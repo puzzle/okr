@@ -9,8 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-@Table(name = "measure")
 @MappedSuperclass
 public abstract class Measure {
     @Id
@@ -36,6 +34,18 @@ public abstract class Measure {
     @NotNull
     @Column(name = "created_on")
     private LocalDateTime createdOn;
+
+    protected Measure(Long id, KeyResult keyResult, String changeInfo, User createdBy, LocalDateTime createdOn) {
+        this.id = id;
+        this.keyResult = keyResult;
+        this.changeInfo = changeInfo;
+        this.createdBy = createdBy;
+        this.createdOn = createdOn;
+    }
+
+    protected Measure() {
+
+    }
 
     @Override
     public boolean equals(Object o) {

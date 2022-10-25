@@ -5,12 +5,14 @@ import ch.puzzle.burningokr.models.entities.User;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "boolean_result")
 public class BooleanMeasure extends Measure {
     @Column(name = "value")
     private Boolean value;

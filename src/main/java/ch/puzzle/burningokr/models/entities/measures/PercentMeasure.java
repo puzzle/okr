@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Table(name = "percent_result")
 public class PercentMeasure extends Measure {
     @NotNull
     @Column(name = "value")

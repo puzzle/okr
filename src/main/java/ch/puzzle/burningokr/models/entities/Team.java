@@ -18,7 +18,9 @@ public class Team {
     @Column(name = "name")
     private String name;
 
-    public Team() {}
+    public Team() {
+    }
+
     private Team(Builder builder) {
         setName(builder.name);
     }
@@ -26,6 +28,7 @@ public class Team {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -44,7 +47,8 @@ public class Team {
     }
 
     public static final class Builder {
-        private @NotBlank @Size(min = 3, max = 15) String name;
+        private @NotBlank
+        @Size(min = 3, max = 15) String name;
 
         public Builder() {
         }

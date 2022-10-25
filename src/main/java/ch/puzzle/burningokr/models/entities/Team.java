@@ -22,6 +22,7 @@ public class Team {
     }
 
     private Team(Builder builder) {
+        id = builder.id;
         setName(builder.name);
     }
 
@@ -55,10 +56,15 @@ public class Team {
     }
 
     public static final class Builder {
-        private @NotBlank
-        @Size(min = 3, max = 15) String name;
+        private Long id;
+        private @NotBlank @Size(min = 3, max = 15) String name;
 
         public Builder() {
+        }
+
+        public Builder id(Long val) {
+            id = val;
+            return this;
         }
 
         public Builder name(@NotBlank @Size(min = 3, max = 15) String val) {

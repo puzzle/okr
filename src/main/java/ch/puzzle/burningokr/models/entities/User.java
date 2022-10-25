@@ -34,6 +34,7 @@ public class User {
     private String email;
 
     private User(Builder builder) {
+        id = builder.id;
         setUsername(builder.username);
         setFirstname(builder.firstname);
         setLastname(builder.lastname);
@@ -100,12 +101,18 @@ public class User {
     }
 
     public static final class Builder {
+        private Long id;
         private @NotBlank @Size(min = 3, max = 20) String username;
         private @NotBlank @Size(min = 3, max = 20) String firstname;
         private @NotBlank @Size(min = 3, max = 20) String lastname;
         private @Email String email;
 
         public Builder() {
+        }
+
+        public Builder id(Long val) {
+            id = val;
+            return this;
         }
 
         public Builder username(@NotBlank @Size(min = 3, max = 20) String val) {

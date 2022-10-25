@@ -1,6 +1,9 @@
 package ch.puzzle.burningokr.models.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,17 +15,22 @@ public class Objective {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 20)
     @Column(name = "title")
     private String title;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "quarter_id")
     private Quarter quarter;
@@ -30,13 +38,16 @@ public class Objective {
     @Column(name = "description")
     private String description;
 
+    @NotNull
     @Column(name = "progress")
     private Double progress;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "created_by_id")
     private User createdBy;
 
+    @NotNull
     @Column(name = "created_on")
     private LocalDateTime createdOn;
 

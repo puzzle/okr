@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "owner")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

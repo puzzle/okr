@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "percent_result")
 public class PercentMeasure extends Measure {
     @NotNull
-    @Column(name = "value")
+    @Column(name = "measure_value")
     private Double value;
 
     @NotNull

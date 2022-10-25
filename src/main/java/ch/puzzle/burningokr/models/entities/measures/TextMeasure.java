@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "text_result")
 public class TextMeasure extends Measure {
-    @Column(name = "value")
+    @Column(name = "measure_value")
     private String value;
 
     @Column(name = "initative")

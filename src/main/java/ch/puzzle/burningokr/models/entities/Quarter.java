@@ -12,7 +12,7 @@ public class Quarter {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "year")
+    @Column(name = "quarter_year")
     private LocalDateTime year;
 
     @Column(name = "number")

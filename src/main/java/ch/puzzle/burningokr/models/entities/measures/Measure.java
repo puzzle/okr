@@ -2,6 +2,7 @@ package ch.puzzle.burningokr.models.entities.measures;
 
 import ch.puzzle.burningokr.models.entities.KeyResult;
 import ch.puzzle.burningokr.models.entities.User;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public abstract class Measure {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

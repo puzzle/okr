@@ -14,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "boolean_result")
 public class BooleanMeasure extends Measure {
-    @Column(name = "value")
+    @Column(name = "measure_value")
     private Boolean value;
 
     private BooleanMeasure(Builder builder) {

@@ -2,6 +2,7 @@ package ch.puzzle.burningokr.models.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "objective")
@@ -49,6 +50,37 @@ public class Objective {
         setProgress(builder.progress);
         setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
+    }
+
+    public Objective() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Objective objective = (Objective) o;
+        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title) && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description) && Objects.equals(progress, objective.progress) && Objects.equals(createdBy, objective.createdBy) && Objects.equals(createdOn, objective.createdOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, owner, team, quarter, description, progress, createdBy, createdOn);
+    }
+
+    @Override
+    public String toString() {
+        return "Objective{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", owner=" + owner +
+                ", team=" + team +
+                ", quarter=" + quarter +
+                ", description='" + description + '\'' +
+                ", progress=" + progress +
+                ", createdBy=" + createdBy +
+                ", createdOn=" + createdOn +
+                '}';
     }
 
     public LocalDateTime getCreatedOn() {

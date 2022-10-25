@@ -1,7 +1,6 @@
 package ch.puzzle.burningokr.models.entities;
 
 import javax.persistence.*;
-import javax.validation.Constraint;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

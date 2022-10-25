@@ -46,6 +46,14 @@ public class Team {
         return Objects.hash(id, name);
     }
 
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public static final class Builder {
         private @NotBlank
         @Size(min = 3, max = 15) String name;

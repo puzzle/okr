@@ -35,7 +35,8 @@ public class Objective {
     @JoinColumn(name = "quarter_id")
     private Quarter quarter;
 
-    @NotBlank@Size(min = 2, max = 1024 * 4)
+    @NotBlank
+    @Size(min = 2, max = 1024 * 4)
     private String description;
 
     @NotNull

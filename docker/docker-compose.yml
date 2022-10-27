@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  okr-db:
+    container_name: okr-dev-db
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: okr
+    ports:
+      - 5432:5432

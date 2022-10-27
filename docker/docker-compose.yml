@@ -1,7 +1,8 @@
 version: '3.5'
 
 services:
-  db:
+  okr-db:
+    container_name: okr-dev-db
     image: postgres:12
     restart: always
     environment:

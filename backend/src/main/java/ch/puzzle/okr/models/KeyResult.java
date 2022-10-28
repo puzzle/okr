@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 public class KeyResult {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_keyResult")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
     @NotNull
     private Long id;
 
@@ -19,7 +19,7 @@ public class KeyResult {
     private Objective objective;
 
     @NotBlank
-    @Size(min = 3, max = 20)
+    @Size(min = 2, max = 250)
     private String title;
 
     @Size(max = 4096)
@@ -33,7 +33,7 @@ public class KeyResult {
     @ManyToOne
     private Quarter quarter;
 
-    private Integer expectedEvolution;
+    private String expectedEvolution;
 
     @NotNull
     @NotBlank
@@ -109,7 +109,7 @@ public class KeyResult {
         private @Size(max = 400) String description;
         private @NotNull User owner;
         private @NotNull Quarter quarter;
-        private Integer expectedEvolution;
+        private String expectedEvolution;
         private @NotNull @NotBlank Unit unit;
         private @NotNull Integer basisValue;
         private @NotNull Integer targetValue;
@@ -149,7 +149,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder expectedEvolution(Integer val) {
+        public Builder expectedEvolution(String val) {
             expectedEvolution = val;
             return this;
         }

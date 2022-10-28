@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "keyResult")
 public class KeyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_keyResult")
@@ -17,31 +16,28 @@ public class KeyResult {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "objective_id")
     private Objective objective;
 
     @NotBlank
     @Size(min = 3, max = 20)
     private String title;
 
-    @Size(max = 400)
+    @Size(max = 4096)
     private String description;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "owner_id")
     private User owner;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "quarter_id")
     private Quarter quarter;
 
     private Integer expectedEvolution;
 
     @NotNull
     @NotBlank
-    private String unit;
+    private Unit unit;
 
     @NotNull
     private Integer basisValue;
@@ -51,7 +47,6 @@ public class KeyResult {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     @NotNull
@@ -115,7 +110,7 @@ public class KeyResult {
         private @NotNull User owner;
         private @NotNull Quarter quarter;
         private Integer expectedEvolution;
-        private @NotNull @NotBlank String unit;
+        private @NotNull @NotBlank Unit unit;
         private @NotNull Integer basisValue;
         private @NotNull Integer targetValue;
         private @NotNull User createdBy;
@@ -159,7 +154,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder unit(@NotNull @NotBlank String val) {
+        public Builder unit(@NotNull @NotBlank Unit val) {
             unit = val;
             return this;
         }

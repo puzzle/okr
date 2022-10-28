@@ -34,14 +34,13 @@ insert into objective(id, title, owner_id, team_id, quarter_id, description, pro
 --     (6, 2, 'Keyresult 6', 'This is the description of Keyresult 6', 1, 1, 2, 2, 0, 100, 2, '2022-01-01');
 
 -- insert into measure(id, keyresult_id, value, change_info, initiatives, created_by_id, created_on) values
---         (1, 1, 60, '', '', 1, '2022-01-01'),                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
---         (2, 1, 30, '', '', 2, '2022-01-01'),                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
---         (3, 2, 10, '', '', 1, '2022-01-01'),                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
---         (4, 2, 15, '', '', 1, '2022-01-01'),                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
---         (5, 3, 85, '', '', 4, '2022-01-01'),                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
---         (6, 4, 90, '', '', 5, '2022-01-01');                                                                                                                                                           (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
-                                                                                                                                                                       (2, 1, 'Keyresult 2', 'This is the description of Keyresult 2', 1, 1, 1, 1, 10, 50, 1, '2022-01-01'),
-                                                                                                                                                                       (3, 1, 'Keyresult 3', 'This is the description of Keyresult 3', 1, 1, 2, 2, 0, 100, 1, '2022-01-01'),
-                                                                                                                                                                       (4, 1, 'Keyresult 4', 'This is the description of Keyresult 4', 1, 1, 2, 3, 0, 1, 1, '2022-01-01'),
-                                                                                                                                                                       (5, 2, 'Keyresult 5', 'This is the description of Keyresult 5', 1, 1, 2, 2, 0, 100, 2, '2022-01-01'),
-                                                                                                                                                                       (6, 2, 'Keyresult 6', 'This is the description of Keyresult 6', 1, 1, 2, 2, 0, 100, 2, '2022-01-01');
+--         (1, 1, 60, '', '', 1, '2022-01-01'),
+--         (2, 1, 30, '', '', 2, '2022-01-01'),
+--         (3, 2, 10, '', '', 1, '2022-01-01'),
+--         (4, 2, 15, '', '', 1, '2022-01-01'),
+--         (5, 3, 85, '', '', 4, '2022-01-01'),
+--         (6, 4, 90, '', '', 5, '2022-01-01');
+
+
+
+

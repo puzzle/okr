@@ -33,7 +33,7 @@ public class KeyResult {
     @ManyToOne
     private Quarter quarter;
 
-    private Integer expectedEvolution;
+    private ExpectedEvolution expectedEvolution;
 
     @NotNull
     @NotBlank
@@ -109,7 +109,7 @@ public class KeyResult {
         private @Size(max = 400) String description;
         private @NotNull User owner;
         private @NotNull Quarter quarter;
-        private Integer expectedEvolution;
+        private ExpectedEvolution expectedEvolution;
         private @NotNull @NotBlank Unit unit;
         private @NotNull Integer basisValue;
         private @NotNull Integer targetValue;
@@ -149,7 +149,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder expectedEvolution(Integer val) {
+        public Builder expectedEvolution(ExpectedEvolution val) {
             expectedEvolution = val;
             return this;
         }

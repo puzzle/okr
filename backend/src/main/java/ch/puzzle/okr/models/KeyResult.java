@@ -33,6 +33,7 @@ public class KeyResult {
     @ManyToOne
     private Quarter quarter;
 
+    @Size(min = 2, max = 250)
     private String expectedEvolution;
 
     @NotNull
@@ -56,19 +57,19 @@ public class KeyResult {
     }
 
     private KeyResult(Builder builder) {
-        id = builder.id;
-        objective = builder.objective;
-        title = builder.title;
-        description = builder.description;
-        owner = builder.owner;
-        quarter = builder.quarter;
-        expectedEvolution = builder.expectedEvolution;
-        unit = builder.unit;
-        basisValue = builder.basisValue;
-        targetValue = builder.targetValue;
-        createdBy = builder.createdBy;
-        createdOn = builder.createdOn;
+        setObjective(builder.objective);
+        setTitle(builder.title);
+        setDescription(builder.description);
+        setOwner(builder.owner);
+        setQuarter(builder.quarter);
+        setExpectedEvolution(builder.expectedEvolution);
+        setUnit(builder.unit);
+        setBasisValue(builder.basisValue);
+        setTargetValue(builder.targetValue);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -101,15 +102,107 @@ public class KeyResult {
                 '}';
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Objective getObjective() {
+        return objective;
+    }
+
+    public void setObjective(Objective objective) {
+        this.objective = objective;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Quarter getQuarter() {
+        return quarter;
+    }
+
+    public void setQuarter(Quarter quarter) {
+        this.quarter = quarter;
+    }
+
+    public String getExpectedEvolution() {
+        return expectedEvolution;
+    }
+
+    public void setExpectedEvolution(String expectedEvolution) {
+        this.expectedEvolution = expectedEvolution;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Integer getBasisValue() {
+        return basisValue;
+    }
+
+    public void setBasisValue(Integer basisValue) {
+        this.basisValue = basisValue;
+    }
+
+    public Integer getTargetValue() {
+        return targetValue;
+    }
+
+    public void setTargetValue(Integer targetValue) {
+        this.targetValue = targetValue;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
 
     public static final class Builder {
         private @NotNull Long id;
         private @NotNull Objective objective;
-        private @NotBlank @Size(min = 3, max = 20) String title;
-        private @Size(max = 400) String description;
+        private @NotBlank @Size(min = 2, max = 250) String title;
+        private @Size(max = 4096) String description;
         private @NotNull User owner;
         private @NotNull Quarter quarter;
-        private String expectedEvolution;
+        private @Size(min = 2, max = 250) String expectedEvolution;
         private @NotNull @NotBlank Unit unit;
         private @NotNull Integer basisValue;
         private @NotNull Integer targetValue;
@@ -129,12 +222,12 @@ public class KeyResult {
             return this;
         }
 
-        public Builder title(@NotBlank @Size(min = 3, max = 20) String val) {
+        public Builder title(@NotBlank @Size(min = 2, max = 250) String val) {
             title = val;
             return this;
         }
 
-        public Builder description(@Size(max = 400) String val) {
+        public Builder description(@Size(max = 4096) String val) {
             description = val;
             return this;
         }
@@ -149,7 +242,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder expectedEvolution(String val) {
+        public Builder expectedEvolution(@Size(min = 2, max = 250) String val) {
             expectedEvolution = val;
             return this;
         }

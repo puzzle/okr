@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "measure")
 public class Measure {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_measure")
@@ -17,7 +16,6 @@ public class Measure {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "key_result_id")
     private KeyResult keyResult;
 
     @NotNull
@@ -33,7 +31,6 @@ public class Measure {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     @NotNull

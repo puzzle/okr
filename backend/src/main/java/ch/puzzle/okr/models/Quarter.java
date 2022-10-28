@@ -13,7 +13,7 @@ public class Quarter {
     private Long id;
 
     @NotNull
-    private LocalDateTime year;
+    private int year;
 
     @NotNull
     private Integer number;
@@ -29,11 +29,11 @@ public class Quarter {
         this.number = number;
     }
 
-    public LocalDateTime getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(LocalDateTime year) {
+    public void setYear(int year) {
         this.year = year;
     }
 }

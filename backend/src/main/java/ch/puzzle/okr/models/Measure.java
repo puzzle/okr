@@ -20,7 +20,6 @@ public class Measure {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
     private Double value;
 
     @NotNull
@@ -37,6 +36,15 @@ public class Measure {
     private LocalDateTime createdOn;
 
     public Measure() {
+    }
+
+    private Measure(Builder builder) {
+        setKeyResult(builder.keyResult);
+        setValue(builder.value);
+        setChangeInfo(builder.changeInfo);
+        setInitiatives(builder.initiatives);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
     }
 
     @Override
@@ -65,20 +73,63 @@ public class Measure {
                 '}';
     }
 
-    private Measure(Builder builder) {
-        id = builder.id;
-        keyResult = builder.keyResult;
-        value = builder.value;
-        changeInfo = builder.changeInfo;
-        initiatives = builder.initiatives;
-        createdBy = builder.createdBy;
-        createdOn = builder.createdOn;
+    public Long getId() {
+        return id;
     }
+
+    public KeyResult getKeyResult() {
+        return keyResult;
+    }
+
+    public void setKeyResult(KeyResult keyResult) {
+        this.keyResult = keyResult;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
+    }
+
+    public String getChangeInfo() {
+        return changeInfo;
+    }
+
+    public void setChangeInfo(String changeInfo) {
+        this.changeInfo = changeInfo;
+    }
+
+    public String getInitiatives() {
+        return initiatives;
+    }
+
+    public void setInitiatives(String initiatives) {
+        this.initiatives = initiatives;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
 
     public static final class Builder {
         private @NotNull Long id;
         private KeyResult keyResult;
-        private @NotNull @NotBlank @Size(min = 2, max = 50) Double value;
+        private @NotNull @NotBlank Double value;
         private @NotNull @NotBlank String changeInfo;
         private String initiatives;
         private @NotNull User createdBy;
@@ -97,7 +148,7 @@ public class Measure {
             return this;
         }
 
-        public Builder value(@NotNull @NotBlank @Size(min = 2, max = 50) Double val) {
+        public Builder value(@NotNull @NotBlank Double val) {
             value = val;
             return this;
         }

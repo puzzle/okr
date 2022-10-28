@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "quarter")
 public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")

@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "objective", indexes = {
+@Table(indexes = {
         @Index(name = "idx_objective_title", columnList = "title")
 })
 public class Objective {

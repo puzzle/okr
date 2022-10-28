@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "team")
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")

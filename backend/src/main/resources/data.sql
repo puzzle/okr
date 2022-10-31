@@ -2,6 +2,8 @@ ALTER SEQUENCE sequence_team RESTART WITH 1000;
 ALTER SEQUENCE sequence_person RESTART WITH 1000;
 ALTER SEQUENCE sequence_quarter RESTART WITH 1000;
 ALTER SEQUENCE sequence_objective RESTART WITH 1000;
+-- ALTER SEQUENCE sequence_key_result RESTART WITH 1000;
+-- ALTER SEQUENCE sequence_measure RESTART WITH 1000;
 
 insert into team(id, name) values
     (1, 'Team 1'),

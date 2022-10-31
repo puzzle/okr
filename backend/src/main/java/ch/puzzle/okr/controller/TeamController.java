@@ -5,8 +5,6 @@ import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.service.TeamService;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
-
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,6 +32,13 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all teams",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Team.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find any teams",
+                    content = @Content)
+    })
     @GetMapping
     public List<TeamDto> getAllTeams() {
         return teamService.getAllTeams().stream()
@@ -46,17 +51,16 @@ public class TeamController {
         return teamMapper.toDto(teamService.getTeamById(id));
     }
 
-    @Operation(summary = "Get specific teams")
+
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found a team",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TeamController.class)) }),
-            @ApiResponse(responseCode = "400", description = "Invalid id supplied",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Team not found",
-                    content = @Content) })
-    @GetMapping("/{id}")
-    public Optional<Team> getTeam(@PathVariable long id) {
+            @ApiResponse(responseCode = "200", description = "Returned a team with a specified ID.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Team.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find a team with a specified ID.", content = @Content)
+    })
+    @GetMapping("{id}")
+    public Optional<Team> getTeamById(@PathVariable long id) {
         return teamRepository.findById(id);
     }
+
 }

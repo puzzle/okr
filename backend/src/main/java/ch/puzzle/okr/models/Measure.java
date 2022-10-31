@@ -85,11 +85,11 @@ public class Measure {
         this.keyResult = keyResult;
     }
 
-    public Double getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 
@@ -128,10 +128,10 @@ public class Measure {
 
     public static final class Builder {
         private @NotNull Long id;
-        private KeyResult keyResult;
-        private @NotNull @NotBlank Double value;
+        private @NotNull KeyResult keyResult;
+        private @NotNull Integer value;
         private @NotNull @NotBlank String changeInfo;
-        private String initiatives;
+        private @Size(max = 4096) String initiatives;
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
@@ -143,12 +143,12 @@ public class Measure {
             return this;
         }
 
-        public Builder keyResult(KeyResult val) {
+        public Builder keyResult(@NotNull KeyResult val) {
             keyResult = val;
             return this;
         }
 
-        public Builder value(@NotNull @NotBlank Double val) {
+        public Builder value(@NotNull Integer val) {
             value = val;
             return this;
         }
@@ -158,7 +158,7 @@ public class Measure {
             return this;
         }
 
-        public Builder initiatives(String val) {
+        public Builder initiatives(@Size(max = 4096) String val) {
             initiatives = val;
             return this;
         }

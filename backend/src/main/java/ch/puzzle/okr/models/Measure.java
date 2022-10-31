@@ -19,7 +19,6 @@ public class Measure {
     private KeyResult keyResult;
 
     @NotNull
-    @NotBlank
     private Double value;
 
     @NotNull

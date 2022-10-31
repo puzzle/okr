@@ -19,12 +19,13 @@ public class Measure {
     private KeyResult keyResult;
 
     @NotNull
-    private Double value;
+    private Integer value;
 
     @NotNull
     @NotBlank
     private String changeInfo;
 
+    @Size(max = 4096)
     private String initiatives;
 
     @NotNull

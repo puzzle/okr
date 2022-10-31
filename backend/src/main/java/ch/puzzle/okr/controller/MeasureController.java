@@ -17,7 +17,7 @@ public class MeasureController {
     MeasureRepository measureRepository;
 
     @GetMapping
-    public List<Measure> getAllTeams() {
+    public List<Measure> getAllMeasures() {
         return (List<Measure>) measureRepository.findAll();
     }
 }

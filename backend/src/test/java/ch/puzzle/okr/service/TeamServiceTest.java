@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.common.BusinessException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;

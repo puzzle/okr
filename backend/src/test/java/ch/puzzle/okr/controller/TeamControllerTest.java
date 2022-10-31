@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.common.BusinessException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.TeamService;

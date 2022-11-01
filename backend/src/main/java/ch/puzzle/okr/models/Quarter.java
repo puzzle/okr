@@ -1,8 +1,10 @@
 package ch.puzzle.okr.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 @Entity
 public class Quarter {
@@ -12,7 +14,7 @@ public class Quarter {
     private Long id;
 
     @NotNull
-    private LocalDateTime year;
+    private Integer year;
 
     @NotNull
     private Integer number;
@@ -28,11 +30,11 @@ public class Quarter {
         this.number = number;
     }
 
-    public LocalDateTime getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(LocalDateTime year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 }

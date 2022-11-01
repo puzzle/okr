@@ -1,9 +1,7 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -39,6 +37,7 @@ public class Measure {
     }
 
     private Measure(Builder builder) {
+        id = builder.id;
         setKeyResult(builder.keyResult);
         setValue(builder.value);
         setChangeInfo(builder.changeInfo);
@@ -135,41 +134,45 @@ public class Measure {
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder id(@NotNull Long val) {
-            id = val;
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder keyResult(@NotNull KeyResult val) {
-            keyResult = val;
+        public Builder withKeyResult(@NotNull KeyResult keyResult) {
+            this.keyResult = keyResult;
             return this;
         }
 
-        public Builder value(@NotNull Integer val) {
-            value = val;
+        public Builder withValue(@NotNull Integer value) {
+            this.value = value;
             return this;
         }
 
-        public Builder changeInfo(@NotNull @NotBlank String val) {
-            changeInfo = val;
+        public Builder withChangeInfo(@NotNull @NotBlank String changeInfo) {
+            this.changeInfo = changeInfo;
             return this;
         }
 
-        public Builder initiatives(@Size(max = 4096) String val) {
-            initiatives = val;
+        public Builder withInitiatives(@Size(max = 4096) String initiatives) {
+            this.initiatives = initiatives;
             return this;
         }
 
-        public Builder createdBy(@NotNull User val) {
-            createdBy = val;
+        public Builder withCreatedBy(@NotNull User createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 
-        public Builder createdOn(@NotNull LocalDateTime val) {
-            createdOn = val;
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
             return this;
         }
 

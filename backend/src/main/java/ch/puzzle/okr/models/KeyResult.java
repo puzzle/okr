@@ -1,9 +1,7 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -57,6 +55,7 @@ public class KeyResult {
     }
 
     private KeyResult(Builder builder) {
+        id = builder.id;
         setObjective(builder.objective);
         setTitle(builder.title);
         setDescription(builder.description);
@@ -209,71 +208,75 @@ public class KeyResult {
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder id(@NotNull Long val) {
-            id = val;
-            return this;
-        }
-
-        public Builder objective(@NotNull Objective val) {
-            objective = val;
-            return this;
-        }
-
-        public Builder title(@NotBlank @Size(min = 2, max = 250) String val) {
-            title = val;
-            return this;
-        }
-
-        public Builder description(@Size(max = 4096) String val) {
-            description = val;
-            return this;
-        }
-
-        public Builder owner(@NotNull User val) {
-            owner = val;
-            return this;
-        }
-
-        public Builder quarter(@NotNull Quarter val) {
-            quarter = val;
-            return this;
-        }
-
-        public Builder expectedEvolution(@Size(min = 2, max = 250) ExpectedEvolution val) {
-            expectedEvolution = val;
-            return this;
-        }
-
-        public Builder unit(@NotNull @NotBlank Unit val) {
-            unit = val;
-            return this;
-        }
-
-        public Builder basisValue(@NotNull Integer val) {
-            basisValue = val;
-            return this;
-        }
-
-        public Builder targetValue(@NotNull Integer val) {
-            targetValue = val;
-            return this;
-        }
-
-        public Builder createdBy(@NotNull User val) {
-            createdBy = val;
-            return this;
-        }
-
-        public Builder createdOn(@NotNull LocalDateTime val) {
-            createdOn = val;
-            return this;
+        public static Builder builder() {
+            return new Builder();
         }
 
         public KeyResult build() {
             return new KeyResult(this);
+        }
+
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withObjective(@NotNull Objective objective) {
+            this.objective = objective;
+            return this;
+        }
+
+        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withDescription(@Size(max = 4096) String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withOwner(@NotNull User owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder withQuarter(@NotNull Quarter quarter) {
+            this.quarter = quarter;
+            return this;
+        }
+
+        public Builder withExpectedEvolution(@Size(min = 2, max = 250) ExpectedEvolution expectedEvolution) {
+            this.expectedEvolution = expectedEvolution;
+            return this;
+        }
+
+        public Builder withUnit(@NotNull @NotBlank Unit unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        public Builder withBasisValue(@NotNull Integer basisValue) {
+            this.basisValue = basisValue;
+            return this;
+        }
+
+        public Builder withTargetValue(@NotNull Integer targetValue) {
+            this.targetValue = targetValue;
+            return this;
+        }
+
+        public Builder withCreatedBy(@NotNull User createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
+            return this;
         }
     }
 }

@@ -1,10 +1,9 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(indexes = {
@@ -49,7 +48,31 @@ public class Objective {
     @NotNull
     private LocalDateTime createdOn;
 
+    private Objective(Builder builder) {
+        this.id = builder.id;
+        setTitle(builder.title);
+        setOwner(builder.owner);
+        setTeam(builder.team);
+        setQuarter(builder.quarter);
+        setDescription(builder.description);
+        setProgress(builder.progress);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
+    }
+
     public Objective() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Objective objective)) return false;
+        return Objects.equals(getTitle(), objective.getTitle()) && Objects.equals(getTeam(), objective.getTeam()) && Objects.equals(getQuarter(), objective.getQuarter());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getTeam(), getQuarter());
     }
 
     public LocalDateTime getCreatedOn() {
@@ -120,8 +143,71 @@ public class Objective {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public static final class Builder {
+        private @NotNull Long id;
+        private @NotBlank @Size(min = 2, max = 250) String title;
+        private @NotNull User owner;
+        private @NotNull Team team;
+        private @NotNull Quarter quarter;
+        private @NotBlank @Size(min = 2, max = 1024 * 4) String description;
+        private @NotNull Double progress;
+        private @NotBlank @Size(min = 2, max = 20) String createdBy;
+        private @NotNull LocalDateTime createdOn;
 
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder withOwner(@NotNull User owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder withTeam(@NotNull Team team) {
+            this.team = team;
+            return this;
+        }
+
+        public Builder withQuarter(@NotNull Quarter quarter) {
+            this.quarter = quarter;
+            return this;
+        }
+
+        public Builder withDescription(@NotBlank @Size(min = 2, max = 1024 * 4) String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withProgress(@NotNull Double progress) {
+            this.progress = progress;
+            return this;
+        }
+
+        public Builder withCreatedBy(@NotBlank @Size(min = 2, max = 20) String createdBy) {
+            this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
+            return this;
+        }
+
+        public Objective build() {
+            return new Objective(this);
+        }
+    }
 }

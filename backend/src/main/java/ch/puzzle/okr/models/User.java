@@ -1,10 +1,8 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "person")
@@ -30,8 +28,6 @@ public class User {
     @Size(min = 2, max = 250)
     private String email;
 
-    public User() {
-    }
 
     private User(Builder builder) {
         id = builder.id;
@@ -41,8 +37,23 @@ public class User {
         setEmail(builder.email);
     }
 
+    public User() {
+    }
+
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(getUsername(), user.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUsername());
     }
 
     public String getEmail() {
@@ -77,7 +88,6 @@ public class User {
         this.username = username;
     }
 
-
     public static final class Builder {
         private @NotNull Long id;
         private @NotBlank @Size(min = 2, max = 20) String username;
@@ -85,35 +95,35 @@ public class User {
         private @NotBlank @Size(min = 2, max = 50) String lastname;
         private @Email @Size(min = 2, max = 250) String email;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public static User.Builder builder() {
-            return new User.Builder();
+        public static Builder builder() {
+            return new Builder();
         }
 
-        public Builder withId(@NotNull Long val) {
-            id = val;
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder withUsername(@NotBlank @Size(min = 2, max = 20) String val) {
-            username = val;
+        public Builder withUsername(@NotBlank @Size(min = 2, max = 20) String username) {
+            this.username = username;
             return this;
         }
 
-        public Builder withFirstname(@NotBlank @Size(min = 2, max = 50) String val) {
-            firstname = val;
+        public Builder withFirstname(@NotBlank @Size(min = 2, max = 50) String firstname) {
+            this.firstname = firstname;
             return this;
         }
 
-        public Builder withLastname(@NotBlank @Size(min = 2, max = 50) String val) {
-            lastname = val;
+        public Builder withLastname(@NotBlank @Size(min = 2, max = 50) String lastname) {
+            this.lastname = lastname;
             return this;
         }
 
-        public Builder withEmail(@Email @Size(min = 2, max = 250) String val) {
-            email = val;
+        public Builder withEmail(@Email @Size(min = 2, max = 250) String email) {
+            this.email = email;
             return this;
         }
 

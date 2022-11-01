@@ -2,9 +2,9 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.dto.objectives.GetObjectiveDto;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class ObjectiveMapper {
 
     public GetObjectiveDto entityToGetObjectiveDto(Objective objective) {

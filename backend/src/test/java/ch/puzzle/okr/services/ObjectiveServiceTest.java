@@ -1,15 +1,13 @@
-package services;
+package ch.puzzle.okr.services;
 
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDto;
+import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.ObjectiveService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,9 +36,9 @@ class ObjectiveServiceTest {
         Iterable<Objective> objectiveIterable = List.of(new Objective());
 
         when(this.objectiveRepository.findAll()).thenReturn(objectiveIterable);
-        when(this.objectiveMapper.entityToGetObjectiveDto(any())).thenReturn(new GetObjectiveDto());
+        when(this.objectiveMapper.entityToGetObjectiveDto(any())).thenReturn(new GetObjectiveDTO());
 
-        List<GetObjectiveDto> objectiveDtos = this.objectiveService.getAllObjectives();
+        List<GetObjectiveDTO> objectiveDtos = this.objectiveService.getAllObjectives();
         assertEquals(1, objectiveDtos.size());
     }
 }

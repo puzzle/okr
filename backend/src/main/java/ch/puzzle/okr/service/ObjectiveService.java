@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.mapper.ObjectiveMapper;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDto;
+import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ public class ObjectiveService {
         this.objectiveMapper = objectiveMapper;
     }
 
-    public List<GetObjectiveDto> getAllObjectives() {
+    public List<GetObjectiveDTO> getAllObjectives() {
         return StreamSupport.stream(this.objectiveRepository.findAll().spliterator(), false)
                         .map(this.objectiveMapper::entityToGetObjectiveDto).collect(Collectors.toList());
     }

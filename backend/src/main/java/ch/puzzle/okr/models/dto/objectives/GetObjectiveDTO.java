@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models.dto.objectives;
 
-public class GetObjectiveDto {
+public class GetObjectiveDTO {
     private Integer teamId;
     private String teamName;
     private String title;
@@ -9,7 +9,7 @@ public class GetObjectiveDto {
     private String ownerName;
     private String quarter;
 
-    public GetObjectiveDto(Integer teamId, String teamName, String title, String description, Integer ownerId, String ownerName, String quarter) {
+    public GetObjectiveDTO(Integer teamId, String teamName, String title, String description, Integer ownerId, String ownerName, String quarter) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.title = title;
@@ -19,7 +19,7 @@ public class GetObjectiveDto {
         this.quarter = quarter;
     }
 
-    public GetObjectiveDto() {
+    public GetObjectiveDTO() {
     }
 
     public Integer getTeamId() {

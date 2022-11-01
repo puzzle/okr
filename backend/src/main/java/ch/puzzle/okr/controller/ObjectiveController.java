@@ -1,8 +1,9 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDto;
+import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class ObjectiveController {
     }
 
     @GetMapping
-    public List<GetObjectiveDto> getObjectiveDtoList() {
-        return this.objectiveService.getAllObjectives();
+    public ResponseEntity<List<GetObjectiveDTO>> getObjectiveDtoList() {
+        return ResponseEntity.ok(this.objectiveService.getAllObjectives());
     }
 }

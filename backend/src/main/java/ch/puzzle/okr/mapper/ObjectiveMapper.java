@@ -1,14 +1,14 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDto;
+import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ObjectiveMapper {
 
-    public GetObjectiveDto entityToGetObjectiveDto(Objective objective) {
-        return new GetObjectiveDto(
+    public GetObjectiveDTO entityToGetObjectiveDto(Objective objective) {
+        return new GetObjectiveDTO(
                 1, objective.getTeam().getName(),
                 objective.getTitle(), objective.getDescription(),
                 1, objective.getOwner().getUsername(),

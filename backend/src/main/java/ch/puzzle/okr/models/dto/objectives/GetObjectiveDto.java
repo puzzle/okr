@@ -19,6 +19,9 @@ public class GetObjectiveDto {
         this.quarter = quarter;
     }
 
+    public GetObjectiveDto() {
+    }
+
     public Integer getTeamId() {
         return teamId;
     }

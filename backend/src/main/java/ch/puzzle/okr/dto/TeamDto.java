@@ -1,16 +1,8 @@
 package ch.puzzle.okr.dto;
 
-import java.io.Serial;
-import java.io.Serializable;
-
-public class TeamDto implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -4405923832408766849L;
+public class TeamDto {
     private Long id;
     private String name;
-
-    public TeamDto() {
-    }
 
     public TeamDto(Long id, String name) {
         this.id = id;

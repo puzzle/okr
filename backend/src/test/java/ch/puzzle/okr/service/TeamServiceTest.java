@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -35,15 +36,15 @@ class TeamServiceTest {
     }
 
     @Test
-    void shouldGetTheTeam() throws BusinessException {
+    void shouldGetTheTeam() throws ResponseStatusException {
         Team team = teamService.getTeamById(5);
         Assertions.assertThat(team.getName()).isEqualTo("Puzzle");
     }
 
     @Test
     void shouldNotFindTheTeam() {
-        BusinessException exception = assertThrows(BusinessException.class, () -> teamService.getTeamById(6));
-        assertEquals(404, exception.getCode());
-        assertEquals("Team with id 6 not found", exception.getMessage());
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> teamService.getTeamById(6));
+        assertEquals(404, exception.getRawStatusCode());
+        assertEquals("Team with id 6 not found", exception.getReason());
     }
 }

@@ -3,8 +3,10 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.service.TeamService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -12,11 +14,13 @@ import java.util.List;
 @RequestMapping("api/v1/teams")
 public class TeamController {
 
-    @Autowired
     TeamService teamService;
-
-    @Autowired
     TeamMapper teamMapper;
+
+    public TeamController(TeamService teamService, TeamMapper teamMapper) {
+        this.teamService = teamService;
+        this.teamMapper = teamMapper;
+    }
 
     @GetMapping
     public List<TeamDto> getAllTeams() {

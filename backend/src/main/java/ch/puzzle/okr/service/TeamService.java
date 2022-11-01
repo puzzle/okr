@@ -2,7 +2,6 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,8 +11,11 @@ import java.util.List;
 @Service
 public class TeamService {
 
-    @Autowired
     TeamRepository teamRepository;
+
+    public TeamService(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
+    }
 
     public List<Team> getAllTeams() {
         return (List<Team>) teamRepository.findAll();

@@ -1,8 +1,7 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
+import ch.puzzle.okr.dto.objectives.GetObjectiveDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootConfiguration;

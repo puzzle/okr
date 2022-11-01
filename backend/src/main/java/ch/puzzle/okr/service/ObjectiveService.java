@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.mapper.ObjectiveMapper;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
+import ch.puzzle.okr.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

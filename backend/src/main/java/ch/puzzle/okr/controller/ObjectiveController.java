@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
+import ch.puzzle.okr.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/objectives")
 public class ObjectiveController {
-    private ObjectiveService objectiveService;
+    private final ObjectiveService objectiveService;
 
     @Autowired
     public ObjectiveController(ObjectiveService objectiveService) {

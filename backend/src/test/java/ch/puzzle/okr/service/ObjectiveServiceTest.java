@@ -1,10 +1,9 @@
-package ch.puzzle.okr.services;
+package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.dto.objectives.GetObjectiveDTO;
 import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.service.ObjectiveService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

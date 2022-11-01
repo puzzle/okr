@@ -1,4 +1,6 @@
-package ch.puzzle.okr.models.dto.objectives;
+package ch.puzzle.okr.dto.objectives;
+
+import java.time.LocalDateTime;
 
 public class GetObjectiveDTO {
     private Integer teamId;
@@ -8,8 +10,10 @@ public class GetObjectiveDTO {
     private Integer ownerId;
     private String ownerName;
     private String quarter;
+    private LocalDateTime createdOn;
 
-    public GetObjectiveDTO(Integer teamId, String teamName, String title, String description, Integer ownerId, String ownerName, String quarter) {
+    public GetObjectiveDTO(Integer teamId, String teamName, String title, String description, Integer ownerId,
+                           String ownerName, String quarter, LocalDateTime createdOn) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.title = title;
@@ -17,6 +21,7 @@ public class GetObjectiveDTO {
         this.ownerId = ownerId;
         this.ownerName = ownerName;
         this.quarter = quarter;
+        this.createdOn = createdOn;
     }
 
     public GetObjectiveDTO() {
@@ -76,5 +81,13 @@ public class GetObjectiveDTO {
 
     public void setQuarter(String quarter) {
         this.quarter = quarter;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
     }
 }

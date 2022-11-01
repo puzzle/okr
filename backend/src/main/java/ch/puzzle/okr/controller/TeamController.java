@@ -21,15 +21,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/teams")
 public class TeamController {
+    private final TeamRepository teamRepository;
+    private final TeamService teamService;
+    private final TeamMapper teamMapper;
+
     @Autowired
-    TeamRepository teamRepository;
-
-    TeamService teamService;
-    TeamMapper teamMapper;
-
-    public TeamController(TeamService teamService, TeamMapper teamMapper) {
+    public TeamController(TeamService teamService, TeamMapper teamMapper, TeamRepository teamRepository) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
+        this.teamRepository = teamRepository;
     }
 
     @ApiResponses(value = {
@@ -46,11 +46,6 @@ public class TeamController {
                 .toList();
     }
 
-    @GetMapping("/{id}")
-    public TeamDto getTeams(@PathVariable long id) {
-        return teamMapper.toDto(teamService.getTeamById(id));
-    }
-
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a team with a specified ID.",
@@ -58,9 +53,9 @@ public class TeamController {
                             schema = @Schema(implementation = Team.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a team with a specified ID.", content = @Content)
     })
-    @GetMapping("{id}")
-    public Optional<Team> getTeamById(@PathVariable long id) {
-        return teamRepository.findById(id);
+    @GetMapping("/{id}")
+    public TeamDto getTeams(@PathVariable long id) {
+        return teamMapper.toDto(teamService.getTeamById(id));
     }
 
 }

@@ -19,6 +19,8 @@ public class TeamService {
         return (List<Team>) teamRepository.findAll();
     }
     public Team getTeamById(long id) {
-        return teamRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id)));
+        return teamRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id))
+        );
     }
 }

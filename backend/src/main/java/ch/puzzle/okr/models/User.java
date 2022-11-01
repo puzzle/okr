@@ -5,10 +5,11 @@ import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "person")
+//table cannot be named "user" since it is a reserved keyword of Postgres
+@Table(name= "client")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_client")
     @NotNull
     private Long id;
 

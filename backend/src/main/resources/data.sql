@@ -1,5 +1,5 @@
 ALTER SEQUENCE sequence_team RESTART WITH 1000;
-ALTER SEQUENCE sequence_person RESTART WITH 1000;
+ALTER SEQUENCE sequence_client RESTART WITH 1000;
 ALTER SEQUENCE sequence_quarter RESTART WITH 1000;
 ALTER SEQUENCE sequence_objective RESTART WITH 1000;
 -- ALTER SEQUENCE sequence_key_result RESTART WITH 1000;
@@ -10,7 +10,7 @@ insert into team(id, name) values
                                (2, 'Team 2'),
                                (3, 'Team 3');
 
-insert into person(id, username, firstname, lastname, email) values
+insert into client(id, username, firstname, lastname, email) values
                                                                  (1, 'alice', 'Alice', 'Wunderland', 'wunderland@puzzle.ch'),
                                                                  (2, 'bob', 'Bob', 'Baumeister', 'baumeister@puzzle.ch'),
                                                                  (3, 'findus', 'Findus', 'Peterson', 'peterson@puzzle.ch'),

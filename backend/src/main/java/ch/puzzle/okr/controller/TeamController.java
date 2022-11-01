@@ -21,15 +21,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api/v1/teams")
 public class TeamController {
-    private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final TeamMapper teamMapper;
 
     @Autowired
-    public TeamController(TeamService teamService, TeamMapper teamMapper, TeamRepository teamRepository) {
+    public TeamController(TeamService teamService, TeamMapper teamMapper) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
-        this.teamRepository = teamRepository;
     }
 
     @ApiResponses(value = {

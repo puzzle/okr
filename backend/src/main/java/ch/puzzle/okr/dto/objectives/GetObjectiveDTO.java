@@ -3,13 +3,21 @@ package ch.puzzle.okr.dto.objectives;
 import java.time.LocalDateTime;
 
 public class GetObjectiveDTO {
+    @ApiModelProperty(notes = "Objective team ID", example = "1", required = true)
     private Integer teamId;
+    @ApiModelProperty(notes = "Objective team name", example = "UFC", required = true)
     private String teamName;
+    @ApiModelProperty(notes = "Objective title", example = "Make more money", required = true)
     private String title;
+    @ApiModelProperty(notes = "Objective description", example = "This is a description", required = true)
     private String description;
+    @ApiModelProperty(notes = "ID of objective owner", example = "1", required = true)
     private Integer ownerId;
+    @ApiModelProperty(notes = "Name of objective owner", example = "Conor McGregor", required = true)
     private String ownerName;
+    @ApiModelProperty(notes = "Quarter in which objective is currently placed", example = "22/1", required = true)
     private String quarter;
+    @ApiModelProperty(notes = "Localdatetime when objective was created", example = "2022-07-01T:00:00", required = true)
     private LocalDateTime createdOn;
 
     public GetObjectiveDTO(Integer teamId, String teamName, String title, String description, Integer ownerId,

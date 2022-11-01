@@ -23,6 +23,6 @@ public class ObjectiveService {
 
     public List<GetObjectiveDTO> getAllObjectives() {
         return StreamSupport.stream(this.objectiveRepository.findAll().spliterator(), false)
-                        .map(this.objectiveMapper::entityToGetObjectiveDto).collect(Collectors.toList());
+                        .map(this.objectiveMapper::entityToGetObjectiveDto).toList();
     }
 }

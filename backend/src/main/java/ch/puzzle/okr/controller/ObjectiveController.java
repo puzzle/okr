@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/objectives")
+@ApiOperation("Objectives API")
 public class ObjectiveController {
     private final ObjectiveService objectiveService;
 
@@ -20,6 +21,10 @@ public class ObjectiveController {
         this.objectiveService = objectiveService;
     }
 
+    @ApiOperation(value = "Get all objectives", notes = "Returns List of ObjectiveDTOs")
+    @APIResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved")
+    })
     @GetMapping
     public ResponseEntity<List<GetObjectiveDTO>> getObjectiveDtoList() {
         return ResponseEntity.ok(this.objectiveService.getAllObjectives());

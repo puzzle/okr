@@ -8,10 +8,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -38,7 +38,6 @@ public class TeamController {
                 .toList();
     }
 
-
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a team with a specified ID.",
                     content = {@Content(mediaType = "application/json",
@@ -48,6 +47,15 @@ public class TeamController {
     @GetMapping("/{id}")
     public TeamDto getTeamById(@PathVariable long id) {
         return teamMapper.toDto(teamService.getTeamById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(teamMapper.toTeam(teamDto)));
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing attribute name when creating team");
+        }
     }
 
 }

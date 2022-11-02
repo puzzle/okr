@@ -25,4 +25,8 @@ public class TeamService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id))
         );
     }
+
+    public Team saveTeam(Team givenTeam) {
+        return teamRepository.save(Team.Builder.builder().withName(givenTeam.getName()).build());
+    }
 }

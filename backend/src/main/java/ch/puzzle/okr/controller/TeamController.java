@@ -46,7 +46,7 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find a team with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public TeamDto getTeams(@PathVariable long id) {
+    public TeamDto getTeamById(@PathVariable long id) {
         return teamMapper.toDto(teamService.getTeamById(id));
     }
 

@@ -27,6 +27,7 @@ public class TeamService {
     }
 
     public Team saveTeam(Team givenTeam) {
-        return teamRepository.save(Team.Builder.builder().withName(givenTeam.getName()).build());
+        Team team = Team.Builder.builder().withName(givenTeam.getName()).build();
+        return teamRepository.save(team);
     }
 }

@@ -10,11 +10,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("api/v1/teams")
 public class TeamController {
@@ -50,9 +53,10 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {
+    public ResponseEntity<Object> createTeam(@Valid @RequestBody TeamDto teamDto) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(teamMapper.toTeam(teamDto)));
+            Team team = teamMapper.toTeam(teamDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing attribute name when creating team");
         }

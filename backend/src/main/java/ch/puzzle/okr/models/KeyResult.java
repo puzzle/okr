@@ -1,9 +1,7 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -57,6 +55,7 @@ public class KeyResult {
     }
 
     private KeyResult(Builder builder) {
+        id = builder.id;
         setObjective(builder.objective);
         setTitle(builder.title);
         setDescription(builder.description);
@@ -68,38 +67,6 @@ public class KeyResult {
         setTargetValue(builder.targetValue);
         setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter) && Objects.equals(expectedEvolution, keyResult.expectedEvolution) && Objects.equals(unit, keyResult.unit) && Objects.equals(basisValue, keyResult.basisValue) && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, quarter, expectedEvolution, unit, basisValue, targetValue, createdBy, createdOn);
-    }
-
-    @Override
-    public String toString() {
-        return "KeyResult{" +
-                "id=" + id +
-                ", objective=" + objective +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", owner=" + owner +
-                ", quarter=" + quarter +
-                ", expectedEvolution=" + expectedEvolution +
-                ", unit='" + unit + '\'' +
-                ", basisValue=" + basisValue +
-                ", targetValue=" + targetValue +
-                ", createdBy=" + createdBy +
-                ", createdOn=" + createdOn +
-                '}';
     }
 
     public Long getId() {
@@ -194,6 +161,36 @@ public class KeyResult {
         this.createdOn = createdOn;
     }
 
+    @Override
+    public String toString() {
+        return "KeyResult{" +
+                "id=" + id +
+                ", objective=" + objective +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", owner=" + owner +
+                ", quarter=" + quarter +
+                ", expectedEvolution=" + expectedEvolution +
+                ", unit='" + unit + '\'' +
+                ", basisValue=" + basisValue +
+                ", targetValue=" + targetValue +
+                ", createdBy=" + createdBy +
+                ", createdOn=" + createdOn +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyResult keyResult = (KeyResult) o;
+        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter) && expectedEvolution == keyResult.expectedEvolution && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue) && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, objective, title, description, owner, quarter, expectedEvolution, unit, basisValue, targetValue, createdBy, createdOn);
+    }
 
     public static final class Builder {
         private @NotNull Long id;
@@ -209,66 +206,70 @@ public class KeyResult {
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder id(@NotNull Long val) {
-            id = val;
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder objective(@NotNull Objective val) {
-            objective = val;
+        public Builder withObjective(@NotNull Objective objective) {
+            this.objective = objective;
             return this;
         }
 
-        public Builder title(@NotBlank @Size(min = 2, max = 250) String val) {
-            title = val;
+        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+            this.title = title;
             return this;
         }
 
-        public Builder description(@Size(max = 4096) String val) {
-            description = val;
+        public Builder withDescription(@Size(max = 4096) String description) {
+            this.description = description;
             return this;
         }
 
-        public Builder owner(@NotNull User val) {
-            owner = val;
+        public Builder withOwner(@NotNull User owner) {
+            this.owner = owner;
             return this;
         }
 
-        public Builder quarter(@NotNull Quarter val) {
-            quarter = val;
+        public Builder withQuarter(@NotNull Quarter quarter) {
+            this.quarter = quarter;
             return this;
         }
 
-        public Builder expectedEvolution(@Size(min = 2, max = 250) ExpectedEvolution val) {
-            expectedEvolution = val;
+        public Builder withExpectedEvolution(@Size(min = 2, max = 250) ExpectedEvolution expectedEvolution) {
+            this.expectedEvolution = expectedEvolution;
             return this;
         }
 
-        public Builder unit(@NotNull @NotBlank Unit val) {
-            unit = val;
+        public Builder withUnit(@NotNull @NotBlank Unit unit) {
+            this.unit = unit;
             return this;
         }
 
-        public Builder basisValue(@NotNull Integer val) {
-            basisValue = val;
+        public Builder withBasisValue(@NotNull Integer basisValue) {
+            this.basisValue = basisValue;
             return this;
         }
 
-        public Builder targetValue(@NotNull Integer val) {
-            targetValue = val;
+        public Builder withTargetValue(@NotNull Integer targetValue) {
+            this.targetValue = targetValue;
             return this;
         }
 
-        public Builder createdBy(@NotNull User val) {
-            createdBy = val;
+        public Builder withCreatedBy(@NotNull User createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 
-        public Builder createdOn(@NotNull LocalDateTime val) {
-            createdOn = val;
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
             return this;
         }
 

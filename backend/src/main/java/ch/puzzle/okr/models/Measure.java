@@ -1,9 +1,7 @@
 package ch.puzzle.okr.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -39,38 +37,13 @@ public class Measure {
     }
 
     private Measure(Builder builder) {
+        id = builder.id;
         setKeyResult(builder.keyResult);
         setValue(builder.value);
         setChangeInfo(builder.changeInfo);
         setInitiatives(builder.initiatives);
         setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Measure measure = (Measure) o;
-        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult) && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo) && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy) && Objects.equals(createdOn, measure.createdOn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
-    }
-
-    @Override
-    public String toString() {
-        return "Measure{" +
-                "id=" + id +
-                ", keyResult=" + keyResult +
-                ", value=" + value +
-                ", changeInfo='" + changeInfo + '\'' +
-                ", initiatives='" + initiatives + '\'' +
-                ", createdBy=" + createdBy +
-                ", createdOn=" + createdOn +
-                '}';
     }
 
     public Long getId() {
@@ -125,6 +98,31 @@ public class Measure {
         this.createdOn = createdOn;
     }
 
+    @Override
+    public String toString() {
+        return "Measure{" +
+                "id=" + id +
+                ", keyResult=" + keyResult +
+                ", value=" + value +
+                ", changeInfo='" + changeInfo + '\'' +
+                ", initiatives='" + initiatives + '\'' +
+                ", createdBy=" + createdBy +
+                ", createdOn=" + createdOn +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Measure measure = (Measure) o;
+        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult) && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo) && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy) && Objects.equals(createdOn, measure.createdOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
+    }
 
     public static final class Builder {
         private @NotNull Long id;
@@ -135,41 +133,45 @@ public class Measure {
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
-        public Builder() {
+        private Builder() {
         }
 
-        public Builder id(@NotNull Long val) {
-            id = val;
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(@NotNull Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder keyResult(@NotNull KeyResult val) {
-            keyResult = val;
+        public Builder withKeyResult(@NotNull KeyResult keyResult) {
+            this.keyResult = keyResult;
             return this;
         }
 
-        public Builder value(@NotNull Integer val) {
-            value = val;
+        public Builder withValue(@NotNull Integer value) {
+            this.value = value;
             return this;
         }
 
-        public Builder changeInfo(@NotNull @NotBlank String val) {
-            changeInfo = val;
+        public Builder withChangeInfo(@NotNull @NotBlank String changeInfo) {
+            this.changeInfo = changeInfo;
             return this;
         }
 
-        public Builder initiatives(@Size(max = 4096) String val) {
-            initiatives = val;
+        public Builder withInitiatives(@Size(max = 4096) String initiatives) {
+            this.initiatives = initiatives;
             return this;
         }
 
-        public Builder createdBy(@NotNull User val) {
-            createdBy = val;
+        public Builder withCreatedBy(@NotNull User createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 
-        public Builder createdOn(@NotNull LocalDateTime val) {
-            createdOn = val;
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
             return this;
         }
 

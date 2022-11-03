@@ -167,7 +167,7 @@ public class Objective {
         private @NotNull Quarter quarter;
         private @NotBlank @Size(min = 2, max = 1024 * 4) String description;
         private @NotNull Double progress;
-        private @NotBlank @Size(min = 2, max = 20) User createdBy;
+        private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
         private Builder() {
@@ -212,7 +212,7 @@ public class Objective {
             return this;
         }
 
-        public Builder withCreatedBy(@NotNull @Size(min = 2, max = 20) User createdBy) {
+        public Builder withCreatedBy(@NotNull User createdBy) {
             this.createdBy = createdBy;
             return this;
         }

@@ -15,28 +15,16 @@ public class Team {
     @Size(min = 2, max = 250)
     private String name;
 
+    public Team() {
+    }
+
     private Team(Builder builder) {
         id = builder.id;
         setName(builder.name);
     }
 
-    public Team() {
-    }
-
     public Long getId() {
         return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Team team)) return false;
-        return Objects.equals(getName(), team.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName());
     }
 
     public String getName() {
@@ -55,6 +43,17 @@ public class Team {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Team team)) return false;
+        return Objects.equals(getName(), team.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName());
+    }
 
     public static final class Builder {
         private @NotNull Long id;

@@ -29,6 +29,8 @@ public class User {
     @Size(min = 2, max = 250)
     private String email;
 
+    public User() {
+    }
 
     private User(Builder builder) {
         id = builder.id;
@@ -38,23 +40,8 @@ public class User {
         setEmail(builder.email);
     }
 
-    public User() {
-    }
-
     public Long getId() {
         return id;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return Objects.equals(getUsername(), user.getUsername());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUsername());
     }
 
     public String getEmail() {
@@ -88,6 +75,30 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(getUsername(), user.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUsername());
+    }
+
 
     public static final class Builder {
         private @NotNull Long id;

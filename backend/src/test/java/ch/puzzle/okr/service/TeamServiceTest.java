@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,6 @@ class TeamServiceTest {
 
     Team teamPuzzle;
     List<Team> teamsPuzzle;
-    List<Team> emptyTeamsPuzzle;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,6 @@ class TeamServiceTest {
                 withName("Puzzle")
                 .build();
         this.teamsPuzzle = List.of(teamPuzzle, teamPuzzle, teamPuzzle);
-        this.emptyTeamsPuzzle = List.of();
     }
 
     @Test
@@ -52,7 +51,7 @@ class TeamServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoTeam() {
-        Mockito.when(teamRepository.findAll()).thenReturn(emptyTeamsPuzzle);
+        Mockito.when(teamRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Team> teams = teamService.getAllTeams();
 

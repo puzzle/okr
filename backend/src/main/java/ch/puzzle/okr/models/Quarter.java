@@ -30,18 +30,6 @@ public class Quarter {
         return id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Quarter quarter)) return false;
-        return Objects.equals(getYear(), quarter.getYear()) && Objects.equals(getNumber(), quarter.getNumber());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getYear(), getNumber());
-    }
-
     public Integer getNumber() {
         return number;
     }
@@ -56,6 +44,27 @@ public class Quarter {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "Quarter{" +
+                "id=" + id +
+                ", year=" + year +
+                ", number=" + number +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Quarter quarter)) return false;
+        return Objects.equals(getYear(), quarter.getYear()) && Objects.equals(getNumber(), quarter.getNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getYear(), getNumber());
     }
 
     public static final class Builder {

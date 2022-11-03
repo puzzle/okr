@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,24 +26,51 @@ class TeamServiceTest {
     @InjectMocks
     private TeamService teamService;
 
+    Team teamPuzzle;
+    List<Team> teamsPuzzle;
+    List<Team> emptyTeamsPuzzle;
+
     @BeforeEach
     void setUp() {
-        Team teamPuzzle = Team.Builder.builder()
+        this.teamPuzzle = Team.Builder.builder()
                 .withId(5L).
                 withName("Puzzle")
                 .build();
-        Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
-        Mockito.when(teamRepository.findById(6L)).thenReturn(Optional.empty());
+        this.teamsPuzzle = List.of(teamPuzzle, teamPuzzle, teamPuzzle);
+        this.emptyTeamsPuzzle = List.of();
+    }
+
+    @Test
+    void shouldGetAllTeams() throws ResponseStatusException {
+        Mockito.when(teamRepository.findAll()).thenReturn(teamsPuzzle);
+
+        List<Team> teams = teamService.getAllTeams();
+
+        assertEquals(3 ,teams.size());
+        assertEquals("Puzzle", teams.get(0).getName());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoTeam() {
+        Mockito.when(teamRepository.findAll()).thenReturn(emptyTeamsPuzzle);
+
+        List<Team> teams = teamService.getAllTeams();
+
+        assertEquals(0 ,teams.size());
     }
 
     @Test
     void shouldGetTheTeam() throws ResponseStatusException {
+        Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
+
         Team team = teamService.getTeamById(5);
         Assertions.assertThat(team.getName()).isEqualTo("Puzzle");
     }
 
     @Test
     void shouldNotFindTheTeam() {
+        Mockito.when(teamRepository.findById(6L)).thenReturn(Optional.empty());
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> teamService.getTeamById(6));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Team with id 6 not found", exception.getReason());

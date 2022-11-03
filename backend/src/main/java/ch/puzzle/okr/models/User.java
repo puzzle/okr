@@ -6,10 +6,10 @@ import java.util.Objects;
 
 @Entity
 //table cannot be named "user" since it is a reserved keyword of Postgres
-@Table(name= "client")
+@Table(name= "person")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_client")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
     @NotNull
     private Long id;
 
@@ -44,20 +44,12 @@ public class User {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
@@ -68,12 +60,20 @@ public class User {
         this.firstname = firstname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLastname() {
+        return lastname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

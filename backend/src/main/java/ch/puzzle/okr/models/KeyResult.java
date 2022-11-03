@@ -213,10 +213,6 @@ public class KeyResult {
             return new Builder();
         }
 
-        public KeyResult build() {
-            return new KeyResult(this);
-        }
-
         public Builder withId(@NotNull Long id) {
             this.id = id;
             return this;
@@ -275,6 +271,10 @@ public class KeyResult {
         public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
             this.createdOn = createdOn;
             return this;
+        }
+
+        public KeyResult build() {
+            return new KeyResult(this);
         }
     }
 }

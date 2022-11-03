@@ -21,17 +21,14 @@ public class Objective {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "owner_id")
     private User owner;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "team_id")
     private Team team;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "quarter_id")
     private Quarter quarter;
 
     @NotBlank

@@ -6,16 +6,16 @@ ALTER SEQUENCE sequence_key_result RESTART WITH 1000;
 ALTER SEQUENCE sequence_measure RESTART WITH 1000;
 
 insert into team(id, name) values
-                               (1, 'Team 1'),
-                               (2, 'Team 2'),
-                               (3, 'Team 3');
+        (1, 'Team 1'),
+        (2, 'Team 2'),
+        (3, 'Team 3');
 
 insert into client(id, username, firstname, lastname, email) values
-                                                                 (1, 'alice', 'Alice', 'Wunderland', 'wunderland@puzzle.ch'),
-                                                                 (2, 'bob', 'Bob', 'Baumeister', 'baumeister@puzzle.ch'),
-                                                                 (3, 'findus', 'Findus', 'Peterson', 'peterson@puzzle.ch'),
-                                                                 (4, 'paco', 'Paco', 'Egiman', 'egiman@puzzle.ch'),
-                                                                 (5, 'robin', 'Robin', 'Papierer', 'papierer@puzzle.ch');
+        (1, 'alice', 'Alice', 'Wunderland', 'wunderland@puzzle.ch'),
+        (2, 'bob', 'Bob', 'Baumeister', 'baumeister@puzzle.ch'),
+        (3, 'findus', 'Findus', 'Peterson', 'peterson@puzzle.ch'),
+        (4, 'paco', 'Paco', 'Egiman', 'egiman@puzzle.ch'),
+        (5, 'robin', 'Robin', 'Papierer', 'papierer@puzzle.ch');
 
 insert into quarter(id, year, number) values
         (1, '2022', 3),

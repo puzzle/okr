@@ -1,43 +1,56 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.objectives.GetObjectiveDTO;
-import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.ObjectiveRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ContextConfiguration
-@SpringBootConfiguration
+@ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
+    @MockBean
+    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
+
     @InjectMocks
     private ObjectiveService objectiveService;
 
-    @Mock
-    private ObjectiveRepository objectiveRepository;
+    Objective objective;
+    List<Objective> objectiveList;
 
-    @Mock
-    private ObjectiveMapper objectiveMapper;
+    @BeforeEach
+    void setUp() {
+        this.objective = Objective.Builder.builder()
+                .withId(5L)
+                .withTitle("Objective 1")
+                .build();
+        this.objectiveList = List.of(objective, objective, objective);
+    }
 
     @Test
-    void getAllObjectivesAsDTOs() {
-        Iterable<Objective> objectiveIterable = List.of(new Objective());
+    void shouldGetAllObjectives() {
+        Mockito.when(objectiveRepository.findAll()).thenReturn(objectiveList);
 
-        when(this.objectiveRepository.findAll()).thenReturn(objectiveIterable);
-        when(this.objectiveMapper.entityToGetObjectiveDto(any())).thenReturn(new GetObjectiveDTO());
+        List<Objective> objectives = objectiveService.getAllObjectives();
 
-        List<GetObjectiveDTO> objectiveDtos = this.objectiveService.getAllObjectives();
-        assertEquals(1, objectiveDtos.size());
+        assertEquals(3 ,objectives.size());
+        assertEquals("Objective 1", objectives.get(0).getTitle());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoTeam() {
+        Mockito.when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Objective> objectives = objectiveService.getAllObjectives();
+
+        assertEquals(0 ,objectives.size());
     }
 }

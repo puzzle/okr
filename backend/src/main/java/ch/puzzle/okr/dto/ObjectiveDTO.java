@@ -13,7 +13,8 @@ public class ObjectiveDTO {
     private String description;
     private Double progress;
 
-    public ObjectiveDTO(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId, String teamName, Integer quarterNumber, Integer quarterYear, String description, Double progress) {
+    public ObjectiveDTO(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId, String teamName,
+                        Integer quarterNumber, Integer quarterYear, String description, Double progress) {
         this.id = id;
         this.title = title;
         this.ownerId = ownerId;

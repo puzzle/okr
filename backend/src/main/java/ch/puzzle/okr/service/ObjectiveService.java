@@ -9,9 +9,8 @@ import java.util.List;
 
 @Service
 public class ObjectiveService {
-    private final ObjectiveRepository objectiveRepository;
+    ObjectiveRepository objectiveRepository;
 
-    @Autowired
     public ObjectiveService(ObjectiveRepository objectiveRepository) {
         this.objectiveRepository = objectiveRepository;
     }

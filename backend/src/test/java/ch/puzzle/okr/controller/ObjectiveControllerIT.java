@@ -46,13 +46,13 @@ class ObjectiveControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup team mapper
+        // setup objective mapper
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
     }
 
     @Test
-    void shouldGetAllTeams() throws Exception {
+    void shouldGetAllObjectives() throws Exception {
         BDDMockito.given(objectiveService.getAllObjectives()).willReturn(objectiveList);
 
         mvc.perform(get("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
+    void shouldGetAllObjectivesIfNoObjectiveExists() throws Exception {
         BDDMockito.given(objectiveService.getAllObjectives()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON))

@@ -46,7 +46,7 @@ class ObjectiveServiceTest {
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoTeam() {
+    void shouldReturnEmptyListWhenNoObjective() {
         Mockito.when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Objective> objectives = objectiveService.getAllObjectives();

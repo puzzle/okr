@@ -47,19 +47,6 @@ public class Measure {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Measure measure = (Measure) o;
-        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult) && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo) && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy) && Objects.equals(createdOn, measure.createdOn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
-    }
-
-    @Override
     public String toString() {
         return "Measure{" +
                 "id=" + id +
@@ -70,6 +57,19 @@ public class Measure {
                 ", createdBy=" + createdBy +
                 ", createdOn=" + createdOn +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Measure measure = (Measure) o;
+        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult) && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo) && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy) && Objects.equals(createdOn, measure.createdOn);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
     }
 
     public Long getId() {

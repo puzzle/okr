@@ -184,14 +184,13 @@ public class KeyResult {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter) && Objects.equals(expectedEvolution, keyResult.expectedEvolution) && Objects.equals(unit, keyResult.unit) && Objects.equals(basisValue, keyResult.basisValue) && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn);
+        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter) && expectedEvolution == keyResult.expectedEvolution && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue) && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, objective, title, description, owner, quarter, expectedEvolution, unit, basisValue, targetValue, createdBy, createdOn);
     }
-
 
     public static final class Builder {
         private @NotNull Long id;

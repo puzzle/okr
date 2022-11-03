@@ -58,13 +58,14 @@ public class Quarter {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Quarter quarter)) return false;
-        return Objects.equals(getYear(), quarter.getYear()) && Objects.equals(getNumber(), quarter.getNumber());
+        if (o == null || getClass() != o.getClass()) return false;
+        Quarter quarter = (Quarter) o;
+        return Objects.equals(id, quarter.id) && Objects.equals(year, quarter.year) && Objects.equals(number, quarter.number);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getYear(), getNumber());
+        return Objects.hash(id, year, number);
     }
 
     public static final class Builder {

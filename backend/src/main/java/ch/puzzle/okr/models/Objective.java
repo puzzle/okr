@@ -149,13 +149,14 @@ public class Objective {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Objective objective)) return false;
-        return Objects.equals(getTitle(), objective.getTitle()) && Objects.equals(getTeam(), objective.getTeam()) && Objects.equals(getQuarter(), objective.getQuarter());
+        if (o == null || getClass() != o.getClass()) return false;
+        Objective objective = (Objective) o;
+        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title) && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description) && Objects.equals(progress, objective.progress) && Objects.equals(createdBy, objective.createdBy) && Objects.equals(createdOn, objective.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getTitle(), getTeam(), getQuarter());
+        return Objects.hash(id, title, owner, team, quarter, description, progress, createdBy, createdOn);
     }
 
     public static final class Builder {

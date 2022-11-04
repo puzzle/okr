@@ -39,10 +39,10 @@ public class KeyResult {
     private Unit unit;
 
     @NotNull
-    private Integer basisValue;
+    private Long basisValue;
 
     @NotNull
-    private Integer targetValue;
+    private Long targetValue;
 
     @NotNull
     @ManyToOne
@@ -129,19 +129,19 @@ public class KeyResult {
         this.unit = unit;
     }
 
-    public Integer getBasisValue() {
+    public Long getBasisValue() {
         return basisValue;
     }
 
-    public void setBasisValue(Integer basisValue) {
+    public void setBasisValue(Long basisValue) {
         this.basisValue = basisValue;
     }
 
-    public Integer getTargetValue() {
+    public Long getTargetValue() {
         return targetValue;
     }
 
-    public void setTargetValue(Integer targetValue) {
+    public void setTargetValue(Long targetValue) {
         this.targetValue = targetValue;
     }
 
@@ -201,8 +201,8 @@ public class KeyResult {
         private @NotNull Quarter quarter;
         private @Size(min = 2, max = 250) ExpectedEvolution expectedEvolution;
         private @NotNull @NotBlank Unit unit;
-        private @NotNull Integer basisValue;
-        private @NotNull Integer targetValue;
+        private @NotNull Long basisValue;
+        private @NotNull Long targetValue;
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
@@ -253,12 +253,12 @@ public class KeyResult {
             return this;
         }
 
-        public Builder withBasisValue(@NotNull Integer basisValue) {
+        public Builder withBasisValue(@NotNull Long basisValue) {
             this.basisValue = basisValue;
             return this;
         }
 
-        public Builder withTargetValue(@NotNull Integer targetValue) {
+        public Builder withTargetValue(@NotNull Long targetValue) {
             this.targetValue = targetValue;
             return this;
         }

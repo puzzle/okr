@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -115,6 +117,7 @@ class TeamControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
         ;
+        verify(teamService, times(1)).saveTeam(any());
     }
 
     @Test
@@ -129,19 +132,4 @@ class TeamControllerIT {
         ;
     }
 
-    @Test
-    void shouldReturnErrorMessageWhenCreatingEmptyTeam() throws Exception {
-        mvc.perform(post("/api/v1/teams")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Missing attribute name when creating team"))
-        ;
-        mvc.perform(post("/api/v1/teams")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"\"}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Missing attribute name when creating team"))
-        ;
-    }
 }

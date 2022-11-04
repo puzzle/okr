@@ -1,6 +1,8 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,22 +11,30 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
     @MockBean
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
+    @MockBean
+    KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
 
     @InjectMocks
     private ObjectiveService objectiveService;
 
     Objective objective;
+    KeyResult keyResult;
     List<Objective> objectiveList;
+    List<KeyResult> keyResults;
 
     @BeforeEach
     void setUp() {
@@ -33,6 +43,11 @@ class ObjectiveServiceTest {
                 .withTitle("Objective 1")
                 .build();
         this.objectiveList = List.of(objective, objective, objective);
+        this.keyResult = KeyResult.Builder.builder()
+                .withId(5L)
+                .withTitle("Keyresult 1")
+                .build();
+        this.keyResults = List.of(keyResult, keyResult, keyResult);
     }
 
     @Test
@@ -52,5 +67,25 @@ class ObjectiveServiceTest {
         List<Objective> objectives = objectiveService.getAllObjectives();
 
         assertEquals(0 ,objectives.size());
+    }
+
+    @Test
+    void shouldGetAllKeyresultsByObjective() {
+        Mockito.when(objectiveRepository.findById(1L)).thenReturn(Optional.ofNullable(objective));
+        Mockito.when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+
+        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
+
+        assertEquals(3 ,keyResultList.size());
+        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoKeyResultInObjective() {
+        Mockito.when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
+
+        List<Objective> objectives = objectiveService.getAllObjectives();
+
+        assertEquals(0, objectives.size());
     }
 }

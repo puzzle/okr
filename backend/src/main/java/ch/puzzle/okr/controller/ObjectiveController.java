@@ -1,8 +1,10 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.KeyResultDTO;
 import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,11 +21,14 @@ import java.util.List;
 public class ObjectiveController {
     private final ObjectiveService objectiveService;
 
+    private final KeyResultService keyResultService;
+
     private final ObjectiveMapper objectiveMapper;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
+    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultService keyResultService) {
         this.objectiveService = objectiveService;
         this.objectiveMapper = objectiveMapper;
+        this.keyResultService = keyResultService;
     }
 
     @ApiResponses(value = {
@@ -36,5 +41,15 @@ public class ObjectiveController {
         return objectiveService.getAllObjectives().stream()
                 .map(objectiveMapper::toDto)
                 .toList();
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all KeyResultsFromObject",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Objective.class))}),
+    })
+    @GetMapping("{id}/keyresults")
+    public List<KeyResultDTO> getAllKeyResultsFromObjective() {
+        return null;
     }
 }

@@ -26,8 +26,10 @@ public class TeamService {
         );
     }
 
-    public Team saveTeam(Team givenTeam) {
-        Team team = Team.Builder.builder().withName(givenTeam.getName()).build();
+    public Team saveTeam(Team team) {
+        if (team.getName() == null || team.getName().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
+        }
         return teamRepository.save(team);
     }
 }

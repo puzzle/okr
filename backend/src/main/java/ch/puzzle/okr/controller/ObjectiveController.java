@@ -51,9 +51,10 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResultsFromObject",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Objective.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
     })
     @GetMapping("{id}/keyresults")
-    public List<KeyResultDTO> getAllKeyResultsFromObjective(@PathVariable Long id) {
+    public List<KeyResultDTO> getAllKeyResultsByObjective(@PathVariable Long id) {
         return objectiveService.getAllKeyResultsByObjective(id).stream()
                 .map(keyResultMapper::toDto)
                 .toList();

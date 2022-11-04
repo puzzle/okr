@@ -24,7 +24,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +44,7 @@ class TeamControllerIT {
 
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
+    static Team teamTestCreating = Team.Builder.builder().withId(1L).withName("TestTeam").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
 
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
@@ -99,6 +102,46 @@ class TeamControllerIT {
         mvc.perform(get("/api/v1/teams").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(0)))
+        ;
+    }
+
+    @Test
+    void shouldReturnTeamWhenCreating() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+
+        mvc.perform(post("/api/v1/teams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\" TestTeam \"}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
+        ;
+    }
+
+    @Test
+    void shouldOnlySetNameWhenCreatingTeam() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+
+        mvc.perform(post("/api/v1/teams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 22, \"name\":\" TestTeam \"}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
+        ;
+    }
+
+    @Test
+    void shouldReturnErrorMessageWhenCreatingEmptyTeam() throws Exception {
+        mvc.perform(post("/api/v1/teams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Missing attribute name when creating team"))
+        ;
+        mvc.perform(post("/api/v1/teams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\"}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Missing attribute name when creating team"))
         ;
     }
 }

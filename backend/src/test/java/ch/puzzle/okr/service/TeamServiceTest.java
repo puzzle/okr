@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
@@ -76,44 +77,56 @@ class TeamServiceTest {
     }
 
     @Test
-    void shouldCreateTeam() {
-        Team team = Team.Builder.builder().withName("TestTeam").build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
-
-        Team savedTeam = teamService.saveTeam(team);
-        assertEquals(savedTeam.getName(), "TestTeam");
-    }
-
-    @Test
-    void shouldOnlySetNameWhenCreatingTeam() {
+    void shouldSetNameWhenCreatingTeam() {
         Team team = Team.Builder.builder().withName("TestTeam").build();
         Mockito.when(teamRepository.save(any())).thenReturn(team);
 
         Team savedTeam = teamService.saveTeam(team);
         assertNull(savedTeam.getId());
         assertEquals(savedTeam.getName(), "TestTeam");
-        ;
     }
 
     @Test
-    void shouldNotCreateTeamNoName() {
-        Team team = Team.Builder.builder().build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
+    void shouldThrowResponseStatusExceptionWhenPuttingId() {
+        Team team = Team.Builder.builder().withId(2L).withName("TestTeam").build();
 
-        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             teamService.saveTeam(team);
         });
-        assertTrue(exception.getMessage().contains("400 BAD_REQUEST \"Missing attribute name when creating team\""));
+        assertEquals(exception.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(exception.getMessage(), "400 BAD_REQUEST \"Not allowed to give an id\"");
     }
 
     @Test
-    void shouldNotCreateTeamEmptyName() {
+    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
+        Team team = Team.Builder.builder().withId(null).withName("TestTeam").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Team savedTeam = teamService.saveTeam(team);
+        assertNull(savedTeam.getId());
+        assertEquals(savedTeam.getName(), "TestTeam");
+    }
+
+    @Test
+    void shouldNotCreateTeamWithNoName() {
+        Team team = Team.Builder.builder().build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertEquals(exception.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(exception.getMessage(), ("400 BAD_REQUEST \"Missing attribute name when creating team\""));
+    }
+
+    @Test
+    void shouldNotCreateTeamWithEmptyName() {
         Team team = Team.Builder.builder().withName("").build();
         Mockito.when(teamRepository.save(any())).thenReturn(team);
 
-        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             teamService.saveTeam(team);
         });
-        assertTrue(exception.getMessage().contains("400 BAD_REQUEST \"Missing attribute name when creating team\""));
+        assertEquals(exception.getStatus(), HttpStatus.BAD_REQUEST);
+        assertEquals(exception.getMessage(), ("400 BAD_REQUEST \"Missing attribute name when creating team\""));
     }
 }

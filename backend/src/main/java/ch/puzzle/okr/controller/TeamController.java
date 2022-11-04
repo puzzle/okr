@@ -52,7 +52,7 @@ public class TeamController {
             @ApiResponse(responseCode = "200", description = "Saved new team to db",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Team.class))}),
-            @ApiResponse(responseCode = "400", description = "Can't save empty team name or not defined team name.", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Can't create team with id or empty name.", content = @Content)
     })
     @PostMapping
     public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {

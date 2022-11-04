@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -73,5 +73,47 @@ class TeamServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> teamService.getTeamById(6));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Team with id 6 not found", exception.getReason());
+    }
+
+    @Test
+    void shouldCreateTeam() {
+        Team team = Team.Builder.builder().withName("TestTeam").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Team savedTeam = teamService.saveTeam(team);
+        assertEquals(savedTeam.getName(), "TestTeam");
+    }
+
+    @Test
+    void shouldOnlySetNameWhenCreatingTeam() {
+        Team team = Team.Builder.builder().withName("TestTeam").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Team savedTeam = teamService.saveTeam(team);
+        assertNull(savedTeam.getId());
+        assertEquals(savedTeam.getName(), "TestTeam");
+        ;
+    }
+
+    @Test
+    void shouldNotCreateTeamNoName() {
+        Team team = Team.Builder.builder().build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertTrue(exception.getMessage().contains("400 BAD_REQUEST \"Missing attribute name when creating team\""));
+    }
+
+    @Test
+    void shouldNotCreateTeamEmptyName() {
+        Team team = Team.Builder.builder().withName("").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertTrue(exception.getMessage().contains("400 BAD_REQUEST \"Missing attribute name when creating team\""));
     }
 }

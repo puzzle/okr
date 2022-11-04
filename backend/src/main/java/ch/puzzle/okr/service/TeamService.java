@@ -27,6 +27,9 @@ public class TeamService {
     }
 
     public Team saveTeam(Team team) {
+        if (team.getId() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+        }
         if (team.getName() == null || team.getName().equals("")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }

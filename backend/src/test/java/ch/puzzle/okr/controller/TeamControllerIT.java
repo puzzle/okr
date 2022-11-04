@@ -108,7 +108,7 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldReturnTeamWhenCreating() throws Exception {
+    void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
 
         mvc.perform(post("/api/v1/teams")
@@ -121,14 +121,26 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldOnlySetNameWhenCreatingTeam() throws Exception {
-        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+    void shouldReturnResponseStatusExceptionWhenCreatingTeamNullName() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
         mvc.perform(post("/api/v1/teams")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 22, \"name\":\" TestTeam \"}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"id\": 22, \"name\": null}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        ;
+    }
+
+    @Test
+    void shouldReturnResponseStatusExceptionWhenCreatingTeamEmptyName() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
+
+        mvc.perform(post("/api/v1/teams")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"id\": 22, \"name\": \"\"}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
         ;
     }
 

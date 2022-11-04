@@ -1,10 +1,7 @@
 package ch.puzzle.okr.dto;
 
-import javax.validation.constraints.NotNull;
-
 public class TeamDto {
     private Long id;
-    @NotNull
     private String name;
 
     public TeamDto(Long id, String name) {

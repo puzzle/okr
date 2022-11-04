@@ -56,12 +56,8 @@ public class TeamController {
     })
     @PostMapping
     public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {
-        if (teamDto.getName() == null || teamDto.getName().equals("")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing attribute name when creating team");
-        } else {
-            Team team = teamMapper.toTeam(teamDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
-        }
+        Team team = teamMapper.toTeam(teamDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
     }
 
 }

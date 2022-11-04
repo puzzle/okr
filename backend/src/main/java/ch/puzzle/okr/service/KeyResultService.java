@@ -13,17 +13,8 @@ import java.util.List;
 @Service
 public class KeyResultService {
     KeyResultRepository keyResultRepository;
-    ObjectiveRepository objectiveRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository) {
         this.keyResultRepository = keyResultRepository;
-        this.objectiveRepository = objectiveRepository;
-    }
-
-    public List<KeyResult> getAllKeyResultsByObjective(long objectiveId) {
-        Objective objective = objectiveRepository.findById(objectiveId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", objectiveId))
-        );
-        return keyResultRepository.findByObjective(objective);
     }
 }

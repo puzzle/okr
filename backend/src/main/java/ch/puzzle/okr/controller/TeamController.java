@@ -10,14 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping("api/v1/teams")
 public class TeamController {
@@ -52,13 +48,19 @@ public class TeamController {
         return teamMapper.toDto(teamService.getTeamById(id));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Saved new team to db",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Team.class))}),
+            @ApiResponse(responseCode = "400", description = "Can't save empty team name or not defined team name.", content = @Content)
+    })
     @PostMapping
-    public ResponseEntity<Object> createTeam(@Valid @RequestBody TeamDto teamDto) {
-        try {
+    public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {
+        if (teamDto.getName() == null || teamDto.getName().equals("")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing attribute name when creating team");
+        } else {
             Team team = teamMapper.toTeam(teamDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing attribute name when creating team");
         }
     }
 

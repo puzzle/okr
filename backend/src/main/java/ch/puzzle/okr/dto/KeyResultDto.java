@@ -3,7 +3,7 @@ package ch.puzzle.okr.dto;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.Unit;
 
-public class KeyResultDTO {
+public class KeyResultDto {
     private Long id;
     private Long objectiveId;
     private String title;
@@ -18,7 +18,7 @@ public class KeyResultDTO {
     private Long basicValue;
     private Long targetValue;
 
-    public KeyResultDTO(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
+    public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
                         String ownerLastname, Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution,
                         Unit unit, Long basicValue, Long targetValue) {
         this.id = id;

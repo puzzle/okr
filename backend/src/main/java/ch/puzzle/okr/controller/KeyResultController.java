@@ -1,10 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/keyresults")

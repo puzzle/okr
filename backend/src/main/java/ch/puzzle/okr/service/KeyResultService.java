@@ -1,11 +1,13 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import org.springframework.http.HttpStatus;
-import ch.puzzle.okr.repository.*;
+import ch.puzzle.okr.repository.ObjectiveRepository;
+import ch.puzzle.okr.repository.QuarterRepository;
+import ch.puzzle.okr.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;

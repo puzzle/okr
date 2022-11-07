@@ -148,7 +148,7 @@ class TeamControllerIT {
 
         mvc.perform(put("/api/v1/teams/5")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
+                        .content("{\"id\":42,\"title\":\"FullObjective\",\"owner\":{\"id\":1,\"username\":\"bkaufmann\",\"firstname\":\"Bob\",\"lastname\":\"Kaufmann\",\"email\":\"kaufmann@puzzle.ch\"},\"team\":{\"id\":1,\"name\":\"Team1\"},\"quarter\":{\"id\":1,\"year\":2020,\"number\":3},\"description\":\"This is our description\",\"progress\":33.3,\"createdOn\":\"+999999999-12-31T23:59:59.999999999\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }

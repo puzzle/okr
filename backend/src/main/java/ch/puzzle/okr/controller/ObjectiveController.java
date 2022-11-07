@@ -5,7 +5,6 @@ import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +49,7 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResultsFromObject",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Objective.class))}),
+                            schema = @Schema(implementation = KeyResultDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
     })
     @GetMapping("{id}/keyresults")

@@ -1,9 +1,7 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDTO;
-import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
 import org.springframework.stereotype.Service;
 
 @Service

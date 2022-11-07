@@ -20,6 +20,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
@@ -52,7 +53,7 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldGetAllObjectives() {
-        Mockito.when(objectiveRepository.findAll()).thenReturn(objectiveList);
+        when(objectiveRepository.findAll()).thenReturn(objectiveList);
 
         List<Objective> objectives = objectiveService.getAllObjectives();
 
@@ -62,7 +63,7 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoObjective() {
-        Mockito.when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
+        when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<Objective> objectives = objectiveService.getAllObjectives();
 
@@ -71,8 +72,8 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldGetAllKeyresultsByObjective() {
-        Mockito.when(objectiveRepository.findById(1L)).thenReturn(Optional.ofNullable(objective));
-        Mockito.when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
 
         List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
 
@@ -82,10 +83,17 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
-        Mockito.when(objectiveRepository.findAll()).thenReturn(Collections.emptyList());
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
 
-        List<Objective> objectives = objectiveService.getAllObjectives();
+        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
 
-        assertEquals(0, objectives.size());
+        assertEquals(0, keyResultList.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenObjectiveDoesntExist() {
+        assertThrows(ResponseStatusException.class, () ->
+                objectiveService.getAllKeyResultsByObjective(1));
     }
 }

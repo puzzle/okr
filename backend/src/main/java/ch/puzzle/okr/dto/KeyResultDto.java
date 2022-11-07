@@ -11,6 +11,7 @@ public class KeyResultDto {
     private Long ownerId;
     private String ownerFirstname;
     private String ownerLastname;
+    private Long quarterId;
     private Integer quarterNumber;
     private Integer quarterYear;
     private ExpectedEvolution expectedEvolution;
@@ -19,7 +20,7 @@ public class KeyResultDto {
     private Long targetValue;
 
     public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
-                        String ownerLastname, Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution,
+                        String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution,
                         Unit unit, Long basicValue, Long targetValue) {
         this.id = id;
         this.objectiveId = objectiveId;
@@ -28,6 +29,7 @@ public class KeyResultDto {
         this.ownerId = ownerId;
         this.ownerFirstname = ownerFirstname;
         this.ownerLastname = ownerLastname;
+        this.quarterId = quarterId;
         this.quarterNumber = quarterNumber;
         this.quarterYear = quarterYear;
         this.expectedEvolution = expectedEvolution;
@@ -138,5 +140,13 @@ public class KeyResultDto {
 
     public void setTargetValue(Long targetValue) {
         this.targetValue = targetValue;
+    }
+
+    public Long getQuarterId() {
+        return quarterId;
+    }
+
+    public void setQuarterId(Long quarterId) {
+        this.quarterId = quarterId;
     }
 }

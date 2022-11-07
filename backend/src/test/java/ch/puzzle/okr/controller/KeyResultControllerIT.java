@@ -52,7 +52,7 @@ public class KeyResultControllerIT {
                 .build();
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
 
-        mvc.perform(put("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON).content("{\"id\":  1, \"title\":  \"Updated Keyresult 1\"}"))
+        mvc.perform(put("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON).content("{\"title\":  \"Updated Keyresult 1\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(1)))
                 .andExpect(jsonPath("$.title", Is.is("Updated Keyresult 1")));
@@ -64,7 +64,7 @@ public class KeyResultControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                         any()));
 
-        mvc.perform(put("/api/v1/keyresults/10").contentType(MediaType.APPLICATION_JSON).content("{\"id\":  1, \"title\":  \"Updated Keyresult 1\"}"))
+        mvc.perform(put("/api/v1/keyresults/10").contentType(MediaType.APPLICATION_JSON).content("{\"title\":  \"Updated Keyresult 1\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 

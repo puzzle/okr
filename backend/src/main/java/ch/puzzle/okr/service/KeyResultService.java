@@ -1,6 +1,8 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.mapper.KeyResultMapper;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.User;
@@ -21,9 +23,11 @@ public class KeyResultService {
     QuarterRepository quarterRepository;
     UserRepository userRepository;
     ObjectiveRepository objectiveRepository;
+    KeyResultMapper keyResultMapper;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, KeyResultMapper keyResultMapper, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
+        this.keyResultMapper = keyResultMapper;
         this.userService = userService;
         this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;

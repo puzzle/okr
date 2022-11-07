@@ -1,22 +1,25 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -27,6 +30,7 @@ class ObjectiveServiceTest {
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
     Objective objective;
+    Objective fullObjective;
     KeyResult keyResult;
     List<Objective> objectiveList;
     List<KeyResult> keyResults;
@@ -45,6 +49,11 @@ class ObjectiveServiceTest {
                 .withTitle("Keyresult 1")
                 .build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
+
+        User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
+        this.fullObjective = Objective.Builder.builder().withTitle("FullObjective").withOwner(user).withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33.3).withCreatedOn(LocalDateTime.MAX).build();
     }
 
     @Test
@@ -111,5 +120,89 @@ class ObjectiveServiceTest {
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
+    @Test
+    void shouldSaveANewObjective() {
+        Mockito.when(objectiveRepository.save(any())).thenReturn(fullObjective);
+
+        Objective savedObjective = objectiveService.saveObjective(fullObjective);
+        assertNull(savedObjective.getId());
+        assertEquals("FullObjective", savedObjective.getTitle());
+        assertEquals("This is our description", savedObjective.getDescription());
+        assertEquals(33.3, savedObjective.getProgress());
+        assertEquals("Team1", savedObjective.getTeam().getName());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+        assertEquals(2020, savedObjective.getQuarter().getYear());
+        assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenPuttingIdCreatingObjective() {
+        Objective objective1 = Objective.Builder.builder().withId(9L).build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.saveObjective(objective1);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Not allowed to give an id", exception.getReason());
+
+    }
+
+    @Test
+    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
+        this.fullObjective.setId(null);
+        Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective);
+
+        Objective savedObjective = objectiveService.saveObjective(this.fullObjective);
+        assertNull(savedObjective.getId());
+        assertEquals("FullObjective", savedObjective.getTitle());
+        assertEquals(33.3, savedObjective.getProgress());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
+        this.fullObjective.setDescription(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.saveObjective(this.fullObjective);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Missing attribute description when creating objective"), exception.getReason());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyProgress() {
+        this.fullObjective.setProgress(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.saveObjective(this.fullObjective);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Missing attribute progress when creating objective"), exception.getReason());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyCreatedOn() {
+        this.fullObjective.setCreatedOn(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.saveObjective(this.fullObjective);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Failed to generate attribute createdOn when creating objective"), exception.getReason());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "  "})
+    void shouldNotCreateObjectiveWithEmptyTitle(String passedName) {
+        Objective objective1 = Objective.Builder.builder().withTitle(passedName).build();
+        Mockito.when(objectiveRepository.save(any())).thenReturn(objective1);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.saveObjective(objective1);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Missing attribute title when creating objective"), exception.getReason());
+    }
 
 }

@@ -1,7 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.*;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultService {
 
     KeyResultRepository keyResultRepository;
-    KeyResultMapper keyResultMapper;
     UserService userService;
     ObjectiveService objectiveService;
     QuarterRepository quarterRepository;
@@ -21,7 +18,6 @@ public class KeyResultService {
 
     public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, KeyResultMapper keyResultMapper, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
-        this.keyResultMapper = keyResultMapper;
         this.userService = userService;
         this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;
@@ -35,8 +31,7 @@ public class KeyResultService {
         );
     }
 
-    public KeyResult createKeyResult(KeyResultDto keyResultDto) {
-        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
+    public KeyResult createKeyResult(KeyResult keyResult) {
         return this.keyResultRepository.save(keyResult);
     }
 

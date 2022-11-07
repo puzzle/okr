@@ -38,16 +38,6 @@ class KeyResultServiceTest {
     KeyResultRepository keyResultRepository;
     @Mock
     KeyResultMapper keyResultMapper;
-    @Mock
-    UserService userService;
-    @Mock
-    ObjectiveService objectiveService;
-    @Mock
-    QuarterRepository quarterRepository;
-    @Mock
-    UserRepository userRepository;
-    @Mock
-    ObjectiveRepository objectiveRepository;
 
     @InjectMocks
     private KeyResultService keyResultService;
@@ -57,7 +47,6 @@ class KeyResultServiceTest {
     private Objective objective;
     private Quarter quarter;
     private KeyResult keyResult;
-
     List<KeyResult> keyResults;
 
     @BeforeEach
@@ -71,19 +60,21 @@ class KeyResultServiceTest {
                 .withId(5L)
                 .withTitle("Objective 1")
                 .build();
+
         this.quarter = Quarter.Builder.builder()
                 .withId(5L)
                 .withNumber(2)
                 .withYear(2022)
                 .build();
-//
+
         this.keyResult = KeyResult.Builder.builder()
                 .withId(5L)
-                .withTitle("test")
+                .withTitle("Keyresult 1")
                 .withObjective(this.objective)
                 .withOwner(this.user)
                 .withQuarter(this.quarter)
                 .build();
+
         this.keyResultDTO = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
         this.keyResults = List.of(keyResult, keyResult, keyResult);
     }
@@ -92,7 +83,6 @@ class KeyResultServiceTest {
     @Test
     void shouldGetKeyResultById() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-
         KeyResult keyResult = keyResultService.getKeyResultById(1);
 
         assertEquals("Keyresult 1", keyResult.getTitle());
@@ -123,5 +113,12 @@ class KeyResultServiceTest {
     void shouldThrowErrorWhenKeyResultDoesntExistDuringPut() {
         Mockito.when(keyResultRepository.findById(any())).thenReturn(Optional.empty());
         assertThrows(ResponseStatusException.class, () -> keyResultService.updateKeyResult(keyResult));
+    }
+
+    @Test
+    void createKeyResult() {
+        Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResult);
+        KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
+        assertEquals("Keyresult 1", keyResult.getTitle());
     }
 }

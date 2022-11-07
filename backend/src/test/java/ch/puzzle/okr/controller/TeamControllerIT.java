@@ -132,16 +132,4 @@ class TeamControllerIT {
         ;
     }
 
-    @Test
-    void shouldReturnResponseStatusExceptionWhenCreatingTeamEmptyName() throws Exception {
-        BDDMockito.given(teamService.saveTeam(any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
-
-        mvc.perform(post("/api/v1/teams")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"id\": 22, \"name\": \"\"}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        ;
-    }
-
 }

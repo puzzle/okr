@@ -40,8 +40,8 @@ class ObjectiveControllerIT {
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
     static List<KeyResult> keyResultList = Arrays.asList(keyResult1, keyResult2);
-    static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
-    static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+    static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice", "Wunderland", 1L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+    static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice", "Wunderland", 1L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 
     @Autowired
     private MockMvc mvc;

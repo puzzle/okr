@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,7 +33,7 @@ public class KeyResultServiceTest {
     @BeforeEach
     void setUp() {
         this.keyResult = KeyResult.Builder.builder()
-                .withId(5L)
+                .withId(1L)
                 .withTitle("Keyresult 1")
                 .build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
@@ -44,17 +45,37 @@ public class KeyResultServiceTest {
 
     @Test
     void shouldGetKeyResultById() {
-        when(keyResultRepository.findById(5L)).thenReturn(Optional.of(keyResult));
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
-        KeyResult keyResult = keyResultService.getKeyResultById(5);
+        KeyResult keyResult = keyResultService.getKeyResultById(1);
 
         assertEquals("Keyresult 1", keyResult.getTitle());
-        assertEquals(5, keyResult.getId());
+        assertEquals(1, keyResult.getId());
     }
 
     @Test
     void shouldThrowExceptionWhenKeyResultDoesntExist() {
         assertThrows(ResponseStatusException.class, () ->
                 keyResultService.getKeyResultById(1));
+    }
+
+    @Test
+    void shouldEditKeyresult() {
+        KeyResult newKeyresult = KeyResult.Builder
+                .builder()
+                .withId(1L).withTitle("Keyresult 1 update")
+                .build();
+        Mockito.when(keyResultRepository.save(any())).thenReturn(newKeyresult);
+        Mockito.when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+
+        keyResultService.updateKeyResult(newKeyresult);
+        assertEquals(1L, newKeyresult.getId());
+        assertEquals("Keyresult 1 update", newKeyresult.getTitle());
+    }
+
+    @Test
+    void shouldThrowErrorWhenKeyResultDoesntExistDuringPut() {
+        Mockito.when(keyResultRepository.findById(any())).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> keyResultService.updateKeyResult(keyResult));
     }
 }

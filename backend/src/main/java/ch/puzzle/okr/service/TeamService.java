@@ -31,7 +31,7 @@ public class TeamService {
         if (team.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
-        if (team.getName().isBlank()) {
+        if (team.getName() == null || team.getName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }
         return teamRepository.save(team);
@@ -39,7 +39,7 @@ public class TeamService {
 
     public Team updateTeam(Long id, Team team) {
         team.setId(id);
-        if (team.getName().isBlank()) {
+        if (team. getName() == null || team.getName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }
         this.getTeamById(id);

@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.service.MeasureService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

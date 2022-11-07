@@ -72,6 +72,11 @@ public class ObjectiveController {
         return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 
+    @PutMapping("/{id}")
+    public void updateObjective(@PathVariable Long id, @RequestBody ObjectiveDTO objectiveDTO) {
+        return;
+    }
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saved new objective to db",
                     content = {@Content(mediaType = "application/json",

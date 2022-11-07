@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
@@ -52,5 +53,9 @@ public class ObjectiveService {
         }
 
         return objectiveRepository.save(objective);
+    }
+
+    public void updateObjective(Long id, ObjectiveDTO objectiveDTO) {
+        this.getObjective(id);
     }
 }

@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.*;
 import org.springframework.http.HttpStatus;
@@ -59,5 +61,4 @@ public class KeyResultService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id))
         );
     }
-
 }

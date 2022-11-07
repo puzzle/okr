@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.ObjectiveService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,6 +60,12 @@ public class ObjectiveController {
                 .toList();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned a objective with a specified ID.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Objective.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
+    })
     @GetMapping("/{id}")
     public ObjectiveDTO getObjective(@PathVariable Long id) {
         return objectiveMapper.toDto(objectiveService.getObjective(id));

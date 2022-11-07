@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultService {
 
     KeyResultRepository keyResultRepository;
+
+    KeyResultMapper keyResultMapper;
     UserService userService;
     ObjectiveService objectiveService;
     QuarterRepository quarterRepository;
@@ -20,17 +22,12 @@ public class KeyResultService {
 
     public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, KeyResultMapper keyResultMapper, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
+        this.keyResultMapper = keyResultMapper;
         this.userService = userService;
         this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
-    }
-
-    public KeyResult getKeyResultById(long id) {
-        return keyResultRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", id))
-        );
     }
 
     public KeyResult createKeyResult(KeyResult keyResult) {

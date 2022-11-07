@@ -28,7 +28,7 @@ public class TeamController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all teams",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Team.class))}),
+                            schema = @Schema(implementation = TeamDto.class))}),
     })
     @GetMapping
     public List<TeamDto> getAllTeams() {
@@ -40,7 +40,7 @@ public class TeamController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a team with a specified ID.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Team.class))}),
+                            schema = @Schema(implementation = TeamDto.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a team with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
@@ -51,8 +51,8 @@ public class TeamController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saved new team to db",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Team.class))}),
-            @ApiResponse(responseCode = "400", description = "Can't create team with id or empty name.", content = @Content)
+                            schema = @Schema(implementation = TeamDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Can't create team with id or empty name or not allowed to pass id.", content = @Content)
     })
     @PostMapping
     public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {

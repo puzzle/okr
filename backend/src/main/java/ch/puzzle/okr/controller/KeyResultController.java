@@ -23,7 +23,9 @@ public class KeyResultController {
     KeyResultRepository keyResultRepository;
     KeyResultMapper keyResultMapper;
 
-    public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
+
+    public KeyResultController(KeyResultRepository keyResultRepository, KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
+        this.keyResultRepository = keyResultRepository;
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
     }
@@ -42,6 +44,7 @@ public class KeyResultController {
 
     @PostMapping
     public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        return this.keyResultService.createKeyResult(keyResultDto);
+        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
+        return this.keyResultService.createKeyResult(keyResult);
     }
 }

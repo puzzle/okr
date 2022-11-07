@@ -9,6 +9,7 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.models.Unit;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -46,7 +47,6 @@ class ObjectiveControllerIT {
 
     @MockBean
     private ObjectiveService objectiveService;
-
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean

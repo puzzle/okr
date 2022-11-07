@@ -46,7 +46,7 @@ public class MeasureServiceTest {
     }
 
     @Test
-    void shouldReturnProperly() {
+    void shouldReturnMeasure() {
         Mockito.when(measureRepository.save(any())).thenReturn(measure);
         Measure returnMeasure = this.measureService.saveMeasure(measure);
         assertEquals(returnMeasure.getValue(), 30);
@@ -57,7 +57,7 @@ public class MeasureServiceTest {
     }
 
     @Test
-    void shouldNotReturnProperly(){
+    void shouldNotReturnException(){
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> measureService.saveMeasure(falseMeasure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Measure has already an Id", exception.getReason());

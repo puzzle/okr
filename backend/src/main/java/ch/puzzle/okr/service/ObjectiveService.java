@@ -44,7 +44,6 @@ public class ObjectiveService {
     }
 
     public Objective updateObjective(Long id, Objective objective) {
-        objective.setId(id);
         if(this.checkIfFalseObjective(objective)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid");
         }

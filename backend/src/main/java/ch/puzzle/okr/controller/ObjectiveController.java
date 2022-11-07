@@ -81,6 +81,7 @@ public class ObjectiveController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Objective> updateObjective(@PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
+        objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         return ResponseEntity.status(HttpStatus.OK).body(objectiveService.updateObjective(id, objective));
     }

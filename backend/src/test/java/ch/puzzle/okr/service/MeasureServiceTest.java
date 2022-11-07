@@ -2,15 +2,11 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.MeasureRepository;
-import ch.puzzle.okr.repository.TeamRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

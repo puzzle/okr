@@ -1,15 +1,20 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.*;
+import org.checkerframework.checker.units.qual.K;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -19,41 +24,44 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
-public class KeyResultServiceTest {
-    @MockBean
-    KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ContextConfiguration(classes = KeyResultServiceTest.class)
+class KeyResultServiceTest {
+
+    @Mock
+    KeyResultRepository keyResultRepository;
+    @Mock
+    KeyResultMapper keyResultMapper;
+    @Mock
+    UserService userService;
+    @Mock
+    ObjectiveService objectiveService;
+    @Mock
+    QuarterRepository quarterRepository;
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    ObjectiveRepository objectiveRepository;
 
     @InjectMocks
     private KeyResultService keyResultService;
 
-    @MockBean
-    ObjectiveService objectiveService;
-
-    @MockBean
-    UserService userService;
-
-    private KeyResult keyResult1;
+    private KeyResultDto keyResultDTO;
     private User user;
     private Objective objective;
+    private Quarter quarter;
+    private KeyResult keyResult;
 
-    KeyResult keyResult;
     List<KeyResult> keyResults;
 
     @BeforeEach
-    void setUp() {
-        this.keyResult = KeyResult.Builder.builder()
-                .withId(1L)
-                .withTitle("Keyresult 1")
-                .build();
-
-        this.keyResult1 = KeyResult.Builder.builder()
-                .withId(5L)
-                .withTitle("New Title")
-                .withDescription("description")
-                .build();
-
+    void setup() {
         this.user = User.Builder.builder()
                 .withId(1L)
                 .withEmail("newMail@tese.com")
@@ -63,11 +71,22 @@ public class KeyResultServiceTest {
                 .withId(5L)
                 .withTitle("Objective 1")
                 .build();
+        this.quarter = Quarter.Builder.builder()
+                .withId(5L)
+                .withNumber(2)
+                .withYear(2022)
+                .build();
+//
+        this.keyResult = KeyResult.Builder.builder()
+                .withId(5L)
+                .withTitle("test")
+                .withObjective(this.objective)
+                .withOwner(this.user)
+                .withQuarter(this.quarter)
+                .build();
+        this.keyResultDTO = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
         this.keyResults = List.of(keyResult, keyResult, keyResult);
     }
-
-
-
 
 
     @Test

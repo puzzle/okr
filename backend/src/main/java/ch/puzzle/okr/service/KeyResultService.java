@@ -38,7 +38,7 @@ public class KeyResultService {
     }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
-        if (keyResultExists(keyResult.getId())) {
+        if (keyResultRepository.findById(keyResult.getId()).isPresent()) {
             return this.keyResultRepository.save(keyResult);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find keyresult with id %d", keyResult.getId()));
@@ -59,9 +59,5 @@ public class KeyResultService {
         return  this.objectiveRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id))
         );
-    }
-
-    public boolean keyResultExists(long id) {
-        return keyResultRepository.findById(id).isPresent();
     }
 }

@@ -29,13 +29,6 @@ public class KeyResultService {
         this.objectiveRepository = objectiveRepository;
     }
 
-//    public KeyResult createKeyResult(KeyResultDto keyResultDto) {
-//        Objective objective = this.objectiveService.getObjective(keyResultDto.getObjectiveId());
-//        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-//        keyResult.setObjective(objective);
-//        return this.keyResultRepository.save(keyResult);
-//    }
-
     public KeyResult getKeyResultById(long id) {
         return keyResultRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", id))

@@ -28,16 +28,11 @@ public class KeyResultController {
         this.keyResultMapper = keyResultMapper;
     }
 
-//    @PostMapping
-//    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-//        return this.keyResultService.createKeyResult(keyResultDto);
-//    }
-
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated a keyresult with a specified ID.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = KeyResult.class))}),
-            @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Did not find a keyresult with a specified ID.", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResult> updateKeyResult(@PathVariable long id, @RequestBody KeyResultDto keyResultDto) {

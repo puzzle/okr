@@ -1,11 +1,10 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import ch.puzzle.okr.service.KeyResultService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,11 +12,23 @@ import java.util.List;
 @RequestMapping("api/v1/keyresults")
 public class KeyResultController {
 
-    @Autowired
+
     KeyResultRepository keyResultRepository;
+
+    KeyResultService keyResultService;
+
+    public KeyResultController(KeyResultRepository keyResultRepository, KeyResultService keyResultService) {
+        this.keyResultRepository = keyResultRepository;
+        this.keyResultService = keyResultService;
+    }
 
     @GetMapping
     public List<KeyResult> getAllKeyResults() {
         return (List<KeyResult>) keyResultRepository.findAll();
+    }
+
+    @PostMapping
+    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+        return this.keyResultService.createKeyResult(keyResultDto);
     }
 }

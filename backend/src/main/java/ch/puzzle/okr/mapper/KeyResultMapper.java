@@ -13,4 +13,16 @@ public class KeyResultMapper {
                 keyResult.getOwner().getLastname(), keyResult.getQuarter().getNumber(), keyResult.getQuarter().getYear(),
                 keyResult.getExpectedEvolution(), keyResult.getUnit(), keyResult.getBasisValue(), keyResult.getTargetValue());
     }
+
+    public KeyResult toKeyResult(KeyResultDto keyResultDto){
+        return KeyResult.Builder.builder()
+                .withId(keyResultDto.getId())
+                .withTitle(keyResultDto.getTitle())
+                .withDescription(keyResultDto.getDescription())
+                .withTargetValue(keyResultDto.getTargetValue())
+                .withBasisValue(keyResultDto.getBasicValue())
+                .withExpectedEvolution(keyResultDto.getExpectedEvolution())
+                .withUnit(keyResultDto.getUnit())
+                .build();
+    }
 }

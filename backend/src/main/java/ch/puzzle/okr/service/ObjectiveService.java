@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
@@ -38,24 +37,26 @@ public class ObjectiveService {
     }
 
     public Objective saveObjective(Objective objective) {
-        if (objective.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+        if(this.checkIfFalseObjective(objective)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid");
         }
-
-        if (objective.getTitle() == null || objective.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective");
-        } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute description when creating objective");
-        } else if (objective.getProgress() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute progress when creating objective");
-        } else if (objective.getCreatedOn() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to generate attribute createdOn when creating objective");
-        }
-
         return objectiveRepository.save(objective);
     }
 
-    public void updateObjective(Long id, ObjectiveDTO objectiveDTO) {
+    public Objective updateObjective(Long id, Objective objective) {
+        objective.setId(id);
+        if(this.checkIfFalseObjective(objective)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid");
+        }
         this.getObjective(id);
+        return objectiveRepository.save(objective);
+    }
+
+    protected boolean checkIfFalseObjective(Objective objective) {
+        return (objective.getTitle() == null || objective.getTitle().isBlank()) ||
+                (objective.getDescription() == null || objective.getDescription().isBlank()) ||
+                (objective.getProgress() == null) ||
+                (objective.getCreatedOn() == null) ||
+                (objective.getId() != null);
     }
 }

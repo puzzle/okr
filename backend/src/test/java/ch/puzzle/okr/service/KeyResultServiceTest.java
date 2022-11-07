@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,6 +28,16 @@ public class KeyResultServiceTest {
     @InjectMocks
     private KeyResultService keyResultService;
 
+    @MockBean
+    ObjectiveService objectiveService;
+
+    @MockBean
+    UserService userService;
+
+    private KeyResult keyResult1;
+    private User user;
+    private Objective objective;
+
     KeyResult keyResult;
     List<KeyResult> keyResults;
 
@@ -35,6 +46,22 @@ public class KeyResultServiceTest {
         this.keyResult = KeyResult.Builder.builder()
                 .withId(1L)
                 .withTitle("Keyresult 1")
+                .build();
+
+        this.keyResult1 = KeyResult.Builder.builder()
+                .withId(5L)
+                .withTitle("New Title")
+                .withDescription("description")
+                .build();
+
+        this.user = User.Builder.builder()
+                .withId(1L)
+                .withEmail("newMail@tese.com")
+                .build();
+
+        this.objective = Objective.Builder.builder()
+                .withId(5L)
+                .withTitle("Objective 1")
                 .build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
     }

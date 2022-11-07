@@ -6,7 +6,8 @@ import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.*;
+import org.springframework.http.HttpStatus;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.repository.UserRepository;
@@ -18,12 +19,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultService {
 
     KeyResultRepository keyResultRepository;
+
+    KeyResultMapper keyResultMapper;
     UserService userService;
     ObjectiveService objectiveService;
     QuarterRepository quarterRepository;
     UserRepository userRepository;
     ObjectiveRepository objectiveRepository;
-    KeyResultMapper keyResultMapper;
 
     public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, KeyResultMapper keyResultMapper, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
@@ -63,5 +65,11 @@ public class KeyResultService {
         return  this.objectiveRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id))
         );
+    public KeyResult createKeyResult(KeyResultDto keyResultDto) {
+        Objective objective = this.objectiveService.getObjective(keyResultDto.getObjectiveId());
+        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
+        keyResult.setObjective(objective);
+        return this.keyResultRepository.save(keyResult);
     }
+
 }

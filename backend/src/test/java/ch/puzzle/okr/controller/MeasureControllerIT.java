@@ -39,7 +39,7 @@ public class MeasureControllerIT {
             .withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12).withTargetValue(50).build())
+            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L).build())
             .withValue(30)
             .withChangeInfo("ChangeInfo")
             .withInitiatives("Initiatives")
@@ -48,7 +48,7 @@ public class MeasureControllerIT {
             .withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0).withTargetValue(100).build())
+            .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0L).withTargetValue(100L).build())
             .withValue(35)
             .withChangeInfo("ChangeInfo")
             .build();

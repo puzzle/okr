@@ -19,23 +19,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/keyresults")
 public class KeyResultController {
-
-
-    KeyResultRepository keyResultRepository;
-
     KeyResultService keyResultService;
 
     KeyResultMapper keyResultMapper;
 
-    public KeyResultController(KeyResultRepository keyResultRepository, KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
-        this.keyResultRepository = keyResultRepository;
+    public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
-    }
-
-    @GetMapping
-    public List<KeyResult> getAllKeyResults() {
-        return (List<KeyResult>) keyResultRepository.findAll();
     }
 
 //    @PostMapping

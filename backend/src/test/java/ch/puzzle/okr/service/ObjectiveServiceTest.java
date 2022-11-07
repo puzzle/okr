@@ -21,6 +21,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -204,5 +205,42 @@ class ObjectiveServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute title when creating objective"), exception.getReason());
     }
+    @Test
+    void shouldWorkProperly() {
+        Objective newObjective = Objective.Builder
+                .builder()
+                .withId(1L).withTitle("Hello World").withDescription("This is a cool objective")
+                .withOwner(User.Builder.builder().withUsername("rudi").build())
+                .withProgress(5.5).withQuarter(new Quarter())
+                .withCreatedOn(LocalDateTime.now())
+                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build())
+                .build();
+        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
+        Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
 
+        Objective returnedObjective = objectiveService.updateObjective(1L, newObjective);
+        assertEquals("Hello World", returnedObjective.getTitle());
+        assertEquals("Best Team", returnedObjective.getTeam().getName());
+        assertEquals("rudi", returnedObjective.getOwner().getUsername());
+        assertEquals("This is a cool objective", returnedObjective.getDescription());
+    }
+
+    @Test
+    void shouldThrowBadRequestCauseAttributes() {
+        assertThrows(ResponseStatusException.class, () -> objectiveService.updateObjective(1L, objective));
+    }
+
+    @Test
+    void shouldReturnNotFound() {
+        Objective newObjective = Objective.Builder
+                .builder()
+                .withId(1L).withTitle("Hello World").withDescription("This is a cool objective")
+                .withOwner(User.Builder.builder().withUsername("rudi").build())
+                .withProgress(5.5).withQuarter(new Quarter())
+                .withCreatedOn(LocalDateTime.now())
+                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build())
+                .build();
+        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(ResponseStatusException.class, () -> objectiveService.updateObjective(1L, newObjective));
+    }
 }

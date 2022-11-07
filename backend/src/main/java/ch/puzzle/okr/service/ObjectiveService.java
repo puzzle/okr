@@ -57,6 +57,6 @@ public class ObjectiveService {
                 (objective.getDescription() == null || objective.getDescription().isBlank()) ||
                 (objective.getProgress() == null) ||
                 (objective.getCreatedOn() == null) ||
-                (objective.getId() != null);
+                (objective.getId() == null);
     }
 }

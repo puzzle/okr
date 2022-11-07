@@ -6,18 +6,21 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -73,5 +76,60 @@ class TeamServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> teamService.getTeamById(6));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Team with id 6 not found", exception.getReason());
+    }
+
+    @Test
+    void shouldSaveANewTeam() {
+        Team team = Team.Builder.builder().withName("TestTeam").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Team savedTeam = teamService.saveTeam(team);
+        assertNull(savedTeam.getId());
+        assertEquals("TestTeam", savedTeam.getName());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenPuttingId() {
+        Team team = Team.Builder.builder().withId(2L).withName("TestTeam").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Not allowed to give an id", exception.getReason());
+    }
+
+    @Test
+    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
+        Team team = Team.Builder.builder().withId(null).withName("TestTeam").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        Team savedTeam = teamService.saveTeam(team);
+        assertNull(savedTeam.getId());
+        assertEquals("TestTeam", savedTeam.getName());
+    }
+
+    @Test
+    void shouldNotCreateTeamWithNoName() {
+        Team team = Team.Builder.builder().build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Missing attribute name when creating team"), exception.getReason());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", " ", "  "})
+    void shouldNotCreateTeamWithEmptyName(String passedName) {
+        Team team = Team.Builder.builder().withName(passedName).build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.saveTeam(team);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(("Missing attribute name when creating team"), exception.getReason());
     }
 }

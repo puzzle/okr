@@ -25,4 +25,14 @@ public class TeamService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id))
         );
     }
+
+    public Team saveTeam(Team team) {
+        if (team.getId() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+        }
+        if (team.getName() == null || team.getName().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
+        }
+        return teamRepository.save(team);
+    }
 }

@@ -12,6 +12,8 @@ public class Team {
     private Long id;
 
     @NotBlank
+    @NotNull
+    @Column(nullable = false)
     @Size(min = 2, max = 250)
     private String name;
 
@@ -57,8 +59,8 @@ public class Team {
     }
 
     public static final class Builder {
-        private @NotNull Long id;
-        private @NotBlank @Size(min = 2, max = 250) String name;
+        private Long id;
+        private String name;
 
         private Builder() {
         }
@@ -67,12 +69,12 @@ public class Team {
             return new Builder();
         }
 
-        public Builder withId(@NotNull Long id) {
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder withName(@NotBlank @Size(min = 2, max = 250) String name) {
+        public Builder withName(String name) {
             this.name = name;
             return this;
         }

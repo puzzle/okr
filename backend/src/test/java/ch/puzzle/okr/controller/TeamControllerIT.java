@@ -24,7 +24,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +46,7 @@ class TeamControllerIT {
 
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
+    static Team teamTestCreating = Team.Builder.builder().withId(1L).withName("TestTeam").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
 
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
@@ -101,4 +106,30 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$", Matchers.hasSize(0)))
         ;
     }
+
+    @Test
+    void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+
+        mvc.perform(post("/api/v1/teams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\" TestTeam \"}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
+        ;
+        verify(teamService, times(1)).saveTeam(any());
+    }
+
+    @Test
+    void shouldReturnResponseStatusExceptionWhenCreatingTeamNullName() throws Exception {
+        BDDMockito.given(teamService.saveTeam(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
+
+        mvc.perform(post("/api/v1/teams")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"id\": 22, \"name\": null}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+        ;
+    }
+
 }

@@ -8,7 +8,6 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.ObjectiveService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +46,6 @@ public class ObjectiveController {
                 .map(objectiveMapper::toDto)
                 .toList();
     }
-
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResultsFromObject",

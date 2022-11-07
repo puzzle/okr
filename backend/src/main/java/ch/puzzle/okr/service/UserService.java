@@ -21,7 +21,6 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-
     public User getOwnerById(Long ownerId) {
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute owner id");

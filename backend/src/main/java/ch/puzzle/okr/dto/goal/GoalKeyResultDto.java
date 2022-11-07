@@ -4,13 +4,11 @@ public class GoalKeyResultDto {
     private Long id;
     private String title;
     private String description;
-    private GoalUserDto owner;
 
-    public GoalKeyResultDto(Long id, String title, String description, GoalUserDto owner) {
+    public GoalKeyResultDto(Long id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.owner = owner;
     }
 
     public Long getId() {
@@ -35,13 +33,5 @@ public class GoalKeyResultDto {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public GoalUserDto getOwner() {
-        return owner;
-    }
-
-    public void setOwner(GoalUserDto owner) {
-        this.owner = owner;
     }
 }

@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.goal.GoalDto;
 import ch.puzzle.okr.dto.goal.GoalKeyResultDto;
 import ch.puzzle.okr.dto.goal.GoalObjectiveDto;
-import ch.puzzle.okr.dto.goal.GoalUserDto;
 import ch.puzzle.okr.mapper.GoalMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.KeyResultService;
@@ -44,9 +43,9 @@ public class GoalControllerIT {
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("KeyResult 2").withObjective(Objective.Builder.builder().withId(1L).build()).build();
     static List<KeyResult> keyResultList = Arrays.asList(keyResult1, keyResult2);
 
-    static GoalDto goalDto1 = new GoalDto(new GoalObjectiveDto(1L, "Objective 1", "This is Objective description",
-            new GoalUserDto(1L, "Alice", "Wunderland")), new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description",
-            new GoalUserDto(1L, "Alice", "Wunderland")), 1L, "Puzzle", 20.0, 2, 2022,
+    static GoalDto goalDto1 = new GoalDto(new GoalObjectiveDto(1L, "Objective 1", "This is Objective description"),
+            new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description"),
+            Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20.0, 2, 2022,
             ExpectedEvolution.CONSTANT, Unit.PERCENT, 0L, 100L);
 
     @BeforeEach

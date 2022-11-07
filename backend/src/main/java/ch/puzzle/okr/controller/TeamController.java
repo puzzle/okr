@@ -57,7 +57,8 @@ public class TeamController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Team> updateTeam(@PathVariable long id, @RequestBody TeamDto teamDto) {
-         return ResponseEntity.status(HttpStatus.OK).body(teamService.updateTeam(id, teamDto));
+        Team team = teamMapper.toTeam(teamDto);
+        return ResponseEntity.status(HttpStatus.OK).body(teamService.updateTeam(id, team));
     }
 
     @ApiResponses(value = {

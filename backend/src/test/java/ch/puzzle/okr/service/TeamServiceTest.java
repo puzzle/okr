@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;
@@ -28,12 +27,10 @@ import static org.mockito.ArgumentMatchers.anyLong;
 class TeamServiceTest {
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
-
-    @InjectMocks
-    private TeamService teamService;
-
     Team teamPuzzle;
     List<Team> teamsPuzzle;
+    @InjectMocks
+    private TeamService teamService;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +47,7 @@ class TeamServiceTest {
 
         List<Team> teams = teamService.getAllTeams();
 
-        assertEquals(3 ,teams.size());
+        assertEquals(3, teams.size());
         assertEquals("Puzzle", teams.get(0).getName());
     }
 
@@ -60,7 +57,7 @@ class TeamServiceTest {
 
         List<Team> teams = teamService.getAllTeams();
 
-        assertEquals(0 ,teams.size());
+        assertEquals(0, teams.size());
     }
 
     @Test
@@ -141,8 +138,7 @@ class TeamServiceTest {
         Mockito.when(teamRepository.save(any())).thenReturn(team);
         Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
 
-        TeamDto teamDto = new TeamDto(1L, "New Team");
-        Team returnedTeam = teamService.updateTeam(1L, teamDto);
+        Team returnedTeam = teamService.updateTeam(1L, team);
         assertEquals("New Team", returnedTeam.getName());
         assertEquals(1L, returnedTeam.getId());
     }
@@ -150,17 +146,17 @@ class TeamServiceTest {
     @Test
     void shouldThrowNotFoundException() {
         Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.empty());
-        TeamDto teamDto = new TeamDto(1L, "New Team");
+        Team team = Team.Builder.builder().withId(1L).withName("New Team").build();
         assertThrows(ResponseStatusException.class, () -> {
-            teamService.updateTeam(1L, teamDto);
+            teamService.updateTeam(1L, team);
         });
     }
 
     @Test
     void shouldNotUpdateTeamWithEmptyName() {
-         TeamDto teamDto = new TeamDto(1L, "");
-         assertThrows(ResponseStatusException.class, () -> {
-             teamService.updateTeam(1L, teamDto);
-         });
+        Team team = Team.Builder.builder().withId(1L).withName("").build();
+        assertThrows(ResponseStatusException.class, () -> {
+            teamService.updateTeam(1L, team);
+        });
     }
 }

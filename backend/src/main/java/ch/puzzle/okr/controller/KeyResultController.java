@@ -38,8 +38,8 @@ public class KeyResultController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResult> updateKeyResult(@PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
-            keyResultDto.setId(id);
-            return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+        keyResultDto.setId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
     }
 
     @PostMapping
@@ -47,5 +47,16 @@ public class KeyResultController {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
         KeyResult keyResult1 = this.keyResultService.createKeyResult(keyResult);
         return keyResult1;
+    }
+
+
+    @GetMapping
+    public List<KeyResult> getAllKeyResults() {
+        return (List<KeyResult>) keyResultRepository.findAll();
+    }
+
+    @PostMapping
+    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+        return this.keyResultService.createKeyResult(keyResultDto);
     }
 }

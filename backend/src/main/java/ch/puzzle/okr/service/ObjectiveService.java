@@ -35,4 +35,22 @@ public class ObjectiveService {
         );
         return keyResultRepository.findByObjective(objective);
     }
+
+    public Objective saveObjective(Objective objective) {
+        if (objective.getId() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+        }
+
+        if (objective.getTitle() == null || objective.getTitle().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective");
+        } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute description when creating objective");
+        } else if (objective.getProgress() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute progress when creating objective");
+        } else if (objective.getCreatedOn() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to generate attribute createdOn when creating objective");
+        }
+
+        return objectiveRepository.save(objective);
+    }
 }

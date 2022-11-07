@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,7 +22,6 @@ import java.util.List;
 @RequestMapping("api/v1/objectives")
 public class ObjectiveController {
     private final ObjectiveService objectiveService;
-
 
     private final ObjectiveMapper objectiveMapper;
 
@@ -57,5 +57,10 @@ public class ObjectiveController {
         return objectiveService.getAllKeyResultsByObjective(id).stream()
                 .map(keyResultMapper::toDto)
                 .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ObjectiveDTO getObjective(@PathVariable Long id) {
+        return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 }

@@ -25,10 +25,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -132,4 +133,29 @@ class TeamControllerIT {
         ;
     }
 
+    @Test
+    void shouldReturnChangedEntity() throws Exception {
+        BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
+
+        mvc.perform(put("/api/v1/teams/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.name", Is.is("Puzzle")))
+        ;
+    }
+
+    @Test
+    void shouldReturnNotFound() throws Exception {
+        BDDMockito.given(teamService.updateTeam(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
+
+        mvc.perform(put("/api/v1/teams/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+        ;
+    }
 }

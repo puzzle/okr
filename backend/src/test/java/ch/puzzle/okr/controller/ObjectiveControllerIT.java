@@ -7,6 +7,7 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
@@ -15,20 +16,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +46,7 @@ class ObjectiveControllerIT {
 
     @MockBean
     private ObjectiveService objectiveService;
+
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean
@@ -123,6 +129,26 @@ class ObjectiveControllerIT {
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    void getObjective() throws Exception {
+        BDDMockito.given(objectiveService.getObjective(5L)).willReturn(objective1);
+
+        mvc.perform(get("/api/v1/objectives/5").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.title", Is.is("Objective 1")))
+        ;
+    }
+
+    @Test
+    void getObjectiveFail() throws Exception {
+        BDDMockito.given(objectiveService.getObjective(10L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        mvc.perform(get("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }
 }

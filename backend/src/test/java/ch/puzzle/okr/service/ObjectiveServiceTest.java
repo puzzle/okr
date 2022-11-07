@@ -13,14 +13,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
@@ -95,5 +96,23 @@ class ObjectiveServiceTest {
     void shouldThrowExceptionWhenObjectiveDoesntExist() {
         assertThrows(ResponseStatusException.class, () ->
                 objectiveService.getAllKeyResultsByObjective(1));
+    }
+
+    @Test
+    void getOneObjective() {
+        Mockito.when(objectiveRepository.findById(5L)).thenReturn(Optional.ofNullable(this.objective));
+        Objective realObjective = objectiveService.getObjective(5L);
+
+        assertEquals("Objective 1" , realObjective.getTitle());
+    }
+
+    @Test
+    void shouldNotFindTheObjective() {
+        Mockito.when(objectiveRepository.findById(6L)).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.getObjective(6L));
+        assertEquals(404, exception.getRawStatusCode());
+        assertEquals("Objective with id 6 not found", exception.getReason());
     }
 }

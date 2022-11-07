@@ -38,6 +38,9 @@ public class TeamService {
     }
 
     public Team updateTeam(long id, TeamDto teamDto) {
+        if (teamDto.getName() == null || teamDto.getName().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
+        }
         this.getTeamById(id);
         return this.teamRepository.save(
                 Team.Builder.builder()

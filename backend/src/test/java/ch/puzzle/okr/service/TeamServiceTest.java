@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -131,5 +133,34 @@ class TeamServiceTest {
         });
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute name when creating team"), exception.getReason());
+    }
+
+    @Test
+    void shouldUpdateTeamProperly() {
+        Team team = Team.Builder.builder().withId(1L).withName("New Team").build();
+        Mockito.when(teamRepository.save(any())).thenReturn(team);
+        Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
+
+        TeamDto teamDto = new TeamDto(1L, "New Team");
+        Team returnedTeam = teamService.updateTeam(1L, teamDto);
+        assertEquals("New Team", returnedTeam.getName());
+        assertEquals(1L, returnedTeam.getId());
+    }
+
+    @Test
+    void shouldThrowNotFoundException() {
+        Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.empty());
+        TeamDto teamDto = new TeamDto(1L, "New Team");
+        assertThrows(ResponseStatusException.class, () -> {
+            teamService.updateTeam(1L, teamDto);
+        });
+    }
+
+    @Test
+    void shouldNotUpdateTeamWithEmptyName() {
+         TeamDto teamDto = new TeamDto(1L, "");
+         assertThrows(ResponseStatusException.class, () -> {
+             teamService.updateTeam(1L, teamDto);
+         });
     }
 }

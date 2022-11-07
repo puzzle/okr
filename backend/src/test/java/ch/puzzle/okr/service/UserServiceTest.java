@@ -10,10 +10,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -68,6 +74,38 @@ class UserServiceTest {
         List<User> userList = userService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(0);
+    }
+
+    @Test
+    void shouldReturnSingleUserWhenFindingOwnerByValidId() {
+        Optional<User> owner = Optional.of(User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build());
+        Mockito.when(userRepository.findById(any())).thenReturn(owner);
+
+        User returnedUser = userService.getOwnerById(1L);
+
+        assertEquals(1L, returnedUser.getId());
+        assertEquals("Bob", returnedUser.getFirstname());
+        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("bkaufmann", returnedUser.getUsername());
+        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
+    void shouldThrowReponseStatusExceptionWhenFindingOwnerNotFound() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.getOwnerById(321L);
+        });
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("Owner with id 321 not found", exception.getReason());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenGetOwnerWithNullId() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.getOwnerById(null);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Missing attribute owner id", exception.getReason());
     }
 
 }

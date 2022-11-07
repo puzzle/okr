@@ -14,16 +14,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultService {
 
     KeyResultRepository keyResultRepository;
-    KeyResultMapper keyResultMapper;
     UserService userService;
     ObjectiveService objectiveService;
     QuarterRepository quarterRepository;
     UserRepository userRepository;
     ObjectiveRepository objectiveRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, KeyResultMapper keyResultMapper, UserService userService, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
-        this.keyResultMapper = keyResultMapper;
         this.userService = userService;
         this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;
@@ -31,12 +29,12 @@ public class KeyResultService {
         this.objectiveRepository = objectiveRepository;
     }
 
-    public KeyResult createKeyResult(KeyResultDto keyResultDto) {
-        Objective objective = this.objectiveService.getObjective(keyResultDto.getObjectiveId());
-        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        keyResult.setObjective(objective);
-        return this.keyResultRepository.save(keyResult);
-    }
+//    public KeyResult createKeyResult(KeyResultDto keyResultDto) {
+//        Objective objective = this.objectiveService.getObjective(keyResultDto.getObjectiveId());
+//        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
+//        keyResult.setObjective(objective);
+//        return this.keyResultRepository.save(keyResult);
+//    }
 
     public KeyResult getKeyResultById(long id) {
         return keyResultRepository.findById(id).orElseThrow(
@@ -45,7 +43,11 @@ public class KeyResultService {
     }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
-        return this.keyResultRepository.save(keyResult);
+        if (keyResultExists(keyResult.getId())) {
+            return this.keyResultRepository.save(keyResult);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find keyresult with id %d", keyResult.getId()));
+        }
     }
 
     public Quarter getQuarterById(long id) {
@@ -64,4 +66,7 @@ public class KeyResultService {
         );
     }
 
+    public boolean keyResultExists(long id) {
+        return keyResultRepository.findById(id).isPresent();
+    }
 }

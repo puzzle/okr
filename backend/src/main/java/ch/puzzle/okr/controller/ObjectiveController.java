@@ -73,8 +73,9 @@ public class ObjectiveController {
     }
 
     @PutMapping("/{id}")
-    public void updateObjective(@PathVariable Long id, @RequestBody ObjectiveDTO objectiveDTO) {
-        return;
+    public ResponseEntity<Objective> updateObjective(@PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
+        Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(objectiveService.updateObjective(id, objective));
     }
 
     @ApiResponses(value = {

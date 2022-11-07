@@ -4,8 +4,8 @@ import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.Unit;
 
 public class GoalDto {
-    private ObjectiveDto objective;
-    private KeyresultDto keyresult;
+    private GoalObjectiveDto objective;
+    private GoalKeyResultDto keyresult;
     private Long teamId;
     private String teamName;
     private Double progress;
@@ -16,7 +16,7 @@ public class GoalDto {
     private Long basicValue;
     private Long targetValue;
 
-    public GoalDto(ObjectiveDto objective, KeyresultDto keyresult, Long teamId, String teamName, Double progress,
+    public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Long teamId, String teamName, Double progress,
                    Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution, Unit unit,
                    Long basicValue, Long targetValue) {
         this.objective = objective;
@@ -32,19 +32,19 @@ public class GoalDto {
         this.targetValue = targetValue;
     }
 
-    public ObjectiveDto getObjective() {
+    public GoalObjectiveDto getObjective() {
         return objective;
     }
 
-    public void setObjective(ObjectiveDto objective) {
+    public void setObjective(GoalObjectiveDto objective) {
         this.objective = objective;
     }
 
-    public KeyresultDto getKeyresult() {
+    public GoalKeyResultDto getKeyresult() {
         return keyresult;
     }
 
-    public void setKeyresult(KeyresultDto keyresult) {
+    public void setKeyresult(GoalKeyResultDto keyresult) {
         this.keyresult = keyresult;
     }
 

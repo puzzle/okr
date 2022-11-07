@@ -1,11 +1,11 @@
 package ch.puzzle.okr.dto.goal;
 
-public class UserDto {
+public class GoalUserDto {
     private Long id;
     private String firstname;
     private String lastname;
 
-    public UserDto(Long id, String firstname, String lastname) {
+    public GoalUserDto(Long id, String firstname, String lastname) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;

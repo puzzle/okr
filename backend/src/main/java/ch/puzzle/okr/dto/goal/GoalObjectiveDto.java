@@ -1,12 +1,12 @@
 package ch.puzzle.okr.dto.goal;
 
-public class KeyresultDto {
+public class GoalObjectiveDto {
     private Long id;
     private String title;
     private String description;
-    private UserDto owner;
+    private GoalUserDto owner;
 
-    public KeyresultDto(Long id, String title, String description, UserDto owner) {
+    public GoalObjectiveDto(Long id, String title, String description, GoalUserDto owner) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -37,11 +37,11 @@ public class KeyresultDto {
         this.description = description;
     }
 
-    public UserDto getOwner() {
+    public GoalUserDto getOwner() {
         return owner;
     }
 
-    public void setOwner(UserDto owner) {
+    public void setOwner(GoalUserDto owner) {
         this.owner = owner;
     }
 }

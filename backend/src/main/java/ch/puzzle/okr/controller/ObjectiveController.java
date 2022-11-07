@@ -63,7 +63,7 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a objective with a specified ID.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Objective.class))}),
+                            schema = @Schema(implementation = ObjectiveDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")

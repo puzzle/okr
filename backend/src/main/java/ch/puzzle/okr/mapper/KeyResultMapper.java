@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KeyResultMapper {
-    KeyResultService keyResultService;
+
+    private final KeyResultService keyResultService;
 
     public KeyResultMapper(KeyResultService keyResultService) {
         this.keyResultService = keyResultService;

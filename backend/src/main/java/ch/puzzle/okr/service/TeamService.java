@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.springframework.http.HttpStatus;
@@ -34,5 +35,13 @@ public class TeamService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }
         return teamRepository.save(team);
+    }
+
+    public Team updateTeam(long id, TeamDto teamDto) {
+        this.getTeamById(id);
+        return this.teamRepository.save(
+                Team.Builder.builder()
+                        .withId(id)
+                        .withName(teamDto.getName()).build());
     }
 }

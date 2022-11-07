@@ -6,6 +6,8 @@ import ch.puzzle.okr.repository.MeasureRepository;
 import org.springframework.stereotype.Component;
 import ch.puzzle.okr.service.MeasureService;
 
+import java.time.LocalDateTime;
+
 @Component
 public class MeasureMapper {
 
@@ -24,7 +26,7 @@ public class MeasureMapper {
                 .withChangeInfo(measureDto.getChangeInfo())
                 .withInitiatives(measureDto.getInitiatives())
                 .withCreatedBy(measureService.mapUser(measureDto))
-                .withCreatedOn(measureDto.getCreatedOn())
+                .withCreatedOn(LocalDateTime.now())
                 .build();
     }
 }

@@ -14,17 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
-import java.util.*;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
@@ -32,14 +26,12 @@ class ObjectiveServiceTest {
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
-
-    @InjectMocks
-    private ObjectiveService objectiveService;
-
     Objective objective;
     KeyResult keyResult;
     List<Objective> objectiveList;
     List<KeyResult> keyResults;
+    @InjectMocks
+    private ObjectiveService objectiveService;
 
     @BeforeEach
     void setUp() {
@@ -61,7 +53,7 @@ class ObjectiveServiceTest {
 
         List<Objective> objectives = objectiveService.getAllObjectives();
 
-        assertEquals(3 ,objectives.size());
+        assertEquals(3, objectives.size());
         assertEquals("Objective 1", objectives.get(0).getTitle());
     }
 
@@ -71,7 +63,7 @@ class ObjectiveServiceTest {
 
         List<Objective> objectives = objectiveService.getAllObjectives();
 
-        assertEquals(0 ,objectives.size());
+        assertEquals(0, objectives.size());
     }
 
     @Test
@@ -81,7 +73,7 @@ class ObjectiveServiceTest {
 
         List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
 
-        assertEquals(3 ,keyResultList.size());
+        assertEquals(3, keyResultList.size());
         assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
     }
 
@@ -106,7 +98,7 @@ class ObjectiveServiceTest {
         Mockito.when(objectiveRepository.findById(5L)).thenReturn(Optional.ofNullable(this.objective));
         Objective realObjective = objectiveService.getObjective(5L);
 
-        assertEquals("Objective 1" , realObjective.getTitle());
+        assertEquals("Objective 1", realObjective.getTitle());
     }
 
     @Test

@@ -4,12 +4,7 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
-import ch.puzzle.okr.models.ExpectedEvolution;
-import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.models.Unit;
-import ch.puzzle.okr.repository.ObjectiveRepository;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -17,24 +12,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,15 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private ObjectiveService objectiveService;
-    @MockBean
-    private ObjectiveMapper objectiveMapper;
-    @MockBean
-    private KeyResultMapper keyResultMapper;
 
     static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
@@ -63,6 +43,14 @@ class ObjectiveControllerIT {
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 
+    @Autowired
+    private MockMvc mvc;
+    @MockBean
+    private ObjectiveService objectiveService;
+    @MockBean
+    private ObjectiveMapper objectiveMapper;
+    @MockBean
+    private KeyResultMapper keyResultMapper;
 
     @BeforeEach
     void setUp() {

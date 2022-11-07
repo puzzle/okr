@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/measures")
 public class MeasureController {
-    MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
     private final MeasureService measureService;
 

@@ -165,7 +165,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
         BDDMockito.given(objectiveService.saveObjective(any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating team"));
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post("/api/v1/objectives")
                         .contentType(MediaType.APPLICATION_JSON)

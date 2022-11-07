@@ -149,10 +149,10 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
-        this.fullObjective.setId(null);
+        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title").withDescription("Description").withProgress(43.21).withCreatedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective);
 
-        Objective savedObjective = objectiveService.saveObjective(this.fullObjective);
+        Objective savedObjective = objectiveService.saveObjective(objective1);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective", savedObjective.getTitle());
         assertEquals(33.3, savedObjective.getProgress());

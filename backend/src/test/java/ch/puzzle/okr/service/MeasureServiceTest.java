@@ -35,7 +35,7 @@ public class MeasureServiceTest {
        this.measure = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12).withTargetValue(50).build())
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L).build())
                 .withValue(30)
                 .withChangeInfo("ChangeInfo")
                 .withInitiatives("Initiatives")

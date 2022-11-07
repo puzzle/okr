@@ -13,12 +13,15 @@ import java.time.LocalDateTime;
 @Service
 public class ObjectiveMapper {
 
-    @Autowired
-    TeamService teamService;
-    @Autowired
-    QuarterService quarterService;
-    @Autowired
-    UserService userService;
+    private final TeamService teamService;
+    private final QuarterService quarterService;
+    private final UserService userService;
+
+    public ObjectiveMapper(TeamService teamService, QuarterService quarterService, UserService userService) {
+        this.teamService = teamService;
+        this.quarterService = quarterService;
+        this.userService = userService;
+    }
 
     public ObjectiveDto toDto(Objective objective) {
         return new ObjectiveDto(

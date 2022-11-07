@@ -6,7 +6,6 @@ import ch.puzzle.okr.dto.goal.KeyresultDto;
 import ch.puzzle.okr.dto.goal.ObjectiveDto;
 import ch.puzzle.okr.dto.goal.UserDto;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -4,10 +4,7 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.ObjectiveDTO;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
-import ch.puzzle.okr.models.ExpectedEvolution;
-import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Unit;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -25,9 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,15 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private ObjectiveService objectiveService;
-    @MockBean
-    private ObjectiveMapper objectiveMapper;
-    @MockBean
-    private KeyResultMapper keyResultMapper;
 
     static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
@@ -57,6 +43,14 @@ class ObjectiveControllerIT {
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice", "Wunderland", 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 
+    @Autowired
+    private MockMvc mvc;
+    @MockBean
+    private ObjectiveService objectiveService;
+    @MockBean
+    private ObjectiveMapper objectiveMapper;
+    @MockBean
+    private KeyResultMapper keyResultMapper;
 
     @BeforeEach
     void setUp() {
@@ -123,6 +117,26 @@ class ObjectiveControllerIT {
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    void getObjective() throws Exception {
+        BDDMockito.given(objectiveService.getObjective(5L)).willReturn(objective1);
+
+        mvc.perform(get("/api/v1/objectives/5").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.title", Is.is("Objective 1")))
+        ;
+    }
+
+    @Test
+    void getObjectiveFail() throws Exception {
+        BDDMockito.given(objectiveService.getObjective(10L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        mvc.perform(get("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }
 }

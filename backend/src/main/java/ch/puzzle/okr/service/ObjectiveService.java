@@ -24,6 +24,11 @@ public class ObjectiveService {
         return (List<Objective>) objectiveRepository.findAll();
     }
 
+    public Objective getObjective(Long id) {
+        return objectiveRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id)));
+    }
+
     public List<KeyResult> getAllKeyResultsByObjective(long objectiveId) {
         Objective objective = objectiveRepository.findById(objectiveId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", objectiveId))

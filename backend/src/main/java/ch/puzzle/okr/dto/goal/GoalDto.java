@@ -1,6 +1,7 @@
 package ch.puzzle.okr.dto.goal;
 
 import ch.puzzle.okr.models.ExpectedEvolution;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.Unit;
 
 public class GoalDto {
@@ -16,13 +17,13 @@ public class GoalDto {
     private Long basicValue;
     private Long targetValue;
 
-    public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Long teamId, String teamName, Double progress,
+    public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Double progress,
                    Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution, Unit unit,
                    Long basicValue, Long targetValue) {
         this.objective = objective;
         this.keyresult = keyresult;
-        this.teamId = teamId;
-        this.teamName = teamName;
+        this.teamId = team.getId();
+        this.teamName = team.getName();
         this.progress = progress;
         this.quarterNumber = quarterNumber;
         this.quarterYear = quarterYear;

@@ -60,7 +60,7 @@ public class KeyResultServiceTest {
     }
 
     @Test
-    void shouldWorkProperly() {
+    void shouldEditKeyresult() {
         KeyResult newKeyresult = KeyResult.Builder
                 .builder()
                 .withId(1L).withTitle("Keyresult 1 update")

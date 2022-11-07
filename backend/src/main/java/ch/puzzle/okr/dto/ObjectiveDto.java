@@ -1,6 +1,6 @@
 package ch.puzzle.okr.dto;
 
-public class ObjectiveDTO {
+public class ObjectiveDto {
     private Long id;
     private String title;
     private Long ownerId;
@@ -8,13 +8,14 @@ public class ObjectiveDTO {
     private String ownerLastname;
     private Long teamId;
     private String teamName;
+    private Long quarterId;
     private Integer quarterNumber;
     private Integer quarterYear;
     private String description;
     private Double progress;
 
-    public ObjectiveDTO(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId, String teamName,
-                        Integer quarterNumber, Integer quarterYear, String description, Double progress) {
+    public ObjectiveDto(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId, String teamName,
+                        Long quarterId, Integer quarterNumber, Integer quarterYear, String description, Double progress) {
         this.id = id;
         this.title = title;
         this.ownerId = ownerId;
@@ -22,6 +23,7 @@ public class ObjectiveDTO {
         this.ownerLastname = ownerLastname;
         this.teamId = teamId;
         this.teamName = teamName;
+        this.quarterId = quarterId;
         this.quarterNumber = quarterNumber;
         this.quarterYear = quarterYear;
         this.description = description;
@@ -84,6 +86,15 @@ public class ObjectiveDTO {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
+
+    public Long getQuarterId() {
+        return quarterId;
+    }
+
+    public void setQuarterId(Long quarterId) {
+        this.quarterId = quarterId;
+    }
+
 
     public Integer getQuarterNumber() {
         return quarterNumber;

@@ -12,6 +12,7 @@ public class Team {
     private Long id;
 
     @NotBlank
+    @NotNull
     @Column(nullable = false)
     @Size(min = 2, max = 250)
     private String name;

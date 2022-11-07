@@ -29,7 +29,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,21 +36,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TeamController.class)
 class TeamControllerIT {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private TeamService teamService;
-    @MockBean
-    private TeamMapper teamMapper;
-
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static Team teamTestCreating = Team.Builder.builder().withId(1L).withName("TestTeam").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
     static TeamDto teamOkrDto = new TeamDto(7L, "OKR");
+    @Autowired
+    private MockMvc mvc;
+    @MockBean
+    private TeamService teamService;
+    @MockBean
+    private TeamMapper teamMapper;
 
     @BeforeEach
     void setUp() {
@@ -127,8 +123,8 @@ class TeamControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
         mvc.perform(post("/api/v1/teams")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"id\": 22, \"name\": null}"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\": 22, \"name\": null}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
         ;
     }
@@ -140,7 +136,6 @@ class TeamControllerIT {
         mvc.perform(put("/api/v1/teams/5")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
-                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.name", Is.is("Puzzle")))
@@ -154,7 +149,6 @@ class TeamControllerIT {
         mvc.perform(put("/api/v1/teams/5")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
-                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }

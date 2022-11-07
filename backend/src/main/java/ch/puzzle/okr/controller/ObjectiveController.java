@@ -72,6 +72,13 @@ public class ObjectiveController {
         return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated objective in db",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ObjectiveDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Given id of objective wasn't found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Can't create new objective, attributes are not set", content = @Content)
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Objective> updateObjective(@PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);

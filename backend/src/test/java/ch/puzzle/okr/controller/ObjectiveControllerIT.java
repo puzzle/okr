@@ -146,7 +146,6 @@ class ObjectiveControllerIT {
     @Test
     void getObjectiveFail() throws Exception {
         BDDMockito.given(objectiveService.getObjective(10L)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-
         mvc.perform(get("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
@@ -175,5 +174,40 @@ class ObjectiveControllerIT {
                         .content("{\"title\": null, \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
         ;
+    }
+
+    @Test
+    void shouldReturnUpdatedObjective() throws Exception {
+        Objective objective = Objective.Builder.builder()
+                .withId(1L).withDescription("Everything Fine")
+                .withProgress(5.5).withTitle("Hunting")
+                .build();
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
+
+        mvc.perform(put("/api/v1/objectives/10"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(1)))
+                .andExpect(jsonPath("$.description", Is.is("Everything Fine")))
+                .andExpect(jsonPath("$.title", Is.is("Hunting")));
+    }
+
+    @Test
+    void shouldReturnNotFound() throws Exception {
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Failed objective -> Attribut is invalid"));
+
+        mvc.perform(put("/api/v1/objectives/10"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnBadRequest() throws Exception {
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Failed objective -> Attribut is invalid"));
+
+        mvc.perform(put("/api/v1/objectives/10"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

@@ -49,6 +49,18 @@ public class TeamController {
     }
 
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated team in db",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = TeamDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Given id of team wasn't found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Teamname was empty", content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Team> updateTeam(@PathVariable long id, @RequestBody TeamDto teamDto) {
+         return ResponseEntity.status(HttpStatus.OK).body(teamService.updateTeam(id, teamDto));
+    }
+
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saved new team to db",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = TeamDto.class))}),

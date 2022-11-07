@@ -21,6 +21,12 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
+    public User getUserById(Long id){
+        return this.userRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id))
+        );
+    }
+
     public User getOwnerById(Long ownerId) {
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute owner id");

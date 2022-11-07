@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 public class KeyResultController {
     KeyResultService keyResultService;
 
+
+    KeyResultRepository keyResultRepository;
     KeyResultMapper keyResultMapper;
 
     public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
@@ -35,5 +38,10 @@ public class KeyResultController {
     public ResponseEntity<KeyResult> updateKeyResult(@PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
             keyResultDto.setId(id);
             return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+    }
+
+    @PostMapping
+    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+        return this.keyResultService.createKeyResult(keyResultDto);
     }
 }

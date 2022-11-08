@@ -86,7 +86,7 @@ class KeyResultServiceTest {
         KeyResult keyResult = keyResultService.getKeyResultById(1);
 
         assertEquals("Keyresult 1", keyResult.getTitle());
-        assertEquals(1, keyResult.getId());
+        assertEquals(5, keyResult.getId());
     }
 
     @Test

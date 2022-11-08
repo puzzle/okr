@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
-public class MeasureServiceTest {
+class MeasureServiceTest {
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
 
@@ -67,9 +68,32 @@ public class MeasureServiceTest {
 
     @Test
     void shouldReturnCorrectEntity() {
-        Mockito.when(measureService.saveMeasure(any())).thenReturn(measure);
+        Mockito.when(measureService.saveMeasure(measure)).thenReturn(measure);
+        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
+        Measure returnedMeasure = this.measureService.updateMeasure(1L, measure);
+        assertEquals(measure.getId(), returnedMeasure.getId());
+        assertEquals(measure.getValue(), returnedMeasure.getValue());
+        assertEquals(measure.getChangeInfo(), returnedMeasure.getChangeInfo());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionNotFound() {
+        Mockito.when(measureService.saveMeasure(measure)).thenReturn(measure);
+        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.measureService.updateMeasure(1L, measure));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionBadRequest() {
+        Mockito.when(measureService.saveMeasure(measure)).thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
 
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.measureService.updateMeasure(1L, measure));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 }
 

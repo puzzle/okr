@@ -2,30 +2,32 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.repository.MeasureRepository;
-import org.springframework.stereotype.Component;
 import ch.puzzle.okr.service.MeasureService;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
 public class MeasureMapper {
+    final MeasureService measureService;
 
-    MeasureRepository measureRepository;
+    public MeasureMapper(MeasureService measureService) {
+        this.measureService = measureService;
+    }
+
     public MeasureDto toDto(Measure measure) {
         return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(), measure.getChangeInfo(),
                 measure.getInitiatives(), measure.getCreatedBy().getId(), measure.getCreatedOn());
     }
 
     public Measure toMeasure(MeasureDto measureDto) {
-        MeasureService measureService = new MeasureService(measureRepository);
         return Measure.Builder.builder()
                 .withId(measureDto.getId())
-                .withKeyResult(measureService.mapKeyResult(measureDto))
+                .withKeyResult(this.measureService.mapKeyResult(measureDto))
                 .withValue(measureDto.getValue())
                 .withChangeInfo(measureDto.getChangeInfo())
                 .withInitiatives(measureDto.getInitiatives())
-                .withCreatedBy(measureService.mapUser(measureDto))
+                .withCreatedBy(this.measureService.mapUser(measureDto))
                 .withCreatedOn(LocalDateTime.now())
                 .build();
     }

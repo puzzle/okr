@@ -14,10 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 public class MeasureServiceTest {
@@ -61,6 +63,13 @@ public class MeasureServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> measureService.saveMeasure(falseMeasure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Measure has already an Id", exception.getReason());
+    }
+
+    @Test
+    void shouldReturnCorrectEntity() {
+        Mockito.when(measureService.saveMeasure(any())).thenReturn(measure);
+        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
+
     }
 }
 

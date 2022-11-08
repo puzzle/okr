@@ -119,13 +119,12 @@ class KeyResultControllerIT {
     @Test
     void invalidDTO() throws Exception {
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willThrow(
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Error") );
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/v1/keyresults")
                         .content(mapper.writeValueAsString(this.keyResultDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-
     }
 }

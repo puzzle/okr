@@ -1,11 +1,12 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class KeyResultService {
@@ -24,6 +25,10 @@ public class KeyResultService {
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
+    }
+
+    public List<KeyResult> getAllKeyResults() {
+        return (List<KeyResult>) this.keyResultRepository.findAll();
     }
 
     public KeyResult createKeyResult(KeyResult keyResult) {

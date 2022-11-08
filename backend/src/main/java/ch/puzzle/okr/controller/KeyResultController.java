@@ -19,12 +19,11 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/keyresults")
 public class KeyResultController {
-    KeyResultService keyResultService;
 
 
-    KeyResultRepository keyResultRepository;
-    KeyResultMapper keyResultMapper;
-
+    private final KeyResultService keyResultService;
+    private final KeyResultRepository keyResultRepository;
+    private final KeyResultMapper keyResultMapper;
 
     public KeyResultController(KeyResultRepository keyResultRepository, KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
         this.keyResultRepository = keyResultRepository;
@@ -50,15 +49,19 @@ public class KeyResultController {
                             schema = @Schema(implementation = KeyResultDto.class))}),
     })
     @GetMapping
-    public List<KeyResult> getAllKeyResults() {
-        return (List<KeyResult>) keyResultRepository.findAll();
+    public List<KeyResultDto> getAllKeyResults() {
+        return this.keyResultService
+                .getAllKeyResults()
+                .stream()
+                .map(keyResultMapper::toDto)
+                .toList();
     }
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Create a keyresult.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = KeyResultDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Did not find a object on which the key result tries to refer to ", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Did not find an object on which the key result tries to refer to ", content = @Content)
     })
     @PostMapping
     public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {

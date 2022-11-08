@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,12 +29,9 @@ class KeyResultServiceTest {
 
     @Mock
     KeyResultRepository keyResultRepository;
-    @Mock
-    KeyResultMapper keyResultMapper;
     List<KeyResult> keyResults;
     @InjectMocks
     private KeyResultService keyResultService;
-    private KeyResultDto keyResultDTO;
     private User user;
     private Objective objective;
     private Quarter quarter;

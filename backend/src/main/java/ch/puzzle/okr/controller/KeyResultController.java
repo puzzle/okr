@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("api/v1/keyresults")
@@ -42,13 +44,6 @@ public class KeyResultController {
         return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
     }
 
-    @PostMapping
-    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        KeyResult keyResult1 = this.keyResultService.createKeyResult(keyResult);
-        return keyResult1;
-    }
-
 
     @GetMapping
     public List<KeyResult> getAllKeyResults() {
@@ -57,6 +52,7 @@ public class KeyResultController {
 
     @PostMapping
     public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        return this.keyResultService.createKeyResult(keyResultDto);
+        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
+        return this.keyResultService.createKeyResult(keyResult);
     }
 }

@@ -1,8 +1,6 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +46,7 @@ class QuarterServiceTest {
     void shouldThrowExceptionBecauseOfNotFound() {
         Mockito.when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(ResponseStatusException.class, () -> {
-           this.quarterService.getQuarterById(5L);
+            this.quarterService.getQuarterById(5L);
         });
     }
 }

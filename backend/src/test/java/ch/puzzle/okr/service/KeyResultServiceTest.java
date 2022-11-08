@@ -63,7 +63,6 @@ class KeyResultServiceTest {
                 .withQuarter(this.quarter)
                 .build();
 
-        this.keyResultDTO = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
         this.keyResults = List.of(keyResult, keyResult, keyResult);
     }
 

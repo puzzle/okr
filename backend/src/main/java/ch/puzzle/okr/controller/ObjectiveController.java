@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,10 +26,9 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/objectives")
 public class ObjectiveController {
+
     private final ObjectiveService objectiveService;
-
     private final ObjectiveMapper objectiveMapper;
-
     private final KeyResultMapper keyResultMapper;
 
     public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper) {

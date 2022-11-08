@@ -9,7 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class QuarterService {
 
-    QuarterRepository quarterRepository;
+    private final QuarterRepository quarterRepository;
 
     public QuarterService(QuarterRepository quarterRepository) {
         this.quarterRepository = quarterRepository;

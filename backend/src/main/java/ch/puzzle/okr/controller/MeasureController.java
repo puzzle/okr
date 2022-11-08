@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/measures")
 public class MeasureController {
+
     private final MeasureMapper measureMapper;
     private final MeasureService measureService;
 
@@ -26,10 +27,11 @@ public class MeasureController {
         this.measureMapper = measureMapper;
         this.measureService = measureService;
     }
+
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description ="returned all measures",
-            content = {@Content(mediaType = "application/json",
-                schema = @Schema(implementation = MeasureDto.class))}),
+            @ApiResponse(responseCode = "200", description = "returned all measures",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MeasureDto.class))}),
     })
     @GetMapping
     public List<MeasureDto> getAllMeasures() {
@@ -45,11 +47,11 @@ public class MeasureController {
             @ApiResponse(responseCode = "400", description = "Can't create measure with id or empty name or not allowed to pass id.", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Object> createMeasure(@Valid @RequestBody MeasureDto measureDto){
-        try{
+    public ResponseEntity<Object> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
+        try {
             Measure measure = measureMapper.toMeasure(measureDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(measureService.saveMeasure(measure));
-        }catch (ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create measure =>" + e.getMessage());
         }
     }

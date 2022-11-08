@@ -11,17 +11,13 @@ import java.util.List;
 @Service
 public class KeyResultService {
 
-    KeyResultRepository keyResultRepository;
-    UserService userService;
-    ObjectiveService objectiveService;
-    QuarterRepository quarterRepository;
-    UserRepository userRepository;
-    ObjectiveRepository objectiveRepository;
+    private final KeyResultRepository keyResultRepository;
+    private final QuarterRepository quarterRepository;
+    private final UserRepository userRepository;
+    private final ObjectiveRepository objectiveRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
-        this.userService = userService;
-        this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;

@@ -209,7 +209,7 @@ class ObjectiveServiceTest {
     void shouldWorkProperly() {
         Objective newObjective = Objective.Builder
                 .builder()
-                .withId(1L).withTitle("Hello World").withDescription("This is a cool objective")
+                .withTitle("Hello World").withDescription("This is a cool objective")
                 .withOwner(User.Builder.builder().withUsername("rudi").build())
                 .withProgress(5.5).withQuarter(new Quarter())
                 .withCreatedOn(LocalDateTime.now())
@@ -225,22 +225,4 @@ class ObjectiveServiceTest {
         assertEquals("This is a cool objective", returnedObjective.getDescription());
     }
 
-    @Test
-    void shouldThrowBadRequestCauseAttributes() {
-        assertThrows(ResponseStatusException.class, () -> objectiveService.updateObjective(1L, objective));
-    }
-
-    @Test
-    void shouldReturnNotFound() {
-        Objective newObjective = Objective.Builder
-                .builder()
-                .withId(1L).withTitle("Hello World").withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build())
-                .withProgress(5.5).withQuarter(new Quarter())
-                .withCreatedOn(LocalDateTime.now())
-                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build())
-                .build();
-        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> objectiveService.updateObjective(1L, newObjective));
-    }
 }

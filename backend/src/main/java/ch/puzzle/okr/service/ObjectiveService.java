@@ -37,25 +37,28 @@ public class ObjectiveService {
     }
 
     public Objective saveObjective(Objective objective) {
-        if(this.checkIfFalseObjective(objective)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid");
+        if (objective.getId() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
+        this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }
 
     public Objective updateObjective(Long id, Objective objective) {
-        if(this.checkIfFalseObjective(objective)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid");
-        }
         this.getObjective(id);
-        return objectiveRepository.save(objective);
+        this.checkObjective(objective);
+        return this.objectiveRepository.save(objective);
     }
 
-    protected boolean checkIfFalseObjective(Objective objective) {
-        return (objective.getTitle() == null || objective.getTitle().isBlank()) ||
-                (objective.getDescription() == null || objective.getDescription().isBlank()) ||
-                (objective.getProgress() == null) ||
-                (objective.getCreatedOn() == null) ||
-                (objective.getId() == null);
+    private void checkObjective(Objective objective) {
+        if (objective.getTitle() == null || objective.getTitle().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective");
+        } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute description when creating objective");
+        } else if (objective.getProgress() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute progress when creating objective");
+        } else if (objective.getCreatedOn() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to generate attribute createdOn when creating objective");
+        }
     }
 }

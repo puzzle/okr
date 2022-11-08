@@ -41,7 +41,7 @@ public class ObjectiveController {
                             schema = @Schema(implementation = Objective.class))}),
     })
     @GetMapping
-    public List<ObjectiveDTO> getAllObjectives() {
+    public List<ObjectiveDto> getAllObjectives() {
         return objectiveService.getAllObjectives().stream()
                 .map(objectiveMapper::toDto)
                 .toList();
@@ -63,11 +63,11 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a objective with a specified ID.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ObjectiveDTO.class))}),
+                            schema = @Schema(implementation = ObjectiveDto.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public ObjectiveDTO getObjective(@PathVariable Long id) {
+    public ObjectiveDto getObjective(@PathVariable Long id) {
         return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 

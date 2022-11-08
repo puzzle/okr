@@ -30,7 +30,7 @@ public class MeasureService {
     public Measure updateMeasure(Long id, Measure measure) {
         this.measureRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Measure with this id wasn't found"));
+                        String.format("Measure with id %d not found", id)));
         this.checkMeasure(measure);
         return this.measureRepository.save(measure);
     }

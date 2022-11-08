@@ -55,7 +55,7 @@ public class MeasureController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Saved new measure to db",
+            @ApiResponse(responseCode = "200", description = "Updated measure in db",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MeasureDto.class))}),
             @ApiResponse(responseCode = "404", description = "Given id of measure wasn't found", content = @Content),

@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.*;
@@ -33,10 +32,11 @@ public class KeyResultService {
     public KeyResult createKeyResult(KeyResult keyResult) {
         return this.keyResultRepository.save(keyResult);
     }
-    public KeyResult getKeyResultById(long id){
-            return this.keyResultRepository.findById(id).orElseThrow(
-                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Keyresult with id %d not found", id))
-            );
+
+    public KeyResult getKeyResultById(long id) {
+        return this.keyResultRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Keyresult with id %d not found", id))
+        );
     }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {

@@ -4,12 +4,9 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import ch.puzzle.okr.repository.*;
-import org.checkerframework.checker.units.qual.K;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,9 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
@@ -38,16 +32,14 @@ class KeyResultServiceTest {
     KeyResultRepository keyResultRepository;
     @Mock
     KeyResultMapper keyResultMapper;
-
+    List<KeyResult> keyResults;
     @InjectMocks
     private KeyResultService keyResultService;
-
     private KeyResultDto keyResultDTO;
     private User user;
     private Objective objective;
     private Quarter quarter;
     private KeyResult keyResult;
-    List<KeyResult> keyResults;
 
     @BeforeEach
     void setup() {

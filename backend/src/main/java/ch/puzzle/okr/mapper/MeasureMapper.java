@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Component
 public class MeasureMapper {
-    final MeasureService measureService;
+    private final MeasureService measureService;
 
     public MeasureMapper(MeasureService measureService) {
         this.measureService = measureService;

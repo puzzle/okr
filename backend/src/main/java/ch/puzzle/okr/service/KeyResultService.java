@@ -33,6 +33,11 @@ public class KeyResultService {
     public KeyResult createKeyResult(KeyResult keyResult) {
         return this.keyResultRepository.save(keyResult);
     }
+    public KeyResult getKeyResultById(long id){
+            return this.keyResultRepository.findById(id).orElseThrow(
+                    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Keyresult with id %d not found", id))
+            );
+    }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
         if (keyResultRepository.findById(keyResult.getId()).isPresent()) {

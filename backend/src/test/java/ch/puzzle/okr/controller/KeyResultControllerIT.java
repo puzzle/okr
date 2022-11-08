@@ -11,11 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -101,21 +99,33 @@ class KeyResultControllerIT {
                         any()));
         mvc.perform(put("/api/v1/keyresults/10").contentType(MediaType.APPLICATION_JSON).content("{\"title\":  \"Updated Keyresult 1\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void createKeyResult() throws Exception {
+        BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(this.quarter);
+        BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(this.user);
+        BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(this.objective);
+        BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(this.keyResult);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mvc.perform(post("/api/v1/keyresults")
+                        .content(mapper.writeValueAsString(this.keyResultDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5)));
+    }
+
+    @Test
+    void invalidDTO() throws Exception {
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willThrow(
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Error") );
+
+        ObjectMapper mapper = new ObjectMapper();
+        mvc.perform(post("/api/v1/keyresults")
+                        .content(mapper.writeValueAsString(this.keyResultDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
-        void createKeyResult() throws Exception {
-            BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(this.quarter);
-            BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(this.user);
-            BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(this.objective);
-            BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(this.keyResult);
-
-            ObjectMapper mapper = new ObjectMapper();
-            mvc.perform(post("/api/v1/keyresults")
-                            .content(mapper.writeValueAsString(this.keyResultDTO))
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(jsonPath("$.id", Is.is(5)));
-
-        }
-
 }

@@ -159,4 +159,33 @@ class TeamServiceTest {
             teamService.updateTeam(1L, team);
         });
     }
+
+    @Test
+    void shouldReturnSingleTeamWhenFindingByValidId() {
+        Optional<Team> team = Optional.of(Team.Builder.builder().withId(1L).withName("Team1").build());
+        Mockito.when(teamRepository.findById(any())).thenReturn(team);
+
+        Team returnedTeam = teamService.getTeamById(1L);
+
+        assertEquals(1L, returnedTeam.getId());
+        assertEquals("Team1", returnedTeam.getName());
+    }
+
+    @Test
+    void shouldThrowReponseStatusExceptionWhenFindingTeamNotFound() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.getTeamById(422L);
+        });
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("Team with id 422 not found", exception.getReason());
+    }
+
+    @Test
+    void shouldThrowResponseStatusExceptionWhenGetTeamWithNullId() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            teamService.getTeamById(null);
+        });
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Missing attribute team id", exception.getReason());
+    }
 }

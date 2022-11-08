@@ -16,6 +16,7 @@ public class Objective {
     private Long id;
 
     @NotBlank
+    @NotNull
     @Size(min = 2, max = 250)
     private String title;
 
@@ -32,15 +33,12 @@ public class Objective {
     private Quarter quarter;
 
     @NotBlank
+    @NotNull
     @Size(min = 2, max = 1024 * 4)
     private String description;
 
     @NotNull
     private Double progress;
-
-    @NotNull
-    @ManyToOne
-    private User createdBy;
 
     @NotNull
     private LocalDateTime createdOn;
@@ -49,14 +47,13 @@ public class Objective {
     }
 
     private Objective(Builder builder) {
-        this.id = builder.id;
+        id = builder.id;
         setTitle(builder.title);
         setOwner(builder.owner);
         setTeam(builder.team);
         setQuarter(builder.quarter);
         setDescription(builder.description);
         setProgress(builder.progress);
-        setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
     }
 
@@ -112,14 +109,6 @@ public class Objective {
         this.progress = progress;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -138,7 +127,6 @@ public class Objective {
                 ", quarter=" + quarter +
                 ", description='" + description + '\'' +
                 ", progress=" + progress +
-                ", createdBy='" + createdBy + '\'' +
                 ", createdOn=" + createdOn +
                 '}';
     }
@@ -148,73 +136,67 @@ public class Objective {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Objective objective = (Objective) o;
-        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title) && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description) && Objects.equals(progress, objective.progress) && Objects.equals(createdBy, objective.createdBy) && Objects.equals(createdOn, objective.createdOn);
+        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title) && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description) && Objects.equals(progress, objective.progress) && Objects.equals(createdOn, objective.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, owner, team, quarter, description, progress, createdBy, createdOn);
+        return Objects.hash(id, title, owner, team, quarter, description, progress, createdOn);
     }
 
     public static final class Builder {
-        private @NotNull Long id;
-        private @NotBlank @Size(min = 2, max = 250) String title;
-        private @NotNull User owner;
-        private @NotNull Team team;
-        private @NotNull Quarter quarter;
-        private @NotBlank @Size(min = 2, max = 1024 * 4) String description;
-        private @NotNull Double progress;
-        private @NotNull User createdBy;
-        private @NotNull LocalDateTime createdOn;
+        private Long id;
+        private String title;
+        private User owner;
+        private Team team;
+        private Quarter quarter;
+        private String description;
+        private Double progress;
+        private LocalDateTime createdOn;
 
-        private Builder() {
+        public Builder() {
         }
 
         public static Builder builder() {
             return new Builder();
         }
 
-        public Builder withId(@NotNull Long id) {
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+        public Builder withTitle(String title) {
             this.title = title;
             return this;
         }
 
-        public Builder withOwner(@NotNull User owner) {
+        public Builder withOwner(User owner) {
             this.owner = owner;
             return this;
         }
 
-        public Builder withTeam(@NotNull Team team) {
+        public Builder withTeam(Team team) {
             this.team = team;
             return this;
         }
 
-        public Builder withQuarter(@NotNull Quarter quarter) {
+        public Builder withQuarter(Quarter quarter) {
             this.quarter = quarter;
             return this;
         }
 
-        public Builder withDescription(@NotBlank @Size(min = 2, max = 1024 * 4) String description) {
+        public Builder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withProgress(@NotNull Double progress) {
+        public Builder withProgress(Double progress) {
             this.progress = progress;
             return this;
         }
 
-        public Builder withCreatedBy(@NotNull User createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+        public Builder withCreatedOn(LocalDateTime createdOn) {
             this.createdOn = createdOn;
             return this;
         }

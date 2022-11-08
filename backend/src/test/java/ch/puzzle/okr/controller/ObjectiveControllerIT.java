@@ -1,7 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.ObjectiveDTO;
+import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
@@ -22,9 +22,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,9 +39,13 @@ class ObjectiveControllerIT {
 
     static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
+    static User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+    static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
+    static Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
+    static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user).withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33.3).withCreatedOn(LocalDateTime.MAX).build();
     static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
-    static ObjectiveDTO objective1Dto = new ObjectiveDTO(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1, 2022, "This is a description", 20.0);
-    static ObjectiveDTO objective2Dto = new ObjectiveDTO(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1, 2022, "This is a description", 20.0);
+    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L, 1, 2022, "This is a description", 20.0);
+    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, 1, 2022, "This is a description", 20.0);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
     static List<KeyResult> keyResultList = Arrays.asList(keyResult1, keyResult2);
@@ -137,6 +146,31 @@ class ObjectiveControllerIT {
 
         mvc.perform(get("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
+        ;
+    }
+
+    @Test
+    void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
+        BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
+
+        mvc.perform(post("/api/v1/objectives")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":42,\"title\":\"FullObjective\",\"owner\":{\"id\":1,\"username\":\"bkaufmann\",\"firstname\":\"Bob\",\"lastname\":\"Kaufmann\",\"email\":\"kaufmann@puzzle.ch\"},\"team\":{\"id\":1,\"name\":\"Team1\"},\"quarter\":{\"id\":1,\"year\":2020,\"number\":3},\"description\":\"This is our description\",\"progress\":33.3,\"createdOn\":\"+999999999-12-31T23:59:59.999999999\"}"))
+        ;
+        verify(objectiveService, times(1)).saveObjective(any());
+    }
+
+    @Test
+    void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
+        BDDMockito.given(objectiveService.saveObjective(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
+
+        mvc.perform(post("/api/v1/objectives")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": null, \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
         ;
     }
 }

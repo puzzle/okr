@@ -45,4 +45,14 @@ public class TeamService {
         this.getTeamById(id);
         return teamRepository.save(team);
     }
+
+    public Team getTeamById(Long teamId) {
+        if (teamId == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute team id");
+        }
+
+        return teamRepository.findById(teamId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, (String.format("Team with id %d not found", teamId)))
+        );
+    }
 }

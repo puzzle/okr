@@ -148,7 +148,7 @@ class TeamControllerIT {
 
         mvc.perform(put("/api/v1/teams/5")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
+                        .content("{\"id\":42,\"title\":\"FullObjective\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }

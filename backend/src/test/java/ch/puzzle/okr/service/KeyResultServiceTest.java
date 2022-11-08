@@ -21,11 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@ContextConfiguration(classes = KeyResultServiceTest.class)
 class KeyResultServiceTest {
-
     @Mock
     KeyResultRepository keyResultRepository;
     List<KeyResult> keyResults;

@@ -45,6 +45,7 @@ public class KeyResultController {
     @PostMapping
     public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        return this.keyResultService.createKeyResult(keyResult);
+        KeyResult keyResult1 = this.keyResultService.createKeyResult(keyResult);
+        return keyResult1;
     }
 }

@@ -5,12 +5,11 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.QuarterService;
 import ch.puzzle.okr.service.TeamService;
 import ch.puzzle.okr.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Service
+@Component
 public class ObjectiveMapper {
 
     private final TeamService teamService;

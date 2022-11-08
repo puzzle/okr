@@ -15,9 +15,15 @@ import java.util.List;
 
 @Service
 public class MeasureService {
-    KeyResultRepository keyResultRepository;
-    UserRepository userRepository;
-    MeasureRepository measureRepository;
+    private final KeyResultRepository keyResultRepository;
+    private final UserRepository userRepository;
+    private final MeasureRepository measureRepository;
+
+    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository, MeasureRepository measureRepository) {
+        this.keyResultRepository = keyResultRepository;
+        this.userRepository = userRepository;
+        this.measureRepository = measureRepository;
+    }
 
     public Measure saveMeasure(Measure measure) {
         if (measure.getId() != null) {
@@ -69,10 +75,5 @@ public class MeasureService {
 
     public List<Measure> getAllMeasures() {
         return (List<Measure>) measureRepository.findAll();
-    }
-
-
-    public MeasureService(MeasureRepository measureRepository) {
-        this.measureRepository = measureRepository;
     }
 }

@@ -12,8 +12,8 @@ import java.util.List;
 
 @Service
 public class ObjectiveService {
-    ObjectiveRepository objectiveRepository;
-    KeyResultRepository keyResultRepository;
+    private final ObjectiveRepository objectiveRepository;
+    private final KeyResultRepository keyResultRepository;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository) {
         this.objectiveRepository = objectiveRepository;

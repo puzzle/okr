@@ -206,7 +206,7 @@ class ObjectiveServiceTest {
         assertEquals(("Missing attribute title when creating objective"), exception.getReason());
     }
     @Test
-    void shouldWorkProperly() {
+    void shouldReturnObjectiveProperly() {
         Objective newObjective = Objective.Builder
                 .builder()
                 .withTitle("Hello World").withDescription("This is a cool objective")

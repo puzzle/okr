@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import org.junit.jupiter.api.BeforeEach;

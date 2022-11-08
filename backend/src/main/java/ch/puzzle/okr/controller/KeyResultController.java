@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,13 +19,10 @@ import java.util.List;
 @RequestMapping("api/v1/keyresults")
 public class KeyResultController {
 
-
     private final KeyResultService keyResultService;
-    private final KeyResultRepository keyResultRepository;
     private final KeyResultMapper keyResultMapper;
 
-    public KeyResultController(KeyResultRepository keyResultRepository, KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
-        this.keyResultRepository = keyResultRepository;
+    public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
     }

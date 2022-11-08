@@ -11,17 +11,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultService {
 
     KeyResultRepository keyResultRepository;
-
-    KeyResultMapper keyResultMapper;
     UserService userService;
     ObjectiveService objectiveService;
     QuarterRepository quarterRepository;
     UserRepository userRepository;
     ObjectiveRepository objectiveRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, KeyResultMapper keyResultMapper, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository, UserService userService, ObjectiveService objectiveService, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
-        this.keyResultMapper = keyResultMapper;
         this.userService = userService;
         this.objectiveService = objectiveService;
         this.quarterRepository = quarterRepository;

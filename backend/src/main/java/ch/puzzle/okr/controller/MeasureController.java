@@ -37,6 +37,7 @@ public class MeasureController {
                 .map(measureMapper::toDto)
                 .toList();
     }
+
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Saved new measure to db",
                     content = {@Content(mediaType = "application/json",
@@ -53,4 +54,10 @@ public class MeasureController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateMeasure(@PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
+        measureDto.setId(id);
+        Measure measure = measureMapper.toMeasure(measureDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(measureService.updateMeasure(id, measure));
+    }
 }

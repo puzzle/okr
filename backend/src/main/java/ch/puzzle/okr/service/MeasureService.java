@@ -41,6 +41,13 @@ public class MeasureService {
         return measureRepository.save(measure);
     }
 
+    public Measure updateMeasure(Long id, Measure measure) {
+        this.measureRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Measure with this id wasn't found"));
+        return this.saveMeasure(measure);
+    }
+
     public KeyResult mapKeyResult(MeasureDto measureDto) {
         Long keyResultId = measureDto.getKeyResultId();
         return keyResultRepository.findById(keyResultId).orElseThrow(

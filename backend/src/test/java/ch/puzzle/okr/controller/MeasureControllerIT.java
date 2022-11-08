@@ -28,13 +28,13 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MeasureController.class)
-
-public class MeasureControllerIT {
+class MeasureControllerIT {
     static Measure measure = Measure.Builder.builder()
             .withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
@@ -126,4 +126,39 @@ public class MeasureControllerIT {
         ;
     }
 
+    @Test
+    void shouldReturnCorrectMeasure() throws Exception {
+        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
+        mvc.perform(put("/api/v1/measures/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": " +
+                        "\"changeInfo\", \"initiatives \": \"initiatives\", " +
+                        "\"createdById \": null}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.value", Is.is(30)))
+                .andExpect(jsonPath("$.createdBy.firstname", Is.is("Frank")))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives")));
+    }
+
+    @Test
+    void shouldReturnNotFound() throws Exception {
+        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+        mvc.perform(put("/api/v1/measures/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": " +
+                                "\"changeInfo\", \"initiatives \": \"initiatives\", " +
+                                "\"createdById \": null}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnBadRequest() throws Exception {
+        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        mvc.perform(put("/api/v1/measures/3")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": " +
+                                "\"changeInfo\", \"initiatives \": \"initiatives\", " +
+                                "\"createdById \": null}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
 }

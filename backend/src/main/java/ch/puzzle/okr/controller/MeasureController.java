@@ -58,6 +58,6 @@ public class MeasureController {
     public ResponseEntity<Object> updateMeasure(@PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(measureService.updateMeasure(id, measure));
+        return ResponseEntity.status(HttpStatus.OK).body(measureService.updateMeasure(id, measure));
     }
 }

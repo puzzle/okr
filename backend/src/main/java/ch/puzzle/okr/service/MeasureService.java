@@ -23,6 +23,19 @@ public class MeasureService {
         if (measure.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Measure has already an Id");
         }
+        this.checkMeasure(measure);
+        return measureRepository.save(measure);
+    }
+
+    public Measure updateMeasure(Long id, Measure measure) {
+        this.measureRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Measure with this id wasn't found"));
+        this.checkMeasure(measure);
+        return this.measureRepository.save(measure);
+    }
+
+    private void checkMeasure(Measure measure) {
         if(measure.getKeyResult() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given keyresult does not exist");
         }
@@ -38,14 +51,6 @@ public class MeasureService {
         if(measure.getCreatedOn() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given creation date is null");
         }
-        return measureRepository.save(measure);
-    }
-
-    public Measure updateMeasure(Long id, Measure measure) {
-        this.measureRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Measure with this id wasn't found"));
-        return this.saveMeasure(measure);
     }
 
     public KeyResult mapKeyResult(MeasureDto measureDto) {

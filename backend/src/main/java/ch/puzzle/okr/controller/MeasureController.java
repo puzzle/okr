@@ -54,6 +54,13 @@ public class MeasureController {
         }
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Saved new measure to db",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MeasureDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Given id of measure wasn't found", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Can't update measure with id or empty name or not allowed to pass id.", content = @Content)
+    })
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateMeasure(@PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);

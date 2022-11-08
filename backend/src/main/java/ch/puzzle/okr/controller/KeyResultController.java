@@ -44,12 +44,22 @@ public class KeyResultController {
         return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
     }
 
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Get all key results",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = KeyResultDto.class))}),
+    })
     @GetMapping
     public List<KeyResult> getAllKeyResults() {
         return (List<KeyResult>) keyResultRepository.findAll();
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Create a keyresult.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = KeyResultDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find a object on which the key result tries to refer to ", content = @Content)
+    })
     @PostMapping
     public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);

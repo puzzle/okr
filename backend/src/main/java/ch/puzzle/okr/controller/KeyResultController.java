@@ -1,7 +1,9 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
+import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,10 +23,12 @@ public class KeyResultController {
 
     private final KeyResultService keyResultService;
     private final KeyResultMapper keyResultMapper;
+    private final MeasureMapper measureMapper;
 
-    public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper) {
+    public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper, MeasureMapper measureMapper) {
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
+        this.measureMapper = measureMapper;
     }
 
     @ApiResponses(value = {
@@ -37,6 +41,19 @@ public class KeyResultController {
     public ResponseEntity<KeyResult> updateKeyResult(@PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
         keyResultDto.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all Measures from KeyResult",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MeasureDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID.", content = @Content)
+    })
+    @GetMapping("/{id}/measures")
+    public List<MeasureDto> getMeasuresFromKeyResult(@PathVariable long id) {
+        return keyResultService.getAllMeasuresByKeyResult(id).stream()
+                .map(measureMapper::toDto)
+                .toList();
     }
 
     @ApiResponses(value = {

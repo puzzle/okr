@@ -15,12 +15,14 @@ public class KeyResultService {
     private final QuarterRepository quarterRepository;
     private final UserRepository userRepository;
     private final ObjectiveRepository objectiveRepository;
+    private final MeasureRepository measureRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository) {
+    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository) {
         this.keyResultRepository = keyResultRepository;
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
+        this.measureRepository = measureRepository;
     }
 
     public List<KeyResult> getAllKeyResults() {
@@ -60,5 +62,12 @@ public class KeyResultService {
         return this.objectiveRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id))
         );
+    }
+
+    public List<Measure> getAllMeasuresByKeyResult(long keyResultId) {
+        KeyResult keyResult = keyResultRepository.findById(keyResultId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", keyResultId))
+        );
+        return measureRepository.findByKeyResult(keyResult);
     }
 }

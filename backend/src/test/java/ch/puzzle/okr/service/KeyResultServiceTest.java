@@ -1,10 +1,8 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.MeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +25,8 @@ import static org.mockito.Mockito.when;
 class KeyResultServiceTest {
     @Mock
     KeyResultRepository keyResultRepository;
+    @Mock
+    MeasureRepository measureRepository;
     List<KeyResult> keyResults;
     @InjectMocks
     private KeyResultService keyResultService;
@@ -33,6 +34,7 @@ class KeyResultServiceTest {
     private Objective objective;
     private Quarter quarter;
     private KeyResult keyResult;
+    private List<Measure> measures;
 
     @BeforeEach
     void setup() {
@@ -60,7 +62,10 @@ class KeyResultServiceTest {
                 .withQuarter(this.quarter)
                 .build();
 
+        Measure measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
+
         this.keyResults = List.of(keyResult, keyResult, keyResult);
+        this.measures = List.of(measure, measure, measure);
     }
 
 
@@ -105,4 +110,36 @@ class KeyResultServiceTest {
         KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
         assertEquals("Keyresult 1", keyResult.getTitle());
     }
+
+    @Test
+    void shouldGetAllMeasuresByKeyResult() {
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+
+        List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
+
+        assertEquals(3, measureList.size());
+        assertEquals(1, measureList.get(0).getId());
+        assertEquals("Keyresult 1", measureList.get(0).getKeyResult().getTitle());
+        assertEquals("Objective 1", measureList.get(0).getKeyResult().getObjective().getTitle());
+        assertEquals("newMail@tese.com", measureList.get(0).getCreatedBy().getEmail());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoMeasuresInKeyResult() {
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+        when(measureRepository.findByKeyResult(any())).thenReturn(Collections.emptyList());
+
+        List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
+
+        assertEquals(0, measureList.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenGetMeasuresFromNonExistingKeyResult() {
+        assertThrows(ResponseStatusException.class, () ->
+                keyResultService.getAllMeasuresByKeyResult(1));
+    }
+
+
 }

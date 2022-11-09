@@ -1,6 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.*;
@@ -9,6 +10,7 @@ import ch.puzzle.okr.service.KeyResultService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -29,9 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,55 +39,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class KeyResultControllerIT {
-    @MockBean
-    KeyResultRepository keyResultRepository;
-
-    @MockBean
-    KeyResultMapper keyResultMapper;
-
-    @MockBean
-    MeasureMapper measureMapper;
-
-    @MockBean
-    KeyResultService keyResultService;
 
     static User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
-    static Measure measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult1).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1").withInitiatives("Initiatives1").withCreatedBy(user).withValue(23).build();
-    static Measure measure2 = Measure.Builder.builder().withId(4L).withKeyResult(keyResult1).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2").withCreatedBy(user).withValue(12).build();
+    static Measure measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult1).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1").withInitiatives("Initiatives1").withValue(23).build();
+    static Measure measure2 = Measure.Builder.builder().withId(4L).withKeyResult(keyResult1).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2").withValue(12).build();
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
-
+    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX);
+    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX);
+    static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
+    static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+    static Quarter quarter = Quarter.Builder.builder().withId(5L).withNumber(2).withYear(2022).build();
+    static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective).withOwner(user).withQuarter(quarter).build();
 
     @Autowired
     private MockMvc mvc;
-    private KeyResultDto keyResultDTO;
-    private Objective objective;
-    private Quarter quarter;
-    private KeyResult keyResult;
+    @MockBean
+    KeyResultRepository keyResultRepository;
+    @MockBean
+    KeyResultMapper keyResultMapper;
+    @MockBean
+    MeasureMapper measureMapper;
+    @MockBean
+    KeyResultService keyResultService;
 
-
+    @BeforeEach
     void setUp() {
-        this.keyResultDTO = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
-        BDDMockito.given(keyResultMapper.toKeyResult(keyResultDTO)).willReturn(keyResult);
-
-        this.objective = Objective.Builder.builder()
-                .withId(5L)
-                .withTitle("Objective 1")
-                .build();
-
-        this.quarter = Quarter.Builder.builder()
-                .withId(5L)
-                .withNumber(2)
-                .withYear(2022)
-                .build();
-
-        this.keyResult = KeyResult.Builder.builder()
-                .withId(5L)
-                .withTitle("test")
-                .withObjective(this.objective)
-                .withOwner(this.user)
-                .withQuarter(this.quarter)
-                .build();
+        BDDMockito.given(keyResultMapper.toKeyResult(keyResultDto)).willReturn(keyResult);
+        BDDMockito.given(measureMapper.toDto(measure1)).willReturn(measureDto1);
+        BDDMockito.given(measureMapper.toDto(measure2)).willReturn(measureDto2);
     }
 
     @Test
@@ -115,14 +95,14 @@ class KeyResultControllerIT {
 
     @Test
     void createKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(this.quarter);
-        BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(this.user);
-        BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(this.objective);
-        BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(this.keyResult);
+        BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
+        BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
+        BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
+        BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(keyResult);
 
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/v1/keyresults")
-                        .content(mapper.writeValueAsString(this.keyResultDTO))
+                        .content(mapper.writeValueAsString(keyResultDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(5)));
@@ -135,27 +115,30 @@ class KeyResultControllerIT {
 
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/v1/keyresults")
-                        .content(mapper.writeValueAsString(this.keyResultDTO))
+                        .content(mapper.writeValueAsString(keyResultDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     void shouldReturnMeasuresFromKeyResult() throws Exception {
-        BDDMockito.given(keyResultService.getAllMeasuresByKeyResult(anyLong())).willReturn(measureList);
-
-        System.out.println(measureList);
+        BDDMockito.given(keyResultService.getAllMeasuresByKeyResult(5)).willReturn(measureList);
 
         mvc.perform(get("/api/v1/keyresults/5/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(print())
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(1)))
-                .andExpect(jsonPath("$[0].value", Is.is(23)))
-                .andExpect(jsonPath("$[0].createdBy", Is.is(1)))
+                .andExpect(jsonPath("$[0].value", Is.is(34)))
+                .andExpect(jsonPath("$[0].keyResultId", Is.is(5)))
+                .andExpect(jsonPath("$[0].createdById", Is.is(1)))
+                .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo1")))
+                .andExpect(jsonPath("$[0].initiatives", Is.is("Ininitatives1")))
                 .andExpect(jsonPath("$[1].id", Is.is(4)))
                 .andExpect(jsonPath("$[1].value", Is.is(12)))
-                .andExpect(jsonPath("$[1].createdBy", Is.is(2)))
+                .andExpect(jsonPath("$[1].createdById", Is.is(1)))
+                .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo2")))
+                .andExpect(jsonPath("$[1].initiatives", Is.is("Ininitatives2")))
+                .andExpect(jsonPath("$[1].keyResultId", Is.is(5)))
         ;
     }
 

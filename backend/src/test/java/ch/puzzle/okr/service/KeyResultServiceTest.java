@@ -7,9 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
@@ -23,18 +24,18 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultServiceTest {
-    @Mock
-    KeyResultRepository keyResultRepository;
-    @Mock
-    MeasureRepository measureRepository;
+    @MockBean
+    KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
+    @MockBean
+    MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
     List<KeyResult> keyResults;
+    User user;
+    Objective objective;
+    Quarter quarter;
+    KeyResult keyResult;
+    List<Measure> measures;
     @InjectMocks
     private KeyResultService keyResultService;
-    private User user;
-    private Objective objective;
-    private Quarter quarter;
-    private KeyResult keyResult;
-    private List<Measure> measures;
 
     @BeforeEach
     void setup() {
@@ -137,9 +138,10 @@ class KeyResultServiceTest {
 
     @Test
     void shouldThrowExceptionWhenGetMeasuresFromNonExistingKeyResult() {
-        assertThrows(ResponseStatusException.class, () ->
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
                 keyResultService.getAllMeasuresByKeyResult(1));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
-
 
 }

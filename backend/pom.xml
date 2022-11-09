@@ -79,6 +79,10 @@
                         <phase>prepare-package</phase>
                         <configuration>
                             <excludes>
+                                <exclude>ch/puzzle/okr/models/**</exclude>
+                                <exclude>ch/puzzle/okr/dto/**</exclude>
+                                <exclude>ch/puzzle/okr/mapper/**</exclude>
+                                <exclude>ch/puzzle/okr/OkrApplication.java</exclude>
                             </excludes>
                             <rules>
                                 <rule>

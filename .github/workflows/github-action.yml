@@ -1,0 +1,9 @@
+name: Project build
+
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: maven-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: mvn package

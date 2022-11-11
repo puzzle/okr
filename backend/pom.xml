@@ -58,6 +58,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.8</version>
+                <configuration>
+                    <excludes>
+                        <exclude>ch/puzzle/okr/models/**</exclude>
+                        <exclude>ch/puzzle/okr/dto/**</exclude>
+                        <exclude>ch/puzzle/okr/mapper/**</exclude>
+                        <exclude>**/OkrApplication.*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -78,12 +86,6 @@
                         </goals>
                         <phase>prepare-package</phase>
                         <configuration>
-                            <excludes>
-                                <exclude>ch/puzzle/okr/models/**</exclude>
-                                <exclude>ch/puzzle/okr/dto/**</exclude>
-                                <exclude>ch/puzzle/okr/mapper/**</exclude>
-                                <exclude>ch/puzzle/okr/OkrApplication.java</exclude>
-                            </excludes>
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>

@@ -102,7 +102,7 @@ class KeyResultControllerIT {
         mvc.perform(post("/api/v1/keyresults")
                         .content(mapper.writeValueAsString(keyResultDto))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(jsonPath("$.id", Is.is(5)));
     }
 

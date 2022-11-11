@@ -36,15 +36,15 @@ public class KeyResultController {
     @Operation(summary = "Create KeyResult",
             description = "Create a new KeyResult.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Created new KeyResult.",
+            @ApiResponse(responseCode = "201", description = "Created new KeyResult.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = KeyResultDto.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the key result tries to refer to.", content = @Content)
     })
     @PostMapping
-    public KeyResult createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+    public ResponseEntity<KeyResult> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        return this.keyResultService.createKeyResult(keyResult);
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.keyResultService.createKeyResult(keyResult));
     }
 
     @Operation(summary = "Update KeyResult",

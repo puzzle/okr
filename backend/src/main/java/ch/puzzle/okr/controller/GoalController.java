@@ -22,7 +22,7 @@ public class GoalController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a goal with a specified ID.",
+            @ApiResponse(responseCode = "200", description = "Returned a Goal with a specified ID.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = GoalDto.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find a Goal with a specified ID.", content = @Content)

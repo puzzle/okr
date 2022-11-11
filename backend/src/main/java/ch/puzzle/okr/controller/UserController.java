@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all users",
+            @ApiResponse(responseCode = "200", description = "Returned all Users.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserDto.class))}),
     })

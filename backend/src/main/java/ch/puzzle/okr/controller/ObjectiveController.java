@@ -32,7 +32,7 @@ public class ObjectiveController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Objectives",
+            @ApiResponse(responseCode = "200", description = "Returned all Objectives.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ObjectiveDto.class))}),
     })
@@ -44,23 +44,10 @@ public class ObjectiveController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all KeyResultsFromObject",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = KeyResultDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
-    })
-    @GetMapping("{id}/keyresults")
-    public List<KeyResultDto> getAllKeyResultsByObjective(@PathVariable Long id) {
-        return objectiveService.getAllKeyResultsByObjective(id).stream()
-                .map(keyResultMapper::toDto)
-                .toList();
-    }
-
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a objective with a specified ID.",
+            @ApiResponse(responseCode = "200", description = "Returned an Objective with a specified ID.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ObjectiveDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Did not find a objective with a specified ID.", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
     public ObjectiveDto getObjective(@PathVariable Long id) {
@@ -68,11 +55,23 @@ public class ObjectiveController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated objective in db",
+            @ApiResponse(responseCode = "200", description = "Created new Objective.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ObjectiveDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Given id of objective wasn't found", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Can't create new objective, attributes are not set", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Can't create new Objective, not allowed to give an ID.", content = @Content)
+    })
+    @PostMapping
+    public ResponseEntity<Objective> createObjective(@RequestBody ObjectiveDto objectiveDTO) {
+        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(objectiveService.saveObjective(objective));
+    }
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated Objective in db.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ObjectiveDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Can't create new Objective, attributes are not set.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
     public ResponseEntity<Objective> updateObjective(@PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
@@ -82,14 +81,15 @@ public class ObjectiveController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Saved new objective to db",
+            @ApiResponse(responseCode = "200", description = "Returned all KeyResults from Objective.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ObjectiveDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Can't create new objective", content = @Content)
+                            schema = @Schema(implementation = KeyResultDto.class))}),
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID to get KeyResults from.", content = @Content)
     })
-    @PostMapping
-    public ResponseEntity<Objective> createObjective(@RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(objectiveService.saveObjective(objective));
+    @GetMapping("{id}/keyresults")
+    public List<KeyResultDto> getAllKeyResultsByObjective(@PathVariable Long id) {
+        return objectiveService.getAllKeyResultsByObjective(id).stream()
+                .map(keyResultMapper::toDto)
+                .toList();
     }
 }

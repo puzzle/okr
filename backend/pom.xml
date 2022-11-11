@@ -56,6 +56,7 @@
                 <version>0.8.8</version>
                 <configuration>
                     <excludes>
+                        <exclude>ch/puzzle/okr/controller/**</exclude>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>
                         <exclude>ch/puzzle/okr/mapper/**</exclude>
@@ -99,7 +100,7 @@
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.8</minimum>
+                                            <minimum>0.7</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

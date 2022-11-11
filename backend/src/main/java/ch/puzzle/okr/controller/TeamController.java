@@ -60,7 +60,7 @@ public class TeamController {
     @Operation(summary = "Create Team",
             description = "Create a new Team.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Created new Team.",
+            @ApiResponse(responseCode = "201", description = "Created new Team.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = TeamDto.class))}),
             @ApiResponse(responseCode = "400", description = "Can't create new Team, not allowed to give an ID or missing attributes.", content = @Content)

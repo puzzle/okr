@@ -65,7 +65,7 @@ public class ObjectiveController {
     @Operation(summary = "Create Objective",
             description = "Create a new Objective.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Created new Objective.",
+            @ApiResponse(responseCode = "201", description = "Created new Objective.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = ObjectiveDto.class))}),
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, not allowed to give an ID.", content = @Content)

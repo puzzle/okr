@@ -47,7 +47,7 @@ public class MeasureController {
     @Operation(summary = "Create Measure",
             description = "Create a new Measure.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Created new Measure.",
+            @ApiResponse(responseCode = "201", description = "Created new Measure.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MeasureDto.class))}),
             @ApiResponse(responseCode = "400", description = "Can't create new Measure, missing attributes or not allowed to give an ID.", content = @Content)

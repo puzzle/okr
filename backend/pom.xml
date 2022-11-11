@@ -33,33 +33,30 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.11</version>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.8</version>
                 <configuration>
                     <excludes>
+                        <exclude>ch/puzzle/okr/controller/**</exclude>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>
                         <exclude>ch/puzzle/okr/mapper/**</exclude>
@@ -103,7 +100,7 @@
                                         <limit>
                                             <counter>COMPLEXITY</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.8</minimum>
+                                            <minimum>0.7</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

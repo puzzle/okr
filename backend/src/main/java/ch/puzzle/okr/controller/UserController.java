@@ -27,7 +27,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all users",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = User.class))}),
+                            schema = @Schema(implementation = UserDto.class))}),
     })
     @GetMapping
     public List<UserDto> getAllUsers() {

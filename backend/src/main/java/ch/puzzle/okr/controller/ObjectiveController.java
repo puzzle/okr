@@ -34,7 +34,7 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Objectives",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Objective.class))}),
+                            schema = @Schema(implementation = ObjectiveDto.class))}),
     })
     @GetMapping
     public List<ObjectiveDto> getAllObjectives() {

@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,6 +28,8 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
+    @Operation(summary = "Get Teams",
+            description = "Get all Teams from db.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Teams.",
                     content = {@Content(mediaType = "application/json",
@@ -39,6 +42,8 @@ public class TeamController {
                 .toList();
     }
 
+    @Operation(summary = "Get Team",
+            description = "Get a Team by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a Team with a specified ID.",
                     content = {@Content(mediaType = "application/json",
@@ -52,6 +57,8 @@ public class TeamController {
         return teamMapper.toDto(teamService.getTeamById(id));
     }
 
+    @Operation(summary = "Create Team",
+            description = "Create a new Team.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created new Team.",
                     content = {@Content(mediaType = "application/json",
@@ -64,6 +71,8 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
     }
 
+    @Operation(summary = "Update Team",
+            description = "Update Team by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Team in db.",
                     content = {@Content(mediaType = "application/json",

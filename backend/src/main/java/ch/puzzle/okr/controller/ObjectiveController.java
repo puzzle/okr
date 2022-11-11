@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.ObjectiveService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,8 @@ public class ObjectiveController {
         this.keyResultMapper = keyResultMapper;
     }
 
+    @Operation(summary = "Get Objectives",
+            description = "Get all Objectives from db.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Objectives.",
                     content = {@Content(mediaType = "application/json",
@@ -44,6 +47,8 @@ public class ObjectiveController {
                 .toList();
     }
 
+    @Operation(summary = "Get Objective",
+            description = "Get an Objective by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned an Objective with a specified ID.",
                     content = {@Content(mediaType = "application/json",
@@ -57,6 +62,8 @@ public class ObjectiveController {
         return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 
+    @Operation(summary = "Create Objective",
+            description = "Create a new Objective.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created new Objective.",
                     content = {@Content(mediaType = "application/json",
@@ -69,6 +76,8 @@ public class ObjectiveController {
         return ResponseEntity.status(HttpStatus.CREATED).body(objectiveService.saveObjective(objective));
     }
 
+    @Operation(summary = "Update Objective",
+            description = "Update Objective by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Objective in db.",
                     content = {@Content(mediaType = "application/json",
@@ -85,6 +94,8 @@ public class ObjectiveController {
         return ResponseEntity.status(HttpStatus.OK).body(objectiveService.updateObjective(id, objective));
     }
 
+    @Operation(summary = "Get KeyResults from Objective",
+            description = "Get all KeyResults from Objective by objectiveID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResults from Objective.",
                     content = {@Content(mediaType = "application/json",

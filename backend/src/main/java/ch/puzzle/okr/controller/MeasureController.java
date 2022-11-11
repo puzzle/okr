@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.MeasureService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,6 +30,8 @@ public class MeasureController {
         this.measureService = measureService;
     }
 
+    @Operation(summary = "Get Measures",
+            description = "Get all Measures from db.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Measures.",
                     content = {@Content(mediaType = "application/json",
@@ -41,6 +44,8 @@ public class MeasureController {
                 .toList();
     }
 
+    @Operation(summary = "Create Measure",
+            description = "Create a new Measure.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created new Measure.",
                     content = {@Content(mediaType = "application/json",
@@ -57,6 +62,8 @@ public class MeasureController {
         }
     }
 
+    @Operation(summary = "Update Measure",
+            description = "Update a Measure by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Measure in db.",
                     content = {@Content(mediaType = "application/json",

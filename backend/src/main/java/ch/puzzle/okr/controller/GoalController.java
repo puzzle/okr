@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.goal.GoalDto;
 import ch.puzzle.okr.mapper.GoalMapper;
 import ch.puzzle.okr.service.KeyResultService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,6 +23,8 @@ public class GoalController {
         this.keyResultService = keyResultService;
     }
 
+    @Operation(summary = "Get Goal",
+            description = "Get a Goal by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a Goal with a specified ID.",
                     content = {@Content(mediaType = "application/json",

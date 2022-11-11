@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,8 @@ public class KeyResultController {
         this.measureMapper = measureMapper;
     }
 
+    @Operation(summary = "Create KeyResult",
+            description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Created new KeyResult.",
                     content = {@Content(mediaType = "application/json",
@@ -44,6 +47,8 @@ public class KeyResultController {
         return this.keyResultService.createKeyResult(keyResult);
     }
 
+    @Operation(summary = "Update KeyResult",
+            description = "Update a KeyResult by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated KeyResult in db.",
                     content = {@Content(mediaType = "application/json",
@@ -58,6 +63,8 @@ public class KeyResultController {
         return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
     }
 
+    @Operation(summary = "Get Measures from KeyResult",
+            description = "Get all Measures from one KeyResult by keyResultId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Measures from KeyResult.",
                     content = {@Content(mediaType = "application/json",

@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.TeamService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,7 +46,9 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public TeamDto getTeamById(@PathVariable long id) {
+    public TeamDto getTeamById(
+            @Parameter(description = "The ID for getting a Team.", required = true)
+            @PathVariable long id) {
         return teamMapper.toDto(teamService.getTeamById(id));
     }
 
@@ -69,7 +72,9 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Team name was empty.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Team> updateTeam(@PathVariable long id, @RequestBody TeamDto teamDto) {
+    public ResponseEntity<Team> updateTeam(
+            @Parameter(description = "The ID for updating a Team.", required = true)
+            @PathVariable long id, @RequestBody TeamDto teamDto) {
         teamDto.setId(id);
         Team team = teamMapper.toTeam(teamDto);
         return ResponseEntity.status(HttpStatus.OK).body(teamService.updateTeam(id, team));

@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.ObjectiveService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -50,7 +51,9 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public ObjectiveDto getObjective(@PathVariable Long id) {
+    public ObjectiveDto getObjective(
+            @Parameter(description = "The ID for getting an Objective.", required = true)
+            @PathVariable Long id) {
         return objectiveMapper.toDto(objectiveService.getObjective(id));
     }
 
@@ -74,7 +77,9 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Objective> updateObjective(@PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
+    public ResponseEntity<Objective> updateObjective(
+            @Parameter(description = "The ID for updating an Objective.", required = true)
+            @PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         return ResponseEntity.status(HttpStatus.OK).body(objectiveService.updateObjective(id, objective));
@@ -87,7 +92,9 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID to get KeyResults from.", content = @Content)
     })
     @GetMapping("{id}/keyresults")
-    public List<KeyResultDto> getAllKeyResultsByObjective(@PathVariable Long id) {
+    public List<KeyResultDto> getAllKeyResultsByObjective(
+            @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true)
+            @PathVariable Long id) {
         return objectiveService.getAllKeyResultsByObjective(id).stream()
                 .map(keyResultMapper::toDto)
                 .toList();

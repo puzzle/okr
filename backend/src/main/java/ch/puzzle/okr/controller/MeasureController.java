@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.MeasureService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,7 +65,9 @@ public class MeasureController {
             @ApiResponse(responseCode = "404", description = "Given ID of Measure wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMeasure(@PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
+    public ResponseEntity<Object> updateMeasure(
+            @Parameter(description = "The ID for updating a Measure.", required = true)
+            @PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
         return ResponseEntity.status(HttpStatus.OK).body(measureService.updateMeasure(id, measure));

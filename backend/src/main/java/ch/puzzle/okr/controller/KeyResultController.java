@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -50,7 +51,9 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<KeyResult> updateKeyResult(@PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
+    public ResponseEntity<KeyResult> updateKeyResult(
+            @Parameter(description = "The ID for updating a KeyResult.", required = true)
+            @PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
         keyResultDto.setId(id);
         return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
     }
@@ -62,7 +65,9 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Measures from.", content = @Content)
     })
     @GetMapping("/{id}/measures")
-    public List<MeasureDto> getMeasuresFromKeyResult(@PathVariable long id) {
+    public List<MeasureDto> getMeasuresFromKeyResult(
+            @Parameter(description = "The ID for getting all Measures from a KeyResult.", required = true)
+            @PathVariable long id) {
         return keyResultService.getAllMeasuresByKeyResult(id).stream()
                 .map(measureMapper::toDto)
                 .toList();

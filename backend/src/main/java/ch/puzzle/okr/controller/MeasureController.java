@@ -4,6 +4,8 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.MeasureService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,8 +30,10 @@ public class MeasureController {
         this.measureService = measureService;
     }
 
+    @Operation(summary = "Get Measures",
+            description = "Get all Measures from db.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "returned all measures",
+            @ApiResponse(responseCode = "200", description = "Returned all Measures.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MeasureDto.class))}),
     })
@@ -40,11 +44,13 @@ public class MeasureController {
                 .toList();
     }
 
+    @Operation(summary = "Create Measure",
+            description = "Create a new Measure.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Saved new measure to db",
+            @ApiResponse(responseCode = "201", description = "Created new Measure.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MeasureDto.class))}),
-            @ApiResponse(responseCode = "400", description = "Can't create measure with id or empty name or not allowed to pass id.", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Can't create new Measure, missing attributes or not allowed to give an ID.", content = @Content)
     })
     @PostMapping
     public ResponseEntity<Object> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
@@ -56,15 +62,19 @@ public class MeasureController {
         }
     }
 
+    @Operation(summary = "Update Measure",
+            description = "Update a Measure by ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated measure in db",
+            @ApiResponse(responseCode = "200", description = "Updated Measure in db.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MeasureDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Given id of measure wasn't found", content = @Content),
-            @ApiResponse(responseCode = "400", description = "Can't update measure with id or empty name or not allowed to pass id.", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Can't create new Measure, attributes are not set.", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Given ID of Measure wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMeasure(@PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
+    public ResponseEntity<Object> updateMeasure(
+            @Parameter(description = "The ID for updating a Measure.", required = true)
+            @PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
         return ResponseEntity.status(HttpStatus.OK).body(measureService.updateMeasure(id, measure));

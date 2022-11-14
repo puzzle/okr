@@ -53,14 +53,10 @@ public class MeasureController {
             @ApiResponse(responseCode = "400", description = "Can't create new Measure, missing attributes or not allowed to give an ID.", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Object> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
-        try {
+    public ResponseEntity<MeasureDto> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
             Measure measure = measureMapper.toMeasure(measureDto);
             MeasureDto createdMeasure = this.measureMapper.toDto(this.measureService.saveMeasure(measure));
             return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create measure =>" + e.getMessage());
-        }
     }
 
     @Operation(summary = "Update Measure",

@@ -9,7 +9,6 @@ import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -24,7 +23,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -150,15 +151,19 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    @Disabled
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
+        ObjectiveDto testObjective = new ObjectiveDto(42L, "Program Faster", 1L, "Rudi",
+                "Grochde", 3L, "PuzzleITC", 1L, 4, 2022,
+                "Just be faster", 5.5);
+
+        BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
 
         mvc.perform(post("/api/v1/objectives")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string("{\"id\":42,\"title\":\"FullObjective\",\"owner\":{\"id\":1,\"username\":\"bkaufmann\",\"firstname\":\"Bob\",\"lastname\":\"Kaufmann\",\"email\":\"kaufmann@puzzle.ch\"},\"team\":{\"id\":1,\"name\":\"Team1\"},\"quarter\":{\"id\":1,\"year\":2020,\"number\":3},\"description\":\"This is our description\",\"progress\":33.3,\"createdOn\":\"+999999999-12-31T23:59:59.999999999\"}"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":42,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterNumber\":4,\"quarterYear\":2022,\"description\":\"Just be faster\",\"progress\":5.5}"))
         ;
         verify(objectiveService, times(1)).saveObjective(any());
     }
@@ -176,12 +181,16 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    @Disabled
     void shouldReturnUpdatedObjective() throws Exception {
+        ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi",
+                "Grochde", 3L, "PuzzleITC", 1L, 4, 2022,
+                "Everything Fine", 5.5);
         Objective objective = Objective.Builder.builder()
                 .withId(1L).withDescription("Everything Fine")
                 .withProgress(5.5).withTitle("Hunting")
                 .build();
+
+        BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
 
         mvc.perform(put("/api/v1/objectives/10"))

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -50,9 +49,6 @@ class KeyResultControllerIT {
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(5L).withNumber(2).withYear(2022).build();
     static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective).withOwner(user).withQuarter(quarter).build();
-
-    @Autowired
-    private MockMvc mvc;
     @MockBean
     KeyResultRepository keyResultRepository;
     @MockBean
@@ -61,6 +57,8 @@ class KeyResultControllerIT {
     MeasureMapper measureMapper;
     @MockBean
     KeyResultService keyResultService;
+    @Autowired
+    private MockMvc mvc;
 
     @BeforeEach
     void setUp() {
@@ -70,18 +68,24 @@ class KeyResultControllerIT {
     }
 
     @Test
-    @Disabled
-    void shouldReturnUpdatedKeyresult() throws Exception {
+    void shouldReturnUpdatedKeyResult() throws Exception {
         KeyResult keyResult = KeyResult.Builder.builder()
                 .withId(1L)
                 .withTitle("Updated Keyresult 1")
                 .build();
+        KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster",
+                1L, "Rudi", "Grochde", 1L, 4, 2022, ExpectedEvolution.INCREASE,
+                Unit.PERCENT, 4L, 12L);
+
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
+        BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
 
         mvc.perform(put("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON).content("{\"title\":  \"Updated Keyresult 1\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(1)))
-                .andExpect(jsonPath("$.title", Is.is("Updated Keyresult 1")));
+                .andExpect(jsonPath("$.title", Is.is("Program Faster")))
+                .andExpect(jsonPath("$.ownerFirstname", Is.is("Rudi")))
+                .andExpect(jsonPath("$.unit", Is.is(Unit.PERCENT.toString())))
+                .andReturn();
     }
 
     @Test
@@ -94,12 +98,16 @@ class KeyResultControllerIT {
     }
 
     @Test
-    @Disabled
     void createKeyResult() throws Exception {
+        KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster",
+                1L, "Rudi", "Grochde", 1L, 4, 2022, ExpectedEvolution.INCREASE,
+                Unit.PERCENT, 4L, 12L);
+
         BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
         BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(keyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
 
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/v1/keyresults")

@@ -7,7 +7,6 @@ import ch.puzzle.okr.service.TeamService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -106,9 +105,11 @@ class TeamControllerIT {
     }
 
     @Test
-    @Disabled
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
+        TeamDto testTeam = new TeamDto(1L, "TestTeam");
+
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+        BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
         mvc.perform(post("/api/v1/teams")
                         .contentType(MediaType.APPLICATION_JSON)

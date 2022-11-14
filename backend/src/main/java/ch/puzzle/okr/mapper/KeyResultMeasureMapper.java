@@ -6,7 +6,9 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.KeyResultService;
+import org.springframework.stereotype.Component;
 
+@Component
 public class KeyResultMeasureMapper {
     private final KeyResultService keyResultService;
     private final MeasureMapper measureMapper;

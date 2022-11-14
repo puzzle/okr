@@ -56,10 +56,10 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public ObjectiveDto getObjective(
+    public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true)
             @PathVariable Long id) {
-        return objectiveMapper.toDto(objectiveService.getObjective(id));
+        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjective(id)));
     }
 
     @Operation(summary = "Create Objective",
@@ -71,9 +71,10 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, not allowed to give an ID.", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Objective> createObjective(@RequestBody ObjectiveDto objectiveDTO) {
+    public ResponseEntity<ObjectiveDto> createObjective(@RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(objectiveService.saveObjective(objective));
+        ObjectiveDto createdObjective = this.objectiveMapper.toDto(this.objectiveService.saveObjective(objective));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
     @Operation(summary = "Update Objective",
@@ -86,12 +87,13 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Objective> updateObjective(
+    public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true)
             @PathVariable Long id, @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(objectiveService.updateObjective(id, objective));
+        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(id, objective));
+        return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 
     @Operation(summary = "Get KeyResults from Objective",

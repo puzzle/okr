@@ -106,7 +106,10 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
+        TeamDto testTeam = new TeamDto(1L, "TestTeam");
+
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+        BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
         mvc.perform(post("/api/v1/teams")
                         .contentType(MediaType.APPLICATION_JSON)

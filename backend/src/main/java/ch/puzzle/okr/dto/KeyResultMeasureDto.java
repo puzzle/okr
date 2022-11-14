@@ -3,7 +3,7 @@ package ch.puzzle.okr.dto;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.Unit;
 
-public class KeyResultDto {
+public class KeyResultMeasureDto {
     private Long id;
     private Long objectiveId;
     private String title;
@@ -18,11 +18,10 @@ public class KeyResultDto {
     private Unit unit;
     private Long basicValue;
     private Long targetValue;
-    private MeasureDto measure;
 
-    public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
+    public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
                         String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution,
-                        Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
+                        Unit unit, Long basicValue, Long targetValue) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -37,7 +36,6 @@ public class KeyResultDto {
         this.unit = unit;
         this.basicValue = basicValue;
         this.targetValue = targetValue;
-        this.measure = measureDto;
     }
 
     public Long getId() {
@@ -150,13 +148,5 @@ public class KeyResultDto {
 
     public void setQuarterId(Long quarterId) {
         this.quarterId = quarterId;
-    }
-
-    public MeasureDto getMeasure() {
-        return measure;
-    }
-
-    public void setMeasure(MeasureDto measure) {
-        this.measure = measure;
     }
 }

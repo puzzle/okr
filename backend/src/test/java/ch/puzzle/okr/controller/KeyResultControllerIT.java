@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -69,6 +70,7 @@ class KeyResultControllerIT {
     }
 
     @Test
+    @Disabled
     void shouldReturnUpdatedKeyresult() throws Exception {
         KeyResult keyResult = KeyResult.Builder.builder()
                 .withId(1L)
@@ -92,6 +94,7 @@ class KeyResultControllerIT {
     }
 
     @Test
+    @Disabled
     void createKeyResult() throws Exception {
         BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);

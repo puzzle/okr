@@ -51,10 +51,10 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public TeamDto getTeamById(
+    public ResponseEntity<TeamDto> getTeamById(
             @Parameter(description = "The ID for getting a Team.", required = true)
             @PathVariable long id) {
-        return teamMapper.toDto(teamService.getTeamById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
     }
 
     @Operation(summary = "Create Team",
@@ -66,9 +66,10 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Can't create new Team, not allowed to give an ID or missing attributes.", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Object> createTeam(@RequestBody TeamDto teamDto) {
+    public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto) {
         Team team = teamMapper.toTeam(teamDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(teamService.saveTeam(team));
+        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.saveTeam(team));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 
     @Operation(summary = "Update Team",
@@ -81,11 +82,12 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Team name was empty.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Team> updateTeam(
+    public ResponseEntity<TeamDto> updateTeam(
             @Parameter(description = "The ID for updating a Team.", required = true)
             @PathVariable long id, @RequestBody TeamDto teamDto) {
         teamDto.setId(id);
         Team team = teamMapper.toTeam(teamDto);
-        return ResponseEntity.status(HttpStatus.OK).body(teamService.updateTeam(id, team));
+        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
+        return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
 }

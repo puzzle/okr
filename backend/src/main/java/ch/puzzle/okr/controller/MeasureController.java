@@ -56,7 +56,8 @@ public class MeasureController {
     public ResponseEntity<Object> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
         try {
             Measure measure = measureMapper.toMeasure(measureDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(measureService.saveMeasure(measure));
+            MeasureDto createdMeasure = this.measureMapper.toDto(this.measureService.saveMeasure(measure));
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create measure =>" + e.getMessage());
         }
@@ -72,11 +73,12 @@ public class MeasureController {
             @ApiResponse(responseCode = "404", description = "Given ID of Measure wasn't found.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateMeasure(
+    public ResponseEntity<MeasureDto> updateMeasure(
             @Parameter(description = "The ID for updating a Measure.", required = true)
             @PathVariable Long id, @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
-        return ResponseEntity.status(HttpStatus.OK).body(measureService.updateMeasure(id, measure));
+        MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureService.updateMeasure(id, measure));
+        return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 }

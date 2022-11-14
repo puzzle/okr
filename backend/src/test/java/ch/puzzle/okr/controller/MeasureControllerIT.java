@@ -9,6 +9,7 @@ import ch.puzzle.okr.service.MeasureService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -103,6 +104,7 @@ class MeasureControllerIT {
     }
 
     @Test
+    @Disabled
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
 
@@ -127,6 +129,7 @@ class MeasureControllerIT {
     }
 
     @Test
+    @Disabled
     void shouldReturnCorrectMeasure() throws Exception {
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         mvc.perform(put("/api/v1/measures/1")

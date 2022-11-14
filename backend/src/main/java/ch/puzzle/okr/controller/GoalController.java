@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,9 +34,9 @@ public class GoalController {
             @ApiResponse(responseCode = "404", description = "Did not find a Goal with a specified ID.", content = @Content)
     })
     @GetMapping("/{id}")
-    public GoalDto getGoalById(
+    public ResponseEntity<GoalDto> getGoalById(
             @Parameter(description = "The ID for getting a Goal.", required = true)
             @PathVariable long id) {
-        return goalMapper.toDto(keyResultService.getKeyResultById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(this.goalMapper.toDto(this.keyResultService.getKeyResultById(id)));
     }
 }

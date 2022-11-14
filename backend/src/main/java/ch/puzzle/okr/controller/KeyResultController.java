@@ -42,9 +42,10 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the key result tries to refer to.", content = @Content)
     })
     @PostMapping
-    public ResponseEntity<KeyResult> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.keyResultService.createKeyResult(keyResult));
+        KeyResultDto createdKeyResult = this.keyResultMapper.toDto(this.keyResultService.createKeyResult(keyResult));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
     @Operation(summary = "Update KeyResult",
@@ -56,11 +57,12 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<KeyResult> updateKeyResult(
+    public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true)
             @PathVariable long id, @RequestBody KeyResultDto keyResultDto) {
         keyResultDto.setId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+        KeyResultDto updatedKeyResult = this.keyResultMapper.toDto(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+        return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 
     @Operation(summary = "Get Measures from KeyResult",

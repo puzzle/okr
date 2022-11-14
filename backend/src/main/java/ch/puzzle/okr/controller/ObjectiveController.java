@@ -1,6 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
@@ -101,11 +102,11 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all KeyResults from Objective.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = KeyResultDto.class))}),
+                            schema = @Schema(implementation = KeyResultMeasureDto.class))}),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID to get KeyResults from.", content = @Content)
     })
     @GetMapping("{id}/keyresults")
-    public List<KeyResultDto> getAllKeyResultsByObjective(
+    public List<KeyResultMeasureDto> getAllKeyResultsByObjective(
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true)
             @PathVariable Long id) {
         return objectiveService.getAllKeyResultsByObjective(id).stream()

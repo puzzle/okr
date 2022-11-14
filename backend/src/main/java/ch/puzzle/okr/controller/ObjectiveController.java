@@ -4,8 +4,10 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
+import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,12 +28,14 @@ public class ObjectiveController {
 
     private final ObjectiveService objectiveService;
     private final ObjectiveMapper objectiveMapper;
-    private final KeyResultMapper keyResultMapper;
+    private final KeyResultMeasureMapper keyResultMeasureMapper;
+    private final KeyResultService keyResultService;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultMapper keyResultMapper) {
+    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultMeasureMapper keyResultMeasureMapper, KeyResultService keyResultService) {
         this.objectiveService = objectiveService;
         this.objectiveMapper = objectiveMapper;
-        this.keyResultMapper = keyResultMapper;
+        this.keyResultMeasureMapper = keyResultMeasureMapper;
+        this.keyResultService = keyResultService;
     }
 
     @Operation(summary = "Get Objectives",
@@ -110,7 +114,7 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true)
             @PathVariable Long id) {
         return objectiveService.getAllKeyResultsByObjective(id).stream()
-                .map(keyResultMapper::toDto)
+                .map(i -> keyResultMeasureMapper.toDto(i, keyResultService.getLastMeasure(i.getId())))
                 .toList();
     }
 }

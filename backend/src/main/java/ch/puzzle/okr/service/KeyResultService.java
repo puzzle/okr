@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -78,5 +79,13 @@ public class KeyResultService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", keyResultId))
         );
         return measureRepository.findByKeyResult(keyResult);
+    }
+
+    public Measure getLastMeasure(Long keyResultId) {
+        KeyResult keyResult = keyResultRepository.findById(keyResultId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", keyResultId))
+        );
+        List<Measure> measureList = measureRepository.findByKeyResult(keyResult);
+        return measureList.stream().sorted(Comparator.comparing((Measure::getCreatedOn))).findFirst().get();
     }
 }

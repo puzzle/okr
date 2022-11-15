@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -54,9 +53,9 @@ public class MeasureController {
     })
     @PostMapping
     public ResponseEntity<MeasureDto> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
-            Measure measure = measureMapper.toMeasure(measureDto);
-            MeasureDto createdMeasure = this.measureMapper.toDto(this.measureService.saveMeasure(measure));
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
+        Measure measure = measureMapper.toMeasure(measureDto);
+        MeasureDto createdMeasure = this.measureMapper.toDto(this.measureService.saveMeasure(measure));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
     @Operation(summary = "Update Measure",

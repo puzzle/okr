@@ -33,7 +33,8 @@ public class ProgressService {
                                         .stream()
                                         .filter(measure -> measure.getKeyResult().getId().equals(keyResult.getId()))
                                         .map(Measure::getValue)
-                                        .findFirst().orElse(0))
+                                        .reduce((first, second) -> second)
+                                        .orElse(0))
                         );
         /*
         Calculate the progress for each keyResult in percent and return the average of

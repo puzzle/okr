@@ -56,4 +56,58 @@ class ProgressServiceTest {
         Long percentValue = this.progressService.updateObjectiveProgressValue(1L);
         assertEquals(40, percentValue);
     }
+
+    @Test
+    void checkUpdateProgressMethodWithThreeKeyResults() {
+        Objective objective = Objective.Builder.builder().withId(1L).build();
+        KeyResult keyResult = KeyResult.Builder.builder()
+                .withId(1L)
+                .withDescription("Hello")
+                .withTargetValue(100L)
+                .withObjective(objective).build();
+        KeyResult keyResult2 = KeyResult.Builder.builder()
+                .withId(2L)
+                .withDescription("Hello")
+                .withTargetValue(200L)
+                .withObjective(objective).build();
+        KeyResult keyResult3 = KeyResult.Builder.builder()
+                .withId(3L)
+                .withDescription("Hello")
+                .withTargetValue(300L)
+                .withObjective(objective).build();
+        List<KeyResult> keyResultList = Arrays.asList(keyResult, keyResult2, keyResult3);
+
+        Measure measure = Measure.Builder.builder().withKeyResult(keyResult).withValue(50).build();
+        Measure measure2 = Measure.Builder.builder().withKeyResult(keyResult2).withValue(60).build();
+        List<Measure> measureList = Arrays.asList(measure, measure2);
+
+        when(keyResultRepository.findAll()).thenReturn(keyResultList);
+        when(measureRepository.findAll()).thenReturn(measureList);
+
+        Long percentValue = this.progressService.updateObjectiveProgressValue(1L);
+        assertEquals(26, percentValue);
+    }
+
+    @Test
+    void checkUpdateProgressWithOneKeyResult() {
+        Objective objective = Objective.Builder.builder().withId(1L).build();
+        KeyResult keyResult = KeyResult.Builder.builder()
+                .withId(1L)
+                .withDescription("Hello")
+                .withTargetValue(100L)
+                .withObjective(objective).build();
+        List<KeyResult> keyResultList = List.of(keyResult);
+
+        Measure measure = Measure.Builder.builder().withKeyResult(keyResult).withValue(30).build();
+        Measure measure2 = Measure.Builder.builder().withKeyResult(keyResult).withValue(50).build();
+        List<Measure> measureList = new ArrayList<>();
+        measureList.add(measure);
+        measureList.add(measure2);
+
+        when(keyResultRepository.findAll()).thenReturn(keyResultList);
+        when(measureRepository.findAll()).thenReturn(measureList);
+
+        Long percentValue = this.progressService.updateObjectiveProgressValue(1L);
+        assertEquals(50, percentValue);
+    }
 }

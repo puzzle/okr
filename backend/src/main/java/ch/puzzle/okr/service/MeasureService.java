@@ -18,11 +18,13 @@ public class MeasureService {
     private final KeyResultRepository keyResultRepository;
     private final UserRepository userRepository;
     private final MeasureRepository measureRepository;
+    private final ProgressService progressService;
 
-    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository, MeasureRepository measureRepository) {
+    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository, MeasureRepository measureRepository, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
         this.userRepository = userRepository;
         this.measureRepository = measureRepository;
+        this.progressService = progressService;
     }
 
     public Measure saveMeasure(Measure measure) {
@@ -30,7 +32,9 @@ public class MeasureService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Measure has already an Id");
         }
         this.checkMeasure(measure);
-        return measureRepository.save(measure);
+        Measure createdMeasure = this.measureRepository.save(measure);
+        this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
+        return createdMeasure;
     }
 
     public Measure updateMeasure(Long id, Measure measure) {
@@ -38,7 +42,9 @@ public class MeasureService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Measure with id %d not found", id)));
         this.checkMeasure(measure);
-        return this.measureRepository.save(measure);
+        Measure createdMeasure = this.measureRepository.save(measure);
+        this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
+        return createdMeasure;
     }
 
     private void checkMeasure(Measure measure) {

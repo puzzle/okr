@@ -48,8 +48,8 @@ public class ObjectiveService {
         if(objective.getProgress() != null) {
             List<KeyResult> keyResultList = (List<KeyResult>) this.keyResultRepository.findAll();
             if(keyResultList.stream().anyMatch(keyResult -> keyResult.getObjective().getId().equals(objective.getId()))) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't set the progress of an " +
-                        "objective if you have already defined keyresults!");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Can't set the progress of an objective if you have already defined keyresults!");
             }
         }
         this.getObjective(id);

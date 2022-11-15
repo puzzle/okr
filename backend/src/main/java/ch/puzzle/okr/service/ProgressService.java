@@ -6,9 +6,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -18,18 +16,19 @@ import java.util.stream.Collectors;
 public class ProgressService {
     private final KeyResultRepository keyResultRepository;
     private final MeasureRepository measureRepository;
+    private final ObjectiveService objectiveService;
     private final ObjectiveRepository objectiveRepository;
 
     public ProgressService(KeyResultRepository keyResultRepository, MeasureRepository measureRepository,
-                           ObjectiveRepository objectiveRepository) {
+                           ObjectiveService objectiveService, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
         this.measureRepository = measureRepository;
+        this.objectiveService = objectiveService;
         this.objectiveRepository = objectiveRepository;
     }
 
     public void updateObjectiveProgress(Long objectiveId) {
-        Objective objective = this.objectiveRepository.findById(objectiveId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Objective objective = this.objectiveService.getObjective(objectiveId);
         Double progress = this.getObjectiveProgressInPercent(objectiveId);
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
@@ -52,7 +51,7 @@ public class ProgressService {
                                         .map(Measure::getValue)
                                         .reduce((first, second) -> second)
                                         .orElse(0))
-                        );
+                );
         /*
         Calculate the progress for each keyResult in percent and return the average of
         the progress of all keyResults in percentage

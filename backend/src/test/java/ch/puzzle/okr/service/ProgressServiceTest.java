@@ -32,6 +32,9 @@ class ProgressServiceTest {
     @MockBean
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
 
+    @MockBean
+    ObjectiveService objectiveService = Mockito.mock(ObjectiveService.class);
+
     @InjectMocks
     ProgressService progressService;
 
@@ -115,6 +118,4 @@ class ProgressServiceTest {
         Double percentValue = this.progressService.getObjectiveProgressInPercent(1L);
         assertEquals(50D, percentValue);
     }
-
-    //TODO: Write Tests to check if progress is set on objective correctly
 }

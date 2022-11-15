@@ -28,6 +28,9 @@ class KeyResultServiceTest {
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
+
+    @MockBean
+    ProgressService progressService = Mockito.mock(ProgressService.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -89,6 +92,7 @@ class KeyResultServiceTest {
     void shouldEditKeyresult() {
         KeyResult newKeyresult = KeyResult.Builder
                 .builder()
+                .withObjective(Objective.Builder.builder().withId(1L).build())
                 .withId(1L).withTitle("Keyresult 1 update")
                 .build();
         Mockito.when(keyResultRepository.save(any())).thenReturn(newKeyresult);

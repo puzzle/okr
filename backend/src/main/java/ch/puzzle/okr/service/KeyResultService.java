@@ -17,12 +17,17 @@ public class KeyResultService {
     private final ObjectiveRepository objectiveRepository;
     private final MeasureRepository measureRepository;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository, UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository) {
+    private final ProgressService progressService;
+
+    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository,
+                            UserRepository userRepository, ObjectiveRepository objectiveRepository,
+                            MeasureRepository measureRepository, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
         this.measureRepository = measureRepository;
+        this.progressService = progressService;
     }
 
     public List<KeyResult> getAllKeyResults() {
@@ -30,7 +35,9 @@ public class KeyResultService {
     }
 
     public KeyResult createKeyResult(KeyResult keyResult) {
-        return this.keyResultRepository.save(keyResult);
+        KeyResult createdKeyResult = this.keyResultRepository.save(keyResult);
+        this.progressService.updateObjectiveProgress(createdKeyResult.getObjective().getId());
+        return createdKeyResult;
     }
 
     public KeyResult getKeyResultById(long id) {
@@ -41,7 +48,9 @@ public class KeyResultService {
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
         if (keyResultRepository.findById(keyResult.getId()).isPresent()) {
-            return this.keyResultRepository.save(keyResult);
+            KeyResult createdKeyResult = this.keyResultRepository.save(keyResult);
+            this.progressService.updateObjectiveProgress(createdKeyResult.getObjective().getId());
+            return createdKeyResult;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find keyresult with id %d", keyResult.getId()));
         }

@@ -38,4 +38,3 @@ jobs:
             context: .
             file: docker/Dockerfile
             push: true
-            tags: ${{ secrets.TAG }}:latest

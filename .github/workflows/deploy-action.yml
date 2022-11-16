@@ -2,7 +2,6 @@ name: 'Deploy'
 
 on:
   push:
-    #    branches: [ production ]
     branches: [ feature/289-deploy ]
 
 jobs:

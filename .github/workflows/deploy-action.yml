@@ -38,3 +38,4 @@ jobs:
             context: .
             file: docker/Dockerfile
             push: true
+            tags: puzzle/okr:latest

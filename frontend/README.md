@@ -1,3 +1,3 @@
-# okr frontend 
+# okr frontend
 
 Frontend for okr open source application

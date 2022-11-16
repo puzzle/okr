@@ -12,7 +12,7 @@ jobs:
       - name: Prettify code
         uses: creyD/prettier_action@v4.2
         with:
-          prettier_options: --write **/*.{js,ts,json,css,scss,html,md,yaml}
+          prettier_options: --check **/*.{js,ts,json,css,scss,html,md,yaml}
   build:
     runs-on: ubuntu-latest
     services:

@@ -8,6 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
+    "check": "prettier --check \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
     "format:upgrade": "npm install --save-exact prettier@latest && npm run format"
   },
   "private": true,

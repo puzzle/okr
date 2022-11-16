@@ -1,4 +1,4 @@
-name: Project build
+name: Validate
 
 on: [push]
 jobs:

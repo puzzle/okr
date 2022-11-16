@@ -9,7 +9,8 @@
     "test": "ng test",
     "format": "prettier --write \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
     "check": "prettier --check \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
-    "format:upgrade": "npm install --save-exact prettier@latest && npm run format"
+    "format:upgrade": "npm install --save-exact prettier@latest && npm run format",
+    "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'"
   },
   "private": true,
   "dependencies": {

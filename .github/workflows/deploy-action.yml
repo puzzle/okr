@@ -36,6 +36,6 @@ jobs:
           uses: docker/build-push-action@v2
           with:
             context: .
-            file: /Docker/Dockerfile
+            file: Docker/Dockerfile
             push: true
             tags: ${{ secrets.TAG }}:latest

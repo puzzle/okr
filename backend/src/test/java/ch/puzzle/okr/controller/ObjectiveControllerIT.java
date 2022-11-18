@@ -134,7 +134,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnErrorWhenObjectiveDoesntExistWhenGettingKeyResults() throws Exception {
-        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1))
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))

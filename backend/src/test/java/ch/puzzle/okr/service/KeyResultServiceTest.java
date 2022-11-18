@@ -3,6 +3,7 @@ package ch.puzzle.okr.service;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +27,8 @@ import static org.mockito.Mockito.when;
 class KeyResultServiceTest {
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
+    @MockBean
+    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
 
@@ -114,6 +117,33 @@ class KeyResultServiceTest {
         Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResult);
         KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
         assertEquals("Keyresult 1", keyResult.getTitle());
+    }
+
+    @Test
+    void shouldGetAllKeyresultsByObjective() {
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+
+        List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
+
+        assertEquals(3, keyResultList.size());
+        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoKeyResultInObjective() {
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
+
+        List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
+
+        assertEquals(0, keyResultList.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenObjectiveDoesntExist() {
+        assertThrows(ResponseStatusException.class, () ->
+                keyResultService.getAllKeyResultsByObjective(1));
     }
 
     @Test

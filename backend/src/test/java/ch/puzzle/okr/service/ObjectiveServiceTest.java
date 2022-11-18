@@ -77,33 +77,6 @@ class ObjectiveServiceTest {
     }
 
     @Test
-    void shouldGetAllKeyresultsByObjective() {
-        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-
-        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
-
-        assertEquals(3, keyResultList.size());
-        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
-    }
-
-    @Test
-    void shouldReturnEmptyListWhenNoKeyResultInObjective() {
-        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
-
-        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
-
-        assertEquals(0, keyResultList.size());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenObjectiveDoesntExist() {
-        assertThrows(ResponseStatusException.class, () ->
-                objectiveService.getAllKeyResultsByObjective(1));
-    }
-
-    @Test
     void getOneObjective() {
         Mockito.when(objectiveRepository.findById(5L)).thenReturn(Optional.ofNullable(this.objective));
         Objective realObjective = objectiveService.getObjective(5L);

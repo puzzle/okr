@@ -6,6 +6,7 @@ import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
+import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
@@ -21,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/objectives")
@@ -113,8 +116,6 @@ public class ObjectiveController {
     public List<KeyResultMeasureDto> getAllKeyResultsByObjective(
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true)
             @PathVariable Long id) {
-        return objectiveService.getAllKeyResultsByObjective(id).stream()
-                .map(i -> keyResultMeasureMapper.toDto(i, keyResultService.getLastMeasure(i.getId())))
-                .toList();
+        return keyResultService.getAllKeyResultsByObjectiveWithMeasure(id);
     }
 }

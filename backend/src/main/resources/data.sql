@@ -37,8 +37,8 @@ insert into key_result(id, objective_id, title, description, owner_id, quarter_i
 
 insert into measure(id, key_result_id, value, change_info, initiatives, created_by_id, created_on) values
         (1, 1, 60, '', '', 1, '2022-01-01'),
-        (2, 1, 30, '', '', 2, '2022-01-01'),
+        (2, 1, 30, '', '', 2, '2021-01-01'),
         (3, 2, 10, '', '', 1, '2022-01-01'),
-        (4, 2, 15, '', '', 1, '2022-01-01'),
+        (4, 2, 15, '', '', 1, '2023-01-01'),
         (5, 3, 85, '', '', 4, '2022-01-01'),
         (6, 4, 90, '', '', 5, '2022-01-01');

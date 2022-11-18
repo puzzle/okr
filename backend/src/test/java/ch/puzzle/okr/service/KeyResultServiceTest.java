@@ -1,5 +1,8 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.KeyResultMeasureDto;
+import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
@@ -31,9 +34,8 @@ class KeyResultServiceTest {
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
-
     @MockBean
-    ProgressService progressService = Mockito.mock(ProgressService.class);
+    KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -95,7 +97,6 @@ class KeyResultServiceTest {
     void shouldEditKeyresult() {
         KeyResult newKeyresult = KeyResult.Builder
                 .builder()
-                .withObjective(Objective.Builder.builder().withId(1L).build())
                 .withId(1L).withTitle("Keyresult 1 update")
                 .build();
         Mockito.when(keyResultRepository.save(any())).thenReturn(newKeyresult);
@@ -178,4 +179,21 @@ class KeyResultServiceTest {
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
 
+    @Test
+    void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
+        when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
+        when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(
+                new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco",
+                        "Egiman", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT,
+                        20L, 100L, new MeasureDto(1L, 1L, 10, "", "", 1L, null)));
+
+        List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
+
+        assertEquals(3 ,keyResultList.size());
+        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
+        assertEquals(1, keyResultList.get(0).getMeasure().getId());
+        assertEquals(1, keyResultList.get(0).getObjectiveId());
+    }
 }

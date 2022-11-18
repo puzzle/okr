@@ -101,7 +101,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllKeyResultsByObjective() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1)).willReturn(keyResultList);
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1)).willReturn(keyResultList);
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -115,7 +115,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllKeyResultsIfNoKeyResultExistsInObjective() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1)).willReturn(Collections.emptyList());
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1)).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -125,7 +125,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnErrorWhenObjectiveDoesntExistWhenGettingKeyResults() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1))
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))

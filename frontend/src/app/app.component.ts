@@ -9,9 +9,9 @@ export class AppComponent {
   title = 'frontend';
 
   public overviewClick() {
-    console.log("Overview component will be displayed");
+    console.log('Overview component will be displayed');
   }
   public teamClick() {
-    console.log("Team list will be displayed");
+    console.log('Team list will be displayed');
   }
 }

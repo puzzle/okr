@@ -5,9 +5,10 @@ import ch.puzzle.okr.dto.goal.GoalKeyResultDto;
 import ch.puzzle.okr.dto.goal.GoalObjectiveDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class GoalMapper {
     public GoalDto toDto(KeyResult keyResult) {
         Objective objective = keyResult.getObjective();

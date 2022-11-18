@@ -31,13 +31,11 @@ public class ObjectiveController {
 
     private final ObjectiveService objectiveService;
     private final ObjectiveMapper objectiveMapper;
-    private final KeyResultMeasureMapper keyResultMeasureMapper;
     private final KeyResultService keyResultService;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultMeasureMapper keyResultMeasureMapper, KeyResultService keyResultService) {
+    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper, KeyResultService keyResultService) {
         this.objectiveService = objectiveService;
         this.objectiveMapper = objectiveMapper;
-        this.keyResultMeasureMapper = keyResultMeasureMapper;
         this.keyResultService = keyResultService;
     }
 

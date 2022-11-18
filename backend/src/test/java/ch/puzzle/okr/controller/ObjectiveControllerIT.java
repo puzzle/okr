@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -58,6 +59,8 @@ class ObjectiveControllerIT {
     private MockMvc mvc;
     @MockBean
     private ObjectiveService objectiveService;
+    @MockBean
+    private KeyResultService keyResultService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean

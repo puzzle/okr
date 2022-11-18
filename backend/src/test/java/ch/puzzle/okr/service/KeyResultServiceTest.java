@@ -21,8 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -195,5 +194,21 @@ class KeyResultServiceTest {
         assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
         assertEquals(1, keyResultList.get(0).getMeasure().getId());
         assertEquals(1, keyResultList.get(0).getObjectiveId());
+    }
+
+    @Test
+    void shouldReturnNullObjectWhenMeasureIsNull() {
+        when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
+        when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(
+                new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco",
+                        "Egiman", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT,
+                        20L, 100L, null));
+
+        List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
+
+        assertEquals(3 ,keyResultList.size());
+        assertNull(keyResultList.get(0).getMeasure());
     }
 }

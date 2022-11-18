@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 
 @Component
 public class KeyResultMeasureMapper {
-    private final KeyResultService keyResultService;
     private final MeasureMapper measureMapper;
 
-    public KeyResultMeasureMapper(KeyResultService keyResultService, MeasureMapper measureMapper) {
-        this.keyResultService = keyResultService;
+    public KeyResultMeasureMapper(MeasureMapper measureMapper) {
         this.measureMapper = measureMapper;
     }
 

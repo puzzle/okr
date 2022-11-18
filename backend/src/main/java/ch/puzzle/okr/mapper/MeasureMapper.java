@@ -16,8 +16,12 @@ public class MeasureMapper {
     }
 
     public MeasureDto toDto(Measure measure) {
-        return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(), measure.getChangeInfo(),
-                measure.getInitiatives(), measure.getCreatedBy().getId(), measure.getCreatedOn());
+        if (measure == null) {
+            return null;
+        } else {
+            return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(), measure.getChangeInfo(),
+                    measure.getInitiatives(), measure.getCreatedBy().getId(), measure.getCreatedOn());
+        }
     }
 
     public Measure toMeasure(MeasureDto measureDto) {

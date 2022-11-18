@@ -93,7 +93,8 @@ public class KeyResultService {
     public List<KeyResultMeasureDto> getAllKeyResultsByObjectiveWithMeasure(Long id) {
             List<Measure> measureList = getLastMeasures(id);
             return getAllKeyResultsByObjective(id).stream()
-                    .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream().filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).toList().get(0)))
+                    .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
+                            .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
                     .toList();
     }
 }

@@ -1,8 +1,6 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ObjectiveService {

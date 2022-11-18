@@ -4,7 +4,6 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 public class KeyResultMapper {

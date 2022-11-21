@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface Objectives {
+export interface Objective {
   id: number;
   title: String;
   ownerId: number;
@@ -16,7 +16,7 @@ export interface Objectives {
 export interface TeamObjectives {
   id: number;
   name: string;
-  objectives: Objectives[];
+  objectives: Objective[];
 }
 
 @Component({
@@ -26,7 +26,7 @@ export interface TeamObjectives {
 })
 export class TeamDetailComponent implements OnInit {
   //Daten manuell einfügen
-  objectives: Array<Objectives> = [
+  objectives: Array<Objective> = [
     {
       id: 3,
       title: 'Wir erzielen eine ausgezeichnete Wirtschaftlichkeit',

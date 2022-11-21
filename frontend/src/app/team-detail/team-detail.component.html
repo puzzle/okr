@@ -1,1 +1,7 @@
-<p>team-detail works!</p>
+<div class="teamDiv">
+  <h1>{{ teamObjectives.name }}</h1>
+  <div *ngFor="let objective of teamObjectives.objectives">
+    <hr />
+    <app-objective [objectiv]="objective"></app-objective>
+  </div>
+</div>

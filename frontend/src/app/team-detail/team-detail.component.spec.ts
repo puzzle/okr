@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TeamDetailComponent } from './team-detail.component';
-import { Objective } from './objective.service';
-import { Observable, of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Team } from '../dashboard/team.service';
-import { DashboardComponent } from '../dashboard/dashboard.component';
-import { CommonModule } from '@angular/common';
+import {TeamDetailComponent} from './team-detail.component';
+import {Objective, ObjectiveService} from './objective.service';
+import {Observable, of} from 'rxjs';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {Team} from '../dashboard/team.service';
+import {DashboardComponent} from '../dashboard/dashboard.component';
+import {CommonModule} from '@angular/common';
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
@@ -56,16 +56,13 @@ describe('TeamDetailComponent', () => {
   ]);
 
   beforeEach(async () => {
-    mockObjectiveService = jasmine.createSpyObj([
-      'getObjectivesOfTeam',
-      'getTeams',
-    ]);
-    mockObjectiveService.getObjectivesOfTeam.and.returnValue(of(objectiveList));
-    mockObjectiveService.getTeams.and.returnValue(of(teamsList));
+    mockObjectiveService = jasmine.createSpyObj(['getObjectivesOfTeam']);
+    mockObjectiveService.getObjectivesOfTeam.and.returnValue(objectiveList);
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CommonModule],
       declarations: [TeamDetailComponent, DashboardComponent],
+      providers: [{provide: ObjectiveService, useValue: mockObjectiveService}]
     }).compileComponents();
 
     fixtureTeamDetails = TestBed.createComponent(TeamDetailComponent);
@@ -82,5 +79,29 @@ describe('TeamDetailComponent', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('h1').length
     ).toEqual(3);
+  });
+
+  it('should create 6 divs (3 Divs with team names and 6 divs with objectives)', () => {
+    expect(
+      fixtureTeamDetails.nativeElement.querySelectorAll('div').length
+    ).toEqual(9);
+  });
+
+  it('should have Puzzle ITC Ziele at the top', () => {
+    expect(
+      fixtureTeamDetails.nativeElement.querySelector('h1').textContent
+    ).toEqual("Puzzle ITC Ziele");
+  });
+
+  it('should have dev/java Ziele at the end', () => {
+    expect(
+      fixtureTeamDetails.nativeElement.querySelectorAll('h1')[2].textContent
+    ).toEqual("dev/java Ziele");
+  });
+
+  it('should create 6 hr when having 3 teams with 2 objectives', () => {
+    expect(
+      fixtureTeamDetails.nativeElement.querySelectorAll('hr').length
+    ).toEqual(6);
   });
 });

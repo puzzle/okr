@@ -40,6 +40,7 @@ class KeyResultServiceTest {
     Objective objective;
     Quarter quarter;
     KeyResult keyResult;
+    Measure measure;
     List<Measure> measures;
     @InjectMocks
     private KeyResultService keyResultService;
@@ -70,8 +71,7 @@ class KeyResultServiceTest {
                 .withQuarter(this.quarter)
                 .build();
 
-        Measure measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
-
+        measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
         this.measures = List.of(measure, measure, measure);
     }
@@ -183,7 +183,7 @@ class KeyResultServiceTest {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(
+        when(keyResultMeasureMapper.toDto(keyResult, measure)).thenReturn(
                 new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco",
                         "Egiman", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT,
                         20L, 100L, new MeasureDto(1L, 1L, 10, "", "", 1L, null)));

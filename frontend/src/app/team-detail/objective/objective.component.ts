@@ -8,7 +8,7 @@ import { Objective } from '../team-detail.component';
 })
 export class ObjectiveComponent implements OnInit {
   @Input()
-  objectiv: Objective | undefined;
+  objective: Objective | undefined;
 
   constructor() {}
 

@@ -1,11 +1,14 @@
 <div class="informationRow">
-  <p class="objectiveTitle">{{ this.objectiv!.title }}</p>
+  <p class="objectiveTitle">{{ this.objective!.title }}</p>
   <div class="objectiveProperties">
-    <mat-progress-bar
-      class="objectiveProgress"
-      mode="determinate"
-      value="40"
-    ></mat-progress-bar>
+    <div class="progressPart">
+      <span id="progressSpan">5%</span>
+      <mat-progress-bar
+        class="objectiveProgress"
+        mode="determinate"
+        value="{{ this.objective!.progress }}"
+      ></mat-progress-bar>
+    </div>
     <div class="objectiveActions">
       <mat-icon>keyboard_arrow_down</mat-icon>
       <mat-icon>more_vert</mat-icon>

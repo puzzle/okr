@@ -13,7 +13,7 @@ export interface Objective {
   progress: number;
 }
 
-export interface TeamObjectives {
+export interface TeamObjective {
   id: number;
   name: string;
   objectives: Objective[];
@@ -52,11 +52,20 @@ export class TeamDetailComponent implements OnInit {
       progress: 30,
     },
   ];
-  teamObjectives: TeamObjectives = {
+  teamObjectiveRuby: TeamObjective = {
     id: 3,
     name: 'dev/ruby',
     objectives: this.objectives,
   };
+  teamObjectiveBBT: TeamObjective = {
+    id: 4,
+    name: 'bbt',
+    objectives: this.objectives,
+  };
+  teamObjectives: TeamObjective[] = [
+    this.teamObjectiveRuby,
+    this.teamObjectiveBBT,
+  ];
   constructor() {}
 
   ngOnInit(): void {}

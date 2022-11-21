@@ -6,13 +6,13 @@
 
 .objectiveTitle {
   display: flex;
-  width: 50%;
+  width: 40%;
   justify-content: flex-start;
 }
 
 .objectiveProperties {
   display: flex;
-  width: 50%;
+  width: 60%;
   align-items: center;
   justify-content: flex-end;
 }
@@ -36,6 +36,10 @@
 .objectiveActions {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  width: 10%;
+  justify-content: flex-end;
+  width: 20%;
+}
+
+.spaceBetween {
+  margin-right: 10%;
 }

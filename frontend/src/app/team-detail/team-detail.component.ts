@@ -6,8 +6,6 @@ export interface Objectives {
   ownerId: number;
   ownerFirstname: String;
   ownerLastname: String;
-  teamId: number;
-  teamName: String;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
@@ -27,7 +25,28 @@ export interface TeamObjectives {
   styleUrls: ['./team-detail.component.scss'],
 })
 export class TeamDetailComponent implements OnInit {
-  constructor() {}
+  objectives: Array<Objectives> = [
+    {
+      id: 3,
+      title: 'Wir erzielen eine ausgezeichnete Wirtschaftlichkeit',
+      ownerId: 2,
+      ownerFirstname: 'Rudi',
+      ownerLastname: 'Grochde',
+      quarterId: 5,
+      quarterNumber: 3,
+      quarterYear: 2022,
+      description: 'Sehr wichtig',
+      progress: 5,
+    },
+  ];
+  teamObjectives: TeamObjectives = {
+    id: 3,
+    name: 'dev/ruby',
+    objectives: this.objectives,
+  };
+  constructor() {
+    //Daten manuell einfügen
+  }
 
   ngOnInit(): void {}
 }

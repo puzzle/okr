@@ -2,7 +2,7 @@
   <p class="objectiveTitle">{{ this.objective!.title }}</p>
   <div class="objectiveProperties">
     <div class="progressPart">
-      <span id="progressSpan">5%</span>
+      <span id="progressSpan">{{ objective!.progress }}%</span>
       <mat-progress-bar
         class="objectiveProgress"
         mode="determinate"

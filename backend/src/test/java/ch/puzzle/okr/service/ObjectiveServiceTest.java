@@ -16,10 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -74,33 +75,6 @@ class ObjectiveServiceTest {
         List<Objective> objectives = objectiveService.getAllObjectives();
 
         assertEquals(0, objectives.size());
-    }
-
-    @Test
-    void shouldGetAllKeyresultsByObjective() {
-        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-
-        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
-
-        assertEquals(3, keyResultList.size());
-        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
-    }
-
-    @Test
-    void shouldReturnEmptyListWhenNoKeyResultInObjective() {
-        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
-
-        List<KeyResult> keyResultList = objectiveService.getAllKeyResultsByObjective(1);
-
-        assertEquals(0, keyResultList.size());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenObjectiveDoesntExist() {
-        assertThrows(ResponseStatusException.class, () ->
-                objectiveService.getAllKeyResultsByObjective(1));
     }
 
     @Test

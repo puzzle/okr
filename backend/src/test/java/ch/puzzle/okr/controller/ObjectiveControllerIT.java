@@ -1,10 +1,13 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.KeyResultMeasureDto;
+import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -50,7 +53,12 @@ class ObjectiveControllerIT {
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, 1, 2022, "This is a description", 20.0);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static List<KeyResult> keyResultList = Arrays.asList(keyResult1, keyResult2);
+    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null);
+    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null);
+    static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
+            new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto),
+            new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto)
+    );
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice", "Wunderland", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice", "Wunderland", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 
@@ -58,6 +66,8 @@ class ObjectiveControllerIT {
     private MockMvc mvc;
     @MockBean
     private ObjectiveService objectiveService;
+    @MockBean
+    private KeyResultService keyResultService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean
@@ -98,21 +108,23 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllKeyResultsByObjective() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1)).willReturn(keyResultList);
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L)).willReturn(keyResultsMeasureList);
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5)))
                 .andExpect(jsonPath("$[0].title", Is.is("Keyresult 1")))
+                .andExpect(jsonPath("$[0].measure.id", Is.is(1)))
                 .andExpect(jsonPath("$[1].id", Is.is(7)))
                 .andExpect(jsonPath("$[1].title", Is.is("Keyresult 2")))
+                .andExpect(jsonPath("$[1].measure.id", Is.is(2)))
         ;
     }
 
     @Test
     void shouldGetAllKeyResultsIfNoKeyResultExistsInObjective() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1)).willReturn(Collections.emptyList());
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1)).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -122,7 +134,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnErrorWhenObjectiveDoesntExistWhenGettingKeyResults() throws Exception {
-        BDDMockito.given(objectiveService.getAllKeyResultsByObjective(1))
+        BDDMockito.given(keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))

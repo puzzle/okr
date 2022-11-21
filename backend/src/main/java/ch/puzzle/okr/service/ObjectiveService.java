@@ -29,13 +29,6 @@ public class ObjectiveService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id)));
     }
 
-    public List<KeyResult> getAllKeyResultsByObjective(long objectiveId) {
-        Objective objective = objectiveRepository.findById(objectiveId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", objectiveId))
-        );
-        return keyResultRepository.findByObjective(objective);
-    }
-
     public Objective saveObjective(Objective objective) {
         if (objective.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");

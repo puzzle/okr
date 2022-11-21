@@ -49,8 +49,6 @@ public class KeyResultService {
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
         if (keyResultRepository.findById(keyResult.getId()).isPresent()) {
-            KeyResult createdKeyResult = this.keyResultRepository.save(keyResult);
-            this.progressService.updateObjectiveProgress(createdKeyResult.getObjective().getId());
             return this.keyResultRepository.save(keyResult);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find keyresult with id %d", keyResult.getId()));

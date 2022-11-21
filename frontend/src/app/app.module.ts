@@ -9,19 +9,19 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import {ObjectiveComponent} from "./team-detail/objective/objective.component";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
-import {MatIconModule} from "@angular/material/icon";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatButtonModule} from "@angular/material/button";
-import { ObjectiveComponent } from './team-detail/objective/objective.component';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ObjectiveComponent } from './team-detail/objective/objective.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    TeamDetailComponent,
+    ObjectiveComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,19 +29,11 @@ import { MatButtonModule } from '@angular/material/button';
     NoopAnimationsModule,
     MatFormFieldModule,
     MatSelectModule,
-    ReactiveFormsModule,
-  ],
-  declarations: [AppComponent, TeamDetailComponent],
-  imports: [BrowserModule, AppRoutingModule, NoopAnimationsModule],
-  declarations: [AppComponent, TeamDetailComponent, ObjectiveComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NoopAnimationsModule,
-    MatProgressBarModule,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatProgressBarModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

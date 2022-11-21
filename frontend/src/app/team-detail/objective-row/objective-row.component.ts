@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Objective } from '../team-detail.component';
 
 @Component({
-  selector: 'app-objective',
-  templateUrl: './objective.component.html',
-  styleUrls: ['./objective.component.scss'],
+  selector: 'app-objective-row',
+  templateUrl: './objective-row.component.html',
+  styleUrls: ['./objective-row.component.scss'],
 })
-export class ObjectiveComponent implements OnInit {
+export class ObjectiveRowComponent implements OnInit {
   @Input()
   objective: Objective | undefined;
 

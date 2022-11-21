@@ -1,12 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TeamDetailComponent} from './team-detail.component';
-import {Objective, ObjectiveService} from './objective.service';
-import {Observable, of} from 'rxjs';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {Team} from '../dashboard/team.service';
-import {DashboardComponent} from '../dashboard/dashboard.component';
-import {CommonModule} from '@angular/common';
+import { TeamDetailComponent } from './team-detail.component';
+import { Objective, ObjectiveService } from './objective.service';
+import { Observable, of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Team } from '../dashboard/team.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { CommonModule } from '@angular/common';
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
@@ -62,7 +62,9 @@ describe('TeamDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CommonModule],
       declarations: [TeamDetailComponent, DashboardComponent],
-      providers: [{provide: ObjectiveService, useValue: mockObjectiveService}]
+      providers: [
+        { provide: ObjectiveService, useValue: mockObjectiveService },
+      ],
     }).compileComponents();
 
     fixtureTeamDetails = TestBed.createComponent(TeamDetailComponent);
@@ -90,13 +92,13 @@ describe('TeamDetailComponent', () => {
   it('should have Puzzle ITC Ziele at the top', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
-    ).toEqual("Puzzle ITC Ziele");
+    ).toEqual('Puzzle ITC Ziele');
   });
 
   it('should have dev/java Ziele at the end', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('h1')[2].textContent
-    ).toEqual("dev/java Ziele");
+    ).toEqual('dev/java Ziele');
   });
 
   it('should create 6 hr when having 3 teams with 2 objectives', () => {

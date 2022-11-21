@@ -37,8 +37,7 @@ export class TeamService {
     let year: number = currentYear;
     for (let i = 0; i < 4; i++) {
       if (currentQuarter == 1) {
-        pastQuarter = 4;
-        year -= 1;
+        (pastQuarter = 4), (year -= 1);
       } else {
         pastQuarter = currentQuarter - 1;
       }
@@ -50,8 +49,7 @@ export class TeamService {
     }
 
     if (currentQuarter == 4) {
-      currentYear += 1;
-      currentQuarter = 1;
+      (currentYear += 1), (currentQuarter = 1);
     } else {
       currentQuarter += 1;
     }

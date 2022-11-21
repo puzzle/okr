@@ -25,6 +25,7 @@ export interface TeamObjectives {
   styleUrls: ['./team-detail.component.scss'],
 })
 export class TeamDetailComponent implements OnInit {
+  //Daten manuell einfügen
   objectives: Array<Objectives> = [
     {
       id: 3,
@@ -44,9 +45,7 @@ export class TeamDetailComponent implements OnInit {
     name: 'dev/ruby',
     objectives: this.objectives,
   };
-  constructor() {
-    //Daten manuell einfügen
-  }
+  constructor() {}
 
   ngOnInit(): void {}
 }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Team } from '../dashboard/team.service';
 import { Observable } from 'rxjs';
+import { ObjectiveService } from './objective.service';
 
 @Component({
   selector: 'app-team-detail',
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 export class TeamDetailComponent implements OnInit {
   @Input() teams!: Observable<Team[]>;
 
-  constructor() {}
+  constructor(public objectiveService: ObjectiveService) {}
 
   ngOnInit(): void {}
 }

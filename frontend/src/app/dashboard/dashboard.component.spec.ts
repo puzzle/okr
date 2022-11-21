@@ -6,18 +6,36 @@ import { TeamService } from './team.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 
+export interface OkrCycle {
+  cycle: string;
+}
+
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
   let mockToolBarService;
-
-  interface Team {
-    id: number;
-    name: string;
-  }
+  let cycleList: OkrCycle[] = [
+    { cycle: '22-4' },
+    { cycle: '22-3' },
+    { cycle: '22-2' },
+    { cycle: '22-1' },
+    { cycle: '21-4' },
+    { cycle: '23-1' },
+  ];
 
   beforeEach(async () => {
-    mockToolBarService = jasmine.createSpyObj(['getTeams']);
+    mockToolBarService = jasmine.createSpyObj(['getTeams', 'getQuarter']);
+    console.log(cycleList[0]);
+    mockToolBarService.getQuarter.and.returnValue(
+      of([
+        { cycle: '22-4' },
+        { cycle: '22-3' },
+        { cycle: '22-2' },
+        { cycle: '22-1' },
+        { cycle: '21-4' },
+        { cycle: '23-1' },
+      ])
+    );
     mockToolBarService.getTeams.and.returnValue(
       of([
         { id: 1, name: 'Team1' },

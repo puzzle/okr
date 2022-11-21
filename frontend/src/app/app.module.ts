@@ -9,6 +9,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import {ObjectiveComponent} from "./team-detail/objective/objective.component";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent],
@@ -23,6 +28,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   declarations: [AppComponent, TeamDetailComponent],
   imports: [BrowserModule, AppRoutingModule, NoopAnimationsModule],
+  declarations: [AppComponent, TeamDetailComponent, ObjectiveComponent],
+  imports: [BrowserModule, AppRoutingModule, NoopAnimationsModule, MatProgressBarModule, MatIconModule, MatMenuModule, MatButtonModule],
   providers: [],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

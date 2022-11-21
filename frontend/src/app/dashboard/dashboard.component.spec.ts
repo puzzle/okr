@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TeamService } from './team.service';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -16,20 +17,23 @@ describe('DashboardComponent', () => {
   }
 
   beforeEach(async () => {
+    mockToolBarService = jasmine.createSpyObj(['getTeams']);
+    mockToolBarService.getTeams.and.returnValue(
+      of([
+        { id: 1, name: 'Team1' },
+        { id: 2, name: 'Team2' },
+      ])
+    );
+
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [TeamService],
+      providers: [{ provide: TeamService, useValue: mockToolBarService }],
       declarations: [DashboardComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
-    mockToolBarService = jasmine.createSpyObj(['getTeams']);
-
-    // let teamList : Observable<Team[]> =
-    mockToolBarService.getTeams.and.returnValue();
   });
 
   it('should create', () => {
@@ -53,6 +57,13 @@ describe('DashboardComponent', () => {
       By.css('.cycle-dropdown')
     );
     expect(dropdownItems.length).toEqual(6);
+  });
+
+  it('should display 2 teams in team dropdown', () => {
+    const dropdownItems = fixture.debugElement.queryAll(
+      By.css('.team-dropdown')
+    );
+    expect(dropdownItems.length).toEqual(2);
   });
 
   // Ziele und Resultate soll stehen

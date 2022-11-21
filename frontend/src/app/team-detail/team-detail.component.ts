@@ -39,6 +39,18 @@ export class TeamDetailComponent implements OnInit {
       description: 'Sehr wichtig',
       progress: 5,
     },
+    {
+      id: 4,
+      title: 'Wir erreichen unsere anvisierten Wachstumsziele',
+      ownerId: 2,
+      ownerFirstname: 'Rudi',
+      ownerLastname: 'Grochde',
+      quarterId: 5,
+      quarterNumber: 3,
+      quarterYear: 2022,
+      description: 'Überaus wichtig',
+      progress: 30,
+    },
   ];
   teamObjectives: TeamObjectives = {
     id: 3,

@@ -5,38 +5,24 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TeamService } from './team.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-
-export interface OkrCycle {
-  cycle: string;
-}
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
-  let mockToolBarService;
-  let cycleList: OkrCycle[] = [
-    { cycle: '22-4' },
-    { cycle: '22-3' },
-    { cycle: '22-2' },
-    { cycle: '22-1' },
-    { cycle: '21-4' },
-    { cycle: '23-1' },
-  ];
+  let teamServiceMock;
 
   beforeEach(async () => {
-    mockToolBarService = jasmine.createSpyObj(['getTeams', 'getQuarter']);
-    console.log(cycleList[0]);
-    mockToolBarService.getQuarter.and.returnValue(
-      of([
-        { cycle: '22-4' },
-        { cycle: '22-3' },
-        { cycle: '22-2' },
-        { cycle: '22-1' },
-        { cycle: '21-4' },
-        { cycle: '23-1' },
-      ])
-    );
-    mockToolBarService.getTeams.and.returnValue(
+    teamServiceMock = jasmine.createSpyObj(['getTeams', 'getQuarter']);
+    teamServiceMock.getQuarter.and.returnValue([
+      { cycle: '22-4' },
+      { cycle: '22-3' },
+      { cycle: '22-2' },
+      { cycle: '22-1' },
+      { cycle: '21-4' },
+      { cycle: '23-1' },
+    ]);
+    teamServiceMock.getTeams.and.returnValue(
       of([
         { id: 1, name: 'Team1' },
         { id: 2, name: 'Team2' },
@@ -44,8 +30,8 @@ describe('DashboardComponent', () => {
     );
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: TeamService, useValue: mockToolBarService }],
+      imports: [HttpClientTestingModule, NoopAnimationsModule],
+      providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [DashboardComponent],
     }).compileComponents();
 
@@ -83,13 +69,4 @@ describe('DashboardComponent', () => {
     );
     expect(dropdownItems.length).toEqual(2);
   });
-
-  // Ziele und Resultate soll stehen
-  // Menu
-  // TeamService mock
-  // 4 Teams als return value
-  // Team Filter soll 4 Einträge haben
-  // Man kann mehrere auswählen, diese werden angezeigt
-  // Zyklus soll 6 Einträge haben
-  // Man soll einen auswählen können und Name stimmt
 });

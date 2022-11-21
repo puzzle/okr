@@ -1,6 +1,6 @@
-<div class="teamDiv">
-  <h1>{{ teamObjectives.name }}</h1>
-  <div *ngFor="let objective of teamObjectives.objectives">
+<div class="teamDiv" *ngFor="let teamObjective of teamObjectives">
+  <h1>{{ teamObjective.name }} Ziele</h1>
+  <div *ngFor="let objective of teamObjective.objectives">
     <hr />
     <app-objective [objective]="objective"></app-objective>
   </div>

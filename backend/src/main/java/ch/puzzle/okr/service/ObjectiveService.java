@@ -29,6 +29,11 @@ public class ObjectiveService {
                 String.format("Objective with id %d not found", id)));
     }
 
+    public List<Objective> getObjectivesByTeam(Long id) {
+
+        return objectiveRepository.findByTeamId(id);
+    }
+
     public Objective saveObjective(Objective objective) {
         if (objective.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");

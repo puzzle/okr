@@ -25,7 +25,9 @@ jobs:
           distribution: 'adopt'
 
       - name: Use Maven to run unittests and integration tests
-        run: mvn formatter:format
+        run: cd backend
+      - name: Use Maven to run unittests and integration tests
+        run: mvn formatter:validate
   application-tests:
     runs-on: ubuntu-latest
     services:

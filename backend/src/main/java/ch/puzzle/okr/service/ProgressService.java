@@ -29,7 +29,7 @@ public class ProgressService {
 
     public void updateObjectiveProgress(Long objectiveId) {
         Objective objective = this.objectiveService.getObjective(objectiveId);
-        Double progress = this.getObjectiveProgressInPercent(objectiveId);
+        Double progress = this.getObjectiveProgressInPercent(objective);
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
     }

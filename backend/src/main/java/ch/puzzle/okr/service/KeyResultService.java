@@ -22,8 +22,9 @@ public class KeyResultService {
     private final KeyResultMeasureMapper keyResultMeasureMapper;
     private final ProgressService progressService;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository, UserRepository userRepository,
-                            ObjectiveRepository objectiveRepository, MeasureRepository measureRepository, KeyResultMeasureMapper keyResultMeasureMapper, ProgressService progressService) {
+    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository,
+            UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
+            KeyResultMeasureMapper keyResultMeasureMapper, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
         this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
@@ -42,40 +43,38 @@ public class KeyResultService {
     }
 
     public KeyResult getKeyResultById(long id) {
-        return this.keyResultRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Keyresult with id %d not found", id))
-        );
+        return this.keyResultRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Keyresult with id %d not found", id)));
     }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
         if (keyResultRepository.findById(keyResult.getId()).isPresent()) {
             return this.keyResultRepository.save(keyResult);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find keyresult with id %d", keyResult.getId()));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Could not find keyresult with id %d", keyResult.getId()));
         }
     }
 
     public Quarter getQuarterById(long id) {
-        return this.quarterRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find quarter with id %d", id)));
+        return this.quarterRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Could not find quarter with id %d", id)));
     }
 
     public User getOwnerById(long id) {
-        return this.userRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Owner with id %d not found", id))
-        );
+        return this.userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Owner with id %d not found", id)));
     }
 
     public Objective getObjectivebyId(long id) {
-        return this.objectiveRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id))
-        );
+        return this.objectiveRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Objective with id %d not found", id)));
     }
 
     public List<Measure> getAllMeasuresByKeyResult(long keyResultId) {
-        KeyResult keyResult = keyResultRepository.findById(keyResultId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("KeyResult with id %d not found", keyResultId))
-        );
+        KeyResult keyResult = keyResultRepository.findById(keyResultId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("KeyResult with id %d not found", keyResultId)));
         return measureRepository.findByKeyResult(keyResult);
     }
 
@@ -84,17 +83,17 @@ public class KeyResultService {
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(long objectiveId) {
-        Objective objective = objectiveRepository.findById(objectiveId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", objectiveId))
-        );
+        Objective objective = objectiveRepository.findById(objectiveId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Objective with id %d not found", objectiveId)));
         return keyResultRepository.findByObjective(objective);
     }
 
     public List<KeyResultMeasureDto> getAllKeyResultsByObjectiveWithMeasure(Long id) {
-            List<Measure> measureList = getLastMeasures(id);
-            return getAllKeyResultsByObjective(id).stream()
-                    .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
-                            .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
-                    .toList();
+        List<Measure> measureList = getLastMeasures(id);
+        return getAllKeyResultsByObjective(id).stream()
+                .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
+                        .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
+                .toList();
     }
 }

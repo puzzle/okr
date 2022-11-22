@@ -14,10 +14,10 @@ public class KeyResultMeasureMapper {
     }
 
     public KeyResultMeasureDto toDto(KeyResult keyResult, Measure measure) {
-        return new KeyResultMeasureDto(
-                keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
+        return new KeyResultMeasureDto(keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
-                keyResult.getOwner().getLastname(), keyResult.getQuarter().getId(), keyResult.getQuarter().getNumber(), keyResult.getQuarter().getYear(),
-                keyResult.getExpectedEvolution(), keyResult.getUnit(), keyResult.getBasisValue(), keyResult.getTargetValue(), measureMapper.toDto(measure));
+                keyResult.getOwner().getLastname(), keyResult.getQuarter().getId(), keyResult.getQuarter().getNumber(),
+                keyResult.getQuarter().getYear(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
+                keyResult.getBasisValue(), keyResult.getTargetValue(), measureMapper.toDto(measure));
     }
 }

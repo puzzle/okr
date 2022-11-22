@@ -37,8 +37,10 @@ class UserControllerIT {
     @MockBean
     private UserMapper userMapper;
 
-    static User userAlice = User.Builder.builder().withId(2L).withUsername("awunderland").withFirstname("Alice").withLastname("Wunderland").withEmail("wunderland@puzzle.ch").build();
-    static User userBob = User.Builder.builder().withId(9L).withUsername("bbaumeister").withFirstname("Bob").withLastname("Baumeister").withEmail("baumeister@puzzle.ch").build();
+    static User userAlice = User.Builder.builder().withId(2L).withUsername("awunderland").withFirstname("Alice")
+            .withLastname("Wunderland").withEmail("wunderland@puzzle.ch").build();
+    static User userBob = User.Builder.builder().withId(9L).withUsername("bbaumeister").withFirstname("Bob")
+            .withLastname("Baumeister").withEmail("baumeister@puzzle.ch").build();
     static List<User> userList = Arrays.asList(userAlice, userBob);
 
     static UserDto userAliceDto = new UserDto(2L, "awunderland", "Alice", "Wunderland", "wunderland@puzzle.ch");
@@ -56,19 +58,15 @@ class UserControllerIT {
         BDDMockito.given(userService.getAllUsers()).willReturn(userList);
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(2)))
-                .andExpect(jsonPath("$[0].username", Is.is("awunderland")))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(2))).andExpect(jsonPath("$[0].username", Is.is("awunderland")))
                 .andExpect(jsonPath("$[0].firstname", Is.is("Alice")))
                 .andExpect(jsonPath("$[0].lastname", Is.is("Wunderland")))
                 .andExpect(jsonPath("$[0].email", Is.is("wunderland@puzzle.ch")))
-                .andExpect(jsonPath("$[1].id", Is.is(9)))
-                .andExpect(jsonPath("$[1].username", Is.is("bbaumeister")))
+                .andExpect(jsonPath("$[1].id", Is.is(9))).andExpect(jsonPath("$[1].username", Is.is("bbaumeister")))
                 .andExpect(jsonPath("$[1].firstname", Is.is("Bob")))
                 .andExpect(jsonPath("$[1].lastname", Is.is("Baumeister")))
-                .andExpect(jsonPath("$[1].email", Is.is("baumeister@puzzle.ch")))
-        ;
+                .andExpect(jsonPath("$[1].email", Is.is("baumeister@puzzle.ch")));
     }
 
     @Test
@@ -76,8 +74,6 @@ class UserControllerIT {
         BDDMockito.given(userService.getAllUsers()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(0)))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 }

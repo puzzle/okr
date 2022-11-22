@@ -33,21 +33,11 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        User userAlice = User.Builder.builder()
-                .withId(2L)
-                .withUsername("awunderland")
-                .withFirstname("Alice")
-                .withLastname("Wunderland")
-                .withEmail("wunderland@puzzle.ch")
-                .build();
+        User userAlice = User.Builder.builder().withId(2L).withUsername("awunderland").withFirstname("Alice")
+                .withLastname("Wunderland").withEmail("wunderland@puzzle.ch").build();
 
-        User userBob = User.Builder.builder()
-                .withId(9L)
-                .withUsername("bbaumeister")
-                .withFirstname("Bob")
-                .withLastname("Baumeister")
-                .withEmail("baumeister@puzzle.ch")
-                .build();
+        User userBob = User.Builder.builder().withId(9L).withUsername("bbaumeister").withFirstname("Bob")
+                .withLastname("Baumeister").withEmail("baumeister@puzzle.ch").build();
 
         userList = Arrays.asList(userAlice, userBob);
     }
@@ -78,7 +68,8 @@ class UserServiceTest {
 
     @Test
     void shouldReturnSingleUserWhenFindingOwnerByValidId() {
-        Optional<User> owner = Optional.of(User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build());
+        Optional<User> owner = Optional.of(User.Builder.builder().withId(1L).withFirstname("Bob")
+                .withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build());
         Mockito.when(userRepository.findById(any())).thenReturn(owner);
 
         User returnedUser = userService.getOwnerById(1L);

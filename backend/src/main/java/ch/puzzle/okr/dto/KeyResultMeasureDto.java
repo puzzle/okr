@@ -20,10 +20,9 @@ public class KeyResultMeasureDto {
     private Long targetValue;
     private MeasureDto measure;
 
-
-    public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId, String ownerFirstname,
-                        String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution,
-                        Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
+    public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
+            String ownerFirstname, String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear,
+            ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;

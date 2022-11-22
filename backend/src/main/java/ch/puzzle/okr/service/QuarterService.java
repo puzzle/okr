@@ -20,8 +20,7 @@ public class QuarterService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute quarter id");
         }
 
-        return quarterRepository.findById(quarterId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, (String.format("Quarter with id %d not found", quarterId)))
-        );
+        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                (String.format("Quarter with id %d not found", quarterId))));
     }
 }

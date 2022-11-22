@@ -20,7 +20,8 @@ public class MeasureService {
     private final MeasureRepository measureRepository;
     private final ProgressService progressService;
 
-    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository, MeasureRepository measureRepository, ProgressService progressService) {
+    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository,
+            MeasureRepository measureRepository, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
         this.userRepository = userRepository;
         this.measureRepository = measureRepository;
@@ -38,9 +39,8 @@ public class MeasureService {
     }
 
     public Measure updateMeasure(Long id, Measure measure) {
-        this.measureRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("Measure with id %d not found", id)));
+        this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Measure with id %d not found", id)));
         this.checkMeasure(measure);
         Measure createdMeasure = this.measureRepository.save(measure);
         this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
@@ -48,35 +48,34 @@ public class MeasureService {
     }
 
     private void checkMeasure(Measure measure) {
-        if(measure.getKeyResult() == null){
+        if (measure.getKeyResult() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given keyresult does not exist");
         }
-        if(measure.getValue() == null){
+        if (measure.getValue() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure does not have a value");
         }
-        if(measure.getChangeInfo().isBlank()){
+        if (measure.getChangeInfo().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given change value is blank");
         }
-        if(measure.getCreatedBy() == null){
+        if (measure.getCreatedBy() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null");
         }
-        if(measure.getCreatedOn() == null){
+        if (measure.getCreatedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given creation date is null");
         }
     }
 
     public KeyResult mapKeyResult(MeasureDto measureDto) {
         Long keyResultId = measureDto.getKeyResultId();
-        return keyResultRepository.findById(keyResultId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Keyresult with id %d not found", keyResultId))
-        );
+        return keyResultRepository.findById(keyResultId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Keyresult with id %d not found", keyResultId)));
     }
 
     public User mapUser(MeasureDto measureDto) {
         Long userId = measureDto.getCreatedById();
-        return userRepository.findById(userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %d not found", userId))
-        );
+        return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("User with id %d not found", userId)));
     }
 
     public List<Measure> getAllMeasures() {

@@ -38,19 +38,13 @@ class ProgressServiceTest {
     @InjectMocks
     ProgressService progressService;
 
-    //Test if progress in percent is calculated correctly
+    // Test if progress in percent is calculated correctly
     @Test
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
-        KeyResult keyResult = KeyResult.Builder.builder()
-                .withId(1L)
-                .withDescription("Hello")
-                .withTargetValue(100L)
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withDescription("Hello").withTargetValue(100L)
                 .withObjective(objective).build();
-        KeyResult keyResult2 = KeyResult.Builder.builder()
-                .withId(2L)
-                .withDescription("Hello")
-                .withTargetValue(200L)
+        KeyResult keyResult2 = KeyResult.Builder.builder().withId(2L).withDescription("Hello").withTargetValue(200L)
                 .withObjective(objective).build();
         List<KeyResult> keyResultList = Arrays.asList(keyResult, keyResult2);
 
@@ -68,20 +62,11 @@ class ProgressServiceTest {
     @Test
     void checkUpdateProgressMethodWithThreeKeyResults() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
-        KeyResult keyResult = KeyResult.Builder.builder()
-                .withId(1L)
-                .withDescription("Hello")
-                .withTargetValue(100L)
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withDescription("Hello").withTargetValue(100L)
                 .withObjective(objective).build();
-        KeyResult keyResult2 = KeyResult.Builder.builder()
-                .withId(2L)
-                .withDescription("Hello")
-                .withTargetValue(200L)
+        KeyResult keyResult2 = KeyResult.Builder.builder().withId(2L).withDescription("Hello").withTargetValue(200L)
                 .withObjective(objective).build();
-        KeyResult keyResult3 = KeyResult.Builder.builder()
-                .withId(3L)
-                .withDescription("Hello")
-                .withTargetValue(300L)
+        KeyResult keyResult3 = KeyResult.Builder.builder().withId(3L).withDescription("Hello").withTargetValue(300L)
                 .withObjective(objective).build();
         List<KeyResult> keyResultList = Arrays.asList(keyResult, keyResult2, keyResult3);
 
@@ -99,10 +84,7 @@ class ProgressServiceTest {
     @Test
     void checkUpdateProgressWithOneKeyResult() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
-        KeyResult keyResult = KeyResult.Builder.builder()
-                .withId(1L)
-                .withDescription("Hello")
-                .withTargetValue(100L)
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withDescription("Hello").withTargetValue(100L)
                 .withObjective(objective).build();
         List<KeyResult> keyResultList = List.of(keyResult);
 

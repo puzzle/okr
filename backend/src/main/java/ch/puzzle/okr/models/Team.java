@@ -39,16 +39,15 @@ public class Team {
 
     @Override
     public String toString() {
-        return "Team{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Team{" + "id=" + id + ", name='" + name + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Team team = (Team) o;
         return Objects.equals(id, team.id) && Objects.equals(name, team.name);
     }

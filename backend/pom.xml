@@ -109,28 +109,14 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.theoryinpractise</groupId>
-                <artifactId>googleformatter-maven-plugin</artifactId>
-                <version>1.7.4</version>
-                <executions>
-                    <execution>
-                        <id>reformat-sources</id>
-                        <configuration>
-                            <includeStale>false</includeStale>
-                            <style>GOOGLE</style>
-                            <formatMain>true</formatMain>
-                            <formatTest>true</formatTest>
-                            <filterModified>false</filterModified>
-                            <skip>false</skip>
-                            <fixImports>false</fixImports>
-                            <maxLineLength>100</maxLineLength>
-                        </configuration>
-                        <goals>
-                            <goal>format</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                    </execution>
-                </executions>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
+                <version>2.21.0</version>
+                <configuration>
+                    <compilerSource>${maven.compiler.source}</compilerSource>
+                    <compilerCompliance>${maven.compiler.source}</compilerCompliance>
+                    <compilerTargetPlatform>${maven.compiler.source}</compilerTargetPlatform>
+                </configuration>
             </plugin>
         </plugins>
     </build>

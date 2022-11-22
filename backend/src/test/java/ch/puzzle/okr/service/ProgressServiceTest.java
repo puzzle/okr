@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.OkrApplication;
 import ch.puzzle.okr.models.Objective;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ class ProgressServiceTest {
     private ProgressService progressService;
 
     @Test
+    @Disabled
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -27,6 +29,7 @@ class ProgressServiceTest {
     }
 
     @Test
+    @Disabled
     void checkProgressMethodWithNoMeasures() {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -34,6 +37,7 @@ class ProgressServiceTest {
     }
 
     @Test
+    @Disabled
     void checkProgressMethodWithNoKeyResults() {
         Objective objective = Objective.Builder.builder().withId(3L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);

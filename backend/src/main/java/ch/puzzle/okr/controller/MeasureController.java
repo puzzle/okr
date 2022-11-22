@@ -66,8 +66,8 @@ public class MeasureController {
             @Valid @RequestBody MeasureDto measureDto) {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
-        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureService.updateMeasure(id, measure));
+        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 }

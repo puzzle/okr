@@ -31,7 +31,7 @@ insert into key_result(id, objective_id, title, description, owner_id, quarter_i
         (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),
         (2, 1, 'Keyresult 2', 'This is the description of Keyresult 2', 1, 1, 1, 1, 10, 50, 1, '2022-01-01'),
         (3, 1, 'Keyresult 3', 'This is the description of Keyresult 3', 1, 1, 2, 2, 0, 100, 1, '2022-01-01'),
-        (4, 1, 'Keyresult 4', 'This is the description of Keyresult 4', 1, 1, 2, 3, 0, 1, 1, '2022-01-01'),
+        (4, 1, 'Keyresult 4', 'This is the description of Keyresult 4', 1, 1, 2, 3, 0, 200, 1, '2022-01-01'),
         (5, 2, 'Keyresult 5', 'This is the description of Keyresult 5', 1, 1, 2, 2, 0, 100, 2, '2022-01-01'),
         (6, 2, 'Keyresult 6', 'This is the description of Keyresult 6', 1, 1, 2, 2, 0, 100, 2, '2022-01-01');
 

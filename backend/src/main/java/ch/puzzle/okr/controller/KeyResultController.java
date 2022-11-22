@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
+import ch.puzzle.okr.service.ProgressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -31,6 +32,7 @@ public class KeyResultController {
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
         this.measureMapper = measureMapper;
+        this.progressService = progressService;
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
@@ -42,6 +44,7 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
         KeyResultDto createdKeyResult = this.keyResultMapper.toDto(this.keyResultService.createKeyResult(keyResult));
+        this.progressService.updateObjectiveProgress(keyResult.getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 

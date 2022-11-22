@@ -1,4 +1,4 @@
-name: Project build
+name: Validate
 
 on: [push]
 jobs:
@@ -13,7 +13,7 @@ jobs:
         uses: creyD/prettier_action@v4.2
         with:
           prettier_options: --check **/*.{js,ts,json,css,scss,html,md,yaml}
-  build:
+  test:
     runs-on: ubuntu-latest
     services:
       postgres:

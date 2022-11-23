@@ -56,7 +56,7 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  it('should display 5 items in cycle dropdown', () => {
+  it('should display 6 items in cycle dropdown', () => {
     const dropdownItems = fixture.debugElement.queryAll(
       By.css('.cycle-dropdown')
     );

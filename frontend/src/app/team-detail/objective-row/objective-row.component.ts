@@ -7,8 +7,7 @@ import { Objective } from '../objective.service';
   styleUrls: ['./objective-row.component.scss'],
 })
 export class ObjectiveRowComponent implements OnInit {
-  @Input()
-  objective: Objective | undefined;
+  @Input() objective!: Objective;
 
   constructor() {}
 

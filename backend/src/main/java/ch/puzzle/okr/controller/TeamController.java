@@ -61,7 +61,6 @@ public class TeamController {
     public ResponseEntity<List<ObjectiveDto>> getObjectivesByTeamId(
             @Parameter(description = "The ID for getting a Team.", required = true)
             @PathVariable long id) {
-        this.teamService.getTeamById(id);
         return ResponseEntity.status(HttpStatus.OK).body(this.objectiveService.getObjectivesByTeam(id).stream()
                 .map(objectiveMapper::toDto)
                 .toList());

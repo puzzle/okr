@@ -1,0 +1,34 @@
+<div class="dashboard-container">
+  <p class="headline-large">Ziele und Resultate</p>
+
+  <div>
+    <mat-form-field appearance="fill" class="filter-dropdown">
+      <mat-label>Team</mat-label>
+      <mat-select
+        [formControl]="teams"
+        multiple
+        (selectionChange)="changeTeamFilter($event.value)"
+      >
+        <mat-option
+          class="team-dropdown"
+          *ngFor="let team of teamList | async"
+          [value]="team.id"
+          >{{ team.name }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Quarter</mat-label>
+      <mat-select (selectionChange)="changeQuarterFilter($event.value)">
+        <mat-option
+          class="quarter-dropdown"
+          *ngFor="let quarter of quarterList"
+          [value]="quarter.quarter"
+        >
+          {{ quarter.quarter }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

@@ -26,9 +26,8 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute owner id");
         }
 
-        return userRepository.findById(ownerId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, (String.format("Owner with id %d not found", ownerId)))
-        );
+        return userRepository.findById(ownerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                (String.format("Owner with id %d not found", ownerId))));
     }
 
 }

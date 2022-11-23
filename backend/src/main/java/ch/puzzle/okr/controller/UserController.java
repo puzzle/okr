@@ -26,18 +26,12 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @Operation(summary = "Get Users",
-            description = "Get all Users from db.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Users.",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class))}),
-    })
+    @Operation(summary = "Get Users", description = "Get all Users from db.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Users.", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userService.getAllUsers().stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userService.getAllUsers().stream().map(userMapper::toDto).toList();
     }
 
 }

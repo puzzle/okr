@@ -13,7 +13,8 @@ public class MeasureDto {
 
     private LocalDateTime createdOn;
 
-    public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById, LocalDateTime createdOn) {
+    public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById,
+            LocalDateTime createdOn) {
         this.id = id;
         this.keyResultId = keyResultId;
         this.value = value;

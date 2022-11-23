@@ -39,18 +39,13 @@ class MeasureServiceTest {
 
     @BeforeEach
     void setUp() {
-       this.measure = Measure.Builder.builder()
+        this.measure = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
                 .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30)
-                .withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives")
-                .build();
-       this.falseMeasure = Measure.Builder.builder()
-               .withId(3L)
-               .build();
+                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+        this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }
 
     @Test
@@ -65,8 +60,9 @@ class MeasureServiceTest {
     }
 
     @Test
-    void shouldNotReturnException(){
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> measureService.saveMeasure(falseMeasure));
+    void shouldNotReturnException() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> measureService.saveMeasure(falseMeasure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Measure has already an Id", exception.getReason());
     }
@@ -94,7 +90,8 @@ class MeasureServiceTest {
     @Test
     void shouldThrowResponseStatusExceptionBadRequest() {
         Mockito.when(measureRepository.save(any())).thenReturn(measure);
-        Mockito.when(measureService.saveMeasure(measure)).thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Mockito.when(measureService.saveMeasure(measure))
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -102,4 +99,3 @@ class MeasureServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 }
-

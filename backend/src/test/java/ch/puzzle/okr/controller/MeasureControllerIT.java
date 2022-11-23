@@ -35,25 +35,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MeasureController.class)
 class MeasureControllerIT {
-    static Measure measure = Measure.Builder.builder()
-            .withId(5L)
+    static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L).build())
-            .withValue(30)
-            .withChangeInfo("ChangeInfo")
-            .withInitiatives("Initiatives")
-            .build();
-    static Measure anotherMeasure = Measure.Builder.builder()
-            .withId(4L)
+            .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+    static Measure anotherMeasure = Measure.Builder.builder().withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0L).withTargetValue(100L).build())
-            .withValue(35)
-            .withChangeInfo("ChangeInfo")
-            .build();
+            .withValue(35).withChangeInfo("ChangeInfo").build();
     static MeasureDto measureDto = new MeasureDto(5L, 8L, 30, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX);
-    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L, LocalDateTime.MAX);
+    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L,
+            LocalDateTime.MAX);
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
 
     @Autowired
@@ -70,26 +64,20 @@ class MeasureControllerIT {
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
     }
 
-
     @Test
     void shouldGetAllMeasures() throws Exception {
         BDDMockito.given(measureService.getAllMeasures()).willReturn(measureList);
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5)))
-                .andExpect(jsonPath("$[0].keyResultId", Is.is(8)))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].keyResultId", Is.is(8)))
                 .andExpect(jsonPath("$[0].value", Is.is(30)))
                 .andExpect(jsonPath("$[0].changeInfo", Is.is("changeInfo")))
                 .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives")))
-                .andExpect(jsonPath("$[0].createdById", Is.is(1)))
-                .andExpect(jsonPath("$[1].id", Is.is(4)))
-                .andExpect(jsonPath("$[1].keyResultId", Is.is(9)))
-                .andExpect(jsonPath("$[1].value", Is.is(35)))
+                .andExpect(jsonPath("$[0].createdById", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(4)))
+                .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35)))
                 .andExpect(jsonPath("$[1].changeInfo", Is.is("changeInfo")))
-                .andExpect(jsonPath("$[1].createdById", Is.is(2)))
-        ;
+                .andExpect(jsonPath("$[1].createdById", Is.is(2)));
     }
 
     @Test
@@ -97,29 +85,21 @@ class MeasureControllerIT {
         BDDMockito.given(measureService.getAllMeasures()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(0)))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30,
-                "changeInfo", "initiatives", 1L,
-                LocalDateTime.now());
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
 
-        mvc.perform(post("/api/v1/measures")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.keyResultId", Is.is(5)))
-                .andExpect(jsonPath("$.value", Is.is(30)))
-                .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")))
-        ;
+        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1}"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30)))
+                .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
     }
 
     @Test
@@ -127,52 +107,43 @@ class MeasureControllerIT {
         BDDMockito.given(measureService.saveMeasure(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
 
-        mvc.perform(post("/api/v1/measures")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        ;
+        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30,
-                "changeInfo", "initiatives", 1L,
-                LocalDateTime.now());
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
 
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
 
-        mvc.perform(put("/api/v1/measures/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": " +
-                                "\"changeInfo\", \"initiatives \": \"initiatives\", " +
-                                "\"createdById \": null}"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.value", Is.is(30)))
+        mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
+                        + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30)))
                 .andExpect(jsonPath("$.createdById", Is.is(1)))
                 .andExpect(jsonPath("$.initiatives", Is.is("initiatives")));
     }
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-        mvc.perform(put("/api/v1/measures/3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": " +
-                                "\"changeInfo\", \"initiatives \": \"initiatives\", " +
-                                "\"createdById \": null}"))
+        BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
+                        + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        mvc.perform(put("/api/v1/measures/3")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": " +
-                                "\"changeInfo\", \"initiatives \": \"initiatives\", " +
-                                "\"createdById \": null}"))
+        BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
+                        + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

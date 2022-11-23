@@ -63,10 +63,8 @@ class TeamControllerIT {
         mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
                 // example for display the Response
                 .andDo((teams) -> System.out.println(teams.getResponse().getContentAsString()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.name", Is.is("Puzzle")))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }
 
     @Test
@@ -75,9 +73,7 @@ class TeamControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 55 not found"));
 
         mvc.perform(get("/api/v1/teams/55").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(status().isNotFound())
-        ;
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
     }
 
     @Test
@@ -85,13 +81,9 @@ class TeamControllerIT {
         BDDMockito.given(teamService.getAllTeams()).willReturn(teamList);
 
         mvc.perform(get("/api/v1/teams").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5)))
-                .andExpect(jsonPath("$[0].name", Is.is("Puzzle")))
-                .andExpect(jsonPath("$[1].id", Is.is(7)))
-                .andExpect(jsonPath("$[1].name", Is.is("OKR")))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is("Puzzle")))
+                .andExpect(jsonPath("$[1].id", Is.is(7))).andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
     @Test
@@ -99,9 +91,7 @@ class TeamControllerIT {
         BDDMockito.given(teamService.getAllTeams()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/teams").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(0)))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
@@ -111,48 +101,38 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
-        mvc.perform(post("/api/v1/teams")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\" TestTeam \"}"))
+        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"))
-        ;
+                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
         verify(teamService, times(1)).saveTeam(any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingTeamNullName() throws Exception {
-        BDDMockito.given(teamService.saveTeam(any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
+        BDDMockito.given(teamService.saveTeam(any())).willThrow(
+                new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
-        mvc.perform(post("/api/v1/teams")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 22, \"name\": null}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-        ;
+        mvc.perform(
+                post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"id\": 22, \"name\": null}"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldReturnChangedEntity() throws Exception {
         BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
 
-        mvc.perform(put("/api/v1/teams/5")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 5, \"name\": \"Puzzle\"}"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.name", Is.is("Puzzle")))
-        ;
+        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 5, \"name\": \"Puzzle\"}")).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5))).andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(teamService.updateTeam(anyLong(), any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
+        BDDMockito.given(teamService.updateTeam(anyLong(), any()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
 
-        mvc.perform(put("/api/v1/teams/5")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"id\":42,\"title\":\"FullObjective\"}"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-        ;
+        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\":42,\"title\":\"FullObjective\"}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

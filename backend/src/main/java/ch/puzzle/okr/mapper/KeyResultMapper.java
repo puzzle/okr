@@ -15,26 +15,20 @@ public class KeyResultMapper {
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
-        return new KeyResultDto(
-                keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
+        return new KeyResultDto(keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
-                keyResult.getOwner().getLastname(), keyResult.getQuarter().getId(), keyResult.getQuarter().getNumber(), keyResult.getQuarter().getYear(),
-                keyResult.getExpectedEvolution(), keyResult.getUnit(), keyResult.getBasisValue(), keyResult.getTargetValue());
+                keyResult.getOwner().getLastname(), keyResult.getQuarter().getId(), keyResult.getQuarter().getNumber(),
+                keyResult.getQuarter().getYear(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
+                keyResult.getBasisValue(), keyResult.getTargetValue());
     }
 
-
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        return KeyResult.Builder.builder()
-                .withId(keyResultDto.getId())
-                .withTitle(keyResultDto.getTitle())
+        return KeyResult.Builder.builder().withId(keyResultDto.getId()).withTitle(keyResultDto.getTitle())
                 .withQuarter(this.keyResultService.getQuarterById(keyResultDto.getQuarterId()))
                 .withOwner(this.keyResultService.getOwnerById(keyResultDto.getOwnerId()))
                 .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
-                .withDescription(keyResultDto.getDescription())
-                .withTargetValue(keyResultDto.getTargetValue())
-                .withBasisValue(keyResultDto.getBasicValue())
-                .withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit())
-                .build();
+                .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
+                .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
+                .withUnit(keyResultDto.getUnit()).build();
     }
 }

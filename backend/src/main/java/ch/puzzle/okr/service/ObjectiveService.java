@@ -25,8 +25,8 @@ public class ObjectiveService {
     }
 
     public Objective getObjective(Long id) {
-        return objectiveRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Objective with id %d not found", id)));
+        return objectiveRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Objective with id %d not found", id)));
     }
 
     public Objective saveObjective(Objective objective) {
@@ -38,9 +38,10 @@ public class ObjectiveService {
     }
 
     public Objective updateObjective(Long id, Objective objective) {
-        if(objective.getProgress() != null) {
+        if (objective.getProgress() != null) {
             List<KeyResult> keyResultList = (List<KeyResult>) this.keyResultRepository.findAll();
-            if(keyResultList.stream().anyMatch(keyResult -> keyResult.getObjective().getId().equals(objective.getId()))) {
+            if (keyResultList.stream()
+                    .anyMatch(keyResult -> keyResult.getObjective().getId().equals(objective.getId()))) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "Can't set the progress of an objective if you have already defined keyresults!");
             }
@@ -52,13 +53,17 @@ public class ObjectiveService {
 
     private void checkObjective(Objective objective) {
         if (objective.getTitle() == null || objective.getTitle().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Missing attribute title when creating objective");
         } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute description when creating objective");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Missing attribute description when creating objective");
         } else if (objective.getProgress() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute progress when creating objective");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Missing attribute progress when creating objective");
         } else if (objective.getCreatedOn() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed to generate attribute createdOn when creating objective");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Failed to generate attribute createdOn when creating objective");
         }
     }
 }

@@ -25,18 +25,15 @@ public class GoalController {
         this.keyResultService = keyResultService;
     }
 
-    @Operation(summary = "Get Goal",
-            description = "Get a Goal by ID.")
+    @Operation(summary = "Get Goal", description = "Get a Goal by ID.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a Goal with a specified ID.",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GoalDto.class))}),
-            @ApiResponse(responseCode = "404", description = "Did not find a Goal with a specified ID.", content = @Content)
-    })
+            @ApiResponse(responseCode = "200", description = "Returned a Goal with a specified ID.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = GoalDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find a Goal with a specified ID.", content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<GoalDto> getGoalById(
-            @Parameter(description = "The ID for getting a Goal.", required = true)
-            @PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.goalMapper.toDto(this.keyResultService.getKeyResultById(id)));
+            @Parameter(description = "The ID for getting a Goal.", required = true) @PathVariable long id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.goalMapper.toDto(this.keyResultService.getKeyResultById(id)));
     }
 }

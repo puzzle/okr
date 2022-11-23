@@ -20,7 +20,7 @@ public class ProgressService {
     private final ObjectiveRepository objectiveRepository;
 
     public ProgressService(KeyResultRepository keyResultRepository, MeasureRepository measureRepository,
-                           ObjectiveService objectiveService, ObjectiveRepository objectiveRepository) {
+            ObjectiveService objectiveService, ObjectiveRepository objectiveRepository) {
         this.keyResultRepository = keyResultRepository;
         this.measureRepository = measureRepository;
         this.objectiveService = objectiveService;
@@ -38,23 +38,16 @@ public class ProgressService {
         List<KeyResult> keyResultList = (List<KeyResult>) this.keyResultRepository.findAll();
         List<Measure> measureList = (List<Measure>) this.measureRepository.findAll();
 
-        //Map KeyResults to their Progress
-        Map<KeyResult, Integer> keyResultsProgress = keyResultList
-                .stream()
+        // Map KeyResults to their Progress
+        Map<KeyResult, Integer> keyResultsProgress = keyResultList.stream()
                 .filter(keyResult -> keyResult.getObjective().getId().equals(objectiveId))
-                .collect(
-                        Collectors.toMap(
-                                keyResult -> keyResult,
-                                keyResult -> measureList
-                                        .stream()
-                                        .filter(measure -> measure.getKeyResult().getId().equals(keyResult.getId()))
-                                        .map(Measure::getValue)
-                                        .reduce((first, second) -> second)
-                                        .orElse(0))
-                );
+                .collect(Collectors.toMap(keyResult -> keyResult,
+                        keyResult -> measureList.stream()
+                                .filter(measure -> measure.getKeyResult().getId().equals(keyResult.getId()))
+                                .map(Measure::getValue).reduce((first, second) -> second).orElse(0)));
         /*
-        Calculate the progress for each keyResult in percent and return the average of
-        the progress of all keyResults in percentage
+         * Calculate the progress for each keyResult in percent and return the average of the progress of all keyResults
+         * in percentage
          */
         return keyResultsProgress.keySet().stream()
                 .map(keyResult -> keyResultsProgress.get(keyResult).doubleValue()

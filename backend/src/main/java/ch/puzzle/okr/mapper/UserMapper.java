@@ -11,12 +11,8 @@ public class UserMapper {
     }
 
     public User toUser(UserDto userDto) {
-        return User.Builder.builder()
-                .withId(userDto.getId())
-                .withUsername(userDto.getUsername())
-                .withFirstname(userDto.getFirstname())
-                .withLastname(userDto.getLastname())
-                .withEmail(userDto.getEmail())
+        return User.Builder.builder().withId(userDto.getId()).withUsername(userDto.getUsername())
+                .withFirstname(userDto.getFirstname()).withLastname(userDto.getLastname()).withEmail(userDto.getEmail())
                 .build();
     }
 }

@@ -1,8 +1,12 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.TeamDto;
+import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.TeamMapper;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.service.ObjectiveService;
 import ch.puzzle.okr.service.TeamService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -40,6 +44,11 @@ class TeamControllerIT {
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static Team teamTestCreating = Team.Builder.builder().withId(1L).withName("TestTeam").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
+    static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+    static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
+    static List<Objective> objectiveList = Arrays.asList(objective1,objective2);
+    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L, 1, 2022, "This is a description", 20.0);
+    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, 1, 2022, "This is a description", 20.0);
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
     static TeamDto teamOkrDto = new TeamDto(7L, "OKR");
     @Autowired
@@ -48,12 +57,19 @@ class TeamControllerIT {
     private TeamService teamService;
     @MockBean
     private TeamMapper teamMapper;
+    @MockBean
+    private ObjectiveService objectiveService;
+
+    @MockBean
+    private ObjectiveMapper objectiveMapper;
 
     @BeforeEach
     void setUp() {
         // setup team mapper
         BDDMockito.given(teamMapper.toDto(teamPuzzle)).willReturn(teamPuzzleDto);
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
+        BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
+        BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
     }
 
     @Test
@@ -134,5 +150,17 @@ class TeamControllerIT {
         mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\":42,\"title\":\"FullObjective\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnListOfObjectives() throws Exception {
+        BDDMockito.given(objectiveService.getObjectivesByTeam(anyLong())).willReturn(objectiveList);
+
+        mvc.perform(get("/api/v1/teams/1/objectives")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(5)))
+                .andExpect(jsonPath("$[1].id", Is.is(7)));
     }
 }

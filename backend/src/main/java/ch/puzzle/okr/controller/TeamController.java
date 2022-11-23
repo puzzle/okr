@@ -59,7 +59,7 @@ public class TeamController {
     })
     @GetMapping("/{id}/objectives")
     public ResponseEntity<List<ObjectiveDto>> getObjectivesByTeamId(
-            @Parameter(description = "The ID for getting a Team.", required = true)
+            @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = true)
             @PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK).body(this.objectiveService.getObjectivesByTeam(id).stream()
                 .map(objectiveMapper::toDto)

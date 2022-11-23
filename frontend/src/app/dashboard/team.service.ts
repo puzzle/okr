@@ -7,8 +7,8 @@ export interface Team {
   name: string;
 }
 
-export interface OkrCycle {
-  cycle: string;
+export interface OkrQuarter {
+  quarter: string;
 }
 
 @Injectable({
@@ -24,14 +24,15 @@ export class TeamService {
   }
 
   public getQuarter(date = new Date()) {
-    let cycleList: OkrCycle[] = [];
+    let quarterList: OkrQuarter[] = [];
 
     let currentQuarter: number = Math.floor(date.getMonth() / 3 + 1);
     let currentYear: number = date.getFullYear();
-    const currentCycle: OkrCycle = {
-      cycle: currentYear.toString().slice(-2) + '-' + currentQuarter.toString(),
+    const currentCycle: OkrQuarter = {
+      quarter:
+        currentYear.toString().slice(-2) + '-' + currentQuarter.toString(),
     };
-    cycleList!.push(currentCycle);
+    quarterList!.push(currentCycle);
 
     let pastQuarter: number;
     let year: number = currentYear;
@@ -42,10 +43,10 @@ export class TeamService {
         pastQuarter = currentQuarter - 1;
       }
       currentQuarter = pastQuarter;
-      const pastCycle: OkrCycle = {
-        cycle: year.toString().slice(-2) + '-' + pastQuarter.toString(),
+      const pastCycle: OkrQuarter = {
+        quarter: year.toString().slice(-2) + '-' + pastQuarter.toString(),
       };
-      cycleList.push(pastCycle);
+      quarterList.push(pastCycle);
     }
 
     if (currentQuarter == 4) {
@@ -53,11 +54,12 @@ export class TeamService {
     } else {
       currentQuarter += 1;
     }
-    const futureCycle: OkrCycle = {
-      cycle: currentYear.toString().slice(-2) + '-' + currentQuarter.toString(),
+    const futureCycle: OkrQuarter = {
+      quarter:
+        currentYear.toString().slice(-2) + '-' + currentQuarter.toString(),
     };
-    cycleList.push(futureCycle);
+    quarterList.push(futureCycle);
 
-    return cycleList!;
+    return quarterList!;
   }
 }

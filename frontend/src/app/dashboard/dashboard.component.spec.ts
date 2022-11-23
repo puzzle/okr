@@ -15,12 +15,12 @@ describe('DashboardComponent', () => {
   beforeEach(async () => {
     teamServiceMock = jasmine.createSpyObj(['getTeams', 'getQuarter']);
     teamServiceMock.getQuarter.and.returnValue([
-      { cycle: '22-4' },
-      { cycle: '22-3' },
-      { cycle: '22-2' },
-      { cycle: '22-1' },
-      { cycle: '21-4' },
-      { cycle: '23-1' },
+      { quarter: '22-4' },
+      { quarter: '22-3' },
+      { quarter: '22-2' },
+      { quarter: '22-1' },
+      { quarter: '21-4' },
+      { quarter: '23-1' },
     ]);
     teamServiceMock.getTeams.and.returnValue(
       of([
@@ -56,9 +56,9 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  it('should display 6 items in cycle dropdown', () => {
+  it('should display 6 items in quarter dropdown', () => {
     const dropdownItems = fixture.debugElement.queryAll(
-      By.css('.cycle-dropdown')
+      By.css('.quarter-dropdown')
     );
     expect(dropdownItems.length).toEqual(6);
   });

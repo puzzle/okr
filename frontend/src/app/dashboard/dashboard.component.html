@@ -12,21 +12,21 @@
         <mat-option
           class="team-dropdown"
           *ngFor="let team of teamList | async"
-          [value]="team.name"
+          [value]="team.id"
           >{{ team.name }}</mat-option
         >
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Zyklus</mat-label>
-      <mat-select (selectionChange)="changeCycleFilter($event.value)">
+      <mat-label>Quarter</mat-label>
+      <mat-select (selectionChange)="changeQuarterFilter($event.value)">
         <mat-option
-          class="cycle-dropdown"
-          *ngFor="let cycle of cycleList"
-          [value]="cycle.cycle"
+          class="quarter-dropdown"
+          *ngFor="let quarter of quarterList"
+          [value]="quarter.quarter"
         >
-          {{ cycle.cycle }}
+          {{ quarter.quarter }}
         </mat-option>
       </mat-select>
     </mat-form-field>

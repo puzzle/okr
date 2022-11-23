@@ -1,12 +1,7 @@
-<div class="teamDiv" *ngFor="let team of teams | async">
-  <h1>{{ team.name }} Ziele</h1>
-  <!--  <div-->
-  <!--    *ngFor="-->
-  <!--      let objective of this.objectiveService.getObjectivesOfTeam(team.id)-->
-  <!--        | async-->
-  <!--    "-->
-  <!--  >-->
-  <!--    <hr />-->
-  <!--        Objective Row Component here-->
-  <!--  </div>-->
+<h1 class="goal-heading">{{ team.name }} Ziele</h1>
+<div class="objective-rows">
+  <div class="objective-row" *ngFor="let objective of objectiveList | async">
+    <hr />
+    {{ objective.title }}
+  </div>
 </div>

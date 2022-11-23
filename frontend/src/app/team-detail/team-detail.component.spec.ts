@@ -40,20 +40,10 @@ describe('TeamDetailComponent', () => {
     },
   ]);
 
-  let teamsList: Observable<Team[]> = of([
-    {
-      id: 1,
-      name: 'Puzzle ITC',
-    },
-    {
-      id: 2,
-      name: 'dev/ruby',
-    },
-    {
-      id: 3,
-      name: 'dev/java',
-    },
-  ]);
+  let team: Team = {
+    id: 1,
+    name: 'Puzzle ITC',
+  };
 
   beforeEach(async () => {
     mockObjectiveService = jasmine.createSpyObj(['getObjectivesOfTeam']);
@@ -69,7 +59,7 @@ describe('TeamDetailComponent', () => {
 
     fixtureTeamDetails = TestBed.createComponent(TeamDetailComponent);
     componentTeamDetails = fixtureTeamDetails.componentInstance;
-    componentTeamDetails.teams = teamsList;
+    componentTeamDetails.team = team;
     fixtureTeamDetails.detectChanges();
   });
 
@@ -77,33 +67,38 @@ describe('TeamDetailComponent', () => {
     expect(componentTeamDetails).toBeTruthy();
   });
 
-  it('should create 3 teams', () => {
+  it('should have 1 title from team', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('h1').length
-    ).toEqual(3);
+    ).toEqual(1);
   });
 
-  it('should create 6 divs (3 Divs with team names and 6 divs with objectives)', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('div').length
-    ).toEqual(9);
-  });
-
-  it('should have Puzzle ITC Ziele at the top', () => {
+  it('should have title Puzzle ITC Ziele', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
     ).toEqual('Puzzle ITC Ziele');
   });
 
-  it('should have dev/java Ziele at the end', () => {
+  it('should have objective title as objective row', () => {
     expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('h1')[2].textContent
-    ).toEqual('dev/java Ziele');
+      fixtureTeamDetails.nativeElement.querySelectorAll('.objective-row')[0]
+        .textContent
+    ).toEqual(' Wir wollen unseren Umsatz verdoppeln ');
+    expect(
+      fixtureTeamDetails.nativeElement.querySelectorAll('.objective-row')[1]
+        .textContent
+    ).toEqual(' Wir wollen unser Personal verdreifachen ');
   });
 
-  it('should create 6 hr when having 3 teams with 2 objectives', () => {
+  it('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {
+    expect(
+      fixtureTeamDetails.nativeElement.querySelectorAll('div').length
+    ).toEqual(3);
+  });
+
+  it('should create 2 hr when having 1 team with 1 objective', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('hr').length
-    ).toEqual(6);
+    ).toEqual(2);
   });
 });

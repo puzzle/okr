@@ -9,9 +9,14 @@ import { Objective, ObjectiveService } from './objective.service';
   styleUrls: ['./team-detail.component.scss'],
 })
 export class TeamDetailComponent implements OnInit {
-  @Input() teams!: Observable<Team[]>;
+  @Input() team!: Team;
+  objectiveList!: Observable<Objective[]>;
 
   constructor(public objectiveService: ObjectiveService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.objectiveList = this.objectiveService.getObjectivesOfTeam(
+      this.team.id
+    );
+  }
 }

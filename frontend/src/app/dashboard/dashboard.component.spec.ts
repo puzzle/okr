@@ -69,4 +69,10 @@ describe('DashboardComponent', () => {
     );
     expect(dropdownItems.length).toEqual(2);
   });
+
+  it('should display 2 team detail components when having 2 teams', () => {
+    expect(
+      fixture.nativeElement.querySelectorAll('app-team-detail').length
+    ).toEqual(2);
+  });
 });

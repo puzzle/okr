@@ -19,10 +19,10 @@ export interface Objective {
   providedIn: 'root',
 })
 export class ObjectiveService {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {}
 
   public getObjectivesOfTeam(teamId: number): Observable<Objective[]> {
-    return this._httpClient
+    return this.httpClient
       .get<Objective[]>(
         'http://localhost:4200/api/v1/teams/' + teamId + '/objectives'
       )

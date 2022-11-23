@@ -17,7 +17,8 @@ public class ObjectiveService {
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
 
-    public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository, TeamRepository teamRepository) {
+    public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
+            TeamRepository teamRepository) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
@@ -36,7 +37,8 @@ public class ObjectiveService {
         if (teamRepository.findById(id).isPresent()) {
             return objectiveRepository.findByTeamId(id);
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Could not find team with id %d", id));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    String.format("Could not find team with id %d", id));
         }
     }
 

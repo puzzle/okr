@@ -46,9 +46,11 @@ class TeamControllerIT {
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
     static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
-    static List<Objective> objectiveList = Arrays.asList(objective1,objective2);
-    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L, 1, 2022, "This is a description", 20.0);
-    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, 1, 2022, "This is a description", 20.0);
+    static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
+    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
+            1, 2022, "This is a description", 20.0);
+    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
+            1, 2022, "This is a description", 20.0);
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
     static TeamDto teamOkrDto = new TeamDto(7L, "OKR");
     @Autowired
@@ -156,11 +158,8 @@ class TeamControllerIT {
     void shouldReturnListOfObjectives() throws Exception {
         BDDMockito.given(objectiveService.getObjectivesByTeam(anyLong())).willReturn(objectiveList);
 
-        mvc.perform(get("/api/v1/teams/1/objectives")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5)))
-                .andExpect(jsonPath("$[1].id", Is.is(7)));
+        mvc.perform(get("/api/v1/teams/1/objectives").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[1].id", Is.is(7)));
     }
 }

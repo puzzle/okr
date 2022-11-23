@@ -4,11 +4,15 @@
   <div>
     <mat-form-field appearance="fill" class="filter-dropdown">
       <mat-label>Team</mat-label>
-      <mat-select [formControl]="teams" multiple>
+      <mat-select
+        [formControl]="teams"
+        multiple
+        (selectionChange)="changeTeamFilter($event.value)"
+      >
         <mat-option
           class="team-dropdown"
           *ngFor="let team of teamList | async"
-          [value]="team.id"
+          [value]="team.name"
           >{{ team.name }}</mat-option
         >
       </mat-select>
@@ -16,7 +20,7 @@
 
     <mat-form-field appearance="fill">
       <mat-label>Zyklus</mat-label>
-      <mat-select>
+      <mat-select (selectionChange)="changeCycleFilter($event.value)">
         <mat-option
           class="cycle-dropdown"
           *ngFor="let cycle of cycleList"

@@ -20,4 +20,12 @@ export class DashboardComponent implements OnInit {
     this.teamList = this.teamService.getTeams();
     this.cycleList = this.teamService.getQuarter();
   }
+
+  changeTeamFilter(value: Team[]) {
+    console.log(value);
+  }
+
+  changeCycleFilter(value: OkrCycle) {
+    console.log(value);
+  }
 }

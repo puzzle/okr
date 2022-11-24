@@ -63,7 +63,7 @@ class GoalControllerIT {
         mvc.perform(get("/api/v1/goals/1").contentType(MediaType.APPLICATION_JSON))
                 // example for display the Response
                 .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.objective.id", Is.is(2)))
                 .andExpect(jsonPath("$.keyresult.id", Is.is(1))).andExpect(jsonPath("$.teamId", Is.is(1)))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")));
     }

@@ -1,7 +1,7 @@
 <div class="dashboard-container">
   <p class="headline-large">Ziele und Resultate</p>
 
-  <div>
+  <div class="dashboard-filter">
     <mat-form-field appearance="fill" class="filter-dropdown">
       <mat-label>Team</mat-label>
       <mat-select
@@ -30,5 +30,9 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+  </div>
+
+  <div *ngFor="let team of teamList | async">
+    <app-team-detail [team]="team"></app-team-detail>
   </div>
 </div>

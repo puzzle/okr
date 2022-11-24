@@ -40,4 +40,4 @@ jobs:
           distribution: 'adopt'
 
       - name: Use Maven to run unittests and integration tests
-        run: mvn clean verify clean test-compile failsafe:integration-test
+        run: mvn clean verify

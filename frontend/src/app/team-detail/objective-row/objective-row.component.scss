@@ -1,0 +1,49 @@
+.informationRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.objectiveTitle {
+  display: flex;
+  width: 40%;
+  justify-content: flex-start;
+}
+
+.objectiveProperties {
+  display: flex;
+  width: 60%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.progressPart {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 40%;
+}
+
+#progressSpan {
+  color: dimgray;
+  font-weight: bold;
+}
+
+.objectiveProgress {
+  width: 100%;
+}
+
+.objectiveActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 20%;
+}
+
+.spaceBetween {
+  margin-right: 10%;
+}
+
+.pointer {
+  cursor: pointer;
+}

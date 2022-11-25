@@ -2,6 +2,6 @@
 <div class="objective-rows">
   <div class="objective-row" *ngFor="let objective of objectiveList | async">
     <hr />
-    {{ objective.title }}
+    <app-objective-row [objective]="objective"></app-objective-row>
   </div>
 </div>

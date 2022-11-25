@@ -12,15 +12,16 @@
     <div class="objectiveActions">
       <mat-icon class="spaceBetween pointer">keyboard_arrow_down</mat-icon>
       <button
+        class="triggerBtn"
         mat-icon-button
         [matMenuTriggerFor]="objectiveMenu"
         aria-label="Button to edit objectives"
       >
         <mat-icon class="pointer">more_vert</mat-icon>
       </button>
-      <mat-menu #objectiveMenu="matMenu" yPosition="above">
+      <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
         <button mat-menu-item>
-          <span>Resultat hinzufügen</span>
+          <span class="addResult"> Resultat hinzufügen</span>
         </button>
         <button mat-menu-item>
           <span>Ziel bearbeiten</span>

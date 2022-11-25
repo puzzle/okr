@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ObjectiveRowComponent } from './objective-row.component';
 import { Objective } from '../objective.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { By } from '@angular/platform-browser';
 
 describe('ObjectiveComponent', () => {
   let component: ObjectiveRowComponent;
@@ -71,5 +72,13 @@ describe('ObjectiveComponent', () => {
     expect(fixture.nativeElement.querySelector('button').textContent).toEqual(
       'more_vert'
     );
+  });
+
+  it('should have text add result in menu', () => {
+    const trigger = fixture.debugElement.query(By.css('.triggerBtn'));
+    trigger.triggerEventHandler('click', {});
+    expect(
+      fixture.nativeElement.querySelector('.matMenu').children.count
+    ).toEqual(4);
   });
 });

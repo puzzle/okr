@@ -79,17 +79,6 @@ describe('TeamDetailComponent', () => {
     ).toEqual('Puzzle ITC Ziele');
   });
 
-  it('should have objective title as objective row', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('.objective-row')[0]
-        .textContent
-    ).toEqual(' Wir wollen unseren Umsatz verdoppeln ');
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('.objective-row')[1]
-        .textContent
-    ).toEqual(' Wir wollen unser Personal verdreifachen ');
-  });
-
   it('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('div').length

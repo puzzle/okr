@@ -19,7 +19,7 @@ export class TeamService {
 
   public getTeams(): Observable<Team[]> {
     return this.httpClient
-      .get<Team[]>('http://localhost:4200/api/v1/teams')
+      .get<Team[]>('api/v1/teams')
       .pipe(tap((data) => console.log(data)));
   }
 

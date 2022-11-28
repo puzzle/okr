@@ -96,8 +96,6 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        KeyResult keyResult = KeyResult.Builder.builder().withObjective(Objective.Builder.builder().withId(1L).build())
-                .build();
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);

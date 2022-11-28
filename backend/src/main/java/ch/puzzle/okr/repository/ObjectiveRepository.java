@@ -18,4 +18,6 @@ public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
             nativeQuery = true
     )
     Double getProgressOfObjective(@Param("objective_id") Long objectiveId);
+
+    List<Objective> findByTeamId(long id);
 }

@@ -58,7 +58,6 @@ class MeasureControllerIT {
     private MeasureService measureService;
     @MockBean
     private MeasureMapper measureMapper;
-
     @MockBean
     private ProgressService progressService;
 
@@ -121,13 +120,12 @@ class MeasureControllerIT {
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
-
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
+                .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30)))
                 .andExpect(jsonPath("$.createdById", Is.is(1)))

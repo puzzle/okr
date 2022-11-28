@@ -26,9 +26,10 @@ public class KeyResultController {
     private final KeyResultService keyResultService;
     private final KeyResultMapper keyResultMapper;
     private final MeasureMapper measureMapper;
+    private final ProgressService progressService;
 
     public KeyResultController(KeyResultService keyResultService, KeyResultMapper keyResultMapper,
-            MeasureMapper measureMapper) {
+            MeasureMapper measureMapper, ProgressService progressService) {
         this.keyResultService = keyResultService;
         this.keyResultMapper = keyResultMapper;
         this.measureMapper = measureMapper;

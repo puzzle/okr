@@ -48,9 +48,9 @@ class TeamControllerIT {
     static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle("Objective 2").build();
     static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
-            1, 2022, "This is a description", 20.0);
+            1, 2022, "This is a description", 20L);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
-            1, 2022, "This is a description", 20.0);
+            1, 2022, "This is a description", 20L);
     static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
     static TeamDto teamOkrDto = new TeamDto(7L, "OKR");
     @Autowired

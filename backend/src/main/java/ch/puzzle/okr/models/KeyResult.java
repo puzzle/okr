@@ -31,11 +31,9 @@ public class KeyResult {
     @ManyToOne
     private Quarter quarter;
 
-    @Size(min = 2, max = 250)
     private ExpectedEvolution expectedEvolution;
 
     @NotNull
-    @NotBlank
     private Unit unit;
 
     @NotNull

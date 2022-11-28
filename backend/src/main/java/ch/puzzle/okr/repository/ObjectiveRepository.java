@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
 
     @Query(
-            value = "select AVG((CAST(coalesce(measure_value, 0) as decimal)/CAST(target_value as decimal))*100) from\n" +
+            value = "select coalesce(AVG((CAST(coalesce(measure_value, 0) as decimal)/CAST(target_value as decimal))*100), 0) from\n" +
                     "(select max(created_on), max(value) as measure_value, max(target_value) as target_value\n" +
                     "from (select key_result.id, target_value, value, m.created_on, objective_id\n" +
                     "      from key_result LEFT JOIN measure m on key_result.id = m.key_result_id) as sub where objective_id = :objective_id group by id) as sub2",

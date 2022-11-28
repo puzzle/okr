@@ -4,7 +4,6 @@ import ch.puzzle.okr.OkrApplication;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ class ProgressServiceTestIT {
     private MeasureRepository measureRepository;
 
     @Test
-    @Disabled
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).build();
@@ -41,14 +39,13 @@ class ProgressServiceTestIT {
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.now()).build();
 
         this.keyResultRepository.save(keyResult);
+        assertEquals(20, this.objectiveService.getObjective(1L).getProgress());
         this.progressService.updateObjectiveProgress(1L);
-
         Objective updatedObjective = this.objectiveService.getObjective(1L);
         assertEquals(44L, updatedObjective.getProgress());
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoMeasures() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withObjective(objective).build();
@@ -57,13 +54,13 @@ class ProgressServiceTestIT {
                 .withCreatedOn(LocalDateTime.now()).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
 
         this.measureRepository.save(measure);
+        assertEquals(20, this.objectiveService.getObjective(1L).getProgress());
         this.progressService.updateObjectiveProgress(1L);
         Objective updatedObjective = this.objectiveService.getObjective(1L);
         assertEquals(63, updatedObjective.getProgress());
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoKeyResults() {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withObjective(objective).build();
@@ -72,6 +69,8 @@ class ProgressServiceTestIT {
                 .withCreatedOn(LocalDateTime.now()).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
 
         this.measureRepository.save(measure);
+        assertEquals(60, this.objectiveService.getObjective(2L).getProgress());
+
         this.progressService.updateObjectiveProgress(2L);
         Objective updatedObjective = this.objectiveService.getObjective(2L);
         assertEquals(45, updatedObjective.getProgress());

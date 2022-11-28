@@ -20,16 +20,16 @@
         <mat-icon class="pointer">more_vert</mat-icon>
       </button>
       <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
-        <button mat-menu-item>
+        <button mat-menu-item (click)="addResult()">
           <span class="addResult"> Resultat hinzufügen</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="editGoal()">
           <span>Ziel bearbeiten</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="duplicateGoal()">
           <span>Ziel duplizieren</span>
         </button>
-        <button mat-menu-item>
+        <button mat-menu-item (click)="deleteGoal()">
           <span>Ziel löschen</span>
         </button>
       </mat-menu>

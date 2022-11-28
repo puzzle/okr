@@ -35,13 +35,10 @@ class ProgressServiceTestIT {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).build();
         User user = User.Builder.builder().withId(1L).build();
-        KeyResult keyResult = KeyResult.Builder.builder().withObjective(objective)
-                .withTargetValue(100L).withTitle("HelloWorld")
-                .withDescription("Very Important").withBasisValue(50L)
-                .withQuarter(quarter).withUnit(Unit.PERCENT)
-                .withExpectedEvolution(ExpectedEvolution.DECREASE)
-                .withOwner(user).withCreatedBy(user)
-                .withCreatedOn(LocalDateTime.now()).build();
+        KeyResult keyResult = KeyResult.Builder.builder().withObjective(objective).withTargetValue(100L)
+                .withTitle("HelloWorld").withDescription("Very Important").withBasisValue(50L).withQuarter(quarter)
+                .withUnit(Unit.PERCENT).withExpectedEvolution(ExpectedEvolution.DECREASE).withOwner(user)
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.now()).build();
 
         this.keyResultRepository.save(keyResult);
         this.progressService.updateObjectiveProgress(1L);
@@ -56,9 +53,8 @@ class ProgressServiceTestIT {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withObjective(objective).build();
         User user = User.Builder.builder().withId(1L).build();
-        Measure measure = Measure.Builder.builder().withValue(90)
-                .withKeyResult(keyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.now())
-                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+        Measure measure = Measure.Builder.builder().withValue(90).withKeyResult(keyResult).withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.now()).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
 
         this.measureRepository.save(measure);
         this.progressService.updateObjectiveProgress(1L);
@@ -72,9 +68,8 @@ class ProgressServiceTestIT {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withObjective(objective).build();
         User user = User.Builder.builder().withId(1L).build();
-        Measure measure = Measure.Builder.builder().withValue(90)
-                .withKeyResult(keyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.now())
-                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+        Measure measure = Measure.Builder.builder().withValue(90).withKeyResult(keyResult).withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.now()).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
 
         this.measureRepository.save(measure);
         this.progressService.updateObjectiveProgress(2L);

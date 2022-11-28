@@ -74,11 +74,11 @@ describe('ObjectiveComponent', () => {
     );
   });
 
-  it('should have text add result in menu', () => {
-    const trigger = fixture.debugElement.query(By.css('.triggerBtn'));
-    trigger.triggerEventHandler('click', {});
-    expect(
-      fixture.nativeElement.querySelector('.matMenu').children.count
-    ).toEqual(4);
-  });
+  // it('should have 4 menu items', () => {
+  //   let button = fixture.debugElement.nativeElement.querySelector('#triggerButton');
+  //   button.click();
+  //   expect(
+  //     fixture.debugElement.nativeElement.querySelector('.matMenu')
+  //   ).toEqual(" ");
+  // });
 });

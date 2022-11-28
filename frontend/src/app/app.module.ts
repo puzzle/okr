@@ -13,9 +13,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TeamDetailComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    TeamDetailComponent,
+    ObjectiveRowComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

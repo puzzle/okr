@@ -22,7 +22,6 @@ public class ProgressService {
     }
 
     public Double getObjectiveProgressInPercent(Objective objectiveToUpdate) {
-        Double progress = this.objectiveRepository.getProgressOfObjective(objectiveToUpdate.getId());
-        return progress == null ? 0 : progress;
+        return this.objectiveRepository.getProgressOfObjective(objectiveToUpdate.getId());
     }
 }

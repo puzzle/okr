@@ -21,7 +21,6 @@ class ProgressServiceTest {
     private ProgressService progressService;
 
     @Test
-    @Disabled
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -29,7 +28,6 @@ class ProgressServiceTest {
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoMeasures() {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -37,7 +35,6 @@ class ProgressServiceTest {
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoKeyResults() {
         Objective objective = Objective.Builder.builder().withId(3L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);

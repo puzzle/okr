@@ -16,7 +16,7 @@ public class ProgressService {
 
     public void updateObjectiveProgress(Long objectiveId) {
         Objective objective = this.objectiveService.getObjective(objectiveId);
-        Double progress = this.objectiveRepository.getProgressOfObjective(objective.getId());
+        Long progress = Math.round(this.objectiveRepository.getProgressOfObjective(objective.getId()));
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
     }

@@ -61,6 +61,7 @@ public class KeyResultController {
         keyResultDto.setId(id);
         KeyResultDto updatedKeyResult = this.keyResultMapper
                 .toDto(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+        this.progressService.updateObjectiveProgress(updatedKeyResult.getObjectiveId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

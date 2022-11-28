@@ -9,7 +9,7 @@ public class GoalDto {
     private GoalKeyResultDto keyresult;
     private Long teamId;
     private String teamName;
-    private Double progress;
+    private Long progress;
     private Integer quarterNumber;
     private Integer quarterYear;
     private ExpectedEvolution expectedEvolution;
@@ -17,7 +17,7 @@ public class GoalDto {
     private Long basicValue;
     private Long targetValue;
 
-    public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Double progress,
+    public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Long progress,
             Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution, Unit unit, Long basicValue,
             Long targetValue) {
         this.objective = objective;
@@ -65,11 +65,11 @@ public class GoalDto {
         this.teamName = teamName;
     }
 
-    public Double getProgress() {
+    public Long getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Long progress) {
         this.progress = progress;
     }
 

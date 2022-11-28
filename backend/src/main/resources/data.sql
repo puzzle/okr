@@ -23,9 +23,9 @@ insert into quarter(id, year, number) values
         (3, '2020', 1);
 
 insert into objective(id, title, owner_id, team_id, quarter_id, description, progress, created_on) values
-        (1, 'Objective 1', 1, 1, 1, 'This is the description of Objective 1', '20.0', '2022-01-01'),
-        (2, 'Objective 2', 2, 2, 2, 'This is the description of Objective 2', '60.0', '2019-01-01'),
-        (3, 'Objective 3', 4, 3, 3, 'This is the description of Objective 3', '80.0', '2020-01-01');
+        (1, 'Objective 1', 1, 1, 1, 'This is the description of Objective 1', '20', '2022-01-01'),
+        (2, 'Objective 2', 2, 2, 2, 'This is the description of Objective 2', '60', '2019-01-01'),
+        (3, 'Objective 3', 4, 3, 3, 'This is the description of Objective 3', '80', '2020-01-01');
 
 insert into key_result(id, objective_id, title, description, owner_id, quarter_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on) values
         (1, 1, 'Keyresult 1', 'This is the description of Keyresult 1', 1, 1, 0, 0, 0, 100, 1, '2022-01-01'),

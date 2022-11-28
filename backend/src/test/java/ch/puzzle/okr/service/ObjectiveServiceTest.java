@@ -61,13 +61,13 @@ class ObjectiveServiceTest {
         Team team2 = Team.Builder.builder().withId(2L).withName("Team2").build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
-                .withQuarter(quarter).withDescription("This is our description").withProgress(33.3)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
-                .withQuarter(quarter).withDescription("This is our description").withProgress(33.3)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjective3 = Objective.Builder.builder().withTitle("FullObjective3").withOwner(user).withTeam(team2)
-                .withQuarter(quarter).withDescription("This is our description").withProgress(33.3)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);
     }
@@ -117,7 +117,7 @@ class ObjectiveServiceTest {
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("This is our description", savedObjective.getDescription());
-        assertEquals(33.3, savedObjective.getProgress());
+        assertEquals(33L, savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
         assertEquals(2020, savedObjective.getQuarter().getYear());
@@ -139,13 +139,13 @@ class ObjectiveServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withProgress(43.21).withCreatedOn(LocalDateTime.now()).build();
+                .withDescription("Description").withProgress(43L).withCreatedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective1);
 
         Objective savedObjective = objectiveService.saveObjective(objective1);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals(33.3, savedObjective.getProgress());
+        assertEquals(33L, savedObjective.getProgress());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
     }
 
@@ -199,7 +199,7 @@ class ObjectiveServiceTest {
     void shouldReturnObjectiveProperly() {
         Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
                 .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5.5)
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
                 .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
@@ -216,7 +216,7 @@ class ObjectiveServiceTest {
     void shouldThrowBadRequestException() {
         Objective newObjective = Objective.Builder.builder().withId(1L).withTitle("Hello World")
                 .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5.5)
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
                 .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         KeyResult testKeyResult = KeyResult.Builder.builder().withObjective(newObjective).build();

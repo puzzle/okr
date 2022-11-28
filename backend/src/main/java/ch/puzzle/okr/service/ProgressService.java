@@ -16,12 +16,8 @@ public class ProgressService {
 
     public void updateObjectiveProgress(Long objectiveId) {
         Objective objective = this.objectiveService.getObjective(objectiveId);
-        Double progress = this.getObjectiveProgressInPercent(objective);
+        Double progress = this.objectiveRepository.getProgressOfObjective(objective.getId());
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
-    }
-
-    public Double getObjectiveProgressInPercent(Objective objectiveToUpdate) {
-        return this.objectiveRepository.getProgressOfObjective(objectiveToUpdate.getId());
     }
 }

@@ -72,7 +72,6 @@ class MeasureControllerIT {
     @Test
     void shouldGetAllMeasures() throws Exception {
         BDDMockito.given(measureService.getAllMeasures()).willReturn(measureList);
-        BDDMockito.given(progressService.getObjectiveProgressInPercent(any())).willReturn(5D);
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -89,7 +88,6 @@ class MeasureControllerIT {
     @Test
     void shouldGetAllMeasureIfNoMeasureExists() throws Exception {
         BDDMockito.given(measureService.getAllMeasures()).willReturn(Collections.emptyList());
-        BDDMockito.given(progressService.getObjectiveProgressInPercent(any())).willReturn(5D);
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -101,7 +99,6 @@ class MeasureControllerIT {
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
-        BDDMockito.given(progressService.getObjectiveProgressInPercent(any())).willReturn(5D);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
@@ -115,7 +112,6 @@ class MeasureControllerIT {
     void shouldReturnResponseStatusExceptionWhenCreatingMeasureNullName() throws Exception {
         BDDMockito.given(measureService.saveMeasure(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
-        BDDMockito.given(progressService.getObjectiveProgressInPercent(any())).willReturn(5D);
 
         mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null}"))
@@ -128,7 +124,6 @@ class MeasureControllerIT {
 
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
-        BDDMockito.given(progressService.getObjectiveProgressInPercent(any())).willReturn(5D);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)

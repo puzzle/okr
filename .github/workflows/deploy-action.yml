@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [ production ]
   push:
-    branches: [ feature/289-deploy ]
+    branches: [ feature/310-frontend-deployment ]
 
 
 jobs:

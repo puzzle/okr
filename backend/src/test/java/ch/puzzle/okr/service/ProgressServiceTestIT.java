@@ -16,11 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @Transactional
 @SpringBootTest(classes = OkrApplication.class)
-class ProgressServiceTest {
+class ProgressServiceTestIT {
     @Autowired
     private ProgressService progressService;
 
     @Test
+    @Disabled
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -28,6 +29,7 @@ class ProgressServiceTest {
     }
 
     @Test
+    @Disabled
     void checkProgressMethodWithNoMeasures() {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);
@@ -35,6 +37,7 @@ class ProgressServiceTest {
     }
 
     @Test
+    @Disabled
     void checkProgressMethodWithNoKeyResults() {
         Objective objective = Objective.Builder.builder().withId(3L).build();
         Double percentValue = this.progressService.getObjectiveProgressInPercent(objective);

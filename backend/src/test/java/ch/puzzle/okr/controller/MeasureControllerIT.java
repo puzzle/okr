@@ -41,7 +41,8 @@ class MeasureControllerIT {
     static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withObjective(objective).withTargetValue(50L).build())
+            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withObjective(objective)
+                    .withTargetValue(50L).build())
             .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
     static Measure anotherMeasure = Measure.Builder.builder().withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
@@ -95,7 +96,8 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        KeyResult keyResult = KeyResult.Builder.builder().withObjective(Objective.Builder.builder().withId(1L).build()).build();
+        KeyResult keyResult = KeyResult.Builder.builder().withObjective(Objective.Builder.builder().withId(1L).build())
+                .build();
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);

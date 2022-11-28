@@ -27,7 +27,7 @@ public class MeasureController {
     private final ProgressService progressService;
 
     public MeasureController(MeasureMapper measureMapper, MeasureService measureService,
-                             ProgressService progressService) {
+            ProgressService progressService) {
         this.measureMapper = measureMapper;
         this.measureService = measureService;
         this.progressService = progressService;

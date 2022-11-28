@@ -3,6 +3,9 @@ name: 'Deploy'
 on:
   pull_request:
     branches: [ production ]
+  push:
+    branches: [ feature/289-deploy ]
+
 
 jobs:
   okr-deploy:

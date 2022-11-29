@@ -39,7 +39,7 @@ describe('ObjectiveComponent', () => {
 
   it('should have objetive title as class objectiveTitle', () => {
     expect(
-      fixture.nativeElement.querySelector('.objectiveTitle').textContent
+      fixture.nativeElement.querySelector('mat-panel-title').textContent
     ).toEqual(objective.title);
   });
 
@@ -53,12 +53,6 @@ describe('ObjectiveComponent', () => {
     expect(
       fixture.nativeElement.querySelector('.objectiveProgress').value
     ).toEqual(objective.progress.toString());
-  });
-
-  it('should have right icon arrow down', () => {
-    expect(fixture.nativeElement.querySelector('.pointer').textContent).toEqual(
-      'keyboard_arrow_down'
-    );
   });
 
   it('should have menu button with icon', () => {

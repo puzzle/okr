@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
+import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './team-detail/objective-row/objective-detail/objective-detail.component';
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ObjectiveDetailComponent } from './team-detail/objective-row/objective-
     TeamDetailComponent,
     ObjectiveRowComponent,
     ObjectiveDetailComponent,
+    KeyresultDetailComponent,
   ],
   imports: [
     BrowserModule,

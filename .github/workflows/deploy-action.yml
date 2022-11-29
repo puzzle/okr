@@ -30,8 +30,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          server-id: github
+          settings-path: ${{ github.workspace }}
 
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker

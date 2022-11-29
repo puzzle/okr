@@ -23,9 +23,7 @@ export class ObjectiveService {
 
   public getObjectivesOfTeam(teamId: number): Observable<Objective[]> {
     return this.httpClient
-      .get<Objective[]>(
-        'http://localhost:4200/api/v1/teams/' + teamId + '/objectives'
-      )
+      .get<Objective[]>('api/v1/teams/' + teamId + '/objectives')
       .pipe(tap((data) => console.log(data)));
   }
 }

@@ -24,3 +24,19 @@
 .flex-end {
   justify-content: end;
 }
+
+.progress-bar-good .mat-progress-bar-fill::after {
+  background-color: green;
+}
+
+.progress-bar-medium .mat-progress-bar-fill::after {
+  background-color: orange;
+}
+
+.progress-bar-bad .mat-progress-bar-fill::after {
+  background-color: red;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+  background: #e4e8eb;
+}

@@ -3,13 +3,20 @@
     <mat-expansion-panel-header>
       <mat-panel-title>{{ this.element!.title }}</mat-panel-title>
       <mat-panel-description class="d-flex flex-end">
-        <div class="progressPart d-flex">
+        <div class="progressPart d-flex green-progress">
           <span id="progressSpan">{{ element!.progress }}%</span>
           <mat-progress-bar
             class="objectiveProgress"
             mode="determinate"
             value="{{ this.element!.progress }}"
-          ></mat-progress-bar>
+            [ngClass]="{
+              'progress-bar-bad': element!.progress < 40,
+              'progress-bar-medium': element!.progress < 70,
+              'progress-bar-good': element!.progress < 100
+            }"
+          >
+            ></mat-progress-bar
+          >
         </div>
         <button
           id="triggerButton"

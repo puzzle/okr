@@ -11,7 +11,10 @@ import { CommonModule } from '@angular/common';
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
   let fixtureTeamDetails: ComponentFixture<TeamDetailComponent>;
-  let mockObjectiveService;
+
+  const mockObjectiveService = {
+    getObjectivesOfTeam: jest.fn(),
+  };
 
   let objectiveList: Observable<Objective[]> = of([
     {
@@ -46,8 +49,7 @@ describe('TeamDetailComponent', () => {
   };
 
   beforeEach(async () => {
-    mockObjectiveService = jasmine.createSpyObj(['getObjectivesOfTeam']);
-    mockObjectiveService.getObjectivesOfTeam.and.returnValue(objectiveList);
+    mockObjectiveService.getObjectivesOfTeam.mockReturnValue(objectiveList);
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CommonModule],

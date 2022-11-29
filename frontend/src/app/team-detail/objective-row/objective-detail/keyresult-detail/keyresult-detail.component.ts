@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { KeyResultMeasure} from '../key-result.service';
+import { KeyResultMeasure } from '../key-result.service';
 
 @Component({
   selector: 'app-keyresult-detail',

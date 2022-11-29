@@ -6,4 +6,8 @@
   </p>
 </div>
 
-<div class="testDiv"></div>
+<div class="testDiv">
+  <div *ngFor="let keyResult of this.keyResultList | async">
+    <p>{{ keyResult.title }}</p>
+  </div>
+</div>

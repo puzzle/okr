@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export enum ExpectedEvolution {
   INCREASE,
@@ -13,7 +15,7 @@ export enum Unit {
   BINARY,
 }
 
-export interface KeyResults {
+export interface KeyResult {
   id: number;
   objectiveId: number;
   title: string;
@@ -33,6 +35,14 @@ export interface KeyResults {
 @Injectable({
   providedIn: 'root',
 })
-export class KeyresultService {
-  constructor() {}
+export class KeyResultService {
+  constructor(private _httpClient: HttpClient) {}
+
+  public getKeyResultsOfObjective(
+    objectiveId: number
+  ): Observable<KeyResult[]> {
+    return this._httpClient
+      .get<KeyResult[]>('/api/v1/objectives/' + objectiveId + '/keyresults')
+      .pipe(tap((data) => console.log(data)));
+  }
 }

@@ -44,7 +44,7 @@ class ProgressServiceTestIT {
         assertEquals(20, this.objectiveService.getObjective(1L).getProgress());
         this.progressService.updateObjectiveProgress(1L);
         Objective updatedObjective = this.objectiveService.getObjective(1L);
-        assertEquals(44L, updatedObjective.getProgress());
+        assertEquals(54L, updatedObjective.getProgress());
     }
 
     @Test

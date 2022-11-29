@@ -1,19 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-
-export interface Objective {
-  id: number;
-  title: String;
-  ownerId: number;
-  ownerFirstname: String;
-  ownerLastname: String;
-  quarterId: number;
-  quarterNumber: number;
-  quarterYear: number;
-  description: String;
-  progress: number;
-}
+import { Objective } from '../models/Objective';
 
 @Injectable({
   providedIn: 'root',

@@ -1,0 +1,39 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ this.element!.title }}
+      </mat-panel-title>
+      <mat-panel-description class="d-flex flex-end">
+        <div class="progressPart d-flex">
+          <span id="progressSpan">{{ element!.progress }}%</span>
+          <mat-progress-bar
+            class="objectiveProgress"
+            mode="determinate"
+            value="{{ this.element!.progress }}"
+          ></mat-progress-bar>
+        </div>
+        <button
+          id="triggerButton"
+          mat-icon-button
+          [matMenuTriggerFor]="objectiveMenu"
+          aria-label="Button to edit objectives"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon class="pointer">more_vert</mat-icon>
+        </button>
+        <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
+          <button
+            mat-menu-item
+            *ngFor="let menuEntry of menuEntries"
+            [routerLink]="menuEntry.routeLine"
+          >
+            <span> {{ menuEntry.displayName }}</span>
+          </button>
+        </mat-menu>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <ng-content></ng-content>
+  </mat-expansion-panel>
+</mat-accordion>

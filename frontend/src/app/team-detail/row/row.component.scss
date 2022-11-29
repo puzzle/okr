@@ -1,0 +1,26 @@
+.progressPart {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 40%;
+}
+
+#progressSpan {
+  color: dimgray;
+  font-weight: bold;
+}
+
+.objectiveProgress {
+  width: 100%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.d-flex {
+  display: flex;
+}
+.flex-end {
+  justify-content: end;
+}

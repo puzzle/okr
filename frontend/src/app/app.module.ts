@@ -13,14 +13,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
+import { RowComponent } from './team-detail/row/row.component';
+import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     TeamDetailComponent,
-    ObjectiveRowComponent,
+    RowComponent,
+    ObjectiveDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +38,8 @@ import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row
     MatButtonModule,
     MatProgressBarModule,
     ReactiveFormsModule,
+    MatExpansionModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -2,6 +2,8 @@
 <div class="objective-rows">
   <div class="objective-row" *ngFor="let objective of objectiveList | async">
     <hr />
-    <app-objective-row [objective]="objective"></app-objective-row>
+    <app-row [element]="objective" [menuEntries]="menuEntries">
+      <app-objective-detail></app-objective-detail>
+    </app-row>
   </div>
 </div>

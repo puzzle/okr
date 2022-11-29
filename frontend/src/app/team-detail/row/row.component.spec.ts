@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ObjectiveRowComponent } from './objective-row.component';
-import { Objective } from '../objective.service';
+import { RowComponent } from './row.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { By } from '@angular/platform-browser';
+import { Objective } from '../../models/Objective';
 
 describe('ObjectiveComponent', () => {
-  let component: ObjectiveRowComponent;
-  let fixture: ComponentFixture<ObjectiveRowComponent>;
+  let component: RowComponent;
+  let fixture: ComponentFixture<RowComponent>;
 
   let objective: Objective = {
     id: 1,
@@ -25,12 +24,12 @@ describe('ObjectiveComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatMenuModule],
-      declarations: [ObjectiveRowComponent],
+      declarations: [RowComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ObjectiveRowComponent);
+    fixture = TestBed.createComponent(RowComponent);
     component = fixture.componentInstance;
-    component.objective = objective;
+    component.element = objective;
     fixture.detectChanges();
   });
 

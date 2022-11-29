@@ -11,10 +11,18 @@ import { RowObject } from 'src/app/models/RowObject';
 export class RowComponent implements OnInit {
   @Input() element!: RowObject;
   @Input() menuEntries!: MenuEntry[];
+  @Input() information!: string[];
+  progressRecord!: Record<string, boolean>;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.progressRecord = {
+      'progress-bar-bad': this.element?.progress < 40,
+      'progress-bar-medium': this.element!.progress < 70,
+      'progress-bar-good': this.element!.progress < 100,
+    };
+  }
 
   public addResult() {
     console.log('Resultat hinzufügen');

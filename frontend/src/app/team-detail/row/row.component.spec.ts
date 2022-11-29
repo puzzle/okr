@@ -16,9 +16,9 @@ describe('ObjectiveComponent', () => {
     ownerLastname: 'Grochde',
     description: 'Sehr wichtig',
     progress: 5,
-    quarterId: 1,
     quarterNumber: 3,
     quarterYear: 2022,
+    created: '',
   };
 
   beforeEach(async () => {

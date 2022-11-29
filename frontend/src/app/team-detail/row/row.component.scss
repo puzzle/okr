@@ -1,17 +1,22 @@
-.progressPart {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  width: 40%;
+.w-100 {
+  width: 100%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.w-25 {
+  width: 25%;
+}
+
+.w-75 {
+  width: 75%;
 }
 
 #progressSpan {
   color: dimgray;
   font-weight: bold;
-}
-
-.objectiveProgress {
-  width: 100%;
 }
 
 .pointer {
@@ -21,8 +26,13 @@
 .d-flex {
   display: flex;
 }
-.flex-end {
-  justify-content: end;
+
+.space-between {
+  justify-content: space-between;
+}
+
+.space-around {
+  justify-content: space-around;
 }
 
 .progress-bar-good .mat-progress-bar-fill::after {
@@ -37,6 +47,6 @@
   background-color: red;
 }
 
-::ng-deep .mat-progress-bar-buffer {
+.mat-progress-bar-buffer {
   background: #e4e8eb;
 }

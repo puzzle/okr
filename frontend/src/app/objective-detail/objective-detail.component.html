@@ -1,1 +1,11 @@
-<p>objective-detail works!</p>
+<p>Resultate</p>
+<app-row
+  *ngFor="let keyResult of keyResults"
+  [information]="[
+    keyResult.ownerFirstname + ' ' + keyResult.ownerLastname,
+    keyResult.created
+  ]"
+  [element]="keyResult"
+  [menuEntries]="menuEntries"
+>
+</app-row>

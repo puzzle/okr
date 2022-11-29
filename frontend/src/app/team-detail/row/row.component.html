@@ -2,36 +2,37 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>{{ this.element!.title }}</mat-panel-title>
-      <mat-panel-description class="d-flex flex-end">
-        <div class="progressPart d-flex green-progress">
-          <span id="progressSpan">{{ element!.progress }}%</span>
-          <mat-progress-bar
-            class="objectiveProgress"
-            mode="determinate"
-            value="{{ this.element!.progress }}"
-            [ngClass]="{
-              'progress-bar-bad': element!.progress < 40,
-              'progress-bar-medium': element!.progress < 70,
-              'progress-bar-good': element!.progress < 100
-            }"
-          >
-            ></mat-progress-bar
-          >
+      <mat-panel-description class="d-flex space-between">
+        <div class="d-flex space-around w-50">
+          <p *ngFor="let info of information">{{ info }}</p>
         </div>
-        <button
-          id="triggerButton"
-          mat-icon-button
-          [matMenuTriggerFor]="objectiveMenu"
-          aria-label="Button to edit objectives"
-          (click)="$event.stopPropagation()"
-        >
-          <mat-icon class="pointer">more_vert</mat-icon>
-        </button>
-        <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
+
+        <div class="d-flex w-50">
+          <div class="w-100">
+            <span id="progressSpan">{{ element!.progress }}%</span>
+            <mat-progress-bar
+              [ngClass]="progressRecord"
+              mode="determinate"
+              value="{{ this.element!.progress }}"
+            >
+            </mat-progress-bar>
+          </div>
           <button
-            mat-menu-item
+            (click)="$event.stopPropagation()"
+            [matMenuTriggerFor]="objectiveMenu"
+            aria-label="Button to edit objectives"
+            id="triggerButton"
+            mat-icon-button
+          >
+            <mat-icon class="pointer">more_vert</mat-icon>
+          </button>
+        </div>
+
+        <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
+          <button
             *ngFor="let menuEntry of menuEntries"
             [routerLink]="menuEntry.routeLine"
+            mat-menu-item
           >
             <span> {{ menuEntry.displayName }}</span>
           </button>

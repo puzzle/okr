@@ -19,8 +19,8 @@ export class RowComponent implements OnInit {
   ngOnInit(): void {
     this.progressRecord = {
       'progress-bar-bad': this.element?.progress < 40,
-      'progress-bar-medium': this.element!.progress < 70,
-      'progress-bar-good': this.element!.progress < 100,
+      'progress-bar-medium': this.element?.progress < 70,
+      'progress-bar-good': this.element?.progress < 100,
     };
   }
 

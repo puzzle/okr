@@ -79,4 +79,20 @@ class ProgressServiceTestIT {
         Objective updatedObjective = this.objectiveService.getObjective(2L);
         assertEquals(45, updatedObjective.getProgress());
     }
+
+    @Test
+    @Disabled
+    void checkProgressIfMeasureDecreases() {
+        Objective objective = Objective.Builder.builder().withId(1L).build();
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withObjective(objective).build();
+        User user = User.Builder.builder().withId(1L).build();
+        Measure measure = Measure.Builder.builder().withValue(40).withKeyResult(keyResult).withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.now()).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+
+        this.measureRepository.save(measure);
+        assertEquals(20, this.objectiveService.getObjective(1L).getProgress());
+        this.progressService.updateObjectiveProgress(1L);
+        Objective updatedObjective = this.objectiveService.getObjective(1L);
+        assertEquals(50, updatedObjective.getProgress());
+    }
 }

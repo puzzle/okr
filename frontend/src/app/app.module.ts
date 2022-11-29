@@ -14,9 +14,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
-import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './team-detail/objective-row/objective-detail/objective-detail.component';
 import { MatCardModule } from '@angular/material/card';
+import { KeyresultDetailComponent } from './team-detail/objective-row/objective-detail/keyresult-detail/keyresult-detail.component';
 
 @NgModule({
   declarations: [

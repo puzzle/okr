@@ -8,6 +8,9 @@
 
 <div class="testDiv">
   <div *ngFor="let keyResult of this.keyResultList | async">
-    <p>{{ keyResult.title }}</p>
+    <!--    TODO: Should be replaced with keyResult Row Component-->
+    <p>{{ keyResult.title }} Row</p>
+    <!--    TODO: Should be integrated in keyResult Row Component-->
+    <app-keyresult-detail [keyResult]="keyResult"></app-keyresult-detail>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { KeyResult } from '../key-result.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -6,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./keyresult-detail.component.scss'],
 })
 export class KeyresultDetailComponent implements OnInit {
+  @Input() keyResult!: KeyResult;
   constructor() {}
 
   ngOnInit(): void {}

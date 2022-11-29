@@ -44,9 +44,9 @@ describe('DashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display Ziele und Resultate headline', () => {
+  it('should display Objectives und Keyresults headline', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
-      'Ziele und Resultate'
+      'Objectives und Keyresults'
     );
   });
 

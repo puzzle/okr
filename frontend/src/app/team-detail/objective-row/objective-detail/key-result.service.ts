@@ -15,7 +15,17 @@ export enum Unit {
   BINARY,
 }
 
-export interface KeyResult {
+export interface Measure {
+  id: number;
+  keyResultId: number;
+  value: number;
+  changeInfo: string;
+  initiatives: String;
+  createdBy: number;
+  createdOn: Date;
+}
+
+export interface KeyResultMeasure {
   id: number;
   objectiveId: number;
   title: string;
@@ -30,6 +40,7 @@ export interface KeyResult {
   unit: Unit;
   basicValue: number;
   targetValue: number;
+  measure: Measure;
 }
 
 @Injectable({
@@ -40,9 +51,11 @@ export class KeyResultService {
 
   public getKeyResultsOfObjective(
     objectiveId: number
-  ): Observable<KeyResult[]> {
+  ): Observable<KeyResultMeasure[]> {
     return this._httpClient
-      .get<KeyResult[]>('/api/v1/objectives/' + objectiveId + '/keyresults')
+      .get<KeyResultMeasure[]>(
+        '/api/v1/objectives/' + objectiveId + '/keyresults'
+      )
       .pipe(tap((data) => console.log(data)));
   }
 }

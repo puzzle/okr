@@ -1,39 +1,5 @@
-.w-100 {
-  width: 100%;
-}
-
-.w-50 {
-  width: 50%;
-}
-
-.w-25 {
-  width: 25%;
-}
-
-.w-75 {
-  width: 75%;
-}
-
-#progressSpan {
-  color: dimgray;
-  font-weight: bold;
-}
-
 .pointer {
   cursor: pointer;
-}
-
-.d-flex {
-  display: flex;
-}
-
-.space-between {
-  justify-content: space-between;
-  background-color: red;
-}
-
-.space-around {
-  justify-content: space-around;
 }
 
 .progress-bar-good .mat-progress-bar-fill::after {

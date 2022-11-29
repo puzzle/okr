@@ -2,14 +2,23 @@
   display: flex;
 }
 
-.justify-content-center {
-  justify-content: space-around;
-}
-
 .w-100 {
   width: 100%;
 }
 
-.w-50.mat-card {
-  width: 43%;
+.w-50 {
+  width: 50%;
+}
+
+.w-95 {
+  width: 93%;
+}
+
+mat-card {
+  border: 4px solid gray;
+  border-radius: 5px;
+}
+
+.justify-content-start {
+  justify-content: start;
 }

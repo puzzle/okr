@@ -2,7 +2,7 @@ name: 'Deploy'
 
 on:
   pull_request:
-    branches: [ production4 ]
+    branches: [ production ]
 
 
 jobs:

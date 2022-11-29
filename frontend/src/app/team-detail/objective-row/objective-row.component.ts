@@ -14,18 +14,18 @@ export class ObjectiveRowComponent implements OnInit {
   ngOnInit(): void {}
 
   public addResult() {
-    console.log('Resultat hinzufügen');
+    console.log('Keyresults hinzufügen');
   }
 
   public editGoal() {
-    console.log('Ziel bearbeiten');
+    console.log('Objectives bearbeiten');
   }
 
   public duplicateGoal() {
-    console.log('Ziel duplizieren');
+    console.log('Objectives duplizieren');
   }
 
   public deleteGoal() {
-    console.log('Ziel löschen');
+    console.log('Objectives löschen');
   }
 }

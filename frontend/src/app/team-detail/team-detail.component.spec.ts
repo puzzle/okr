@@ -73,10 +73,10 @@ describe('TeamDetailComponent', () => {
     ).toEqual(1);
   });
 
-  it('should have title Puzzle ITC Ziele', () => {
+  it('should have title Puzzle ITC Objectives', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
-    ).toEqual('Puzzle ITC Ziele');
+    ).toEqual('Puzzle ITC Objectives');
   });
 
   it('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {

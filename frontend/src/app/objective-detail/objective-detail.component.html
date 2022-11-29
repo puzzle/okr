@@ -1,11 +1,12 @@
-<p>Resultate</p>
-<app-row
-  *ngFor="let keyResult of keyResults"
-  [information]="[
-    keyResult.ownerFirstname + ' ' + keyResult.ownerLastname,
-    keyResult.created
-  ]"
-  [element]="keyResult"
-  [menuEntries]="menuEntries"
->
-</app-row>
+<mat-accordion>
+  <app-row
+    *ngFor="let keyResult of keyResults"
+    [element]="keyResult"
+    [information]="[
+      keyResult.ownerFirstname + ' ' + keyResult.ownerLastname,
+      keyResult.created
+    ]"
+    [menuEntries]="menuEntries"
+  >
+  </app-row>
+</mat-accordion>

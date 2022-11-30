@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MenuEntry } from '../../models/MenuEntry';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { trigger } from '@angular/animations';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('RowComponent', () => {
   let component: RowComponent;
@@ -26,18 +28,12 @@ describe('RowComponent', () => {
     created: '',
   };
 
-  let menuEntries: MenuEntry[] = [
-    { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
-    { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-    { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-    { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
-  ];
-
   let information: string[] = ['Yanick Minder', '01.01.2022'];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        BrowserDynamicTestingModule,
         NoopAnimationsModule,
         MatMenuModule,
         MatExpansionModule,
@@ -46,12 +42,17 @@ describe('RowComponent', () => {
         MatProgressBarModule,
       ],
       declarations: [RowComponent],
-    }).compileComponents();
+    })
+      .overrideComponent(RowComponent, {
+        set: {
+          animations: [trigger('entryModeTransition', [])],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(RowComponent);
     component = fixture.componentInstance;
     component.element = objective;
-    component.menuEntries = menuEntries;
     component.information = information;
     fixture.detectChanges();
   });
@@ -67,43 +68,47 @@ describe('RowComponent', () => {
   });
 
   it('should have progress label with progress from objective', () => {
-    expect(
-      fixture.nativeElement.querySelector('#progressContainer').children[0]
-        .textContent
-    ).toEqual(objective.progress + '%');
+    let progressLabel = fixture.nativeElement
+      .querySelector('#progressContainer')
+      .querySelector('.h5');
+    expect(progressLabel.textContent).toEqual(objective.progress + '%');
   });
 
-  // it('should have progress bar with progress from objective', () => {
-  //   let progressContainer = fixture.nativeElement.querySelector('#progressContainer');
-  //   let progressbar = progressContainer.querySelector("mat-progress-bar");
-  //   console.log(progressbar.getAttribute('value'));
-  //   expect(
-  //    progressbar.value
-  //   ).toEqual(objective.progress.toString());
-  // });
+  it('should have progress bar with progress from objective', () => {
+    let progressBar = fixture.nativeElement
+      .querySelector('#progressContainer')
+      .querySelector('mat-progress-bar');
+    expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
+      objective.progress.toString()
+    );
+  });
 
+  // @ts-ignore
   it.each([
-    [10, 'bad', true],
-    [50, 'medium', true],
     [100, 'good', true],
-    [100, 'good', false],
+    [10, 'medium', true],
+    [50, 'bad', true],
+    [10, 'good', false],
   ])(
-    'ParameterizedTest',
+    'Progressbar test with value: %i, barname %s, result: %o',
     (progress: number, barIdentifier: string, result: boolean) => {
+      fixture = TestBed.createComponent(RowComponent);
+      component = fixture.componentInstance;
       component.element = { ...objective, progress: progress } as Objective;
       fixture.detectChanges();
 
-      let progressContainer =
-        fixture.nativeElement.querySelector('#progressContainer');
-      let progressbar = progressContainer.querySelector('mat-progress-bar');
+      let progressBar = fixture.nativeElement
+        .querySelector('#progressContainer')
+        .querySelector('mat-progress-bar');
 
       let barPrefix = 'progress-bar-';
-      let classList = [...progressbar.classList].filter((e) =>
-        e.toString().includes(barPrefix)
-      );
+      let classList = [...progressBar.classList]
+        .map((e) => e.toString())
+        .filter((e) => e.includes(barPrefix));
 
-      let barName = barPrefix + barIdentifier;
-      expect(classList[0] === barName).toBe(result);
+      let expectedClass = barPrefix + barIdentifier;
+      let activeClass = classList[0];
+      expect(activeClass === expectedClass).toBe(result);
     }
   );
 
@@ -113,11 +118,41 @@ describe('RowComponent', () => {
     );
   });
 
-  // it('should have 4 menu items', () => {
-  //   let button = fixture.debugElement.nativeElement.querySelector('#triggerButton');
-  //   button.click();
-  //   expect(
-  //     fixture.debugElement.nativeElement.querySelector('.matMenu')
-  //   ).toEqual(" ");
-  // });
+  // @ts-ignore
+  it.each([
+    [
+      [
+        { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
+        { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
+        { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
+        { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+      ] as MenuEntry[],
+    ],
+    [
+      [
+        { displayName: 'Resultat bearbeiten', routeLine: 'result/add' },
+        { displayName: 'Resultat duplizieren', routeLine: 'objective/edit' },
+        { displayName: 'Details einsehen', routeLine: 'result/add' },
+        { displayName: 'Resultat löschen', routeLine: 'result/add' },
+        { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
+      ] as MenuEntry[],
+    ],
+  ])('should have menu items', async (menuEntries: MenuEntry[]) => {
+    fixture = TestBed.createComponent(RowComponent);
+    component = fixture.componentInstance;
+    component.element = objective;
+    component.menuEntries = menuEntries;
+    fixture.detectChanges();
+
+    let button = fixture.debugElement.nativeElement.querySelector(
+      'button[mat-icon-button]'
+    );
+    button.click();
+    let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+    let children = Array.from(matMenu.children)
+      .map((e) => e.querySelector('span')!)
+      .map((e) => e.textContent);
+    let itemTexts = menuEntries.map((e) => e.displayName);
+    expect(children).toEqual(itemTexts);
+  });
 });

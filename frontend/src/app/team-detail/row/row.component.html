@@ -10,9 +10,10 @@
         <div class="w-100" id="progressContainer">
           <span class="h5">{{ element!.progress }}%</span>
           <mat-progress-bar
+            class="objectiveProgress"
             [ngClass]="progressRecord"
             mode="determinate"
-            [value]="this.element?.progress"
+            [value]="this.element!.progress"
           >
           </mat-progress-bar>
         </div>
@@ -20,7 +21,6 @@
           (click)="$event.stopPropagation()"
           [matMenuTriggerFor]="objectiveMenu"
           aria-label="Button to edit objectives"
-          id="triggerButton"
           mat-icon-button
         >
           <mat-icon class="pointer">more_vert</mat-icon>
@@ -33,7 +33,7 @@
           [routerLink]="menuEntry.routeLine"
           mat-menu-item
         >
-          <span> {{ menuEntry.displayName }}</span>
+          <span>{{ menuEntry.displayName }}</span>
         </button>
       </mat-menu>
     </mat-panel-description>

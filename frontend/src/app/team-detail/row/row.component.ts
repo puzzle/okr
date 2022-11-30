@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuEntry } from 'src/app/models/MenuEntry';
 import { RowObject } from 'src/app/models/RowObject';
+import { timestamp } from 'rxjs';
 
 @Component({
   selector: 'app-row',
@@ -20,7 +21,7 @@ export class RowComponent implements OnInit {
     this.progressRecord = {
       'progress-bar-bad': this.element?.progress < 40,
       'progress-bar-medium': this.element?.progress < 70,
-      'progress-bar-good': this.element?.progress < 100,
+      'progress-bar-good': this.element?.progress <= 100,
     };
   }
 
@@ -38,5 +39,9 @@ export class RowComponent implements OnInit {
 
   public deleteGoal() {
     console.log('Ziel löschen');
+  }
+
+  test() {
+    console.log(new Date());
   }
 }

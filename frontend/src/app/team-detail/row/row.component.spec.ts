@@ -83,8 +83,8 @@ describe('RowComponent', () => {
   // @ts-ignore
   it.each([
     [100, 'good', true],
-    [10, 'medium', true],
-    [50, 'bad', true],
+    [10, 'bad', true],
+    [50, 'medium', true],
     [10, 'good', false],
   ])(
     'Progressbar test with value: %i, barname %s, result: %o',

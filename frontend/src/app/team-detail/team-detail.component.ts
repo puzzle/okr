@@ -16,8 +16,8 @@ export class TeamDetailComponent implements OnInit {
   menuEntries: MenuEntry[] = [
     { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
     { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-    { displayName: 'Ziel duplizieren', routeLine: 'result/add' },
-    { displayName: 'Ziel löschen', routeLine: 'result/add' },
+    { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
+    { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
   ];
 
   constructor(public objectiveService: ObjectiveService) {}

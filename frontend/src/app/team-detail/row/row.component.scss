@@ -14,6 +14,6 @@
   background-color: red;
 }
 
-.mat-progress-bar-buffer {
+.mat-progress-bar-buffer::after {
   background: #e4e8eb;
 }

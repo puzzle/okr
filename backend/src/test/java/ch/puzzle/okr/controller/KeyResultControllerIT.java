@@ -7,6 +7,7 @@ import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.KeyResultService;
+import ch.puzzle.okr.service.ProgressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -64,6 +65,8 @@ class KeyResultControllerIT {
     MeasureMapper measureMapper;
     @MockBean
     KeyResultService keyResultService;
+    @MockBean
+    ProgressService progressService;
     @Autowired
     private MockMvc mvc;
 
@@ -82,6 +85,7 @@ class KeyResultControllerIT {
 
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
         mvc.perform(put("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\":  \"Updated Keyresult 1\"}")).andExpect(MockMvcResultMatchers.status().isOk())
@@ -109,6 +113,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
         BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
         ObjectMapper mapper = new ObjectMapper();
         mvc.perform(post("/api/v1/keyresults").content(mapper.writeValueAsString(keyResultDto))

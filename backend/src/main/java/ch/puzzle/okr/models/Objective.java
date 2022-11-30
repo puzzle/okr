@@ -36,7 +36,7 @@ public class Objective {
     private String description;
 
     @NotNull
-    private Double progress;
+    private Long progress;
 
     @NotNull
     private LocalDateTime createdOn;
@@ -99,11 +99,11 @@ public class Objective {
         this.description = description;
     }
 
-    public Double getProgress() {
+    public Long getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Long progress) {
         this.progress = progress;
     }
 
@@ -147,7 +147,7 @@ public class Objective {
         private Team team;
         private Quarter quarter;
         private String description;
-        private Double progress;
+        private Long progress;
         private LocalDateTime createdOn;
 
         public Builder() {
@@ -187,7 +187,7 @@ public class Objective {
             return this;
         }
 
-        public Builder withProgress(Double progress) {
+        public Builder withProgress(Long progress) {
             this.progress = progress;
             return this;
         }

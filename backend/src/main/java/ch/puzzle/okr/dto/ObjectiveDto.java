@@ -12,11 +12,11 @@ public class ObjectiveDto {
     private Integer quarterNumber;
     private Integer quarterYear;
     private String description;
-    private Double progress;
+    private Long progress;
 
     public ObjectiveDto(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId,
             String teamName, Long quarterId, Integer quarterNumber, Integer quarterYear, String description,
-            Double progress) {
+            Long progress) {
         this.id = id;
         this.title = title;
         this.ownerId = ownerId;
@@ -119,11 +119,11 @@ public class ObjectiveDto {
         this.description = description;
     }
 
-    public Double getProgress() {
+    public Long getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Long progress) {
         this.progress = progress;
     }
 }

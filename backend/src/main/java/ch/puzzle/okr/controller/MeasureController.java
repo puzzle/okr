@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.MeasureService;
+import ch.puzzle.okr.service.ProgressService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,10 +24,13 @@ public class MeasureController {
 
     private final MeasureMapper measureMapper;
     private final MeasureService measureService;
+    private final ProgressService progressService;
 
-    public MeasureController(MeasureMapper measureMapper, MeasureService measureService) {
+    public MeasureController(MeasureMapper measureMapper, MeasureService measureService,
+            ProgressService progressService) {
         this.measureMapper = measureMapper;
         this.measureService = measureService;
+        this.progressService = progressService;
     }
 
     @Operation(summary = "Get Measures", description = "Get all Measures from db.")
@@ -46,6 +50,7 @@ public class MeasureController {
     public ResponseEntity<MeasureDto> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
         Measure measure = measureMapper.toMeasure(measureDto);
         MeasureDto createdMeasure = this.measureMapper.toDto(this.measureService.saveMeasure(measure));
+        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
@@ -62,6 +67,7 @@ public class MeasureController {
         measureDto.setId(id);
         Measure measure = measureMapper.toMeasure(measureDto);
         MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureService.updateMeasure(id, measure));
+        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 }

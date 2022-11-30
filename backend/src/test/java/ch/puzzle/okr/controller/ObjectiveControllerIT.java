@@ -49,13 +49,13 @@ class ObjectiveControllerIT {
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user)
-            .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33.3)
+            .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33L)
             .withCreatedOn(LocalDateTime.MAX).build();
     static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
-            1, 2022, "This is a description", 20.0);
+            1, 2022, "This is a description", 20L);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
-            1, 2022, "This is a description", 20.0);
+            1, 2022, "This is a description", 20L);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
     static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null);
@@ -157,7 +157,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(42L, "Program Faster", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
-                4, 2022, "Just be faster", 5.5);
+                4, 2022, "Just be faster", 5L);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
@@ -166,7 +166,7 @@ class ObjectiveControllerIT {
                 "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":42,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterNumber\":4,\"quarterYear\":2022,\"description\":\"Just be faster\",\"progress\":5.5}"));
+                        "{\"id\":42,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterNumber\":4,\"quarterYear\":2022,\"description\":\"Just be faster\",\"progress\":5}"));
         verify(objectiveService, times(1)).saveObjective(any());
     }
 
@@ -183,9 +183,9 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L, 4,
-                2022, "Everything Fine", 5.5);
-        Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine")
-                .withProgress(5.5).withTitle("Hunting").build();
+                2022, "Everything Fine", 5L);
+        Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine").withProgress(5L)
+                .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);

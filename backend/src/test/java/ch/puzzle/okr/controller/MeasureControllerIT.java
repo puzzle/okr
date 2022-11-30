@@ -4,8 +4,10 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.MeasureService;
+import ch.puzzle.okr.service.ProgressService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,10 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MeasureController.class)
 class MeasureControllerIT {
+    static Objective objective = Objective.Builder.builder().withId(1L).build();
     static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L).build())
+            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withObjective(objective)
+                    .withTargetValue(50L).build())
             .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
     static Measure anotherMeasure = Measure.Builder.builder().withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
@@ -56,6 +60,8 @@ class MeasureControllerIT {
     private MeasureService measureService;
     @MockBean
     private MeasureMapper measureMapper;
+    @MockBean
+    private ProgressService progressService;
 
     @BeforeEach
     void setUp() {
@@ -94,6 +100,7 @@ class MeasureControllerIT {
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
+        BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1}"))
@@ -115,12 +122,12 @@ class MeasureControllerIT {
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now());
-
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
+        BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
+                .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30)))
                 .andExpect(jsonPath("$.createdById", Is.is(1)))

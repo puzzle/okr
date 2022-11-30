@@ -28,8 +28,6 @@ describe('RowComponent', () => {
     created: '',
   };
 
-  let information: string[] = ['Yanick Minder', '01.01.2022'];
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -53,7 +51,6 @@ describe('RowComponent', () => {
     fixture = TestBed.createComponent(RowComponent);
     component = fixture.componentInstance;
     component.element = objective;
-    component.information = information;
     fixture.detectChanges();
   });
 
@@ -137,7 +134,7 @@ describe('RowComponent', () => {
         { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
       ] as MenuEntry[],
     ],
-  ])('should have menu items', async (menuEntries: MenuEntry[]) => {
+  ])('should have menu items', (menuEntries: MenuEntry[]) => {
     fixture = TestBed.createComponent(RowComponent);
     component = fixture.componentInstance;
     component.element = objective;
@@ -154,5 +151,26 @@ describe('RowComponent', () => {
       .map((e) => e.textContent);
     let itemTexts = menuEntries.map((e) => e.displayName);
     expect(children).toEqual(itemTexts);
+  });
+
+  // @ts-ignore
+  it.each([
+    [['Yanick Minder', '01.01.2022']],
+    [['Vorname Nachname', '12.12.2012']],
+  ])('test information', (informationArray: string[]) => {
+    fixture = TestBed.createComponent(RowComponent);
+    component = fixture.componentInstance;
+    component.element = objective;
+    component.information = informationArray;
+    fixture.detectChanges();
+
+    let informationNodes: HTMLElement[] =
+      fixture.debugElement.nativeElement.querySelector('mat-panel-description')!
+        .children[0].children;
+    let informationStrings: string[] = Array.from(informationNodes).map(
+      (e) => e.textContent!
+    );
+
+    expect(informationStrings).toEqual(informationArray);
   });
 });

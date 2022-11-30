@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Team } from '../dashboard/team.service';
+import { Team } from '../team.service';
 import { Observable } from 'rxjs';
 import { Objective, ObjectiveService } from './objective.service';
 

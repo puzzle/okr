@@ -2,14 +2,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TeamService } from './team.service';
+import { TeamService } from '../../team-module/team.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AppModule } from '../app.module';
+import { AppModule } from '../../app.module';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;

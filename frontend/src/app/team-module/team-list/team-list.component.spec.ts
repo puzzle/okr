@@ -33,22 +33,22 @@ describe('TeamListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display a headline with right text', () => {
+  test('should display a headline with right text', () => {
     expect(
       fixture.nativeElement.querySelector('.headline-large').textContent
     ).toEqual('Teams');
   });
 
-  it('should display two teams', () => {
+  test('should display two teams', () => {
     const teamRows = fixture.debugElement.queryAll(By.css('.team-row'));
     expect(teamRows.length).toEqual(2);
   });
 
-  it('should have right name on teams', () => {
+  test('should have right name on teams', () => {
     const teamRows = fixture.debugElement.queryAll(By.css('.team-row'));
     expect(teamRows[0].nativeElement.querySelector('p').textContent).toEqual(
       'Team1'
@@ -58,17 +58,17 @@ describe('TeamListComponent', () => {
     );
   });
 
-  it('should have two edit buttons', () => {
+  test('should have two edit buttons', () => {
     const editButtons = fixture.debugElement.queryAll(By.css('.edit-icon'));
     expect(editButtons.length).toEqual(2);
   });
 
-  it('should have two delete buttons', () => {
+  test('should have two delete buttons', () => {
     const editButtons = fixture.debugElement.queryAll(By.css('.delete-icon'));
     expect(editButtons.length).toEqual(2);
   });
 
-  it('should have two lines under the teams', () => {
+  test('should have two lines under the teams', () => {
     const dividers = fixture.debugElement.queryAll(By.css('.divider'));
     expect(dividers.length).toEqual(2);
   });

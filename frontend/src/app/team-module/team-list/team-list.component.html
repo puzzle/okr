@@ -4,8 +4,14 @@
   <div class="team-row" *ngFor="let team of teamList | async">
     <div class="team-flex">
       <p class="team-name">{{ team.name }}</p>
-      <img src="assets/edit-icon.svg" alt="edit-icon" class="edit-icon" />
-      <img src="assets/delete-icon.svg" alt="delete-icon" class="delete-icon" />
+      <div class="team-icons">
+        <img src="assets/edit-icon.svg" alt="edit-icon" class="edit-icon" />
+        <img
+          src="assets/delete-icon.svg"
+          alt="delete-icon"
+          class="delete-icon"
+        />
+      </div>
     </div>
     <mat-divider class="divider"></mat-divider>
   </div>

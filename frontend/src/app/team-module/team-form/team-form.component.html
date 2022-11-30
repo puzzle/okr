@@ -1,0 +1,46 @@
+<div class="teamlist-container">
+  <p *ngIf="isCreating" class="headline-large">Team erstellen</p>
+  <p *ngIf="!isCreating" class="headline-large">Team bearbeiten</p>
+
+  <form #teamName="ngForm" (ngSubmit)="submit(teamName.value)">
+    <input
+      *ngIf="isCreating"
+      type="text"
+      name="teamName"
+      placeholder="Team hinzufügen"
+      ngModel
+      required
+    />
+    <input
+      *ngIf="!isCreating"
+      type="text"
+      name="teamName"
+      placeholder="Team bearbeiten"
+      [ngModel]="teamname"
+      required
+    />
+
+    <br />
+    <button class="cancel-button" mat-stroked-button routerLink="/teams">
+      Abbrechen
+    </button>
+    <button
+      *ngIf="isCreating"
+      class="create-button"
+      mat-stroked-button
+      type="submit"
+      [disabled]="teamName.invalid"
+    >
+      Speichern
+    </button>
+    <button
+      *ngIf="!isCreating"
+      class="create-button"
+      mat-stroked-button
+      type="submit"
+      [disabled]="teamName.invalid"
+    >
+      Änderungen speichern
+    </button>
+  </form>
+</div>

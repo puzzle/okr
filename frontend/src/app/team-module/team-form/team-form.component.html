@@ -1,6 +1,6 @@
 <div class="teamlist-container">
   <p *ngIf="isCreating" class="headline-large">Team erstellen</p>
-  <p *ngIf="!isCreating" class="headline-large">Team bearbeiten</p>
+  <p *ngIf="!isCreating" class="headline-large">Team Name bearbeiten</p>
 
   <form #teamName="ngForm" (ngSubmit)="submit(teamName.value)">
     <input

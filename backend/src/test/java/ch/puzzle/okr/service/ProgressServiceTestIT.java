@@ -4,7 +4,6 @@ import ch.puzzle.okr.OkrApplication;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,6 @@ class ProgressServiceTestIT {
     private MeasureRepository measureRepository;
 
     @Test
-    @Disabled
     void checkUpdateProgressMethod() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).build();
@@ -48,7 +46,6 @@ class ProgressServiceTestIT {
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoMeasures() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withObjective(objective).build();
@@ -64,7 +61,6 @@ class ProgressServiceTestIT {
     }
 
     @Test
-    @Disabled
     void checkProgressMethodWithNoKeyResults() {
         Objective objective = Objective.Builder.builder().withId(2L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withObjective(objective).build();
@@ -81,7 +77,6 @@ class ProgressServiceTestIT {
     }
 
     @Test
-    @Disabled
     void checkProgressIfMeasureDecreases() {
         Objective objective = Objective.Builder.builder().withId(1L).build();
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withObjective(objective).build();

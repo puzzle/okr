@@ -13,13 +13,6 @@ export class TeamDetailComponent implements OnInit {
   @Input() team!: Team;
   objectiveList!: Observable<Objective[]>;
 
-  menuEntries: MenuEntry[] = [
-    { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
-    { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-    { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-    { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
-  ];
-
   constructor(public objectiveService: ObjectiveService) {}
 
   ngOnInit(): void {

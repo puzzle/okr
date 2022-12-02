@@ -13,15 +13,17 @@ export class KeyResultRowComponent implements OnInit {
   @Input() element!: KeyResultMeasure;
   @Input() menuEntries!: MenuEntry[];
   @Input() information!: string[];
+  progressPercentage!: number;
   progressRecord!: Record<string, boolean>;
 
   constructor() {}
 
   ngOnInit(): void {
+    this.progressPercentage = Math.round((this.element?.measure.value / (this.element?.targetValue - this.element?.basicValue)) * 100)
     this.progressRecord = {
-      'progress-bar-bad': this.element?.progress < 40,
-      'progress-bar-medium': this.element?.progress < 70,
-      'progress-bar-good': this.element?.progress <= 100,
+      'progress-bar-bad': this.progressPercentage < 40,
+      'progress-bar-medium': this.progressPercentage < 70,
+      'progress-bar-good': this.progressPercentage <= 100,
     };
   }
 

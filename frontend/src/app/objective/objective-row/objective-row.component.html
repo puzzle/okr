@@ -1,39 +1,38 @@
-<div class="informationRow">
-  <p class="objectiveTitle">{{ this.objective!.title }}</p>
-  <div class="objectiveProperties">
-    <div class="progressPart">
-      <span id="progressSpan">{{ objective!.progress }}%</span>
-      <mat-progress-bar
-        class="objectiveProgress"
-        mode="determinate"
-        value="{{ this.objective!.progress }}"
-      ></mat-progress-bar>
-    </div>
-    <div class="objectiveActions">
-      <mat-icon class="spaceBetween pointer">keyboard_arrow_down</mat-icon>
-      <button
-        id="triggerButton"
-        mat-icon-button
-        [matMenuTriggerFor]="objectiveMenu"
-        aria-label="Button to edit objectives"
-      >
-        <mat-icon class="pointer">more_vert</mat-icon>
-      </button>
-      <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
-        <button mat-menu-item (click)="addResult()">
-          <span class="addResult"> Keyresult hinzufügen</span>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>{{ this.objective!.title }}</mat-panel-title>
+    <mat-panel-description class="d-flex space-between">
+      <div class="d-flex w-50 margin-left">
+        <div class="w-100" id="progressContainer">
+          <span class="h5">{{ objective!.progress }}%</span>
+          <mat-progress-bar
+                  class="objectiveProgress"
+                  [ngClass]="progressRecord"
+                  mode="determinate"
+                  [value]="this.objective!.progress"
+          >
+          </mat-progress-bar>
+        </div>
+        <button
+                (click)="$event.stopPropagation()"
+                [matMenuTriggerFor]="objectiveMenu"
+                aria-label="Button to edit objectives"
+                mat-icon-button
+        >
+          <mat-icon class="pointer">more_vert</mat-icon>
         </button>
-        <button mat-menu-item (click)="editGoal()">
-          <span>Objective bearbeiten</span>
-        </button>
-        <button mat-menu-item (click)="duplicateGoal()">
-          <span>Objective duplizieren</span>
-        </button>
-        <button mat-menu-item (click)="deleteGoal()">
-          <span>Objective löschen</span>
+      </div>
+
+      <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
+        <button
+                *ngFor="let menuEntry of menuEntries"
+                [routerLink]="menuEntry.routeLine"
+                mat-menu-item
+        >
+          <span>{{ menuEntry.displayName }}</span>
         </button>
       </mat-menu>
-    </div>
-  </div>
-</div>
-<app-objective-detail [objective]="objective"></app-objective-detail>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <app-objective-detail [objective]="objective"></app-objective-detail>
+</mat-expansion-panel>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Objective } from '../../services/objective.service';
+import {MenuEntry} from "../../types/menu-entry";
 
 @Component({
   selector: 'app-objective-row',
@@ -9,9 +10,24 @@ import { Objective } from '../../services/objective.service';
 export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
 
+  menuEntries: MenuEntry[] = [
+    { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
+    { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
+    { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
+    { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+  ];
+
+  progressRecord!: Record<string, boolean>;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.progressRecord = {
+      'progress-bar-bad': this.objective?.progress < 40,
+      'progress-bar-medium': this.objective?.progress < 70,
+      'progress-bar-good': this.objective?.progress <= 100,
+    };
+  }
 
   public addResult() {
     console.log('Keyresult hinzufügen');

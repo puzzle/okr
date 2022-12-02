@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {KeyresultModule} from "../keyresult/keyresult.module";
 import {MatButtonModule} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import {MatButtonModule} from "@angular/material/button";
         MatMenuModule,
         KeyresultModule,
         MatButtonModule,
+        RouterLink,
     ]
 })
 export class ObjectiveModule { }

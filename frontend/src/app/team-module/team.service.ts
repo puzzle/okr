@@ -23,8 +23,11 @@ export class TeamService {
       .pipe(tap((data) => console.log(data)));
   }
 
-  public createTeam(teamName: string) {
-    this.httpClient.post<any>('api/v1/teams', teamName).subscribe();
+  public createTeam(name: string) {
+    const team = {
+      name: name,
+    } as Team;
+    this.httpClient.post<any>('api/v1/teams', team).subscribe();
   }
 
   public updateTeam(team: Team) {

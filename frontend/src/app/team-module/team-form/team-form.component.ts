@@ -36,7 +36,7 @@ export class TeamFormComponent implements OnInit {
 
   submit(teamName: string) {
     if (this.isCreating) {
-      this.teamService.createTeam(teamName);
+      this.teamService.createTeam(Object(teamName)['teamName']);
     } else {
       this.teamObject.name = Object(teamName)['teamName'];
       this.teamService.updateTeam(this.teamObject);

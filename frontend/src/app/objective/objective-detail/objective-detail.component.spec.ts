@@ -47,6 +47,7 @@ describe('ObjectiveDetailComponent', () => {
       basicValue: 10,
       targetValue: 50,
       measure: measure,
+      progress: 50,
     },
   ]);
 
@@ -78,6 +79,7 @@ describe('ObjectiveDetailComponent', () => {
       quarterId: 1,
       progress: 10,
       ownerId: 1,
+      created: '01.01.2022',
     };
 
     component.objective = testObjective;

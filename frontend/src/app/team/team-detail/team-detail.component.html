@@ -2,6 +2,9 @@
 <div class="objective-rows">
   <div class="objective-row" *ngFor="let objective of objectiveList | async">
     <hr />
-    <app-objective-row [objective]="objective"></app-objective-row>
+    <mat-accordion>
+      <app-objective-row [objective]="objective">
+      </app-objective-row>
+    </mat-accordion>
   </div>
 </div>

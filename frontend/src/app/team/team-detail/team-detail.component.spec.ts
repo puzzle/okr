@@ -28,6 +28,7 @@ describe('TeamDetailComponent', () => {
       quarterId: 1,
       quarterNumber: 3,
       quarterYear: 2022,
+      created: '01.01.2022',
     },
     {
       id: 2,
@@ -40,6 +41,7 @@ describe('TeamDetailComponent', () => {
       quarterId: 1,
       quarterNumber: 3,
       quarterYear: 2022,
+      created: '01.01.2022',
     },
   ]);
 

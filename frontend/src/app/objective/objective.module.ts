@@ -1,0 +1,37 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {AppModule} from "../app.module";
+import {ObjectiveRowComponent} from "./objective-row/objective-row.component";
+import {ObjectiveService} from "../services/objective.service";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
+import {KeyresultModule} from "../keyresult/keyresult.module";
+import {MatButtonModule} from "@angular/material/button";
+
+
+@NgModule({
+    declarations: [
+        ObjectiveDetailComponent,
+        ObjectiveRowComponent
+    ],
+    providers: [
+        ObjectiveService
+    ],
+    exports: [
+        ObjectiveRowComponent,
+        ObjectiveDetailComponent
+    ],
+    imports: [
+        CommonModule,
+        MatExpansionModule,
+        MatProgressBarModule,
+        MatIconModule,
+        MatMenuModule,
+        KeyresultModule,
+        MatButtonModule,
+    ]
+})
+export class ObjectiveModule { }

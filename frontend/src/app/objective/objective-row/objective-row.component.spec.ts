@@ -20,7 +20,7 @@ describe('ObjectiveComponent', () => {
     quarterId: 1,
     quarterNumber: 3,
     quarterYear: 2022,
-    created: '01.01.2022'
+    created: '01.01.2022',
   };
 
   beforeEach(async () => {

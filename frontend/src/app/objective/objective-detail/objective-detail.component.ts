@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Objective } from '../../services/objective.service';
 import { Observable } from 'rxjs';
-import { KeyResultMeasure, KeyResultService } from '../../services/key-result.service';
-import {MenuEntry} from "../../types/menu-entry";
+import {
+  KeyResultMeasure,
+  KeyResultService,
+} from '../../services/key-result.service';
+import { MenuEntry } from '../../types/menu-entry';
 
 @Component({
   selector: 'app-objective-detail',
@@ -25,7 +28,7 @@ export class ObjectiveDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(
-        this.objective.id
+      this.objective.id
     );
   }
 }

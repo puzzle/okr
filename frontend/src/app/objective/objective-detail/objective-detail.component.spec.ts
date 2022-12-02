@@ -53,7 +53,7 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(
-        keyResultList
+      keyResultList
     );
 
     await TestBed.configureTestingModule({
@@ -92,13 +92,13 @@ describe('ObjectiveDetailComponent', () => {
 
   it('should contain Zyklus', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
-        'Zyklus GJ 2022'
+      'Zyklus GJ 2022'
     );
   });
 
   it('should contain Owner', () => {
     expect(fixture.nativeElement.querySelectorAll('p')[1].textContent).toEqual(
-        'Ziel Besitzer firstname lastname '
+      'Ziel Besitzer firstname lastname '
     );
   });
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Objective } from '../../services/objective.service';
-import {MenuEntry} from "../../types/menu-entry";
+import { MenuEntry } from '../../types/menu-entry';
 
 @Component({
   selector: 'app-objective-row',

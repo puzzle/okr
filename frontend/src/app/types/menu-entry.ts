@@ -1,4 +1,4 @@
 export interface MenuEntry {
-    displayName: string;
-    routeLine: string;
+  displayName: string;
+  routeLine: string;
 }

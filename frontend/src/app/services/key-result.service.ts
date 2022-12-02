@@ -40,7 +40,7 @@ export interface KeyResultMeasure {
   unit: Unit;
   basicValue: number;
   targetValue: number;
-  progress: number
+  progress: number;
   measure: Measure;
 }
 
@@ -50,11 +50,13 @@ export interface KeyResultMeasure {
 export class KeyResultService {
   constructor(private httpClient: HttpClient) {}
 
-  public getKeyResultsOfObjective(objectiveId: number): Observable<KeyResultMeasure[]> {
+  public getKeyResultsOfObjective(
+    objectiveId: number
+  ): Observable<KeyResultMeasure[]> {
     return this.httpClient
-        .get<KeyResultMeasure[]>(
-            '/api/v1/objectives/' + objectiveId + '/keyresults'
-        )
-        .pipe(tap((data) => console.log(data)));
+      .get<KeyResultMeasure[]>(
+        '/api/v1/objectives/' + objectiveId + '/keyresults'
+      )
+      .pipe(tap((data) => console.log(data)));
   }
 }

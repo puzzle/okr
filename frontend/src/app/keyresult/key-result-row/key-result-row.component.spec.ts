@@ -7,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { trigger } from '@angular/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import {Objective} from "../../services/objective.service";
-import {KeyResultRowComponent} from "./key-result-row.component";
+import { Objective } from '../../services/objective.service';
+import { KeyResultRowComponent } from './key-result-row.component';
 import { MenuEntry } from 'src/app/types/menu-entry';
 
 describe('KeyResultKeyResultRowComponent', () => {
@@ -42,12 +42,12 @@ describe('KeyResultKeyResultRowComponent', () => {
       ],
       declarations: [KeyResultRowComponent],
     })
-        .overrideComponent(KeyResultRowComponent, {
-          set: {
-            animations: [trigger('entryModeTransition', [])],
-          },
-        })
-        .compileComponents();
+      .overrideComponent(KeyResultRowComponent, {
+        set: {
+          animations: [trigger('entryModeTransition', [])],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(KeyResultRowComponent);
     component = fixture.componentInstance;
@@ -61,23 +61,23 @@ describe('KeyResultKeyResultRowComponent', () => {
 
   it('should have objetive title as class objectiveTitle', () => {
     expect(
-        fixture.nativeElement.querySelector('mat-panel-title').textContent
+      fixture.nativeElement.querySelector('mat-panel-title').textContent
     ).toEqual(objective.title);
   });
 
   it('should have progress label with progress from objective', () => {
     let progressLabel = fixture.nativeElement
-        .querySelector('#progressContainer')
-        .querySelector('.h5');
+      .querySelector('#progressContainer')
+      .querySelector('.h5');
     expect(progressLabel.textContent).toEqual(objective.progress + '%');
   });
 
   it('should have progress bar with progress from objective', () => {
     let progressBar = fixture.nativeElement
-        .querySelector('#progressContainer')
-        .querySelector('mat-progress-bar');
+      .querySelector('#progressContainer')
+      .querySelector('mat-progress-bar');
     expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
-        objective.progress.toString()
+      objective.progress.toString()
     );
   });
 
@@ -88,31 +88,31 @@ describe('KeyResultKeyResultRowComponent', () => {
     [50, 'medium', true],
     [10, 'good', false],
   ])(
-      'Progressbar test with value: %i, barname %s, result: %o',
-      (progress: number, barIdentifier: string, result: boolean) => {
-        fixture = TestBed.createComponent(KeyResultRowComponent);
-        component = fixture.componentInstance;
-        component.element = { ...objective, progress: progress } as Objective;
-        fixture.detectChanges();
+    'Progressbar test with value: %i, barname %s, result: %o',
+    (progress: number, barIdentifier: string, result: boolean) => {
+      fixture = TestBed.createComponent(KeyResultRowComponent);
+      component = fixture.componentInstance;
+      component.element = { ...objective, progress: progress } as Objective;
+      fixture.detectChanges();
 
-        let progressBar = fixture.nativeElement
-            .querySelector('#progressContainer')
-            .querySelector('mat-progress-bar');
+      let progressBar = fixture.nativeElement
+        .querySelector('#progressContainer')
+        .querySelector('mat-progress-bar');
 
-        let barPrefix = 'progress-bar-';
-        let classList = [...progressBar.classList]
-            .map((e) => e.toString())
-            .filter((e) => e.includes(barPrefix));
+      let barPrefix = 'progress-bar-';
+      let classList = [...progressBar.classList]
+        .map((e) => e.toString())
+        .filter((e) => e.includes(barPrefix));
 
-        let expectedClass = barPrefix + barIdentifier;
-        let activeClass = classList[0];
-        expect(activeClass === expectedClass).toBe(result);
-      }
+      let expectedClass = barPrefix + barIdentifier;
+      let activeClass = classList[0];
+      expect(activeClass === expectedClass).toBe(result);
+    }
   );
 
   it('should have menu button with icon', () => {
     expect(fixture.nativeElement.querySelector('button').textContent).toEqual(
-        'more_vert'
+      'more_vert'
     );
   });
 
@@ -143,13 +143,13 @@ describe('KeyResultKeyResultRowComponent', () => {
     fixture.detectChanges();
 
     let button = fixture.debugElement.nativeElement.querySelector(
-        'button[mat-icon-button]'
+      'button[mat-icon-button]'
     );
     button.click();
     let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
     let children = Array.from(matMenu.children)
-        .map((e) => e.querySelector('span')!)
-        .map((e) => e.textContent);
+      .map((e) => e.querySelector('span')!)
+      .map((e) => e.textContent);
     let itemTexts = menuEntries.map((e) => e.displayName);
     expect(children).toEqual(itemTexts);
   });
@@ -166,10 +166,10 @@ describe('KeyResultKeyResultRowComponent', () => {
     fixture.detectChanges();
 
     let informationNodes: HTMLElement[] =
-        fixture.debugElement.nativeElement.querySelector('mat-panel-description')!
-            .children[0].children;
+      fixture.debugElement.nativeElement.querySelector('mat-panel-description')!
+        .children[0].children;
     let informationStrings: string[] = Array.from(informationNodes).map(
-        (e) => e.textContent!
+      (e) => e.textContent!
     );
 
     expect(informationStrings).toEqual(informationArray);

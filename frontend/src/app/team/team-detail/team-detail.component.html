@@ -3,8 +3,7 @@
   <div class="objective-row" *ngFor="let objective of objectiveList | async">
     <hr />
     <mat-accordion>
-      <app-objective-row [objective]="objective">
-      </app-objective-row>
+      <app-objective-row [objective]="objective"> </app-objective-row>
     </mat-accordion>
   </div>
 </div>

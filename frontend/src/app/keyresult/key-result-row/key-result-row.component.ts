@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import {Objective} from "../../services/objective.service";
-import {MenuEntry} from "../../types/menu-entry";
-import {KeyResultMeasure} from "../../services/key-result.service";
+import { MenuEntry } from '../../types/menu-entry';
+import { KeyResultMeasure } from '../../services/key-result.service';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -19,7 +18,11 @@ export class KeyResultRowComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.progressPercentage = Math.round((this.element?.measure.value / (this.element?.targetValue - this.element?.basicValue)) * 100)
+    this.progressPercentage = Math.round(
+      (this.element?.measure.value /
+        (this.element?.targetValue - this.element?.basicValue)) *
+        100
+    );
     this.progressRecord = {
       'progress-bar-bad': this.progressPercentage < 40,
       'progress-bar-medium': this.progressPercentage < 70,

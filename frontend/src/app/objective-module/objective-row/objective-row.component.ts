@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Objective } from '../objective.service';
+import { Objective } from '../../services/objective.service';
 
 @Component({
   selector: 'app-objective-row',

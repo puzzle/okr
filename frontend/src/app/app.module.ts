@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { TeamDetailComponent } from './team/team-detail/team-detail.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
+import { ObjectiveRowComponent } from './objective-module/objective-row/objective-row.component';
+import {ObjectiveModuleModule} from "./objective-module/objective-module.module";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row
     MatButtonModule,
     MatProgressBarModule,
     ReactiveFormsModule,
+    ObjectiveModuleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

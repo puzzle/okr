@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Team } from '../dashboard/team.service';
+import { Team } from '../../services/team.service';
 import { Observable } from 'rxjs';
-import { Objective, ObjectiveService } from './objective.service';
+import { Objective, ObjectiveService } from '../../services/objective.service';
 
 @Component({
   selector: 'app-team-detail',

@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeamDetailComponent } from './team-detail.component';
-import { Objective, ObjectiveService } from './objective.service';
+import { Objective, ObjectiveService } from '../../services/objective.service';
 import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Team } from '../dashboard/team.service';
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import { Team } from '../../services/team.service';
+import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
 
 describe('TeamDetailComponent', () => {

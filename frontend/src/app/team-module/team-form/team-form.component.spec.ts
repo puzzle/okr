@@ -29,11 +29,24 @@ describe('TeamFormComponent Creating', () => {
     expect(component.isCreating).toEqual(true);
   });
 
+  test('should have right title', () => {
+    const heading = fixture.nativeElement.querySelector('p').textContent;
+    expect(heading).toEqual('Team erstellen');
+  });
+
   test('should have 1 input filed with right placeholder', () => {
     const inputFileds = fixture.debugElement.queryAll(By.css('input'));
     expect(inputFileds.length).toEqual(1);
 
     expect(inputFileds[0].nativeElement.placeholder).toEqual('Team hinzufügen');
+  });
+
+  test('should have 1 buttons', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('button'));
+    expect(buttons.length).toEqual(2);
+
+    expect(buttons[0].nativeElement.textContent).toEqual(' Abbrechen ');
+    expect(buttons[1].nativeElement.textContent).toEqual(' Speichern ');
   });
 });
 
@@ -50,10 +63,25 @@ describe('TeamFormComponent Editing', () => {
     expect(component.isCreating).toEqual(false);
   });
 
+  test('should have right title', () => {
+    const heading = fixture.nativeElement.querySelector('p').textContent;
+    expect(heading).toEqual('Team Name bearbeiten');
+  });
+
   test('should have 1 input filed with right placeholder', () => {
     const inputFileds = fixture.debugElement.queryAll(By.css('input'));
     expect(inputFileds.length).toEqual(1);
 
     expect(inputFileds[0].nativeElement.placeholder).toEqual('Team bearbeiten');
+  });
+
+  test('should have 1 buttons', () => {
+    const buttons = fixture.debugElement.queryAll(By.css('button'));
+    expect(buttons.length).toEqual(2);
+
+    expect(buttons[0].nativeElement.textContent).toEqual('Abbrechen');
+    expect(buttons[1].nativeElement.textContent).toEqual(
+      'Änderungen speichern'
+    );
   });
 });

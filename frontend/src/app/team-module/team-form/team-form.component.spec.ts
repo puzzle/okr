@@ -53,6 +53,7 @@ describe('TeamFormComponent Creating', () => {
 describe('TeamFormComponent Editing', () => {
   beforeEach(async () => {
     component.isCreating = false;
+    fixture.detectChanges();
   });
 
   test('should create', () => {
@@ -79,9 +80,9 @@ describe('TeamFormComponent Editing', () => {
     const buttons = fixture.debugElement.queryAll(By.css('button'));
     expect(buttons.length).toEqual(2);
 
-    expect(buttons[0].nativeElement.textContent).toEqual('Abbrechen');
+    expect(buttons[0].nativeElement.textContent).toEqual(' Abbrechen ');
     expect(buttons[1].nativeElement.textContent).toEqual(
-      'Änderungen speichern'
+      ' Änderungen speichern '
     );
   });
 });

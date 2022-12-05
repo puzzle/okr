@@ -10,6 +10,7 @@
   <mat-card class="w-50">
     <mat-card-content class="w-50">
       <p><b>Letzte Messung</b></p>
+      <p *ngIf="keyResult.measure === null">-</p>
       <p>
         <b>{{ keyResult.measure?.createdOn | date }}</b>
       </p>

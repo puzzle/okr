@@ -7,11 +7,7 @@ import { TeamFormComponent } from './team-module/team-form/team-form.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
   { path: 'teams', component: TeamListComponent },
-  {
-    path: 'team/edit/:id',
-    component: TeamFormComponent,
-    data: { team: 'some_value' },
-  },
+  { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

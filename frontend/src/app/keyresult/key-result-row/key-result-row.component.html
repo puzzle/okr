@@ -1,6 +1,8 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
-    <mat-panel-title>{{ this.element!.title }}</mat-panel-title>
+    <mat-panel-title class="keyresult-title">{{
+      this.element!.title
+    }}</mat-panel-title>
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex justify-content-around w-50">
         <p *ngFor="let info of information">{{ info }}</p>

@@ -1,3 +1,8 @@
+.keyresult-title {
+  font-weight: 400;
+  font-size: 14px;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -16,4 +21,8 @@
 
 .mat-progress-bar-buffer::after {
   background: #e4e8eb;
+}
+
+.matMenu {
+  margin-right: 15px;
 }

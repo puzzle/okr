@@ -14,7 +14,7 @@ import { MenuEntry } from '../../shared/types/menu-entry';
 })
 export class ObjectiveDetailComponent implements OnInit {
   @Input() objective!: Objective;
-  keyResultList!: Observable<KeyResultMeasure[]>;
+  @Input() keyResultList!: Observable<KeyResultMeasure[]>;
 
   menuEntries: MenuEntry[] = [
     { displayName: 'Resultat bearbeiten', routeLine: 'result/add' },
@@ -27,8 +27,6 @@ export class ObjectiveDetailComponent implements OnInit {
   constructor(private keyResultService: KeyResultService) {}
 
   ngOnInit(): void {
-    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(
-      this.objective.id
-    );
+
   }
 }

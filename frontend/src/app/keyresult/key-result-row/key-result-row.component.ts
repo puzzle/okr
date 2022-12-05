@@ -13,7 +13,6 @@ export class KeyResultRowComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;
   @Input() menuEntries!: MenuEntry[];
   progressPercentage!: number;
-  progressRecord!: Record<string, boolean>;
 
   constructor(private datePipe: DatePipe) {}
 
@@ -27,11 +26,6 @@ export class KeyResultRowComponent implements OnInit {
         (elementMeasureTargetValue - elementMeasureBasicValue)) *
         100
     );
-    this.progressRecord = {
-      'progress-bar-bad': this.progressPercentage < 40,
-      'progress-bar-medium': this.progressPercentage < 70,
-      'progress-bar-good': this.progressPercentage <= 100,
-    };
   }
 
   public formatDate(): string {

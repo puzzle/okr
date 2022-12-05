@@ -1,4 +1,4 @@
-<mat-expansion-panel>
+<mat-expansion-panel (opened)="getKeyResults(this.objective.id)">
   <mat-expansion-panel-header>
     <mat-panel-title class="objective-title">{{
       this.objective!.title
@@ -6,10 +6,9 @@
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex w-50 margin-left">
         <div class="w-100" id="progressContainer">
-          <span class="h5">{{ objective!.progress }}%</span>
+          <span class="h6">{{ objective!.progress }}%</span>
           <mat-progress-bar
             class="objectiveProgress"
-            [ngClass]="progressRecord"
             mode="determinate"
             [value]="this.objective!.progress"
           >
@@ -36,5 +35,5 @@
       </mat-menu>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <app-objective-detail [objective]="objective"></app-objective-detail>
+  <app-objective-detail [objective]="objective" [keyResultList]="keyResultList"></app-objective-detail>
 </mat-expansion-panel>

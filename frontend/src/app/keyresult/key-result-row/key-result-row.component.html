@@ -15,10 +15,9 @@
 
       <div class="d-flex w-50">
         <div class="w-100" id="progressContainer">
-          <span class="h5">{{ progressPercentage }}%</span>
+          <span class="h6">{{ progressPercentage }}%</span>
           <mat-progress-bar
             class="objectiveProgress"
-            [ngClass]="progressRecord"
             mode="determinate"
             [value]="progressPercentage"
           >

@@ -40,7 +40,6 @@ export interface KeyResultMeasure {
   unit: Unit;
   basicValue: number;
   targetValue: number;
-  progress: number;
   measure?: Measure;
 }
 

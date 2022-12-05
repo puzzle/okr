@@ -50,7 +50,6 @@ describe('ObjectiveDetailComponent', () => {
       basicValue: 10,
       targetValue: 50,
       measure: measure,
-      progress: 50,
     },
   ]);
 

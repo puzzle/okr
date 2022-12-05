@@ -25,22 +25,6 @@ export class ObjectiveRowComponent implements OnInit {
 
   }
 
-  public addResult() {
-    console.log('Keyresult hinzufügen');
-  }
-
-  public editGoal() {
-    console.log('Objective bearbeiten');
-  }
-
-  public duplicateGoal() {
-    console.log('Objective duplizieren');
-  }
-
-  public deleteGoal() {
-    console.log('Objective löschen');
-  }
-
   public getKeyResults(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
   }

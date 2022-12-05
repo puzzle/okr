@@ -7,9 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { trigger } from '@angular/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { Objective } from '../../services/objective.service';
+import { Objective } from '../../shared/services/objective.service';
 import { KeyResultRowComponent } from './key-result-row.component';
-import { MenuEntry } from 'src/app/types/menu-entry';
+import { MenuEntry } from 'src/app/shared/types/menu-entry';
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
@@ -51,7 +51,7 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     fixture = TestBed.createComponent(KeyResultRowComponent);
     component = fixture.componentInstance;
-    component.element = objective;
+    component.keyResult = objective;
     fixture.detectChanges();
   });
 
@@ -92,7 +92,7 @@ describe('KeyResultKeyResultRowComponent', () => {
     (progress: number, barIdentifier: string, result: boolean) => {
       fixture = TestBed.createComponent(KeyResultRowComponent);
       component = fixture.componentInstance;
-      component.element = { ...objective, progress: progress } as Objective;
+      component.keyResult = { ...objective, progress: progress } as Objective;
       fixture.detectChanges();
 
       let progressBar = fixture.nativeElement
@@ -138,7 +138,7 @@ describe('KeyResultKeyResultRowComponent', () => {
   ])('should have menu items', (menuEntries: MenuEntry[]) => {
     fixture = TestBed.createComponent(KeyResultRowComponent);
     component = fixture.componentInstance;
-    component.element = objective;
+    component.keyResult = objective;
     component.menuEntries = menuEntries;
     fixture.detectChanges();
 
@@ -161,7 +161,7 @@ describe('KeyResultKeyResultRowComponent', () => {
   ])('test information', (informationArray: string[]) => {
     fixture = TestBed.createComponent(KeyResultRowComponent);
     component = fixture.componentInstance;
-    component.element = objective;
+    component.keyResult = objective;
     component.information = informationArray;
     fixture.detectChanges();
 

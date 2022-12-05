@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { MenuEntry } from '../../types/menu-entry';
-import { KeyResultMeasure } from '../../services/key-result.service';
+import { MenuEntry } from '../../shared/types/menu-entry';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -9,18 +10,21 @@ import { KeyResultMeasure } from '../../services/key-result.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class KeyResultRowComponent implements OnInit {
-  @Input() element!: KeyResultMeasure;
+  @Input() keyResult!: KeyResultMeasure;
   @Input() menuEntries!: MenuEntry[];
-  @Input() information!: string[];
   progressPercentage!: number;
   progressRecord!: Record<string, boolean>;
 
-  constructor() {}
+  constructor(private datePipe: DatePipe) {}
 
   ngOnInit(): void {
+    const elementMeasureValue =
+      this.keyResult.measure?.value || this.keyResult.basicValue;
+    const elementMeasureTargetValue = this.keyResult.targetValue;
+    const elementMeasureBasicValue = this.keyResult.basicValue;
     this.progressPercentage = Math.round(
-      (this.element?.measure.value /
-        (this.element?.targetValue - this.element?.basicValue)) *
+      (elementMeasureValue /
+        (elementMeasureTargetValue - elementMeasureBasicValue)) *
         100
     );
     this.progressRecord = {
@@ -30,23 +34,15 @@ export class KeyResultRowComponent implements OnInit {
     };
   }
 
-  public addResult() {
-    console.log('Resultat hinzufügen');
-  }
-
-  public editGoal() {
-    console.log('Ziel bearbeiten');
-  }
-
-  public duplicateGoal() {
-    console.log('Ziel duplizieren');
-  }
-
-  public deleteGoal() {
-    console.log('Ziel löschen');
-  }
-
-  test() {
-    console.log(new Date());
+  public formatDate(): string {
+    const formattedDate = this.datePipe.transform(
+      this.keyResult.measure?.createdOn,
+      'dd.mM.Y'
+    );
+    if (formattedDate == null) {
+      return '-';
+    } else {
+      return formattedDate;
+    }
   }
 }

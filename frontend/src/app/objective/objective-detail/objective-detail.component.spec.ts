@@ -2,7 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Objective, ObjectiveService } from '../../services/objective.service';
+import {
+  Objective,
+  ObjectiveService,
+} from '../../shared/services/objective.service';
 import { Observable, of } from 'rxjs';
 import {
   ExpectedEvolution,
@@ -10,7 +13,7 @@ import {
   KeyResultService,
   Measure,
   Unit,
-} from '../../services/key-result.service';
+} from '../../shared/services/key-result.service';
 
 describe('ObjectiveDetailComponent', () => {
   let component: ObjectiveDetailComponent;

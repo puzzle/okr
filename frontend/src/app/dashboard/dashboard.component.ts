@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { OkrQuarter, Team, TeamService } from '../services/team.service';
+import { OkrQuarter, Team, TeamService } from '../shared/services/team.service';
 import { Observable } from 'rxjs';
 
 @Component({

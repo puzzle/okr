@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ObjectiveRowComponent } from './objective-row.component';
-import { Objective } from '../../services/objective.service';
+import { Objective } from '../../shared/services/objective.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { By } from '@angular/platform-browser';
 

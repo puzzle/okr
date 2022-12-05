@@ -1,11 +1,16 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title class="keyresult-title">{{
-      this.element!.title
+      this.keyResult!.title
     }}</mat-panel-title>
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex justify-content-around w-50">
-        <p *ngFor="let info of information">{{ info }}</p>
+        <p>{{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}</p>
+        <p
+          [ngClass]="formatDate() == '-' ? 'measure-null-date' : 'measure-date'"
+        >
+          {{ formatDate() }}
+        </p>
       </div>
 
       <div class="d-flex w-50">
@@ -41,5 +46,5 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  <app-key-result-detail [keyResult]="element"></app-key-result-detail>
+  <app-key-result-detail [keyResult]="keyResult"></app-key-result-detail>
 </mat-expansion-panel>

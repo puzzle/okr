@@ -22,15 +22,7 @@
     </div>
   </div>
 </div>
-
 <mat-accordion *ngFor="let keyResult of keyResultList | async">
-  <app-keyresult-row
-    [element]="keyResult"
-    [information]="[
-      keyResult.ownerFirstname + ' ' + keyResult.ownerLastname,
-      (keyResult.measure.createdOn | date: 'dd.mM.Y')!.toString()
-    ]"
-    [menuEntries]="menuEntries"
-  >
+  <app-keyresult-row [keyResult]="keyResult" [menuEntries]="menuEntries">
   </app-keyresult-row>
 </mat-accordion>

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
 
 export enum Unit {
   PERCENT = 'Prozent',
@@ -23,13 +22,17 @@ export enum ExpectedEvolution {
 export class KeyResultFormComponent implements OnInit {
   keyResultForm = new FormGroup({
     title: new FormControl(''),
-    baseValue: new FormControl(''),
     unit: new FormControl(''),
     expectedEvolution: new FormControl(''),
+    baseValue: new FormControl(''),
+    targetValue: new FormControl(''),
+    description: new FormControl(''),
+    owner: new FormControl(''),
   });
 
-  units = Object.values(Unit);
-  expectedEvolutions = Object.values(ExpectedEvolution);
+  public Unit = Unit;
+  public ExpectedEvolution = ExpectedEvolution;
+
   constructor() {}
 
   ngOnInit(): void {}

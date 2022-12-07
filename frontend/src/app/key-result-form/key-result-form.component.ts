@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { User, UserService } from './user.service';
+import { Observable } from 'rxjs';
 
 export enum Unit {
   PERCENT = 'Prozent',
@@ -30,12 +32,16 @@ export class KeyResultFormComponent implements OnInit {
     owner: new FormControl(''),
   });
 
+  public users$!: Observable<User[]>;
+
   public Unit = Unit;
   public ExpectedEvolution = ExpectedEvolution;
 
-  constructor() {}
+  constructor(private _userService: UserService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.users$ = this._userService.getAllUsers();
+  }
 
   submit() {
     console.log(this.keyResultForm.value);

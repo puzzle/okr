@@ -139,8 +139,8 @@
       >
         <mat-label>Besitzer</mat-label>
         <mat-select formControlName="owner">
-          <mat-option *ngFor="let unit of Unit | keyvalue" [value]="unit.key">
-            {{ unit.value }}
+          <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+            {{ user.firstname + " " + user.lastname }}
           </mat-option>
         </mat-select>
       </mat-form-field>

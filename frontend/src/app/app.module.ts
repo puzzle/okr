@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,20 +12,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { TeamModule } from './team/team.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    TeamDetailComponent,
-    ObjectiveRowComponent,
-  ],
+  declarations: [AppComponent, DashboardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NoopAnimationsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatIconModule,
@@ -34,6 +29,10 @@ import { ObjectiveRowComponent } from './team-detail/objective-row/objective-row
     MatButtonModule,
     MatProgressBarModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatExpansionModule,
+    MatInputModule,
+    TeamModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

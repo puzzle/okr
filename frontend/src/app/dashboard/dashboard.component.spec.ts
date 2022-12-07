@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TeamService } from './team.service';
+import { TeamService } from '../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +20,7 @@ describe('DashboardComponent', () => {
     getTeams: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     teamServiceMock.getQuarter.mockReturnValue([
       { quarter: '22-4' },
       { quarter: '22-3' },
@@ -36,7 +36,7 @@ describe('DashboardComponent', () => {
       ])
     );
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         NoopAnimationsModule,
@@ -56,19 +56,20 @@ describe('DashboardComponent', () => {
 
   afterEach(() => {
     teamServiceMock.getQuarter.mockReset();
+    teamServiceMock.getTeams.mockReset();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display Objectives und Keyresults headline', () => {
+  test('should display Objectives und Keyresults headline', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
       'Objectives und Keyresults'
     );
   });
 
-  it('should display 2 dropdowns links', () => {
+  test('should display 2 dropdowns links', () => {
     expect(
       fixture.nativeElement.querySelectorAll('mat-form-field').length
     ).toEqual(2);
@@ -88,7 +89,7 @@ describe('DashboardComponent', () => {
     expect(dropdownItems.length).toEqual(2);
   });
 
-  it('should display 2 team detail components when having 2 teams', () => {
+  test('should display 2 team detail components when having 2 teams', () => {
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
     ).toEqual(2);

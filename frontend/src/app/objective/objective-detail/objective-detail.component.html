@@ -1,0 +1,28 @@
+<div>
+  <p class="objective-cycle">
+    <strong>Zyklus</strong> GJ {{ this.objective.quarterYear }}
+  </p>
+  <p class="objective-owner">
+    <strong>Ziel Besitzer</strong> {{ this.objective.ownerFirstname }}
+    {{ this.objective.ownerLastname }}
+  </p>
+</div>
+<div class="d-flex">
+  <div class="w-35 objective-results">
+    <span class="h6">Resultate</span>
+  </div>
+
+  <div class="d-flex w-65">
+    <div class="d-flex w-50 justify-content-around">
+      <span class="h6">Besitzer</span>
+      <span class="h6">Letzte Messung</span>
+    </div>
+    <div class="d-flex w-50">
+      <span class="h6">Fortschritt</span>
+    </div>
+  </div>
+</div>
+<mat-accordion *ngFor="let keyResult of keyResultList | async">
+  <app-keyresult-row [keyResult]="keyResult" [menuEntries]="menuEntries">
+  </app-keyresult-row>
+</mat-accordion>

@@ -13,6 +13,7 @@ export interface Objective {
   quarterYear: number;
   description: String;
   progress: number;
+  created: string;
 }
 
 @Injectable({

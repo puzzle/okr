@@ -12,11 +12,11 @@ describe('TeamService', () => {
     service = TestBed.inject(TeamService);
   });
 
-  it('should be created', () => {
+  test('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return 6 quarters', () => {
+  test('should return 6 quarters', () => {
     let currentYear = new Date().getFullYear();
     let currentQuarter: number = Math.floor(new Date().getMonth() / 3 + 1);
     let quarterList = service.getQuarter();
@@ -35,8 +35,8 @@ describe('TeamService', () => {
     }
   });
 
-  it('should return first quarter at last march', () => {
-    let firstQuarter = new Date('2022-03-31');
+  test('should return first quarter at last march', () => {
+    let firstQuarter = new Date('2022-03-31T00:00:00');
     let quarterList = service.getQuarter(firstQuarter);
     expect(quarterList.length).toEqual(6);
     expect(quarterList[0].quarter).toEqual('22-1');
@@ -44,8 +44,8 @@ describe('TeamService', () => {
     expect(quarterList[5].quarter).toEqual('22-2');
   });
 
-  it('should return second quarter at first april', () => {
-    let secondQuarter = new Date('2022-04-01');
+  test('should return second quarter at first april', () => {
+    let secondQuarter = new Date('2022-04-01T00:00:00');
     let quarterList = service.getQuarter(secondQuarter);
     expect(quarterList.length).toEqual(6);
     expect(quarterList[0].quarter).toEqual('22-2');
@@ -53,8 +53,8 @@ describe('TeamService', () => {
     expect(quarterList[5].quarter).toEqual('22-3');
   });
 
-  it('should return right quarters at beginning of year', () => {
-    let beginningOfYear = new Date('2022-01-01');
+  test('should return right quarters at beginning of year', () => {
+    let beginningOfYear = new Date('2022-01-01T00:00:00');
     let quarterList = service.getQuarter(beginningOfYear);
     expect(quarterList.length).toEqual(6);
     expect(quarterList[0].quarter).toEqual('22-1');
@@ -65,8 +65,8 @@ describe('TeamService', () => {
     expect(quarterList[5].quarter).toEqual('22-2');
   });
 
-  it('should return right quarters in the middle of year', () => {
-    let middleOfYear = new Date('2018-06-15');
+  test('should return right quarters in the middle of year', () => {
+    let middleOfYear = new Date('2018-06-15T00:00:00');
     let quarterList = service.getQuarter(middleOfYear);
     expect(quarterList.length).toEqual(6);
     expect(quarterList[0].quarter).toEqual('18-2');
@@ -77,8 +77,8 @@ describe('TeamService', () => {
     expect(quarterList[5].quarter).toEqual('18-3');
   });
 
-  it('should return right quarters at end of year', () => {
-    let endOfYear = new Date('2010-12-31');
+  test('should return right quarters at end of year', () => {
+    let endOfYear = new Date('2010-12-31T00:00:00');
     let quarterList = service.getQuarter(endOfYear);
     expect(quarterList.length).toEqual(6);
     expect(quarterList[0].quarter).toEqual('10-4');

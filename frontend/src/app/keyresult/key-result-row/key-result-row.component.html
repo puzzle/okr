@@ -1,0 +1,51 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="keyresult-title">{{
+      this.keyResult!.title
+    }}</mat-panel-title>
+    <mat-panel-description class="d-flex space-between">
+      <div class="d-flex justify-content-around w-50">
+        <p class="keyResultOwner">
+          {{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}
+        </p>
+        <p
+          [ngClass]="formatDate() == '-' ? 'measure-null-date' : 'measure-date'"
+        >
+          {{ formatDate() }}
+        </p>
+      </div>
+
+      <div class="d-flex w-50">
+        <div class="w-100" id="progressContainer">
+          <span class="h6">{{ progressPercentage }}%</span>
+          <mat-progress-bar
+            class="objectiveProgress"
+            mode="determinate"
+            [value]="progressPercentage"
+          >
+          </mat-progress-bar>
+        </div>
+        <button
+          (click)="$event.stopPropagation()"
+          [matMenuTriggerFor]="objectiveMenu"
+          aria-label="Button to edit objectives"
+          mat-icon-button
+        >
+          <mat-icon class="pointer">more_vert</mat-icon>
+        </button>
+      </div>
+
+      <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
+        <button
+          *ngFor="let menuEntry of menuEntries"
+          [routerLink]="menuEntry.routeLine"
+          mat-menu-item
+        >
+          <span>{{ menuEntry.displayName }}</span>
+        </button>
+      </mat-menu>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <app-key-result-detail [keyResult]="keyResult"></app-key-result-detail>
+</mat-expansion-panel>

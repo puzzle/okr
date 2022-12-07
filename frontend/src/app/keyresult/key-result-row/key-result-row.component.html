@@ -5,7 +5,9 @@
     }}</mat-panel-title>
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex justify-content-around w-50">
-        <p>{{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}</p>
+        <p class="keyResultOwner">
+          {{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}
+        </p>
         <p
           [ngClass]="formatDate() == '-' ? 'measure-null-date' : 'measure-date'"
         >

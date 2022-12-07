@@ -16,6 +16,7 @@ import {
 } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
+import { KeyresultModule } from '../keyresult.module';
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
@@ -57,6 +58,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           MatIconModule,
           RouterTestingModule,
           MatProgressBarModule,
+          KeyresultModule,
         ],
         providers: [DatePipe],
         declarations: [KeyResultRowComponent],
@@ -112,7 +114,6 @@ describe('KeyResultKeyResultRowComponent', () => {
       );
     });
 
-    // @ts-ignore
     test.each([
       [
         [
@@ -162,6 +163,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           MatIconModule,
           RouterTestingModule,
           MatProgressBarModule,
+          KeyresultModule,
         ],
         providers: [DatePipe],
         declarations: [KeyResultRowComponent],

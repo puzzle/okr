@@ -38,7 +38,7 @@ export class KeyResultRowComponent implements OnInit {
       this.keyResult.measure?.createdOn,
       'dd.MM.yyyy'
     );
-    if (formattedDate == null) {
+    if (formattedDate === null) {
       return '-';
     } else {
       return formattedDate;

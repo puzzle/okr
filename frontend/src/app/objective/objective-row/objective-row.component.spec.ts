@@ -21,6 +21,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { trigger } from '@angular/animations';
 import { By } from '@angular/platform-browser';
+import { ObjectiveModule } from '../objective.module';
 
 describe('ObjectiveComponent', () => {
   let component: ObjectiveRowComponent;
@@ -113,6 +114,7 @@ describe('ObjectiveComponent', () => {
         MatIconModule,
         RouterTestingModule,
         MatProgressBarModule,
+        ObjectiveModule,
       ],
       declarations: [ObjectiveRowComponent],
       providers: [
@@ -165,7 +167,6 @@ describe('ObjectiveComponent', () => {
     );
   });
 
-  // @ts-ignore
   test.each([
     [
       [

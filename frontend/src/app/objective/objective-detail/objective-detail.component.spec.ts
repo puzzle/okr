@@ -10,6 +10,9 @@ import {
   Unit,
 } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
+import { ObjectiveModule } from '../objective.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ObjectiveDetailComponent', () => {
   let component: ObjectiveDetailComponent;
@@ -84,8 +87,13 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        ObjectiveModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
+      ],
       declarations: [ObjectiveDetailComponent],
-      imports: [HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveDetailComponent);

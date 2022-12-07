@@ -7,6 +7,8 @@ import {
   Unit,
 } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatCardModule } from '@angular/material/card';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
@@ -40,6 +42,7 @@ describe('KeyResultDetailComponent', () => {
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
+        imports: [RouterTestingModule, MatCardModule],
         declarations: [KeyResultDetailComponent],
       }).compileComponents();
 

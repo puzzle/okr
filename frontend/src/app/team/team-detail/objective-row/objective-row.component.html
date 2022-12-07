@@ -1,0 +1,38 @@
+<div class="informationRow">
+  <p class="objectiveTitle">{{ this.objective!.title }}</p>
+  <div class="objectiveProperties">
+    <div class="progressPart">
+      <span id="progressSpan">{{ objective!.progress }}%</span>
+      <mat-progress-bar
+        class="objectiveProgress"
+        mode="determinate"
+        value="{{ this.objective!.progress }}"
+      ></mat-progress-bar>
+    </div>
+    <div class="objectiveActions">
+      <mat-icon class="spaceBetween pointer">keyboard_arrow_down</mat-icon>
+      <button
+        id="triggerButton"
+        mat-icon-button
+        [matMenuTriggerFor]="objectiveMenu"
+        aria-label="Button to edit objectives"
+      >
+        <mat-icon class="pointer">more_vert</mat-icon>
+      </button>
+      <mat-menu class="matMenu" #objectiveMenu="matMenu" yPosition="above">
+        <button mat-menu-item (click)="addResult()">
+          <span class="addResult"> Keyresult hinzufügen</span>
+        </button>
+        <button mat-menu-item (click)="editGoal()">
+          <span>Objective bearbeiten</span>
+        </button>
+        <button mat-menu-item (click)="duplicateGoal()">
+          <span>Objective duplizieren</span>
+        </button>
+        <button mat-menu-item (click)="deleteGoal()">
+          <span>Objective löschen</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</div>

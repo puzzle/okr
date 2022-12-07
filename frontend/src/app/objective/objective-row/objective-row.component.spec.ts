@@ -12,6 +12,15 @@ import {
   KeyResultService,
   Unit,
 } from '../../shared/services/key-result.service';
+import { MenuEntry } from '../../shared/types/menu-entry';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { trigger } from '@angular/animations';
+import { By } from '@angular/platform-browser';
 
 describe('ObjectiveComponent', () => {
   let component: ObjectiveRowComponent;
@@ -54,7 +63,7 @@ describe('ObjectiveComponent', () => {
         changeInfo: 'Change Infos',
         initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date('2022-12-07'),
+        createdOn: new Date('2022-12-07T00:00:00'),
       },
     },
     {
@@ -79,7 +88,7 @@ describe('ObjectiveComponent', () => {
         changeInfo: 'Change Infos',
         initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date('2022-12-07'),
+        createdOn: new Date('2022-12-07T00:00:00'),
       },
     },
   ]);
@@ -88,22 +97,40 @@ describe('ObjectiveComponent', () => {
     getKeyResultsOfObjective: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(
       keyResultList
     );
 
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CommonModule, MatMenuModule],
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        CommonModule,
+        BrowserDynamicTestingModule,
+        NoopAnimationsModule,
+        MatMenuModule,
+        MatExpansionModule,
+        MatIconModule,
+        RouterTestingModule,
+        MatProgressBarModule,
+      ],
       declarations: [ObjectiveRowComponent],
       providers: [
         { provide: KeyResultService, useValue: mockKeyResultService },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ObjectiveRowComponent, {
+        set: {
+          animations: [trigger('entryModeTransition', [])],
+        },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveRowComponent);
     component = fixture.componentInstance;
+
     component.objective = objective;
+
     fixture.detectChanges();
   });
 
@@ -114,13 +141,13 @@ describe('ObjectiveComponent', () => {
   test('should have objective title', () => {
     expect(
       fixture.nativeElement.querySelector('.objective-title').textContent
-    ).toEqual(objective.title);
+    ).toEqual('Objective 1');
   });
 
   test('should have progress label with progress from objective', () => {
     expect(
       fixture.nativeElement.querySelector('#progressSpan').textContent
-    ).toEqual(objective.progress + '%');
+    ).toEqual('5%');
   });
 
   test('should have progress bar with progress from objective', () => {
@@ -135,17 +162,33 @@ describe('ObjectiveComponent', () => {
     );
   });
 
-  test('should have button with icon', () => {
-    expect(fixture.nativeElement.querySelector('button').textContent).toEqual(
-      'more_vert'
+  // @ts-ignore
+  test.each([
+    [
+      [
+        { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
+        { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
+        { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
+        { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+      ] as MenuEntry[],
+    ],
+  ])('should have menu items', (menuEntries: MenuEntry[]) => {
+    let button = fixture.debugElement.nativeElement.querySelector(
+      'button[mat-icon-button]'
     );
+    button.click();
+    let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+    let children = Array.from(matMenu.children)
+      .map((e) => e.querySelector('span')!)
+      .map((e) => e.textContent);
+    let itemTexts = menuEntries.map((e) => e.displayName);
+    expect(children).toEqual(itemTexts);
   });
 
-  // it('should have 4 menu items', () => {
-  //   let button = fixture.debugElement.nativeElement.querySelector('#triggerButton');
-  //   button.click();
-  //   expect(
-  //     fixture.debugElement.nativeElement.querySelector('.matMenu')
-  //   ).toEqual(" ");
-  // });
+  test('should have 1 objective detail rows', () => {
+    const keyResultRows = fixture.debugElement.queryAll(
+      By.css('app-objective-detail')
+    );
+    expect(keyResultRows.length).toEqual(1);
+  });
 });

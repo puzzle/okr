@@ -33,7 +33,7 @@ describe('KeyResultDetailComponent', () => {
       changeInfo: 'Change Infos',
       initiatives: 'Initatives',
       createdBy: 2,
-      createdOn: new Date('2022-12-07'),
+      createdOn: new Date('2022-12-07T00:00:00'),
     },
   };
 

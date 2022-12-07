@@ -59,17 +59,17 @@ describe('DashboardComponent', () => {
     teamServiceMock.getTeams.mockReset();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display Objectives und Keyresults headline', () => {
+  test('should display Objectives und Keyresults headline', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
       'Objectives und Keyresults'
     );
   });
 
-  it('should display 2 dropdowns links', () => {
+  test('should display 2 dropdowns links', () => {
     expect(
       fixture.nativeElement.querySelectorAll('mat-form-field').length
     ).toEqual(2);
@@ -89,7 +89,7 @@ describe('DashboardComponent', () => {
     expect(dropdownItems.length).toEqual(2);
   });
 
-  it('should display 2 team detail components when having 2 teams', () => {
+  test('should display 2 team detail components when having 2 teams', () => {
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
     ).toEqual(2);

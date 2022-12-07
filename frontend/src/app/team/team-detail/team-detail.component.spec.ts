@@ -53,10 +53,10 @@ describe('TeamDetailComponent', () => {
     name: 'Puzzle ITC',
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockObjectiveService.getObjectivesOfTeam.mockReturnValue(objectiveList);
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CommonModule],
       declarations: [TeamDetailComponent, DashboardComponent],
       providers: [
@@ -70,29 +70,29 @@ describe('TeamDetailComponent', () => {
     fixtureTeamDetails.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(componentTeamDetails).toBeTruthy();
   });
 
-  it('should have 1 title from team', () => {
+  test('should have 1 title from team', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('h1').length
     ).toEqual(1);
   });
 
-  it('should have title Puzzle ITC Objectives', () => {
+  test('should have title Puzzle ITC Objectives', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
     ).toEqual('Puzzle ITC Objectives');
   });
 
-  it('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {
+  test('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('div').length
     ).toEqual(3);
   });
 
-  it('should create 2 hr when having 1 team with 1 objective', () => {
+  test('should create 2 hr when having 1 team with 1 objective', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('hr').length
     ).toEqual(2);

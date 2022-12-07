@@ -97,23 +97,23 @@ describe('ObjectiveDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have cycle with right quarteryear', () => {
+  test('should have cycle with right quarteryear', () => {
     const cycleText = fixture.debugElement.query(By.css('.objective-cycle'));
     expect(cycleText.nativeElement.textContent).toEqual('Zyklus GJ 2022 ');
   });
 
-  it('should have owner with right first- and lastname', () => {
+  test('should have owner with right first- and lastname', () => {
     const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
     expect(ownerText.nativeElement.textContent).toEqual(
       'Ziel Besitzer Wunderland Alice '
     );
   });
 
-  it('should have right table titles', () => {
+  test('should have right table titles', () => {
     const spanTextes = fixture.debugElement.queryAll(By.css('span'));
     expect(spanTextes[0].nativeElement.textContent).toEqual('Resultate');
     expect(spanTextes[1].nativeElement.textContent).toEqual('Besitzer');
@@ -121,7 +121,7 @@ describe('ObjectiveDetailComponent', () => {
     expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');
   });
 
-  it('should have 2 key result rows', () => {
+  test('should have 2 key result rows', () => {
     const keyResultRows = fixture.debugElement.queryAll(
       By.css('app-keyresult-row')
     );

@@ -51,11 +51,11 @@ describe('KeyResultDetailComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should create', () => {
+    test('should create', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should have right strong titles', () => {
+    test('should have right strong titles', () => {
       const strongs = fixture.debugElement.queryAll(By.css('strong'));
 
       expect(strongs.length).toEqual(3);
@@ -65,21 +65,21 @@ describe('KeyResultDetailComponent', () => {
       expect(strongs[1].nativeElement.textContent).toEqual('Letzte Messung');
     });
 
-    it('should have keyresult description', () => {
+    test('should have keyresult description', () => {
       const paragraphs = fixture.debugElement.queryAll(By.css('p'));
       expect(paragraphs[1].nativeElement.textContent).toEqual(
         'This is a description'
       );
     });
 
-    it('should have last measure date', () => {
+    test('should have last measure date', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasureDate')
       );
       expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 7, 2022');
     });
 
-    it('should have last measure date', () => {
+    test('should have last measure date', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasurechangeInfo')
       );
@@ -103,7 +103,7 @@ describe('KeyResultDetailComponent', () => {
       fixture.detectChanges();
     });
 
-    it('should display - when measure is null', () => {
+    test('should display - when measure is null', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.emptyLastMeasure')
       );

@@ -12,9 +12,6 @@ import { KeyResultMeasure } from '../../shared/services/key-result.service';
   styleUrls: ['./key-result-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyResultDetailComponent implements OnInit {
+export class KeyResultDetailComponent {
   @Input() keyResult!: KeyResultMeasure;
-  constructor() {}
-
-  ngOnInit(): void {}
 }

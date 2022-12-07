@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./objective-row.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveRowComponent implements OnInit {
+export class ObjectiveRowComponent {
   @Input() objective!: Objective;
   keyResultList!: Observable<KeyResultMeasure[]>;
   menuEntries: MenuEntry[] = [
@@ -28,8 +28,6 @@ export class ObjectiveRowComponent implements OnInit {
     { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
   ];
   constructor(private keyResultService: KeyResultService) {}
-
-  ngOnInit(): void {}
 
   public getKeyResults(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);

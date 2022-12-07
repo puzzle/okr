@@ -18,7 +18,7 @@ import { MenuEntry } from '../../shared/types/menu-entry';
   styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveDetailComponent implements OnInit {
+export class ObjectiveDetailComponent {
   @Input() objective!: Objective;
   @Input() keyResultList!: Observable<KeyResultMeasure[]>;
 
@@ -29,8 +29,4 @@ export class ObjectiveDetailComponent implements OnInit {
     { displayName: 'Resultat löschen', routeLine: 'result/add' },
     { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
   ];
-
-  constructor(private keyResultService: KeyResultService) {}
-
-  ngOnInit(): void {}
 }

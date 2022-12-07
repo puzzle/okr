@@ -91,7 +91,7 @@ describe('ObjectiveDetailComponent', () => {
 
   it('should contain Zyklus', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
-      'Zyklus GJ 2022'
+      'Zyklus GJ 2022 '
     );
   });
 
@@ -99,9 +99,5 @@ describe('ObjectiveDetailComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('p')[1].textContent).toEqual(
       'Ziel Besitzer firstname lastname '
     );
-  });
-
-  it('should create keyResults for this objective', () => {
-    expect(fixture.nativeElement.querySelectorAll('div').length).toEqual(3);
   });
 });

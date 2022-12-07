@@ -151,9 +151,12 @@ describe('ObjectiveComponent', () => {
   });
 
   test('should have progress bar with progress from objective', () => {
-    expect(
-      fixture.nativeElement.querySelector('.objectiveProgress').value
-    ).toEqual(objective.progress);
+    let progressBar = fixture.nativeElement
+      .querySelector('#progressContainer')
+      .querySelector('mat-progress-bar');
+    expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
+      objective.progress.toString()
+    );
   });
 
   test('should have menu button with icon', () => {

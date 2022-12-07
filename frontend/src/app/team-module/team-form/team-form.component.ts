@@ -10,7 +10,6 @@ import { map, Observable } from 'rxjs';
 })
 export class TeamFormComponent implements OnInit {
   isCreating: boolean = true;
-  state$!: Observable<object>;
   teamObject!: Team;
   teamname!: string;
 
@@ -22,10 +21,7 @@ export class TeamFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.route.snapshot.params['id'] != null) {
-      this.state$ = this.route.paramMap.pipe(map(() => window.history.state));
-      this.state$.subscribe(
-        (team) => (this.teamObject = Object(team)['teamObject'])
-      );
+      this.teamObject = window.history.state;
       this.teamObject.id = this.route.snapshot.params['id'];
       this.teamname = this.teamObject.name;
       this.isCreating = false;

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface Objective {
   id: number;
-  title: String;
+  title: string;
   ownerId: number;
-  ownerFirstname: String;
-  ownerLastname: String;
+  ownerFirstname: string;
+  ownerLastname: string;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
-  description: String;
+  description: string;
   progress: number;
   created: string;
 }
@@ -23,8 +23,8 @@ export class ObjectiveService {
   constructor(private httpClient: HttpClient) {}
 
   public getObjectivesOfTeam(teamId: number): Observable<Objective[]> {
-    return this.httpClient
-      .get<Objective[]>('api/v1/teams/' + teamId + '/objectives')
-      .pipe(tap((data) => console.log(data)));
+    return this.httpClient.get<Objective[]>(
+      'api/v1/teams/' + teamId + '/objectives'
+    );
   }
 }

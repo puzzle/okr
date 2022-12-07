@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Team, TeamService } from '../team.service';
 
@@ -6,6 +6,7 @@ import { Team, TeamService } from '../team.service';
   selector: 'app-team-list',
   templateUrl: './team-list.component.html',
   styleUrls: ['./team-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamListComponent implements OnInit {
   teamList!: Observable<Team[]>;

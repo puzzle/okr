@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TeamService } from '../team.service';
 import { By } from '@angular/platform-browser';
+import { MatDividerModule } from '@angular/material/divider';
 
 describe('TeamListComponent', () => {
   let component: TeamListComponent;
@@ -23,7 +24,7 @@ describe('TeamListComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatDividerModule],
       providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [TeamListComponent],
     }).compileComponents();

@@ -7,7 +7,6 @@ import {
   Unit,
 } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MatCardModule } from '@angular/material/card';
 
 describe('KeyResultDetailComponent', () => {
@@ -42,7 +41,7 @@ describe('KeyResultDetailComponent', () => {
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule, MatCardModule],
+        imports: [MatCardModule],
         declarations: [KeyResultDetailComponent],
       }).compileComponents();
 
@@ -93,6 +92,7 @@ describe('KeyResultDetailComponent', () => {
   describe('KeyResultDetail with no measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
+        imports: [MatCardModule],
         declarations: [KeyResultDetailComponent],
       }).compileComponents();
 

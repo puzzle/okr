@@ -5,11 +5,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
   {
-    path: 'keyresults/edit',
+    path: 'keyresults/edit/:id',
     loadChildren: () =>
       import('./key-result-form/key-result-form.module').then(
         (m) => m.KeyResultFormModule
       ),
+  },
+  {
+    path: 'keyresults/edit',
+    redirectTo: 'keyresults/edit/',
+    pathMatch: 'full',
   },
   { path: '**', component: DashboardComponent, pathMatch: 'full' },
 ];

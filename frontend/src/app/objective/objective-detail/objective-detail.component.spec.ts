@@ -7,35 +7,20 @@ import { Observable, of } from 'rxjs';
 import {
   ExpectedEvolution,
   KeyResultMeasure,
-  KeyResultService,
-  Measure,
   Unit,
 } from '../../shared/services/key-result.service';
+import { By } from '@angular/platform-browser';
 
 describe('ObjectiveDetailComponent', () => {
   let component: ObjectiveDetailComponent;
   let fixture: ComponentFixture<ObjectiveDetailComponent>;
-
-  const mockKeyResultService = {
-    getKeyResultsOfObjective: jest.fn(),
-  };
-
-  let measure: Measure = {
-    id: 1,
-    keyResultId: 2,
-    value: 15,
-    changeInfo: 'Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: Date.prototype,
-  };
 
   let keyResultList: Observable<KeyResultMeasure[]> = of([
     {
       id: 1,
       objectiveId: 1,
       title: 'KeyResult 1',
-      description: 'Description of KeyResult',
+      description: 'Description of KeyResult 1',
       ownerId: 1,
       ownerFirstname: 'Rudi',
       ownerLastname: 'Voller',
@@ -46,42 +31,69 @@ describe('ObjectiveDetailComponent', () => {
       unit: Unit.NUMBER,
       basicValue: 10,
       targetValue: 50,
-      measure: measure,
+      measure: {
+        id: 1,
+        keyResultId: 1,
+        value: 15,
+        changeInfo: 'Changeinfo 1',
+        initiatives: 'Initiatives 2',
+        createdBy: 1,
+        createdOn: Date.prototype,
+      },
+    },
+    {
+      id: 2,
+      objectiveId: 1,
+      title: 'KeyResult 2',
+      description: 'Description of KeyResult 2',
+      ownerId: 1,
+      ownerFirstname: 'Rudi',
+      ownerLastname: 'Voller',
+      quarterId: 1,
+      quarterNumber: 2,
+      quarterYear: 2022,
+      expectedEvolution: ExpectedEvolution.CONSTANT,
+      unit: Unit.NUMBER,
+      basicValue: 20,
+      targetValue: 120,
+      measure: {
+        id: 2,
+        keyResultId: 2,
+        value: 45,
+        changeInfo: 'Changeinfo 2',
+        initiatives: 'Initiatives 2',
+        createdBy: 1,
+        createdOn: Date.prototype,
+      },
     },
   ]);
 
-  beforeEach(async () => {
-    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(
-      keyResultList
-    );
+  let objective: Objective = {
+    id: 1,
+    title: 'title',
+    ownerLastname: 'Alice',
+    ownerFirstname: 'Wunderland',
+    description: 'description',
+    quarterYear: 2022,
+    quarterNumber: 4,
+    quarterId: 1,
+    progress: 10,
+    ownerId: 1,
+    created: '01.01.2022',
+  };
 
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ObjectiveDetailComponent],
       imports: [HttpClientTestingModule],
-      providers: [
-        { provide: KeyResultService, useValue: mockKeyResultService },
-      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveDetailComponent);
     component = fixture.componentInstance;
 
-    //Test objective which fills our component with values
-    let testObjective: Objective = {
-      id: 1,
-      title: 'title',
-      ownerLastname: 'lastname',
-      ownerFirstname: 'firstname',
-      description: 'description',
-      quarterYear: 2022,
-      quarterNumber: 4,
-      quarterId: 1,
-      progress: 10,
-      ownerId: 1,
-      created: '01.01.2022',
-    };
+    component.keyResultList = keyResultList;
+    component.objective = objective;
 
-    component.objective = testObjective;
     fixture.detectChanges();
   });
 
@@ -89,15 +101,30 @@ describe('ObjectiveDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should contain Zyklus', () => {
-    expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
-      'Zyklus GJ 2022 '
+  it('should have cycle with right quarteryear', () => {
+    const cycleText = fixture.debugElement.query(By.css('.objective-cycle'));
+    expect(cycleText.nativeElement.textContent).toEqual('Zyklus GJ 2022 ');
+  });
+
+  it('should have owner with right first- and lastname', () => {
+    const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
+    expect(ownerText.nativeElement.textContent).toEqual(
+      'Ziel Besitzer Wunderland Alice '
     );
   });
 
-  it('should contain Owner', () => {
-    expect(fixture.nativeElement.querySelectorAll('p')[1].textContent).toEqual(
-      'Ziel Besitzer firstname lastname '
+  it('should have right table titles', () => {
+    const spanTextes = fixture.debugElement.queryAll(By.css('span'));
+    expect(spanTextes[0].nativeElement.textContent).toEqual('Resultate');
+    expect(spanTextes[1].nativeElement.textContent).toEqual('Besitzer');
+    expect(spanTextes[2].nativeElement.textContent).toEqual('Letzte Messung');
+    expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');
+  });
+
+  it('should have 2 key result rows', () => {
+    const keyResultRows = fixture.debugElement.queryAll(
+      By.css('app-keyresult-row')
     );
+    expect(keyResultRows.length).toEqual(2);
   });
 });

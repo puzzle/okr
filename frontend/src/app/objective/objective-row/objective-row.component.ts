@@ -5,7 +5,7 @@ import {
   KeyResultMeasure,
   KeyResultService,
 } from '../../shared/services/key-result.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-objective-row',
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 })
 export class ObjectiveRowComponent {
   @Input() objective!: Objective;
-  keyResultList!: Observable<KeyResultMeasure[]>;
+  keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries: MenuEntry[] = [
     { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
     { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },

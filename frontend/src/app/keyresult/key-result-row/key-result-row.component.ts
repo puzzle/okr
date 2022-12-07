@@ -3,7 +3,6 @@ import {
   Component,
   Input,
   OnInit,
-  ViewEncapsulation,
 } from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';

@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
+import { Objective } from '../../shared/services/objective.service';
 import { Observable, of } from 'rxjs';
 import {
   ExpectedEvolution,

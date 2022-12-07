@@ -1,14 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ObjectiveRowComponent} from './objective-row.component';
-import {Objective, ObjectiveService} from '../../shared/services/objective.service';
-import {MatMenuModule} from '@angular/material/menu';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {CommonModule} from "@angular/common";
-import {TeamDetailComponent} from "../../team/team-detail/team-detail.component";
-import {DashboardComponent} from "../../dashboard/dashboard.component";
-import {Observable, of} from "rxjs";
-import {ExpectedEvolution, KeyResultMeasure, KeyResultService, Unit} from "../../shared/services/key-result.service";
+import { ObjectiveRowComponent } from './objective-row.component';
+import { Objective } from '../../shared/services/objective.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { CommonModule } from '@angular/common';
+import { Observable, of } from 'rxjs';
+import {
+  ExpectedEvolution,
+  KeyResultMeasure,
+  KeyResultService,
+  Unit,
+} from '../../shared/services/key-result.service';
 
 describe('ObjectiveComponent', () => {
   let component: ObjectiveRowComponent;
@@ -32,8 +35,8 @@ describe('ObjectiveComponent', () => {
     {
       id: 1,
       objectiveId: 1,
-      title: "Keyresult 1",
-      description: "This is a description",
+      title: 'Keyresult 1',
+      description: 'This is a description',
       ownerId: 2,
       ownerFirstname: 'Alice',
       ownerLastname: 'Wunderland',
@@ -48,17 +51,17 @@ describe('ObjectiveComponent', () => {
         id: 1,
         keyResultId: 1,
         value: 20,
-        changeInfo: "Change Infos",
-        initiatives: "Initatives",
+        changeInfo: 'Change Infos',
+        initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date()
+        createdOn: new Date(),
       },
     },
     {
       id: 2,
       objectiveId: 1,
-      title: "Keyresult 2",
-      description: "This is a description",
+      title: 'Keyresult 2',
+      description: 'This is a description',
       ownerId: 2,
       ownerFirstname: 'Alice',
       ownerLastname: 'Wunderland',
@@ -73,10 +76,10 @@ describe('ObjectiveComponent', () => {
         id: 2,
         keyResultId: 2,
         value: 40,
-        changeInfo: "Change Infos",
-        initiatives: "Initatives",
+        changeInfo: 'Change Infos',
+        initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date()
+        createdOn: new Date(),
       },
     },
   ]);
@@ -86,7 +89,9 @@ describe('ObjectiveComponent', () => {
   };
 
   beforeEach(async () => {
-    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(keyResultList);
+    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(
+      keyResultList
+    );
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, CommonModule, MatMenuModule],

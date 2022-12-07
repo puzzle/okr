@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Objective } from '../../shared/services/objective.service';
 import { Observable } from 'rxjs';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 
 @Component({

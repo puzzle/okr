@@ -14,7 +14,7 @@ describe('TeamListComponent', () => {
     getTeams: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     teamServiceMock.getTeams.mockReturnValue(
       of([
         { id: 1, name: 'Team1' },
@@ -22,7 +22,7 @@ describe('TeamListComponent', () => {
       ])
     );
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [TeamListComponent],

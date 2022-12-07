@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
@@ -7,7 +13,7 @@ import { DatePipe } from '@angular/common';
   selector: 'app-keyresult-row',
   templateUrl: './key-result-row.component.html',
   styleUrls: ['./key-result-row.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyResultRowComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;

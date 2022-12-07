@@ -1,18 +1,26 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {Objective} from '../../shared/services/objective.service';
-import {MenuEntry} from '../../shared/types/menu-entry';
-import {KeyResultMeasure, KeyResultService} from "../../shared/services/key-result.service";
-import {Observable} from "rxjs";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { Objective } from '../../shared/services/objective.service';
+import { MenuEntry } from '../../shared/types/menu-entry';
+import {
+  KeyResultMeasure,
+  KeyResultService,
+} from '../../shared/services/key-result.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-objective-row',
   templateUrl: './objective-row.component.html',
   styleUrls: ['./objective-row.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
-  keyResultList!: Observable<KeyResultMeasure[]>
+  keyResultList!: Observable<KeyResultMeasure[]>;
   menuEntries: MenuEntry[] = [
     { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
     { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
@@ -21,9 +29,7 @@ export class ObjectiveRowComponent implements OnInit {
   ];
   constructor(private keyResultService: KeyResultService) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   public getKeyResults(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);

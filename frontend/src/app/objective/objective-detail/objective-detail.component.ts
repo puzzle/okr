@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Objective } from '../../shared/services/objective.service';
 import { Observable } from 'rxjs';
 import {
@@ -11,6 +16,7 @@ import { MenuEntry } from '../../shared/types/menu-entry';
   selector: 'app-objective-detail',
   templateUrl: './objective-detail.component.html',
   styleUrls: ['./objective-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveDetailComponent implements OnInit {
   @Input() objective!: Objective;
@@ -26,7 +32,5 @@ export class ObjectiveDetailComponent implements OnInit {
 
   constructor(private keyResultService: KeyResultService) {}
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 }

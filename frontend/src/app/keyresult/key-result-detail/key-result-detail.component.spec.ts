@@ -33,7 +33,7 @@ describe('KeyResultDetailComponent', () => {
       changeInfo: 'Change Infos',
       initiatives: 'Initatives',
       createdBy: 2,
-      createdOn: new Date(),
+      createdOn: new Date('2022-12-07'),
     },
   };
 
@@ -107,7 +107,7 @@ describe('KeyResultDetailComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.emptyLastMeasure')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('-');
+      expect(lastMeasureDate.nativeElement.textContent).toContain('-');
     });
   });
 });

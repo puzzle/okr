@@ -54,7 +54,7 @@ describe('ObjectiveComponent', () => {
         changeInfo: 'Change Infos',
         initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date(),
+        createdOn: new Date('2022-12-07'),
       },
     },
     {
@@ -79,7 +79,7 @@ describe('ObjectiveComponent', () => {
         changeInfo: 'Change Infos',
         initiatives: 'Initatives',
         createdBy: 2,
-        createdOn: new Date(),
+        createdOn: new Date('2022-12-07'),
       },
     },
   ]);

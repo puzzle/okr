@@ -42,7 +42,7 @@ describe('KeyResultKeyResultRowComponent', () => {
       changeInfo: 'Change Infos',
       initiatives: 'Initatives',
       createdBy: 2,
-      createdOn: new Date(),
+      createdOn: new Date('2022-12-07'),
     },
   };
 
@@ -86,12 +86,12 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     test('should have right owner', () => {
       const ownerTag = fixture.debugElement.query(By.css('.keyResultOwner'));
-      expect(ownerTag.nativeElement.textContent).toEqual('Alice Wunderland');
+      expect(ownerTag.nativeElement.textContent).toContain('Alice Wunderland');
     });
 
     test('should have right last measure when measure is set', () => {
       const ownerTag = fixture.debugElement.query(By.css('.measure-date'));
-      expect(ownerTag.nativeElement.textContent).toEqual(' 07.812.2022 ');
+      expect(ownerTag.nativeElement.textContent).toEqual(' 07.12.2022 ');
     });
 
     test('should have progress label with right calculated progress', () => {

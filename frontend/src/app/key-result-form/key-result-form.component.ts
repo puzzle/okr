@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 @Component({
   selector: 'app-key-result-form',
@@ -6,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./key-result-form.component.scss'],
 })
 export class KeyResultFormComponent implements OnInit {
+  keyResultForm = new FormGroup({
+    title: new FormControl(''),
+  });
+
+  matcher = new ErrorStateMatcher();
   constructor() {}
 
   ngOnInit(): void {}
+
+  submit($event: any) {
+    console.log($event.value);
+  }
 }

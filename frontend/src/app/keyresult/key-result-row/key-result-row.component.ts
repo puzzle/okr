@@ -36,7 +36,7 @@ export class KeyResultRowComponent implements OnInit {
   public formatDate(): string {
     const formattedDate = this.datePipe.transform(
       this.keyResult.measure?.createdOn,
-      'dd.MM.Y'
+      'dd.MM.yyyy'
     );
     if (formattedDate == null) {
       return '-';

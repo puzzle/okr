@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export enum ExpectedEvolution {
@@ -20,7 +20,7 @@ export interface Measure {
   keyResultId: number;
   value: number;
   changeInfo: string;
-  initiatives: String;
+  initiatives: string;
   createdBy: number;
   createdOn: Date;
 }
@@ -52,10 +52,8 @@ export class KeyResultService {
   public getKeyResultsOfObjective(
     objectiveId: number
   ): Observable<KeyResultMeasure[]> {
-    return this.httpClient
-      .get<KeyResultMeasure[]>(
-        '/api/v1/objectives/' + objectiveId + '/keyresults'
-      )
-      .pipe(tap((data) => console.log(data)));
+    return this.httpClient.get<KeyResultMeasure[]>(
+      '/api/v1/objectives/' + objectiveId + '/keyresults'
+    );
   }
 }

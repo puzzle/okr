@@ -42,7 +42,7 @@ describe('KeyResultKeyResultRowComponent', () => {
       changeInfo: 'Change Infos',
       initiatives: 'Initatives',
       createdBy: 2,
-      createdOn: new Date('2022-12-07'),
+      createdOn: new Date('2022-12-07T00:00:00'),
     },
   };
 
@@ -91,7 +91,7 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     test('should have right last measure when measure is set', () => {
       const ownerTag = fixture.debugElement.query(By.css('.measure-date'));
-      expect(ownerTag.nativeElement.textContent).toEqual(' 07.12.2022 ');
+      expect(ownerTag.nativeElement.textContent).toContain('07.12.2022');
     });
 
     test('should have progress label with right calculated progress', () => {

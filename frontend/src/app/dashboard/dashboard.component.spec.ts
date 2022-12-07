@@ -20,7 +20,7 @@ describe('DashboardComponent', () => {
     getTeams: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     teamServiceMock.getQuarter.mockReturnValue([
       { quarter: '22-4' },
       { quarter: '22-3' },
@@ -36,7 +36,7 @@ describe('DashboardComponent', () => {
       ])
     );
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         NoopAnimationsModule,
@@ -56,6 +56,7 @@ describe('DashboardComponent', () => {
 
   afterEach(() => {
     teamServiceMock.getQuarter.mockReset();
+    teamServiceMock.getTeams.mockReset();
   });
 
   it('should create', () => {

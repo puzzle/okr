@@ -1,15 +1,36 @@
 import { TestBed } from '@angular/core/testing';
-import { TeamService } from './team.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Team, TeamService } from './team.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+
+const response = [
+  {
+    id: 1,
+    name: 'Team 1',
+  },
+  {
+    id: 2,
+    name: 'Team 2',
+  },
+  {
+    id: 3,
+    name: 'Team 3',
+  },
+];
 
 describe('TeamService', () => {
   let service: TeamService;
+  let httpTestingController: HttpTestingController;
+  const URL = 'api/v1/teams';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(TeamService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   test('should be created', () => {
@@ -87,5 +108,36 @@ describe('TeamService', () => {
     expect(quarterList[3].quarter).toEqual('10-1');
     expect(quarterList[4].quarter).toEqual('09-4');
     expect(quarterList[5].quarter).toEqual('11-1');
+  });
+
+  test('should get all teams', (done) => {
+    service.getTeams().subscribe({
+      next(response: Team[]) {
+        expect(response.length).toBe(3);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+    const req = httpTestingController.expectOne(URL);
+    expect(req.request.method).toEqual('GET');
+    req.flush(response);
+    httpTestingController.verify();
+  });
+
+  test('should throw an error if request is bad', (done) => {
+    service.getTeams().subscribe({
+      next() {
+        done('should return a 404 Not Found');
+      },
+      error() {
+        done();
+      },
+    });
+    const req = httpTestingController.expectOne(URL);
+    expect(req.request.method).toEqual('GET');
+    req.flush(null, { status: 404, statusText: 'Not Found' });
+    httpTestingController.verify();
   });
 });

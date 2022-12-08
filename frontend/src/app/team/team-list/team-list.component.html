@@ -1,7 +1,7 @@
 <div class="teamlist-container">
   <p class="headline-large">Teams</p>
 
-  <div class="team-row" *ngFor="let team of teamList | async">
+  <div class="team-row" *ngFor="let team of teamList$ | async">
     <div class="team-flex">
       <p class="team-name">{{ team.name }}</p>
       <div class="team-icons">

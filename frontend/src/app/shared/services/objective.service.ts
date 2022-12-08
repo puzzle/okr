@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 export interface Objective {
-  id: number;
+  id: number | null;
   title: string;
   ownerId: number;
   ownerFirstname: string;
   ownerLastname: string;
-  teamId: number;
-  teamName: string;
+  teamId: number | null;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
   description: string;
   progress: number;
-  created: string;
 }
 
 @Injectable({
@@ -30,7 +28,28 @@ export class ObjectiveService {
     );
   }
 
-  getObjectiveById(objectiveId: number): Observable<Objective> {
+  public getObjectiveById(objectiveId: number): Observable<Objective> {
     return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
+  }
+
+  public saveObjective(objective: Objective): Observable<Objective> {
+    return this.httpClient.post<Objective>('api/v1/objectives', objective);
+  }
+
+  public getInitObjective() {
+    return {
+      id: null,
+      title: '',
+      description: '',
+      teamId: null,
+      quarterId: 1,
+      ownerId: 0,
+      ownerFirstname: '',
+      ownerLastname: '',
+      quarterYear: 2022,
+      quarterNumber: 1,
+      teamName: '',
+      progress: 0,
+    };
   }
 }

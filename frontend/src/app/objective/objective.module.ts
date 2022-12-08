@@ -10,9 +10,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { KeyresultModule } from '../keyresult/keyresult.module';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { ObjectiveFormComponent } from './objective-form/objective-form.component';
 
 @NgModule({
-  declarations: [ObjectiveDetailComponent, ObjectiveRowComponent],
+  declarations: [
+    ObjectiveDetailComponent,
+    ObjectiveRowComponent,
+    ObjectiveFormComponent,
+  ],
   providers: [ObjectiveService],
   exports: [ObjectiveRowComponent, ObjectiveDetailComponent],
   imports: [

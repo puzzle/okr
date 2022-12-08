@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeyresultFormComponent } from './keyresult/keyresult-form/keyresult-form.component';
 import { TeamListComponent } from './team/team-list/team-list.component';
+import { ObjectiveFormComponent } from './objective/objective-form/objective-form.component';
 import { TeamFormComponent } from './team/team-form/team-form.component';
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     component: KeyresultFormComponent,
   },
   { path: 'teams', component: TeamListComponent },
+  { path: 'objectives/new', component: ObjectiveFormComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },

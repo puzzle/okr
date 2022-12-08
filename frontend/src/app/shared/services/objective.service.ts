@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
 export interface Objective {
   id: number;
@@ -30,7 +30,7 @@ export class ObjectiveService {
 
   getObjectiveById(objectiveId: number): Observable<Objective> {
     return this.httpClient
-      .get<Objective>('api/v1/objectives' + objectiveId)
+      .get<Objective>('api/v1/objectives/' + objectiveId)
       .pipe(tap((data) => console.log(data)));
   }
 }

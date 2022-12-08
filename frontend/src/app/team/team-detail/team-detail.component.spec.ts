@@ -10,6 +10,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Team } from '../../shared/services/team.service';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ObjectiveModule } from '../../objective/objective.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
@@ -57,7 +61,14 @@ describe('TeamDetailComponent', () => {
     mockObjectiveService.getObjectivesOfTeam.mockReturnValue(objectiveList);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, CommonModule],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        CommonModule,
+        MatExpansionModule,
+        ObjectiveModule,
+        NoopAnimationsModule,
+      ],
       declarations: [TeamDetailComponent, DashboardComponent],
       providers: [
         { provide: ObjectiveService, useValue: mockObjectiveService },
@@ -84,12 +95,6 @@ describe('TeamDetailComponent', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
     ).toEqual('Puzzle ITC Objectives');
-  });
-
-  test('should create 3 divs (1 Div with team name and 2 divs with objectives)', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('div').length
-    ).toEqual(3);
   });
 
   test('should create 2 hr when having 1 team with 1 objective', () => {

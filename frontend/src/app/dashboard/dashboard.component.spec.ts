@@ -1,15 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TeamService } from '../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from '../app.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -37,14 +33,7 @@ describe('DashboardComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        NoopAnimationsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        ReactiveFormsModule,
-        AppModule,
-      ],
+      imports: [AppModule, NoopAnimationsModule],
       providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [DashboardComponent],
     }).compileComponents();

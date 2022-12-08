@@ -11,7 +11,27 @@
   <div *ngIf="objective$ | async as objective" class="d-flex flex-column">
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">{{ this.objective.title }}</p>
+        <p class="fw-bold max-content">Title</p>
+      </span>
+
+      <p class="w-100">
+        {{ this.objective.title }}
+      </p>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3">
+      <span class="d-flex w-50 justify-content-end">
+        <p class="fw-bold max-content">Team</p>
+      </span>
+
+      <p class="w-100">
+        {{ this.objective.teamName }}
+      </p>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3">
+      <span class="d-flex w-50 justify-content-end">
+        <p class="fw-bold max-content">Description</p>
       </span>
 
       <p class="w-100">
@@ -24,7 +44,7 @@
         <p class="fw-bold max-content">Zyklus</p>
       </span>
 
-      <p class="w-100">GJ {{ this.objective.quarterYear }}</p>
+      <p class="w-100">GJ {{ this.objective.quarterYear }}-{{this.objective.quarterNumber}}</p>
     </div>
   </div>
 
@@ -155,7 +175,7 @@
           <mat-label>Besitzer</mat-label>
           <mat-select
             [value]="(keyresult$ | async)?.ownerId"
-            formControlName="owner"
+            formControlName="ownerId"
           >
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
               {{ user.firstname + " " + user.lastname }}

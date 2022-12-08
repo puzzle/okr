@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 export interface Objective {
   id: number;
@@ -8,6 +8,8 @@ export interface Objective {
   ownerId: number;
   ownerFirstname: string;
   ownerLastname: string;
+  teamId: number
+  teamName: string
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;

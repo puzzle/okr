@@ -26,7 +26,7 @@ export interface Measure {
 }
 
 export interface KeyResultMeasure {
-  id: number;
+  id?: number | null;
   objectiveId: number;
   title: string;
   description: string;
@@ -65,7 +65,7 @@ export class KeyResultService {
 
   getInitKeyResult() {
     return {
-      id: 0,
+      id: null,
       title: '',
       description: '',
       expectedEvolution: ExpectedEvolution.CONSTANT,
@@ -79,10 +79,11 @@ export class KeyResultService {
       targetValue: 1,
       basicValue: 1,
       objectiveId: 1,
+      createdBy: 1
     };
   }
 
   saveKeyresult(keyresult: KeyResultMeasure) {
-    return this.httpClient.post<KeyResultMeasure>(`/users`, keyresult);
+    return this.httpClient.post<KeyResultMeasure>(`/api/v1/keyresults`, keyresult);
   }
 }

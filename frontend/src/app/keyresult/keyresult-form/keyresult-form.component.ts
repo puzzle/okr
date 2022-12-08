@@ -38,7 +38,7 @@ export class KeyresultFormComponent implements OnInit {
     basicValue: new FormControl<number>(0),
     targetValue: new FormControl<number>(0),
     description: new FormControl<string>('', [Validators.maxLength(500)]),
-    owner: new FormControl<number>(0, [Validators.required]),
+    ownerId: new FormControl<number>(0, [Validators.required]),
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;

@@ -5,6 +5,8 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.service.KeyResultService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class KeyResultMapper {
 
@@ -29,6 +31,6 @@ public class KeyResultMapper {
                 .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
                 .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
                 .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit()).build();
+                .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now()).build();
     }
 }

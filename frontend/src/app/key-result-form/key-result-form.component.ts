@@ -68,12 +68,17 @@ export class KeyResultFormComponent implements OnInit {
       id: this.id,
       objectiveId: this.objective.id,
     } as KeyResultMeasure;
+
     console.log(keyResult);
+
     if (this.id) {
       //TODO update keyResult
       return;
     }
-    //TODO create new keyResult
+
+    this.keyResultService
+      .createKeyResult(keyResult)
+      .subscribe((result) => console.log(result));
   }
 
   getBaseKeyResult() {
@@ -86,7 +91,7 @@ export class KeyResultFormComponent implements OnInit {
       ownerId: 0,
       ownerLastname: '',
       ownerFirstname: '',
-      quarterId: 0,
+      quarterId: 1,
       quarterNumber: 1,
       quarterYear: 2022,
       targetValue: 1,

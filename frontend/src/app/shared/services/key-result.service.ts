@@ -53,4 +53,13 @@ export class KeyResultService {
       '/api/v1/keyresults/' + keyResultId
     );
   }
+
+  public createKeyResult(
+    keyResult: KeyResultMeasure
+  ): Observable<KeyResultMeasure> {
+    return this.httpClient.post<KeyResultMeasure>(
+      '/api/v1/keyresults',
+      keyResult
+    );
+  }
 }

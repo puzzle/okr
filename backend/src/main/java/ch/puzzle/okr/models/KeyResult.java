@@ -42,11 +42,14 @@ public class KeyResult {
     @NotNull
     private Long targetValue;
 
-    @NotNull
+    //TODO implement created by and comment in line below
+//    @NotNull
     @ManyToOne
     private User createdBy;
 
-    @NotNull
+//    TODO update Hibernate to enable @Creation timestamp on LocalTimeDate
+//    @Column(insertable = false)
+//    @CreationTimestamp
     private LocalDateTime createdOn;
 
     public KeyResult() {

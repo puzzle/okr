@@ -8,9 +8,8 @@ describe('KeyresultFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ KeyresultFormComponent ]
-    })
-    .compileComponents();
+      declarations: [KeyresultFormComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(KeyresultFormComponent);
     component = fixture.componentInstance;

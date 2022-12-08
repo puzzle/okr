@@ -3,181 +3,186 @@
   <p class="">Zurück</p>
 </span>
 
-<p class="fs-2"> {{ this.create ? "Keyresult hinzufügen" : "Keyresult bearbeiten" }}</p>
+<p class="fs-2">
+  {{ this.create ? "Keyresult hinzufügen" : "Keyresult bearbeiten" }}
+</p>
 <p class="fs-4">Objective Beschreibung</p>
 <div>
-    <div class="d-flex flex-column">
-        <div class="d-flex justify-content-center gap-3">
+  <div class="d-flex flex-column">
+    <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
         <p class="fw-bold max-content">{{ this.objective.title }}</p>
       </span>
 
-            <p class="w-100">
-                {{ this.objective.description }}
-            </p>
-        </div>
+      <p class="w-100">
+        {{ this.objective.description }}
+      </p>
+    </div>
 
-        <div class="d-flex justify-content-center gap-3">
+    <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
         <p class="fw-bold max-content">Zyklus</p>
       </span>
 
-            <p class="w-100">GJ {{ this.objective.quarterYear }}</p>
-        </div>
+      <p class="w-100">GJ {{ this.objective.quarterYear }}</p>
     </div>
+  </div>
 
-    <mat-divider></mat-divider>
+  <mat-divider></mat-divider>
 
-    <p class="fs-4">Details</p>
+  <p class="fs-4">Details</p>
 
-    <div class="d-flex w-100 justify-content-center">
-        <form
-                (ngSubmit)="save()"
-                [formGroup]="keyResultForm"
-                class="d-flex flex-column fit-content"
+  <div class="d-flex w-100 justify-content-center">
+    <form
+      (ngSubmit)="save()"
+      [formGroup]="keyResultForm"
+      class="d-flex flex-column fit-content"
+    >
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="fw-bold">Titel</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
         >
-            <div class="d-flex align-items-center justify-content-end gap-4">
-                <p class="fw-bold">Titel</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Titel</mat-label>
-                    <input
-                            [value]="(keyresult$ | async)?.title"
-                            formControlName="title"
-                            matInput
-                            placeholder="Titel"
-                            type="text"
-                    />
-                </mat-form-field>
-            </div>
+          <mat-label>Titel</mat-label>
+          <input
+            [value]="(keyresult$ | async)?.title"
+            formControlName="title"
+            matInput
+            placeholder="Titel"
+            type="text"
+          />
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center gap-4 justify-content-end">
-                <p class="fw-bold">Einheit</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Einheit</mat-label>
-                    <mat-select
-                            [value]="(keyresult$ | async)?.unit"
-                            formControlName="unit"
-                    >
-                        <mat-option *ngFor="let unit of unit$ | keyvalue" [value]="unit.key">
-                            {{ unit.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+      <div class="d-flex align-items-center gap-4 justify-content-end">
+        <p class="fw-bold">Einheit</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
+        >
+          <mat-label>Einheit</mat-label>
+          <mat-select
+            [value]="(keyresult$ | async)?.unit"
+            formControlName="unit"
+          >
+            <mat-option
+              *ngFor="let unit of unit$ | keyvalue"
+              [value]="unit.key"
+            >
+              {{ unit.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center gap-4 justify-content-end">
-                <p class="fw-bold">Erwartete Entwicklung</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Erwartete Entwicklung</mat-label>
-                    <mat-select
-                            [value]="(keyresult$ | async)?.expectedEvolution"
-                            formControlName="expectedEvolution"
-                    >
-                        <mat-option
-                                *ngFor="let evolution of expectedEvolution$ | keyvalue"
-                                [value]="evolution.key"
-                        >
-                            {{ evolution.value }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+      <div class="d-flex align-items-center gap-4 justify-content-end">
+        <p class="fw-bold">Erwartete Entwicklung</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
+        >
+          <mat-label>Erwartete Entwicklung</mat-label>
+          <mat-select
+            [value]="(keyresult$ | async)?.expectedEvolution"
+            formControlName="expectedEvolution"
+          >
+            <mat-option
+              *ngFor="let evolution of expectedEvolution$ | keyvalue"
+              [value]="evolution.key"
+            >
+              {{ evolution.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center justify-content-end gap-4">
-                <p class="fw-bold">Startwert</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Startwert</mat-label>
-                    <input
-                            [value]="(keyresult$ | async)?.basicValue?.toString()"
-                            formControlName="basicValue"
-                            matInput
-                            placeholder="0.0"
-                            type="text"
-                    />
-                </mat-form-field>
-            </div>
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="fw-bold">Startwert</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
+        >
+          <mat-label>Startwert</mat-label>
+          <input
+            [value]="(keyresult$ | async)?.basicValue?.toString()"
+            formControlName="basicValue"
+            matInput
+            placeholder="0.0"
+            type="text"
+          />
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center justify-content-end gap-4">
-                <p class="fw-bold">Zielwert</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Zielwert</mat-label>
-                    <input
-                            [value]="(keyresult$ | async)?.targetValue?.toString()"
-                            formControlName="targetValue"
-                            matInput
-                            placeholder="0.0"
-                            type="text"
-                    />
-                </mat-form-field>
-            </div>
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="fw-bold">Zielwert</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
+        >
+          <mat-label>Zielwert</mat-label>
+          <input
+            [value]="(keyresult$ | async)?.targetValue?.toString()"
+            formControlName="targetValue"
+            matInput
+            placeholder="0.0"
+            type="text"
+          />
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center justify-content-end gap-4">
-                <p class="fw-bold">Beschreibung</p>
-                <mat-form-field appearance="outline" class="form-field-width">
-                    <mat-label>Beschreibung</mat-label>
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="fw-bold">Beschreibung</p>
+        <mat-form-field appearance="outline" class="form-field-width">
+          <mat-label>Beschreibung</mat-label>
 
-                    <textarea
-                            [value]="(keyresult$ | async)?.description?.toString()"
-                            formControlName="description"
-                            matInput
-                            placeholder="Beschreibung"
-                            type="text"
-                    ></textarea>
-                </mat-form-field>
-            </div>
+          <textarea
+            [value]="(keyresult$ | async)?.description?.toString()"
+            formControlName="description"
+            matInput
+            placeholder="Beschreibung"
+            type="text"
+          ></textarea>
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex align-items-center gap-4 justify-content-end">
-                <p class="fw-bold">Besitzer</p>
-                <mat-form-field
-                        appearance="outline"
-                        class="form-field-width form-field-height"
-                >
-                    <mat-label>Besitzer</mat-label>
-                    <mat-select
-                            [value]="(keyresult$ | async)?.ownerId"
-                            formControlName="owner"
-                    >
-                        <mat-option *ngFor="let user of users$ | async" [value]="user.id">
-                            {{ user.firstname + " " + user.lastname }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+      <div class="d-flex align-items-center gap-4 justify-content-end">
+        <p class="fw-bold">Besitzer</p>
+        <mat-form-field
+          appearance="outline"
+          class="form-field-width form-field-height"
+        >
+          <mat-label>Besitzer</mat-label>
+          <mat-select
+            [value]="(keyresult$ | async)?.ownerId"
+            formControlName="owner"
+          >
+            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+              {{ user.firstname + " " + user.lastname }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-            <div class="d-flex gap-2 justify-content-end">
-                <button
-                        class="rounded-5"
-                        color="primary"
-                        mat-stroked-button
-                        type="cancel"
-                >
-                    Abbrechen
-                </button>
+      <div class="d-flex gap-2 justify-content-end">
+        <button
+          class="rounded-5"
+          color="primary"
+          mat-stroked-button
+          type="cancel"
+        >
+          Abbrechen
+        </button>
 
-                <button
-                        class="rounded-5"
-                        color="primary"
-                        mat-raised-button
-                        type="submit"
-                >
-                    {{ this.create ? "Erstellen" : "Aktualisieren" }}
-                </button>
-            </div>
-        </form>
-    </div>
+        <button
+          class="rounded-5"
+          color="primary"
+          mat-raised-button
+          type="submit"
+        >
+          {{ this.create ? "Erstellen" : "Aktualisieren" }}
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

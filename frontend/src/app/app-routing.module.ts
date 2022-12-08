@@ -7,8 +7,14 @@ import { TeamFormComponent } from './team/team-form/team-form.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
-  { path: 'keyresult/edit/:id', component: KeyresultFormComponent},
-  { path: 'keyresult/new', component: KeyresultFormComponent},
+  {
+    path: 'objective/:objectiveId/keyresult/edit/:keyresultId',
+    component: KeyresultFormComponent,
+  },
+  {
+    path: 'objective/:objectiveId/keyresult/new',
+    component: KeyresultFormComponent,
+  },
   { path: '**', component: DashboardComponent, pathMatch: 'full' },
   { path: 'teams', component: TeamListComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },

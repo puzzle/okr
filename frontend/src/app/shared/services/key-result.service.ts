@@ -59,7 +59,7 @@ export class KeyResultService {
 
   getKeyResultById(keyresultId: number) {
     return this.httpClient.get<KeyResultMeasure>(
-        '/api/v1/keyresults/' + keyresultId
+      '/api/v1/keyresults/' + keyresultId
     );
   }
 

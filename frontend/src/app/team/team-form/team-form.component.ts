@@ -32,11 +32,14 @@ export class TeamFormComponent implements OnInit {
 
   submit(teamName: string) {
     if (this.isCreating) {
-      this.teamService.createTeam(Object(teamName)['teamName']);
+      this.teamService
+        .createTeam(Object(teamName)['teamName'])
+        .subscribe((answer) => this.router.navigate(['/', 'teams']));
     } else {
       this.teamObject.name = Object(teamName)['teamName'];
-      this.teamService.updateTeam(this.teamObject);
+      this.teamService
+        .updateTeam(this.teamObject)
+        .subscribe((answer) => this.router.navigate(['/', 'teams']));
     }
-    this.router.navigate(['/', 'teams']);
   }
 }

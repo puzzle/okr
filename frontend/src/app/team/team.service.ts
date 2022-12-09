@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 export interface Team {
   id: number;
@@ -15,7 +16,7 @@ export interface OkrQuarter {
   providedIn: 'root',
 })
 export class TeamService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   public getTeams(): Observable<Team[]> {
     return this.httpClient
@@ -23,15 +24,15 @@ export class TeamService {
       .pipe(tap((data) => console.log(data)));
   }
 
-  public createTeam(name: string) {
+  public createTeam(name: string): Observable<Team> {
     const team = {
       name: name,
     } as Team;
-    this.httpClient.post<any>('api/v1/teams', team).subscribe();
+    return this.httpClient.post<any>('api/v1/teams', team);
   }
 
-  public updateTeam(team: Team) {
-    this.httpClient.put<any>('api/v1/teams/' + team.id, team).subscribe();
+  public updateTeam(team: Team): Observable<Team> {
+    return this.httpClient.put<any>('api/v1/teams/' + team.id, team);
   }
 
   public getQuarter(date = new Date()) {

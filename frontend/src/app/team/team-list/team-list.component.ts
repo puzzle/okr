@@ -9,11 +9,11 @@ import { Team, TeamService } from '../../shared/services/team.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamListComponent implements OnInit {
-  teamList!: Observable<Team[]>;
+  teamList$!: Observable<Team[]>;
 
   constructor(private teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.teamList = this.teamService.getTeams();
+    this.teamList$ = this.teamService.getTeams();
   }
 }

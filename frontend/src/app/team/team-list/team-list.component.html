@@ -6,9 +6,9 @@
     </button>
   </div>
 
-  <div class="team-row" *ngFor="let team of teamList | async">
+  <div class="team-row" *ngFor="let team of teamList$ | async">
     <div class="team-flex">
-      <p class="team-name">{{ team.name.substring(0, 40) }}</p>
+      <p class="team-name">{{ team.name }}</p>
       <img
         src="assets/edit-icon.svg"
         alt="edit-icon"

@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Team, TeamService } from '../team.service';
-import { map, Observable } from 'rxjs';
+import { Team, TeamService } from '../../shared/services/team.service';
 
 @Component({
   selector: 'app-team-form',

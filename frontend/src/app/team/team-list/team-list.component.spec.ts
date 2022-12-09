@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamListComponent } from './team-list.component';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TeamService } from '../team.service';
+import { TeamService } from '../../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
 

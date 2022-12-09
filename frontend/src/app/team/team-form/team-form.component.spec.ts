@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Team } from '../team.service';
+import { Team } from '../../shared/services/team.service';
 import { ActivatedRoute } from '@angular/router';
 
 let component: TeamFormComponent;

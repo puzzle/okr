@@ -18,9 +18,7 @@ export class TeamService {
   constructor(private httpClient: HttpClient) {}
 
   public getTeams(): Observable<Team[]> {
-    return this.httpClient
-      .get<Team[]>('api/v1/teams')
-      .pipe(tap((data) => console.log(data)));
+    return this.httpClient.get<Team[]>('api/v1/teams');
   }
 
   public createTeam(name: string): Observable<Team> {

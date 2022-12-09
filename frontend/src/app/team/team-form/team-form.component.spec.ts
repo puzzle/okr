@@ -88,7 +88,6 @@ describe('TeamFormComponent', () => {
     });
 
     test('should isCreating set on false', () => {
-      console.log(component.isCreating);
       expect(component.isCreating).toEqual(false);
     });
 

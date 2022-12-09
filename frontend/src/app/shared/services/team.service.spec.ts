@@ -1,15 +1,28 @@
 import { TestBed } from '@angular/core/testing';
-import { TeamService } from './team.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Team, TeamService } from './team.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+
+const respons = [
+  {
+    id: 1,
+    name: 'Team 1',
+  },
+];
 
 describe('TeamService', () => {
   let service: TeamService;
+  let httpTestingController: HttpTestingController;
+  const URL = 'api/v1/teams';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(TeamService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   test('should be created', () => {
@@ -87,5 +100,22 @@ describe('TeamService', () => {
     expect(quarterList[3].quarter).toEqual('10-1');
     expect(quarterList[4].quarter).toEqual('09-4');
     expect(quarterList[5].quarter).toEqual('11-1');
+  });
+
+  test('should get Teams', (done) => {
+    service.getTeams().subscribe({
+      next(response: Team[]) {
+        expect(response.length).toBe(1);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(respons);
+    httpTestingController.verify();
   });
 });

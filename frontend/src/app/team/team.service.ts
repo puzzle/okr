@@ -23,6 +23,17 @@ export class TeamService {
       .pipe(tap((data) => console.log(data)));
   }
 
+  public createTeam(name: string) {
+    const team = {
+      name: name,
+    } as Team;
+    this.httpClient.post<any>('api/v1/teams', team).subscribe();
+  }
+
+  public updateTeam(team: Team) {
+    this.httpClient.put<any>('api/v1/teams/' + team.id, team).subscribe();
+  }
+
   public getQuarter(date = new Date()) {
     let quarterList: OkrQuarter[] = [];
 

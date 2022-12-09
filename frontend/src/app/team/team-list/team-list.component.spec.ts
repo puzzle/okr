@@ -40,6 +40,12 @@ describe('TeamListComponent', () => {
 
   test('should display a headline with right text', () => {
     expect(
+      fixture.nativeElement.querySelector('.create-button').textContent
+    ).toEqual(' Team erstellen ');
+  });
+
+  test('should have create team button with right text', () => {
+    expect(
       fixture.nativeElement.querySelector('.headline-large').textContent
     ).toEqual('Teams');
   });

@@ -21,15 +21,12 @@ export class TeamService {
     return this.httpClient.get<Team[]>('api/v1/teams');
   }
 
-  public createTeam(name: string): Observable<Team> {
-    const team = {
-      name: name,
-    } as Team;
-    return this.httpClient.post<Team>('api/v1/teams', team);
-  }
-
-  public updateTeam(team: Team): Observable<Team> {
-    return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);
+  public save(team: Team) {
+    if (team.id == null || undefined) {
+      return this.httpClient.post<Team>('api/v1/teams', team);
+    } else {
+      return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);
+    }
   }
 
   public getQuarter(date = new Date()) {

@@ -25,20 +25,17 @@ export class TeamFormComponent implements OnInit {
       this.teamname = this.teamObject.name;
       this.isCreating = false;
     } else {
+      this.teamObject = {
+        name: '',
+      } as Team;
       this.isCreating = true;
     }
   }
 
   submit(teamName: string) {
-    if (this.isCreating) {
-      this.teamService
-        .createTeam(Object(teamName)['teamName'])
-        .subscribe((answer) => this.router.navigate(['/', 'teams']));
-    } else {
-      this.teamObject.name = Object(teamName)['teamName'];
-      this.teamService
-        .updateTeam(this.teamObject)
-        .subscribe((answer) => this.router.navigate(['/', 'teams']));
-    }
+    this.teamObject.name = Object(teamName)['teamName'];
+    this.teamService
+      .save(this.teamObject)
+      .subscribe((answer) => this.router.navigate(['/', 'teams']));
   }
 }

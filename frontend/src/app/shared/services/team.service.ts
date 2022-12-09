@@ -27,11 +27,11 @@ export class TeamService {
     const team = {
       name: name,
     } as Team;
-    return this.httpClient.post<any>('api/v1/teams', team);
+    return this.httpClient.post<Team>('api/v1/teams', team);
   }
 
   public updateTeam(team: Team): Observable<Team> {
-    return this.httpClient.put<any>('api/v1/teams/' + team.id, team);
+    return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);
   }
 
   public getQuarter(date = new Date()) {

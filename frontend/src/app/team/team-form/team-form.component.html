@@ -8,6 +8,7 @@
       type="text"
       name="teamName"
       placeholder="Team hinzufügen"
+      class="create-input"
       ngModel
       required
     />
@@ -17,6 +18,7 @@
       name="teamName"
       placeholder="Team bearbeiten"
       [ngModel]="teamname"
+      class="edit-input"
       required
     />
 
@@ -26,7 +28,7 @@
     </button>
     <button
       *ngIf="isCreating"
-      class="create-button"
+      class="cancel-button"
       mat-stroked-button
       type="submit"
       [disabled]="teamName.invalid"

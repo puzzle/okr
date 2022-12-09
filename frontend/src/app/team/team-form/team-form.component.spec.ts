@@ -58,6 +58,19 @@ describe('TeamFormComponent', () => {
       expect(buttons[0].nativeElement.textContent).toEqual(' Abbrechen ');
       expect(buttons[1].nativeElement.textContent).toEqual(' Speichern ');
     });
+
+    test('should right dis- and enable button', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      const inputField = fixture.debugElement.query(By.css('.create-input'));
+      inputField.nativeElement.value = '';
+      expect(inputField.nativeElement.value).toEqual('');
+
+      expect(buttons[1].nativeElement.disabled).toEqual(false);
+
+      inputField.nativeElement.value = 'Team 1';
+
+      expect(buttons[1].nativeElement.disabled).toEqual(true);
+    });
   });
 
   describe('Edit existing team', () => {
@@ -96,7 +109,7 @@ describe('TeamFormComponent', () => {
       expect(heading).toEqual('Team Name bearbeiten');
     });
 
-    test('should have 1 input filed with right placeholder', () => {
+    test('should have 1 input field with right placeholder', () => {
       const inputFileds = fixture.debugElement.queryAll(By.css('input'));
       expect(inputFileds.length).toEqual(1);
 
@@ -114,6 +127,24 @@ describe('TeamFormComponent', () => {
       expect(buttons[1].nativeElement.textContent).toEqual(
         ' Änderungen speichern '
       );
+    });
+
+    test('should right dis- and enable button', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      const inputField = fixture.debugElement.query(By.css('.edit-input'));
+
+      expect(inputField.nativeElement.value).toBeNaN();
+      expect(buttons[1].nativeElement.getAttribute('disabled')).toEqual(null);
+
+      inputField.nativeElement.value = '';
+
+      expect(inputField.nativeElement.value).toEqual('');
+
+      expect(buttons[1].nativeElement.getAttribute('disabled')).toEqual('');
+
+      inputField.nativeElement.value = 'Team 1';
+
+      expect(buttons[1].nativeElement.getAttribute('disabled')).toEqual(null);
     });
   });
 });

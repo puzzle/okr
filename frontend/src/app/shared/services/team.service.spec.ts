@@ -118,4 +118,25 @@ describe('TeamService', () => {
     req.flush(respons);
     httpTestingController.verify();
   });
+
+  test('should create Team', (done) => {
+    let team: Team = {
+      id: 22,
+      name: 'Team 22',
+    };
+    service.createTeam(team.name).subscribe({
+      next(response: Team) {
+        expect(response).toBe(respons);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}`);
+    expect(req.request.method).toEqual('POST');
+    req.flush(respons);
+    httpTestingController.verify();
+  });
 });

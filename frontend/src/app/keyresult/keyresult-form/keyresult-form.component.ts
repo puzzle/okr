@@ -30,20 +30,31 @@ export class KeyresultFormComponent implements OnInit {
       Validators.minLength(2),
       Validators.maxLength(20),
     ]),
-    unit: new FormControl<Unit>(Unit.PERCENT, [Validators.required]),
-    expectedEvolution: new FormControl<ExpectedEvolution>(
-      ExpectedEvolution.INCREASE,
-      [Validators.required]
-    ),
-    basicValue: new FormControl<number>(0),
-    targetValue: new FormControl<number>(0),
-    description: new FormControl<string>('', [Validators.maxLength(500)]),
-    ownerId: new FormControl<number>(0, [Validators.required]),
+    unit: new FormControl<string>('PERCENT', [Validators.required]),
+    expectedEvolution: new FormControl<string>('INCREASE', [
+      Validators.required,
+    ]),
+    basicValue: new FormControl<number>(0, Validators.required),
+    targetValue: new FormControl<number>(0, Validators.required),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
+    ownerId: new FormControl<number>(0, [
+      Validators.required,
+      Validators.min(1),
+    ]),
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$ = Unit;
-  public expectedEvolution$ = ExpectedEvolution;
+  public unit$: Unit[] = [
+    { id: 0, unit: 'PERCENT' },
+    { id: 1, unit: 'CHF' },
+    { id: 2, unit: 'NUMBER' },
+    { id: 3, unit: 'BINARY' },
+  ];
+  public expectedEvolution$: ExpectedEvolution[] = [
+    { id: 0, expectedEvolution: 'INCREASE' },
+    { id: 1, expectedEvolution: 'DECREASE' },
+    { id: 2, expectedEvolution: 'CONSTANT' },
+  ];
   public create!: boolean;
 
   constructor(
@@ -78,6 +89,20 @@ export class KeyresultFormComponent implements OnInit {
         }
       })
     );
+
+    this.keyresult$.subscribe((keyresult) => {
+      const {
+        id,
+        objectiveId,
+        ownerFirstname,
+        ownerLastname,
+        quarterId,
+        quarterNumber,
+        quarterYear,
+        ...restKeyresult
+      } = keyresult;
+      this.keyResultForm.setValue(restKeyresult);
+    });
   }
 
   save() {
@@ -91,7 +116,7 @@ export class KeyresultFormComponent implements OnInit {
         })
       )
       .subscribe((keyresult) =>
-        this.keyResultService.saveKeyresult(keyresult).subscribe({
+        this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
             console.log('Can not save this keyresult: ', keyresult);

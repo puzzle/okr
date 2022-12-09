@@ -2,17 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-export enum ExpectedEvolution {
-  INCREASE,
-  DECREASE,
-  CONSTANT,
+export interface ExpectedEvolution {
+  id: number;
+  expectedEvolution: string;
 }
 
-export enum Unit {
-  PERCENT,
-  CHF,
-  NUMBER,
-  BINARY,
+export interface Unit {
+  id: number;
+  unit: string;
 }
 
 export interface Measure {
@@ -36,8 +33,8 @@ export interface KeyResultMeasure {
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
-  expectedEvolution: ExpectedEvolution;
-  unit: Unit;
+  expectedEvolution: string;
+  unit: string;
   basicValue: number;
   targetValue: number;
   measure?: Measure;
@@ -68,8 +65,8 @@ export class KeyResultService {
       id: null,
       title: '',
       description: '',
-      expectedEvolution: ExpectedEvolution.CONSTANT,
-      unit: Unit.BINARY,
+      expectedEvolution: 'INCREASE',
+      unit: 'PERCENT',
       ownerId: 0,
       ownerLastname: '',
       ownerFirstname: '',
@@ -79,11 +76,20 @@ export class KeyResultService {
       targetValue: 1,
       basicValue: 1,
       objectiveId: 1,
-      createdBy: 1
     };
   }
 
-  saveKeyresult(keyresult: KeyResultMeasure) {
-    return this.httpClient.post<KeyResultMeasure>(`/api/v1/keyresults`, keyresult);
+  saveKeyresult(keyresult: KeyResultMeasure, post: boolean) {
+    if (post) {
+      return this.httpClient.post<KeyResultMeasure>(
+        `/api/v1/keyresults`,
+        keyresult
+      );
+    } else {
+      return this.httpClient.put<KeyResultMeasure>(
+        `/api/v1/keyresults/` + keyresult.id,
+        keyresult
+      );
+    }
   }
 }

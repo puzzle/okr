@@ -8,8 +8,8 @@ export interface Objective {
   ownerId: number;
   ownerFirstname: string;
   ownerLastname: string;
-  teamId: number
-  teamName: string
+  teamId: number;
+  teamName: string;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;

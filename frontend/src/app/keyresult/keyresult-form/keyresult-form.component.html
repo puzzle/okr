@@ -3,12 +3,15 @@
   <p class="">Zurück</p>
 </span>
 
-<p class="fs-2">
+<p class="fs-2 title">
   {{ this.create ? "Keyresult hinzufügen" : "Keyresult bearbeiten" }}
 </p>
-<p class="fs-4">Objective Beschreibung</p>
+<p class="fs-4 title">Objective Beschreibung</p>
 <div>
-  <div *ngIf="objective$ | async as objective" class="d-flex flex-column">
+  <div
+    *ngIf="objective$ | async as objective"
+    class="d-flex flex-column center"
+  >
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
         <p class="fw-bold max-content">Title</p>
@@ -44,13 +47,15 @@
         <p class="fw-bold max-content">Zyklus</p>
       </span>
 
-      <p class="w-100">GJ {{ this.objective.quarterYear }}-{{this.objective.quarterNumber}}</p>
+      <p class="w-100">
+        GJ {{ this.objective.quarterYear }}-{{ this.objective.quarterNumber }}
+      </p>
     </div>
   </div>
 
   <mat-divider></mat-divider>
 
-  <p class="fs-4">Details</p>
+  <p class="fs-4 title detail">Details</p>
 
   <div class="d-flex w-100 justify-content-center">
     <form
@@ -86,11 +91,8 @@
             [value]="(keyresult$ | async)?.unit"
             formControlName="unit"
           >
-            <mat-option
-              *ngFor="let unit of unit$ | keyvalue"
-              [value]="unit.key"
-            >
-              {{ unit.value }}
+            <mat-option *ngFor="let unit of unit$" [value]="unit.id">
+              {{ unit.unit }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -108,10 +110,10 @@
             formControlName="expectedEvolution"
           >
             <mat-option
-              *ngFor="let evolution of expectedEvolution$ | keyvalue"
-              [value]="evolution.key"
+              *ngFor="let evolution of expectedEvolution$"
+              [value]="evolution.id"
             >
-              {{ evolution.value }}
+              {{ evolution.expectedEvolution }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -199,6 +201,7 @@
           color="primary"
           mat-raised-button
           type="submit"
+          [disabled]="!keyResultForm.valid"
         >
           {{ this.create ? "Erstellen" : "Aktualisieren" }}
         </button>

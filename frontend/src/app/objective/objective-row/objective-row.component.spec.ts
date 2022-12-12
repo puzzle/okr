@@ -27,12 +27,12 @@ describe('ObjectiveComponent', () => {
 
   let objective: Objective = {
     id: 1,
+    teamName: 'TeamName',
+    teamId: 1,
     title: 'Objective 1',
     ownerId: 2,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    teamId: 1,
-    teamName: 'Puzzle ITC',
     description: 'This is a description',
     progress: 5,
     quarterId: 1,

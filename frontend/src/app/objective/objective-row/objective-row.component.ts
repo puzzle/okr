@@ -28,20 +28,19 @@ export class ObjectiveRowComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  public getKeyResults(id: number) {
+    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
+  }
+  ngOnInit(): void {
     this.menuEntries = [
+      { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
       {
-        displayName: 'Resultat hinzufügen',
-        routeLine: 'objective/' + this.objective.id + '/keyresult/new',
+        displayName: 'Ziel bearbeiten',
+        routeLine: 'objectives/edit/' + this.objective.id,
       },
-      { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
       { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
       { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
     ];
-  }
-
-  public getKeyResults(id: number) {
-    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
   }
 
   redirect(menuEntry: MenuEntry) {

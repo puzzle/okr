@@ -19,10 +19,6 @@ describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
   let fixtureTeamDetails: ComponentFixture<TeamDetailComponent>;
 
-  const mockObjectiveService = {
-    getObjectivesOfTeam: jest.fn(),
-  };
-
   let objectiveList: Observable<Objective[]> = of([
     {
       id: 1,
@@ -59,6 +55,10 @@ describe('TeamDetailComponent', () => {
   let team: Team = {
     id: 1,
     name: 'Puzzle ITC',
+  };
+
+  const mockObjectiveService = {
+    getObjectivesOfTeam: jest.fn(),
   };
 
   beforeEach(() => {

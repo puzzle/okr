@@ -41,7 +41,7 @@ export class ObjectiveFormComponent implements OnInit {
       Validators.minLength(2),
     ]),
     ownerId: new FormControl<number>(0, [Validators.required]),
-    // To Do: Implement quarterService as described below
+    // ToDo: Implement quarterService as described below
     quarterId: new FormControl<number>(1),
   });
   public users$!: Observable<User[]>;
@@ -63,7 +63,7 @@ export class ObjectiveFormComponent implements OnInit {
     created: '',
   };
   public create!: boolean;
-  // To Do: implement quarterService, which generates quarter and returns year and number in order to create quarter with id in backend.
+  // ToDo: implement quarterService, which generates quarter and returns year and number in order to create quarter with id in backend.
   public quarterList!: OkrQuarter[] | undefined;
   constructor(
     private userService: UserService,
@@ -76,7 +76,7 @@ export class ObjectiveFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    // getQuarter should not be in teamService.ts
+    // ToDo: getQuarter should not be in teamService.ts
     this.quarterList = this.teamService.getQuarter();
     this.teams$ = this.teamService.getTeams();
     this.objectives$ = this.route.paramMap.pipe(

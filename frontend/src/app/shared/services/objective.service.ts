@@ -42,7 +42,7 @@ export class ObjectiveService {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
       return this.httpClient.put<Objective>(
-        'api/v1/objectives/edit/' + objective.id,
+        'api/v1/objectives/' + objective.id,
         objective
       );
     }

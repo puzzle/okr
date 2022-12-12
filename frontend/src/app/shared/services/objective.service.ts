@@ -15,6 +15,7 @@ export interface Objective {
   quarterYear: number;
   description: string;
   progress: number;
+  created: string;
 }
 
 @Injectable({
@@ -61,6 +62,7 @@ export class ObjectiveService {
       quarterNumber: 1,
       teamName: '',
       progress: 0,
+      created: '',
     };
   }
 }

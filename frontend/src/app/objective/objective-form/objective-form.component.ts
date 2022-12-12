@@ -6,11 +6,15 @@ import {
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { Team, TeamService } from '../../team/team.service';
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
-import { OkrQuarter } from '../../shared/services/team.service';
+import {
+  OkrQuarter,
+  Team,
+  TeamService,
+} from '../../shared/services/team.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -56,6 +60,7 @@ export class ObjectiveFormComponent implements OnInit {
     ownerId: 21,
     ownerFirstname: 'Vorname',
     ownerLastname: 'Nachname',
+    created: '',
   };
   public create!: boolean;
   // To Do: implement quarterService, which generates quarter and returns year and number in order to create quarter with id in backend.

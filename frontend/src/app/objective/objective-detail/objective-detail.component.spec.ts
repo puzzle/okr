@@ -69,6 +69,8 @@ describe('ObjectiveDetailComponent', () => {
 
   let objective: Objective = {
     id: 1,
+    teamId: 1,
+    teamName: 'Team Name',
     title: 'title',
     ownerLastname: 'Alice',
     ownerFirstname: 'Wunderland',

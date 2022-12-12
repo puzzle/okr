@@ -24,7 +24,11 @@ import { MatInputModule } from '@angular/material/input';
     ObjectiveFormComponent,
   ],
   providers: [ObjectiveService],
-  exports: [ObjectiveRowComponent, ObjectiveDetailComponent],
+  exports: [
+    ObjectiveRowComponent,
+    ObjectiveDetailComponent,
+    ObjectiveFormComponent,
+  ],
   imports: [
     CommonModule,
     MatExpansionModule,

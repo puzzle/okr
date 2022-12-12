@@ -26,6 +26,8 @@ describe('TeamDetailComponent', () => {
   let objectiveList: Observable<Objective[]> = of([
     {
       id: 1,
+      teamName: 'Team Name',
+      teamId: 1,
       title: 'Wir wollen unseren Umsatz verdoppeln',
       ownerId: 2,
       ownerFirstname: 'Ruedi',
@@ -41,6 +43,8 @@ describe('TeamDetailComponent', () => {
     },
     {
       id: 2,
+      teamName: 'Team Name',
+      teamId: 1,
       title: 'Wir wollen unser Personal verdreifachen',
       ownerId: 2,
       ownerFirstname: 'Ruedi',

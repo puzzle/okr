@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 export interface Objective {
   id: number | null;
   title: string;
-  ownerId: number;
+  ownerId: number | null;
   ownerFirstname: string;
   ownerLastname: string;
   teamId: number | null;
@@ -55,7 +55,7 @@ export class ObjectiveService {
       description: '',
       teamId: null,
       quarterId: 1,
-      ownerId: 0,
+      ownerId: null,
       ownerFirstname: '',
       ownerLastname: '',
       quarterYear: 2022,

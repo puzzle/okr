@@ -40,7 +40,10 @@ export class ObjectiveFormComponent implements OnInit {
       Validators.maxLength(4096),
       Validators.minLength(2),
     ]),
-    ownerId: new FormControl<number>(0, [Validators.required]),
+    ownerId: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.nullValidator,
+    ]),
     // ToDo: Implement quarterService as described below
     quarterId: new FormControl<number>(1),
   });
@@ -100,6 +103,7 @@ export class ObjectiveFormComponent implements OnInit {
         quarterNumber,
         quarterYear,
         progress,
+        created,
         ...restObjective
       } = objective;
       this.objectiveForm.setValue(restObjective);

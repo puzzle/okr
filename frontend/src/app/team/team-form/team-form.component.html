@@ -14,6 +14,7 @@
       matInput
       placeholder="Team Name"
       type="text"
+      class="teamname-input"
     />
     <div class="button-container">
       <button
@@ -21,6 +22,7 @@
         color="primary"
         mat-stroked-button
         type="cancel"
+        (click)="navigateBack()"
       >
         Abbrechen
       </button>

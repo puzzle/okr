@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Team, TeamService } from '../../shared/services/team.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-team-form',
@@ -16,7 +17,8 @@ export class TeamFormComponent implements OnInit {
   constructor(
     private teamService: TeamService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -43,5 +45,9 @@ export class TeamFormComponent implements OnInit {
     this.teamService
       .save(this.teamObject)
       .subscribe((answer) => this.router.navigate(['/', 'teams']));
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }

@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -66,7 +66,9 @@ describe('DashboardComponent', () => {
   });
 
   test('should display 6 items in quarter dropdown', () => {
-    fixture.debugElement.queryAll(By.css('mat-select'))[1].nativeElement.click();
+    fixture.debugElement
+      .queryAll(By.css('mat-select'))[1]
+      .nativeElement.click();
     fixture.detectChanges();
     const options = fixture.debugElement.queryAll(By.css('mat-option'));
 

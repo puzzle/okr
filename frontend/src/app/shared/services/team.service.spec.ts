@@ -121,7 +121,7 @@ describe('TeamService', () => {
 
   test('should create Team', (done) => {
     let team: Team = {
-      id: null!,
+      id: null,
       name: 'Team 22',
     };
     service.save(team).subscribe({
@@ -138,6 +138,28 @@ describe('TeamService', () => {
     expect(req.request.method).toEqual('POST');
     req.flush(respons);
     expect(req.request.body).toEqual({ id: null, name: 'Team 22' });
+    httpTestingController.verify();
+  });
+
+  test('should update Team', (done) => {
+    let team: Team = {
+      id: 22,
+      name: 'Team 22',
+    };
+    service.save(team).subscribe({
+      next(response: Team) {
+        expect(response).toBe(respons);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}/22`);
+    expect(req.request.method).toEqual('PUT');
+    req.flush(respons);
+    expect(req.request.body).toEqual({ id: 22, name: 'Team 22' });
     httpTestingController.verify();
   });
 });

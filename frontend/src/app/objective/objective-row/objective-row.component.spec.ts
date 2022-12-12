@@ -136,6 +136,10 @@ describe('ObjectiveComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    mockKeyResultService.getKeyResultsOfObjective.mockReset();
+  });
+
   test('should create', () => {
     expect(component).toBeTruthy();
   });

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -49,7 +50,8 @@ export class KeyresultFormComponent implements OnInit {
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -119,5 +121,9 @@ export class KeyresultFormComponent implements OnInit {
           },
         })
       );
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }

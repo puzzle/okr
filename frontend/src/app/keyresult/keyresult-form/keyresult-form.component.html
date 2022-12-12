@@ -1,6 +1,6 @@
 <span class="d-flex">
   <mat-icon>chevron_left</mat-icon>
-  <p class="">Zurück</p>
+  <p (click)="navigateBack()" class="">Zurück</p>
 </span>
 
 <p class="fs-2 title">
@@ -184,6 +184,7 @@
 
       <div class="d-flex gap-2 justify-content-end">
         <button
+                (click)="navigateBack()"
           class="rounded-5"
           color="primary"
           mat-stroked-button

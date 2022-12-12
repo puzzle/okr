@@ -16,19 +16,19 @@ public class MeasureMapper {
     }
 
     public MeasureDto toDto(Measure measure) {
-        return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(), measure.getChangeInfo(),
-                measure.getInitiatives(), measure.getCreatedBy().getId(), measure.getCreatedOn());
+        if (measure == null) {
+            return null;
+        } else {
+            return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(),
+                    measure.getChangeInfo(), measure.getInitiatives(), measure.getCreatedBy().getId(),
+                    measure.getCreatedOn());
+        }
     }
 
     public Measure toMeasure(MeasureDto measureDto) {
-        return Measure.Builder.builder()
-                .withId(measureDto.getId())
-                .withKeyResult(this.measureService.mapKeyResult(measureDto))
-                .withValue(measureDto.getValue())
-                .withChangeInfo(measureDto.getChangeInfo())
-                .withInitiatives(measureDto.getInitiatives())
-                .withCreatedBy(this.measureService.mapUser(measureDto))
-                .withCreatedOn(LocalDateTime.now())
-                .build();
+        return Measure.Builder.builder().withId(measureDto.getId())
+                .withKeyResult(this.measureService.mapKeyResult(measureDto)).withValue(measureDto.getValue())
+                .withChangeInfo(measureDto.getChangeInfo()).withInitiatives(measureDto.getInitiatives())
+                .withCreatedBy(this.measureService.mapUser(measureDto)).withCreatedOn(LocalDateTime.now()).build();
     }
 }

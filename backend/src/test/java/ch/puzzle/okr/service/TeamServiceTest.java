@@ -34,10 +34,7 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.teamPuzzle = Team.Builder.builder()
-                .withId(5L).
-                withName("Puzzle")
-                .build();
+        this.teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
         this.teamsPuzzle = List.of(teamPuzzle, teamPuzzle, teamPuzzle);
     }
 
@@ -72,7 +69,8 @@ class TeamServiceTest {
     void shouldNotFindTheTeam() {
         Mockito.when(teamRepository.findById(6L)).thenReturn(Optional.empty());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> teamService.getTeamById(6));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.getTeamById(6));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Team with id 6 not found", exception.getReason());
     }
@@ -120,7 +118,7 @@ class TeamServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "  "})
+    @ValueSource(strings = { "", " ", "  " })
     void shouldNotCreateTeamWithEmptyName(String passedName) {
         Team team = Team.Builder.builder().withName(passedName).build();
         Mockito.when(teamRepository.save(any())).thenReturn(team);

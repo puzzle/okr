@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(indexes = {
-        @Index(name = "idx_objective_title", columnList = "title")
-})
+@Table(indexes = { @Index(name = "idx_objective_title", columnList = "title") })
 public class Objective {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
@@ -38,7 +36,7 @@ public class Objective {
     private String description;
 
     @NotNull
-    private Double progress;
+    private Long progress;
 
     @NotNull
     private LocalDateTime createdOn;
@@ -101,11 +99,11 @@ public class Objective {
         this.description = description;
     }
 
-    public Double getProgress() {
+    public Long getProgress() {
         return progress;
     }
 
-    public void setProgress(Double progress) {
+    public void setProgress(Long progress) {
         this.progress = progress;
     }
 
@@ -119,24 +117,22 @@ public class Objective {
 
     @Override
     public String toString() {
-        return "Objective{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", owner=" + owner +
-                ", team=" + team +
-                ", quarter=" + quarter +
-                ", description='" + description + '\'' +
-                ", progress=" + progress +
-                ", createdOn=" + createdOn +
-                '}';
+        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", owner=" + owner + ", team=" + team
+                + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
+                + ", createdOn=" + createdOn + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Objective objective = (Objective) o;
-        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title) && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description) && Objects.equals(progress, objective.progress) && Objects.equals(createdOn, objective.createdOn);
+        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
+                && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team)
+                && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
+                && Objects.equals(progress, objective.progress) && Objects.equals(createdOn, objective.createdOn);
     }
 
     @Override
@@ -151,7 +147,7 @@ public class Objective {
         private Team team;
         private Quarter quarter;
         private String description;
-        private Double progress;
+        private Long progress;
         private LocalDateTime createdOn;
 
         public Builder() {
@@ -191,7 +187,7 @@ public class Objective {
             return this;
         }
 
-        public Builder withProgress(Double progress) {
+        public Builder withProgress(Long progress) {
             this.progress = progress;
             return this;
         }

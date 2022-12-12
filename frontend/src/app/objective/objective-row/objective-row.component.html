@@ -1,0 +1,42 @@
+<mat-expansion-panel (opened)="getKeyResults(this.objective.id!)">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="objective-title">{{
+      this.objective!.title
+    }}</mat-panel-title>
+    <mat-panel-description class="d-flex space-between">
+      <div class="d-flex w-50 margin-left">
+        <div class="w-100" id="progressContainer">
+          <span class="h6" id="progressSpan">{{ objective!.progress }}%</span>
+          <mat-progress-bar
+            class="objectiveProgress"
+            mode="determinate"
+            [value]="this.objective!.progress"
+          >
+          </mat-progress-bar>
+        </div>
+        <button
+          (click)="$event.stopPropagation()"
+          [matMenuTriggerFor]="objectiveMenu"
+          aria-label="Button to edit objectives"
+          mat-icon-button
+        >
+          <mat-icon class="pointer">more_vert</mat-icon>
+        </button>
+      </div>
+
+      <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
+        <button
+          *ngFor="let menuEntry of menuEntries"
+          (click)="redirect(menuEntry)"
+          mat-menu-item
+        >
+          <span>{{ menuEntry.displayName }}</span>
+        </button>
+      </mat-menu>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <app-objective-detail
+    [objective]="objective"
+    [keyResultList]="keyResultList"
+  ></app-objective-detail>
+</mat-expansion-panel>

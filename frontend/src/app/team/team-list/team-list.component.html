@@ -1,0 +1,23 @@
+<div class="teamlist-container">
+  <div class="title-create-button">
+    <p class="headline-large">Teams</p>
+    <button class="create-button" mat-stroked-button routerLink="/team/edit">
+      <img class="add-icon" src="assets/add-icon.svg" /> Team erstellen
+    </button>
+  </div>
+
+  <div class="team-row" *ngFor="let team of teamList$ | async">
+    <div class="team-flex">
+      <p class="team-name">{{ team.name }}</p>
+      <img
+        src="assets/edit-icon.svg"
+        alt="edit-icon"
+        class="edit-icon"
+        routerLink="/team/edit/{{ team.id }}"
+        [state]="team"
+      />
+      <img src="assets/delete-icon.svg" alt="delete-icon" class="delete-icon" />
+    </div>
+    <mat-divider class="divider"></mat-divider>
+  </div>
+</div>

@@ -5,8 +5,8 @@ import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Entity
-//table cannot be named "user" since it is a reserved keyword of Postgres
-@Table(name= "person")
+// table cannot be named "user" since it is a reserved keyword of Postgres
+@Table(name = "person")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
@@ -14,18 +14,22 @@ public class User {
     private Long id;
 
     @NotBlank
+    @NotNull
     @Size(min = 2, max = 20)
     private String username;
 
     @NotBlank
+    @NotNull
     @Size(min = 2, max = 50)
     private String firstname;
 
     @NotBlank
+    @NotNull
     @Size(min = 2, max = 50)
     private String lastname;
 
     @Email
+    @NotNull
     @Size(min = 2, max = 250)
     private String email;
 
@@ -78,21 +82,20 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return "User{" + "id=" + id + ", username='" + username + '\'' + ", firstname='" + firstname + '\''
+                + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname) && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username)
+                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
+                && Objects.equals(email, user.email);
     }
 
     @Override

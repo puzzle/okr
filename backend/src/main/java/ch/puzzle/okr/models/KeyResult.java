@@ -31,11 +31,9 @@ public class KeyResult {
     @ManyToOne
     private Quarter quarter;
 
-    @Size(min = 2, max = 250)
     private ExpectedEvolution expectedEvolution;
 
     @NotNull
-    @NotBlank
     private Unit unit;
 
     @NotNull
@@ -163,33 +161,32 @@ public class KeyResult {
 
     @Override
     public String toString() {
-        return "KeyResult{" +
-                "id=" + id +
-                ", objective=" + objective +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", owner=" + owner +
-                ", quarter=" + quarter +
-                ", expectedEvolution=" + expectedEvolution +
-                ", unit='" + unit + '\'' +
-                ", basisValue=" + basisValue +
-                ", targetValue=" + targetValue +
-                ", createdBy=" + createdBy +
-                ", createdOn=" + createdOn +
-                '}';
+        return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
+                + description + '\'' + ", owner=" + owner + ", quarter=" + quarter + ", expectedEvolution="
+                + expectedEvolution + ", unit='" + unit + '\'' + ", basisValue=" + basisValue + ", targetValue="
+                + targetValue + ", createdBy=" + createdBy + ", createdOn=" + createdOn + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter) && expectedEvolution == keyResult.expectedEvolution && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue) && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn);
+        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective)
+                && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description)
+                && Objects.equals(owner, keyResult.owner) && Objects.equals(quarter, keyResult.quarter)
+                && expectedEvolution == keyResult.expectedEvolution && unit == keyResult.unit
+                && Objects.equals(basisValue, keyResult.basisValue)
+                && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy)
+                && Objects.equals(createdOn, keyResult.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, quarter, expectedEvolution, unit, basisValue, targetValue, createdBy, createdOn);
+        return Objects.hash(id, objective, title, description, owner, quarter, expectedEvolution, unit, basisValue,
+                targetValue, createdBy, createdOn);
     }
 
     public static final class Builder {

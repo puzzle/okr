@@ -1,0 +1,41 @@
+<div class="teamlist-container">
+  <p class="headline-large">
+    {{ isCreating ? "Team erstellen" : "Team Name bearbeiten" }}
+  </p>
+
+  <form
+    (ngSubmit)="save()"
+    [formGroup]="teamForm"
+    class="d-flex flex-column fit-content"
+  >
+    <input
+      [value]="teamObject.name"
+      formControlName="teamName"
+      matInput
+      placeholder="Team Name"
+      type="text"
+      class="teamname-input"
+    />
+    <div class="button-container">
+      <button
+        class="rounded-5 cancel-button"
+        color="primary"
+        mat-stroked-button
+        type="cancel"
+        (click)="navigateBack()"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        class="rounded-5 create-button"
+        color="primary"
+        mat-raised-button
+        type="submit"
+        [disabled]="!teamForm.valid"
+      >
+        {{ this.isCreating ? "Speichern" : "Änderungen speichern" }}
+      </button>
+    </div>
+  </form>
+</div>

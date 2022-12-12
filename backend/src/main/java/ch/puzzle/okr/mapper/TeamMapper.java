@@ -11,9 +11,6 @@ public class TeamMapper {
     }
 
     public Team toTeam(TeamDto teamDto) {
-        return Team.Builder.builder()
-                .withId(teamDto.getId())
-                .withName(teamDto.getName())
-                .build();
+        return Team.Builder.builder().withId(teamDto.getId()).withName(teamDto.getName()).build();
     }
 }

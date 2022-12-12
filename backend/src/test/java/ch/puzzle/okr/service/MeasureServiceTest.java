@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.MeasureRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,9 @@ class MeasureServiceTest {
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
 
+    @MockBean
+    ProgressService progressService = Mockito.mock(ProgressService.class);
+
     @InjectMocks
     private MeasureService measureService;
 
@@ -35,17 +39,13 @@ class MeasureServiceTest {
 
     @BeforeEach
     void setUp() {
-       this.measure = Measure.Builder.builder()
+        this.measure = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L).build())
-                .withValue(30)
-                .withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives")
-                .build();
-       this.falseMeasure = Measure.Builder.builder()
-               .withId(3L)
-               .build();
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
+                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
+                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+        this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }
 
     @Test
@@ -60,15 +60,16 @@ class MeasureServiceTest {
     }
 
     @Test
-    void shouldNotReturnException(){
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> measureService.saveMeasure(falseMeasure));
+    void shouldNotReturnException() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> measureService.saveMeasure(falseMeasure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Measure has already an Id", exception.getReason());
     }
 
     @Test
     void shouldReturnCorrectEntity() {
-        Mockito.when(measureService.saveMeasure(measure)).thenReturn(measure);
+        Mockito.when(measureRepository.save(any())).thenReturn(measure);
         Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
         Measure returnedMeasure = this.measureService.updateMeasure(1L, measure);
         assertEquals(measure.getId(), returnedMeasure.getId());
@@ -78,7 +79,7 @@ class MeasureServiceTest {
 
     @Test
     void shouldThrowResponseStatusExceptionNotFound() {
-        Mockito.when(measureService.saveMeasure(measure)).thenReturn(measure);
+        Mockito.when(measureRepository.save(any())).thenReturn(measure);
         Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -88,7 +89,9 @@ class MeasureServiceTest {
 
     @Test
     void shouldThrowResponseStatusExceptionBadRequest() {
-        Mockito.when(measureService.saveMeasure(measure)).thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Mockito.when(measureRepository.save(any())).thenReturn(measure);
+        Mockito.when(measureService.saveMeasure(measure))
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -96,4 +99,3 @@ class MeasureServiceTest {
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 }
-

@@ -22,9 +22,8 @@ public class TeamService {
     }
 
     public Team getTeamById(long id) {
-        return teamRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Team with id %d not found", id))
-        );
+        return teamRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Team with id %d not found", id)));
     }
 
     public Team saveTeam(Team team) {
@@ -50,8 +49,7 @@ public class TeamService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute team id");
         }
 
-        return teamRepository.findById(teamId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, (String.format("Team with id %d not found", teamId)))
-        );
+        return teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                (String.format("Team with id %d not found", teamId))));
     }
 }

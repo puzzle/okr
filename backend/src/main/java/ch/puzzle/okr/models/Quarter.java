@@ -38,7 +38,6 @@ public class Quarter {
         this.year = year;
     }
 
-
     public Integer getNumber() {
         return number;
     }
@@ -49,19 +48,18 @@ public class Quarter {
 
     @Override
     public String toString() {
-        return "Quarter{" +
-                "id=" + id +
-                ", year=" + year +
-                ", number=" + number +
-                '}';
+        return "Quarter{" + "id=" + id + ", year=" + year + ", number=" + number + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(id, quarter.id) && Objects.equals(year, quarter.year) && Objects.equals(number, quarter.number);
+        return Objects.equals(id, quarter.id) && Objects.equals(year, quarter.year)
+                && Objects.equals(number, quarter.number);
     }
 
     @Override

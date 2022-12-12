@@ -1,8 +1,12 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.KeyResultMeasureDto;
+import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -27,48 +30,36 @@ class KeyResultServiceTest {
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
     @MockBean
+    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
+    @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
+    @MockBean
+    KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
     Quarter quarter;
     KeyResult keyResult;
+    Measure measure;
     List<Measure> measures;
     @InjectMocks
     private KeyResultService keyResultService;
 
     @BeforeEach
     void setup() {
-        this.user = User.Builder.builder()
-                .withId(1L)
-                .withEmail("newMail@tese.com")
-                .build();
+        this.user = User.Builder.builder().withId(1L).withEmail("newMail@tese.com").build();
 
-        this.objective = Objective.Builder.builder()
-                .withId(5L)
-                .withTitle("Objective 1")
-                .build();
+        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
-        this.quarter = Quarter.Builder.builder()
-                .withId(5L)
-                .withNumber(2)
-                .withYear(2022)
-                .build();
+        this.quarter = Quarter.Builder.builder().withId(5L).withNumber(2).withYear(2022).build();
 
-        this.keyResult = KeyResult.Builder.builder()
-                .withId(5L)
-                .withTitle("Keyresult 1")
-                .withObjective(this.objective)
-                .withOwner(this.user)
-                .withQuarter(this.quarter)
-                .build();
+        this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(this.objective)
+                .withOwner(this.user).withQuarter(this.quarter).build();
 
-        Measure measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
-
+        measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
         this.measures = List.of(measure, measure, measure);
     }
-
 
     @Test
     void shouldGetKeyResultById() {
@@ -81,16 +72,12 @@ class KeyResultServiceTest {
 
     @Test
     void shouldThrowExceptionWhenKeyResultDoesntExist() {
-        assertThrows(ResponseStatusException.class, () ->
-                keyResultService.getKeyResultById(1));
+        assertThrows(ResponseStatusException.class, () -> keyResultService.getKeyResultById(1));
     }
 
     @Test
     void shouldEditKeyresult() {
-        KeyResult newKeyresult = KeyResult.Builder
-                .builder()
-                .withId(1L).withTitle("Keyresult 1 update")
-                .build();
+        KeyResult newKeyresult = KeyResult.Builder.builder().withId(1L).withTitle("Keyresult 1 update").build();
         Mockito.when(keyResultRepository.save(any())).thenReturn(newKeyresult);
         Mockito.when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
@@ -110,6 +97,32 @@ class KeyResultServiceTest {
         Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResult);
         KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
         assertEquals("Keyresult 1", keyResult.getTitle());
+    }
+
+    @Test
+    void shouldGetAllKeyresultsByObjective() {
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+
+        List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
+
+        assertEquals(3, keyResultList.size());
+        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenNoKeyResultInObjective() {
+        when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
+        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
+
+        List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
+
+        assertEquals(0, keyResultList.size());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenObjectiveDoesntExist() {
+        assertThrows(ResponseStatusException.class, () -> keyResultService.getAllKeyResultsByObjective(1));
     }
 
     @Test
@@ -138,10 +151,41 @@ class KeyResultServiceTest {
 
     @Test
     void shouldThrowExceptionWhenGetMeasuresFromNonExistingKeyResult() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () ->
-                keyResultService.getAllMeasuresByKeyResult(1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> keyResultService.getAllMeasuresByKeyResult(1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
 
+    @Test
+    void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
+        when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
+        when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultMeasureMapper.toDto(keyResult, measure)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
+                "Description", 1L, "Paco", "Egiman", 4L, 1, 2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
+                new MeasureDto(1L, 1L, 10, "", "", 1L, null)));
+
+        List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
+
+        assertEquals(3, keyResultList.size());
+        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
+        assertEquals(1, keyResultList.get(0).getMeasure().getId());
+        assertEquals(1, keyResultList.get(0).getObjectiveId());
+    }
+
+    @Test
+    void shouldReturnNullObjectWhenMeasureIsNull() {
+        when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
+        when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
+        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultMeasureMapper.toDto(any(), any()))
+                .thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman", 4L, 1,
+                        2022, ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null));
+
+        List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
+
+        assertEquals(3, keyResultList.size());
+        assertNull(keyResultList.get(0).getMeasure());
+    }
 }

@@ -39,14 +39,16 @@ class GoalControllerIT {
     @MockBean
     private GoalMapper goalMapper;
 
-    static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(Objective.Builder.builder().withId(1L).build()).build();
-    static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("KeyResult 2").withObjective(Objective.Builder.builder().withId(1L).build()).build();
+    static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1")
+            .withObjective(Objective.Builder.builder().withId(1L).build()).build();
+    static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("KeyResult 2")
+            .withObjective(Objective.Builder.builder().withId(1L).build()).build();
     static List<KeyResult> keyResultList = Arrays.asList(keyResult1, keyResult2);
 
     static GoalDto goalDto1 = new GoalDto(new GoalObjectiveDto(1L, "Objective 1", "This is Objective description"),
             new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description"),
-            Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20.0, 2, 2022,
-            ExpectedEvolution.CONSTANT, Unit.PERCENT, 0L, 100L);
+            Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20L, 2, 2022, ExpectedEvolution.CONSTANT,
+            Unit.PERCENT, 0L, 100L);
 
     @BeforeEach
     void setUp() {
@@ -61,12 +63,9 @@ class GoalControllerIT {
         mvc.perform(get("/api/v1/goals/1").contentType(MediaType.APPLICATION_JSON))
                 // example for display the Response
                 .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.objective.id", Is.is(1)))
-                .andExpect(jsonPath("$.keyresult.id", Is.is(1)))
-                .andExpect(jsonPath("$.teamId", Is.is(1)))
-                .andExpect(jsonPath("$.unit", Is.is("PERCENT")))
-        ;
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(jsonPath("$.keyresult.id", Is.is(1))).andExpect(jsonPath("$.teamId", Is.is(1)))
+                .andExpect(jsonPath("$.unit", Is.is("PERCENT")));
     }
 
     @Test
@@ -75,8 +74,6 @@ class GoalControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 55 not found"));
 
         mvc.perform(get("/api/v1/goals/55").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(status().isNotFound())
-        ;
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
     }
 }

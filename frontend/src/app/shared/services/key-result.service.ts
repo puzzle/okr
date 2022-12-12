@@ -13,7 +13,7 @@ export interface Measure {
 }
 
 export interface KeyResultMeasure {
-  id?: number | null;
+  id: number | null;
   objectiveId: number;
   title: string;
   description: string;

@@ -2,9 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyResultDetailComponent } from './key-result-detail.component';
 import {
-  ExpectedEvolution,
   KeyResultMeasure,
-  Unit,
 } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
@@ -23,8 +21,8 @@ describe('KeyResultDetailComponent', () => {
     quarterId: 1,
     quarterNumber: 3,
     quarterYear: 2022,
-    expectedEvolution: ExpectedEvolution.INCREASE,
-    unit: Unit.PERCENT,
+    expectedEvolution: 'INCREASE',
+    unit: 'PERCENT',
     basicValue: 0,
     targetValue: 100,
     measure: {

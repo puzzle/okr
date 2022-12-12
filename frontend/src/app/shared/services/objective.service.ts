@@ -33,6 +33,5 @@ export class ObjectiveService {
   getObjectiveById(objectiveId: number): Observable<Objective> {
     return this.httpClient
       .get<Objective>('api/v1/objectives/' + objectiveId)
-      .pipe(tap((data) => console.log(data)));
   }
 }

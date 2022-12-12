@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'teams', component: TeamListComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },
-  { path: '**', component: DashboardComponent, pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {Team} from "./team.service";
-import {HttpClient} from "@angular/common/http";
+import { Team } from './team.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface User {
   id: number;

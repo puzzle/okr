@@ -7,10 +7,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import {
-  ExpectedEvolution,
   KeyResultMeasure,
   KeyResultService,
-  Unit,
 } from '../../shared/services/key-result.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -33,6 +31,8 @@ describe('ObjectiveComponent', () => {
     ownerId: 2,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
+    teamId: 1,
+    teamName: 'Puzzle ITC',
     description: 'This is a description',
     progress: 5,
     quarterId: 1,
@@ -53,8 +53,8 @@ describe('ObjectiveComponent', () => {
       quarterId: 1,
       quarterNumber: 3,
       quarterYear: 2022,
-      expectedEvolution: ExpectedEvolution.INCREASE,
-      unit: Unit.PERCENT,
+      expectedEvolution: 'INCREASE',
+      unit: 'PERCENT',
       basicValue: 0,
       targetValue: 100,
       measure: {
@@ -78,8 +78,8 @@ describe('ObjectiveComponent', () => {
       quarterId: 1,
       quarterNumber: 3,
       quarterYear: 2022,
-      expectedEvolution: ExpectedEvolution.INCREASE,
-      unit: Unit.PERCENT,
+      expectedEvolution: 'INCREASE',
+      unit: 'PERCENT',
       basicValue: 0,
       targetValue: 100,
       measure: {

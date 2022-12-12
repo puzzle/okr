@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {ReactiveFormsModule} from "@angular/forms";
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -33,7 +34,7 @@ describe('DashboardComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [AppModule, NoopAnimationsModule],
+      imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule],
       providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [DashboardComponent],
     }).compileComponents();
@@ -64,18 +65,20 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  xit('should display 6 items in quarter dropdown', () => {
-    const dropdownItems = fixture.debugElement.queryAll(
-      By.css('.quarter-dropdown')
-    );
-    expect(dropdownItems.length).toEqual(6);
+  test('should display 6 items in quarter dropdown', () => {
+    fixture.debugElement.queryAll(By.css('mat-select'))[1].nativeElement.click();
+    fixture.detectChanges();
+    const options = fixture.debugElement.queryAll(By.css('mat-option'));
+
+    expect(options.length).toEqual(6);
   });
 
-  xit('should display 2 teams in team dropdown', () => {
-    const dropdownItems = fixture.debugElement.queryAll(
-      By.css('.team-dropdown')
-    );
-    expect(dropdownItems.length).toEqual(2);
+  test('should display 2 teams in team dropdown', () => {
+    fixture.debugElement.query(By.css('mat-select')).nativeElement.click();
+    fixture.detectChanges();
+    const options = fixture.debugElement.queryAll(By.css('mat-option'));
+
+    expect(options.length).toEqual(2);
   });
 
   test('should display 2 team detail components when having 2 teams', () => {

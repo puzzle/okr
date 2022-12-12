@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class KeyResultMapper {
 
     private final KeyResultService keyResultService;
-    //TODO: Remove UserRepository when Login works and use logged in user for createdBy in toKeyResult method
+    // TODO: Remove UserRepository when Login works and use logged in user for createdBy in toKeyResult method
     private final UserRepository userRepository;
 
     public KeyResultMapper(KeyResultService keyResultService, UserRepository userRepository) {
@@ -35,6 +35,7 @@ public class KeyResultMapper {
                 .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
                 .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
                 .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now()).withCreatedBy(userRepository.findById(1L).get()).build();
+                .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now())
+                .withCreatedBy(userRepository.findById(1L).get()).build();
     }
 }

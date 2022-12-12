@@ -2,16 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
-export interface ExpectedEvolution {
-  id: number;
-  expectedEvolution: string;
-}
-
-export interface Unit {
-  id: number;
-  unit: string;
-}
-
 export interface Measure {
   id: number;
   keyResultId: number;
@@ -60,13 +50,13 @@ export class KeyResultService {
     );
   }
 
-  getInitKeyResult() {
+  getInitKeyResult(): KeyResultMeasure {
     return {
       id: null,
       title: '',
       description: '',
-      expectedEvolution: 'INCREASE',
-      unit: 'PERCENT',
+      expectedEvolution: '',
+      unit: '',
       ownerId: 0,
       ownerLastname: '',
       ownerFirstname: '',

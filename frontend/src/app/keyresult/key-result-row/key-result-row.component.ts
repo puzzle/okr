@@ -70,26 +70,14 @@ export class KeyResultRowComponent implements OnInit {
     elementMeasureTargetValue: number,
     elementMeasureBasicValue: number
   ) {
-    console.log(this.keyResult.expectedEvolution);
-    if (this.keyResult.expectedEvolution === 'INCREASE') {
-      this.progressPercentage = Math.round(
+    if (elementMeasureTargetValue === elementMeasureBasicValue) {
+      this.progressPercentage = 100;
+    } else {
+      this.progressPercentage = Math.abs(Math.round(
         (elementMeasureValue /
           (elementMeasureTargetValue - elementMeasureBasicValue)) *
           100
-      );
-      console.log(elementMeasureValue);
-    } else if (this.keyResult.expectedEvolution === 'DECREASE') {
-      this.progressPercentage = Math.round(
-        (elementMeasureValue /
-          (elementMeasureBasicValue - elementMeasureTargetValue)) *
-          100
-      );
-    } else {
-      if (elementMeasureValue === elementMeasureTargetValue) {
-        this.progressPercentage = 100;
-      } else {
-        this.progressPercentage = 0;
-      }
+      ));
     }
   }
 }

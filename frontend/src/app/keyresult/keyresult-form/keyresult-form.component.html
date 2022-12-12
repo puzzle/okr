@@ -57,7 +57,7 @@
 
   <p class="fs-4 title detail">Details</p>
 
-  <div class="d-flex w-100 justify-content-center">
+  <div *ngIf="keyresult$ | async as keyresult" class="d-flex w-100 justify-content-center">
     <form
       (ngSubmit)="save()"
       [formGroup]="keyResultForm"
@@ -71,7 +71,7 @@
         >
           <mat-label>Titel</mat-label>
           <input
-            [value]="(keyresult$ | async)?.title"
+            [value]="keyresult.title"
             formControlName="title"
             matInput
             placeholder="Titel"
@@ -79,7 +79,6 @@
           />
         </mat-form-field>
       </div>
-
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="fw-bold">Einheit</p>
         <mat-form-field
@@ -88,11 +87,11 @@
         >
           <mat-label>Einheit</mat-label>
           <mat-select
-            [value]="(keyresult$ | async)?.unit"
+            [value]="keyresult.unit"
             formControlName="unit"
           >
-            <mat-option *ngFor="let unit of unit$" [value]="unit.id">
-              {{ unit.unit }}
+            <mat-option *ngFor="let unit of unit$" [value]="unit">
+              {{ unit }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -106,14 +105,14 @@
         >
           <mat-label>Erwartete Entwicklung</mat-label>
           <mat-select
-            [value]="(keyresult$ | async)?.expectedEvolution"
+            [value]="keyresult.expectedEvolution"
             formControlName="expectedEvolution"
           >
             <mat-option
               *ngFor="let evolution of expectedEvolution$"
-              [value]="evolution.id"
+              [value]="evolution"
             >
-              {{ evolution.expectedEvolution }}
+              {{ evolution }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -127,7 +126,7 @@
         >
           <mat-label>Startwert</mat-label>
           <input
-            [value]="(keyresult$ | async)?.basicValue?.toString()"
+            [value]="keyresult.basicValue"
             formControlName="basicValue"
             matInput
             placeholder="0.0"
@@ -144,7 +143,7 @@
         >
           <mat-label>Zielwert</mat-label>
           <input
-            [value]="(keyresult$ | async)?.targetValue?.toString()"
+            [value]="keyresult.targetValue"
             formControlName="targetValue"
             matInput
             placeholder="0.0"
@@ -159,7 +158,7 @@
           <mat-label>Beschreibung</mat-label>
 
           <textarea
-            [value]="(keyresult$ | async)?.description?.toString()"
+            [value]="keyresult.description"
             formControlName="description"
             matInput
             placeholder="Beschreibung"
@@ -176,7 +175,7 @@
         >
           <mat-label>Besitzer</mat-label>
           <mat-select
-            [value]="(keyresult$ | async)?.ownerId"
+            [value]="keyresult.ownerId"
             formControlName="ownerId"
           >
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">

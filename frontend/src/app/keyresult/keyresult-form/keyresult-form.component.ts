@@ -7,10 +7,8 @@ import {
   ObjectiveService,
 } from '../../shared/services/objective.service';
 import {
-  ExpectedEvolution,
   KeyResultMeasure,
   KeyResultService,
-  Unit,
 } from '../../shared/services/key-result.service';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
@@ -30,8 +28,8 @@ export class KeyresultFormComponent implements OnInit {
       Validators.minLength(2),
       Validators.maxLength(20),
     ]),
-    unit: new FormControl<string>('PERCENT', [Validators.required]),
-    expectedEvolution: new FormControl<string>('INCREASE', [
+    unit: new FormControl<string>('', [Validators.required]),
+    expectedEvolution: new FormControl<string>('', [
       Validators.required,
     ]),
     basicValue: new FormControl<number>(0, Validators.required),
@@ -44,16 +42,16 @@ export class KeyresultFormComponent implements OnInit {
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$: Unit[] = [
-    { id: 0, unit: 'PERCENT' },
-    { id: 1, unit: 'CHF' },
-    { id: 2, unit: 'NUMBER' },
-    { id: 3, unit: 'BINARY' },
+  public unit$: string[] = [
+    'PERCENT',
+    'CHF' ,
+    'NUMBER',
+    'BINARY',
   ];
-  public expectedEvolution$: ExpectedEvolution[] = [
-    { id: 0, expectedEvolution: 'INCREASE' },
-    { id: 1, expectedEvolution: 'DECREASE' },
-    { id: 2, expectedEvolution: 'CONSTANT' },
+  public expectedEvolution$: string[] = [
+      'INCREASE' ,
+     'DECREASE' ,
+    'CONSTANT' ,
   ];
   public create!: boolean;
 
@@ -85,7 +83,11 @@ export class KeyresultFormComponent implements OnInit {
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
           this.create = true;
-          return of<KeyResultMeasure>(this.keyResultService.getInitKeyResult());
+          let keyresult: KeyResultMeasure = this.keyResultService.getInitKeyResult();
+          return this.objective$.pipe(map(objective => {
+            keyresult.objectiveId = objective.id;
+            return keyresult
+          }))
         }
       })
     );

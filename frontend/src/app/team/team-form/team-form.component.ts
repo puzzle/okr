@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Team, TeamService } from '../../shared/services/team.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-team-form',
@@ -8,9 +9,9 @@ import { Team, TeamService } from '../../shared/services/team.service';
   styleUrls: ['./team-form.component.scss'],
 })
 export class TeamFormComponent implements OnInit {
-  isCreating: boolean = true;
+  isCreating!: boolean;
   teamObject!: Team;
-  teamname!: string;
+  teamForm!: FormGroup;
 
   constructor(
     private teamService: TeamService,
@@ -22,18 +23,23 @@ export class TeamFormComponent implements OnInit {
     if (this.route.snapshot.params['id'] != null) {
       this.teamObject = window.history.state;
       this.teamObject.id = this.route.snapshot.params['id'];
-      this.teamname = this.teamObject.name;
       this.isCreating = false;
     } else {
-      this.teamObject = {
-        name: '',
-      } as Team;
+      this.teamObject = this.teamService.getInitTeam();
       this.isCreating = true;
     }
+
+    this.teamForm = new FormGroup({
+      teamName: new FormControl<string>(this.teamObject.name, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(250),
+      ]),
+    });
   }
 
-  submit(teamName: string) {
-    this.teamObject.name = Object(teamName)['teamName'];
+  save() {
+    this.teamObject.name = Object(this.teamForm.value)['teamName'];
     this.teamService
       .save(this.teamObject)
       .subscribe((answer) => this.router.navigate(['/', 'teams']));

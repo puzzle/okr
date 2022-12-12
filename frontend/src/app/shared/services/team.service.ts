@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 export interface Team {
-  id: number;
+  id: number | null;
   name: string;
 }
 
@@ -67,5 +67,12 @@ export class TeamService {
     quarterList.push(futureCycle);
 
     return quarterList!;
+  }
+
+  getInitTeam() {
+    return {
+      id: null,
+      name: '',
+    };
   }
 }

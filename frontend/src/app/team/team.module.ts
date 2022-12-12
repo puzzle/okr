@@ -7,9 +7,10 @@ import { ObjectiveModule } from '../objective/objective.module';
 import { MatDividerModule } from '@angular/material/divider';
 import { TeamListComponent } from './team-list/team-list.component';
 import { TeamFormComponent } from './team-form/team-form.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [TeamDetailComponent, TeamListComponent, TeamFormComponent],
@@ -23,6 +24,8 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     MatButtonModule,
     RouterLink,
+    ReactiveFormsModule,
+    MatInputModule,
   ],
 })
 export class TeamModule {}

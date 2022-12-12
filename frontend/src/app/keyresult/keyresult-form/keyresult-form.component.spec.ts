@@ -63,12 +63,11 @@ describe('KeyresultFormComponent', () => {
     getKeyResultById: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockUserService.getUsers.mockReturnValue(userList);
-
     mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [KeyresultFormComponent],
       providers: [
         { provide: UserService, useValue: mockUserService },
@@ -79,6 +78,11 @@ describe('KeyresultFormComponent', () => {
     fixture = TestBed.createComponent(KeyresultFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    mockUserService.getUsers.mockReset();
+    mockKeyResultService.getKeyResultById.mockReset();
   });
 
   xtest('should create', () => {

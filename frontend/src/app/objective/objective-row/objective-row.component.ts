@@ -11,7 +11,6 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objective-row',
@@ -23,28 +22,21 @@ export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
-  constructor(
-    private keyResultService: KeyResultService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.menuEntries = [
-      {
-        displayName: 'Resultat hinzufügen',
-        routeLine: 'objective/' + this.objective.id + '/keyresult/new',
-      },
-      { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-      { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-      { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
-    ];
-  }
+  constructor(private keyResultService: KeyResultService) {}
 
   public getKeyResults(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
   }
 
-  redirect(menuEntry: MenuEntry) {
-    this.router.navigate([menuEntry.routeLine]);
+  ngOnInit(): void {
+    this.menuEntries = [
+      { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
+      {
+        displayName: 'Ziel bearbeiten',
+        routeLine: 'objectives/edit/' + this.objective.id,
+      },
+      { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
+      { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+    ];
   }
 }

@@ -3,6 +3,7 @@ import {
   Objective,
   ObjectiveService,
 } from '../../shared/services/objective.service';
+import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, of, switchMap } from 'rxjs';
 import { Team, TeamService } from '../../team/team.service';
@@ -64,7 +65,8 @@ export class ObjectiveFormComponent implements OnInit {
     private objectiveService: ObjectiveService,
     private teamService: TeamService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -123,5 +125,8 @@ export class ObjectiveFormComponent implements OnInit {
           },
         })
       );
+  }
+  navigateBack() {
+    this.location.back();
   }
 }

@@ -9,6 +9,7 @@ export interface Objective {
   ownerFirstname: string;
   ownerLastname: string;
   teamId: number | null;
+  teamName: string;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
@@ -32,8 +33,18 @@ export class ObjectiveService {
     return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
   }
 
-  public saveObjective(objective: Objective): Observable<Objective> {
-    return this.httpClient.post<Objective>('api/v1/objectives', objective);
+  public saveObjective(
+    objective: Objective,
+    post: boolean
+  ): Observable<Objective> {
+    if (post) {
+      return this.httpClient.post<Objective>('api/v1/objectives', objective);
+    } else {
+      return this.httpClient.put<Objective>(
+        'api/v1/objectives/edit/' + objective.id,
+        objective
+      );
+    }
   }
 
   public getInitObjective() {

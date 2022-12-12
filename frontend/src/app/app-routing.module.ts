@@ -18,6 +18,7 @@ const routes: Routes = [
   },
   { path: 'teams', component: TeamListComponent },
   { path: 'objectives/new', component: ObjectiveFormComponent },
+  { path: 'objectives/edit/:objectiveId', component: ObjectiveFormComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' },

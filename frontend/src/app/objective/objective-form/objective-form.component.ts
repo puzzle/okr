@@ -32,7 +32,7 @@ export class ObjectiveFormComponent implements OnInit {
     ]),
     description: new FormControl<string>('', [
       Validators.required,
-      Validators.maxLength(500),
+      Validators.maxLength(4096),
       Validators.minLength(2),
     ]),
     ownerId: new FormControl<number>(0, [Validators.required]),
@@ -50,6 +50,7 @@ export class ObjectiveFormComponent implements OnInit {
     quarterId: 1,
     quarterNumber: 2,
     teamId: 1,
+    teamName: 'Team Name',
     progress: 22,
     ownerId: 21,
     ownerFirstname: 'Vorname',
@@ -68,11 +69,12 @@ export class ObjectiveFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
+    // getQuarter should not be in teamService.ts
     this.quarterList = this.teamService.getQuarter();
     this.teams$ = this.teamService.getTeams();
     this.objectives$ = this.route.paramMap.pipe(
       switchMap((params) => {
-        const objectiveId = getNumberOrNull(params.get('id'));
+        const objectiveId = getNumberOrNull(params.get('objectiveId'));
         if (objectiveId) {
           this.create = false;
           return this.objectiveService.getObjectiveById(objectiveId);
@@ -82,6 +84,19 @@ export class ObjectiveFormComponent implements OnInit {
         }
       })
     );
+    this.objectives$.subscribe((objective) => {
+      const {
+        id,
+        ownerFirstname,
+        ownerLastname,
+        teamName,
+        quarterNumber,
+        quarterYear,
+        progress,
+        ...restObjective
+      } = objective;
+      this.objectiveForm.setValue(restObjective);
+    });
   }
 
   changeQuarterFilter(value: OkrQuarter) {
@@ -99,7 +114,7 @@ export class ObjectiveFormComponent implements OnInit {
         })
       )
       .subscribe((objective) =>
-        this.objectiveService.saveObjective(objective).subscribe({
+        this.objectiveService.saveObjective(objective, this.create).subscribe({
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
             console.log('Can not save this objective: ', objective);

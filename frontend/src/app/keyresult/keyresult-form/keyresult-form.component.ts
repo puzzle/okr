@@ -78,7 +78,7 @@ export class KeyresultFormComponent implements OnInit {
             this.keyResultService.getInitKeyResult();
           return this.objective$.pipe(
             map((objective) => {
-              keyresult.objectiveId = objective.id;
+              keyresult.objectiveId = objective.id!;
               return keyresult;
             })
           );

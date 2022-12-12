@@ -74,8 +74,6 @@ describe('ObjectiveDetailComponent', () => {
     title: 'title',
     ownerLastname: 'Alice',
     ownerFirstname: 'Wunderland',
-    teamId: 1,
-    teamName: 'Puzzle ITC',
     description: 'description',
     quarterYear: 2022,
     quarterNumber: 4,

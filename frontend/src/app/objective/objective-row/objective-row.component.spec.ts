@@ -33,8 +33,6 @@ describe('ObjectiveComponent', () => {
     ownerId: 2,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    teamId: 1,
-    teamName: 'Puzzle ITC',
     description: 'This is a description',
     progress: 5,
     quarterId: 1,

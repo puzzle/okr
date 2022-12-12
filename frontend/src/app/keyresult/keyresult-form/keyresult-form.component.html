@@ -57,7 +57,10 @@
 
   <p class="fs-4 title detail">Details</p>
 
-  <div *ngIf="keyresult$ | async as keyresult" class="d-flex w-100 justify-content-center">
+  <div
+    *ngIf="keyresult$ | async as keyresult"
+    class="d-flex w-100 justify-content-center"
+  >
     <form
       (ngSubmit)="save()"
       [formGroup]="keyResultForm"
@@ -86,10 +89,7 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Einheit</mat-label>
-          <mat-select
-            [value]="keyresult.unit"
-            formControlName="unit"
-          >
+          <mat-select [value]="keyresult.unit" formControlName="unit">
             <mat-option *ngFor="let unit of unit$" [value]="unit">
               {{ unit }}
             </mat-option>
@@ -174,10 +174,7 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Besitzer</mat-label>
-          <mat-select
-            [value]="keyresult.ownerId"
-            formControlName="ownerId"
-          >
+          <mat-select [value]="keyresult.ownerId" formControlName="ownerId">
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>

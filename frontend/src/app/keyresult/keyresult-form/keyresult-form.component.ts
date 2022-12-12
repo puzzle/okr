@@ -29,9 +29,7 @@ export class KeyresultFormComponent implements OnInit {
       Validators.maxLength(20),
     ]),
     unit: new FormControl<string>('', [Validators.required]),
-    expectedEvolution: new FormControl<string>('', [
-      Validators.required,
-    ]),
+    expectedEvolution: new FormControl<string>('', [Validators.required]),
     basicValue: new FormControl<number>(0, Validators.required),
     targetValue: new FormControl<number>(0, Validators.required),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -42,17 +40,8 @@ export class KeyresultFormComponent implements OnInit {
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$: string[] = [
-    'PERCENT',
-    'CHF' ,
-    'NUMBER',
-    'BINARY',
-  ];
-  public expectedEvolution$: string[] = [
-      'INCREASE' ,
-     'DECREASE' ,
-    'CONSTANT' ,
-  ];
+  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER', 'BINARY'];
+  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT'];
   public create!: boolean;
 
   constructor(
@@ -83,11 +72,14 @@ export class KeyresultFormComponent implements OnInit {
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
           this.create = true;
-          let keyresult: KeyResultMeasure = this.keyResultService.getInitKeyResult();
-          return this.objective$.pipe(map(objective => {
-            keyresult.objectiveId = objective.id;
-            return keyresult
-          }))
+          let keyresult: KeyResultMeasure =
+            this.keyResultService.getInitKeyResult();
+          return this.objective$.pipe(
+            map((objective) => {
+              keyresult.objectiveId = objective.id;
+              return keyresult;
+            })
+          );
         }
       })
     );

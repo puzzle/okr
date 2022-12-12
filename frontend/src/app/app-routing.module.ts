@@ -15,10 +15,10 @@ const routes: Routes = [
     path: 'objective/:objectiveId/keyresult/new',
     component: KeyresultFormComponent,
   },
-  { path: '**', component: DashboardComponent, pathMatch: 'full' },
   { path: 'teams', component: TeamListComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },
+  { path: '**', component: DashboardComponent, pathMatch: 'full' },
 ];
 
 @NgModule({

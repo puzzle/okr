@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 export interface Team {
-  id: number;
+  id: number | null;
   name: string;
 }
 
@@ -18,9 +18,15 @@ export class TeamService {
   constructor(private httpClient: HttpClient) {}
 
   public getTeams(): Observable<Team[]> {
-    return this.httpClient
-      .get<Team[]>('api/v1/teams')
-      .pipe(tap((data) => console.log(data)));
+    return this.httpClient.get<Team[]>('api/v1/teams');
+  }
+
+  public save(team: Team): Observable<Team> {
+    if (team.id === null) {
+      return this.httpClient.post<Team>('api/v1/teams', team);
+    } else {
+      return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);
+    }
   }
 
   public getQuarter(date = new Date()) {
@@ -61,5 +67,12 @@ export class TeamService {
     quarterList.push(futureCycle);
 
     return quarterList!;
+  }
+
+  getInitTeam() {
+    return {
+      id: null,
+      name: '',
+    };
   }
 }

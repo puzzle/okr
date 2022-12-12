@@ -1,15 +1,28 @@
 import { TestBed } from '@angular/core/testing';
-import { TeamService } from './team.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Team, TeamService } from './team.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+
+const respons = [
+  {
+    id: 1,
+    name: 'Team 1',
+  },
+];
 
 describe('TeamService', () => {
   let service: TeamService;
+  let httpTestingController: HttpTestingController;
+  const URL = 'api/v1/teams';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(TeamService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   test('should be created', () => {
@@ -87,5 +100,66 @@ describe('TeamService', () => {
     expect(quarterList[3].quarter).toEqual('10-1');
     expect(quarterList[4].quarter).toEqual('09-4');
     expect(quarterList[5].quarter).toEqual('11-1');
+  });
+
+  test('should get Teams', (done) => {
+    service.getTeams().subscribe({
+      next(response: Team[]) {
+        expect(response.length).toBe(1);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(respons);
+    httpTestingController.verify();
+  });
+
+  test('should create Team', (done) => {
+    let team: Team = {
+      id: null,
+      name: 'Team 22',
+    };
+    service.save(team).subscribe({
+      next(response: Team) {
+        expect(response).toBe(respons);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}`);
+    expect(req.request.method).toEqual('POST');
+    req.flush(respons);
+    expect(req.request.body).toEqual({ id: null, name: 'Team 22' });
+    httpTestingController.verify();
+  });
+
+  test('should update Team', (done) => {
+    let team: Team = {
+      id: 22,
+      name: 'Team 22',
+    };
+    service.save(team).subscribe({
+      next(response: Team) {
+        expect(response).toBe(respons);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}/22`);
+    expect(req.request.method).toEqual('PUT');
+    req.flush(respons);
+    expect(req.request.body).toEqual({ id: 22, name: 'Team 22' });
+    httpTestingController.verify();
   });
 });

@@ -3,9 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamListComponent } from './team-list.component';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TeamService } from '../team.service';
+import { TeamService } from '../../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TeamListComponent', () => {
   let component: TeamListComponent;
@@ -24,7 +25,7 @@ describe('TeamListComponent', () => {
     );
 
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDividerModule],
+      imports: [HttpClientTestingModule, MatDividerModule, RouterTestingModule],
       providers: [{ provide: TeamService, useValue: teamServiceMock }],
       declarations: [TeamListComponent],
     }).compileComponents();
@@ -42,6 +43,12 @@ describe('TeamListComponent', () => {
     expect(
       fixture.nativeElement.querySelector('.headline-large').textContent
     ).toEqual('Teams');
+  });
+
+  test('should have create team button with right text', () => {
+    expect(
+      fixture.nativeElement.querySelector('.create-button').textContent
+    ).toEqual(' Team erstellen ');
   });
 
   test('should display two teams', () => {

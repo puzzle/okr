@@ -25,7 +25,7 @@ export class TeamDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.objectiveList = this.objectiveService.getObjectivesOfTeam(
-      this.team.id
+      this.team.id!
     );
   }
 }

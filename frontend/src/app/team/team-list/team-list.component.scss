@@ -22,26 +22,45 @@
 }
 
 .team-row {
-  max-width: 500px;
   margin-bottom: 30px;
 }
 
-.team-icons {
-  margin-left: auto;
-}
-
 .edit-icon {
-  margin-right: 15px;
+  position: absolute;
+  margin-left: 420px;
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 
 .delete-icon {
+  position: absolute;
+  margin-left: 450px;
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 
 .divider {
   color: black;
-  max-width: 100%;
+  width: 500px;
+}
+
+.title-create-button {
+  display: flex;
+  flex-direction: row;
+}
+
+.create-button {
+  margin-top: 5px;
+  margin-left: 30px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.add-icon {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  margin-bottom: 3px;
 }

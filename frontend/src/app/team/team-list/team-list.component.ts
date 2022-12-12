@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Team, TeamService } from '../team.service';
+import { Team, TeamService } from '../../shared/services/team.service';
 
 @Component({
   selector: 'app-team-list',

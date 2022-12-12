@@ -31,7 +31,6 @@ export class ObjectiveService {
   }
 
   getObjectiveById(objectiveId: number): Observable<Objective> {
-    return this.httpClient
-      .get<Objective>('api/v1/objectives/' + objectiveId)
+    return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
   }
 }

@@ -1,9 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyResultDetailComponent } from './key-result-detail.component';
-import {
-  KeyResultMeasure,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 

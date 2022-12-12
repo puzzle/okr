@@ -4,9 +4,7 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Objective } from '../../shared/services/objective.service';
 import { Observable, of } from 'rxjs';
-import {
-  KeyResultMeasure,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
 import { ObjectiveModule } from '../objective.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';

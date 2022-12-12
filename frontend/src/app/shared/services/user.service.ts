@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Team } from './team.service';
+import { HttpClient } from '@angular/common/http';
 
 export interface User {
   id: number;
@@ -13,31 +15,9 @@ export interface User {
   providedIn: 'root',
 })
 export class UserService {
-  constructor() {}
+  constructor(private httpClient: HttpClient) {}
 
   public getUsers(): Observable<User[]> {
-    return of([
-      {
-        id: 1,
-        username: 'alice',
-        firstname: 'Alice',
-        lastname: 'Wunderland',
-        email: 'alice@wunderland.ch',
-      },
-      {
-        id: 2,
-        username: 'paco',
-        firstname: 'Paco',
-        lastname: 'Egiman',
-        email: 'paco@egiman.ch',
-      },
-      {
-        id: 2,
-        username: 'robin',
-        firstname: 'Robin',
-        lastname: 'Papier',
-        email: 'robin@papier.ch',
-      },
-    ]);
+    return this.httpClient.get<User[]>('api/v1/users');
   }
 }

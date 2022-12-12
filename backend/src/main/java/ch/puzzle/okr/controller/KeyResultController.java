@@ -36,6 +36,16 @@ public class KeyResultController {
         this.progressService = progressService;
     }
 
+    @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Got keyresult by Id", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id", content = @Content) })
+    @GetMapping("/{id}")
+    public KeyResultDto getKeyResultbyId(@PathVariable long id) {
+        return this.keyResultMapper.toDto(this.keyResultService.getKeyResultById(id));
+    }
+
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new KeyResult.", content = {

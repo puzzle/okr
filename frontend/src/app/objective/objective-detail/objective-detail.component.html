@@ -23,6 +23,6 @@
   </div>
 </div>
 <mat-accordion *ngFor="let keyResult of keyResultList | async">
-  <app-keyresult-row [keyResult]="keyResult" [menuEntries]="menuEntries">
+  <app-keyresult-row [keyResult]="keyResult" [objectiveId]="objective.id">
   </app-keyresult-row>
 </mat-accordion>

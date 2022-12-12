@@ -2,16 +2,22 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 public class KeyResultMapper {
 
     private final KeyResultService keyResultService;
+    // TODO: Remove UserRepository when Login works and use logged in user for createdBy in toKeyResult method
+    private final UserRepository userRepository;
 
-    public KeyResultMapper(KeyResultService keyResultService) {
+    public KeyResultMapper(KeyResultService keyResultService, UserRepository userRepository) {
         this.keyResultService = keyResultService;
+        this.userRepository = userRepository;
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
@@ -29,6 +35,7 @@ public class KeyResultMapper {
                 .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
                 .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
                 .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit()).build();
+                .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now())
+                .withCreatedBy(userRepository.findById(1L).get()).build();
     }
 }

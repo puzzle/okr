@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 export interface Objective {
   id: number;
@@ -8,6 +8,8 @@ export interface Objective {
   ownerId: number;
   ownerFirstname: string;
   ownerLastname: string;
+  teamId: number;
+  teamName: string;
   quarterId: number;
   quarterNumber: number;
   quarterYear: number;
@@ -26,5 +28,9 @@ export class ObjectiveService {
     return this.httpClient.get<Objective[]>(
       'api/v1/teams/' + teamId + '/objectives'
     );
+  }
+
+  getObjectiveById(objectiveId: number): Observable<Objective> {
+    return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
   }
 }

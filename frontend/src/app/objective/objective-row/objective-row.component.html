@@ -27,7 +27,7 @@
       <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
         <button
           *ngFor="let menuEntry of menuEntries"
-          [routerLink]="menuEntry.routeLine"
+          (click)="redirect(menuEntry)"
           mat-menu-item
         >
           <span>{{ menuEntry.displayName }}</span>

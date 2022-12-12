@@ -4,11 +4,7 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Objective } from '../../shared/services/objective.service';
 import { Observable, of } from 'rxjs';
-import {
-  ExpectedEvolution,
-  KeyResultMeasure,
-  Unit,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
 import { ObjectiveModule } from '../objective.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,8 +26,8 @@ describe('ObjectiveDetailComponent', () => {
       quarterId: 1,
       quarterNumber: 3,
       quarterYear: 2022,
-      expectedEvolution: ExpectedEvolution.CONSTANT,
-      unit: Unit.NUMBER,
+      expectedEvolution: 'CONSTANT',
+      unit: 'NUMBER',
       basicValue: 10,
       targetValue: 50,
       measure: {
@@ -55,8 +51,8 @@ describe('ObjectiveDetailComponent', () => {
       quarterId: 1,
       quarterNumber: 2,
       quarterYear: 2022,
-      expectedEvolution: ExpectedEvolution.CONSTANT,
-      unit: Unit.NUMBER,
+      expectedEvolution: 'CONSTANT',
+      unit: 'NUMBER',
       basicValue: 20,
       targetValue: 120,
       measure: {
@@ -76,6 +72,8 @@ describe('ObjectiveDetailComponent', () => {
     title: 'title',
     ownerLastname: 'Alice',
     ownerFirstname: 'Wunderland',
+    teamId: 1,
+    teamName: 'Puzzle ITC',
     description: 'description',
     quarterYear: 2022,
     quarterNumber: 4,

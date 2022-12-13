@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KeyresultOverviewComponent } from './keyresult-overview.component';
+import { KeyResultOverviewComponent } from './key-result-overview.component';
 
 describe('KeyresultOverviewComponent', () => {
-  let component: KeyresultOverviewComponent;
-  let fixture: ComponentFixture<KeyresultOverviewComponent>;
+  let component: KeyResultOverviewComponent;
+  let fixture: ComponentFixture<KeyResultOverviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KeyresultOverviewComponent],
+      declarations: [KeyResultOverviewComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(KeyresultOverviewComponent);
+    fixture = TestBed.createComponent(KeyResultOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

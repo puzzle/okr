@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.component';
 import { MatCardModule } from '@angular/material/card';
+import { KeyResultOverviewComponent } from './key-result-overview/key-result-overview.component';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
@@ -21,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
     KeyResultRowComponent,
     KeyResultDetailComponent,
     KeyresultFormComponent,
+    KeyResultOverviewComponent,
   ],
   providers: [KeyResultService, DatePipe],
   exports: [KeyResultRowComponent],

@@ -1,3 +1,31 @@
-<div class="keyresult-overview-container">
+<div class="key-result-overview-container">
   <p class="headline-large">Keyresult Beschreibung</p>
+  <div
+    *ngIf="keyResult$ | async as key_result"
+    class="key-result-overview-text">
+    <p class="key-result-title">
+      <strong>Resultat</strong>
+      <br>
+      {{ this.key_result.title }}
+    </p>
+
+    <p class="key-result-description">
+      <strong>Beschreibung</strong>
+      <br>
+      {{ this.key_result.description }}
+    </p>
+
+    <p *ngIf="objective$ | async as objective"
+       class="key-result-Ziel">
+      <strong>Puzzle ITC Ziel</strong>
+      <br>
+      {{ this.objective.title }}
+    </p>
+
+    <p class="key-result-title">
+      <strong>Quartal</strong>
+      <br>
+      GJ {{ this.key_result.quarterYear }}
+    </p>
+  </div>
 </div>

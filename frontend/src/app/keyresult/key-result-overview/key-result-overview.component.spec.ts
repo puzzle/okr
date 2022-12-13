@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyResultOverviewComponent } from './key-result-overview.component';
-import {KeyResultMeasure} from "../../shared/services/key-result.service";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {ObjectiveModule} from "../../objective/objective.module";
-import {NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {RouterTestingModule} from "@angular/router/testing";
-import {Objective} from "../../shared/services/objective.service";
-import {Observable, of} from "rxjs";
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ObjectiveModule } from '../../objective/objective.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Objective } from '../../shared/services/objective.service';
+import { Observable, of } from 'rxjs';
 
 describe('KeyresultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
@@ -36,8 +36,8 @@ describe('KeyresultOverviewComponent', () => {
       initiatives: 'Initiatives 2',
       createdBy: 1,
       createdOn: new Date('2022-12-07T00:00:00'),
-    }
-  })
+    },
+  });
 
   let objective: Observable<Objective> = of({
     id: 1,

@@ -2,29 +2,29 @@
   <p class="headline-large">Keyresult Beschreibung</p>
   <div
     *ngIf="keyResult$ | async as key_result"
-    class="key-result-overview-text">
+    class="key-result-overview-text"
+  >
     <p class="key-result-title">
       <strong>Resultat</strong>
-      <br>
+      <br />
       {{ this.key_result.title }}
     </p>
 
     <p class="key-result-description">
       <strong>Beschreibung</strong>
-      <br>
+      <br />
       {{ this.key_result.description }}
     </p>
 
-    <p *ngIf="objective$ | async as objective"
-       class="key-result-Ziel">
+    <p *ngIf="objective$ | async as objective" class="key-result-Ziel">
       <strong>Puzzle ITC Ziel</strong>
-      <br>
+      <br />
       {{ this.objective.title }}
     </p>
 
     <p class="key-result-title">
       <strong>Quartal</strong>
-      <br>
+      <br />
       GJ {{ this.key_result.quarterYear }}
     </p>
   </div>

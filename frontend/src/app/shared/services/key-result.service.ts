@@ -9,7 +9,8 @@ export interface Measure {
   changeInfo: string;
   initiatives: string;
   createdBy: number;
-  createdOn: string;
+  createdOn: Date;
+  measureDate: Date;
 }
 
 export interface KeyResultMeasure {

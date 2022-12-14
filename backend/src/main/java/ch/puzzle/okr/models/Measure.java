@@ -135,7 +135,6 @@ public class Measure {
         return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
     }
 
-
     public static final class Builder {
         private @NotNull Long id;
         private @NotNull KeyResult keyResult;

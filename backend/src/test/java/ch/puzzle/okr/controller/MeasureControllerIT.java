@@ -49,9 +49,10 @@ class MeasureControllerIT {
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0L).withTargetValue(100L).build())
             .withValue(35).withChangeInfo("ChangeInfo").build();
-    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX, LocalDateTime.of(2022, 8, 12, 1, 1));
-    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L,
-            LocalDateTime.MAX, LocalDateTime.of(2022, 8, 12, 1, 1));
+    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
+            LocalDateTime.of(2022, 8, 12, 1, 1));
+    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L, LocalDateTime.MAX,
+            LocalDateTime.of(2022, 8, 12, 1, 1));
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
 
     @Autowired
@@ -96,7 +97,8 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(), LocalDateTime.of(2022, 8, 12, 1, 1));
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+                LocalDateTime.of(2022, 8, 12, 1, 1));
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
@@ -121,7 +123,8 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(), LocalDateTime.of(2022, 8, 12, 1, 1));
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+                LocalDateTime.of(2022, 8, 12, 1, 1));
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);

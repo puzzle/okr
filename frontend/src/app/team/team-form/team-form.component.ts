@@ -19,7 +19,7 @@ export class TeamFormComponent implements OnInit {
       Validators.maxLength(250),
     ]),
   });
-  id = this.route.snapshot.params['id'];
+  id?: number;
 
   constructor(
     private teamService: TeamService,
@@ -29,6 +29,7 @@ export class TeamFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
     if (this.id) {
       this.teamObject = this.teamService.getTeam(this.id);
     }

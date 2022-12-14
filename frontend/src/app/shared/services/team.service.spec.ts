@@ -5,12 +5,12 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-const respons = [
-  {
-    id: 1,
-    name: 'Team 1',
-  },
-];
+const teamResponse: Team = {
+  id: 1,
+  name: 'Team 1',
+};
+
+const teamListResponse = [teamResponse];
 
 describe('TeamService', () => {
   let service: TeamService;
@@ -102,6 +102,24 @@ describe('TeamService', () => {
     expect(quarterList[5].quarter).toEqual('11-1');
   });
 
+  test('should get Team', (done) => {
+    let id: number = 1;
+    service.getTeam(id).subscribe({
+      next(response: Team) {
+        expect(response.name).toBe('Team 1');
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}/` + id);
+    expect(req.request.method).toEqual('GET');
+    req.flush(teamResponse);
+    httpTestingController.verify();
+  });
+
   test('should get Teams', (done) => {
     service.getTeams().subscribe({
       next(response: Team[]) {
@@ -115,7 +133,7 @@ describe('TeamService', () => {
 
     const req = httpTestingController.expectOne(`${URL}`);
     expect(req.request.method).toEqual('GET');
-    req.flush(respons);
+    req.flush(teamListResponse);
     httpTestingController.verify();
   });
 
@@ -126,7 +144,7 @@ describe('TeamService', () => {
     };
     service.save(team).subscribe({
       next(response: Team) {
-        expect(response).toBe(respons);
+        expect(response).toBe(teamListResponse);
         done();
       },
       error(error) {
@@ -136,7 +154,7 @@ describe('TeamService', () => {
 
     const req = httpTestingController.expectOne(`${URL}`);
     expect(req.request.method).toEqual('POST');
-    req.flush(respons);
+    req.flush(teamListResponse);
     expect(req.request.body).toEqual({ id: null, name: 'Team 22' });
     httpTestingController.verify();
   });
@@ -148,7 +166,7 @@ describe('TeamService', () => {
     };
     service.save(team).subscribe({
       next(response: Team) {
-        expect(response).toBe(respons);
+        expect(response).toBe(teamListResponse);
         done();
       },
       error(error) {
@@ -158,7 +176,7 @@ describe('TeamService', () => {
 
     const req = httpTestingController.expectOne(`${URL}/22`);
     expect(req.request.method).toEqual('PUT');
-    req.flush(respons);
+    req.flush(teamListResponse);
     expect(req.request.body).toEqual({ id: 22, name: 'Team 22' });
     httpTestingController.verify();
   });

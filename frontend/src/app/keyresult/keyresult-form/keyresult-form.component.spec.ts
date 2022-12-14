@@ -7,13 +7,7 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { Observable, of } from 'rxjs';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { KeyresultModule } from '../keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 

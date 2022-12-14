@@ -1,6 +1,6 @@
-<span class="d-flex back-btn">
+<span class="d-flex">
   <mat-icon>chevron_left</mat-icon>
-  <p (click)="navigateBack()">Zurück</p>
+  <p (click)="navigateBack()" class="back-btn">Zurück</p>
 </span>
 
 <p class="fs-2 heading-label">
@@ -102,14 +102,14 @@
 
       <div class="d-flex gap-2 justify-content-end">
         <button
+          (click)="navigateBack()"
           class="rounded-5"
           color="primary"
           mat-stroked-button
-          type="cancel"
+          type="reset"
         >
           Abbrechen
         </button>
-
         <button
           [disabled]="objectiveForm.invalid"
           class="rounded-5"

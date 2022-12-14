@@ -20,6 +20,9 @@ export class TeamService {
   public getTeams(): Observable<Team[]> {
     return this.httpClient.get<Team[]>('api/v1/teams');
   }
+  public getTeam(teamId: number): Observable<Team> {
+    return this.httpClient.get<Team>('api/v1/teams/' + teamId);
+  }
 
   public save(team: Team): Observable<Team> {
     if (team.id === null) {

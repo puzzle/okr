@@ -1,6 +1,6 @@
 <div class="teamlist-container">
   <p class="headline-large">
-    {{ isCreating ? "Team erstellen" : "Team Name bearbeiten" }}
+    {{ this.id ? "Team erstellen" : "Team Name bearbeiten" }}
   </p>
 
   <form
@@ -8,15 +8,21 @@
     [formGroup]="teamForm"
     class="d-flex flex-column fit-content"
   >
-    <input
-      [value]="teamObject.name"
-      formControlName="teamName"
-      matInput
-      placeholder="Team Name"
-      type="text"
-      class="teamname-input"
-    />
-    <div class="button-container">
+    <mat-form-field
+      appearance="outline"
+      class="form-field-width form-field-height"
+    >
+      <mat-label>Teamname</mat-label>
+      <input
+        [value]="(this.teamObject | async)?.name"
+        formControlName="name"
+        matInput
+        placeholder="z.B. DevTree"
+        type="text"
+      />
+    </mat-form-field>
+
+    <div class="d-flex gap-3">
       <button
         class="rounded-5 cancel-button"
         color="primary"
@@ -34,7 +40,7 @@
         type="submit"
         [disabled]="!teamForm.valid"
       >
-        {{ this.isCreating ? "Speichern" : "Änderungen speichern" }}
+        {{ this.id ? "Speichern" : "Änderungen speichern" }}
       </button>
     </div>
   </form>

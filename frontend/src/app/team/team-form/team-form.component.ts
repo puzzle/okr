@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Team, TeamService } from '../../shared/services/team.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-team-form',
@@ -10,9 +11,15 @@ import { Location } from '@angular/common';
   styleUrls: ['./team-form.component.scss'],
 })
 export class TeamFormComponent implements OnInit {
-  isCreating!: boolean;
-  teamObject!: Team;
-  teamForm!: FormGroup;
+  teamObject: Observable<Team> = of(this.teamService.getInitTeam());
+  teamForm: FormGroup = new FormGroup({
+    name: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250),
+    ]),
+  });
+  id = this.route.snapshot.params['id'];
 
   constructor(
     private teamService: TeamService,
@@ -22,28 +29,19 @@ export class TeamFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (this.route.snapshot.params['id'] != null) {
-      this.teamObject = window.history.state;
-      this.teamObject.id = this.route.snapshot.params['id'];
-      this.isCreating = false;
-    } else {
-      this.teamObject = this.teamService.getInitTeam();
-      this.isCreating = true;
+    if (this.id) {
+      this.teamObject = this.teamService.getTeam(this.id);
     }
-
-    this.teamForm = new FormGroup({
-      teamName: new FormControl<string>(this.teamObject.name, [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(250),
-      ]),
-    });
   }
 
   save() {
-    this.teamObject.name = Object(this.teamForm.value)['teamName'];
+    let saveTeam = {
+      ...this.teamService.getInitTeam(),
+      id: this.id,
+      ...this.teamForm.value,
+    } as Team;
     this.teamService
-      .save(this.teamObject)
+      .save(saveTeam)
       .subscribe((answer) => this.router.navigate(['/', 'teams']));
   }
 

@@ -110,18 +110,13 @@ describe('KeyResultKeyResultRowComponent', () => {
       );
     });
 
-    xtest.each([
+    test.each([
       [
         [
-          { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
-          { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-          { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-          { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
-        ] as MenuEntry[],
-      ],
-      [
-        [
-          { displayName: 'Resultat bearbeiten', routeLine: 'result/add' },
+          {
+            displayName: 'Resultat bearbeiten',
+            routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
+          },
           { displayName: 'Resultat duplizieren', routeLine: 'objective/edit' },
           { displayName: 'Details einsehen', routeLine: 'result/add' },
           { displayName: 'Resultat löschen', routeLine: 'result/add' },

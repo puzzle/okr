@@ -7,6 +7,9 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { Observable, of } from 'rxjs';
+import { RouterTestingModule } from '@angular/router/testing';
+import { KeyresultModule } from '../keyresult.module';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
@@ -63,13 +66,13 @@ describe('KeyresultFormComponent', () => {
     getKeyResultById: jest.fn(),
   };
 
-  beforeEach(async () => {
+  beforeEach(() => {
     mockUserService.getUsers.mockReturnValue(userList);
-
     mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [KeyresultFormComponent],
+      imports: [HttpClientTestingModule, RouterTestingModule, KeyresultModule],
       providers: [
         { provide: UserService, useValue: mockUserService },
         { provide: KeyResultService, useValue: mockKeyResultService },
@@ -81,7 +84,12 @@ describe('KeyresultFormComponent', () => {
     fixture.detectChanges();
   });
 
-  xtest('should create', () => {
+  afterEach(() => {
+    mockUserService.getUsers.mockReset();
+    mockKeyResultService.getKeyResultById.mockReset();
+  });
+
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 });

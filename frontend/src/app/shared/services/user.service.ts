@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Team } from './team.service';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface User {

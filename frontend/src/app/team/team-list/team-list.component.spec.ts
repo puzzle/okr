@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeamListComponent } from './team-list.component';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TeamService } from '../../shared/services/team.service';
+import { Team, TeamService } from '../../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -12,17 +12,23 @@ describe('TeamListComponent', () => {
   let component: TeamListComponent;
   let fixture: ComponentFixture<TeamListComponent>;
 
+  let teamList: Observable<Team[]> = of([
+    {
+      id: 1,
+      name: 'Team1',
+    },
+    {
+      id: 2,
+      name: 'Team2',
+    },
+  ]);
+
   const teamServiceMock = {
     getTeams: jest.fn(),
   };
 
   beforeEach(() => {
-    teamServiceMock.getTeams.mockReturnValue(
-      of([
-        { id: 1, name: 'Team1' },
-        { id: 2, name: 'Team2' },
-      ])
-    );
+    teamServiceMock.getTeams.mockReturnValue(teamList);
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDividerModule, RouterTestingModule],
@@ -33,6 +39,10 @@ describe('TeamListComponent', () => {
     fixture = TestBed.createComponent(TeamListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    teamServiceMock.getTeams.mockReset();
   });
 
   test('should create', () => {

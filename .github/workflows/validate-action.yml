@@ -41,3 +41,16 @@ jobs:
 
       - name: Use Maven to run unittests and integration tests
         run: mvn clean verify
+  frontend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.10.0'
+      - run: npm ci
+      - run: npm test

@@ -31,6 +31,17 @@ public class Measure {
     private User createdBy;
 
     @NotNull
+    private LocalDateTime measureDate;
+
+    public LocalDateTime getMeasureDate() {
+        return measureDate;
+    }
+
+    public void setMeasureDate(LocalDateTime measureDate) {
+        this.measureDate = measureDate;
+    }
+
+    @NotNull
     private LocalDateTime createdOn;
 
     public Measure() {
@@ -43,6 +54,7 @@ public class Measure {
         setChangeInfo(builder.changeInfo);
         setInitiatives(builder.initiatives);
         setCreatedBy(builder.createdBy);
+        setMeasureDate(builder.measureDate);
         setCreatedOn(builder.createdOn);
     }
 
@@ -123,6 +135,7 @@ public class Measure {
         return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
     }
 
+
     public static final class Builder {
         private @NotNull Long id;
         private @NotNull KeyResult keyResult;
@@ -130,6 +143,7 @@ public class Measure {
         private @NotNull @NotBlank String changeInfo;
         private @Size(max = 4096) String initiatives;
         private @NotNull User createdBy;
+        private @NotNull LocalDateTime measureDate;
         private @NotNull LocalDateTime createdOn;
 
         private Builder() {
@@ -166,6 +180,11 @@ public class Measure {
 
         public Builder withCreatedBy(@NotNull User createdBy) {
             this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder withMeasureDate(@NotNull LocalDateTime measureDate) {
+            this.measureDate = measureDate;
             return this;
         }
 

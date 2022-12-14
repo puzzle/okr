@@ -33,12 +33,12 @@ insert into key_result(id, objective_id, owner_id, expected_evolution, unit, bas
         (5, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 5', 'This is the description of Keyresult 5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s'),
         (6, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 6', 'This is the description of Keyresult 6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s');
 
-insert into measure(id, key_result_id, value, created_by_id, created_on, change_info, initiatives) values
-        (1, 1, 2, 1, '2022-09-01', 'Bei dieser Messung standen 2 Schokolandenarten auf allen Stockwerken bereit.', 'Mehr vom einfachen Milch- und Nuss-Schokolade einkaufen.'),
-        (2, 1, 1, 1, '2022-10-02', 'Uns sind drei Schokoladenarten ausgegangen.', 'Wir müssen regelmässig einkaufen gehen.'),
-        (3, 2, 0, 1, '2022-09-01', 'Leider fand in diesem Monat kein Apéro statt.', 'Sofort die Termine für den nächsten Monat bestimmen.'),
-        (4, 2, 1, 1, '2022-10-03', 'Wir hatten zumindest ein Apéro durchgeführt. Das zweite Apéro musste wegen Terminkonflikte abgesagt werden.', 'Termine mit den Bereichen koordinieren.'),
-        (5, 3, 80, 4, '2022-09-01', 'Ein grossteil der Members haben uns ihre Einschätzung gemeldet.', 'Vielleicht sollten wir  die Umfrage per E-Mail versenden.'),
-        (6, 3, 70, 4, '2022-10-02', 'Fast alle Members haben uns ihre Einschätzung gemeldet.', 'Brauchen nichts zu ändern.'),
-        (7, 4, 1, 5, '2022-09-01', 'Der Mattenhof Keller hat es erfüllt.', 'Wir überwachen die Menükarte zur Sicherheit'),
-        (8, 4, 1, 5, '2022-10-04', 'Es gab immer Cordon bleu am Dienstag', 'Aktuell kein Handlungsbedarf');
+insert into measure(id, key_result_id, value, created_by_id, created_on, change_info, initiatives, measure_date) values
+        (1, 1, 2, 1, '2022-08-01', 'Bei dieser Messung standen 2 Schokolandenarten auf allen Stockwerken bereit.', 'Mehr vom einfachen Milch- und Nuss-Schokolade einkaufen.','2022-09-01'),
+        (2, 1, 1, 1, '2022-08-01', 'Uns sind drei Schokoladenarten ausgegangen.', 'Wir müssen regelmässig einkaufen gehen.','2022-10-02'),
+        (3, 2, 0, 1, '2022-08-01', 'Leider fand in diesem Monat kein Apéro statt.', 'Sofort die Termine für den nächsten Monat bestimmen.','2022-09-01'),
+        (4, 2, 1, 1, '2022-08-01', 'Wir hatten zumindest ein Apéro durchgeführt. Das zweite Apéro musste wegen Terminkonflikte abgesagt werden.', 'Termine mit den Bereichen koordinieren.','2022-10-03'),
+        (5, 3, 80, 4, '2022-08-01', 'Ein grossteil der Members haben uns ihre Einschätzung gemeldet.', 'Vielleicht sollten wir  die Umfrage per E-Mail versenden.','2022-09-01'),
+        (6, 3, 70, 4, '2022-08-01', 'Fast alle Members haben uns ihre Einschätzung gemeldet.', 'Brauchen nichts zu ändern.','2022-10-02'),
+        (7, 4, 1, 5, '2022-08-01', 'Der Mattenhof Keller hat es erfüllt.', 'Wir überwachen die Menükarte zur Sicherheit','2022-09-01'),
+        (8, 4, 1, 5, '2022-08-01', 'Es gab immer Cordon bleu am Dienstag', 'Aktuell kein Handlungsbedarf','2022-10-04');

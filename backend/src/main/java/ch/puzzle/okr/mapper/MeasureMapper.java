@@ -21,7 +21,7 @@ public class MeasureMapper {
         } else {
             return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(),
                     measure.getChangeInfo(), measure.getInitiatives(), measure.getCreatedBy().getId(),
-                    measure.getCreatedOn());
+                    measure.getCreatedOn(), measure.getMeasureDate());
         }
     }
 

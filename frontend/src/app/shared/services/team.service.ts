@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Team {
-  id: number | null;
+  id: number | undefined;
   name: string;
 }
 
@@ -74,7 +74,7 @@ export class TeamService {
 
   getInitTeam() {
     return {
-      id: null,
+      id: undefined,
       name: '',
     };
   }

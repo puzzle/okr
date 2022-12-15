@@ -35,16 +35,16 @@ export class KeyResultRowComponent implements OnInit {
     );
     this.menuEntries = [
       {
-        displayName: 'Resultat bearbeiten',
+        displayName: 'KeyResult bearbeiten',
         routeLine:
           'objective/' +
           this.objectiveId +
           '/keyresult/edit/' +
           this.keyResult.id,
       },
-      { displayName: 'Resultat duplizieren', routeLine: 'objective/edit' },
+      { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
       { displayName: 'Details einsehen', routeLine: 'result/add' },
-      { displayName: 'Resultat löschen', routeLine: 'result/add' },
+      { displayName: 'KeyResult löschen', routeLine: 'result/add' },
       { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
     ];
   }

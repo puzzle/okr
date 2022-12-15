@@ -114,12 +114,12 @@ describe('KeyResultKeyResultRowComponent', () => {
       [
         [
           {
-            displayName: 'Resultat bearbeiten',
+            displayName: 'KeyResult bearbeiten',
             routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
           },
-          { displayName: 'Resultat duplizieren', routeLine: 'objective/edit' },
+          { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
           { displayName: 'Details einsehen', routeLine: 'result/add' },
-          { displayName: 'Resultat löschen', routeLine: 'result/add' },
+          { displayName: 'KeyResult löschen', routeLine: 'result/add' },
           { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
         ] as MenuEntry[],
       ],

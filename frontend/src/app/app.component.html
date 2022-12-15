@@ -27,8 +27,20 @@
   <pzsh-nav slot="nav">
     <pzsh-nav-item class="okr-label" active="">OKRs</pzsh-nav-item>
     <pzsh-subnav>
-      <span routerLink="" class="overview-item">Übersicht</span>
-      <span routerLink="/teams">Teams</span>
+      <pzsh-nav-item
+        routerLink=""
+        (click)="preventLinkAction()"
+        class="okr-label"
+        [attr.active]="isOverview()"
+        >Overview</pzsh-nav-item
+      >
+      <pzsh-nav-item
+        routerLink="/teams"
+        (click)="preventLinkAction()"
+        class="okr-label"
+        [attr.active]="isTeam()"
+        >Team</pzsh-nav-item
+      >
     </pzsh-subnav>
   </pzsh-nav>
 </pzsh-menu>

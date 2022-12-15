@@ -17,7 +17,12 @@
 
       <div class="d-flex w-50">
         <div class="w-100" id="progressContainer">
-          <span class="h6">{{ progressPercentage }}%</span>
+          <span class="h6" *ngIf="keyResult.measure; else noMeasure"
+            >{{ progressPercentage }} %</span
+          >
+          <ng-template #noMeasure>
+            <span class="h6">-</span>
+          </ng-template>
           <mat-progress-bar
             class="objectiveProgress"
             mode="determinate"

@@ -121,7 +121,7 @@ describe('ObjectiveDetailComponent', () => {
 
   test('should have right table titles', () => {
     const spanTextes = fixture.debugElement.queryAll(By.css('span'));
-    expect(spanTextes[0].nativeElement.textContent).toEqual('Resultate');
+    expect(spanTextes[0].nativeElement.textContent).toEqual('KeyResult');
     expect(spanTextes[1].nativeElement.textContent).toEqual('Besitzer');
     expect(spanTextes[2].nativeElement.textContent).toEqual('Letzte Messung');
     expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');

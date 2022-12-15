@@ -34,15 +34,18 @@ export class ObjectiveRowComponent implements OnInit {
   ngOnInit(): void {
     this.menuEntries = [
       {
-        displayName: 'Resultat hinzufügen',
+        displayName: 'KeyResult hinzufügen',
         routeLine: 'objective/' + this.objective.id + '/keyresult/new',
       },
       {
-        displayName: 'Ziel bearbeiten',
+        displayName: 'Objective bearbeiten',
         routeLine: 'objectives/edit/' + this.objective.id,
       },
-      { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-      { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+      {
+        displayName: 'Objective duplizieren',
+        routeLine: 'objective/duplicate',
+      },
+      { displayName: 'Objective löschen', routeLine: 'objective/delete' },
     ];
   }
 

@@ -1,6 +1,6 @@
-<span class="d-flex">
+<span class="d-flex back-btn">
   <mat-icon>chevron_left</mat-icon>
-  <p (click)="navigateBack()" class="back-btn">Zurück</p>
+  <p (click)="navigateBack()">Zurück</p>
 </span>
 
 <p class="fs-2 title">
@@ -17,37 +17,37 @@
         <p class="fw-bold max-content">Title</p>
       </span>
 
-      <p class="w-100">
+      <p class="w-100 objective-title">
         {{ this.objective.title }}
       </p>
     </div>
 
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Team</p>
+        <p class="fw-bold max-content teamname-title">Team</p>
       </span>
 
-      <p class="w-100">
+      <p class="w-100 objective-teamname">
         {{ this.objective.teamName }}
       </p>
     </div>
 
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Description</p>
+        <p class="fw-bold max-content description-title">Description</p>
       </span>
 
-      <p class="w-100">
+      <p class="w-100 objective-description">
         {{ this.objective.description }}
       </p>
     </div>
 
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Zyklus</p>
+        <p class="fw-bold max-content quarter-title">Zyklus</p>
       </span>
 
-      <p class="w-100">
+      <p class="w-100 objective-quarter">
         GJ {{ this.objective.quarterYear }}-{{ this.objective.quarterNumber }}
       </p>
     </div>
@@ -79,6 +79,7 @@
             matInput
             placeholder="Titel"
             type="text"
+            class="title-input"
           />
         </mat-form-field>
       </div>
@@ -89,7 +90,11 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Einheit</mat-label>
-          <mat-select [value]="keyresult.unit" formControlName="unit">
+          <mat-select
+            [value]="keyresult.unit"
+            formControlName="unit"
+            class="unit-select"
+          >
             <mat-option *ngFor="let unit of unit$" [value]="unit">
               {{ unit }}
             </mat-option>
@@ -107,6 +112,7 @@
           <mat-select
             [value]="keyresult.expectedEvolution"
             formControlName="expectedEvolution"
+            class="evolution-select"
           >
             <mat-option
               *ngFor="let evolution of expectedEvolution$"
@@ -131,6 +137,7 @@
             matInput
             placeholder="0.0"
             type="text"
+            class="basicValue-input"
           />
         </mat-form-field>
       </div>
@@ -148,6 +155,7 @@
             matInput
             placeholder="0.0"
             type="text"
+            class="targetValue-input"
           />
         </mat-form-field>
       </div>
@@ -163,6 +171,7 @@
             matInput
             placeholder="Beschreibung"
             type="text"
+            class="description-textarea"
           ></textarea>
         </mat-form-field>
       </div>
@@ -174,7 +183,11 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Besitzer</mat-label>
-          <mat-select [value]="keyresult.ownerId" formControlName="ownerId">
+          <mat-select
+            [value]="keyresult.ownerId"
+            formControlName="ownerId"
+            class="owner-select"
+          >
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>
@@ -194,7 +207,7 @@
         </button>
 
         <button
-          class="rounded-5"
+          class="rounded-5 create-button"
           color="primary"
           mat-raised-button
           type="submit"

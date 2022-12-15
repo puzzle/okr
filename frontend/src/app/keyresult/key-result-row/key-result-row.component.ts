@@ -35,16 +35,16 @@ export class KeyResultRowComponent implements OnInit {
     );
     this.menuEntries = [
       {
-        displayName: 'Resultat bearbeiten',
+        displayName: 'KeyResult bearbeiten',
         routeLine:
           'objective/' +
           this.objectiveId +
           '/keyresult/edit/' +
           this.keyResult.id,
       },
-      { displayName: 'Resultat duplizieren', routeLine: 'objective/edit' },
+      { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
       { displayName: 'Details einsehen', routeLine: 'result/add' },
-      { displayName: 'Resultat löschen', routeLine: 'result/add' },
+      { displayName: 'KeyResult löschen', routeLine: 'result/add' },
       { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
     ];
   }
@@ -70,8 +70,8 @@ export class KeyResultRowComponent implements OnInit {
     elementMeasureTargetValue: number,
     elementMeasureBasicValue: number
   ) {
-    if (elementMeasureTargetValue === elementMeasureBasicValue) {
-      this.progressPercentage = 100;
+    if (!this.keyResult.measure) {
+      this.progressPercentage = 0;
     } else {
       this.progressPercentage = Math.abs(
         Math.round(

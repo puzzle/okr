@@ -174,10 +174,13 @@ describe('ObjectiveComponent', () => {
   test.each([
     [
       [
-        { displayName: 'Resultat hinzufügen', routeLine: 'result/add' },
-        { displayName: 'Ziel bearbeiten', routeLine: 'objective/edit' },
-        { displayName: 'Ziel duplizieren', routeLine: 'objective/duplicate' },
-        { displayName: 'Ziel löschen', routeLine: 'objective/delete' },
+        { displayName: 'KeyResult hinzufügen', routeLine: 'result/add' },
+        { displayName: 'Objective bearbeiten', routeLine: 'objective/edit' },
+        {
+          displayName: 'Objective duplizieren',
+          routeLine: 'objective/duplicate',
+        },
+        { displayName: 'Objective löschen', routeLine: 'objective/delete' },
       ] as MenuEntry[],
     ],
   ])('should have menu items', (menuEntries: MenuEntry[]) => {

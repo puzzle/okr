@@ -62,7 +62,7 @@ export class KeyresultFormComponent implements OnInit {
         if (objectiveId) {
           return this.objectiveService.getObjectiveById(objectiveId);
         } else {
-          throw Error('Objective with Id' + objectiveId + "doesn't exist");
+          throw Error('Objective with Id ' + objectiveId + " doesn't exist");
         }
       })
     );

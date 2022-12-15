@@ -263,11 +263,17 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    xtest('should set keyresult unit in mat select and set it new on item change', () => {
-      const unitselect = fixture.debugElement.query(
+    test('should set keyresult unit in mat select and set it new on item change', () => {
+      const unitselect: HTMLElement = fixture.debugElement.query(
         By.css('.unit-select')
       ).nativeElement;
-      expect(unitselect.value).toEqual('PERCENT');
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const innerSpan =
+        unitselect.children[0].children[0].children[0].children[0];
+
+      expect(innerSpan.innerHTML).toEqual('PERCENT');
 
       unitselect.click();
       fixture.detectChanges();
@@ -278,14 +284,20 @@ describe('KeyresultFormComponent', () => {
       selectOptions[2].nativeElement.click();
       fixture.detectChanges();
 
-      expect(unitselect.value).toEqual('NUMBER');
+      expect(innerSpan.innerHTML).toEqual('NUMBER');
     });
 
-    xtest('should set keyresult evolution in mat select and set it new on item change', () => {
-      const evolutionSelect = fixture.debugElement.query(
+    test('should set keyresult evolution in mat select and set it new on item change', () => {
+      const evolutionSelect: HTMLElement = fixture.debugElement.query(
         By.css('.evolution-select')
       ).nativeElement;
-      expect(evolutionSelect.value).toEqual('INCREASE');
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const innerSpan =
+        evolutionSelect.children[0].children[0].children[0].children[0];
+
+      expect(innerSpan.innerHTML).toEqual('INCREASE');
 
       evolutionSelect.click();
       fixture.detectChanges();
@@ -296,7 +308,7 @@ describe('KeyresultFormComponent', () => {
       selectOptions[2].nativeElement.click();
       fixture.detectChanges();
 
-      expect(evolutionSelect.value).toEqual('CONSTANT');
+      expect(innerSpan.innerHTML).toEqual('CONSTANT');
     });
 
     test('should set keyresult basicvalue in input field and set input invalid when empty value', () => {
@@ -348,11 +360,16 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    xtest('should set keyresult owner in mat select and set it new on item change', () => {
-      const ownerSelect = fixture.debugElement.query(
+    test('should set keyresult owner in mat select and set it new on item change', () => {
+      component.ngOnInit();
+      fixture.detectChanges();
+      const ownerSelect: HTMLElement = fixture.debugElement.query(
         By.css('.owner-select')
       ).nativeElement;
-      expect(ownerSelect.value).toEqual('Alice Wunderland');
+
+      const innerSpan = ownerSelect.children[0].children[0];
+
+      expect(innerSpan.innerHTML).toEqual('Alice Wunderland');
 
       ownerSelect.click();
       fixture.detectChanges();
@@ -363,7 +380,7 @@ describe('KeyresultFormComponent', () => {
       selectOptions[1].nativeElement.click();
       fixture.detectChanges();
 
-      expect(ownerSelect.value).toEqual('Paco Egiiman');
+      expect(innerSpan.innerHTML).toEqual('Paco Egiiman');
     });
 
     test('should disable button when form is invalid', () => {

@@ -1,6 +1,6 @@
 <div class="teamlist-container">
   <p class="headline-large">
-    {{ this.id ? "Team erstellen" : "Team Name bearbeiten" }}
+    {{ this.id ? "Team Name bearbeiten" : "Team erstellen" }}
   </p>
 
   <form
@@ -40,7 +40,7 @@
         type="submit"
         [disabled]="!teamForm.valid"
       >
-        {{ this.id ? "Speichern" : "Änderungen speichern" }}
+        {{ this.id ? "Änderungen speichern" : "Speichern" }}
       </button>
     </div>
   </form>

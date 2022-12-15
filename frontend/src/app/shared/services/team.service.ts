@@ -25,7 +25,7 @@ export class TeamService {
   }
 
   public save(team: Team): Observable<Team> {
-    if (team.id === null) {
+    if (team.id === undefined) {
       return this.httpClient.post<Team>('api/v1/teams', team);
     } else {
       return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);

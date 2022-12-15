@@ -262,7 +262,7 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void shouldReturnUpdatedObjective() throws Exception {
+    void shouldReturnUpdatedKeyresult() throws Exception {
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(keyResultDto);
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
 
@@ -278,7 +278,7 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultService.updateKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"));
 
-        mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(put("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

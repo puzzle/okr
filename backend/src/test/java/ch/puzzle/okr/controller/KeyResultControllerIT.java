@@ -8,7 +8,6 @@ import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ProgressService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,12 +50,69 @@ class KeyResultControllerIT {
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
     static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX);
     static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX);
-    static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "", "", 5L, "", "", 5L, 2, 2022,
+    static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", 5L, 2, 2022,
             ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(5L).withNumber(2).withYear(2022).build();
     static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective)
             .withOwner(user).withQuarter(quarter).build();
+
+    static String createBody = """
+            {
+                "id":null,
+                "objectiveId":5,
+                "title":"",
+                "description":"",
+                "ownerId":5,
+                "ownerFirstname":"",
+                "ownerLastname":"",
+                "quarterId":5,
+                "quarterNumber":2,
+                "quarterYear":2022,
+                "expectedEvolution":"INCREASE",
+                "unit":"PERCENT",
+                "basicValue":0,
+                "targetValue":1
+            }
+            """;
+
+    static String createBodyWithEnumKeys = """
+            {
+                "id":null,
+                "objectiveId":5,
+                "title":"",
+                "description":"",
+                "ownerId":5,
+                "ownerFirstname":"",
+                "ownerLastname":"",
+                "quarterId":5,
+                "quarterNumber":2,
+                "quarterYear":2022,
+                "expectedEvolution": 0,
+                "unit": 0,
+                "basicValue":0,
+                "targetValue":1
+            }
+            """;
+
+    static String putBody = """
+            {
+                "id":1,
+                "objectiveId":5,
+                "title":"Updated Keyresult",
+                "description":"",
+                "ownerId":5,
+                "ownerFirstname":"",
+                "ownerLastname":"",
+                "quarterId":5,
+                "quarterNumber":2,
+                "quarterYear":2022,
+                "expectedEvolution":"INCREASE",
+                "unit":"PERCENT",
+                "basicValue":0,
+                "targetValue":1
+            }
+            """;
     @MockBean
     KeyResultRepository keyResultRepository;
     @MockBean
@@ -75,6 +131,29 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultMapper.toKeyResult(keyResultDto)).willReturn(keyResult);
         BDDMockito.given(measureMapper.toDto(measure1)).willReturn(measureDto1);
         BDDMockito.given(measureMapper.toDto(measure2)).willReturn(measureDto2);
+    }
+
+    @Test
+    void shouldGetKeyresultWithId() throws Exception {
+        KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
+                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+        BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
+
+        mvc.perform(get("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(1)))
+                .andExpect(jsonPath("$.objectiveId", Is.is(1)))
+                .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")))
+                .andExpect(jsonPath("$.unit", Is.is("PERCENT")));
+    }
+
+    @Test
+    void shouldNotFindTheKeyresultWithId() throws Exception {
+        BDDMockito.given(keyResultService.getKeyResultById(55))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 55 not found"));
+
+        mvc.perform(get("/api/v1/keyresults/55").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
     }
 
     @Test
@@ -115,10 +194,28 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
-        ObjectMapper mapper = new ObjectMapper();
-        mvc.perform(post("/api/v1/keyresults").content(mapper.writeValueAsString(keyResultDto))
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id", Is.is(5)));
+        mvc.perform(post("/api/v1/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.unit", Is.is("PERCENT")))
+                .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")));
+    }
+
+    @Test
+    void createKeyResultWithEnumKeys() throws Exception {
+        KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
+                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+
+        BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
+        BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
+        BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
+        BDDMockito.given(this.keyResultService.createKeyResult(any())).willReturn(keyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
+
+        mvc.perform(post("/api/v1/keyresults").content(createBodyWithEnumKeys).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.unit", Is.is("PERCENT")))
+                .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")));
     }
 
     @Test
@@ -126,9 +223,8 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
-        ObjectMapper mapper = new ObjectMapper();
-        mvc.perform(post("/api/v1/keyresults").content(mapper.writeValueAsString(keyResultDto))
-                .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(post("/api/v1/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -163,5 +259,34 @@ class KeyResultControllerIT {
 
         mvc.perform(get("/api/v1/keyresults/1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnUpdatedKeyresult() throws Exception {
+        BDDMockito.given(keyResultMapper.toDto(any())).willReturn(keyResultDto);
+        BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
+
+        mvc.perform(put("/api/v1/keyresults/10").content(putBody).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.title", Is.is("Keyresult")))
+                .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")))
+                .andExpect(jsonPath("$.unit", Is.is("PERCENT")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenUpdatingKeyresult() throws Exception {
+        BDDMockito.given(keyResultService.updateKeyResult(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"));
+
+        mvc.perform(put("/api/v1/keyresults/1000").content(putBody).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenUpdatingKeyresult() throws Exception {
+        BDDMockito.given(keyResultService.updateKeyResult(any()))
+                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
+
+        mvc.perform(put("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

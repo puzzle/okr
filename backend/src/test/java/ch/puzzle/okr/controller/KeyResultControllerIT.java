@@ -278,7 +278,7 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultService.updateKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"));
 
-        mvc.perform(put("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(put("/api/v1/keyresults/1000").content(putBody).contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

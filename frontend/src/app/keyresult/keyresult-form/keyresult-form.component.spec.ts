@@ -99,6 +99,23 @@ describe('KeyresultFormComponent', () => {
     objectiveId: 3000,
   };
 
+  let createKeyResultObject: KeyResultMeasure = {
+    id: null,
+    title: 'Keyresult 1',
+    description: 'This is a description',
+    expectedEvolution: 'INCREASE',
+    unit: 'PERCENT',
+    ownerId: 2,
+    ownerLastname: '',
+    ownerFirstname: '',
+    quarterId: 1,
+    quarterNumber: 1,
+    quarterYear: 2022,
+    targetValue: 100,
+    basicValue: 0,
+    objectiveId: 1,
+  };
+
   let createKeyResultForm = new FormGroup({
     title: new FormControl<string>('Keyresult 1', [
       Validators.required,
@@ -408,8 +425,10 @@ describe('KeyresultFormComponent', () => {
 
       keyResult.subscribe((keyresult) => {
         expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
-          keyresult
+          keyresult,
+          false
         );
+        expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -418,6 +437,8 @@ describe('KeyresultFormComponent', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockObjectiveService.getObjectiveById.mockReturnValue(objective);
+      mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
+      mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
@@ -451,6 +472,8 @@ describe('KeyresultFormComponent', () => {
     afterEach(() => {
       mockUserService.getUsers.mockReset();
       mockObjectiveService.getObjectiveById.mockReset();
+      mockKeyResultService.getInitKeyResult.mockReset();
+      mockKeyResultService.saveKeyresult.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
@@ -548,15 +571,24 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should save new keyresult', () => {
-      // Fill form group and submit it
+      component.keyResultForm = createKeyResultForm;
+      fixture.detectChanges();
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
+      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
+        createKeyResultObject,
+        true
+      );
     });
   });
 
   describe('KeyresultFormComponent with no id in url', () => {
     beforeEach(() => {
-      mockUserService.getUsers.mockReturnValue(userList);
-      mockObjectiveService.getObjectiveById.mockReturnValue(objective);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(null);
+      mockObjectiveService.getObjectiveById.mockReturnValue(null);
 
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
@@ -567,8 +599,6 @@ describe('KeyresultFormComponent', () => {
           NoopAnimationsModule,
         ],
         providers: [
-          { provide: UserService, useValue: mockUserService },
-          { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: ObjectiveService, useValue: mockObjectiveService },
           {
             provide: ActivatedRoute,
@@ -591,17 +621,8 @@ describe('KeyresultFormComponent', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
-    xtest('should create', (done) => {
-      expect(component.ngOnInit()).toThrowError(
-        "Error: Objective with Idnulldoesn't exist"
-      );
-
-      component.objective$.subscribe((objective) => {
-        expect(mockGetNumerOrNull).toHaveBeenCalledTimes(1);
-        expect(mockGetNumerOrNull).toHaveBeenCalledWith(null);
-        expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
-        done();
-      });
+    test('should not create', () => {
+      expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
     });
   });
 });

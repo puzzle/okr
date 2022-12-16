@@ -18,6 +18,10 @@ import {
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
+import loader from '@angular-devkit/build-angular/src/webpack/plugins/single-test-transform';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
@@ -152,6 +156,8 @@ describe('KeyresultFormComponent', () => {
     getNumberOrNull: jest.fn(),
   };
 
+  let loader: HarnessLoader;
+
   describe('KeyresultFormComponent Edit KeyResult', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
@@ -184,6 +190,7 @@ describe('KeyresultFormComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -377,25 +384,22 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    xtest('should set keyresult owner in mat select and set it new on item change', () => {
-      component.ngOnInit();
-      fixture.detectChanges();
-      const ownerSelect: HTMLElement = fixture.debugElement.query(
-        By.css('.owner-select')
-      ).nativeElement;
+    test('should set keyresult owner in mat select and set it new on item change', async () => {
+      // doku https://material.angular.io/guide/using-component-harnesses
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      //TODO: expect(await select.getValueText()).toEqual('Alice Wunderland');
 
-      const innerSpan = ownerSelect.children[0].children[0].children[0];
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      await bugOption[0].click();
 
-      ownerSelect.click();
-      fixture.detectChanges();
-
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(2);
-
-      selectOptions[1].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(innerSpan.innerHTML).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should disable button when form is invalid', () => {

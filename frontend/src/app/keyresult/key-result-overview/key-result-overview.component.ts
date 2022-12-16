@@ -8,6 +8,7 @@ import {
   Objective,
   ObjectiveService,
 } from '../../shared/services/objective.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-key-result-overview',
@@ -15,8 +16,8 @@ import {
   styleUrls: ['./key-result-overview.component.scss'],
 })
 export class KeyResultOverviewComponent implements OnInit {
-  public keyResult!: KeyResultMeasure;
-  public objective!: Objective;
+  public keyResult$!: Observable<KeyResultMeasure>;
+  public objective$!: Observable<Objective>;
 
   constructor(
     private keyResultService: KeyResultService,
@@ -25,15 +26,13 @@ export class KeyResultOverviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keyResultService
-      .getKeyResultById(this.route.snapshot.params['id'])
-      .subscribe((keyResult) => {
-        this.keyResult = keyResult;
-        this.objectiveService
-          .getObjectiveById(keyResult.objectiveId)
-          .subscribe((objective) => {
-            this.objective = objective;
-          });
-      });
+    this.keyResult$ = this.keyResultService.getKeyResultById(
+      this.route.snapshot.params['id']
+    );
+    this.keyResult$.subscribe((keyresult) => {
+      this.objective$ = this.objectiveService.getObjectiveById(
+        keyresult.objectiveId
+      );
+    });
   }
 }

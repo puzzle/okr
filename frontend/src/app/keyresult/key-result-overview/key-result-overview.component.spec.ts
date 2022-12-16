@@ -105,17 +105,11 @@ describe('KeyresultOverviewComponent', () => {
   });
 
   test('should set keyresult of component', () => {
-    keyresult1.subscribe((keyresult1Value) => {
-      let keyresult = keyresult1Value;
-      expect(component.keyResult).toEqual(keyresult);
-    });
+    expect(component.keyResult$).toEqual(keyresult1);
   });
 
   test('should set objective of component', () => {
-    objective1.subscribe((objective1Value) => {
-      let objective = objective1Value;
-      expect(component.objective).toEqual(objective);
-    });
+    expect(component.objective$).toEqual(objective1);
   });
 
   test('should have 4 strong titles', () => {

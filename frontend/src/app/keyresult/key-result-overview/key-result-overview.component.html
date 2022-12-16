@@ -1,31 +1,28 @@
-<div class="key-result-overview-container">
+<div class="key-result-overview-container" *ngIf="goal$ | async as goal">
   <p class="headline-large">Keyresult Beschreibung</p>
-  <div
-    *ngIf="keyResult$ | async as key_result"
-    class="key-result-overview-text"
-  >
+  <div class="key-result-overview-text">
     <p class="key-result-title">
       <strong>KeyResult</strong>
       <br />
-      {{ key_result.title }}
+      {{ goal.keyresult.title }}
     </p>
 
     <p class="key-result-description">
       <strong>Beschreibung</strong>
       <br />
-      {{ key_result.description }}
+      {{ goal.keyresult.description }}
     </p>
 
-    <p *ngIf="objective$ | async as objective" class="key-result-Ziel">
-      <strong>{{ objective.teamName }} Objective</strong>
+    <p class="key-result-Ziel">
+      <strong>{{ goal.teamName }} Objective</strong>
       <br />
-      {{ objective.title }}
+      {{ goal.objective.title }}
     </p>
 
     <p class="key-result-quarter">
       <strong>Zyklus</strong>
       <br />
-      GJ {{ key_result.quarterYear }}
+      GJ {{ goal.quarterYear }}
     </p>
   </div>
 </div>

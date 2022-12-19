@@ -28,7 +28,7 @@ public class QuarterService {
                 (String.format("Quarter with id %d not found", quarterId))));
     }
 
-    public List<Quarter> createQuartersIfNotExist() {
+    public List<Quarter> getOrCreateQuarters() {
         String currentQuarter = generateCurrentQuarter();
         int currentQuarterNumber = getBusinessYearQuarter();
         int currentYear = getCurrentYear();
@@ -50,7 +50,7 @@ public class QuarterService {
         return quarterList;
     }
 
-    public List<Quarter> generatePastQuarters(int currentYear, int currentQuarter) {
+    private List<Quarter> generatePastQuarters(int currentYear, int currentQuarter) {
         List<Quarter> quarterList = new ArrayList<>();
         int quarter = currentQuarter;
         int year = currentYear;
@@ -70,7 +70,7 @@ public class QuarterService {
         return quarterList;
     }
 
-    public String generateFutureQuarter(int currentYear, int currentQuarter) {
+    private String generateFutureQuarter(int currentYear, int currentQuarter) {
         if ((currentQuarter == 3) || (currentQuarter == 2) || (currentQuarter == 1)) {
             return "GJ " + currentYear + "/" + (currentYear + 1) + "-Q" + (currentQuarter + 1);
         } else {
@@ -78,16 +78,16 @@ public class QuarterService {
         }
     }
 
-    public int getCurrentYear() {
+    private int getCurrentYear() {
         return myCal.get(Calendar.YEAR) % 100;
     }
 
-    public int getBusinessYearQuarter() {
+    private int getBusinessYearQuarter() {
         int yearQuarter = (myCal.get(Calendar.MONTH) / 3) + 1;
         return quarterMap.get(yearQuarter);
     }
 
-    public String generateCurrentQuarter() {
+    private String generateCurrentQuarter() {
         int quarterNumber = getBusinessYearQuarter();
         int year = getCurrentYear();
         String currentQuarterLabel;
@@ -100,7 +100,7 @@ public class QuarterService {
         return currentQuarterLabel;
     }
 
-    public HashMap<Integer, Integer> fillQuarterMap() {
+    private HashMap<Integer, Integer> fillQuarterMap() {
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         hashMap.put(1, 3);
         hashMap.put(2, 4);

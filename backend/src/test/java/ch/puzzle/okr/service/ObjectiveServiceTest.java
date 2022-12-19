@@ -59,7 +59,7 @@ class ObjectiveServiceTest {
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
         Team team2 = Team.Builder.builder().withId(2L).withName("Team2").build();
-        Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(null)
                 .withCreatedOn(LocalDateTime.MAX).build();
@@ -120,7 +120,7 @@ class ObjectiveServiceTest {
         assertEquals(0, savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
-        assertEquals(2020, savedObjective.getQuarter().getQuarterLabel());
+        assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getQuarterLabel());
         assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
     }
 

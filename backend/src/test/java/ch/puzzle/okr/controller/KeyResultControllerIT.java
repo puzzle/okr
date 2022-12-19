@@ -50,10 +50,10 @@ class KeyResultControllerIT {
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
     static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX);
     static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX);
-    static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", 5L, 2, 2022,
+    static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", 5L, "GJ 22/23-Q2",
             ExpectedEvolution.INCREASE, Unit.PERCENT, 0L, 1L);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    static Quarter quarter = Quarter.Builder.builder().withId(5L).withNumber(2).withYear(2022).build();
+    static Quarter quarter = Quarter.Builder.builder().withId(5L).withLabel("GJ 22/23-Q2").build();
     static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective)
             .withOwner(user).withQuarter(quarter).build();
 
@@ -136,7 +136,7 @@ class KeyResultControllerIT {
     @Test
     void shouldGetKeyresultWithId() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                1L, "GJ 22/23-Q2", ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
         BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
 
@@ -160,7 +160,7 @@ class KeyResultControllerIT {
     void shouldReturnUpdatedKeyResult() throws Exception {
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withTitle("Updated Keyresult 1").build();
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                1L, "GJ 22/23-Q2", ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
 
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
@@ -185,7 +185,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResult() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                1L, "GJ 22/23-Q2", ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
 
         BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
@@ -203,7 +203,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResultWithEnumKeys() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                1L, 4, 2022, ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                1L, "GJ 22/23-Q2", ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
 
         BDDMockito.given(this.keyResultService.getQuarterById(5)).willReturn(quarter);
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);

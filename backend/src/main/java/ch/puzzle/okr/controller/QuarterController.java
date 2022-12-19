@@ -30,10 +30,10 @@ public class QuarterController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of current quarters", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Could not find or create quarters", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Could not create quarters", content = @Content) })
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.quarterService.getCurrentQuarters());
+                .body(this.quarterService.createQuartersIfNotExist());
     }
 }

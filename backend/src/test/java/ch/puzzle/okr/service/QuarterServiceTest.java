@@ -26,11 +26,11 @@ class QuarterServiceTest {
 
     @Test
     void shouldReturnProperQuarter() {
-        Quarter quarter = Quarter.Builder.builder().withId(3L).withNumber(3).withYear(2022).build();
+        Quarter quarter = Quarter.Builder.builder().withId(3L).withLabel("GJ 22/23-Q2").build();
         Mockito.when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.of(quarter));
         Quarter objectQuarter = this.quarterService.getQuarterById(3L);
-        assertEquals(3, objectQuarter.getNumber());
-        assertEquals(2022, objectQuarter.getQuarterLabel());
+        assertEquals("GJ 22/23-Q2", objectQuarter.getQuarterLabel());
+        assertEquals(3, objectQuarter.getQuarterId());
     }
 
     @Test

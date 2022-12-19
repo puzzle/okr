@@ -10,9 +10,8 @@ export interface Objective {
   ownerLastname: string;
   teamId: number | null;
   teamName: string;
-  quarterId: number;
-  quarterNumber: number;
-  quarterYear: number;
+  quarterId: number | null;
+  quarterLabel: string;
   description: string;
   progress: number;
   created: string;
@@ -48,18 +47,17 @@ export class ObjectiveService {
     }
   }
 
-  public getInitObjective() {
+  public getInitObjective(): Objective {
     return {
       id: null,
       title: '',
       description: '',
       teamId: null,
-      quarterId: 1,
       ownerId: null,
       ownerFirstname: '',
       ownerLastname: '',
-      quarterYear: 2022,
-      quarterNumber: 1,
+      quarterId: null,
+      quarterLabel: '',
       teamName: '',
       progress: 0,
       created: '',

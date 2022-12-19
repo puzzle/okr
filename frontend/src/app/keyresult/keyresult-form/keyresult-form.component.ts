@@ -95,6 +95,7 @@ export class KeyresultFormComponent implements OnInit {
         quarterId,
         quarterNumber,
         quarterYear,
+        measure,
         ...restKeyresult
       } = keyresult;
       this.keyResultForm.setValue(restKeyresult);

@@ -42,8 +42,8 @@ class QuarterControllerIT {
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].quarterLabel", Is.is("GJ 22/23-Q2")))
-                .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].quarterLabel", Is.is("GJ 22/23-Q3")));
+                .andExpect(jsonPath("$[0].quarterId", Is.is(1))).andExpect(jsonPath("$[0].quarterLabel", Is.is("GJ 22/23-Q2")))
+                .andExpect(jsonPath("$[1].quarterId", Is.is(2))).andExpect(jsonPath("$[1].quarterLabel", Is.is("GJ 22/23-Q3")));
     }
 
     @Test

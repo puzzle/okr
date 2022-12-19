@@ -120,7 +120,7 @@ class ObjectiveServiceTest {
         assertEquals(0, savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
-        assertEquals(2020, savedObjective.getQuarter().getYear());
+        assertEquals(2020, savedObjective.getQuarter().getQuarterLabel());
         assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
     }
 

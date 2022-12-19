@@ -23,8 +23,8 @@ public class KeyResultMapper {
     public KeyResultDto toDto(KeyResult keyResult) {
         return new KeyResultDto(keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
-                keyResult.getOwner().getLastname(), keyResult.getQuarter().getId(), keyResult.getQuarter().getNumber(),
-                keyResult.getQuarter().getYear(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
+                keyResult.getOwner().getLastname(), keyResult.getQuarter().getQuarterId(),
+                keyResult.getQuarter().getQuarterLabel(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
                 keyResult.getBasisValue(), keyResult.getTargetValue());
     }
 

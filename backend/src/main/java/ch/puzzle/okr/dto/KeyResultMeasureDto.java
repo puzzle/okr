@@ -12,8 +12,7 @@ public class KeyResultMeasureDto {
     private String ownerFirstname;
     private String ownerLastname;
     private Long quarterId;
-    private Integer quarterNumber;
-    private Integer quarterYear;
+    private String quarterLabel;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
     private Long basicValue;
@@ -21,7 +20,7 @@ public class KeyResultMeasureDto {
     private MeasureDto measure;
 
     public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
-            String ownerFirstname, String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear,
+            String ownerFirstname, String ownerLastname, Long quarterId, String quarterLabel,
             ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
         this.id = id;
         this.objectiveId = objectiveId;
@@ -31,8 +30,7 @@ public class KeyResultMeasureDto {
         this.ownerFirstname = ownerFirstname;
         this.ownerLastname = ownerLastname;
         this.quarterId = quarterId;
-        this.quarterNumber = quarterNumber;
-        this.quarterYear = quarterYear;
+        this.quarterLabel = quarterLabel;
         this.expectedEvolution = expectedEvolution;
         this.unit = unit;
         this.basicValue = basicValue;
@@ -96,20 +94,12 @@ public class KeyResultMeasureDto {
         this.ownerLastname = ownerLastname;
     }
 
-    public Integer getQuarterNumber() {
-        return quarterNumber;
+    public String getQuarterLabel() {
+        return quarterLabel;
     }
 
-    public void setQuarterNumber(Integer quarterNumber) {
-        this.quarterNumber = quarterNumber;
-    }
-
-    public Integer getQuarterYear() {
-        return quarterYear;
-    }
-
-    public void setQuarterYear(Integer quarterYear) {
-        this.quarterYear = quarterYear;
+    public void setQuarterLabel(String quarterLabel) {
+        this.quarterLabel = quarterLabel;
     }
 
     public ExpectedEvolution getExpectedEvolution() {

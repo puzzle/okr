@@ -68,7 +68,7 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Objective in db.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Objective, attributes are not set.", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Can't create new Objective, attributes are not set or tried to set quarter.", content = @Content),
             @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<ObjectiveDto> updateObjective(

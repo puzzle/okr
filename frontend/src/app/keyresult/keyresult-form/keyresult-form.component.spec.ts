@@ -287,52 +287,38 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set keyresult unit in mat select and set it new on item change', () => {
-      const unitselect: HTMLElement = fixture.debugElement.query(
-        By.css('.unit-select')
-      ).nativeElement;
-      component.ngOnInit();
-      fixture.detectChanges();
+    test('should set keyresult unit in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('PERCENT');
 
-      const innerSpan =
-        unitselect.children[0].children[0].children[0].children[0];
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'NUMBER' });
+      await bugOption[0].click();
 
-      expect(innerSpan.innerHTML).toEqual('PERCENT');
-
-      unitselect.click();
-      fixture.detectChanges();
-
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(4);
-
-      selectOptions[2].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(innerSpan.innerHTML).toEqual('NUMBER');
+      expect(await select.getValueText()).toEqual('NUMBER');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should set keyresult evolution in mat select and set it new on item change', () => {
-      const evolutionSelect: HTMLElement = fixture.debugElement.query(
-        By.css('.evolution-select')
-      ).nativeElement;
-      component.ngOnInit();
-      fixture.detectChanges();
+    test('should set keyresult evolution in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('INCREASE');
 
-      const innerSpan =
-        evolutionSelect.children[0].children[0].children[0].children[0];
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'CONSTANT' });
+      await bugOption[0].click();
 
-      expect(innerSpan.innerHTML).toEqual('INCREASE');
-
-      evolutionSelect.click();
-      fixture.detectChanges();
-
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(3);
-
-      selectOptions[2].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(innerSpan.innerHTML).toEqual('CONSTANT');
+      expect(await select.getValueText()).toEqual('CONSTANT');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should set keyresult basicvalue in input field and set input invalid when empty value', () => {
@@ -391,7 +377,7 @@ describe('KeyresultFormComponent', () => {
           selector: 'mat-select[formControlName="ownerId"]',
         })
       );
-      //TODO: expect(await select.getValueText()).toEqual('Alice Wunderland');
+      expect(await select.getValueText()).toEqual('Alice Wunderland');
 
       await select.open();
       const bugOption = await select.getOptions({ text: 'Paco Egiiman' });

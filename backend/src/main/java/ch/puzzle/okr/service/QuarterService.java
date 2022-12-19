@@ -43,7 +43,6 @@ public class QuarterService {
         String futureQuarter = generateFutureQuarter(currentYear, currentQuarterNumber);
         generatePastQuarters(currentYear, currentQuarterNumber);
 
-        System.out.println(quarterRepository.findByQuarterLabel(currentQuarter));
         if(quarterRepository.findByQuarterLabel(currentQuarter) == null) {
             quarterRepository.save(Quarter.Builder.builder().withLabel(currentQuarter).build());
             quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
@@ -67,7 +66,9 @@ public class QuarterService {
                 quarter -= 1;
             }
             String quarterLabel = "GJ " + year + "/" + (year + 1) + "-Q" + quarter;
-            quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build());
+            if (quarterRepository.findByQuarterLabel(quarterLabel) == null) {
+                quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build());
+            }
         }
     }
 
@@ -100,8 +101,6 @@ public class QuarterService {
         } else {
             currentQuarterLabel = "GJ " + year + "/" + (year + 1) + "-Q" + quarterNumber;
         }
-        System.out.println(currentQuarterLabel);
-
         return currentQuarterLabel;
     }
 

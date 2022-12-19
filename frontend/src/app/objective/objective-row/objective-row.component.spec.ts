@@ -158,7 +158,7 @@ describe('ObjectiveComponent', () => {
       .querySelector('#progressContainer')
       .querySelector('mat-progress-bar');
     expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
-      objective.progress.toString()
+      objective.progress!.toString()
     );
   });
 

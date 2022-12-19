@@ -34,8 +34,6 @@ describe('KeyresultFormComponent', () => {
     ownerId: 1,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 0,
@@ -92,11 +90,10 @@ describe('KeyresultFormComponent', () => {
     ownerId: 0,
     ownerLastname: '',
     ownerFirstname: '',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
     targetValue: 1,
     basicValue: 1,
     objectiveId: 3000,
+    measure: undefined,
   };
 
   let createKeyResultObject: KeyResultMeasure = {

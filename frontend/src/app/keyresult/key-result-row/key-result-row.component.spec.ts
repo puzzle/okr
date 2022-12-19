@@ -25,8 +25,6 @@ describe('KeyResultKeyResultRowComponent', () => {
     ownerId: 2,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 0,

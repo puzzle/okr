@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuarterRepository extends CrudRepository<Quarter, Long> {
-    Quarter findByQuarterLabel(@Param("quarter_label") String quarterLabel);
+    Quarter findByLabel(@Param("label") String label);
 }

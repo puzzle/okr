@@ -35,18 +35,18 @@ public class QuarterService {
         String futureQuarter = generateFutureQuarter(currentYear, currentQuarterNumber);
         List<Quarter> quarterList = generatePastQuarters(currentYear, currentQuarterNumber);
 
-        if (quarterRepository.findByQuarterLabel(currentQuarter) == null) {
+        if (quarterRepository.findByLabel(currentQuarter) == null) {
             quarterRepository.save(Quarter.Builder.builder().withLabel(currentQuarter).build());
             quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
-            quarterList.add(quarterRepository.findByQuarterLabel(currentQuarter));
-            quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
+            quarterList.add(quarterRepository.findByLabel(currentQuarter));
+            quarterList.add(quarterRepository.findByLabel(futureQuarter));
         } else {
-            quarterList.add(quarterRepository.findByQuarterLabel(currentQuarter));
-            if (quarterRepository.findByQuarterLabel(futureQuarter) == null) {
+            quarterList.add(quarterRepository.findByLabel(currentQuarter));
+            if (quarterRepository.findByLabel(futureQuarter) == null) {
                 quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
-                quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
+                quarterList.add(quarterRepository.findByLabel(futureQuarter));
             } else {
-                quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
+                quarterList.add(quarterRepository.findByLabel(futureQuarter));
             }
         }
 
@@ -65,11 +65,11 @@ public class QuarterService {
                 quarter -= 1;
             }
             String quarterLabel = "GJ " + year + "/" + (year + 1) + "-Q" + quarter;
-            if (quarterRepository.findByQuarterLabel(quarterLabel) == null) {
+            if (quarterRepository.findByLabel(quarterLabel) == null) {
                 quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build());
-                quarterList.add(quarterRepository.findByQuarterLabel(quarterLabel));
+                quarterList.add(quarterRepository.findByLabel(quarterLabel));
             } else {
-                quarterList.add(quarterRepository.findByQuarterLabel(quarterLabel));
+                quarterList.add(quarterRepository.findByLabel(quarterLabel));
             }
         }
         return quarterList;

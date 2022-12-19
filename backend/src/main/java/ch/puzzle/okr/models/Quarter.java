@@ -9,34 +9,34 @@ public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
     @NotNull
-    private Long quarterId;
+    private Long id;
 
     @NotNull
-    private String quarterLabel;
+    private String label;
 
     public Quarter() {
     }
 
     public Quarter(Builder builder) {
-        this.quarterId = builder.id;
-        setQuarterLabel(builder.label);
+        this.id = builder.id;
+        setLabel(builder.label);
     }
 
-    public Long getQuarterId() {
-        return quarterId;
+    public Long getId() {
+        return id;
     }
 
-    public String getQuarterLabel() {
-        return quarterLabel;
+    public String getLabel() {
+        return label;
     }
 
-    public void setQuarterLabel(String label) {
-        this.quarterLabel = label;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + quarterId + ", year=" + quarterLabel + '}';
+        return "Quarter{" + "id=" + id + ", year=" + label + '}';
     }
 
     @Override
@@ -46,12 +46,12 @@ public class Quarter {
         if (o == null || getClass() != o.getClass())
             return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(quarterId, quarter.quarterId) && Objects.equals(quarterLabel, quarter.quarterLabel);
+        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quarterId, quarterLabel);
+        return Objects.hash(id, label);
     }
 
     public static final class Builder {

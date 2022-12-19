@@ -30,7 +30,7 @@ class QuarterServiceTest {
         Mockito.when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.of(quarter));
         Quarter objectQuarter = this.quarterService.getQuarterById(3L);
         assertEquals(3, objectQuarter.getNumber());
-        assertEquals(2022, objectQuarter.getYear());
+        assertEquals(2022, objectQuarter.getQuarterLabel());
     }
 
     @Test

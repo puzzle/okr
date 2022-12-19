@@ -47,8 +47,8 @@ class GoalControllerIT {
 
     static GoalDto goalDto1 = new GoalDto(new GoalObjectiveDto(1L, "Objective 1", "This is Objective description"),
             new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description"),
-            Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20L, "GJ 22/23-Q2",
-            ExpectedEvolution.CONSTANT, Unit.PERCENT, 0L, 100L);
+            Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20L, "GJ 22/23-Q2", ExpectedEvolution.CONSTANT,
+            Unit.PERCENT, 0L, 100L);
 
     @BeforeEach
     void setUp() {

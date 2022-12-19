@@ -40,6 +40,7 @@ export class ObjectiveService {
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
+      objective.quarterId = null;
       return this.httpClient.put<Objective>(
         'api/v1/objectives/' + objective.id,
         objective

@@ -25,13 +25,13 @@ insert into objective(id, title, owner_id, team_id, quarter_id, progress, create
         (2, 'Objective 2', 2, 2, 1, '0', '2019-01-01', 'This is the description of Objective 2'),
         (3, 'Objective 3', 4, 3, 1, '0', '2020-01-01', 'This is the description of Objective 3');
 
-insert into key_result(id, objective_id, owner_id, quarter_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
-        (1, 1, 5, 1, 1, 2, 0, 4, 1, '2022-08-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
-        (2, 1, 1, 1, 2, 2, 0, 2, 1, '2022-08-01', 'Regelmässige Apéros', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.'),
-        (3, 1, 3, 1, 2, 0, 0, 100, 1, '2022-08-01', 'Spannende Arbeit', 'Die Members sollen spannende und interessante Arbeit erhalten.'),
-        (4, 1, 2, 1, 2, 3, 0, 1, 1, '2022-08-01', 'Dienstag: Cordon bleu', 'Am Dienstag bietet der Mattenhof immer Keller Cordon bleu an.'),
-        (5, 2, 1, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 5', 'This is the description of Keyresult 5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s'),
-        (6, 2, 1, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 6', 'This is the description of Keyresult 6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s');
+insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
+        (1, 1, 5, 1, 2, 0, 4, 1, '2022-08-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
+        (2, 1, 1, 2, 2, 0, 2, 1, '2022-08-01', 'Regelmässige Apéros', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.'),
+        (3, 1, 3, 2, 0, 0, 100, 1, '2022-08-01', 'Spannende Arbeit', 'Die Members sollen spannende und interessante Arbeit erhalten.'),
+        (4, 1, 2, 2, 3, 0, 1, 1, '2022-08-01', 'Dienstag: Cordon bleu', 'Am Dienstag bietet der Mattenhof immer Keller Cordon bleu an.'),
+        (5, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 5', 'This is the description of Keyresult 5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s'),
+        (6, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 6', 'This is the description of Keyresult 6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s');
 
 insert into measure(id, key_result_id, value, created_by_id, created_on, change_info, initiatives) values
         (1, 1, 2, 1, '2022-09-01', 'Bei dieser Messung standen 2 Schokolandenarten auf allen Stockwerken bereit.', 'Mehr vom einfachen Milch- und Nuss-Schokolade einkaufen.'),

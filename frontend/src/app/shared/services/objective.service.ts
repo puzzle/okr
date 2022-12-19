@@ -13,7 +13,7 @@ export interface Objective {
   quarterId: number | null;
   quarterLabel: string;
   description: string;
-  progress: number;
+  progress: number | null;
   created: string;
 }
 
@@ -40,7 +40,7 @@ export class ObjectiveService {
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
-      objective.quarterId = null;
+      //TODO: blocked because backend needs improvments about progress objective.progress = null
       return this.httpClient.put<Objective>(
         'api/v1/objectives/' + objective.id,
         objective

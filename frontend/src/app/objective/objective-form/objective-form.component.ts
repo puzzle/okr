@@ -30,7 +30,7 @@ export class ObjectiveFormComponent implements OnInit {
     title: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(20),
+      Validators.maxLength(250),
     ]),
     description: new FormControl<string>('', [
       Validators.required,
@@ -49,7 +49,6 @@ export class ObjectiveFormComponent implements OnInit {
   public users$!: Observable<User[]>;
   public teams$!: Observable<Team[]>;
   public create!: boolean;
-  // ToDo: implement quarterService, which generates quarter and returns year and number in order to create quarter with id in backend.
   public quarters$!: Observable<Quarter[]>;
   constructor(
     private userService: UserService,

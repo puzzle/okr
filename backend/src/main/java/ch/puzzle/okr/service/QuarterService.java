@@ -15,7 +15,6 @@ public class QuarterService {
     private HashMap<Integer, Integer> quarterMap = fillQuarterMap();
     private Calendar myCal = new GregorianCalendar();
 
-
     public QuarterService(QuarterRepository quarterRepository) {
         this.quarterRepository = quarterRepository;
     }
@@ -36,7 +35,7 @@ public class QuarterService {
         String futureQuarter = generateFutureQuarter(currentYear, currentQuarterNumber);
         List<Quarter> quarterList = generatePastQuarters(currentYear, currentQuarterNumber);
 
-        if(quarterRepository.findByQuarterLabel(currentQuarter) == null) {
+        if (quarterRepository.findByQuarterLabel(currentQuarter) == null) {
             quarterRepository.save(Quarter.Builder.builder().withLabel(currentQuarter).build());
             quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
             quarterList.add(quarterRepository.findByQuarterLabel(currentQuarter));
@@ -80,7 +79,7 @@ public class QuarterService {
     }
 
     public int getCurrentYear() {
-        return myCal.get(Calendar.YEAR)%100;
+        return myCal.get(Calendar.YEAR) % 100;
     }
 
     public int getBusinessYearQuarter() {

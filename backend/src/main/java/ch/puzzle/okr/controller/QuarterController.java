@@ -33,7 +33,6 @@ public class QuarterController {
             @ApiResponse(responseCode = "404", description = "Could not create quarters", content = @Content) })
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.quarterService.createQuartersIfNotExist());
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.createQuartersIfNotExist());
     }
 }

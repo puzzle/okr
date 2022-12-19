@@ -17,8 +17,7 @@ public class GoalDto {
     private Long targetValue;
 
     public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Long progress,
-                   String quarterLabel, ExpectedEvolution expectedEvolution, Unit unit, Long basicValue,
-                   Long targetValue) {
+            String quarterLabel, ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue) {
         this.objective = objective;
         this.keyresult = keyresult;
         this.teamId = team.getId();

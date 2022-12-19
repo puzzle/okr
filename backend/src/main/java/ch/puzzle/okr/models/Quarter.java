@@ -34,7 +34,6 @@ public class Quarter {
         this.quarterLabel = label;
     }
 
-
     @Override
     public String toString() {
         return "Quarter{" + "id=" + quarterId + ", year=" + quarterLabel + '}';

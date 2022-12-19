@@ -182,8 +182,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L, "GJ 22/23-Q2",
-                "Everything Fine", 5L);
+        ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
+                "GJ 22/23-Q2", "Everything Fine", 5L);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine").withProgress(5L)
                 .withTitle("Hunting").build();
 

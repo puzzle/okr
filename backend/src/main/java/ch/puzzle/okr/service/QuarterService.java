@@ -81,14 +81,12 @@ public class QuarterService {
     }
 
     public int getCurrentYear() {
-        int year = myCal.get(Calendar.YEAR)%100;
-        return year;
+        return myCal.get(Calendar.YEAR)%100;
     }
 
     public int getBusinessYearQuarter() {
         int yearQuarter = (myCal.get(Calendar.MONTH) / 3) + 1;
-        int quarter = quarterMap.get(yearQuarter);
-        return quarter;
+        return quarterMap.get(yearQuarter);
     }
 
     public String generateCurrentQuarter() {

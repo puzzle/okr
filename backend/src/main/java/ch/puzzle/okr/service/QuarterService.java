@@ -13,7 +13,7 @@ public class QuarterService {
 
     private final QuarterRepository quarterRepository;
     public HashMap<Integer, Integer> quarterMap = fillQuarterMap();
-    public Calendar myCal = new GregorianCalendar();
+    public Calendar calendar = new GregorianCalendar();
 
     public QuarterService(QuarterRepository quarterRepository) {
         this.quarterRepository = quarterRepository;
@@ -41,8 +41,11 @@ public class QuarterService {
             quarterList.add(quarterRepository.findByQuarterLabel(currentQuarter));
             quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
         } else {
+            quarterList.add(quarterRepository.findByQuarterLabel(currentQuarter));
             if (quarterRepository.findByQuarterLabel(futureQuarter) == null) {
                 quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
+                quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
+            } else {
                 quarterList.add(quarterRepository.findByQuarterLabel(futureQuarter));
             }
         }
@@ -65,6 +68,8 @@ public class QuarterService {
             if (quarterRepository.findByQuarterLabel(quarterLabel) == null) {
                 quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build());
                 quarterList.add(quarterRepository.findByQuarterLabel(quarterLabel));
+            } else {
+                quarterList.add(quarterRepository.findByQuarterLabel(quarterLabel));
             }
         }
         return quarterList;
@@ -79,11 +84,11 @@ public class QuarterService {
     }
 
     public int getCurrentYear() {
-        return myCal.get(Calendar.YEAR) % 100;
+        return calendar.get(Calendar.YEAR) % 100;
     }
 
     public int getBusinessYearQuarter() {
-        int yearQuarter = (myCal.get(Calendar.MONTH) / 3) + 1;
+        int yearQuarter = (calendar.get(Calendar.MONTH) / 3) + 1;
         return quarterMap.get(yearQuarter);
     }
 

@@ -31,8 +31,7 @@ describe('TeamDetailComponent', () => {
       description: 'Sehr wichtig',
       progress: 5,
       quarterId: 1,
-      quarterNumber: 3,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       created: '01.01.2022',
     },
     {
@@ -46,8 +45,7 @@ describe('TeamDetailComponent', () => {
       description: 'Sehr wichtig',
       progress: 5,
       quarterId: 1,
-      quarterNumber: 3,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       created: '01.01.2022',
     },
   ]);

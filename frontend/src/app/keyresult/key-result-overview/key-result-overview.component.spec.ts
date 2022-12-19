@@ -27,8 +27,7 @@ describe('KeyresultOverviewComponent', () => {
     teamId: 1,
     teamName: 'Team 1',
     progress: 30,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 1,
@@ -101,6 +100,6 @@ describe('KeyresultOverviewComponent', () => {
 
   test('should set quarter from keyresult', () => {
     const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
-    expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 2022');
+    expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
   });
 });

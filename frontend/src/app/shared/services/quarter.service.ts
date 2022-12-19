@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { Objective } from './objective.service';
+import { Observable } from 'rxjs';
 
 export interface Quarter {
   id: number;

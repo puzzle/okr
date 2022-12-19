@@ -265,7 +265,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 
@@ -539,20 +539,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
-      );
-    });
-
-    test('should have objective quarter', () => {
-      const teamNameTitle = fixture.debugElement.query(
-        By.css('.quarter-title')
-      );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
-      const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-quarter')
-      );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 

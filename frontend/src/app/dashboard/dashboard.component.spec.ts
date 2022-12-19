@@ -7,25 +7,31 @@ import { of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import { QuarterService } from '../shared/services/quarter.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
   const teamServiceMock = {
-    getQuarter: jest.fn(),
     getTeams: jest.fn(),
   };
 
+  const quarterServiceMock = {
+    getQuarters: jest.fn(),
+  };
+
   beforeEach(() => {
-    teamServiceMock.getQuarter.mockReturnValue([
-      { quarter: '22-4' },
-      { quarter: '22-3' },
-      { quarter: '22-2' },
-      { quarter: '22-1' },
-      { quarter: '21-4' },
-      { quarter: '23-1' },
-    ]);
+    quarterServiceMock.getQuarters.mockReturnValue(
+      of([
+        { quarter: '22-4' },
+        { quarter: '22-3' },
+        { quarter: '22-2' },
+        { quarter: '22-1' },
+        { quarter: '21-4' },
+        { quarter: '23-1' },
+      ])
+    );
     teamServiceMock.getTeams.mockReturnValue(
       of([
         { id: 1, name: 'Team1' },
@@ -35,7 +41,10 @@ describe('DashboardComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule],
-      providers: [{ provide: TeamService, useValue: teamServiceMock }],
+      providers: [
+        { provide: TeamService, useValue: teamServiceMock },
+        { provide: QuarterService, useValue: quarterServiceMock },
+      ],
       declarations: [DashboardComponent],
     }).compileComponents();
 
@@ -45,7 +54,7 @@ describe('DashboardComponent', () => {
   });
 
   afterEach(() => {
-    teamServiceMock.getQuarter.mockReset();
+    quarterServiceMock.getQuarters.mockReset();
     teamServiceMock.getTeams.mockReset();
   });
 

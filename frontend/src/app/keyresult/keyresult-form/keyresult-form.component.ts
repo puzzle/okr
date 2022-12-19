@@ -93,6 +93,7 @@ export class KeyresultFormComponent implements OnInit {
         ownerFirstname,
         ownerLastname,
         quarterLabel,
+        quarterId,
         ...restKeyresult
       } = keyresult;
       this.keyResultForm.setValue(restKeyresult);

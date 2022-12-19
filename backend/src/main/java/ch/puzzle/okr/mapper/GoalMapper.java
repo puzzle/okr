@@ -13,7 +13,7 @@ public class GoalMapper {
         Objective objective = keyResult.getObjective();
         return new GoalDto(new GoalObjectiveDto(objective.getId(), objective.getTitle(), objective.getDescription()),
                 new GoalKeyResultDto(keyResult.getId(), keyResult.getTitle(), keyResult.getDescription()),
-                objective.getTeam(), objective.getProgress(), keyResult.getQuarter().getLabel(),
+                objective.getTeam(), objective.getProgress(), keyResult.getObjective().getQuarter().getLabel(),
                 keyResult.getExpectedEvolution(), keyResult.getUnit(), keyResult.getBasisValue(),
                 keyResult.getTargetValue());
     }

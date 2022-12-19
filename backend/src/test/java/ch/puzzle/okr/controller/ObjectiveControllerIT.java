@@ -61,14 +61,14 @@ class ObjectiveControllerIT {
     static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null);
     static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null);
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
-            new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman", 4L, "GJ 22/23-Q2",
+            new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
                     ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto),
-            new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier", 4L, "GJ 22/23-Q2",
+            new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
                     ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", 4L, "GJ 22/23-Q2", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland",  ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
-            "Wunderland", 4L, "GJ 22/23-Q2", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 
     @Autowired
     private MockMvc mvc;

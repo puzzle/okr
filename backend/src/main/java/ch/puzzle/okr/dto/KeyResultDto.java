@@ -11,15 +11,13 @@ public class KeyResultDto {
     private Long ownerId;
     private String ownerFirstname;
     private String ownerLastname;
-    private Long quarterId;
-    private String quarterLabel;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
     private Long basicValue;
     private Long targetValue;
 
     public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId,
-            String ownerFirstname, String ownerLastname, Long quarterId, String quarterLabel,
+            String ownerFirstname, String ownerLastname,
             ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue) {
         this.id = id;
         this.objectiveId = objectiveId;
@@ -28,8 +26,6 @@ public class KeyResultDto {
         this.ownerId = ownerId;
         this.ownerFirstname = ownerFirstname;
         this.ownerLastname = ownerLastname;
-        this.quarterId = quarterId;
-        this.quarterLabel = quarterLabel;
         this.expectedEvolution = expectedEvolution;
         this.unit = unit;
         this.basicValue = basicValue;
@@ -92,14 +88,6 @@ public class KeyResultDto {
         this.ownerLastname = ownerLastname;
     }
 
-    public String getQuarterLabel() {
-        return quarterLabel;
-    }
-
-    public void setQuarterLabel(String quarterLabel) {
-        this.quarterLabel = quarterLabel;
-    }
-
     public ExpectedEvolution getExpectedEvolution() {
         return expectedEvolution;
     }
@@ -130,13 +118,5 @@ public class KeyResultDto {
 
     public void setTargetValue(Long targetValue) {
         this.targetValue = targetValue;
-    }
-
-    public Long getQuarterId() {
-        return quarterId;
-    }
-
-    public void setQuarterId(Long quarterId) {
-        this.quarterId = quarterId;
     }
 }

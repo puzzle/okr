@@ -381,7 +381,6 @@ describe('KeyresultFormComponent', () => {
 
       await select.open();
       const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
-      console.log(await select.getOptions({ text: 'Paco Egiiman' }));
       await bugOption[0].click();
 
       expect(await select.getValueText()).toEqual('Paco Egiiman');

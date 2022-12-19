@@ -18,8 +18,8 @@ public class KeyResultMeasureDto {
     private MeasureDto measure;
 
     public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
-            String ownerFirstname, String ownerLastname,
-            ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
+            String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
+            Long basicValue, Long targetValue, MeasureDto measureDto) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;

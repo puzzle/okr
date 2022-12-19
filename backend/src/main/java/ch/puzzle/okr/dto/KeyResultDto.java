@@ -17,8 +17,8 @@ public class KeyResultDto {
     private Long targetValue;
 
     public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId,
-            String ownerFirstname, String ownerLastname,
-            ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue) {
+            String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
+            Long basicValue, Long targetValue) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;

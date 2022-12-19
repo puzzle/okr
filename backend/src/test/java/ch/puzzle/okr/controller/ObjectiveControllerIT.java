@@ -66,7 +66,7 @@ class ObjectiveControllerIT {
             new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
                     ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland",  ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
             "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
 

@@ -35,7 +35,6 @@ class QuarterControllerIT {
     @MockBean
     private QuarterService quarterService;
 
-
     @Test
     void shouldGetAllQuarters() throws Exception {
         BDDMockito.given(quarterService.getOrCreateQuarters()).willReturn(quaterList);

@@ -149,9 +149,9 @@ public class KeyResult {
     @Override
     public String toString() {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
-                + description + '\'' + ", owner=" + owner + ", expectedEvolution="
-                + expectedEvolution + ", unit='" + unit + '\'' + ", basisValue=" + basisValue + ", targetValue="
-                + targetValue + ", createdBy=" + createdBy + ", createdOn=" + createdOn + '}';
+                + description + '\'' + ", owner=" + owner + ", expectedEvolution=" + expectedEvolution + ", unit='"
+                + unit + '\'' + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", createdBy="
+                + createdBy + ", createdOn=" + createdOn + '}';
     }
 
     @Override
@@ -163,17 +163,16 @@ public class KeyResult {
         KeyResult keyResult = (KeyResult) o;
         return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective)
                 && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description)
-                && Objects.equals(owner, keyResult.owner)
-                && expectedEvolution == keyResult.expectedEvolution && unit == keyResult.unit
-                && Objects.equals(basisValue, keyResult.basisValue)
+                && Objects.equals(owner, keyResult.owner) && expectedEvolution == keyResult.expectedEvolution
+                && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue)
                 && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy)
                 && Objects.equals(createdOn, keyResult.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, expectedEvolution, unit, basisValue,
-                targetValue, createdBy, createdOn);
+        return Objects.hash(id, objective, title, description, owner, expectedEvolution, unit, basisValue, targetValue,
+                createdBy, createdOn);
     }
 
     public static final class Builder {

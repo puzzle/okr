@@ -66,8 +66,7 @@ public class ObjectiveService {
         this.getObjective(id);
         this.checkObjective(objective);
         if (objective.getQuarter() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Can't update the quarter of objective!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't update the quarter of objective!");
         }
         return this.objectiveRepository.save(objective);
     }

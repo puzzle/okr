@@ -188,8 +188,8 @@ class ObjectiveServiceTest {
     void shouldReturnObjectiveProperly() {
         Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
                 .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
-                .withQuarter(null).withCreatedOn(LocalDateTime.now())
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
+                .withCreatedOn(LocalDateTime.now())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
@@ -214,8 +214,7 @@ class ObjectiveServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             objectiveService.updateObjective(1L, newObjective);
         });
-        assertEquals("Can't update the quarter of objective!",
-                exception.getReason());
+        assertEquals("Can't update the quarter of objective!", exception.getReason());
     }
 
     @Test

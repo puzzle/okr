@@ -20,10 +20,6 @@ public class QuarterService {
     }
 
     public Quarter getQuarterById(Long quarterId) {
-        if (quarterId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute quarter id");
-        }
-
         return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 (String.format("Quarter with id %d not found", quarterId))));
     }

@@ -32,7 +32,7 @@ describe('KeyresultFormComponent', () => {
     objectiveId: 1,
     title: 'Keyresult 1',
     description: 'This is a description',
-    ownerId: 2,
+    ownerId: 1,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
     quarterId: 1,
@@ -78,7 +78,7 @@ describe('KeyresultFormComponent', () => {
       email: 'alice@wunerland.ch',
     },
     {
-      id: 1,
+      id: 2,
       username: 'pago',
       firstname: 'Paco',
       lastname: 'Egiiman',
@@ -381,6 +381,7 @@ describe('KeyresultFormComponent', () => {
 
       await select.open();
       const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      console.log(await select.getOptions({ text: 'Paco Egiiman' }));
       await bugOption[0].click();
 
       expect(await select.getValueText()).toEqual('Paco Egiiman');

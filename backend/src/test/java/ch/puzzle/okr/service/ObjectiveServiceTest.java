@@ -61,7 +61,7 @@ class ObjectiveServiceTest {
         Team team2 = Team.Builder.builder().withId(2L).withName("Team2").build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
-                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(null)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
@@ -139,13 +139,13 @@ class ObjectiveServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withProgress(43L).withCreatedOn(LocalDateTime.now()).build();
+                .withDescription("Description").withProgress(null).withCreatedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective1);
 
         Objective savedObjective = objectiveService.saveObjective(objective1);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
-        assertEquals(33L, savedObjective.getProgress());
+        assertNull(savedObjective.getProgress());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
     }
 

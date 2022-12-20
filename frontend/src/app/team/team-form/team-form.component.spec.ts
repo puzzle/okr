@@ -3,11 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamFormComponent } from './team-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Team } from '../../shared/services/team.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 let component: TeamFormComponent;
 let fixture: ComponentFixture<TeamFormComponent>;
@@ -21,10 +23,11 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
-          FormsModule,
           ReactiveFormsModule,
+          MatInputModule,
         ],
         declarations: [TeamFormComponent],
       }).compileComponents();
@@ -57,9 +60,7 @@ describe('TeamFormComponent', () => {
       expect(buttons.length).toEqual(2);
 
       expect(buttons[0].nativeElement.textContent).toContain('Abbrechen');
-      expect(buttons[1].nativeElement.textContent).toContain(
-        'Änderungen speichern'
-      );
+      expect(buttons[1].nativeElement.textContent).toContain('Speichern');
     });
 
     test('should right dis- and enable button', () => {
@@ -79,7 +80,6 @@ describe('TeamFormComponent', () => {
 
       component.teamForm.get('name')?.setValue('Team Name 1');
       fixture.detectChanges();
-      console.log(component.teamForm);
       expect(component.teamForm.valid).toBeTruthy();
       expect(inputField.nativeElement.value).toEqual('Team Name 1');
       expect(buttons.nativeElement.disabled).toEqual(false);
@@ -90,10 +90,11 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
-          FormsModule,
           ReactiveFormsModule,
+          MatInputModule,
         ],
         declarations: [TeamFormComponent],
         providers: [
@@ -124,6 +125,9 @@ describe('TeamFormComponent', () => {
         By.css('input[formControlName="name"]')
       );
 
+      component.teamObject = of(team);
+      fixture.detectChanges();
+
       expect(inputFields.nativeElement.placeholder).toContain('z.B. DevTree');
       expect(inputFields.nativeElement.value).toEqual('Team1');
     });
@@ -140,13 +144,17 @@ describe('TeamFormComponent', () => {
 
     test('should right dis- and enable button', () => {
       const buttons = fixture.debugElement.query(By.css('.create-button'));
-      const inputField = fixture.debugElement.query(By.css('.teamname-input'));
+      const inputField = fixture.debugElement.query(
+        By.css('input[formControlName="name"]')
+      );
 
+      component.teamForm.get('name')?.setValue(team.name);
+      fixture.detectChanges();
       expect(component.teamForm.valid).toBeTruthy();
       expect(inputField.nativeElement.value).toEqual('Team1');
       expect(buttons.nativeElement.disabled).toEqual(false);
 
-      component.teamForm.get('teamName')?.setValue('');
+      component.teamForm.get('name')?.setValue('');
       fixture.detectChanges();
 
       expect(component.teamForm.valid).toBeFalsy();

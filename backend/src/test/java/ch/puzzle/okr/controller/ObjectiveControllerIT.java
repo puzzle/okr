@@ -182,7 +182,6 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    @Disabled("Requestbody was wrong (swagger was implemented)")
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L, 4,
                 2022, "Everything Fine", 5L);
@@ -192,18 +191,27 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
 
-        mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isOk())
+        mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", " +
+                        "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", " +
+                        "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, " +
+                        "\"description\": \"This is our description\", \"progress\": 33.3}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(1))).andExpect(jsonPath("$.description", Is.is("Everything Fine")))
                 .andExpect(jsonPath("$.title", Is.is("Hunting")));
     }
 
     @Test
-    @Disabled("Requestbody was wrong (swagger was implemented)")
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
-        mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", " +
+                        "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", " +
+                        "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, " +
+                        "\"description\": \"This is our description\", \"progress\": 33.3}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

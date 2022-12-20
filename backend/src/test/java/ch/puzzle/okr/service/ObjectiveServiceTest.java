@@ -161,17 +161,6 @@ class ObjectiveServiceTest {
     }
 
     @Test
-    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyProgress() {
-        this.fullObjective1.setProgress(null);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            objectiveService.saveObjective(this.fullObjective1);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(("Missing attribute progress when creating objective"), exception.getReason());
-    }
-
-    @Test
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyCreatedOn() {
         this.fullObjective1.setCreatedOn(null);
 

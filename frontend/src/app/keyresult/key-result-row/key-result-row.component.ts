@@ -25,7 +25,7 @@ export class KeyResultRowComponent implements OnInit {
 
   ngOnInit(): void {
     const elementMeasureValue =
-      this.keyResult.measure?.value || this.keyResult.basicValue;
+      this.keyResult.measure != null ? this.keyResult.measure?.value : 0;
     const elementMeasureTargetValue = this.keyResult.targetValue;
     const elementMeasureBasicValue = this.keyResult.basicValue;
     this.calculateProgress(

@@ -46,6 +46,9 @@ public class ObjectiveService {
         if (objective.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
+        if (objective.getProgress() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
+        }
         objective.setProgress(0L);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);

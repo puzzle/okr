@@ -12,7 +12,7 @@ import java.util.*;
 public class QuarterService {
 
     private final QuarterRepository quarterRepository;
-    public HashMap<Integer, Integer> quarterMap = yearToBusinessQuarterMap();
+    private HashMap<Integer, Integer> quarterMap = yearToBusinessQuarterMap();
     public Calendar calendar;
 
     public QuarterService(QuarterRepository quarterRepository, Calendar calendar) {
@@ -29,19 +29,16 @@ public class QuarterService {
         String currentQuarter = generateCurrentQuarter();
         int currentQuarterNumber = getBusinessYearQuarter();
         int currentYear = getCurrentYear();
-        String futureQuarter = generateFutureQuarter(currentYear, currentQuarterNumber);
+        String futureQuarter = generateFutureQuarterLabel(currentYear, currentQuarterNumber);
         List<Quarter> quarterList = generatePastQuarters(currentYear, currentQuarterNumber);
 
         if (quarterRepository.findByLabel(currentQuarter) == null) {
-            quarterRepository.save(Quarter.Builder.builder().withLabel(currentQuarter).build());
-            quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
-            quarterList.add(quarterRepository.findByLabel(currentQuarter));
-            quarterList.add(quarterRepository.findByLabel(futureQuarter));
+            quarterList.add(quarterRepository.save(Quarter.Builder.builder().withLabel(currentQuarter).build()));
+            quarterList.add(quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build()));
         } else {
             quarterList.add(quarterRepository.findByLabel(currentQuarter));
             if (quarterRepository.findByLabel(futureQuarter) == null) {
-                quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build());
-                quarterList.add(quarterRepository.findByLabel(futureQuarter));
+                quarterList.add(quarterRepository.save(Quarter.Builder.builder().withLabel(futureQuarter).build()));
             } else {
                 quarterList.add(quarterRepository.findByLabel(futureQuarter));
             }
@@ -63,8 +60,7 @@ public class QuarterService {
             }
             String quarterLabel = "GJ " + year + "/" + (year + 1) + "-Q" + quarter;
             if (quarterRepository.findByLabel(quarterLabel) == null) {
-                quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build());
-                quarterList.add(quarterRepository.findByLabel(quarterLabel));
+                quarterList.add(quarterRepository.save(Quarter.Builder.builder().withLabel(quarterLabel).build()));
             } else {
                 quarterList.add(quarterRepository.findByLabel(quarterLabel));
             }
@@ -72,7 +68,7 @@ public class QuarterService {
         return quarterList;
     }
 
-    public String generateFutureQuarter(int currentYear, int currentQuarter) {
+    public String generateFutureQuarterLabel(int currentYear, int currentQuarter) {
         if ((currentQuarter == 3) || (currentQuarter == 2) || (currentQuarter == 1)) {
             return "GJ " + currentYear + "/" + (currentYear + 1) + "-Q" + (currentQuarter + 1);
         } else {

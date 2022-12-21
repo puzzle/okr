@@ -70,56 +70,56 @@ class QuarterServiceTest {
     @Test
     void shouldFillHasMap() {
         HashMap<Integer, Integer> hashMap = this.quarterService.yearToBusinessQuarterMap();
-        assertEquals(hashMap.get(1), 3);
-        assertEquals(hashMap.get(2), 4);
-        assertEquals(hashMap.get(3), 1);
-        assertEquals(hashMap.get(4), 2);
+        assertEquals(3, hashMap.get(1));
+        assertEquals(4, hashMap.get(2));
+        assertEquals(1, hashMap.get(3));
+        assertEquals(2, hashMap.get(4));
     }
 
     @Test
     void shouldSetCurrentBusinessYearQuarter() {
-        assertEquals(this.quarterService.getBusinessYearQuarter(), 2);
+        assertEquals(2, this.quarterService.getBusinessYearQuarter());
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, 07, 01);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        assertEquals(this.quarterService.getBusinessYearQuarter(), 1);
+        assertEquals(1, this.quarterService.getBusinessYearQuarter());
     }
 
     @Test
     void shouldReturnCurrentYear() {
-        assertEquals(this.quarterService.getCurrentYear(), 22);
+        assertEquals(22, this.quarterService.getCurrentYear());
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2004, 01, 01);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        assertEquals(this.quarterService.getCurrentYear(), 04);
+        assertEquals(04, this.quarterService.getCurrentYear());
     }
 
     @Test
     void shouldGenerateCurrentQuarterInFirst() {
-        assertEquals(this.quarterService.generateCurrentQuarter(), "GJ 22/23-Q2");
+        assertEquals("GJ 22/23-Q2", this.quarterService.generateCurrentQuarter());
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, 05, 01);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        assertEquals(this.quarterService.generateCurrentQuarter(), "GJ 21/22-Q4");
+        assertEquals("GJ 21/22-Q4", this.quarterService.generateCurrentQuarter());
     }
 
     @Test
     void shouldGenerateFutureQuater() {
-        assertEquals(this.quarterService.generateFutureQuarterLabel(22, 2), "GJ 22/23-Q3");
+        assertEquals("GJ 22/23-Q3", this.quarterService.generateFutureQuarterLabel(22, 2));
     }
 
     @Test
     void shouldGenerateFutureQuaterOnBusinessYearChange() {
-        assertEquals(this.quarterService.generateFutureQuarterLabel(22, 4), "GJ 23/24-Q1");
+        assertEquals("GJ 23/24-Q1", this.quarterService.generateFutureQuarterLabel(22, 4));
     }
 
     @Test

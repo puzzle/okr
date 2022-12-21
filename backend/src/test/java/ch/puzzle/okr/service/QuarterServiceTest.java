@@ -102,7 +102,7 @@ class QuarterServiceTest {
 
     @Test
     void shouldGenerateCurrentQuarterInFirst() {
-      assertEquals(this.quarterService.generateCurrentQuarter(), "GJ 22/23-Q2");
+        assertEquals(this.quarterService.generateCurrentQuarter(), "GJ 22/23-Q2");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(2022, 05, 01);
@@ -137,10 +137,7 @@ class QuarterServiceTest {
     @Test
     void shouldGeneratePastQuartersInRepository() {
         when(this.quarterRepository.findByLabel(anyString())).thenReturn(null);
-        when(this.quarterRepository.save(any()))
-                .thenReturn(quarter1)
-                .thenReturn(quarter2)
-                .thenReturn(quarter3)
+        when(this.quarterRepository.save(any())).thenReturn(quarter1).thenReturn(quarter2).thenReturn(quarter3)
                 .thenReturn(quarter4);
 
         assertEquals(this.quarterService.generatePastQuarters(22, 2), quarterList);
@@ -155,16 +152,15 @@ class QuarterServiceTest {
         when(this.quarterRepository.findByLabel("GJ 22/23-Q2")).thenReturn(quarter5);
         when(this.quarterRepository.findByLabel("GJ 22/23-Q3")).thenReturn(quarter6);
 
-        List<Quarter> finalQuarterList = new ArrayList<>(Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
+        List<Quarter> finalQuarterList = new ArrayList<>(
+                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
 
         assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
     }
 
     @Test
     void shouldSaveFutureAndCurrentQuarterInRepository() {
-        when(this.quarterRepository.save(any()))
-                .thenReturn(quarter5)
-                .thenReturn(quarter6);
+        when(this.quarterRepository.save(any())).thenReturn(quarter5).thenReturn(quarter6);
         when(this.quarterRepository.findByLabel(anyString())).thenReturn(null);
 
         when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
@@ -172,15 +168,15 @@ class QuarterServiceTest {
         when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
         when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
 
-        List<Quarter> finalQuarterList = new ArrayList<>(Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
+        List<Quarter> finalQuarterList = new ArrayList<>(
+                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
 
         assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
     }
 
     @Test
     void shouldSaveFutureQuarterInRepository() {
-        when(this.quarterRepository.save(any()))
-                .thenReturn(quarter6);
+        when(this.quarterRepository.save(any())).thenReturn(quarter6);
         when(this.quarterRepository.findByLabel("GJ 22/23-Q2")).thenReturn(quarter5);
 
         when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
@@ -188,7 +184,8 @@ class QuarterServiceTest {
         when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
         when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
 
-        List<Quarter> finalQuarterList = new ArrayList<>(Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
+        List<Quarter> finalQuarterList = new ArrayList<>(
+                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
 
         assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
     }

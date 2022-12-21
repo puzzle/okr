@@ -43,13 +43,13 @@ class KeyResultControllerIT {
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static Measure measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult1).withCreatedBy(user)
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1").withInitiatives("Initiatives1")
-            .withValue(23).build();
+            .withValue(23).withMeasureDate(LocalDateTime.of(2021, 11, 3, 5, 55)).build();
     static Measure measure2 = Measure.Builder.builder().withId(4L).withKeyResult(keyResult1).withCreatedBy(user)
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2")
-            .withValue(12).build();
+            .withValue(12).withMeasureDate(LocalDateTime.of(2020, 8, 29, 22, 44)).build();
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX, LocalDateTime.of(2022, 8, 12, 1, 1));
-    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX, LocalDateTime.of(2022, 8, 12, 1, 1));
+    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX, LocalDateTime.of(2022, 3, 24, 18, 45));
+    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX, LocalDateTime.of(2022, 10, 18, 10, 33));
     static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", ExpectedEvolution.INCREASE,
             Unit.PERCENT, 0L, 1L);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();

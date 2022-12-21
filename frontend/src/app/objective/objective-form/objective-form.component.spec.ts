@@ -12,22 +12,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { OkrQuarter, Team } from '../../shared/services/team.service';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../shared/services/user.service';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('ObjectiveFormComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
   let objective = {
     id: 1,
-    title: '',
-    description: '',
-    teamId: 1,
-    quarterId: 1,
-    ownerId: 1,
+    title: 'This is a title',
+    description: 'This is the description',
+    teamId: 2,
+    quarterId: 3,
+    ownerId: 4,
     ownerFirstname: '',
     ownerLastname: '',
     quarterYear: 2022,
     quarterNumber: 1,
-    teamName: '',
+    teamName: 'teamName',
     progress: 0,
     created: '',
   };
@@ -91,7 +92,6 @@ describe('ObjectiveFormComponent', () => {
 
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
-      component.objectives$ = of(objective);
       component.teams$ = of(teams);
       fixture.detectChanges();
     });
@@ -101,35 +101,47 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have right title', () => {
-      const heading = fixture.nativeElement.querySelector(
-        '.fs-2.heading-label'
-      ).textContent;
+      fixture.detectChanges();
+
+      const heading = fixture.debugElement.query(By.css('.heading-label'))
+        .nativeElement.textContent;
+
+      expect(component.create).toEqual(true);
       expect(heading).toContain('Objective hinzufügen');
     });
 
-    test('should have input team dopdown', () => {
+    test('should have input team dropdown', () => {
       const select = fixture.debugElement.query(
         By.css('mat-select[formControlName="teamId"]')
       )!.nativeElement;
       component.teams$ = of(teams);
+      component.objectiveForm.controls['teamId'].setValue(objective.teamId);
+      component.objectives$ = of(objective);
       fixture.detectChanges();
 
       select.click();
       fixture.detectChanges();
 
       const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
+      let value: number = +select.getAttribute('ng-reflect-value');
       expect(selectOptions.length).toEqual(3);
+      expect(value).toEqual(objective.teamId);
     });
 
-    test('should have inputfield named Titel', () => {
+    test('should have input field named Titel', () => {
       const input = fixture.debugElement.query(
         By.css('input[formControlName="title"]')
       )!.nativeElement;
 
+      component.objectives$ = of(objective);
+      component.objectiveForm.controls['title'].setValue(objective.title);
+      fixture.detectChanges();
+
+      expect(input.value).toEqual(objective.title);
       expect(input.placeholder).toEqual('Titel');
     });
 
-    test('should have inputfield named description', () => {
+    test('should have input field named description', () => {
       const input = fixture.debugElement.query(
         By.css('textarea[formControlName="description"]')
       )!.nativeElement;
@@ -138,23 +150,28 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have besitzer dropdown with values', () => {
-      const input = fixture.debugElement.query(
+      const select = fixture.debugElement.query(
         By.css('mat-select[formControlName="ownerId"]')
       )!.nativeElement;
 
       component.users$ = of(users);
+      component.objectives$ = of(objective);
       fixture.detectChanges();
 
-      input.click();
+      select.click();
       fixture.detectChanges();
 
       const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
+      let value: number = +select.getAttribute('ng-reflect-value');
+
       expect(selectOptions.length).toEqual(4);
+      expect(value).toEqual(objective.ownerId);
     });
 
-    test('should have Zyklus dropdown with values', () => {
+    //Todo Implement test after quarter service is implemented
+    test.skip('should have Zyklus dropdown with values', () => {
       const input = fixture.debugElement.query(
-        By.css('mat-select[formControlName="ownerId"]')
+        By.css('mat-select[formControlName="zyklusID"]')
       )!.nativeElement;
 
       component.quarterList = quarters;
@@ -172,29 +189,190 @@ describe('ObjectiveFormComponent', () => {
       expect(buttons.length).toEqual(2);
 
       expect(buttons[0].nativeElement.textContent).toContain('Abbrechen');
-      expect(buttons[1].nativeElement.textContent).toContain('Speichern');
+      expect(buttons[1].nativeElement.textContent).toContain('Erstellen');
     });
 
-    test('should right dis- and enable button', () => {
-      const buttons = fixture.debugElement.query(
+    test('disable button if form is invalid', () => {
+      const submit = fixture.debugElement.query(
         By.css('button[type="submit"]')
       );
-      const inputField = fixture.debugElement.query(
-        By.css('input[formControlName="name"]')
+
+      expect(component.objectiveForm.valid).toBeFalsy();
+      expect(submit.nativeElement.disabled).toEqual(true);
+    });
+
+    test('enable button if form is valid', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
       );
 
-      // component.objectiveForm.get('name')?.setValue('');
+      component.objectiveForm.controls['teamId'].setValue(objective.teamId);
+      component.objectiveForm.controls['title'].setValue(objective.title);
+      component.objectiveForm.controls['description'].setValue(
+        objective.description
+      );
+      component.objectiveForm.controls['ownerId'].setValue(objective.ownerId);
+      component.objectiveForm.controls['quarterId'].setValue(
+        objective.quarterId
+      );
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.valid).toBeTruthy();
+      expect(submit.nativeElement.disabled).toEqual(false);
+    });
+  });
+
+  describe('Edit existing Objective', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          RouterTestingModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          MatSelectModule,
+          MatIconModule,
+        ],
+        declarations: [ObjectiveFormComponent],
+        providers: [
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of(convertToParamMap({ objectiveId: 1 })),
+            },
+          },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(ObjectiveFormComponent);
+      component = fixture.componentInstance;
+      component.users$ = of(users);
+      component.teams$ = of(teams);
+      component.objectives$ = of(objective);
+      fixture.detectChanges();
+    });
+
+    test('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    test('should have right title', () => {
+      const heading = fixture.nativeElement.querySelector(
+        '.fs-2.heading-label'
+      ).textContent;
+      expect(heading).toContain('Objective bearbeiten');
+    });
+
+    test('input field should contains correct value', () => {
+      const select = fixture.debugElement.query(
+        By.css('mat-select[formControlName="teamId"]')
+      )!.nativeElement;
+
+      component.objectives$ = of(objective);
+      fixture.detectChanges();
+
+      let value: number = +select.getAttribute('ng-reflect-value');
+      expect(value).toEqual(2);
+    });
+
+    test('should have input field named Titel', () => {
+      const input = fixture.debugElement.query(
+        By.css('input[formControlName="title"]')
+      )!.nativeElement;
+
+      component.objectives$ = of(objective);
+      fixture.detectChanges();
+
+      expect(input.value).toEqual(objective.title);
+    });
+
+    test('should have input field named description', () => {
+      const input = fixture.debugElement.query(
+        By.css('textarea[formControlName="description"]')
+      )!.nativeElement;
+
+      component.objectives$ = of(objective);
+      fixture.detectChanges();
+
+      expect(input.value).toEqual(objective.description);
+    });
+
+    test('should have besitzer dropdown with values', () => {
+      const input = fixture.debugElement.query(
+        By.css('mat-select[formControlName="ownerId"]')
+      )!.nativeElement;
+
+      component.users$ = of(users);
+      component.objectives$ = of(objective);
+      fixture.detectChanges();
+
+      let value: number = +input.getAttribute('ng-reflect-value');
+      expect(value).toEqual(objective.ownerId);
+    });
+
+    //Todo Implement test after quarter service is implemented
+    test.skip('should have Zyklus dropdown with values', () => {
+      const input = fixture.debugElement.query(
+        By.css('mat-select[formControlName="zyklusID"]')
+      )!.nativeElement;
+
+      component.quarterList = quarters;
+      fixture.detectChanges();
+
+      input.click();
+      fixture.detectChanges();
+
+      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
+      expect(selectOptions.length).toEqual(4);
+    });
+
+    test('should have 2 buttons', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      expect(buttons.length).toEqual(2);
+
+      expect(buttons[0].nativeElement.textContent).toContain('Abbrechen');
+      expect(buttons[1].nativeElement.textContent).toContain('Aktualisieren');
+    });
+
+    test('enable button if form is valid', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+
+      component.objectiveForm.controls['teamId'].setValue(objective.teamId);
+      component.objectiveForm.controls['title'].setValue(objective.title);
+      component.objectiveForm.controls['description'].setValue(
+        objective.description
+      );
+      component.objectiveForm.controls['ownerId'].setValue(objective.ownerId);
+      component.objectiveForm.controls['quarterId'].setValue(
+        objective.quarterId
+      );
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.valid).toBeTruthy();
+      expect(submit.nativeElement.disabled).toEqual(false);
+    });
+
+    test('disable button if form is invalid', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+
+      component.objectiveForm.controls['teamId'].setValue(objective.teamId);
+      component.objectiveForm.controls['title'].setValue(objective.title);
+      component.objectiveForm.controls['description'].setValue(
+        objective.description
+      );
+      component.objectiveForm.controls['ownerId'].setValue(null);
+      component.objectiveForm.controls['quarterId'].setValue(
+        objective.quarterId
+      );
       fixture.detectChanges();
 
       expect(component.objectiveForm.valid).toBeFalsy();
-      expect(inputField.nativeElement.value).toEqual('');
-      expect(buttons.nativeElement.disabled).toEqual(true);
-
-      // component.objectiveForm.get('name')?.setValue('Team Name 1');
-      fixture.detectChanges();
-      expect(component.objectiveForm.valid).toBeTruthy();
-      expect(inputField.nativeElement.value).toEqual('Team Name 1');
-      expect(buttons.nativeElement.disabled).toEqual(false);
+      expect(submit.nativeElement.disabled).toEqual(true);
     });
   });
 });

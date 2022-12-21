@@ -12,11 +12,12 @@ import java.util.*;
 public class QuarterService {
 
     private final QuarterRepository quarterRepository;
-    public HashMap<Integer, Integer> quarterMap = fillQuarterMap();
-    public Calendar calendar = new GregorianCalendar();
+    public HashMap<Integer, Integer> quarterMap = yearToBusinessQuarterMap();
+    public Calendar calendar;
 
-    public QuarterService(QuarterRepository quarterRepository) {
+    public QuarterService(QuarterRepository quarterRepository, Calendar calendar) {
         this.quarterRepository = quarterRepository;
+        this.calendar = calendar;
     }
 
     public Quarter getQuarterById(Long quarterId) {
@@ -101,7 +102,7 @@ public class QuarterService {
         return currentQuarterLabel;
     }
 
-    public HashMap<Integer, Integer> fillQuarterMap() {
+    public HashMap<Integer, Integer> yearToBusinessQuarterMap() {
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         hashMap.put(1, 3);
         hashMap.put(2, 4);

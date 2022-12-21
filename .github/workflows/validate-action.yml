@@ -3,7 +3,7 @@ name: Validate
 on: [push]
 jobs:
 
-  frontend_format-check_test:
+  Frontend_format-check_tests:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -22,7 +22,7 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-  backend_format-check:
+  Backend_format-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,7 +30,7 @@ jobs:
       - name: Check backend format
         run: mvn formatter:validate -f backend/pom.xml
 
-  backend_tests:
+  Backend_tests:
     runs-on: ubuntu-latest
     services:
       postgres:

@@ -115,7 +115,6 @@ export class KeyresultFormComponent implements OnInit {
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
             console.log('Can not save this keyresult: ', keyresult);
-            // window.alert('Can not save this keyresult: ');
             return new Error('ups sommething happend');
           },
         })

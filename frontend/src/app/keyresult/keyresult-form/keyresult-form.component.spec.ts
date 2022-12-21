@@ -105,9 +105,6 @@ describe('KeyresultFormComponent', () => {
     ownerId: 2,
     ownerLastname: '',
     ownerFirstname: '',
-    quarterId: 1,
-    quarterNumber: 1,
-    quarterYear: 2022,
     targetValue: 100,
     basicValue: 0,
     objectiveId: 1,
@@ -271,7 +268,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.title-input')
       );
       expect(titleinputfield.nativeElement.value).toContain('Keyresult 1');
-      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
       component.keyResultForm.get('title')?.setValue('');
       titleinputfield.nativeElement.value = '';
@@ -537,6 +534,19 @@ describe('KeyresultFormComponent', () => {
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
         'GJ 22/23-Q1'
+      );
+    });
+
+    test('should have objective quarter', () => {
+      const teamNameTitle = fixture.debugElement.query(
+        By.css('.quarter-title')
+      );
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
+      const objectiveTeamName = fixture.debugElement.query(
+        By.css('.objective-quarter')
+      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain(
+        'GJ 22/23-Q1 '
       );
     });
 

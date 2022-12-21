@@ -33,14 +33,6 @@ public class Measure {
     @NotNull
     private LocalDateTime measureDate;
 
-    public LocalDateTime getMeasureDate() {
-        return measureDate;
-    }
-
-    public void setMeasureDate(LocalDateTime measureDate) {
-        this.measureDate = measureDate;
-    }
-
     @NotNull
     private LocalDateTime createdOn;
 
@@ -102,6 +94,14 @@ public class Measure {
         this.createdBy = createdBy;
     }
 
+    public LocalDateTime getMeasureDate() {
+        return measureDate;
+    }
+
+    public void setMeasureDate(LocalDateTime measureDate) {
+        this.measureDate = measureDate;
+    }
+
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -112,27 +112,29 @@ public class Measure {
 
     @Override
     public String toString() {
-        return "Measure{" + "id=" + id + ", keyResult=" + keyResult + ", value=" + value + ", changeInfo='" + changeInfo
-                + '\'' + ", initiatives='" + initiatives + '\'' + ", createdBy=" + createdBy + ", createdOn="
-                + createdOn + '}';
+        return "Measure{" +
+                "id=" + id +
+                ", keyResult=" + keyResult +
+                ", value=" + value +
+                ", changeInfo='" + changeInfo + '\'' +
+                ", initiatives='" + initiatives + '\'' +
+                ", createdBy=" + createdBy +
+                ", measureDate=" + measureDate +
+                ", createdOn=" + createdOn +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Measure measure = (Measure) o;
-        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult)
-                && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo)
-                && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy)
-                && Objects.equals(createdOn, measure.createdOn);
+        return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult) && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo) && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy) && Objects.equals(measureDate, measure.measureDate) && Objects.equals(createdOn, measure.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
+        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, measureDate, createdOn);
     }
 
     public static final class Builder {

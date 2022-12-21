@@ -9,13 +9,11 @@ public class MeasureDto {
     private String changeInfo;
     private String initiatives;
     private LocalDateTime measureDate;
-
     private Long createdById;
-
     private LocalDateTime createdOn;
 
     public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById,
-            LocalDateTime createdOn, LocalDateTime measureDate) {
+                      LocalDateTime createdOn, LocalDateTime measureDate) {
         this.id = id;
         this.keyResultId = keyResultId;
         this.value = value;
@@ -78,11 +76,15 @@ public class MeasureDto {
         return createdOn;
     }
 
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
     public void setMeasureDate(LocalDateTime measureDate) {
         this.measureDate = measureDate;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
+    public LocalDateTime getMeasureDate() {
+        return measureDate;
     }
 }

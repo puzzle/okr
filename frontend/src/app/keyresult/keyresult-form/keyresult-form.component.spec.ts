@@ -20,7 +20,6 @@ import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
-import loader from '@angular-devkit/build-angular/src/webpack/plugins/single-test-transform';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
 describe('KeyresultFormComponent', () => {
@@ -313,10 +312,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('INCREASE');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'CONSTANT' });
+      const bugOption = await select.getOptions({ text: 'DECREASE' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('CONSTANT');
+      expect(await select.getValueText()).toEqual('DECREASE');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -371,7 +370,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set keyresult owner in mat select and set it new on item change', async () => {
-      // doku https://material.angular.io/guide/using-component-harnesses
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="ownerId"]',
@@ -455,6 +453,7 @@ describe('KeyresultFormComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -558,6 +557,40 @@ describe('KeyresultFormComponent', () => {
       expect(objectiveTeamName.nativeElement.textContent).toContain(
         'GJ 2022-3'
       );
+    });
+
+    test('should be possible to set expected evolution in mat select', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('DECREASE');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
+    });
+
+    test('should be possible to set keyresult owner in mat select', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should save new keyresult', () => {

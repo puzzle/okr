@@ -156,8 +156,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(42L, "Program Faster", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
-                4, 2022, "Just be faster", 5L);
+        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, "Rudi", "Grochde", 3L, "PuzzleITC",
+                1L, 4, 2022, "Just be faster", 0L);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
@@ -166,7 +166,7 @@ class ObjectiveControllerIT {
                 "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":42,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterNumber\":4,\"quarterYear\":2022,\"description\":\"Just be faster\",\"progress\":5}"));
+                        "{\"id\":null,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterNumber\":4,\"quarterYear\":2022,\"description\":\"Just be faster\",\"progress\":0}"));
         verify(objectiveService, times(1)).saveObjective(any());
     }
 

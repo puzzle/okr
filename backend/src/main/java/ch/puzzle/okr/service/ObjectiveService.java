@@ -46,6 +46,10 @@ public class ObjectiveService {
         if (objective.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
+        if (objective.getProgress() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
+        }
+        objective.setProgress(0L);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }
@@ -71,9 +75,6 @@ public class ObjectiveService {
         } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Missing attribute description when creating objective");
-        } else if (objective.getProgress() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Missing attribute progress when creating objective");
         } else if (objective.getCreatedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Failed to generate attribute createdOn when creating objective");

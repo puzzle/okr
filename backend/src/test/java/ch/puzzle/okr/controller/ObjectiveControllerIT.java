@@ -47,7 +47,7 @@ class ObjectiveControllerIT {
     static User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
-    static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").withNumber(3).withYear(2020).build();
+    static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user)
             .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33L)
             .withCreatedOn(LocalDateTime.MAX).build();

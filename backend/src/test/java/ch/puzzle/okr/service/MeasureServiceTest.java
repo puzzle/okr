@@ -75,6 +75,7 @@ class MeasureServiceTest {
         assertEquals(measure.getId(), returnedMeasure.getId());
         assertEquals(measure.getValue(), returnedMeasure.getValue());
         assertEquals(measure.getChangeInfo(), returnedMeasure.getChangeInfo());
+        assertEquals(measure.getMeasureDate(), returnedMeasure.getMeasureDate());
     }
 
     @Test

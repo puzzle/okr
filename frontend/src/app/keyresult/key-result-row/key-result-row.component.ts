@@ -73,7 +73,7 @@ export class KeyResultRowComponent implements OnInit {
     elementMeasureTargetValue: number,
     elementMeasureBasicValue: number
   ) {
-    if (!this.keyResult.measure) {
+    if (elementMeasureValue === 0) {
       this.progressPercentage = 0;
     } else {
       this.progressPercentage = Math.abs(

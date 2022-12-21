@@ -1,12 +1,12 @@
 # JMeter
 
 ### Setup
-- Start JMeter
-- Import tts.jmx file
-- Start
-- See analytics
-- Run multiple times to increase data
 
+* Start JMeter
+* Import tts.jmx file
+* Start
+* See analytics
+* Run multiple times to increase data
 
 ### What it does 
 1 Run produces 1 Objective with 5 Keyresults and 5 Measures for each Keyresult.

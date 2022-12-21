@@ -6,7 +6,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-const respons = [
+const response = [
   {
     id: 1,
     objectiveId: 1,
@@ -93,7 +93,7 @@ describe('KeyResultService', () => {
 
     const req = httpTestingController.expectOne(`${URL}/42/keyresults`);
     expect(req.request.method).toEqual('GET');
-    req.flush(respons);
+    req.flush(response);
     httpTestingController.verify();
   });
 

@@ -45,7 +45,7 @@ public class TeamController {
     }
 
     @Deprecated
-    @Operation(summary = "Get Objectives by Team", description = "Get a List of Objectives by Team Id")
+    @Operation(summary = "Get Objectives by Team", description = "Get a List of Objectives by Team Id", deprecated = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of Objectives associated to a Team with a specified ID", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),

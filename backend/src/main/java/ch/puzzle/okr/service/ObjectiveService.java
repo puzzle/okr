@@ -46,6 +46,10 @@ public class ObjectiveService {
         if (objective.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
+        if (objective.getProgress() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
+        }
+        objective.setProgress(0L);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }
@@ -59,7 +63,9 @@ public class ObjectiveService {
                         "Can't set the progress of an objective if you have already defined keyresults!");
             }
         }
-        this.getObjective(id);
+        Objective existingObjective = this.getObjective(id);
+        objective.setQuarter(existingObjective.getQuarter());
+        objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);
         return this.objectiveRepository.save(objective);
     }
@@ -71,9 +77,6 @@ public class ObjectiveService {
         } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Missing attribute description when creating objective");
-        } else if (objective.getProgress() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Missing attribute progress when creating objective");
         } else if (objective.getCreatedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Failed to generate attribute createdOn when creating objective");

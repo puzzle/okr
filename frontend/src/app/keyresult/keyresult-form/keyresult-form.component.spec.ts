@@ -18,6 +18,9 @@ import {
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
@@ -28,12 +31,9 @@ describe('KeyresultFormComponent', () => {
     objectiveId: 1,
     title: 'Keyresult 1',
     description: 'This is a description',
-    ownerId: 2,
+    ownerId: 1,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 0,
@@ -60,8 +60,7 @@ describe('KeyresultFormComponent', () => {
     description: 'Description',
     progress: 5,
     quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     created: '01.01.2022',
   });
 
@@ -74,7 +73,7 @@ describe('KeyresultFormComponent', () => {
       email: 'alice@wunerland.ch',
     },
     {
-      id: 1,
+      id: 2,
       username: 'pago',
       firstname: 'Paco',
       lastname: 'Egiiman',
@@ -91,12 +90,24 @@ describe('KeyresultFormComponent', () => {
     ownerId: 0,
     ownerLastname: '',
     ownerFirstname: '',
-    quarterId: 1,
-    quarterNumber: 1,
-    quarterYear: 2022,
     targetValue: 1,
     basicValue: 1,
     objectiveId: 3000,
+    measure: undefined,
+  };
+
+  let createKeyResultObject: KeyResultMeasure = {
+    id: null,
+    title: 'Keyresult 1',
+    description: 'This is a description',
+    expectedEvolution: 'INCREASE',
+    unit: 'PERCENT',
+    ownerId: 2,
+    ownerLastname: '',
+    ownerFirstname: '',
+    targetValue: 100,
+    basicValue: 0,
+    objectiveId: 1,
   };
 
   let createKeyResultForm = new FormGroup({
@@ -135,6 +146,8 @@ describe('KeyresultFormComponent', () => {
     getNumberOrNull: jest.fn(),
   };
 
+  let loader: HarnessLoader;
+
   describe('KeyresultFormComponent Edit KeyResult', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
@@ -167,6 +180,7 @@ describe('KeyresultFormComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -245,7 +259,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 
@@ -254,7 +268,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.title-input')
       );
       expect(titleinputfield.nativeElement.value).toContain('Keyresult 1');
-      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
       component.keyResultForm.get('title')?.setValue('');
       titleinputfield.nativeElement.value = '';
@@ -263,40 +277,38 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    xtest('should set keyresult unit in mat select and set it new on item change', () => {
-      const unitselect = fixture.debugElement.query(
-        By.css('.unit-select')
-      ).nativeElement;
-      expect(unitselect.value).toEqual('PERCENT');
+    test('should set keyresult unit in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('PERCENT');
 
-      unitselect.click();
-      fixture.detectChanges();
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'NUMBER' });
+      await bugOption[0].click();
 
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(4);
-
-      selectOptions[2].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(unitselect.value).toEqual('NUMBER');
+      expect(await select.getValueText()).toEqual('NUMBER');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
-    xtest('should set keyresult evolution in mat select and set it new on item change', () => {
-      const evolutionSelect = fixture.debugElement.query(
-        By.css('.evolution-select')
-      ).nativeElement;
-      expect(evolutionSelect.value).toEqual('INCREASE');
+    test('should set keyresult evolution in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('INCREASE');
 
-      evolutionSelect.click();
-      fixture.detectChanges();
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      await bugOption[0].click();
 
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(3);
-
-      selectOptions[2].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(evolutionSelect.value).toEqual('CONSTANT');
+      expect(await select.getValueText()).toEqual('DECREASE');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should set keyresult basicvalue in input field and set input invalid when empty value', () => {
@@ -348,22 +360,21 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    xtest('should set keyresult owner in mat select and set it new on item change', () => {
-      const ownerSelect = fixture.debugElement.query(
-        By.css('.owner-select')
-      ).nativeElement;
-      expect(ownerSelect.value).toEqual('Alice Wunderland');
+    test('should set keyresult owner in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('Alice Wunderland');
 
-      ownerSelect.click();
-      fixture.detectChanges();
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      await bugOption[0].click();
 
-      const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(2);
-
-      selectOptions[1].nativeElement.click();
-      fixture.detectChanges();
-
-      expect(ownerSelect.value).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should disable button when form is invalid', () => {
@@ -393,8 +404,10 @@ describe('KeyresultFormComponent', () => {
 
       keyResult.subscribe((keyresult) => {
         expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
-          keyresult
+          keyresult,
+          false
         );
+        expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
       });
     });
   });
@@ -403,6 +416,8 @@ describe('KeyresultFormComponent', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockObjectiveService.getObjectiveById.mockReturnValue(objective);
+      mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
+      mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
@@ -429,6 +444,7 @@ describe('KeyresultFormComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -436,6 +452,8 @@ describe('KeyresultFormComponent', () => {
     afterEach(() => {
       mockUserService.getUsers.mockReset();
       mockObjectiveService.getObjectiveById.mockReset();
+      mockKeyResultService.getInitKeyResult.mockReset();
+      mockKeyResultService.saveKeyresult.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
@@ -515,7 +533,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 
@@ -528,20 +546,63 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1 '
       );
     });
 
+    test('should be possible to set expected evolution in mat select', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('DECREASE');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
+    });
+
+    test('should be possible to set keyresult owner in mat select', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
+    });
+
     test('should save new keyresult', () => {
-      // Fill form group and submit it
+      component.keyResultForm = createKeyResultForm;
+      fixture.detectChanges();
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
+      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
+        createKeyResultObject,
+        true
+      );
     });
   });
 
   describe('KeyresultFormComponent with no id in url', () => {
     beforeEach(() => {
-      mockUserService.getUsers.mockReturnValue(userList);
-      mockObjectiveService.getObjectiveById.mockReturnValue(objective);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(null);
+      mockObjectiveService.getObjectiveById.mockReturnValue(null);
 
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
@@ -552,8 +613,6 @@ describe('KeyresultFormComponent', () => {
           NoopAnimationsModule,
         ],
         providers: [
-          { provide: UserService, useValue: mockUserService },
-          { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: ObjectiveService, useValue: mockObjectiveService },
           {
             provide: ActivatedRoute,
@@ -576,17 +635,8 @@ describe('KeyresultFormComponent', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
-    xtest('should create', (done) => {
-      expect(component.ngOnInit()).toThrowError(
-        "Error: Objective with Idnulldoesn't exist"
-      );
-
-      component.objective$.subscribe((objective) => {
-        expect(mockGetNumerOrNull).toHaveBeenCalledTimes(1);
-        expect(mockGetNumerOrNull).toHaveBeenCalledWith(null);
-        expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
-        done();
-      });
+    test('should not create', () => {
+      expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
     });
   });
 });

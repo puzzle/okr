@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Objective, ObjectiveService } from './objective.service';
+import { Goal, GoalService } from './goal.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
@@ -8,30 +8,37 @@ import {
 
 const respons = [
   {
-    id: 1,
-    title: 'Objective 1',
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
+    objective: {
+      id: 1,
+      title: 'Objective title',
+      description: 'Objective description',
+    },
+    keyresult: {
+      id: 1,
+      title: 'KeyResult title',
+      description: 'KeyResult description',
+    },
     teamId: 1,
     teamName: 'Team 1',
-    quarterId: 1,
+    progress: 30,
     quarterLabel: 'GJ 22/23-Q1',
-    description: 'This is the description of Objective 1',
-    progress: 20,
+    expectedEvolution: 'INCREASE',
+    unit: 'PERCENT',
+    basicValue: 1,
+    targetValue: 100,
   },
 ];
 
-describe('ObjectiveService', () => {
-  let service: ObjectiveService;
+describe('GoalService', () => {
+  let service: GoalService;
   let httpTestingController: HttpTestingController;
-  const URL = 'api/v1/teams';
+  const URL = '/api/v1/goals';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(ObjectiveService);
+    service = TestBed.inject(GoalService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -39,10 +46,10 @@ describe('ObjectiveService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should get Objectives', (done) => {
-    service.getObjectivesOfTeam(42).subscribe({
-      next(response: Objective[]) {
-        expect(response.length).toBe(1);
+  test('should get goal by keyresult id', (done) => {
+    service.getGoalByKeyResultId(42).subscribe({
+      next(response: Goal) {
+        expect(response).toEqual(respons);
         done();
       },
       error(error) {
@@ -50,7 +57,7 @@ describe('ObjectiveService', () => {
       },
     });
 
-    const req = httpTestingController.expectOne(`${URL}/42/objectives`);
+    const req = httpTestingController.expectOne(`${URL}/42`);
     expect(req.request.method).toEqual('GET');
     req.flush(respons);
     httpTestingController.verify();

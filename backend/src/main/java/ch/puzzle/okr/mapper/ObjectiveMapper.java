@@ -25,16 +25,19 @@ public class ObjectiveMapper {
     public ObjectiveDto toDto(Objective objective) {
         return new ObjectiveDto(objective.getId(), objective.getTitle(), objective.getOwner().getId(),
                 objective.getOwner().getFirstname(), objective.getOwner().getLastname(), objective.getTeam().getId(),
-                objective.getTeam().getName(), objective.getQuarter().getId(), objective.getQuarter().getNumber(),
-                objective.getQuarter().getYear(), objective.getDescription(), objective.getProgress());
+                objective.getTeam().getName(), objective.getQuarter().getId(), objective.getQuarter().getLabel(),
+                objective.getDescription(), objective.getProgress());
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
-        return Objective.Builder.builder().withId(objectiveDto.getId()).withTitle(objectiveDto.getTitle())
-                .withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
+        Objective.Builder builder = Objective.Builder.builder().withId(objectiveDto.getId())
+                .withTitle(objectiveDto.getTitle()).withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
                 .withTeam(teamService.getTeamById(objectiveDto.getTeamId()))
-                .withQuarter(quarterService.getQuarterById(objectiveDto.getQuarterId()))
                 .withDescription(objectiveDto.getDescription()).withProgress(objectiveDto.getProgress())
-                .withCreatedOn(LocalDateTime.now()).build();
+                .withCreatedOn(LocalDateTime.now());
+        if (objectiveDto.getQuarterId() != null) {
+            builder.withQuarter(quarterService.getQuarterById(objectiveDto.getQuarterId()));
+        }
+        return builder.build();
     }
 }

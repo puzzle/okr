@@ -10,6 +10,7 @@ import {
 import {
   KeyResultMeasure,
   KeyResultService,
+  Measure,
 } from '../../shared/services/key-result.service';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
@@ -92,9 +93,7 @@ export class KeyresultFormComponent implements OnInit {
         objectiveId,
         ownerFirstname,
         ownerLastname,
-        quarterId,
-        quarterNumber,
-        quarterYear,
+        measure,
         ...restKeyresult
       } = keyresult;
       this.keyResultForm.setValue(restKeyresult);
@@ -116,7 +115,6 @@ export class KeyresultFormComponent implements OnInit {
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
             console.log('Can not save this keyresult: ', keyresult);
-            // window.alert('Can not save this keyresult: ');
             return new Error('ups sommething happend');
           },
         })

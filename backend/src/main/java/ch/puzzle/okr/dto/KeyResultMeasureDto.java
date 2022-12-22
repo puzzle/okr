@@ -11,9 +11,6 @@ public class KeyResultMeasureDto {
     private Long ownerId;
     private String ownerFirstname;
     private String ownerLastname;
-    private Long quarterId;
-    private Integer quarterNumber;
-    private Integer quarterYear;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
     private Long basicValue;
@@ -21,8 +18,8 @@ public class KeyResultMeasureDto {
     private MeasureDto measure;
 
     public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
-            String ownerFirstname, String ownerLastname, Long quarterId, Integer quarterNumber, Integer quarterYear,
-            ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue, MeasureDto measureDto) {
+            String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
+            Long basicValue, Long targetValue, MeasureDto measureDto) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -30,9 +27,6 @@ public class KeyResultMeasureDto {
         this.ownerId = ownerId;
         this.ownerFirstname = ownerFirstname;
         this.ownerLastname = ownerLastname;
-        this.quarterId = quarterId;
-        this.quarterNumber = quarterNumber;
-        this.quarterYear = quarterYear;
         this.expectedEvolution = expectedEvolution;
         this.unit = unit;
         this.basicValue = basicValue;
@@ -96,22 +90,6 @@ public class KeyResultMeasureDto {
         this.ownerLastname = ownerLastname;
     }
 
-    public Integer getQuarterNumber() {
-        return quarterNumber;
-    }
-
-    public void setQuarterNumber(Integer quarterNumber) {
-        this.quarterNumber = quarterNumber;
-    }
-
-    public Integer getQuarterYear() {
-        return quarterYear;
-    }
-
-    public void setQuarterYear(Integer quarterYear) {
-        this.quarterYear = quarterYear;
-    }
-
     public ExpectedEvolution getExpectedEvolution() {
         return expectedEvolution;
     }
@@ -142,14 +120,6 @@ public class KeyResultMeasureDto {
 
     public void setTargetValue(Long targetValue) {
         this.targetValue = targetValue;
-    }
-
-    public Long getQuarterId() {
-        return quarterId;
-    }
-
-    public void setQuarterId(Long quarterId) {
-        this.quarterId = quarterId;
     }
 
     public MeasureDto getMeasure() {

@@ -12,43 +12,31 @@ public class Quarter {
     private Long id;
 
     @NotNull
-    private Integer year;
-
-    @NotNull
-    private Integer number;
+    private String label;
 
     public Quarter() {
     }
 
     public Quarter(Builder builder) {
         this.id = builder.id;
-        setYear(builder.year);
-        setNumber(builder.number);
+        setLabel(builder.label);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Integer getYear() {
-        return year;
+    public String getLabel() {
+        return label;
     }
 
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", year=" + year + ", number=" + number + '}';
+        return "Quarter{" + "id=" + id + ", year=" + label + '}';
     }
 
     @Override
@@ -58,19 +46,17 @@ public class Quarter {
         if (o == null || getClass() != o.getClass())
             return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(id, quarter.id) && Objects.equals(year, quarter.year)
-                && Objects.equals(number, quarter.number);
+        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, year, number);
+        return Objects.hash(id, label);
     }
 
     public static final class Builder {
         private @NotNull Long id;
-        private @NotNull Integer year;
-        private @NotNull Integer number;
+        private @NotNull String label;
 
         private Builder() {
         }
@@ -84,13 +70,8 @@ public class Quarter {
             return this;
         }
 
-        public Builder withYear(@NotNull Integer year) {
-            this.year = year;
-            return this;
-        }
-
-        public Builder withNumber(@NotNull Integer number) {
-            this.number = number;
+        public Builder withLabel(@NotNull String label) {
+            this.label = label;
             return this;
         }
 

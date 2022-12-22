@@ -9,14 +9,12 @@ public class ObjectiveDto {
     private Long teamId;
     private String teamName;
     private Long quarterId;
-    private Integer quarterNumber;
-    private Integer quarterYear;
+    private String quarterLabel;
     private String description;
     private Long progress;
 
     public ObjectiveDto(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname, Long teamId,
-            String teamName, Long quarterId, Integer quarterNumber, Integer quarterYear, String description,
-            Long progress) {
+            String teamName, Long quarterId, String quarterLabel, String description, Long progress) {
         this.id = id;
         this.title = title;
         this.ownerId = ownerId;
@@ -25,8 +23,7 @@ public class ObjectiveDto {
         this.teamId = teamId;
         this.teamName = teamName;
         this.quarterId = quarterId;
-        this.quarterNumber = quarterNumber;
-        this.quarterYear = quarterYear;
+        this.quarterLabel = quarterLabel;
         this.description = description;
         this.progress = progress;
     }
@@ -95,20 +92,12 @@ public class ObjectiveDto {
         this.quarterId = quarterId;
     }
 
-    public Integer getQuarterNumber() {
-        return quarterNumber;
+    public String getQuarterLabel() {
+        return quarterLabel;
     }
 
-    public void setQuarterNumber(Integer quarterNumber) {
-        this.quarterNumber = quarterNumber;
-    }
-
-    public Integer getQuarterYear() {
-        return quarterYear;
-    }
-
-    public void setQuarterYear(Integer quarterYear) {
-        this.quarterYear = quarterYear;
+    public void setQuarterLabel(String quarterLabel) {
+        this.quarterLabel = quarterLabel;
     }
 
     public String getDescription() {

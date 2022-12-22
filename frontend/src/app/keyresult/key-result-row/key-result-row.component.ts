@@ -25,7 +25,7 @@ export class KeyResultRowComponent implements OnInit {
 
   ngOnInit(): void {
     const elementMeasureValue =
-      this.keyResult.measure?.value || this.keyResult.basicValue;
+      this.keyResult.measure != null ? this.keyResult.measure?.value : 0;
     const elementMeasureTargetValue = this.keyResult.targetValue;
     const elementMeasureBasicValue = this.keyResult.basicValue;
     this.calculateProgress(
@@ -43,7 +43,10 @@ export class KeyResultRowComponent implements OnInit {
           this.keyResult.id,
       },
       { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
-      { displayName: 'Details einsehen', routeLine: 'result/add' },
+      {
+        displayName: 'Details einsehen',
+        routeLine: 'keyresults/' + this.keyResult.id,
+      },
       { displayName: 'KeyResult löschen', routeLine: 'result/add' },
       { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
     ];
@@ -70,7 +73,7 @@ export class KeyResultRowComponent implements OnInit {
     elementMeasureTargetValue: number,
     elementMeasureBasicValue: number
   ) {
-    if (!this.keyResult.measure) {
+    if (elementMeasureValue === 0) {
       this.progressPercentage = 0;
     } else {
       this.progressPercentage = Math.abs(

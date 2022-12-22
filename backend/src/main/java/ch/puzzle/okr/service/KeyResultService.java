@@ -56,11 +56,6 @@ public class KeyResultService {
         }
     }
 
-    public Quarter getQuarterById(long id) {
-        return this.quarterRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("Could not find quarter with id %d", id)));
-    }
-
     public User getOwnerById(long id) {
         return this.userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Owner with id %d not found", id)));

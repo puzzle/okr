@@ -10,23 +10,20 @@ public class GoalDto {
     private Long teamId;
     private String teamName;
     private Long progress;
-    private Integer quarterNumber;
-    private Integer quarterYear;
+    private String quarterLabel;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
     private Long basicValue;
     private Long targetValue;
 
     public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Long progress,
-            Integer quarterNumber, Integer quarterYear, ExpectedEvolution expectedEvolution, Unit unit, Long basicValue,
-            Long targetValue) {
+            String quarterLabel, ExpectedEvolution expectedEvolution, Unit unit, Long basicValue, Long targetValue) {
         this.objective = objective;
         this.keyresult = keyresult;
         this.teamId = team.getId();
         this.teamName = team.getName();
         this.progress = progress;
-        this.quarterNumber = quarterNumber;
-        this.quarterYear = quarterYear;
+        this.quarterLabel = quarterLabel;
         this.expectedEvolution = expectedEvolution;
         this.unit = unit;
         this.basicValue = basicValue;
@@ -73,20 +70,12 @@ public class GoalDto {
         this.progress = progress;
     }
 
-    public Integer getQuarterNumber() {
-        return quarterNumber;
+    public String getQuarterLabel() {
+        return quarterLabel;
     }
 
-    public void setQuarterNumber(Integer quarterNumber) {
-        this.quarterNumber = quarterNumber;
-    }
-
-    public Integer getQuarterYear() {
-        return quarterYear;
-    }
-
-    public void setQuarterYear(Integer quarterYear) {
-        this.quarterYear = quarterYear;
+    public void setQuarterLabel(String quarterLabel) {
+        this.quarterLabel = quarterLabel;
     }
 
     public ExpectedEvolution getExpectedEvolution() {

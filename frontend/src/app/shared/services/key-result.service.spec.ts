@@ -6,7 +6,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
-const respons = [
+const response = [
   {
     id: 1,
     objectiveId: 1,
@@ -17,8 +17,7 @@ const respons = [
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
     quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 0,
@@ -44,8 +43,7 @@ const respons = [
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
     quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     expectedEvolution: 'DECREASE',
     unit: 'CHF',
     basicValue: 10,
@@ -93,7 +91,7 @@ describe('KeyResultService', () => {
 
     const req = httpTestingController.expectOne(`${URL}/42/keyresults`);
     expect(req.request.method).toEqual('GET');
-    req.flush(respons);
+    req.flush(response);
     httpTestingController.verify();
   });
 

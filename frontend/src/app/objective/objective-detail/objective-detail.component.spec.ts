@@ -24,8 +24,7 @@ describe('ObjectiveDetailComponent', () => {
       ownerFirstname: 'Rudi',
       ownerLastname: 'Voller',
       quarterId: 1,
-      quarterNumber: 3,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       expectedEvolution: 'CONSTANT',
       unit: 'NUMBER',
       basicValue: 10,
@@ -49,8 +48,7 @@ describe('ObjectiveDetailComponent', () => {
       ownerFirstname: 'Rudi',
       ownerLastname: 'Voller',
       quarterId: 1,
-      quarterNumber: 2,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       expectedEvolution: 'CONSTANT',
       unit: 'NUMBER',
       basicValue: 20,
@@ -75,9 +73,8 @@ describe('ObjectiveDetailComponent', () => {
     ownerLastname: 'Alice',
     ownerFirstname: 'Wunderland',
     description: 'description',
-    quarterYear: 2022,
-    quarterNumber: 4,
     quarterId: 1,
+    quarterLabel: 'GJ 22/23-Q1',
     progress: 10,
     ownerId: 1,
     created: '01.01.2022',
@@ -109,7 +106,7 @@ describe('ObjectiveDetailComponent', () => {
 
   test('should have cycle with right quarteryear', () => {
     const cycleText = fixture.debugElement.query(By.css('.objective-cycle'));
-    expect(cycleText.nativeElement.textContent).toEqual('Zyklus GJ 2022 ');
+    expect(cycleText.nativeElement.textContent).toEqual('Zyklus GJ 22/23-Q1 ');
   });
 
   test('should have owner with right first- and lastname', () => {

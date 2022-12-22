@@ -3,11 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamFormComponent } from './team-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Team } from '../../shared/services/team.service';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { MatInputModule } from '@angular/material/input';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 let component: TeamFormComponent;
 let fixture: ComponentFixture<TeamFormComponent>;
@@ -21,10 +23,11 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
-          FormsModule,
           ReactiveFormsModule,
+          MatInputModule,
         ],
         declarations: [TeamFormComponent],
       }).compileComponents();
@@ -38,23 +41,21 @@ describe('TeamFormComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test.skip('should isCreating set on true default', () => {
-      // expect(component.isCreating).toEqual(true);
-    });
-
-    test.skip('should have right title', () => {
+    test('should have right title', () => {
       const heading = fixture.nativeElement.querySelector('p').textContent;
       expect(heading).toContain('Team erstellen');
     });
 
-    test.skip('should have 1 input field with right placeholder', () => {
-      const inputFiled = fixture.debugElement.query(By.css('.teamname-input'));
+    test('should have 1 input field with right placeholder', () => {
+      const inputFiled = fixture.debugElement.query(
+        By.css('input[formControlName="name"]')
+      );
 
-      expect(inputFiled.nativeElement.placeholder).toEqual('Team Name');
+      expect(inputFiled.nativeElement.placeholder).toEqual('z.B. DevTree');
       expect(inputFiled.nativeElement.value).toEqual('');
     });
 
-    test.skip('should have 2 buttons', () => {
+    test('should have 2 buttons', () => {
       const buttons = fixture.debugElement.queryAll(By.css('button'));
       expect(buttons.length).toEqual(2);
 
@@ -62,20 +63,23 @@ describe('TeamFormComponent', () => {
       expect(buttons[1].nativeElement.textContent).toContain('Speichern');
     });
 
-    test.skip('should right dis- and enable button', () => {
-      const buttons = fixture.debugElement.query(By.css('.create-button'));
-      const inputField = fixture.debugElement.query(By.css('.teamname-input'));
+    test('should right dis- and enable button', () => {
+      const buttons = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+      const inputField = fixture.debugElement.query(
+        By.css('input[formControlName="name"]')
+      );
 
-      component.teamForm.get('teamName')?.setValue('');
+      component.teamForm.get('name')?.setValue('');
       fixture.detectChanges();
 
       expect(component.teamForm.valid).toBeFalsy();
       expect(inputField.nativeElement.value).toEqual('');
       expect(buttons.nativeElement.disabled).toEqual(true);
 
-      component.teamForm.get('teamName')?.setValue('Team Name 1');
+      component.teamForm.get('name')?.setValue('Team Name 1');
       fixture.detectChanges();
-
       expect(component.teamForm.valid).toBeTruthy();
       expect(inputField.nativeElement.value).toEqual('Team Name 1');
       expect(buttons.nativeElement.disabled).toEqual(false);
@@ -86,10 +90,11 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
-          FormsModule,
           ReactiveFormsModule,
+          MatInputModule,
         ],
         declarations: [TeamFormComponent],
         providers: [
@@ -102,10 +107,7 @@ describe('TeamFormComponent', () => {
 
       fixture = TestBed.createComponent(TeamFormComponent);
       component = fixture.componentInstance;
-
-      window.history.pushState(team, '');
       component.teamObject = of(team);
-
       fixture.detectChanges();
     });
 
@@ -113,23 +115,24 @@ describe('TeamFormComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test.skip('should isCreating set on false', () => {
-      // expect(component.isCreating).toEqual(false);
-    });
-
-    test.skip('should have right title', () => {
+    test('should have right title', () => {
       const heading = fixture.nativeElement.querySelector('p').textContent;
       expect(heading).toContain('Team Name bearbeiten');
     });
 
-    test.skip('should have 1 input field with right placeholder', () => {
-      const inputFileds = fixture.debugElement.query(By.css('.teamname-input'));
+    test('should have 1 input field with right placeholder', () => {
+      const inputFields = fixture.debugElement.query(
+        By.css('input[formControlName="name"]')
+      );
 
-      expect(inputFileds.nativeElement.placeholder).toContain('Team Name');
-      expect(inputFileds.nativeElement.value).toEqual('Team1');
+      component.teamObject = of(team);
+      fixture.detectChanges();
+
+      expect(inputFields.nativeElement.placeholder).toContain('z.B. DevTree');
+      expect(inputFields.nativeElement.value).toEqual('Team1');
     });
 
-    test.skip('should have 2 buttons', () => {
+    test('should have 2 buttons', () => {
       const buttons = fixture.debugElement.queryAll(By.css('button'));
       expect(buttons.length).toEqual(2);
 
@@ -139,15 +142,19 @@ describe('TeamFormComponent', () => {
       );
     });
 
-    test.skip('should right dis- and enable button', () => {
+    test('should right dis- and enable button', () => {
       const buttons = fixture.debugElement.query(By.css('.create-button'));
-      const inputField = fixture.debugElement.query(By.css('.teamname-input'));
+      const inputField = fixture.debugElement.query(
+        By.css('input[formControlName="name"]')
+      );
 
+      component.teamForm.get('name')?.setValue(team.name);
+      fixture.detectChanges();
       expect(component.teamForm.valid).toBeTruthy();
       expect(inputField.nativeElement.value).toEqual('Team1');
       expect(buttons.nativeElement.disabled).toEqual(false);
 
-      component.teamForm.get('teamName')?.setValue('');
+      component.teamForm.get('name')?.setValue('');
       fixture.detectChanges();
 
       expect(component.teamForm.valid).toBeFalsy();

@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import * as teamsData from '../shared/testing/mock-data/teams.json';
 import * as quartersData from '../shared/testing/mock-data/quarters.json';
+import { OverviewService } from '../shared/services/overview.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -27,7 +28,57 @@ describe('DashboardComponent', () => {
     getQuarters: jest.fn(),
   };
 
+  const overviewServiceMock = {
+    getOverview: jest.fn(),
+  };
+
   beforeEach(() => {
+    overviewServiceMock.getOverview.mockReturnValue(
+      of([
+        {
+          team: {
+            id: 1,
+            name: 'Team 1',
+          },
+          objectives: [
+            {
+              id: 1,
+              title: 'Objective 1',
+              ownerId: 1,
+              ownerFirstname: 'Alice',
+              ownerLastname: 'Wunderland',
+              teamId: 1,
+              teamName: 'Team 1',
+              quarterId: 1,
+              quarterLabel: 'GJ 22/23-Q1',
+              description: 'This is the description of Objective 1',
+              progress: 20,
+            },
+          ],
+        },
+        {
+          team: {
+            id: 2,
+            name: 'Team 2',
+          },
+          objectives: [
+            {
+              id: 2,
+              title: 'Objective 2',
+              ownerId: 1,
+              ownerFirstname: 'Alice',
+              ownerLastname: 'Wunderland',
+              teamId: 1,
+              teamName: 'Team 1',
+              quarterId: 1,
+              quarterLabel: 'GJ 22/23-Q1',
+              description: 'This is the description of Objective 1',
+              progress: 20,
+            },
+          ],
+        },
+      ])
+    );
     quarterServiceMock.getQuarters.mockReturnValue(quarters);
     teamServiceMock.getTeams.mockReturnValue(teams);
 
@@ -36,6 +87,7 @@ describe('DashboardComponent', () => {
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
+        { provide: OverviewService, useValue: overviewServiceMock },
       ],
       declarations: [DashboardComponent],
     }).compileComponents();

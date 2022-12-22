@@ -16,10 +16,48 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 import * as teamsData from '../../shared/testing/mock-data/teams.json';
+import { Overview } from '../../shared/services/overview.service';
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
   let fixtureTeamDetails: ComponentFixture<TeamDetailComponent>;
+
+  let overview: Overview = {
+    team: {
+      id: 1,
+      name: 'Puzzle ITC',
+    },
+    objectives: [
+      {
+        id: 1,
+        title: 'Objective 1',
+        ownerId: 1,
+        ownerFirstname: 'Alice',
+        ownerLastname: 'Wunderland',
+        teamId: 1,
+        teamName: 'Team 1',
+        quarterId: 1,
+        quarterLabel: 'GJ 22/23-Q1',
+        description: 'This is the description of Objective 1',
+        progress: 20,
+        created: '01.01.2022',
+      },
+      {
+        id: 1,
+        title: 'Objective 1',
+        ownerId: 1,
+        ownerFirstname: 'Alice',
+        ownerLastname: 'Wunderland',
+        teamId: 1,
+        teamName: 'Team 1',
+        quarterId: 1,
+        quarterLabel: 'GJ 22/23-Q1',
+        description: 'This is the description of Objective 1',
+        progress: 20,
+        created: '01.01.2022',
+      },
+    ],
+  };
 
   let objectiveList: Observable<Objective[]> = of(objectivesData.objectives);
 
@@ -30,8 +68,6 @@ describe('TeamDetailComponent', () => {
   };
 
   beforeEach(() => {
-    mockObjectiveService.getObjectivesOfTeam.mockReturnValue(objectiveList);
-
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -42,14 +78,12 @@ describe('TeamDetailComponent', () => {
         NoopAnimationsModule,
       ],
       declarations: [TeamDetailComponent, DashboardComponent],
-      providers: [
-        { provide: ObjectiveService, useValue: mockObjectiveService },
-      ],
+      providers: [],
     }).compileComponents();
 
     fixtureTeamDetails = TestBed.createComponent(TeamDetailComponent);
     componentTeamDetails = fixtureTeamDetails.componentInstance;
-    componentTeamDetails.team = team;
+    componentTeamDetails.overview = overview;
     fixtureTeamDetails.detectChanges();
   });
 

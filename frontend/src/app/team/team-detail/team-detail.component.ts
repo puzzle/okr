@@ -10,6 +10,7 @@ import {
   Objective,
   ObjectiveService,
 } from '../../shared/services/objective.service';
+import { Overview } from '../../shared/services/overview.service';
 
 @Component({
   selector: 'app-team-detail',
@@ -17,15 +18,8 @@ import {
   styleUrls: ['./team-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamDetailComponent implements OnInit {
-  @Input() team!: Team;
-  objectiveList!: Observable<Objective[]>;
+export class TeamDetailComponent {
+  @Input() overview!: Overview;
 
-  constructor(public objectiveService: ObjectiveService) {}
-
-  ngOnInit(): void {
-    this.objectiveList = this.objectiveService.getObjectivesOfTeam(
-      this.team.id!
-    );
-  }
+  constructor() {}
 }

@@ -44,14 +44,16 @@ public class OverviewControllerIT {
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
 
     static OverviewDto overviewDtoPuzzle = new OverviewDto(new TeamDto(1L, "Puzzle"),
-            List.of(new ObjectiveDto(1L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
-                    "GJ 22/23-Q2", "This is a description", 20L), new ObjectiveDto(2L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
-                    "GJ 22/23-Q2", "This is a description", 20L)));
+            List.of(new ObjectiveDto(1L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L, "GJ 22/23-Q2",
+                    "This is a description", 20L),
+                    new ObjectiveDto(2L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, "GJ 22/23-Q2",
+                            "This is a description", 20L)));
 
     static OverviewDto overviewDtoOKR = new OverviewDto(new TeamDto(2L, "OKR"),
-            List.of(new ObjectiveDto(5L, "Objective 5", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
-                    "GJ 22/23-Q2", "This is a description", 20L), new ObjectiveDto(7L, "Objective 7", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
-                    "GJ 22/23-Q2", "This is a description", 20L)));
+            List.of(new ObjectiveDto(5L, "Objective 5", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L, "GJ 22/23-Q2",
+                    "This is a description", 20L),
+                    new ObjectiveDto(7L, "Objective 7", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, "GJ 22/23-Q2",
+                            "This is a description", 20L)));
 
     @BeforeEach
     void setUp() {
@@ -67,9 +69,11 @@ public class OverviewControllerIT {
         mvc.perform(get("/api/v1/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
-                .andExpect(jsonPath("$[0].objectives[0].id", Is.is(1))).andExpect(jsonPath("$[0].objectives[1].id", Is.is(2)))
-                .andExpect(jsonPath("$[1].team.id", Is.is(2))).andExpect(jsonPath("$[1].team.name", Is.is("OKR")))
-                .andExpect(jsonPath("$[1].objectives[0].id", Is.is(5))).andExpect(jsonPath("$[1].objectives[1].id", Is.is(7)));
+                .andExpect(jsonPath("$[0].objectives[0].id", Is.is(1)))
+                .andExpect(jsonPath("$[0].objectives[1].id", Is.is(2))).andExpect(jsonPath("$[1].team.id", Is.is(2)))
+                .andExpect(jsonPath("$[1].team.name", Is.is("OKR")))
+                .andExpect(jsonPath("$[1].objectives[0].id", Is.is(5)))
+                .andExpect(jsonPath("$[1].objectives[1].id", Is.is(7)));
     }
 
     @Test

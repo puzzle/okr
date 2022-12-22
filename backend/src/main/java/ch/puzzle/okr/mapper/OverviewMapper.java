@@ -19,6 +19,7 @@ public class OverviewMapper {
     }
 
     public OverviewDto toDto(Team team) {
-        return new OverviewDto(new TeamDto(team.getId(), team.getName()), this.objectiveService.getObjectivesByTeam(team.getId()).stream().map(objectiveMapper::toDto).toList());
+        return new OverviewDto(new TeamDto(team.getId(), team.getName()),
+                this.objectiveService.getObjectivesByTeam(team.getId()).stream().map(objectiveMapper::toDto).toList());
     }
 }

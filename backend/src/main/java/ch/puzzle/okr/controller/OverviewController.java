@@ -37,7 +37,7 @@ public class OverviewController {
             @ApiResponse(responseCode = "400", description = "Can't return list of teams with their objectives", content = @Content) })
     @GetMapping("")
     public ResponseEntity<List<OverviewDto>> getOverview() {
-        return  ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.OK)
                 .body(teamService.getAllTeams().stream().map(overviewMapper::toDto).toList());
     }
 

@@ -16,8 +16,7 @@ export interface Goal {
   teamId: number;
   teamName: string;
   progress: number;
-  quarterNumber: number;
-  quarterYear: number;
+  quarterLabel: string;
   expectedEvolution: string;
   unit: string;
   basicValue: number;

@@ -36,8 +36,7 @@ describe('ObjectiveComponent', () => {
     description: 'This is a description',
     progress: 5,
     quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     created: '01.01.2022',
   };
 
@@ -51,8 +50,7 @@ describe('ObjectiveComponent', () => {
       ownerFirstname: 'Alice',
       ownerLastname: 'Wunderland',
       quarterId: 1,
-      quarterNumber: 3,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       expectedEvolution: 'INCREASE',
       unit: 'PERCENT',
       basicValue: 0,
@@ -76,8 +74,7 @@ describe('ObjectiveComponent', () => {
       ownerFirstname: 'Alice',
       ownerLastname: 'Wunderland',
       quarterId: 1,
-      quarterNumber: 3,
-      quarterYear: 2022,
+      quarterLabel: 'GJ 22/23-Q1',
       expectedEvolution: 'INCREASE',
       unit: 'PERCENT',
       basicValue: 0,
@@ -161,7 +158,7 @@ describe('ObjectiveComponent', () => {
       .querySelector('#progressContainer')
       .querySelector('mat-progress-bar');
     expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
-      objective.progress.toString()
+      objective.progress!.toString()
     );
   });
 

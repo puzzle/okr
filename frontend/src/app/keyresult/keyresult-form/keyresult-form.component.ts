@@ -10,6 +10,7 @@ import {
 import {
   KeyResultMeasure,
   KeyResultService,
+  Measure,
 } from '../../shared/services/key-result.service';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
@@ -92,9 +93,6 @@ export class KeyresultFormComponent implements OnInit {
         objectiveId,
         ownerFirstname,
         ownerLastname,
-        quarterId,
-        quarterNumber,
-        quarterYear,
         measure,
         ...restKeyresult
       } = keyresult;

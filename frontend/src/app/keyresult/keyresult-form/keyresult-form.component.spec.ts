@@ -34,9 +34,6 @@ describe('KeyresultFormComponent', () => {
     ownerId: 1,
     ownerFirstname: 'Alice',
     ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
     expectedEvolution: 'INCREASE',
     unit: 'PERCENT',
     basicValue: 0,
@@ -63,8 +60,7 @@ describe('KeyresultFormComponent', () => {
     description: 'Description',
     progress: 5,
     quarterId: 1,
-    quarterNumber: 3,
-    quarterYear: 2022,
+    quarterLabel: 'GJ 22/23-Q1',
     created: '01.01.2022',
   });
 
@@ -94,12 +90,10 @@ describe('KeyresultFormComponent', () => {
     ownerId: 0,
     ownerLastname: '',
     ownerFirstname: '',
-    quarterId: 1,
-    quarterNumber: 1,
-    quarterYear: 2022,
     targetValue: 1,
     basicValue: 1,
     objectiveId: 3000,
+    measure: undefined,
   };
 
   let createKeyResultObject: KeyResultMeasure = {
@@ -111,9 +105,6 @@ describe('KeyresultFormComponent', () => {
     ownerId: 2,
     ownerLastname: '',
     ownerFirstname: '',
-    quarterId: 1,
-    quarterNumber: 1,
-    quarterYear: 2022,
     targetValue: 100,
     basicValue: 0,
     objectiveId: 1,
@@ -268,7 +259,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 
@@ -277,7 +268,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.title-input')
       );
       expect(titleinputfield.nativeElement.value).toContain('Keyresult 1');
-      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
       component.keyResultForm.get('title')?.setValue('');
       titleinputfield.nativeElement.value = '';
@@ -542,7 +533,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1'
       );
     });
 
@@ -555,7 +546,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-quarter')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 2022-3'
+        'GJ 22/23-Q1 '
       );
     });
 

@@ -10,11 +10,8 @@ import { map, Observable, of, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
-import {
-  OkrQuarter,
-  Team,
-  TeamService,
-} from '../../shared/services/team.service';
+import { Team, TeamService } from '../../shared/services/team.service';
+import { Quarter, QuarterService } from '../../shared/services/quarter.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -33,7 +30,7 @@ export class ObjectiveFormComponent implements OnInit {
     title: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(20),
+      Validators.maxLength(250),
     ]),
     description: new FormControl<string>('', [
       Validators.required,
@@ -44,34 +41,20 @@ export class ObjectiveFormComponent implements OnInit {
       Validators.required,
       Validators.nullValidator,
     ]),
-    // ToDo: Implement quarterService as described below
-    quarterId: new FormControl<number>(1),
+    quarterId: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.nullValidator,
+    ]),
   });
   public users$!: Observable<User[]>;
   public teams$!: Observable<Team[]>;
-
-  public objective: Objective = {
-    id: 1,
-    title: 'Objective name',
-    description: 'description',
-    quarterYear: 2022,
-    quarterId: 1,
-    quarterNumber: 2,
-    teamId: 1,
-    teamName: 'Team Name',
-    progress: 22,
-    ownerId: 21,
-    ownerFirstname: 'Vorname',
-    ownerLastname: 'Nachname',
-    created: '',
-  };
   public create!: boolean;
-  // ToDo: implement quarterService, which generates quarter and returns year and number in order to create quarter with id in backend.
-  public quarterList!: OkrQuarter[] | undefined;
+  public quarters$!: Observable<Quarter[]>;
   constructor(
     private userService: UserService,
     private objectiveService: ObjectiveService,
     private teamService: TeamService,
+    private quarterService: QuarterService,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location
@@ -79,8 +62,7 @@ export class ObjectiveFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
-    // ToDo: getQuarter should not be in teamService.ts
-    this.quarterList = this.teamService.getQuarter();
+    this.quarters$ = this.quarterService.getQuarters();
     this.teams$ = this.teamService.getTeams();
     this.objectives$ = this.route.paramMap.pipe(
       switchMap((params) => {
@@ -100,18 +82,13 @@ export class ObjectiveFormComponent implements OnInit {
         ownerFirstname,
         ownerLastname,
         teamName,
-        quarterNumber,
-        quarterYear,
+        quarterLabel,
         progress,
         created,
         ...restObjective
       } = objective;
       this.objectiveForm.setValue(restObjective);
     });
-  }
-
-  changeQuarterFilter(value: OkrQuarter) {
-    console.log(value);
   }
 
   save() {
@@ -128,8 +105,6 @@ export class ObjectiveFormComponent implements OnInit {
         this.objectiveService.saveObjective(objective, this.create).subscribe({
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
-            console.log('Can not save this objective: ', objective);
-            window.alert('Can not save this objective: ');
             return new Error('can not save objective');
           },
         })

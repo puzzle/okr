@@ -3,20 +3,20 @@ package ch.puzzle.okr.dto;
 import java.util.List;
 
 public class OverviewDto {
-    private TeamDto teamDto;
+    private TeamDto team;
     private List<ObjectiveDto> objectives;
 
-    public OverviewDto(TeamDto teamDto, List<ObjectiveDto> objectives) {
-        this.teamDto = teamDto;
+    public OverviewDto(TeamDto team, List<ObjectiveDto> objectives) {
+        this.team = team;
         this.objectives = objectives;
     }
 
-    public TeamDto getTeamDto() {
-        return teamDto;
+    public TeamDto getTeam() {
+        return team;
     }
 
-    public void setTeamDto(TeamDto teamDto) {
-        this.teamDto = teamDto;
+    public void setTeam(TeamDto team) {
+        this.team = team;
     }
 
     public List<ObjectiveDto> getObjectives() {

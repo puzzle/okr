@@ -30,8 +30,8 @@ public class ObjectiveMapper {
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
-        Objective.Builder builder = Objective.Builder.builder().withId(objectiveDto.getId()).withTitle(objectiveDto.getTitle())
-                .withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
+        Objective.Builder builder = Objective.Builder.builder().withId(objectiveDto.getId())
+                .withTitle(objectiveDto.getTitle()).withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
                 .withTeam(teamService.getTeamById(objectiveDto.getTeamId()))
                 .withDescription(objectiveDto.getDescription()).withProgress(objectiveDto.getProgress())
                 .withCreatedOn(LocalDateTime.now());

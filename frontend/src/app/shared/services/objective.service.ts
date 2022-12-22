@@ -37,10 +37,11 @@ export class ObjectiveService {
     objective: Objective,
     post: boolean
   ): Observable<Objective> {
+    objective.progress = null;
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
-      //TODO: blocked because backend needs improvments about progress objective.progress = null
+      objective.quarterId = null;
       return this.httpClient.put<Objective>(
         'api/v1/objectives/' + objective.id,
         objective

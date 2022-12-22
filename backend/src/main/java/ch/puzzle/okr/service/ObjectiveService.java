@@ -63,11 +63,10 @@ public class ObjectiveService {
                         "Can't set the progress of an objective if you have already defined keyresults!");
             }
         }
-        this.getObjective(id);
+        Objective existingObjective = this.getObjective(id);
+        objective.setQuarter(existingObjective.getQuarter());
+        objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);
-        if (objective.getQuarter() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't update the quarter of objective!");
-        }
         return this.objectiveRepository.save(objective);
     }
 

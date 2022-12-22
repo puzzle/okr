@@ -13,7 +13,7 @@ import { Quarter, QuarterService } from '../shared/services/quarter.service';
 export class DashboardComponent implements OnInit {
   teams = new FormControl('');
   teamList!: Observable<Team[]>;
-  quarterList!: Observable<Quarter[]> | undefined;
+  quarters$!: Observable<Quarter[]> | undefined;
 
   constructor(
     private teamService: TeamService,
@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.teamList = this.teamService.getTeams();
-    this.quarterList = this.quarterService.getQuarters();
+    this.quarters$ = this.quarterService.getQuarters();
   }
 
   changeTeamFilter(value: Team[]) {

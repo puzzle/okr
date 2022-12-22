@@ -32,7 +32,7 @@
       <mat-select (selectionChange)="changeQuarterFilter($event.value)">
         <mat-option
           class="quarter-dropdown"
-          *ngFor="let quarter of quarterList | async"
+          *ngFor="let quarter of quarters$ | async"
           [value]="quarter.id"
         >
           {{ quarter.label }}

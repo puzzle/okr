@@ -24,12 +24,12 @@ describe('DashboardComponent', () => {
   beforeEach(() => {
     quarterServiceMock.getQuarters.mockReturnValue(
       of([
-        { quarter: '22-4' },
-        { quarter: '22-3' },
-        { quarter: '22-2' },
-        { quarter: '22-1' },
-        { quarter: '21-4' },
-        { quarter: '23-1' },
+        { quarter: 'GJ 21/22-Q1' },
+        { quarter: 'GJ 21/22-Q2' },
+        { quarter: 'GJ 21/22-Q3' },
+        { quarter: 'GJ 21/22-Q4' },
+        { quarter: 'GJ 22/23-Q1' },
+        { quarter: 'GJ 22/23-Q2' },
       ])
     );
     teamServiceMock.getTeams.mockReturnValue(

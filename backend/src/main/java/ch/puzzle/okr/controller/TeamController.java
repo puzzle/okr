@@ -44,6 +44,7 @@ public class TeamController {
         return teamService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
+    @Deprecated
     @Operation(summary = "Get Objectives by Team", description = "Get a List of Objectives by Team Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of Objectives associated to a Team with a specified ID", content = {

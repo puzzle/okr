@@ -59,7 +59,7 @@ class ObjectiveServiceTest {
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
         Team team2 = Team.Builder.builder().withId(2L).withName("Team2").build();
-        Quarter quarter = Quarter.Builder.builder().withId(1L).withNumber(3).withYear(2020).build();
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(null)
                 .withCreatedOn(LocalDateTime.MAX).build();
@@ -120,7 +120,7 @@ class ObjectiveServiceTest {
         assertEquals(0, savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
-        assertEquals(2020, savedObjective.getQuarter().getYear());
+        assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
         assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
     }
 
@@ -188,8 +188,8 @@ class ObjectiveServiceTest {
     void shouldReturnObjectiveProperly() {
         Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
                 .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
-                .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
+                .withCreatedOn(LocalDateTime.now())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
@@ -199,6 +199,22 @@ class ObjectiveServiceTest {
         assertEquals("Best Team", returnedObjective.getTeam().getName());
         assertEquals("rudi", returnedObjective.getOwner().getUsername());
         assertEquals("This is a cool objective", returnedObjective.getDescription());
+    }
+
+    @Test
+    void shouldThrowErrorWhenUpdateObjectiveWithQuarter() {
+        Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
+                .withDescription("This is a cool objective")
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
+                .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
+                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
+        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
+        Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            objectiveService.updateObjective(1L, newObjective);
+        });
+        assertEquals("Can't update the quarter of objective!", exception.getReason());
     }
 
     @Test

@@ -25,8 +25,8 @@ public class ObjectiveMapper {
     public ObjectiveDto toDto(Objective objective) {
         return new ObjectiveDto(objective.getId(), objective.getTitle(), objective.getOwner().getId(),
                 objective.getOwner().getFirstname(), objective.getOwner().getLastname(), objective.getTeam().getId(),
-                objective.getTeam().getName(), objective.getQuarter().getId(), objective.getQuarter().getNumber(),
-                objective.getQuarter().getYear(), objective.getDescription(), objective.getProgress());
+                objective.getTeam().getName(), objective.getQuarter().getId(), objective.getQuarter().getLabel(),
+                objective.getDescription(), objective.getProgress());
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {

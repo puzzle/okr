@@ -41,6 +41,7 @@ import { ProgressModule } from '../progress/progress.module';
     MatInputModule,
     MatSelectModule,
     ProgressModule,
+    MeasureModule,
   ],
 })
 export class KeyresultModule {}

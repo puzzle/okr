@@ -41,6 +41,16 @@ public class MeasureController {
         return measureService.getAllMeasures().stream().map(measureMapper::toDto).toList();
     }
 
+    @Operation(summary = "Get Measure by Id", description = "Get Measure by Id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Got Measure by Id", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find the Measure with requested id", content = @Content) })
+    @GetMapping("/{id}")
+    public MeasureDto getMeasureById(@PathVariable long id) {
+        return this.measureMapper.toDto(this.measureService.getMeasureById(id));
+    }
+
     @Operation(summary = "Create Measure", description = "Create a new Measure.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new Measure.", content = {

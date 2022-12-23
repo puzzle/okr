@@ -37,7 +37,7 @@ describe('KeyResultDetailComponent', () => {
 
       expect(strongs[0].nativeElement.textContent).toEqual('Details');
 
-      expect(strongs[1].nativeElement.textContent).toEqual('Letzte Messung');
+      expect(strongs[1].nativeElement.textContent).toEqual('Messungszeitpunkt');
     });
 
     test('should have keyresult description', () => {

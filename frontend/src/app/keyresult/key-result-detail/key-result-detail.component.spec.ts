@@ -43,7 +43,7 @@ describe('KeyResultDetailComponent', () => {
     test('should have keyresult description', () => {
       const paragraphs = fixture.debugElement.queryAll(By.css('p'));
       expect(paragraphs[1].nativeElement.textContent).toEqual(
-        'This is a description'
+        'This is the description'
       );
     });
 
@@ -51,14 +51,16 @@ describe('KeyResultDetailComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasureDate')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 7, 2022');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual('Jan 1, 2022');
     });
 
     test('should have last measure date', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasurechangeInfo')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Change Infos');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual(
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+      );
     });
   });
 

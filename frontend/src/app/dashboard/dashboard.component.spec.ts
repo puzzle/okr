@@ -11,13 +11,13 @@ import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import * as teamsData from '../shared/testing/mock-data/teams.json';
 import * as quartersData from '../shared/testing/mock-data/quarters.json';
 
-const quarters: Observable<Quarter[]> = of(quartersData.quarters);
-
-const teams: Observable<Team[]> = of(teamsData.teams);
-
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+
+  let quarters: Observable<Quarter[]> = of(quartersData.quarters);
+
+  let teams: Observable<Team[]> = of(teamsData.teams);
 
   const teamServiceMock = {
     getTeams: jest.fn(),

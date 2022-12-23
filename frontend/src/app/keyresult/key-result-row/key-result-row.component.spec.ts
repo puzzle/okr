@@ -66,19 +66,19 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     test('should have right last measure when measure is set', () => {
       const ownerTag = fixture.debugElement.query(By.css('.measure-date'));
-      expect(ownerTag.nativeElement.textContent).toContain('07.12.2022');
+      expect(ownerTag.nativeElement.textContent).toContain('01.01.2022');
     });
 
     test('should have progress label with right calculated progress', () => {
       let progressLabel = fixture.debugElement.query(By.css('.h6'));
-      expect(progressLabel.nativeElement.textContent).toEqual('20%');
+      expect(progressLabel.nativeElement.textContent).toEqual('60%');
     });
 
     test('should have progress bar with progress from objective', () => {
       let progressBar = fixture.nativeElement
         .querySelector('#progressContainer')
         .querySelector('mat-progress-bar');
-      expect(progressBar.getAttribute('ng-reflect-value')).toEqual('20');
+      expect(progressBar.getAttribute('ng-reflect-value')).toEqual('60');
     });
 
     test('should have menu button with icon', () => {

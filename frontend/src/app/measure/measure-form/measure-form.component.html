@@ -3,13 +3,10 @@
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
-<p class="fs-2 title">
+<p class="fs-2 heading-label">
   {{ this.create ? "Messung hinzufügen" : "Keyresult bearbeiten" }}
 </p>
-<div
-  *ngIf="measure$ | async as measure"
-  class="d-flex w-100 justify-content-center"
->
+<div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
   <form
     (ngSubmit)="save()"
     [formGroup]="measureForm"

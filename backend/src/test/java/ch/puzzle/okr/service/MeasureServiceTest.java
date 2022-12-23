@@ -45,7 +45,8 @@ class MeasureServiceTest {
                 .withCreatedOn(LocalDateTime.MAX)
                 .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withMeasureDate(LocalDateTime.of(2021, 11, 3, 5, 55)).build();
+                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withMeasureDate(LocalDateTime.of(2021, 11, 3, 5, 55)).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }
 

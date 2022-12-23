@@ -63,6 +63,9 @@ public class MeasureService {
         if (measure.getCreatedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given creation date is null");
         }
+        if (measure.getMeasureDate() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
+        }
     }
 
     public KeyResult mapKeyResult(MeasureDto measureDto) {

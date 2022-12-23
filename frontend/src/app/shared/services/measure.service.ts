@@ -37,6 +37,7 @@ export class MeasureService {
 
   saveMeasure(measure: Measure, post: boolean) {
     if (post) {
+      measure.createdOn = new Date();
       return this.httpClient.post<Measure>(`/api/v1/measures`, measure);
     } else {
       return this.httpClient.put<Measure>(

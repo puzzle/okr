@@ -19,7 +19,10 @@ export class MeasureFormComponent implements OnInit {
   measure$!: Observable<Measure>;
 
   measureForm = new FormGroup({
-    value: new FormControl<number>(0, [Validators.required]),
+    value: new FormControl<number>(0, [
+      Validators.required,
+      Validators.pattern('^[0-9]*$'),
+    ]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
     changeInfo: new FormControl<string>('', [Validators.required]),
     initiatives: new FormControl<string>('', [Validators.required]),
@@ -82,15 +85,16 @@ export class MeasureFormComponent implements OnInit {
           } as Measure;
         })
       )
-      .subscribe((measure) =>
+      .subscribe((measure) => {
+        measure.measureDate = new Date(measure.measureDate.toString() + 'UTC');
         this.measureService.saveMeasure(measure, this.create).subscribe({
           next: () => this.router.navigate(['/dashboard']),
           error: () => {
             console.log('Can not save this measure: ', measure);
             return new Error('ups sommething happend');
           },
-        })
-      );
+        });
+      });
   }
 
   navigateBack() {

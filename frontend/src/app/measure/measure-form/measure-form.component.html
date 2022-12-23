@@ -16,7 +16,7 @@
     class="d-flex flex-column fit-content"
   >
     <div class="d-flex align-items-center justify-content-end gap-4">
-      <p class="fw-bold">Titel</p>
+      <p class="fw-bold">Aktueller Wert</p>
       <mat-form-field
         appearance="outline"
         class="form-field-width form-field-height"
@@ -37,18 +37,15 @@
     </div>
 
     <mat-form-field appearance="fill">
-      <mat-label>Choose a date</mat-label>
       <input
         matInput
-        formControlName="measureDate"
         [matDatepicker]="picker"
-        [value]="measure.measureDate.getUTCDate()"
+        formControlName="measureDate"
+        [value]="measure.measureDate"
       />
+      <mat-label>Datum der Messung</mat-label>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-hint>DD/MM/YYYY</mat-hint>
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="picker"
-      ></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 

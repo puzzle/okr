@@ -19,6 +19,6 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
 })
 export class MeasureModule {}

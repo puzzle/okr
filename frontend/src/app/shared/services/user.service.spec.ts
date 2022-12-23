@@ -4,23 +4,9 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { User, UserService } from './user.service';
+import * as userData from '../testing/mock-data/users.json';
 
-const response = [
-  {
-    id: 1,
-    username: 'alicewunderland',
-    firstname: 'Alice',
-    lastname: 'Wunderland',
-    email: 'alice@wunderland.ch',
-  },
-  {
-    id: 2,
-    username: 'pacoegiman',
-    firstname: 'Paco',
-    lastname: 'Egiman',
-    email: 'paco@egiman.ch',
-  },
-];
+const response = userData.users;
 describe('UserService', () => {
   let service: UserService;
   let httpTestingController: HttpTestingController;
@@ -41,7 +27,7 @@ describe('UserService', () => {
   test('should get Users', (done) => {
     service.getUsers().subscribe({
       next(response: User[]) {
-        expect(response.length).toBe(2);
+        expect(response.length).toBe(3);
         done();
       },
       error(error) {

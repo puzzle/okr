@@ -5,61 +5,9 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import * as keyresultData from '../testing/mock-data/keyresults.json';
 
-const response = [
-  {
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description:
-      "This is the description of Keyresult 1: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 60,
-      changeInfo:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      initiatives: '',
-      createdById: 1,
-      createdOn: '2022-01-01T00:00:00',
-    },
-  },
-  {
-    id: 2,
-    objectiveId: 1,
-    title: 'Keyresult 2',
-    description:
-      "This is the description of Keyresult 2: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    expectedEvolution: 'DECREASE',
-    unit: 'CHF',
-    basicValue: 10,
-    targetValue: 50,
-    measure: {
-      id: 4,
-      keyResultId: 2,
-      value: 15,
-      changeInfo:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      initiatives: '',
-      createdById: 1,
-      createdOn: '2023-01-01T00:00:00',
-    },
-  },
-];
+const response = keyresultData.keyresults;
 
 describe('KeyResultService', () => {
   let service: KeyResultService;
@@ -81,7 +29,7 @@ describe('KeyResultService', () => {
   test('should get KeyResults of Objective', (done) => {
     service.getKeyResultsOfObjective(42).subscribe({
       next(response: KeyResultMeasure[]) {
-        expect(response.length).toBe(2);
+        expect(response.length).toBe(3);
         done();
       },
       error(error) {

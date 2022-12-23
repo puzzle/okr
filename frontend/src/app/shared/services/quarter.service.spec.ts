@@ -5,29 +5,9 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import * as quarterData from '../testing/mock-data/quarters.json';
 
-const response = [
-  {
-    id: 1,
-    label: 'GJ 22/23-Q1',
-  },
-  {
-    id: 2,
-    label: 'GJ 22/23-Q2',
-  },
-  {
-    id: 3,
-    label: 'GJ 22/23-Q3',
-  },
-  {
-    id: 4,
-    label: 'GJ 22/23-Q4',
-  },
-  {
-    id: 5,
-    label: 'GJ 23/24-Q1',
-  },
-];
+const response = quarterData.quarters;
 
 describe('QuarterService', () => {
   let quarterService: QuarterService;

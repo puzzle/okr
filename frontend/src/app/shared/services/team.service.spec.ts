@@ -4,11 +4,9 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import * as teamData from '../testing/mock-data/teams.json';
 
-const teamResponse: Team = {
-  id: 1,
-  name: 'Team 1',
-};
+const teamResponse: Team = teamData.teams[0];
 
 const teamListResponse = [teamResponse];
 

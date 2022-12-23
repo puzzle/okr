@@ -11,7 +11,8 @@
       "quarterId": 1,
       "quarterLabel": "GJ 22/23-Q1",
       "description": "This is the description of Objective 1",
-      "progress": 20
+      "progress": 20,
+      "created": "01.01.2022"
     },
     {
       "id": 2,
@@ -24,7 +25,8 @@
       "quarterId": 1,
       "quarterLabel": "GJ 22/23-Q1",
       "description": "This is the description of Objective 2",
-      "progress": 20
+      "progress": 20,
+      "created": "01.01.2022"
     },
     {
       "id": 3,
@@ -37,7 +39,8 @@
       "quarterId": 1,
       "quarterLabel": "GJ 22/23-Q1",
       "description": "This is the description of Objective 3",
-      "progress": 20
+      "progress": 20,
+      "created": "01.01.2022"
     }
   ]
 }

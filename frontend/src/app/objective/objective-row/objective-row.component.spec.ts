@@ -20,76 +20,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { trigger } from '@angular/animations';
 import { By } from '@angular/platform-browser';
 import { ObjectiveModule } from '../objective.module';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 
 describe('ObjectiveComponent', () => {
   let component: ObjectiveRowComponent;
   let fixture: ComponentFixture<ObjectiveRowComponent>;
 
-  let objective: Objective = {
-    id: 1,
-    teamName: 'TeamName',
-    teamId: 1,
-    title: 'Objective 1',
-    ownerId: 2,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    description: 'This is a description',
-    progress: 5,
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    created: '01.01.2022',
-  };
+  let objective: Objective = objectivesData.objectives[0];
 
-  let keyResultList: Observable<KeyResultMeasure[]> = of([
-    {
-      id: 1,
-      objectiveId: 1,
-      title: 'Keyresult 1',
-      description: 'This is a description',
-      ownerId: 2,
-      ownerFirstname: 'Alice',
-      ownerLastname: 'Wunderland',
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      expectedEvolution: 'INCREASE',
-      unit: 'PERCENT',
-      basicValue: 0,
-      targetValue: 100,
-      measure: {
-        id: 1,
-        keyResultId: 1,
-        value: 20,
-        changeInfo: 'Change Infos',
-        initiatives: 'Initatives',
-        createdBy: 2,
-        createdOn: new Date('2022-12-07T00:00:00'),
-      },
-    },
-    {
-      id: 2,
-      objectiveId: 1,
-      title: 'Keyresult 2',
-      description: 'This is a description',
-      ownerId: 2,
-      ownerFirstname: 'Alice',
-      ownerLastname: 'Wunderland',
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      expectedEvolution: 'INCREASE',
-      unit: 'PERCENT',
-      basicValue: 0,
-      targetValue: 100,
-      measure: {
-        id: 2,
-        keyResultId: 2,
-        value: 40,
-        changeInfo: 'Change Infos',
-        initiatives: 'Initatives',
-        createdBy: 2,
-        createdOn: new Date('2022-12-07T00:00:00'),
-      },
-    },
-  ]);
+  let keyResultList: Observable<KeyResultMeasure[]> = of(
+    keyresultData.keyresults
+  );
 
   const mockKeyResultService = {
     getKeyResultsOfObjective: jest.fn(),
@@ -150,7 +92,7 @@ describe('ObjectiveComponent', () => {
   test('should have progress label with progress from objective', () => {
     expect(
       fixture.nativeElement.querySelector('#progressSpan').textContent
-    ).toEqual('5%');
+    ).toEqual('20%');
   });
 
   test('should have progress bar with progress from objective', () => {

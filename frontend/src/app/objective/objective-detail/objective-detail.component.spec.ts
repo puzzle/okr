@@ -9,76 +9,18 @@ import { By } from '@angular/platform-browser';
 import { ObjectiveModule } from '../objective.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 
 describe('ObjectiveDetailComponent', () => {
   let component: ObjectiveDetailComponent;
   let fixture: ComponentFixture<ObjectiveDetailComponent>;
 
-  let keyResultList: Observable<KeyResultMeasure[]> = of([
-    {
-      id: 1,
-      objectiveId: 1,
-      title: 'KeyResult 1',
-      description: 'Description of KeyResult 1',
-      ownerId: 1,
-      ownerFirstname: 'Rudi',
-      ownerLastname: 'Voller',
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      expectedEvolution: 'CONSTANT',
-      unit: 'NUMBER',
-      basicValue: 10,
-      targetValue: 50,
-      measure: {
-        id: 1,
-        keyResultId: 1,
-        value: 15,
-        changeInfo: 'Changeinfo 1',
-        initiatives: 'Initiatives 2',
-        createdBy: 1,
-        createdOn: new Date('2022-12-07T00:00:00'),
-      },
-    },
-    {
-      id: 2,
-      objectiveId: 1,
-      title: 'KeyResult 2',
-      description: 'Description of KeyResult 2',
-      ownerId: 1,
-      ownerFirstname: 'Rudi',
-      ownerLastname: 'Voller',
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      expectedEvolution: 'CONSTANT',
-      unit: 'NUMBER',
-      basicValue: 20,
-      targetValue: 120,
-      measure: {
-        id: 2,
-        keyResultId: 2,
-        value: 45,
-        changeInfo: 'Changeinfo 2',
-        initiatives: 'Initiatives 2',
-        createdBy: 1,
-        createdOn: new Date('2022-12-07T00:00:00'),
-      },
-    },
-  ]);
+  let keyResultList: Observable<KeyResultMeasure[]> = of(
+    keyresultData.keyresults
+  );
 
-  let objective: Objective = {
-    id: 1,
-    teamId: 1,
-    teamName: 'Team Name',
-    title: 'title',
-    ownerLastname: 'Alice',
-    ownerFirstname: 'Wunderland',
-    description: 'description',
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    progress: 10,
-    ownerId: 1,
-    created: '01.01.2022',
-  };
+  let objective: Objective = objectivesData.objectives[1];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -112,7 +54,7 @@ describe('ObjectiveDetailComponent', () => {
   test('should have owner with right first- and lastname', () => {
     const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
     expect(ownerText.nativeElement.textContent).toEqual(
-      'Ziel Besitzer Wunderland Alice '
+      'Ziel Besitzer Alice Wunderland '
     );
   });
 
@@ -128,6 +70,6 @@ describe('ObjectiveDetailComponent', () => {
     const keyResultRows = fixture.debugElement.queryAll(
       By.css('app-keyresult-row')
     );
-    expect(keyResultRows.length).toEqual(2);
+    expect(keyResultRows.length).toEqual(3);
   });
 });

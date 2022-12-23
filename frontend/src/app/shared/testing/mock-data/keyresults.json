@@ -20,7 +20,7 @@
         "value": 60,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         "initiatives": "",
-        "createdById": 1,
+        "createdBy": 1,
         "createdOn": "2022-01-01T00:00:00"
       }
     },
@@ -44,7 +44,7 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         "initiatives": "",
-        "createdById": 1,
+        "createdBy": 1,
         "createdOn": "2023-01-01T00:00:00"
       }
     },
@@ -68,7 +68,7 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
         "initiatives": "",
-        "createdById": 1,
+        "createdBy": 1,
         "createdOn": "2023-01-01T00:00:00"
       }
     }

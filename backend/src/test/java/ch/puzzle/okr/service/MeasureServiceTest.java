@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +45,7 @@ class MeasureServiceTest {
                 .withCreatedOn(LocalDateTime.MAX)
                 .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withMeasureDate(LocalDateTime.of(2021, 11, 3, 5, 55)).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }
 

@@ -21,94 +21,24 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import * as usersData from '../../shared/testing/mock-data/users.json';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
   let fixture: ComponentFixture<KeyresultFormComponent>;
 
-  let keyResult: Observable<KeyResultMeasure> = of({
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 20,
-      changeInfo: 'Change Infos',
-      initiatives: 'Initatives',
-      createdBy: 2,
-      createdOn: new Date('2022-12-07T00:00:00'),
-    },
-  });
+  let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
-  let objective: Observable<Objective> = of({
-    id: 1,
-    teamName: 'Team Name',
-    teamId: 1,
-    title: 'Wir wollen unseren Umsatz verdoppeln',
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    description: 'Description',
-    progress: 5,
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    created: '01.01.2022',
-  });
+  let objective: Observable<Objective> = of(objectivesData.objectives[0]);
 
-  let userList: Observable<User[]> = of([
-    {
-      id: 1,
-      username: 'alice',
-      firstname: 'Alice',
-      lastname: 'Wunderland',
-      email: 'alice@wunerland.ch',
-    },
-    {
-      id: 2,
-      username: 'pago',
-      firstname: 'Paco',
-      lastname: 'Egiiman',
-      email: 'paco@egiiman.ch',
-    },
-  ]);
+  let userList: Observable<User[]> = of(usersData.users);
 
-  let initKeyResult: KeyResultMeasure = {
-    id: null,
-    title: '',
-    description: '',
-    expectedEvolution: '',
-    unit: '',
-    ownerId: 0,
-    ownerLastname: '',
-    ownerFirstname: '',
-    targetValue: 1,
-    basicValue: 1,
-    objectiveId: 3000,
-    measure: undefined,
-  };
+  let initKeyResult: KeyResultMeasure = keyresultData.initKeyResult;
 
-  let createKeyResultObject: KeyResultMeasure = {
-    id: null,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    ownerId: 2,
-    ownerLastname: '',
-    ownerFirstname: '',
-    targetValue: 100,
-    basicValue: 0,
-    objectiveId: 1,
-  };
+  let createKeyResultObject: KeyResultMeasure =
+    keyresultData.createKeyResultObject;
 
   let createKeyResultForm = new FormGroup({
     title: new FormControl<string>('Keyresult 1', [
@@ -220,7 +150,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-title')
       );
       expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Wir wollen unseren Umsatz verdoppeln'
+        ' Objective 1 '
       );
     });
 
@@ -232,9 +162,7 @@ describe('KeyresultFormComponent', () => {
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-teamname')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Team Name'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
     });
 
     test('should have objective description', () => {
@@ -246,7 +174,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-description')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Description'
+        ' This is the description of Objective 1 '
       );
     });
 
@@ -346,7 +274,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.description-textarea')
       );
       expect(descriptionTextArea.nativeElement.value).toContain(
-        'This is a description'
+        'This is the description'
       );
       expect(descriptionTextArea.nativeElement.placeholder).toContain(
         'Beschreibung'
@@ -369,10 +297,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('Alice Wunderland');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      const bugOption = await select.getOptions({ text: 'Paco Egiman' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiman');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -494,7 +422,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-title')
       );
       expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Wir wollen unseren Umsatz verdoppeln'
+        ' Objective 1 '
       );
     });
 
@@ -506,9 +434,7 @@ describe('KeyresultFormComponent', () => {
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-teamname')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Team Name'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
     });
 
     test('should have objective description', () => {
@@ -520,7 +446,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-description')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Description'
+        'This is the description of Objective 1'
       );
     });
 
@@ -576,10 +502,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      const bugOption = await select.getOptions({ text: 'Paco Egiman' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiman');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });

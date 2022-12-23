@@ -13,32 +13,12 @@ import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { KeyresultModule } from '../keyresult.module';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
   let fixture: ComponentFixture<KeyResultRowComponent>;
-  let keyResult: KeyResultMeasure = {
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    ownerId: 2,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 20,
-      changeInfo: 'Change Infos',
-      initiatives: 'Initatives',
-      createdBy: 2,
-      createdOn: new Date('2022-12-07T00:00:00'),
-    },
-  };
+  let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
   describe('KeyResultRow with set measure', () => {
     beforeEach(() => {

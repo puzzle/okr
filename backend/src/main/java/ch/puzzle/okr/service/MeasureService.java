@@ -18,8 +18,8 @@ public class MeasureService {
     private final MeasureRepository measureRepository;
     private final ProgressService progressService;
 
-    public MeasureService(KeyResultRepository keyResultRepository,
-            MeasureRepository measureRepository, ProgressService progressService) {
+    public MeasureService(KeyResultRepository keyResultRepository, MeasureRepository measureRepository,
+            ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
         this.measureRepository = measureRepository;
         this.progressService = progressService;

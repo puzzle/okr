@@ -154,8 +154,10 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have right last measure when measure is set', () => {
-      const ownerTag = fixture.debugElement.query(By.css('.measure-null-date'));
-      expect(ownerTag.nativeElement.textContent).toEqual(' - ');
+      const measureTag = fixture.debugElement.query(
+        By.css('.measure-null-date')
+      );
+      expect(measureTag.nativeElement.textContent).toContain('-');
     });
   });
 });

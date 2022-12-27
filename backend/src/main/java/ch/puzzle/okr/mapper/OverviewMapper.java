@@ -1,11 +1,13 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.OverviewDto;
 import ch.puzzle.okr.dto.TeamDto;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.ObjectiveService;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class OverviewMapper {
@@ -18,8 +20,8 @@ public class OverviewMapper {
         this.objectiveMapper = objectiveMapper;
     }
 
-    public OverviewDto toDto(Team team) {
+    public OverviewDto toDto(Team team, List<Objective> objectives) {
         return new OverviewDto(new TeamDto(team.getId(), team.getName()),
-                this.objectiveService.getObjectivesByTeam(team.getId()).stream().map(objectiveMapper::toDto).toList());
+                objectives.stream().map(objectiveMapper::toDto).toList());
     }
 }

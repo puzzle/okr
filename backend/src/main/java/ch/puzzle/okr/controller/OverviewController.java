@@ -1,7 +1,6 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.OverviewDto;
-import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.service.OverviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,11 +20,9 @@ import java.util.List;
 @RequestMapping("api/v1/overview")
 public class OverviewController {
     private final OverviewService overviewService;
-    private OverviewMapper overviewMapper;
 
-    public OverviewController(OverviewService overviewService, OverviewMapper overviewMapper) {
+    public OverviewController(OverviewService overviewService) {
         this.overviewService = overviewService;
-        this.overviewMapper = overviewMapper;
     }
 
     @Operation(summary = "Get all teams and their objectives", description = "Get a List of teams with their objectives")

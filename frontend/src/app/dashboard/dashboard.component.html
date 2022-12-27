@@ -41,7 +41,7 @@
     </mat-form-field>
   </div>
 
-  <div *ngFor="let team of teamList | async">
-    <app-team-detail [team]="team"></app-team-detail>
+  <div *ngFor="let team of teams$ | async">
+    <app-team-detail [overview]="team"></app-team-detail>
   </div>
 </div>

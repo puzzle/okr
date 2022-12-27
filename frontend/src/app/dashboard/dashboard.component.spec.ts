@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import * as teamsData from '../shared/testing/mock-data/teams.json';
 import * as quartersData from '../shared/testing/mock-data/quarters.json';
+import * as overviewData from '../shared/testing/mock-data/overview.json';
+import { OverviewService } from '../shared/services/overview.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -27,7 +29,12 @@ describe('DashboardComponent', () => {
     getQuarters: jest.fn(),
   };
 
+  const overviewServiceMock = {
+    getOverview: jest.fn(),
+  };
+
   beforeEach(() => {
+    overviewServiceMock.getOverview.mockReturnValue(of(overviewData.overview));
     quarterServiceMock.getQuarters.mockReturnValue(quarters);
     teamServiceMock.getTeams.mockReturnValue(teams);
 
@@ -36,6 +43,7 @@ describe('DashboardComponent', () => {
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
+        { provide: OverviewService, useValue: overviewServiceMock },
       ],
       declarations: [DashboardComponent],
     }).compileComponents();

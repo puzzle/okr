@@ -1,15 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
-import { Team } from '../../shared/services/team.service';
-import { Observable } from 'rxjs';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Overview } from '../../shared/services/overview.service';
 
 @Component({

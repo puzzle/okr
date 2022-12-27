@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import * as teamsData from '../shared/testing/mock-data/teams.json';
 import * as quartersData from '../shared/testing/mock-data/quarters.json';
+import * as overviewData from '../shared/testing/mock-data/overview.json';
 import { OverviewService } from '../shared/services/overview.service';
 
 describe('DashboardComponent', () => {
@@ -33,52 +34,7 @@ describe('DashboardComponent', () => {
   };
 
   beforeEach(() => {
-    overviewServiceMock.getOverview.mockReturnValue(
-      of([
-        {
-          team: {
-            id: 1,
-            name: 'Team 1',
-          },
-          objectives: [
-            {
-              id: 1,
-              title: 'Objective 1',
-              ownerId: 1,
-              ownerFirstname: 'Alice',
-              ownerLastname: 'Wunderland',
-              teamId: 1,
-              teamName: 'Team 1',
-              quarterId: 1,
-              quarterLabel: 'GJ 22/23-Q1',
-              description: 'This is the description of Objective 1',
-              progress: 20,
-            },
-          ],
-        },
-        {
-          team: {
-            id: 2,
-            name: 'Team 2',
-          },
-          objectives: [
-            {
-              id: 2,
-              title: 'Objective 2',
-              ownerId: 1,
-              ownerFirstname: 'Alice',
-              ownerLastname: 'Wunderland',
-              teamId: 1,
-              teamName: 'Team 1',
-              quarterId: 1,
-              quarterLabel: 'GJ 22/23-Q1',
-              description: 'This is the description of Objective 1',
-              progress: 20,
-            },
-          ],
-        },
-      ])
-    );
+    overviewServiceMock.getOverview.mockReturnValue(of(overviewData.overview));
     quarterServiceMock.getQuarters.mockReturnValue(quarters);
     teamServiceMock.getTeams.mockReturnValue(teams);
 

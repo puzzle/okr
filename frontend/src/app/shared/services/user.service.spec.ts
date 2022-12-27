@@ -1,24 +1,22 @@
 import { TestBed } from '@angular/core/testing';
-
-import { Objective, ObjectiveService } from './objective.service';
 import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import * as objectivesData from '../testing/mock-data/objectives.json';
+import { User, UserService } from './user.service';
+import * as userData from '../testing/mock-data/users.json';
 
-const response = objectivesData.objectives;
-
-describe('ObjectiveService', () => {
-  let service: ObjectiveService;
+const response = userData.users;
+describe('UserService', () => {
+  let service: UserService;
   let httpTestingController: HttpTestingController;
-  const URL = 'api/v1/teams';
+  const URL = 'api/v1/users';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
     });
-    service = TestBed.inject(ObjectiveService);
+    service = TestBed.inject(UserService);
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
@@ -26,9 +24,9 @@ describe('ObjectiveService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should get Objectives', (done) => {
-    service.getObjectivesOfTeam(42).subscribe({
-      next(response: Objective[]) {
+  test('should get Users', (done) => {
+    service.getUsers().subscribe({
+      next(response: User[]) {
         expect(response.length).toBe(3);
         done();
       },
@@ -37,7 +35,7 @@ describe('ObjectiveService', () => {
       },
     });
 
-    const req = httpTestingController.expectOne(`${URL}/42/objectives`);
+    const req = httpTestingController.expectOne(`${URL}`);
     expect(req.request.method).toEqual('GET');
     req.flush(response);
     httpTestingController.verify();

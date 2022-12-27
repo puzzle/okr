@@ -4,32 +4,12 @@ import { KeyResultDetailComponent } from './key-result-detail.component';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { By } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
   let fixture: ComponentFixture<KeyResultDetailComponent>;
-  let keyResult: KeyResultMeasure = {
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    ownerId: 2,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 20,
-      changeInfo: 'Change Infos',
-      initiatives: 'Initatives',
-      createdBy: 2,
-      createdOn: new Date('2022-12-07T00:00:00'),
-    },
-  };
+  let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
@@ -63,7 +43,7 @@ describe('KeyResultDetailComponent', () => {
     test('should have keyresult description', () => {
       const paragraphs = fixture.debugElement.queryAll(By.css('p'));
       expect(paragraphs[1].nativeElement.textContent).toEqual(
-        'This is a description'
+        'This is the description'
       );
     });
 
@@ -71,14 +51,16 @@ describe('KeyResultDetailComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasureDate')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 7, 2022');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual('Jan 1, 2022');
     });
 
     test('should have last measure date', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasurechangeInfo')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Change Infos');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual(
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+      );
     });
   });
 

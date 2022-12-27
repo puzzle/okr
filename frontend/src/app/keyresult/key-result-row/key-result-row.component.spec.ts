@@ -13,32 +13,12 @@ import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { KeyresultModule } from '../keyresult.module';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
   let fixture: ComponentFixture<KeyResultRowComponent>;
-  let keyResult: KeyResultMeasure = {
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    ownerId: 2,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 20,
-      changeInfo: 'Change Infos',
-      initiatives: 'Initatives',
-      createdBy: 2,
-      createdOn: new Date('2022-12-07T00:00:00'),
-    },
-  };
+  let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
   describe('KeyResultRow with set measure', () => {
     beforeEach(() => {
@@ -86,19 +66,19 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     test('should have right last measure when measure is set', () => {
       const ownerTag = fixture.debugElement.query(By.css('.measure-date'));
-      expect(ownerTag.nativeElement.textContent).toContain('07.12.2022');
+      expect(ownerTag.nativeElement.textContent).toContain('01.01.2022');
     });
 
     test('should have progress label with right calculated progress', () => {
       let progressLabel = fixture.debugElement.query(By.css('.h6'));
-      expect(progressLabel.nativeElement.textContent).toEqual('20%');
+      expect(progressLabel.nativeElement.textContent).toEqual('60%');
     });
 
     test('should have progress bar with progress from objective', () => {
       let progressBar = fixture.nativeElement
         .querySelector('#progressContainer')
         .querySelector('mat-progress-bar');
-      expect(progressBar.getAttribute('ng-reflect-value')).toEqual('20');
+      expect(progressBar.getAttribute('ng-reflect-value')).toEqual('60');
     });
 
     test('should have menu button with icon', () => {

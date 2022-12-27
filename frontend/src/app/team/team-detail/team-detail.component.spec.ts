@@ -14,46 +14,16 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ObjectiveModule } from '../../objective/objective.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import * as teamsData from '../../shared/testing/mock-data/teams.json';
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
   let fixtureTeamDetails: ComponentFixture<TeamDetailComponent>;
 
-  let objectiveList: Observable<Objective[]> = of([
-    {
-      id: 1,
-      teamName: 'Team Name',
-      teamId: 1,
-      title: 'Wir wollen unseren Umsatz verdoppeln',
-      ownerId: 2,
-      ownerFirstname: 'Ruedi',
-      ownerLastname: 'Grochde',
-      description: 'Sehr wichtig',
-      progress: 5,
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      created: '01.01.2022',
-    },
-    {
-      id: 2,
-      teamName: 'Team Name',
-      teamId: 1,
-      title: 'Wir wollen unser Personal verdreifachen',
-      ownerId: 2,
-      ownerFirstname: 'Ruedi',
-      ownerLastname: 'Grochde',
-      description: 'Sehr wichtig',
-      progress: 5,
-      quarterId: 1,
-      quarterLabel: 'GJ 22/23-Q1',
-      created: '01.01.2022',
-    },
-  ]);
+  let objectiveList: Observable<Objective[]> = of(objectivesData.objectives);
 
-  let team: Team = {
-    id: 1,
-    name: 'Puzzle ITC',
-  };
+  let team: Team = teamsData.teams[0];
 
   const mockObjectiveService = {
     getObjectivesOfTeam: jest.fn(),
@@ -96,12 +66,12 @@ describe('TeamDetailComponent', () => {
   test('should have title Puzzle ITC Objectives', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
-    ).toEqual('Puzzle ITC Objectives');
+    ).toEqual('Team 1 Objectives');
   });
 
-  test('should create 2 hr when having 1 team with 1 objective', () => {
+  test('should create 3 hr when having 1 team with 3 objectives', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelectorAll('hr').length
-    ).toEqual(2);
+    ).toEqual(3);
   });
 });

@@ -5,29 +5,9 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import * as goalsData from '../testing/mock-data/goals.json';
 
-const respons = [
-  {
-    objective: {
-      id: 1,
-      title: 'Objective title',
-      description: 'Objective description',
-    },
-    keyresult: {
-      id: 1,
-      title: 'KeyResult title',
-      description: 'KeyResult description',
-    },
-    teamId: 1,
-    teamName: 'Team 1',
-    progress: 30,
-    quarterLabel: 'GJ 22/23-Q1',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 1,
-    targetValue: 100,
-  },
-];
+const response = goalsData.goals[0];
 
 describe('GoalService', () => {
   let service: GoalService;
@@ -49,7 +29,7 @@ describe('GoalService', () => {
   test('should get goal by keyresult id', (done) => {
     service.getGoalByKeyResultId(42).subscribe({
       next(response: Goal) {
-        expect(response).toEqual(respons);
+        expect(response).toEqual(response);
         done();
       },
       error(error) {
@@ -59,7 +39,7 @@ describe('GoalService', () => {
 
     const req = httpTestingController.expectOne(`${URL}/42`);
     expect(req.request.method).toEqual('GET');
-    req.flush(respons);
+    req.flush(response);
     httpTestingController.verify();
   });
 });

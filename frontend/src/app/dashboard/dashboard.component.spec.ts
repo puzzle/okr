@@ -1,17 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
-import { TeamService } from '../shared/services/team.service';
+import { Team, TeamService } from '../shared/services/team.service';
 import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { QuarterService } from '../shared/services/quarter.service';
+import { Quarter, QuarterService } from '../shared/services/quarter.service';
+import * as teamsData from '../shared/testing/mock-data/teams.json';
+import * as quartersData from '../shared/testing/mock-data/quarters.json';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+
+  let quarters: Observable<Quarter[]> = of(quartersData.quarters);
+
+  let teams: Observable<Team[]> = of(teamsData.teams);
 
   const teamServiceMock = {
     getTeams: jest.fn(),
@@ -22,22 +28,8 @@ describe('DashboardComponent', () => {
   };
 
   beforeEach(() => {
-    quarterServiceMock.getQuarters.mockReturnValue(
-      of([
-        { quarter: 'GJ 21/22-Q1' },
-        { quarter: 'GJ 21/22-Q2' },
-        { quarter: 'GJ 21/22-Q3' },
-        { quarter: 'GJ 21/22-Q4' },
-        { quarter: 'GJ 22/23-Q1' },
-        { quarter: 'GJ 22/23-Q2' },
-      ])
-    );
-    teamServiceMock.getTeams.mockReturnValue(
-      of([
-        { id: 1, name: 'Team1' },
-        { id: 2, name: 'Team2' },
-      ])
-    );
+    quarterServiceMock.getQuarters.mockReturnValue(quarters);
+    teamServiceMock.getTeams.mockReturnValue(teams);
 
     TestBed.configureTestingModule({
       imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule],
@@ -74,27 +66,27 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  test('should display 6 items in quarter dropdown', () => {
+  test('should display 5 items in quarter dropdown', () => {
     fixture.debugElement
       .queryAll(By.css('mat-select'))[1]
       .nativeElement.click();
     fixture.detectChanges();
     const options = fixture.debugElement.queryAll(By.css('mat-option'));
 
-    expect(options.length).toEqual(6);
+    expect(options.length).toEqual(5);
   });
 
-  test('should display 2 teams in team dropdown', () => {
+  test('should display 3 teams in team dropdown', () => {
     fixture.debugElement.query(By.css('mat-select')).nativeElement.click();
     fixture.detectChanges();
     const options = fixture.debugElement.queryAll(By.css('mat-option'));
 
-    expect(options.length).toEqual(2);
+    expect(options.length).toEqual(3);
   });
 
-  test('should display 2 team detail components when having 2 teams', () => {
+  test('should display 3 team detail components when having 3 teams', () => {
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
-    ).toEqual(2);
+    ).toEqual(3);
   });
 });

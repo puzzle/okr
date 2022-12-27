@@ -8,38 +8,20 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { Goal, GoalService } from '../../shared/services/goal.service';
+import * as goalsData from '../../shared/testing/mock-data/goals.json';
 
 describe('KeyresultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
   let fixture: ComponentFixture<KeyResultOverviewComponent>;
 
-  let goal1: Observable<Goal> = of({
-    objective: {
-      id: 1,
-      title: 'Objective title',
-      description: 'Objective description',
-    },
-    keyresult: {
-      id: 1,
-      title: 'KeyResult title',
-      description: 'KeyResult description',
-    },
-    teamId: 1,
-    teamName: 'Team 1',
-    progress: 30,
-    quarterLabel: 'GJ 22/23-Q1',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 1,
-    targetValue: 100,
-  });
+  let goal: Observable<Goal> = of(goalsData.goals[0]);
 
   const mockGoalService = {
     getGoalByKeyResultId: jest.fn(),
   };
 
   beforeEach(() => {
-    mockGoalService.getGoalByKeyResultId.mockReturnValue(goal1);
+    mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
 
     TestBed.configureTestingModule({
       imports: [
@@ -67,7 +49,7 @@ describe('KeyresultOverviewComponent', () => {
   });
 
   test('should set goal of component', () => {
-    expect(component.goal$).toEqual(goal1);
+    expect(component.goal$).toEqual(goal);
   });
 
   test('should have 4 strong titles', () => {

@@ -10,13 +10,12 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import * as teamsData from '../../shared/testing/mock-data/teams.json';
 
 let component: TeamFormComponent;
 let fixture: ComponentFixture<TeamFormComponent>;
-let team: Team = {
-  id: 1,
-  name: 'Team1',
-};
+
+let team: Team = teamsData.teams[0];
 
 describe('TeamFormComponent', () => {
   describe('Create new Team', () => {
@@ -129,7 +128,7 @@ describe('TeamFormComponent', () => {
       fixture.detectChanges();
 
       expect(inputFields.nativeElement.placeholder).toContain('z.B. DevTree');
-      expect(inputFields.nativeElement.value).toEqual('Team1');
+      expect(inputFields.nativeElement.value).toEqual('Team 1');
     });
 
     test('should have 2 buttons', () => {
@@ -151,7 +150,7 @@ describe('TeamFormComponent', () => {
       component.teamForm.get('name')?.setValue(team.name);
       fixture.detectChanges();
       expect(component.teamForm.valid).toBeTruthy();
-      expect(inputField.nativeElement.value).toEqual('Team1');
+      expect(inputField.nativeElement.value).toEqual('Team 1');
       expect(buttons.nativeElement.disabled).toEqual(false);
 
       component.teamForm.get('name')?.setValue('');

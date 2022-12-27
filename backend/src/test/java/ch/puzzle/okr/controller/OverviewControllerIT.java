@@ -3,10 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.OverviewDto;
 import ch.puzzle.okr.dto.TeamDto;
-import ch.puzzle.okr.mapper.OverviewMapper;
-import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.OverviewService;
-import ch.puzzle.okr.service.TeamService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,10 +32,6 @@ public class OverviewControllerIT {
     private MockMvc mvc;
     @MockBean
     private OverviewService overviewService;
-
-    static Team teamPuzzle = Team.Builder.builder().withId(1L).withName("Puzzle").build();
-    static Team teamOKR = Team.Builder.builder().withId(2L).withName("OKR").build();
-    static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
 
     static OverviewDto overviewDtoPuzzle = new OverviewDto(new TeamDto(1L, "Puzzle"),
             List.of(new ObjectiveDto(1L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, "GJ 22/23-Q2",

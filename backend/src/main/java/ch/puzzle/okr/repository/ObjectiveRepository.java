@@ -16,4 +16,8 @@ public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
     Double getProgressOfObjective(@Param("objective_id") Long objectiveId);
 
     List<Objective> findByTeamId(long id);
+
+    @Query(value = "select o from Objective as o where (:quarterId is null or o.quarter.id = :quarterId) and "
+            + "(:teamId is null or o.team.id = :teamId)")
+    List<Objective> findByQuarterIdAndTeamId(@Param("quarterId") Long quarterId, @Param("teamId") Long teamId);
 }

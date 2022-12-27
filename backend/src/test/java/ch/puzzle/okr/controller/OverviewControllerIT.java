@@ -53,12 +53,10 @@ public class OverviewControllerIT {
                     new ObjectiveDto(7L, "Objective 7", 1L, "Alice", "Wunderland", 2L, "OKR", 1L, "GJ 22/23-Q2",
                             "This is a description", 20L)));
 
-    static OverviewDto overviewDtoKuchen = new OverviewDto(new TeamDto(3L, "Kuchen"),
-            List.of(new ObjectiveDto(8L, "Objective 8", 1L, "Alice", "Wunderland", 3L, "Kuchen", 1L, "GJ 22/23-Q2",
-                            "This is a description", 20L)));
+    static OverviewDto overviewDtoKuchen = new OverviewDto(new TeamDto(3L, "Kuchen"), List.of(new ObjectiveDto(8L,
+            "Objective 8", 1L, "Alice", "Wunderland", 3L, "Kuchen", 1L, "GJ 22/23-Q2", "This is a description", 20L)));
 
-    static OverviewDto overviewDtoFindus = new OverviewDto(new TeamDto(4L, "Findus"),
-            Collections.emptyList());
+    static OverviewDto overviewDtoFindus = new OverviewDto(new TeamDto(4L, "Findus"), Collections.emptyList());
 
     @BeforeEach
     void setUp() {
@@ -67,19 +65,17 @@ public class OverviewControllerIT {
 
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), null)).willReturn(List.of(overviewDtoPuzzle, overviewDtoOKR, overviewDtoKuchen));
+        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), null))
+                .willReturn(List.of(overviewDtoPuzzle, overviewDtoOKR, overviewDtoKuchen));
 
         mvc.perform(get("/api/v1/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
-                .andExpect(jsonPath("$[0].team.id", Is.is(1)))
-                .andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
+                .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
                 .andExpect(jsonPath("$[0].objectives[0].id", Is.is(1)))
-                .andExpect(jsonPath("$[0].objectives[1].id", Is.is(2)))
-                .andExpect(jsonPath("$[1].team.id", Is.is(2)))
+                .andExpect(jsonPath("$[0].objectives[1].id", Is.is(2))).andExpect(jsonPath("$[1].team.id", Is.is(2)))
                 .andExpect(jsonPath("$[1].team.name", Is.is("OKR")))
                 .andExpect(jsonPath("$[1].objectives[0].id", Is.is(5)))
-                .andExpect(jsonPath("$[1].objectives[1].id", Is.is(7)))
-                .andExpect(jsonPath("$[2].team.id", Is.is(3)))
+                .andExpect(jsonPath("$[1].objectives[1].id", Is.is(7))).andExpect(jsonPath("$[2].team.id", Is.is(3)))
                 .andExpect(jsonPath("$[2].team.name", Is.is("Kuchen")))
                 .andExpect(jsonPath("$[2].objectives[0].id", Is.is(8)));
     }
@@ -94,7 +90,8 @@ public class OverviewControllerIT {
 
     @Test
     void shouldReturnOnlyFilteredTeams() throws Exception {
-        BDDMockito.given(overviewService.getOverview(List.of(1L,3L), null)).willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
+        BDDMockito.given(overviewService.getOverview(List.of(1L, 3L), null))
+                .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
 
         mvc.perform(get("/api/v1/overview?team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -107,20 +104,21 @@ public class OverviewControllerIT {
 
     @Test
     void shouldReturnOnlyFilteredObjectivesByQuarter() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 1L)).willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
+        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 1L))
+                .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
 
         mvc.perform(get("/api/v1/overview?quarter=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
-                .andExpect(jsonPath("$[0].objectives.size()", Is.is(2)))
-                .andExpect(jsonPath("$[1].team.id", Is.is(3)))
+                .andExpect(jsonPath("$[0].objectives.size()", Is.is(2))).andExpect(jsonPath("$[1].team.id", Is.is(3)))
                 .andExpect(jsonPath("$[1].team.name", Is.is("Kuchen")))
                 .andExpect(jsonPath("$[1].objectives.size()", Is.is(1)));
     }
 
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 5L)).willReturn(List.of(overviewDtoFindus));
+        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 5L))
+                .willReturn(List.of(overviewDtoFindus));
 
         mvc.perform(get("/api/v1/overview?quarter=5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))

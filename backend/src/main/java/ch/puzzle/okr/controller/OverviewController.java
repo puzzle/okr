@@ -31,9 +31,10 @@ public class OverviewController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OverviewDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't return list of teams with their objectives", content = @Content) })
     @GetMapping("")
-    public ResponseEntity<List<OverviewDto>> getOverview(@RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter, @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(overviewService.getOverview(teamFilter, quarterFilter));
+    public ResponseEntity<List<OverviewDto>> getOverview(
+            @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
+            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter) {
+        return ResponseEntity.status(HttpStatus.OK).body(overviewService.getOverview(teamFilter, quarterFilter));
     }
 
 }

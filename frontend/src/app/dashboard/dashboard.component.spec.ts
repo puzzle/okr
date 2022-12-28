@@ -14,6 +14,7 @@ import { Overview, OverviewService } from '../shared/services/overview.service';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -44,7 +45,12 @@ describe('DashboardComponent', () => {
     teamServiceMock.getTeams.mockReturnValue(teams);
 
     TestBed.configureTestingModule({
-      imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule],
+      imports: [
+        AppModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },

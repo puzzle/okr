@@ -98,7 +98,7 @@ describe('ObjectiveComponent', () => {
   test('should have progress bar with progress from objective', () => {
     let progressBar = fixture.nativeElement
       .querySelector('#progressContainer')
-      .querySelector('mat-progress-bar');
+      .querySelector('app-progress-bar');
     expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
       objective.progress!.toString()
     );

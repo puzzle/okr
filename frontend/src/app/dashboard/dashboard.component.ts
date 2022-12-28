@@ -16,6 +16,8 @@ export class DashboardComponent implements OnInit {
   teamList!: Observable<Team[]>;
   teams$!: Observable<Overview[]>;
   quarters$!: Observable<Quarter[]> | undefined;
+  teamFilter: number[] = [];
+  quarterFilter!: number;
 
   constructor(
     private teamService: TeamService,
@@ -25,15 +27,26 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.teamList = this.teamService.getTeams();
-    this.teams$ = this.overviewService.getOverview();
+    this.teams$ = this.overviewService.getOverview(
+      this.quarterFilter,
+      this.teamFilter
+    );
     this.quarters$ = this.quarterService.getQuarters();
   }
 
-  changeTeamFilter(value: Team[]) {
-    console.log(value);
+  changeTeamFilter(value: number[]) {
+    this.teamFilter = value;
+    this.teams$ = this.overviewService.getOverview(
+      this.quarterFilter,
+      this.teamFilter
+    );
   }
 
-  changeQuarterFilter(value: Quarter) {
-    console.log(value);
+  changeQuarterFilter(value: number) {
+    this.quarterFilter = value;
+    this.teams$ = this.overviewService.getOverview(
+      this.quarterFilter,
+      this.teamFilter
+    );
   }
 }

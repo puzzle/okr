@@ -31,11 +31,15 @@ public class OverviewService {
         Team puzzleTeam = teamRepository.findByName("Puzzle ITC");
         List<Team> teams;
         if (teamFilter.contains(puzzleTeam.getId()) || teamFilter.isEmpty()) {
-            teams = Stream.concat(Stream.of(puzzleTeam), teamRepository.findAllById(teamFilter).stream()
-                    .filter(team -> !"Puzzle ITC".equals(team.getName()))
-                    .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName()))).toList();
+            teams = Stream
+                    .concat(Stream.of(puzzleTeam),
+                            teamRepository.findAllById(teamFilter).stream()
+                                    .filter(team -> !"Puzzle ITC".equals(team.getName()))
+                                    .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())))
+                    .toList();
         } else {
-            teams = teamRepository.findAllById(teamFilter).stream().sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())).toList();
+            teams = teamRepository.findAllById(teamFilter).stream()
+                    .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())).toList();
         }
         return teams.stream().map(team -> overviewMapper.toDto(team,
                 objectiveRepository.findByQuarterIdAndTeamId(quarterFilter, team.getId()))).toList();

@@ -10,6 +10,7 @@ export interface Measure {
   initiatives: string;
   createdBy: number;
   createdOn: string;
+  measureDate: string;
 }
 
 export interface KeyResultMeasure {

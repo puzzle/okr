@@ -37,7 +37,7 @@ describe('KeyResultDetailComponent', () => {
 
       expect(strongs[0].nativeElement.textContent).toEqual('Details');
 
-      expect(strongs[1].nativeElement.textContent).toEqual('Letzte Messung');
+      expect(strongs[1].nativeElement.textContent).toEqual('Messungszeitpunkt');
     });
 
     test('should have keyresult description', () => {
@@ -51,10 +51,10 @@ describe('KeyResultDetailComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasureDate')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Jan 1, 2022');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 23, 2022');
     });
 
-    test('should have last measure date', () => {
+    test('should have change info title', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasurechangeInfo')
       );

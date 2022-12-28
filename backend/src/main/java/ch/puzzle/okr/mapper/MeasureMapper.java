@@ -21,7 +21,7 @@ public class MeasureMapper {
         } else {
             return new MeasureDto(measure.getId(), measure.getKeyResult().getId(), measure.getValue(),
                     measure.getChangeInfo(), measure.getInitiatives(), measure.getCreatedBy().getId(),
-                    measure.getCreatedOn());
+                    measure.getCreatedOn(), measure.getMeasureDate());
         }
     }
 
@@ -29,6 +29,7 @@ public class MeasureMapper {
         return Measure.Builder.builder().withId(measureDto.getId())
                 .withKeyResult(this.measureService.mapKeyResult(measureDto)).withValue(measureDto.getValue())
                 .withChangeInfo(measureDto.getChangeInfo()).withInitiatives(measureDto.getInitiatives())
-                .withCreatedBy(this.measureService.mapUser(measureDto)).withCreatedOn(LocalDateTime.now()).build();
+                .withCreatedBy(this.measureService.mapUser(measureDto)).withCreatedOn(LocalDateTime.now())
+                .withMeasureDate(measureDto.getMeasureDate()).build();
     }
 }

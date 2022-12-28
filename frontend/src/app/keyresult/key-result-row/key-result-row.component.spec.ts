@@ -66,7 +66,7 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     test('should have right last measure when measure is set', () => {
       const ownerTag = fixture.debugElement.query(By.css('.measure-date'));
-      expect(ownerTag.nativeElement.textContent).toContain('01.01.2022');
+      expect(ownerTag.nativeElement.textContent).toContain('23.12.2022');
     });
 
     test('should have progress label with right calculated progress', () => {
@@ -154,8 +154,10 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have right last measure when measure is set', () => {
-      const ownerTag = fixture.debugElement.query(By.css('.measure-null-date'));
-      expect(ownerTag.nativeElement.textContent).toEqual(' - ');
+      const measureTag = fixture.debugElement.query(
+        By.css('.measure-null-date')
+      );
+      expect(measureTag.nativeElement.textContent).toContain('-');
     });
   });
 });

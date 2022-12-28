@@ -31,6 +31,9 @@ public class Measure {
     private User createdBy;
 
     @NotNull
+    private LocalDateTime measureDate;
+
+    @NotNull
     private LocalDateTime createdOn;
 
     public Measure() {
@@ -43,6 +46,7 @@ public class Measure {
         setChangeInfo(builder.changeInfo);
         setInitiatives(builder.initiatives);
         setCreatedBy(builder.createdBy);
+        setMeasureDate(builder.measureDate);
         setCreatedOn(builder.createdOn);
     }
 
@@ -90,6 +94,14 @@ public class Measure {
         this.createdBy = createdBy;
     }
 
+    public LocalDateTime getMeasureDate() {
+        return measureDate;
+    }
+
+    public void setMeasureDate(LocalDateTime measureDate) {
+        this.measureDate = measureDate;
+    }
+
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -101,8 +113,8 @@ public class Measure {
     @Override
     public String toString() {
         return "Measure{" + "id=" + id + ", keyResult=" + keyResult + ", value=" + value + ", changeInfo='" + changeInfo
-                + '\'' + ", initiatives='" + initiatives + '\'' + ", createdBy=" + createdBy + ", createdOn="
-                + createdOn + '}';
+                + '\'' + ", initiatives='" + initiatives + '\'' + ", createdBy=" + createdBy + ", measureDate="
+                + measureDate + ", createdOn=" + createdOn + '}';
     }
 
     @Override
@@ -115,12 +127,12 @@ public class Measure {
         return Objects.equals(id, measure.id) && Objects.equals(keyResult, measure.keyResult)
                 && Objects.equals(value, measure.value) && Objects.equals(changeInfo, measure.changeInfo)
                 && Objects.equals(initiatives, measure.initiatives) && Objects.equals(createdBy, measure.createdBy)
-                && Objects.equals(createdOn, measure.createdOn);
+                && Objects.equals(measureDate, measure.measureDate) && Objects.equals(createdOn, measure.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, createdOn);
+        return Objects.hash(id, keyResult, value, changeInfo, initiatives, createdBy, measureDate, createdOn);
     }
 
     public static final class Builder {
@@ -130,6 +142,7 @@ public class Measure {
         private @NotNull @NotBlank String changeInfo;
         private @Size(max = 4096) String initiatives;
         private @NotNull User createdBy;
+        private @NotNull LocalDateTime measureDate;
         private @NotNull LocalDateTime createdOn;
 
         private Builder() {
@@ -166,6 +179,11 @@ public class Measure {
 
         public Builder withCreatedBy(@NotNull User createdBy) {
             this.createdBy = createdBy;
+            return this;
+        }
+
+        public Builder withMeasureDate(@NotNull LocalDateTime measureDate) {
+            this.measureDate = measureDate;
             return this;
         }
 

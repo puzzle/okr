@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
 import { Team, TeamService } from '../shared/services/team.service';
-import { By } from '@angular/platform-browser';
 import { Observable, of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,7 +10,10 @@ import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import * as teamsData from '../shared/testing/mock-data/teams.json';
 import * as quartersData from '../shared/testing/mock-data/quarters.json';
 import * as overviewData from '../shared/testing/mock-data/overview.json';
-import { OverviewService } from '../shared/services/overview.service';
+import { Overview, OverviewService } from '../shared/services/overview.service';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -20,6 +22,7 @@ describe('DashboardComponent', () => {
   let quarters: Observable<Quarter[]> = of(quartersData.quarters);
 
   let teams: Observable<Team[]> = of(teamsData.teams);
+  let overview: Observable<Overview[]> = of(overviewData.overview);
 
   const teamServiceMock = {
     getTeams: jest.fn(),
@@ -33,8 +36,10 @@ describe('DashboardComponent', () => {
     getOverview: jest.fn(),
   };
 
+  let loader: HarnessLoader;
+
   beforeEach(() => {
-    overviewServiceMock.getOverview.mockReturnValue(of(overviewData.overview));
+    overviewServiceMock.getOverview.mockReturnValue(overview);
     quarterServiceMock.getQuarters.mockReturnValue(quarters);
     teamServiceMock.getTeams.mockReturnValue(teams);
 
@@ -49,6 +54,7 @@ describe('DashboardComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
+    loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -74,27 +80,56 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  test('should display 5 items in quarter dropdown', () => {
-    fixture.debugElement
-      .queryAll(By.css('mat-select'))[1]
-      .nativeElement.click();
-    fixture.detectChanges();
-    const options = fixture.debugElement.queryAll(By.css('mat-option'));
-
-    expect(options.length).toEqual(5);
-  });
-
-  test('should display 3 teams in team dropdown', () => {
-    fixture.debugElement.query(By.css('mat-select')).nativeElement.click();
-    fixture.detectChanges();
-    const options = fixture.debugElement.queryAll(By.css('mat-option'));
-
-    expect(options.length).toEqual(3);
-  });
-
   test('should display 3 team detail components when having 3 teams', () => {
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
     ).toEqual(3);
+  });
+
+  test('should select quarter filter in dropdown and change filter', async () => {
+    const select = await loader.getHarness(
+      MatSelectHarness.with({
+        selector: '#quarterDropdown',
+      })
+    );
+
+    await select.open();
+    const dropDownElements = await select.getOptions();
+    const bugOption = await select.getOptions({ text: 'GJ 22/23-Q1' });
+    await bugOption[0].click();
+
+    expect(component.quarterFilter).toEqual(1);
+    expect(dropDownElements.length).toEqual(5);
+    expect(await select.getValueText()).toEqual('GJ 22/23-Q1');
+    expect(await select.isDisabled()).toBeFalsy();
+    expect(await select.isOpen()).toBeFalsy();
+  });
+
+  test('should select team filter in dropdown and change filter', async () => {
+    const select = await loader.getHarness(
+      MatSelectHarness.with({
+        selector: '#teamDropdown',
+      })
+    );
+
+    await select.open();
+    const dropDownElements = await select.getOptions();
+    const bugOptionFirstTeam = await select.getOptions({ text: 'Team 1' });
+    const bugOptionSecondTeam = await select.getOptions({ text: 'Team 2' });
+    await bugOptionFirstTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 1');
+    expect(component.teamFilter.length).toEqual(1);
+    expect(component.teamFilter[0]).toEqual(1);
+
+    await bugOptionSecondTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 1, Team 2');
+    expect(component.teamFilter.length).toEqual(2);
+    expect(component.teamFilter[0]).toEqual(1);
+    expect(component.teamFilter[1]).toEqual(2);
+
+    expect(dropDownElements.length).toEqual(3);
+    expect(await select.isDisabled()).toBeFalsy();
   });
 });

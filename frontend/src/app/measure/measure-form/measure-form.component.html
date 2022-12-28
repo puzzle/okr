@@ -4,7 +4,7 @@
 </span>
 
 <p class="fs-2 heading-label">
-  {{ this.create ? "Messung hinzufügen" : "Keyresult bearbeiten" }}
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
 <div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
   <form
@@ -28,25 +28,31 @@
           class="title-input"
         />
       </mat-form-field>
-      <mat-label *ngIf="keyresult$ | async as keyresult"
-        >Einheit: {{ keyresult.unit }}</mat-label
+      <mat-label *ngIf="keyresult$ | async as keyresult" class="unit-label"
+        ><b>{{ keyresult.unit }}</b></mat-label
       >
     </div>
 
-    <mat-form-field appearance="fill">
-      <input
-        matInput
-        [matDatepicker]="picker"
-        formControlName="measureDate"
-        [value]="measure.measureDate"
-      />
-      <mat-label>Datum der Messung</mat-label>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-hint>DD/MM/YYYY</mat-hint>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 datepicker-input margin-right"
+    >
+      <p class="fw-bold">Datum der Messung</p>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="measureDate"
+          [value]="measure.measureDate"
+        />
+        <mat-label>Datum der Messung</mat-label>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
 
-    <div class="d-flex align-items-center justify-content-end gap-4">
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 margin-right"
+    >
       <p class="fw-bold">Veränderung seit letzter Messung</p>
       <mat-form-field appearance="outline" class="form-field-width">
         <mat-label>Text hinzufügen</mat-label>
@@ -61,7 +67,9 @@
       </mat-form-field>
     </div>
 
-    <div class="d-flex align-items-center justify-content-end gap-4">
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 margin-right"
+    >
       <p class="fw-bold">Massnahmen</p>
       <mat-form-field appearance="outline" class="form-field-width">
         <mat-label>Text hinzufügen</mat-label>

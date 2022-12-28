@@ -6,6 +6,8 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 
+const response = 'svg code';
+
 describe('SvgService', () => {
   let service: SvgService;
   let httpTestingController: HttpTestingController;
@@ -19,13 +21,14 @@ describe('SvgService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  test('should be created', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
   test('should get svg', (done) => {
     service.getSvg('progress_bar.svg').subscribe({
-      next() {
+      next(response: string) {
+        expect(response).toEqual(response);
         done();
       },
       error(error) {
@@ -35,6 +38,7 @@ describe('SvgService', () => {
 
     const req = httpTestingController.expectOne(`${URL}/progress_bar.svg`);
     expect(req.request.method).toEqual('GET');
+    req.flush(response);
     httpTestingController.verify();
   });
 });

@@ -51,7 +51,7 @@ describe('KeyResultDetailComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('.lastMeasureDate')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toEqual('Jan 1, 2022');
+      expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 23, 2022');
     });
 
     test('should have change info title', () => {

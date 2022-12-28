@@ -53,6 +53,17 @@ describe('MeasureFormComponent', () => {
     measureDate: new Date('2023-01-05'),
   });
 
+  let receivedMeasure: Measure = {
+    id: 1,
+    keyResultId: 1,
+    value: 30,
+    changeInfo: 'New Changeinfo',
+    initiatives: 'Initiatives',
+    createdBy: 1,
+    createdOn: new Date('2022-12-28T00:00:00.000Z'),
+    measureDate: new Date('2023-01-05T01:00:00.000Z'),
+  };
+
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
   };
@@ -205,14 +216,29 @@ describe('MeasureFormComponent', () => {
     });
 
     it('should set form valid when no changes and set to invalid if empty input', () => {
+      let button = fixture.debugElement.query(By.css('.create-button'));
+      expect(button.nativeElement.disabled).toEqual(false);
       expect(component.measureForm.valid).toEqual(true);
 
       component.measureForm.get('changeInfo')?.setValue('');
       fixture.detectChanges();
 
-      let button = fixture.debugElement.query(By.css('.create-button'));
+      button = fixture.debugElement.query(By.css('.create-button'));
       expect(component.measureForm.valid).toEqual(false);
       expect(button.nativeElement.disabled).toEqual(true);
+    });
+
+    it('should save edited measure', () => {
+      component.measureForm.get('changeInfo')?.setValue('New Changeinfo');
+      component.measureForm.get('value')?.setValue(30);
+      fixture.detectChanges();
+      component.save();
+
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
+        receivedMeasure,
+        false
+      );
     });
   });
 

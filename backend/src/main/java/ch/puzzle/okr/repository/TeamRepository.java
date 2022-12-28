@@ -12,4 +12,6 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
     // every value is returned instead of an empty list
     @Query(value = "select t from Team as t where coalesce(:teamIds, null) is null or t.id in (:teamIds)")
     List<Team> findAllById(@Param("teamIds") List<Long> teamIds);
+
+    Team findByName(String name);
 }

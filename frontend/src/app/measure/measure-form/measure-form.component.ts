@@ -71,6 +71,7 @@ export class MeasureFormComponent implements OnInit {
 
     this.measure$.subscribe((measure) => {
       const { id, keyResultId, createdBy, createdOn, ...restMeasure } = measure;
+      restMeasure.measureDate = new Date(measure.measureDate);
       this.measureForm.setValue(restMeasure);
     });
   }

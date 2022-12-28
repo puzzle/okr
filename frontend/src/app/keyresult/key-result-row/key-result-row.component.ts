@@ -53,7 +53,7 @@ export class KeyResultRowComponent implements OnInit {
   }
 
   public formatDate(): string {
-    if (this.keyResult.measure?.measureDate! == undefined) {
+    if (this.keyResult.measure?.measureDate == undefined) {
       return '-';
     }
     var convertedDate: Date = new Date(this.keyResult.measure?.measureDate!);

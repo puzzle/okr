@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ProgressModule } from '../progress/progress.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatInputModule,
     MatSelectModule,
+    ProgressModule,
   ],
 })
 export class KeyresultModule {}

@@ -62,6 +62,16 @@ export class MeasureFormComponent implements OnInit {
             map((keyresult) => {
               measure.keyResultId = keyresult.id!;
               // measure.createdBy = loggedInUser
+              if (keyresult.unit == 'BINARY') {
+                this.measureForm
+                  .get('value')
+                  ?.addValidators(Validators.pattern('^[0-1]{1}$'));
+              } else if (keyresult.unit == 'PERCENT') {
+                this.measureForm
+                  .get('value')
+                  ?.addValidators(Validators.pattern('^[0-9][0-9]?$|^100$'));
+              }
+
               return measure;
             })
           );

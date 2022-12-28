@@ -5,19 +5,10 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import * as measureData from '../testing/mock-data/measure.json';
 
-const respons = [
-  {
-    id: 1,
-    keyResultId: 1,
-    value: 20,
-    changeInfo: 'Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: new Date(),
-    measureDate: new Date(),
-  },
-];
+const respons = measureData.measure;
+const badRespons = 'Did not find the Measure with requested id';
 
 describe('MeasureService', () => {
   let service: MeasureService;
@@ -50,6 +41,22 @@ describe('MeasureService', () => {
     const req = httpTestingController.expectOne(`${URL}/1`);
     expect(req.request.method).toEqual('GET');
     req.flush(respons);
+    httpTestingController.verify();
+  });
+
+  test('should return error when no measure with id', (done) => {
+    service.getMeasureById(34567).subscribe({
+      next() {
+        done('should have a 404 Not Found');
+      },
+      error() {
+        done();
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}/34567`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(null, { status: 404, statusText: 'Not Found' });
     httpTestingController.verify();
   });
 });

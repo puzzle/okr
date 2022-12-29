@@ -54,6 +54,18 @@ export class MeasureFormComponent implements OnInit {
         const measureId = getNumberOrNull(params.get('measureId'));
         if (measureId) {
           this.create = false;
+          this.keyresult$.subscribe((keyresult) => {
+            if (keyresult.unit == 'BINARY') {
+              this.measureForm
+                .get('value')
+                ?.addValidators(Validators.pattern('^[0-1]{1}$'));
+            } else if (keyresult.unit == 'PERCENT') {
+              this.measureForm
+                .get('value')
+                ?.addValidators(Validators.pattern('^[0-9][0-9]?$|^100$'));
+            }
+          });
+
           return this.measureService.getMeasureById(measureId);
         } else {
           this.create = true;

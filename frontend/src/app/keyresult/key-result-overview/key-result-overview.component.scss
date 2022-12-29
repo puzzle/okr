@@ -13,3 +13,12 @@
   margin-left: 20px;
   width: 50%;
 }
+
+.row {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.column {
+  height: max-content;
+}

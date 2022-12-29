@@ -1,4 +1,5 @@
-<div class="key-result-overview-container" *ngIf="goal$ | async as goal">
+<!--<div class="row">-->
+<div class="key-result-overview-container column" *ngIf="goal$ | async as goal">
   <p class="headline-large">Keyresult Beschreibung</p>
   <div class="key-result-overview-text">
     <p class="key-result-title">
@@ -26,3 +27,8 @@
     </p>
   </div>
 </div>
+
+<div class="column">
+  <app-diagram></app-diagram>
+</div>
+<!--</div>-->

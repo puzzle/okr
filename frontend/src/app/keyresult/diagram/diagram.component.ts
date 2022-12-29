@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js/auto';
 import 'chartjs-adapter-moment';
-import { Objective } from '../../shared/services/objective.service';
+import {
+  KeyResultService,
+  Measure,
+} from '../../shared/services/key-result.service';
+import { Observable } from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -11,11 +15,35 @@ Chart.register(...registerables);
   styleUrls: ['./diagram.component.scss'],
 })
 export class DiagramComponent implements OnInit {
-  @Input() keyResultId!: Objective;
+  @Input() keyResultId!: number;
+  measures!: Observable<Measure[]>;
 
-  constructor() {}
+  constructor(private keyresultService: KeyResultService) {}
 
   ngOnInit(): void {
+    this.measures = this.keyresultService.getMeasuresOfKeyResult(
+      this.keyResultId
+    );
+    this.measures.subscribe((measures) => {
+      console.log(measures);
+
+      this.generateDiagram(measures);
+    });
+  }
+
+  generateDiagram(measures: Measure[]) {
+    let measureDates: string[] = [];
+    measures.forEach(function (item) {
+      measureDates.push(item.measureDate);
+    });
+    let measureValues: number[] = [];
+    measures.forEach(function (item) {
+      measureValues.push(item.value);
+    });
+
+    console.log(measureDates);
+    console.log(measureValues);
+
     const plugin = {
       id: 'chart_area_background_color',
       beforeDraw: (

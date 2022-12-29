@@ -42,6 +42,12 @@ export class KeyResultService {
     );
   }
 
+  public getMeasuresOfKeyResult(keyresultId: number): Observable<Measure[]> {
+    return this.httpClient.get<Measure[]>(
+      '/api/v1/keyresults/' + keyresultId + '/measures'
+    );
+  }
+
   getKeyResultById(keyresultId: number) {
     return this.httpClient.get<KeyResultMeasure>(
       '/api/v1/keyresults/' + keyresultId

@@ -37,17 +37,12 @@ export class DiagramComponent implements OnInit {
   }
 
   generateDiagram(measures: Measure[]) {
-    let pointArray: any[] = [];
+    let arrayWithPoints: any[] = [];
 
     measures.forEach(function (item) {
-      let measureDateSplit = item.measureDate.split('T');
-      let measureDate = measureDateSplit[0].replace('-', '/');
-      measureDate = measureDate.replace('-', '/');
-      let point: DiagramObject = { x: measureDate, y: item.value };
-      pointArray.push(point);
+      let point: DiagramObject = { x: item.measureDate, y: item.value };
+      arrayWithPoints.push(point);
     });
-
-    console.log(pointArray);
 
     const plugin = {
       id: 'chart_area_background_color',
@@ -71,13 +66,13 @@ export class DiagramComponent implements OnInit {
     new Chart('myChart', {
       type: 'scatter',
       data: {
-        // labels: labels,
         datasets: [
           {
             backgroundColor: ['black'],
             borderColor: ['black'],
             borderWidth: 2,
-            data: pointArray,
+            label: 'Messung am',
+            data: arrayWithPoints,
             pointRadius: 5,
             pointStyle: 'circle',
           },
@@ -90,7 +85,7 @@ export class DiagramComponent implements OnInit {
         spanGaps: true,
         plugins: {
           legend: { display: false },
-          tooltip: { enabled: true },
+          tooltip: { enabled: true, displayColors: false },
           chart_area_background_color: {},
         },
 
@@ -105,7 +100,7 @@ export class DiagramComponent implements OnInit {
               displayFormats: {
                 hour: 'dd/MM/yyyy', //second = 'dd/MM/yyyy HH:mm:ss'
               },
-              tooltipFormat: 'dd/MM/yyyy',
+              tooltipFormat: 'DD/MM/yyyy',
             },
           },
           y: {

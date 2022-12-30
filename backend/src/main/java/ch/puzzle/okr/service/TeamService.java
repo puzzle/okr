@@ -24,12 +24,16 @@ public class TeamService {
     public List<Team> getAllTeams() {
         Team puzzleTeam = teamRepository.findByName("Puzzle ITC");
         List<Team> teamList = (List<Team>) teamRepository.findAll();
-        return Stream
-                .concat(Stream.of(puzzleTeam),
-                        teamList.stream()
-                                .filter(team -> !"Puzzle ITC".equals(team.getName()))
-                                .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())))
-                .toList();
+        if (teamList.isEmpty()) {
+            return teamList;
+        } else {
+            return Stream
+                    .concat(Stream.of(puzzleTeam),
+                            teamList.stream()
+                                    .filter(team -> !"Puzzle ITC".equals(team.getName()))
+                                    .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())))
+                    .toList();
+        }
     }
 
     public Team getTeamById(long id) {

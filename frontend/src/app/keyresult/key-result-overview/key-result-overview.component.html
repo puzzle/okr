@@ -1,34 +1,34 @@
-<!--<div class="row">-->
-<div class="key-result-overview-container column" *ngIf="goal$ | async as goal">
-  <p class="headline-large">Keyresult Beschreibung</p>
-  <div class="key-result-overview-text">
-    <p class="key-result-title">
-      <strong>KeyResult</strong>
-      <br />
-      {{ goal.keyresult.title }}
-    </p>
+<div class="row" *ngIf="goal$ | async as goal">
+  <div class="key-result-overview-container">
+    <p class="headline-large">Keyresult Beschreibung</p>
+    <div class="key-result-overview-text">
+      <p class="key-result-title">
+        <strong>KeyResult</strong>
+        <br />
+        {{ goal.keyresult.title }}
+      </p>
 
-    <p class="key-result-description">
-      <strong>Beschreibung</strong>
-      <br />
-      {{ goal.keyresult.description }}
-    </p>
+      <p class="key-result-description">
+        <strong>Beschreibung</strong>
+        <br />
+        {{ goal.keyresult.description }}
+      </p>
 
-    <p class="key-result-Ziel">
-      <strong>{{ goal.teamName }} Objective</strong>
-      <br />
-      {{ goal.objective.title }}
-    </p>
+      <p class="key-result-Ziel">
+        <strong>{{ goal.teamName }} Objective</strong>
+        <br />
+        {{ goal.objective.title }}
+      </p>
 
-    <p class="key-result-quarter">
-      <strong>Zyklus</strong>
-      <br />
-      {{ goal.quarterLabel }}
-    </p>
+      <p class="key-result-quarter">
+        <strong>Zyklus</strong>
+        <br />
+        {{ goal.quarterLabel }}
+      </p>
+    </div>
   </div>
 
-  <div class="column">
+  <div class="column" *ngIf="goal$ | async as goal">
     <app-diagram [keyResultId]="goal.keyresult.id"></app-diagram>
   </div>
 </div>
-<!--</div>-->

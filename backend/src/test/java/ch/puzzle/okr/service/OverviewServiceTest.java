@@ -38,8 +38,8 @@ public class OverviewServiceTest {
     Objective objective3;
 
     Team team1;
-    Team team3;
     Team team2;
+    Team team3;
 
     List<Objective> objectiveList;
     List<Team> teamList;
@@ -60,9 +60,9 @@ public class OverviewServiceTest {
                 .withQuarter(Quarter.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(2L).build()).build();
         this.objectiveList = List.of(objective1, objective2, objective3);
-        this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
-        this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
-        this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
+        this.team1 = Team.Builder.builder().withId(1L).withName("Puzzle ITC").build();
+        this.team2 = Team.Builder.builder().withId(2L).withName("B.Team 2").build();
+        this.team3 = Team.Builder.builder().withId(3L).withName("A.Team 3").build();
         this.overview1 = new OverviewDto(new TeamDto(team1.getId(), team1.getName()),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective1.getQuarter().getId(), null, null, null),
@@ -79,6 +79,7 @@ public class OverviewServiceTest {
     @Test
     void shouldGetAllTeamsWithAllObjectives() {
         when(teamRepository.findAllById(Collections.emptyList())).thenReturn(teamList);
+        when(teamRepository.findByName("Puzzle ITC")).thenReturn(team1);
         when(objectiveRepository.findByQuarterIdAndTeamId(null, 1L)).thenReturn(List.of(objective1, objective2));
         when(objectiveRepository.findByQuarterIdAndTeamId(null, 2L)).thenReturn(List.of(objective3));
         when(objectiveRepository.findByQuarterIdAndTeamId(null, 3L)).thenReturn(Collections.emptyList());
@@ -91,15 +92,16 @@ public class OverviewServiceTest {
         assertEquals(3, overview.size());
         assertEquals(1, overview.get(0).getTeam().getId());
         assertEquals(2, overview.get(0).getObjectives().size());
-        assertEquals(2, overview.get(1).getTeam().getId());
-        assertEquals(1, overview.get(1).getObjectives().size());
-        assertEquals(3, overview.get(2).getTeam().getId());
-        assertEquals(0, overview.get(2).getObjectives().size());
+        assertEquals(3, overview.get(1).getTeam().getId());
+        assertEquals(0, overview.get(1).getObjectives().size());
+        assertEquals(2, overview.get(2).getTeam().getId());
+        assertEquals(1, overview.get(2).getObjectives().size());
     }
 
     @Test
     void shouldFilterTeamsWithTeamsFilter() {
         when(teamRepository.findAllById(List.of(1L, 3L))).thenReturn(List.of(team1, team3));
+        when(teamRepository.findByName("Puzzle ITC")).thenReturn(team1);
         when(objectiveRepository.findByQuarterIdAndTeamId(null, 1L)).thenReturn(List.of(objective1, objective2));
         when(objectiveRepository.findByQuarterIdAndTeamId(null, 3L)).thenReturn(Collections.emptyList());
         when(overviewMapper.toDto(team1, List.of(objective1, objective2))).thenReturn(overview1);
@@ -119,6 +121,7 @@ public class OverviewServiceTest {
         OverviewDto overview1WithoutObjective2 = new OverviewDto(new TeamDto(team1.getId(), team1.getName()),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective1.getQuarter().getId(), null, null, null)));
+        when(teamRepository.findByName("Puzzle ITC")).thenReturn(team1);
         when(teamRepository.findAllById(Collections.emptyList())).thenReturn(teamList);
         when(objectiveRepository.findByQuarterIdAndTeamId(1L, 1L)).thenReturn(List.of(objective1));
         when(objectiveRepository.findByQuarterIdAndTeamId(1L, 2L)).thenReturn(List.of(objective3));
@@ -132,10 +135,10 @@ public class OverviewServiceTest {
         assertEquals(3, overview.size());
         assertEquals(1, overview.get(0).getTeam().getId());
         assertEquals(1, overview.get(0).getObjectives().size());
-        assertEquals(2, overview.get(1).getTeam().getId());
-        assertEquals(1, overview.get(1).getObjectives().size());
-        assertEquals(3, overview.get(2).getTeam().getId());
-        assertEquals(0, overview.get(2).getObjectives().size());
+        assertEquals(3, overview.get(1).getTeam().getId());
+        assertEquals(0, overview.get(1).getObjectives().size());
+        assertEquals(2, overview.get(2).getTeam().getId());
+        assertEquals(1, overview.get(2).getObjectives().size());
     }
 
 }

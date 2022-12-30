@@ -9,6 +9,11 @@ import { Observable } from 'rxjs';
 
 Chart.register(...registerables);
 
+export interface DiagramObject {
+  x: string;
+  y: number;
+}
+
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
@@ -32,17 +37,17 @@ export class DiagramComponent implements OnInit {
   }
 
   generateDiagram(measures: Measure[]) {
-    let measureDates: string[] = [];
+    let pointArray: any[] = [];
+
     measures.forEach(function (item) {
-      measureDates.push(item.measureDate);
-    });
-    let measureValues: number[] = [];
-    measures.forEach(function (item) {
-      measureValues.push(item.value);
+      let measureDateSplit = item.measureDate.split('T');
+      let measureDate = measureDateSplit[0].replace('-', '/');
+      measureDate = measureDate.replace('-', '/');
+      let point: DiagramObject = { x: measureDate, y: item.value };
+      pointArray.push(point);
     });
 
-    console.log(measureDates);
-    console.log(measureValues);
+    console.log(pointArray);
 
     const plugin = {
       id: 'chart_area_background_color',
@@ -63,19 +68,6 @@ export class DiagramComponent implements OnInit {
       },
     };
 
-    const labels = [
-      'Jan',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-    ];
     new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -85,14 +77,7 @@ export class DiagramComponent implements OnInit {
             backgroundColor: ['black'],
             borderColor: ['black'],
             borderWidth: 2,
-            data: [
-              { x: '2020/07/02', y: 15 },
-              { x: '2020/11/03', y: 16 },
-              { x: '2020/11/04', y: 19 },
-              { x: '2020/11/07', y: 22 },
-              { x: '2020/11/08', y: 23 },
-              { x: '2021/08/09', y: 30 },
-            ],
+            data: pointArray,
             pointRadius: 5,
             pointStyle: 'circle',
           },

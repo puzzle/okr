@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 export interface Measure {
   id: number;
@@ -32,7 +33,7 @@ export interface KeyResultMeasure {
   providedIn: 'root',
 })
 export class KeyResultService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   public getKeyResultsOfObjective(
     objectiveId: number
@@ -86,7 +87,10 @@ export class KeyResultService {
 
   deleteKeyResultById(keyresultId: number) {
     this.httpClient.delete('/api/v1/keyresults/' + keyresultId).subscribe({
-      next: () => {},
+      next: () => {
+        // Temporär bis navigieren aud Dashboard über route funktioniert
+        location.reload();
+      },
       error: () => {
         return new Error('Couldnt delete Keyresult');
       },

@@ -30,8 +30,6 @@ export class DiagramComponent implements OnInit {
       this.keyResultId
     );
     this.measures.subscribe((measures) => {
-      console.log(measures);
-
       this.generateDiagram(measures);
     });
   }

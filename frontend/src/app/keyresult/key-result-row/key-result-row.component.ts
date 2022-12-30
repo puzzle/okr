@@ -11,6 +11,8 @@ import {
 } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { KeyresultDeleteDialogComponent } from '../../shared/dialog/keyresult-delete-dialog/keyresult-delete-dialog.component';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -27,7 +29,8 @@ export class KeyResultRowComponent implements OnInit {
   constructor(
     private datePipe: DatePipe,
     private router: Router,
-    private keyResultService: KeyResultService
+    private keyResultService: KeyResultService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -77,10 +80,24 @@ export class KeyResultRowComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.routeLine == 'result/delete') {
-      this.keyResultService.deleteKeyResultById(this.keyResult.id!);
+      this.openDialog();
     } else {
       this.router.navigate([menuEntry.routeLine]);
     }
+  }
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    const dialogRef = this.dialog.open(
+      KeyresultDeleteDialogComponent,
+      dialogConfig
+    );
+
+    return dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        this.keyResultService.deleteKeyResultById(this.keyResult.id!);
+      }
+    });
   }
 
   private calculateProgress(

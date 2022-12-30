@@ -93,7 +93,10 @@ public class KeyResultService {
     }
 
     public void deleteKeyResultById(Long id) {
-        measureRepository.deleteByKeyResultId(id);
+        List<Measure> measures = measureRepository.findByKeyResultId(id);
+        for (Measure measure : measures) {
+            measureRepository.deleteById(measure.getId());
+        }
         keyResultRepository.deleteById(id);
     }
 }

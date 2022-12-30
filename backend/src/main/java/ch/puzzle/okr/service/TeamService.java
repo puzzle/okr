@@ -29,8 +29,7 @@ public class TeamService {
         } else {
             return Stream
                     .concat(Stream.of(puzzleTeam),
-                            teamList.stream()
-                                    .filter(team -> !"Puzzle ITC".equals(team.getName()))
+                            teamList.stream().filter(team -> !"Puzzle ITC".equals(team.getName()))
                                     .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())))
                     .toList();
         }

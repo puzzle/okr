@@ -23,12 +23,15 @@
           <ng-template #noMeasure>
             <span class="h6">-</span>
           </ng-template>
-          <mat-progress-bar
-            class="objectiveProgress"
-            mode="determinate"
+          <app-progress-bar
             [value]="progressPercentage"
+            [colorLow]="'#FF1A0C'"
+            [colorMiddle]="'#FFA012'"
+            [colorHigh]="'#29DF0B'"
+            [limitLow]="30"
+            [limitHigh]="70"
           >
-          </mat-progress-bar>
+          </app-progress-bar>
         </div>
         <button
           (click)="$event.stopPropagation()"

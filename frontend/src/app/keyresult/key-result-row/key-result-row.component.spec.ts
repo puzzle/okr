@@ -4,7 +4,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { trigger } from '@angular/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultRowComponent } from './key-result-row.component';
@@ -14,6 +13,7 @@ import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { KeyresultModule } from '../keyresult.module';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
@@ -30,8 +30,8 @@ describe('KeyResultKeyResultRowComponent', () => {
           MatExpansionModule,
           MatIconModule,
           RouterTestingModule,
-          MatProgressBarModule,
           KeyresultModule,
+          HttpClientTestingModule,
         ],
         providers: [DatePipe],
         declarations: [KeyResultRowComponent],
@@ -77,7 +77,7 @@ describe('KeyResultKeyResultRowComponent', () => {
     test('should have progress bar with progress from objective', () => {
       let progressBar = fixture.nativeElement
         .querySelector('#progressContainer')
-        .querySelector('mat-progress-bar');
+        .querySelector('app-progress-bar');
       expect(progressBar.getAttribute('ng-reflect-value')).toEqual('60');
     });
 
@@ -130,8 +130,8 @@ describe('KeyResultKeyResultRowComponent', () => {
           MatExpansionModule,
           MatIconModule,
           RouterTestingModule,
-          MatProgressBarModule,
           KeyresultModule,
+          HttpClientTestingModule,
         ],
         providers: [DatePipe],
         declarations: [KeyResultRowComponent],

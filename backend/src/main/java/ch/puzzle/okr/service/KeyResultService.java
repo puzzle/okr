@@ -91,4 +91,9 @@ public class KeyResultService {
                         .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
                 .toList();
     }
+
+    public void deleteKeyResultById(Long id) {
+        measureRepository.deleteByKeyResultId(id);
+        keyResultRepository.deleteById(id);
+    }
 }

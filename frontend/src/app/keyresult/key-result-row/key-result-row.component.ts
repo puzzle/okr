@@ -5,7 +5,10 @@ import {
   OnInit,
 } from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
-import { KeyResultMeasure } from '../../shared/services/key-result.service';
+import {
+  KeyResultMeasure,
+  KeyResultService,
+} from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -21,7 +24,11 @@ export class KeyResultRowComponent implements OnInit {
   menuEntries!: MenuEntry[];
   progressPercentage!: number;
 
-  constructor(private datePipe: DatePipe, private router: Router) {}
+  constructor(
+    private datePipe: DatePipe,
+    private router: Router,
+    private keyResultService: KeyResultService
+  ) {}
 
   ngOnInit(): void {
     const elementMeasureValue =
@@ -47,7 +54,7 @@ export class KeyResultRowComponent implements OnInit {
         displayName: 'Details einsehen',
         routeLine: 'keyresults/' + this.keyResult.id,
       },
-      { displayName: 'KeyResult löschen', routeLine: 'result/add' },
+      { displayName: 'KeyResult löschen', routeLine: 'result/delete' },
       {
         displayName: 'Messung hinzufügen',
         routeLine: 'keyresults/' + this.keyResult.id + '/measure/new',
@@ -69,7 +76,11 @@ export class KeyResultRowComponent implements OnInit {
   }
 
   redirect(menuEntry: MenuEntry) {
-    this.router.navigate([menuEntry.routeLine]);
+    if (menuEntry.routeLine == 'result/delete') {
+      this.keyResultService.deleteKeyResultById(this.keyResult.id!);
+    } else {
+      this.router.navigate([menuEntry.routeLine]);
+    }
   }
 
   private calculateProgress(

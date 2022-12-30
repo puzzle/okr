@@ -32,7 +32,7 @@ describe('ProgressBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should addCards', () => {
+  test('should paint progress bar', () => {
     component.paintProgressBar();
     expect(mockSvgService.getSvg).toHaveBeenCalledTimes(1);
   });

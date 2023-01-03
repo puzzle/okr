@@ -34,13 +34,17 @@ export class DiagramComponent implements OnInit {
     });
   }
 
-  generateDiagram(measures: Measure[]) {
+  generateDiagrammObjects(measures: Measure[]): any[] {
     let arrayWithPoints: any[] = [];
-
     measures.forEach(function (item) {
       let point: DiagramObject = { x: item.measureDate, y: item.value };
       arrayWithPoints.push(point);
     });
+    return arrayWithPoints;
+  }
+
+  generateDiagram(measures: Measure[]) {
+    let arrayWithPoints: any[] = this.generateDiagrammObjects(measures);
 
     const plugin = {
       id: 'chart_area_background_color',

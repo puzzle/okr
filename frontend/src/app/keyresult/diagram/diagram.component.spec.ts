@@ -55,4 +55,15 @@ describe('DiagramComponent', () => {
   it('should set measures in component', () => {
     expect(component.measures).toEqual(measures);
   });
+
+  it('should create correct Diagram Objects', () => {
+    measures.subscribe((item) => {
+      let diagrammObjects = component.generateDiagrammObjects(item);
+      item.forEach((measure) => {
+        let number = item.indexOf(measure);
+        expect(diagrammObjects[number].y).toEqual(measure.value);
+        expect(diagrammObjects[number].x).toEqual(measure.measureDate);
+      });
+    });
+  });
 });

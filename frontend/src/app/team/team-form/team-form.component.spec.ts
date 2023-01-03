@@ -11,6 +11,7 @@ import { of } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as teamsData from '../../shared/testing/mock-data/teams.json';
+import { ToastrModule } from 'ngx-toastr';
 
 let component: TeamFormComponent;
 let fixture: ComponentFixture<TeamFormComponent>;
@@ -22,6 +23,7 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
@@ -89,6 +91,7 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,

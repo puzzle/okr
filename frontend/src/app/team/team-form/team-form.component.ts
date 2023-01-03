@@ -4,6 +4,8 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
+import { HttpStatusCode } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-team-form',
@@ -25,7 +27,8 @@ export class TeamFormComponent implements OnInit {
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -41,9 +44,20 @@ export class TeamFormComponent implements OnInit {
       id: this.id,
       ...this.teamForm.value,
     } as Team;
-    this.teamService
-      .save(saveTeam)
-      .subscribe((answer) => this.router.navigate(['/', 'teams']));
+    this.teamService.save(saveTeam).subscribe({
+      next: () => {
+        this.router.navigate(['/', 'teams']);
+        this.toastr.success('Everything worked fine', 'Team created!', {
+          timeOut: 5000,
+        });
+      },
+      error: (value: HttpStatusCode) => {
+        this.toastr.error("Can't save Team!", 'Error: ' + value, {
+          timeOut: 5000,
+        });
+        return;
+      },
+    });
   }
 
   navigateBack() {

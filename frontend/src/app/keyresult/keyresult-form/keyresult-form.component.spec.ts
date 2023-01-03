@@ -24,6 +24,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import * as usersData from '../../shared/testing/mock-data/users.json';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import { ToastrModule } from 'ngx-toastr';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
@@ -89,6 +90,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
@@ -351,6 +353,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
@@ -533,6 +536,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,

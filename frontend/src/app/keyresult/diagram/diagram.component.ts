@@ -53,7 +53,7 @@ export class DiagramComponent implements OnInit {
         ctx.save();
         ctx.globalCompositeOperation = 'destination-over';
         ctx.fillStyle = options.color;
-        ctx.fillRect(27, 10, chart.width - 39, chart.height - 39);
+        ctx.fillRect(27, 10, chart.width - 33, chart.height - 39);
         ctx.restore();
       },
       defaults: {

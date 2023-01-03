@@ -1,34 +1,37 @@
-<div class="row" *ngIf="goal$ | async as goal">
-  <div class="key-result-overview-container">
-    <p class="headline-large">Keyresult Beschreibung</p>
-    <div class="key-result-overview-text">
-      <p class="key-result-title">
-        <strong>KeyResult</strong>
-        <br />
-        {{ goal.keyresult.title }}
-      </p>
+<div class="row d-flex w-100" *ngIf="goal$ | async as goal">
+  <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
+    <div class="key-result-overview-container">
+      <p class="headline-large">Keyresult Beschreibung</p>
+      <div class="key-result-overview-text w-100">
+        <p class="key-result-title">
+          <strong>KeyResult</strong>
+          <br />
+          {{ goal.keyresult.title }}
+        </p>
 
-      <p class="key-result-description">
-        <strong>Beschreibung</strong>
-        <br />
-        {{ goal.keyresult.description }}
-      </p>
+        <p class="key-result-description">
+          <strong>Beschreibung</strong>
+          <br />
+          {{ goal.keyresult.description }}
+        </p>
 
-      <p class="key-result-Ziel">
-        <strong>{{ goal.teamName }} Objective</strong>
-        <br />
-        {{ goal.objective.title }}
-      </p>
+        <p class="key-result-Ziel">
+          <strong>{{ goal.teamName }} Objective</strong>
+          <br />
+          {{ goal.objective.title }}
+        </p>
 
-      <p class="key-result-quarter">
-        <strong>Zyklus</strong>
-        <br />
-        {{ goal.quarterLabel }}
-      </p>
+        <p class="key-result-quarter">
+          <strong>Zyklus</strong>
+          <br />
+          {{ goal.quarterLabel }}
+        </p>
+      </div>
     </div>
   </div>
-
-  <div class="column" *ngIf="goal$ | async as goal">
-    <app-diagram [keyResultId]="goal.keyresult.id"></app-diagram>
+  <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
+    <div class="mt-sm-0 mt-lg-5" *ngIf="goal$ | async as goal">
+      <app-diagram [keyResultId]="goal.keyresult.id"></app-diagram>
+    </div>
   </div>
 </div>

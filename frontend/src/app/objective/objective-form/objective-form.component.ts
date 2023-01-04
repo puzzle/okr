@@ -107,7 +107,6 @@ export class ObjectiveFormComponent implements OnInit {
       .subscribe((objective) =>
         this.objectiveService.saveObjective(objective, this.create).subscribe({
           next: () => {
-            this.router.navigate(['/dashboard']);
             this.toastr.success(
               'Everything worked fine',
               'Objective created!',
@@ -115,6 +114,7 @@ export class ObjectiveFormComponent implements OnInit {
                 timeOut: 5000,
               }
             );
+            this.router.navigate(['/dashboard']);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(

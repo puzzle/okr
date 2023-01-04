@@ -13,7 +13,7 @@ import { getNumberOrNull } from '../../shared/common';
 import { Team, TeamService } from '../../shared/services/team.service';
 import { Quarter, QuarterService } from '../../shared/services/quarter.service';
 import { ToastrService } from 'ngx-toastr';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-objective-form',
@@ -116,10 +116,14 @@ export class ObjectiveFormComponent implements OnInit {
               }
             );
           },
-          error: (value: HttpStatusCode) => {
-            this.toastr.error("Can't save Objective!", 'Error: ' + value, {
-              timeOut: 5000,
-            });
+          error: (e: HttpErrorResponse) => {
+            this.toastr.error(
+              "Can't save Objective! " + e.error.message,
+              'Error: ' + e.status,
+              {
+                timeOut: 5000,
+              }
+            );
             return new Error('can not save objective');
           },
         })

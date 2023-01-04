@@ -14,7 +14,7 @@ import {
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
 import { ToastrService } from 'ngx-toastr';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -124,10 +124,14 @@ export class KeyresultFormComponent implements OnInit {
               }
             );
           },
-          error: (value: HttpStatusCode) => {
-            this.toastr.error("Can't save keyresult!", 'Error: ' + value, {
-              timeOut: 5000,
-            });
+          error: (e: HttpErrorResponse) => {
+            this.toastr.error(
+              "Can't save keyresult! " + e.error.message,
+              'Error: ' + e.status,
+              {
+                timeOut: 5000,
+              }
+            );
             console.log('Can not save this keyresult: ', keyresult);
             return new Error('ups sommething happend');
           },

@@ -4,7 +4,7 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -51,10 +51,14 @@ export class TeamFormComponent implements OnInit {
           timeOut: 5000,
         });
       },
-      error: (value: HttpStatusCode) => {
-        this.toastr.error("Can't save Team!", 'Error: ' + value, {
-          timeOut: 5000,
-        });
+      error: (e: HttpErrorResponse) => {
+        this.toastr.error(
+          "Can't save Team! " + e.error.message,
+          'Error: ' + e.status,
+          {
+            timeOut: 5000,
+          }
+        );
         return;
       },
     });

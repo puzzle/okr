@@ -6,7 +6,7 @@ import {
   KeyResultMeasure,
   KeyResultService,
 } from '../../shared/services/key-result.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { KeyresultModule } from '../keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -24,8 +24,10 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import * as usersData from '../../shared/testing/mock-data/users.json';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
-import { ToastrModule } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
+//Create ToastrService object, insert it in providers and then check if calls to it has been made
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
   let fixture: ComponentFixture<KeyresultFormComponent>;
@@ -75,6 +77,11 @@ describe('KeyresultFormComponent', () => {
   };
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
+  };
+
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
   };
 
   let loader: HarnessLoader;
@@ -567,6 +574,93 @@ describe('KeyresultFormComponent', () => {
 
     test('should not create', () => {
       expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('Toastr notification when Keyresults is updated or saved', () => {
+    beforeEach(() => {
+      //Standard mocks to create keyresult-form
+      mockUserService.getUsers.mockReturnValue(userList);
+      mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
+      mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
+
+      TestBed.configureTestingModule({
+        declarations: [KeyresultFormComponent],
+        imports: [
+          ToastrModule.forRoot(),
+          RouterTestingModule,
+          KeyresultModule,
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: UserService, useValue: mockUserService },
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of(
+                convertToParamMap({ objectiveId: '1', keyresultId: '1' })
+              ),
+            },
+          },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      //ToastrService Reset
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+
+      //Standard Services Reset
+      mockUserService.getUsers.mockReset();
+      mockKeyResultService.getKeyResultById.mockReset();
+      mockKeyResultService.getInitKeyResult.mockReset();
+    });
+
+    test('should display success notification', () => {
+      //Return Keyresult to trigger success notification of ToastrService
+      mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).toHaveBeenCalledWith(
+        'Everything worked fine',
+        'Keyresult created!',
+        { timeOut: 5000 }
+      );
+    });
+
+    test('should display error notification', () => {
+      //Return Error to trigger error notification of ToastrService
+      mockKeyResultService.saveKeyresult.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 500,
+              error: { message: 'Something went wrong' },
+            })
+        )
+      );
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        "Can't save keyresult! Something went wrong",
+        'Error: 500',
+        { timeOut: 5000 }
+      );
     });
   });
 });

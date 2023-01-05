@@ -657,7 +657,7 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        "Can't save keyresult! Something went wrong",
+        "Can't save Keyresult! Something went wrong",
         'Error: 500',
         { timeOut: 5000 }
       );

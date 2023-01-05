@@ -126,7 +126,7 @@ export class KeyresultFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              "Can't save keyresult! " + e.error.message,
+              "Can't save Keyresult! " + e.error.message,
               'Error: ' + e.status,
               {
                 timeOut: 5000,

@@ -4,7 +4,7 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -46,10 +46,10 @@ export class TeamFormComponent implements OnInit {
     } as Team;
     this.teamService.save(saveTeam).subscribe({
       next: () => {
-        this.router.navigate(['/', 'teams']);
         this.toastr.success('Everything worked fine', 'Team created!', {
           timeOut: 5000,
         });
+        this.router.navigate(['/', 'teams']);
       },
       error: (e: HttpErrorResponse) => {
         this.toastr.error(
@@ -59,7 +59,7 @@ export class TeamFormComponent implements OnInit {
             timeOut: 5000,
           }
         );
-        return;
+        return new Error('ups sommething happend');
       },
     });
   }

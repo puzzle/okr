@@ -118,7 +118,7 @@ export class KeyresultFormComponent implements OnInit {
             this.router.navigate(['/dashboard']);
             this.toastr.success(
               'Everything worked fine',
-              'Keyresult created!',
+              'Keyresult processed!',
               {
                 timeOut: 5000,
               }
@@ -126,7 +126,7 @@ export class KeyresultFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              "Can't save Keyresult! " + e.error.message,
+              "Can't process Keyresult! " + e.error.message,
               'Error: ' + e.status,
               {
                 timeOut: 5000,

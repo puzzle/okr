@@ -120,7 +120,7 @@ describe('ObjectiveFormComponent', () => {
     expect(mockToastrService.success).toHaveBeenCalledTimes(1);
     expect(mockToastrService.success).toHaveBeenCalledWith(
       'Everything worked fine',
-      'Objective created!',
+      'Objective processed!',
       { timeOut: 5000 }
     );
   });
@@ -141,7 +141,7 @@ describe('ObjectiveFormComponent', () => {
     fixture.detectChanges();
     expect(mockToastrService.error).toHaveBeenCalledTimes(1);
     expect(mockToastrService.error).toHaveBeenCalledWith(
-      "Can't save Objective! Something went wrong",
+      "Can't process Objective! Something went wrong",
       'Error: 500',
       { timeOut: 5000 }
     );

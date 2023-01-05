@@ -109,7 +109,7 @@ export class ObjectiveFormComponent implements OnInit {
           next: () => {
             this.toastr.success(
               'Everything worked fine',
-              'Objective created!',
+              'Objective processed!',
               {
                 timeOut: 5000,
               }
@@ -118,13 +118,13 @@ export class ObjectiveFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              "Can't save Objective! " + e.error.message,
+              "Can't process Objective! " + e.error.message,
               'Error: ' + e.status,
               {
                 timeOut: 5000,
               }
             );
-            return new Error('can not save objective');
+            return new Error('can not process objective');
           },
         })
       );

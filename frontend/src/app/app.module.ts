@@ -18,13 +18,10 @@ import { TeamModule } from './team/team.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeyresultDeleteDialogComponent } from './shared/dialog/keyresult-delete-dialog/keyresult-delete-dialog.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    KeyresultDeleteDialogComponent,
-  ],
+  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

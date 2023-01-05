@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import {
@@ -12,7 +14,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { KeyresultDeleteDialogComponent } from '../../shared/dialog/keyresult-delete-dialog/keyresult-delete-dialog.component';
+import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -23,6 +25,7 @@ import { KeyresultDeleteDialogComponent } from '../../shared/dialog/keyresult-de
 export class KeyResultRowComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;
   @Input() objectiveId!: number;
+  @Output() removeKeyResult: EventEmitter<any> = new EventEmitter();
   menuEntries!: MenuEntry[];
   progressPercentage!: number;
 
@@ -87,15 +90,20 @@ export class KeyResultRowComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogConfig = new MatDialogConfig();
-    const dialogRef = this.dialog.open(
-      KeyresultDeleteDialogComponent,
-      dialogConfig
-    );
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title:
+          'Willst du dieses Keyresult und die dazugehörigen Messungen wirklich löschen?',
+        confirmText: 'Bestätigen',
+        closeText: 'Abbrechen',
+      },
+    });
 
     return dialogRef.afterClosed().subscribe((data) => {
       if (data) {
         this.keyResultService.deleteKeyResultById(this.keyResult.id!);
+        this.removeKeyResult.emit(this.keyResult.id!);
       }
     });
   }

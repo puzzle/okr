@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultServiceTest {
@@ -186,5 +186,16 @@ class KeyResultServiceTest {
 
         assertEquals(3, keyResultList.size());
         assertNull(keyResultList.get(0).getMeasure());
+    }
+
+    @Test
+    void shouldDeleteKeyResultAndAssociatedMeasures() {
+        when(measureRepository.findByKeyResultId(1L)).thenReturn(measures);
+
+        keyResultService.deleteKeyResultById(1L);
+
+        verify(keyResultRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).findByKeyResultId(1L);
+        verify(measureRepository, times(3)).deleteById(any());
     }
 }

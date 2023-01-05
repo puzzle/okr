@@ -16,14 +16,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { TeamModule } from './team/team.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { KeyresultDeleteDialogComponent } from './shared/dialog/keyresult-delete-dialog/keyresult-delete-dialog.component';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    KeyresultDeleteDialogComponent,
-  ],
+  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

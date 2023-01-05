@@ -1,10 +1,10 @@
 <mat-dialog-content>
-  <p>LIAS ISCH E GEILI NUTTE</p>
+  <p>{{ title }}</p>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button class="mat-raised-button" (click)="close()">Close</button>
+  <button class="mat-raised-button" (click)="close()">{{ closeText }}</button>
   <button class="mat-raised-button mat-primary" (click)="confirm()">
-    Confirm
+    {{ confirmText }}
   </button>
 </mat-dialog-actions>

@@ -87,10 +87,6 @@ export class KeyResultService {
 
   deleteKeyResultById(keyresultId: number) {
     this.httpClient.delete('/api/v1/keyresults/' + keyresultId).subscribe({
-      next: () => {
-        // Temporär bis navigieren aud Dashboard über route funktioniert
-        location.reload();
-      },
       error: () => {
         return new Error('Couldnt delete Keyresult');
       },

@@ -95,5 +95,28 @@
     "targetValue": 1,
     "basicValue": 1,
     "objectiveId": 3000
+  },
+  "binaryKeyresult": {
+    "id": 5,
+    "objectiveId": 1,
+    "title": "Keyresult 5",
+    "description": "description of Keyresult 5",
+    "ownerId": 1,
+    "ownerFirstname": "OwnerFirstname",
+    "ownerLastname": "OwnerLastname",
+    "expectedEvolution": "INCREASE",
+    "unit": "BINARY",
+    "basicValue": 0,
+    "targetValue": 1,
+    "measure": {
+      "id": 5,
+      "keyResultId": 3,
+      "value": 0,
+      "changeInfo": "Changeinfo",
+      "initiatives": "Initiatives",
+      "createdBy": 1,
+      "createdOn": "2023-02-14",
+      "measureDate": "2023-03-06"
+    }
   }
 }

@@ -199,19 +199,18 @@ describe('MeasureFormComponent', () => {
     it('should be invalid when not matching pattern of keyresult unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('PERCENT');
-
       component.measureForm.get('value')?.setValue(333);
       expect(component.measureForm.get('value')?.valid).toEqual(false);
 
-      component.keyresult$.subscribe((keyresult) => {
-        keyresult.unit = 'BINARY';
-        fixture.detectChanges();
+      //Set Keyresult to BINARY Unit so that button has to be disabled in with value 333
+      component.keyresult$ = of(keyresultData.keyresults[5]);
+      fixture.detectChanges();
 
-        component.measureForm.get('value')?.setValue(333);
-        expect(component.measureForm.get('value')?.valid).toEqual(false);
-        component.measureForm.get('value')?.setValue(0);
-        expect(component.measureForm.get('value')?.valid).toEqual(true);
-      });
+      /* Check if button is really disabled, then set value to 0 which fits BINARY regex and
+       * check if button is not enabled */
+      expect(component.measureForm.get('value')?.valid).toEqual(false);
+      component.measureForm.get('value')?.setValue(0);
+      expect(component.measureForm.get('value')?.valid).toEqual(true);
     });
 
     it('should have datepicker value', () => {
@@ -325,6 +324,7 @@ describe('MeasureFormComponent', () => {
 
     afterEach(() => {
       mockMeasureService.getInitMeasure.mockReset();
+      mockMeasureService.saveMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });

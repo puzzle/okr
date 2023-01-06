@@ -50,7 +50,7 @@ describe('MeasureFormComponent', () => {
     initiatives: 'Initiatives',
     createdBy: 1,
     createdOn: new Date('2022-12-28'),
-    measureDate: new Date('2023-01-05'),
+    measureDate: new Date('2023-01-05 01:00:00'),
   });
 
   let receivedEditedMeasure: Measure = {

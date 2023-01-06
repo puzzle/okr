@@ -26,6 +26,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { loadMeasure } from '../../shared/testing/Loader';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -51,6 +52,11 @@ describe('MeasureFormComponent', () => {
     getKeyResultById: jest.fn(),
   };
 
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
+
   describe('Edit Measure', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -70,10 +76,12 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -267,10 +275,12 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -375,6 +385,7 @@ describe('MeasureFormComponent', () => {
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {

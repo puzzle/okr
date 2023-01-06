@@ -108,8 +108,8 @@ export class ObjectiveFormComponent implements OnInit {
         this.objectiveService.saveObjective(objective, this.create).subscribe({
           next: () => {
             this.toastr.success(
-              'Everything worked fine',
-              'Objective processed!',
+              'Alles hat funktioniert!',
+              'Objective verarbeitet!',
               {
                 timeOut: 5000,
               }
@@ -118,8 +118,8 @@ export class ObjectiveFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              "Can't process Objective! " + e.error.message,
-              'Error: ' + e.status,
+              'Objective konnte nicht verarbeitet werden!',
+              'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,
               }

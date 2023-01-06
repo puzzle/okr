@@ -634,8 +634,8 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Everything worked fine',
-        'Keyresult processed!',
+        'Alles hat funktioniert!',
+        'Keyresult verarbeitet!',
         { timeOut: 5000 }
       );
     });
@@ -657,8 +657,8 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        "Can't process Keyresult! Something went wrong",
-        'Error: 500',
+        'Keyresult konnte nicht verarbeitet werden!',
+        'Fehlerstatus: 500',
         { timeOut: 5000 }
       );
     });

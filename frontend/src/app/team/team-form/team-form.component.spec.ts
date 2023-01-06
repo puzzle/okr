@@ -212,8 +212,8 @@ describe('TeamFormComponent', () => {
 
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Everything worked fine',
-        'Team processed!',
+        'Alles hat funktioniert!',
+        'Team verarbeitet!',
         { timeOut: 5000 }
       );
     });
@@ -235,8 +235,8 @@ describe('TeamFormComponent', () => {
 
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        "Can't process Team! Something went wrong",
-        'Error: 500',
+        'Team konnte nicht verarbeitet werden!',
+        'Fehlerstatus: 500',
         { timeOut: 5000 }
       );
     });

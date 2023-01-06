@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http/testing';
 import * as measureData from '../testing/mock-data/measure.json';
 
-const respons = measureData.measure;
+const respons = measureData.measures[0];
 
 describe('MeasureService', () => {
   let service: MeasureService;

@@ -8,6 +8,7 @@ import {
   Measure,
 } from '../../shared/services/key-result.service';
 import * as measureData from '../../shared/testing/mock-data/measure.json';
+import * as goalData from '../../shared/testing/mock-data/goals.json';
 
 describe('DiagramComponent', () => {
   let component: DiagramComponent;
@@ -33,7 +34,7 @@ describe('DiagramComponent', () => {
 
     fixture = TestBed.createComponent(DiagramComponent);
     component = fixture.componentInstance;
-    component.keyResultId = 1;
+    component.goal = goalData.goals[0];
     fixture.detectChanges();
   });
 

@@ -72,7 +72,7 @@ describe('MeasureFormComponent', () => {
     initiatives: 'Initiatives 1',
     createdBy: 0,
     createdOn: new Date('2022-12-01T00:00:00.000Z'),
-    measureDate: new Date('2022-12-01T01:00:00.000Z'),
+    measureDate: new Date('2022-12-01T00:00:00.000Z'),
   };
 
   const mockGetNumerOrNull = {
@@ -276,7 +276,7 @@ describe('MeasureFormComponent', () => {
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),
-      measureDate: new FormControl<Date>(new Date('2022-12-01'), [
+      measureDate: new FormControl<Date>(new Date('2022-12-01 00:00:00:'), [
         Validators.required,
       ]),
       changeInfo: new FormControl<string>('Changeinfo 1', [
@@ -430,6 +430,7 @@ describe('MeasureFormComponent', () => {
       mockMeasureService.getInitMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+      mockMeasureService.saveMeasure.mockReset();
     });
 
     it('should create', () => {

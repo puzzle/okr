@@ -57,13 +57,25 @@ describe('DiagramComponent', () => {
   });
 
   it('should create correct Diagram Objects', () => {
+    let diagrammObjects: any[] = [];
+    let measuresOriginal: Measure[] = [];
     measures.subscribe((item) => {
-      let diagrammObjects = component.generateDiagrammObjects(item);
-      item.forEach((measure) => {
-        let number = item.indexOf(measure);
-        expect(diagrammObjects[number].y).toEqual(measure.value);
-        expect(diagrammObjects[number].x).toEqual(measure.measureDate);
-      });
+      diagrammObjects = component.generateDiagrammObjects(item);
+      measuresOriginal = item;
     });
+    measuresOriginal.forEach((measure) => {
+      let number = measuresOriginal.indexOf(measure);
+      expect(diagrammObjects[number].y).toEqual(measure.value);
+      expect(diagrammObjects[number].x).toEqual(measure.measureDate);
+    });
+  });
+
+  it('should sort measures ascending by date (lowest date at the top)', () => {
+    let diagrammObjects: any[] = [];
+    measures.subscribe((item) => {
+      diagrammObjects = component.generateDiagrammObjects(item);
+    });
+    expect(diagrammObjects[1].x).toEqual('2023-01-21');
+    expect(diagrammObjects[2].x).toEqual('2023-03-18');
   });
 });

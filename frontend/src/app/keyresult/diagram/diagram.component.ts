@@ -35,6 +35,11 @@ export class DiagramComponent implements OnInit {
   }
 
   generateDiagrammObjects(measures: Measure[]): any[] {
+    measures.sort(
+      (measureA, measureB) =>
+        new Date(measureA.measureDate).getTime() -
+        new Date(measureB.measureDate).getTime()
+    );
     let arrayWithPoints: any[] = [];
     measures.forEach(function (item) {
       let point: DiagramObject = { x: item.measureDate, y: item.value };

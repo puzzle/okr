@@ -19,6 +19,16 @@
       "createdBy": 1,
       "createdOn": "2023-02-02",
       "measureDate": "2023-03-18"
+    },
+    {
+      "id": 3,
+      "keyResultId": 1,
+      "value": 40,
+      "changeInfo": "Changeinfo 3",
+      "initiatives": "Initiatives 3",
+      "createdBy": 1,
+      "createdOn": "2023-02-02",
+      "measureDate": "2023-01-21"
     }
   ]
 }

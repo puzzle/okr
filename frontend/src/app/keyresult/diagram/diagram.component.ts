@@ -112,29 +112,13 @@ export class DiagramComponent implements OnInit {
             },
           },
           y: {
-            min: this.getMin(arrayWithPoints),
-            max: this.getMax(arrayWithPoints),
+            suggestedMin: Math.min(this.goal.targetValue, this.goal.basicValue),
+            suggestedMax: Math.max(this.goal.targetValue, this.goal.basicValue),
           },
         },
         responsive: true,
       },
       plugins: [plugin],
     });
-  }
-
-  getMax(array: DiagramObject[]) {
-    let maxValue = Math.max(this.goal.targetValue, this.goal.basicValue);
-    array.forEach((diagrammObject) => {
-      maxValue = diagrammObject.y > maxValue ? diagrammObject.y : maxValue;
-    });
-    return maxValue;
-  }
-
-  getMin(array: DiagramObject[]) {
-    let minValue = Math.min(this.goal.targetValue, this.goal.basicValue);
-    array.forEach((diagrammObject) => {
-      minValue = diagrammObject.y < minValue ? diagrammObject.y : minValue;
-    });
-    return minValue;
   }
 }

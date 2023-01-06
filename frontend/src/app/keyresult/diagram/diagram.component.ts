@@ -6,6 +6,7 @@ import {
   Measure,
 } from '../../shared/services/key-result.service';
 import { Observable } from 'rxjs';
+import { Goal } from '../../shared/services/goal.service';
 
 Chart.register(...registerables);
 
@@ -20,14 +21,14 @@ export interface DiagramObject {
   styleUrls: ['./diagram.component.scss'],
 })
 export class DiagramComponent implements OnInit {
-  @Input() keyResultId!: number;
+  @Input() goal!: Goal;
   measures!: Observable<Measure[]>;
 
   constructor(private keyresultService: KeyResultService) {}
 
   ngOnInit(): void {
     this.measures = this.keyresultService.getMeasuresOfKeyResult(
-      this.keyResultId
+      this.goal.keyresult.id
     );
     this.measures.subscribe((measures) => {
       this.generateDiagram(measures);
@@ -110,10 +111,30 @@ export class DiagramComponent implements OnInit {
               tooltipFormat: 'DD/MM/yyyy',
             },
           },
+          y: {
+            min: this.getMin(arrayWithPoints),
+            max: this.getMax(arrayWithPoints),
+          },
         },
         responsive: true,
       },
       plugins: [plugin],
     });
+  }
+
+  getMax(array: DiagramObject[]) {
+    let maxValue = Math.max(this.goal.targetValue, this.goal.basicValue);
+    array.forEach((diagrammObject) => {
+      maxValue = diagrammObject.y > maxValue ? diagrammObject.y : maxValue;
+    });
+    return maxValue;
+  }
+
+  getMin(array: DiagramObject[]) {
+    let minValue = Math.min(this.goal.targetValue, this.goal.basicValue);
+    array.forEach((diagrammObject) => {
+      minValue = diagrammObject.y < minValue ? diagrammObject.y : minValue;
+    });
+    return minValue;
   }
 }

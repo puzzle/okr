@@ -25,7 +25,7 @@ const routes: Routes = [
     component: MeasureFormComponent,
   },
   {
-    path: 'keyresults/:keyresultId/measure/:measureId',
+    path: 'keyresults/:keyresultId/measure/edit/:measureId',
     component: MeasureFormComponent,
   },
   { path: 'objectives/new', component: ObjectiveFormComponent },

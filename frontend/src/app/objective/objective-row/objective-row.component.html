@@ -1,4 +1,4 @@
-<mat-expansion-panel (opened)="getKeyResults(this.objective.id!)">
+<mat-expansion-panel [expanded]="isSelected" (opened)="getKeyResults(this.objective.id!)">
   <mat-expansion-panel-header>
     <mat-panel-title class="objective-title">{{
       this.objective!.title

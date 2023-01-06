@@ -33,7 +33,7 @@ export class KeyResultRowComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private keyResultService: KeyResultService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {

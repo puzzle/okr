@@ -25,7 +25,7 @@ export class MeasureFormComponent implements OnInit {
     ]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
     changeInfo: new FormControl<string>('', [Validators.required]),
-    initiatives: new FormControl<string>('', [Validators.required]),
+    initiatives: new FormControl<string>(''),
   });
   public keyresult$!: Observable<KeyResultMeasure>;
   public create!: boolean;

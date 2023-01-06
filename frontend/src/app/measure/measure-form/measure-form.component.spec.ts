@@ -282,9 +282,7 @@ describe('MeasureFormComponent', () => {
       changeInfo: new FormControl<string>('Changeinfo 1', [
         Validators.required,
       ]),
-      initiatives: new FormControl<string>('Initiatives 1', [
-        Validators.required,
-      ]),
+      initiatives: new FormControl<string>('Initiatives 1'),
     });
 
     beforeEach(() => {

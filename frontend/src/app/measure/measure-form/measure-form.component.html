@@ -1,0 +1,110 @@
+<span class="d-flex back-btn">
+  <mat-icon>chevron_left</mat-icon>
+  <p (click)="navigateBack()">Zurück</p>
+</span>
+
+<p class="fs-2 heading-label">
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
+</p>
+<div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
+  <form
+    (ngSubmit)="save()"
+    [formGroup]="measureForm"
+    class="d-flex flex-column fit-content"
+  >
+    <div class="d-flex align-items-center justify-content-end gap-4">
+      <p class="fw-bold">Aktueller Wert</p>
+      <mat-form-field
+        appearance="outline"
+        class="form-field-width form-field-height"
+      >
+        <mat-label>Aktueller Wert</mat-label>
+        <input
+          [value]="measure.value"
+          formControlName="value"
+          matInput
+          placeholder="Aktueller Wert"
+          type="text"
+          class="value-input"
+        />
+      </mat-form-field>
+      <mat-label *ngIf="keyresult$ | async as keyresult" class="unit-label"
+        ><b>{{ keyresult.unit }}</b></mat-label
+      >
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right"
+    >
+      <p class="fw-bold">Datum der Messung</p>
+      <mat-form-field appearance="fill">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="measureDate"
+          [value]="measure.measureDate"
+          class="datepicker-input"
+        />
+        <mat-label>Datum der Messung</mat-label>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 margin-right"
+    >
+      <p class="fw-bold">Veränderung seit letzter Messung</p>
+      <mat-form-field appearance="outline" class="form-field-width">
+        <mat-label>Text hinzufügen</mat-label>
+        <textarea
+          [value]="measure.changeInfo"
+          formControlName="changeInfo"
+          matInput
+          placeholder="Text hinzufügen"
+          type="text"
+          class="description-textarea"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-end gap-4 margin-right"
+    >
+      <p class="fw-bold">Massnahmen</p>
+      <mat-form-field appearance="outline" class="form-field-width">
+        <mat-label>Text hinzufügen</mat-label>
+        <textarea
+          [value]="measure.initiatives"
+          formControlName="initiatives"
+          matInput
+          placeholder="Text hinzufügen"
+          type="text"
+          class="description-textarea"
+        ></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-end">
+      <button
+        (click)="navigateBack()"
+        class="rounded-5"
+        color="primary"
+        mat-stroked-button
+        type="reset"
+      >
+        Abbrechen
+      </button>
+
+      <button
+        class="rounded-5 create-button"
+        color="primary"
+        mat-raised-button
+        type="submit"
+        [disabled]="!measureForm.valid"
+      >
+        {{ this.create ? "Erstellen" : "Aktualisieren" }}
+      </button>
+    </div>
+  </form>
+</div>

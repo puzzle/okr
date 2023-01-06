@@ -48,7 +48,10 @@ export class KeyResultRowComponent implements OnInit {
         routeLine: 'keyresults/' + this.keyResult.id,
       },
       { displayName: 'KeyResult löschen', routeLine: 'result/add' },
-      { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
+      {
+        displayName: 'Messung hinzufügen',
+        routeLine: 'keyresults/' + this.keyResult.id + '/measure/new',
+      },
     ];
   }
 

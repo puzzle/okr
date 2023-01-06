@@ -3,7 +3,6 @@ package ch.puzzle.okr.service;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.UserRepository;
@@ -16,14 +15,12 @@ import java.util.List;
 @Service
 public class MeasureService {
     private final KeyResultRepository keyResultRepository;
-    private final UserRepository userRepository;
     private final MeasureRepository measureRepository;
     private final ProgressService progressService;
 
-    public MeasureService(KeyResultRepository keyResultRepository, UserRepository userRepository,
-            MeasureRepository measureRepository, ProgressService progressService) {
+    public MeasureService(KeyResultRepository keyResultRepository, MeasureRepository measureRepository,
+            ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
-        this.userRepository = userRepository;
         this.measureRepository = measureRepository;
         this.progressService = progressService;
     }
@@ -75,13 +72,12 @@ public class MeasureService {
                         String.format("Keyresult with id %d not found", keyResultId)));
     }
 
-    public User mapUser(MeasureDto measureDto) {
-        Long userId = measureDto.getCreatedById();
-        return userRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("User with id %d not found", userId)));
-    }
-
     public List<Measure> getAllMeasures() {
         return (List<Measure>) measureRepository.findAll();
+    }
+
+    public Measure getMeasureById(long id) {
+        return this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Measure with id %d not found", id)));
     }
 }

@@ -17,6 +17,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ProgressModule } from '../progress/progress.module';
+import { MeasureModule } from '../measure/measure.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ProgressModule } from '../progress/progress.module';
     MatInputModule,
     MatSelectModule,
     ProgressModule,
+    MeasureModule,
   ],
 })
 export class KeyresultModule {}

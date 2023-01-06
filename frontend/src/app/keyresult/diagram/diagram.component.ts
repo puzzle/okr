@@ -105,9 +105,6 @@ export class DiagramComponent implements OnInit {
               tooltipFormat: 'DD/MM/yyyy',
             },
           },
-          y: {
-            min: 0,
-          },
         },
         responsive: true,
       },

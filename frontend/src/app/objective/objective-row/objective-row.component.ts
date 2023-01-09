@@ -1,19 +1,22 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
-import { Objective } from '../../shared/services/objective.service';
+import {
+  Objective,
+  ObjectiveService,
+} from '../../shared/services/objective.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import {
   KeyResultMeasure,
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import { Location } from '@angular/common';
-import { getNumberOrNull } from '../../shared/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objective-row',
@@ -25,32 +28,17 @@ export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
-  isSelected: boolean = false;
+  @Output() onKeyresultChange: EventEmitter<any> = new EventEmitter();
   constructor(
     private keyResultService: KeyResultService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private location: Location
+    private objectiveService: ObjectiveService,
+    private router: Router
   ) {}
 
   public getKeyResults(id: number) {
-      this.router.navigate([],
-          {
-            relativeTo: this.route,
-            queryParams: { objectives: this.objective.id },
-            queryParamsHandling: 'merge'
-          });
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
   }
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      if (params['objectives'] !== undefined) {
-      const selectedObjectives: string[] = params['objectives'].split(',');
-       if (selectedObjectives.some(x => getNumberOrNull(x) === this.objective.id)) {
-         this.isSelected = true;
-       }
-      }
-     })
     this.menuEntries = [
       {
         displayName: 'KeyResult hinzufügen',
@@ -70,5 +58,15 @@ export class ObjectiveRowComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     this.router.navigate([menuEntry.routeLine]);
+  }
+
+  removeKeyResultFromListAndReloadObjective(id: number) {
+    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
+    this.onKeyresultChange.emit(this.objective.id);
+    this.objectiveService
+      .getObjectiveById(this.objective.id!)
+      .subscribe((objective) => {
+        this.objective = objective;
+      });
   }
 }

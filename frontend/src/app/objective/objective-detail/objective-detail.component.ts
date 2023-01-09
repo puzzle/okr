@@ -20,13 +20,4 @@ import { KeyResultRowComponent } from '../../keyresult/key-result-row/key-result
 export class ObjectiveDetailComponent {
   @Input() objective!: Objective;
   @Input() keyResultList!: Observable<KeyResultMeasure[]>;
-
-  removeKeyResult(keyResultId: number) {
-    this.keyResultList.subscribe((data) => {
-      data.forEach((element, index) => {
-        if (element.id == keyResultId) data.splice(index, 1);
-        this.keyResultList = of(data);
-      });
-    });
-  }
 }

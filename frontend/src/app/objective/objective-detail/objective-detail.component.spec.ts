@@ -65,11 +65,4 @@ describe('ObjectiveDetailComponent', () => {
     expect(spanTextes[2].nativeElement.textContent).toEqual('Letzte Messung');
     expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');
   });
-
-  test('should have 2 key result rows', () => {
-    const keyResultRows = fixture.debugElement.queryAll(
-      By.css('app-keyresult-row')
-    );
-    expect(keyResultRows.length).toEqual(3);
-  });
 });

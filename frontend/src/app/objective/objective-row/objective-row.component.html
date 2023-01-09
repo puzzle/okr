@@ -1,4 +1,4 @@
-<mat-expansion-panel [expanded]="isSelected" (opened)="getKeyResults(this.objective.id!)">
+<mat-expansion-panel (opened)="getKeyResults(this.objective.id!)">
   <mat-expansion-panel-header>
     <mat-panel-title class="objective-title">{{
       this.objective!.title
@@ -42,4 +42,14 @@
     [objective]="objective"
     [keyResultList]="keyResultList"
   ></app-objective-detail>
+  <mat-accordion *ngFor="let keyResult of keyResultList | async">
+    <app-keyresult-row
+      (onKeyresultListUpdate)="
+        removeKeyResultFromListAndReloadObjective($event)
+      "
+      [keyResult]="keyResult"
+      [objectiveId]="objective.id!"
+    >
+    </app-keyresult-row>
+  </mat-accordion>
 </mat-expansion-panel>

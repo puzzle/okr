@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
@@ -85,11 +85,9 @@ export class KeyResultService {
     }
   }
 
-  deleteKeyResultById(keyresultId: number) {
-    this.httpClient.delete('/api/v1/keyresults/' + keyresultId).subscribe({
-      error: () => {
-        return new Error('Couldnt delete Keyresult');
-      },
-    });
+  deleteKeyResultById(keyresultId: number): Observable<KeyResultMeasure> {
+    return this.httpClient.delete<KeyResultMeasure>(
+      '/api/v1/keyresults/' + keyresultId
+    );
   }
 }

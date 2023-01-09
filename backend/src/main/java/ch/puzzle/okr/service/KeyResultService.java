@@ -94,9 +94,11 @@ public class KeyResultService {
 
     public void deleteKeyResultById(Long id) {
         List<Measure> measures = measureRepository.findByKeyResultId(id);
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
         for (Measure measure : measures) {
             measureRepository.deleteById(measure.getId());
         }
         keyResultRepository.deleteById(id);
+        progressService.updateObjectiveProgress(objectiveId);
     }
 }

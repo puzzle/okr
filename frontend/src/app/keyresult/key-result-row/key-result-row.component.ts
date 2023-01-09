@@ -25,7 +25,7 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
 export class KeyResultRowComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;
   @Input() objectiveId!: number;
-  @Output() removeKeyResult: EventEmitter<any> = new EventEmitter();
+  @Output() onKeyresultListUpdate: EventEmitter<any> = new EventEmitter();
   menuEntries!: MenuEntry[];
   progressPercentage!: number;
 
@@ -33,7 +33,7 @@ export class KeyResultRowComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private keyResultService: KeyResultService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -100,10 +100,13 @@ export class KeyResultRowComponent implements OnInit {
       },
     });
 
-    return dialogRef.afterClosed().subscribe((data) => {
+    dialogRef.afterClosed().subscribe((data) => {
       if (data) {
-        this.keyResultService.deleteKeyResultById(this.keyResult.id!);
-        this.removeKeyResult.emit(this.keyResult.id!);
+        this.keyResultService
+          .deleteKeyResultById(this.keyResult.id!)
+          .subscribe((data) => {
+            this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
+          });
       }
     });
   }

@@ -35,6 +35,8 @@ class KeyResultServiceTest {
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
     @MockBean
     KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
+    @MockBean
+    ProgressService progressService = Mockito.mock(ProgressService.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -191,6 +193,7 @@ class KeyResultServiceTest {
     @Test
     void shouldDeleteKeyResultAndAssociatedMeasures() {
         when(measureRepository.findByKeyResultId(1L)).thenReturn(measures);
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
         keyResultService.deleteKeyResultById(1L);
 

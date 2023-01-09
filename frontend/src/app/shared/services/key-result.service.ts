@@ -33,7 +33,7 @@ export interface KeyResultMeasure {
   providedIn: 'root',
 })
 export class KeyResultService {
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  constructor(private httpClient: HttpClient) {}
 
   public getKeyResultsOfObjective(
     objectiveId: number

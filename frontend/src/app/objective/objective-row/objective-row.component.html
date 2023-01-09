@@ -42,7 +42,10 @@
     [objective]="objective"
     [keyResultList]="keyResultList"
   ></app-objective-detail>
-  <mat-accordion *ngFor="let keyResult of keyResultList | async">
+  <mat-accordion
+    class="keyresult-row"
+    *ngFor="let keyResult of keyResultList | async"
+  >
     <app-keyresult-row
       (onKeyresultListUpdate)="
         removeKeyResultFromListAndReloadObjective($event)

@@ -42,5 +42,19 @@
       "progress": 20,
       "created": "01.01.2022"
     }
-  ]
+  ],
+  "initObjective": {
+    "id": null,
+    "title": "",
+    "description": "",
+    "teamId": null,
+    "ownerId": null,
+    "ownerFirstname": "",
+    "ownerLastname": "",
+    "quarterId": null,
+    "quarterLabel": "",
+    "teamName": "",
+    "progress": 0,
+    "created": ""
+  }
 }

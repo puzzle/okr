@@ -27,123 +27,122 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 let loader: HarnessLoader;
 
+let component: ObjectiveFormComponent;
+let fixture: ComponentFixture<ObjectiveFormComponent>;
+
+let objective: Observable<Objective> = of(objectivesData.objectives[0]);
+let userList: Observable<User[]> = of(usersData.users);
+let teamList: Observable<Team[]> = of(teamsData.teams);
+let quarterList: Observable<Quarter[]> = of(quarterData.quarters);
+
+const mockObjectiveService = {
+  saveObjective: jest.fn(),
+  getObjectiveById: jest.fn(),
+};
+
+const mockUserService = {
+  getUsers: jest.fn(),
+};
+
+const mockToastrService = {
+  success: jest.fn(),
+  error: jest.fn(),
+};
+
+const mockQuarterService = {
+  getQuarters: jest.fn(),
+};
+
+const mockTeamService = {
+  getTeams: jest.fn(),
+};
+
 describe('ObjectiveFormComponent', () => {
-  let component: ObjectiveFormComponent;
-  let fixture: ComponentFixture<ObjectiveFormComponent>;
+  describe('Check if component makes call to toastrservice', () => {
+    beforeEach(() => {
+      mockObjectiveService.getObjectiveById.mockReturnValue(objective);
+      mockUserService.getUsers.mockReturnValue(userList);
+      mockQuarterService.getQuarters.mockReturnValue(quarterList);
+      mockTeamService.getTeams.mockReturnValue(teamList);
 
-  let objective: Observable<Objective> = of(objectivesData.objectives[0]);
-  let userList: Observable<User[]> = of(usersData.users);
-  let teamList: Observable<Team[]> = of(teamsData.teams);
-  let quarterList: Observable<Quarter[]> = of(quarterData.quarters);
-
-  const mockObjectiveService = {
-    saveObjective: jest.fn(),
-    getObjectiveById: jest.fn(),
-  };
-
-  const mockUserService = {
-    getUsers: jest.fn(),
-  };
-
-  const mockToastrService = {
-    success: jest.fn(),
-    error: jest.fn(),
-  };
-
-  const mockQuarterService = {
-    getQuarters: jest.fn(),
-  };
-
-  const mockTeamService = {
-    getTeams: jest.fn(),
-  };
-
-  beforeEach(() => {
-    mockObjectiveService.getObjectiveById.mockReturnValue(objective);
-
-    mockUserService.getUsers.mockReturnValue(userList);
-    mockQuarterService.getQuarters.mockReturnValue(quarterList);
-    mockTeamService.getTeams.mockReturnValue(teamList);
-
-    TestBed.configureTestingModule({
-      imports: [
-        ToastrModule.forRoot(),
-        HttpClientTestingModule,
-        RouterTestingModule,
-        ObjectiveModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [ObjectiveFormComponent],
-      providers: [
-        { provide: ObjectiveService, useValue: mockObjectiveService },
-        { provide: ToastrService, useValue: mockToastrService },
-        { provide: UserService, useValue: mockUserService },
-        { provide: QuarterService, useValue: mockQuarterService },
-        { provide: TeamService, useValue: mockTeamService },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            paramMap: of(convertToParamMap({ objectiveId: '1' })),
+      TestBed.configureTestingModule({
+        imports: [
+          ToastrModule.forRoot(),
+          HttpClientTestingModule,
+          RouterTestingModule,
+          ObjectiveModule,
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+        ],
+        declarations: [ObjectiveFormComponent],
+        providers: [
+          { provide: ObjectiveService, useValue: mockObjectiveService },
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: UserService, useValue: mockUserService },
+          { provide: QuarterService, useValue: mockQuarterService },
+          { provide: TeamService, useValue: mockTeamService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of(convertToParamMap({ objectiveId: '1' })),
+            },
           },
-        },
-      ],
-    }).compileComponents();
+        ],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(ObjectiveFormComponent);
-    loader = TestbedHarnessEnvironment.loader(fixture);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+      fixture = TestBed.createComponent(ObjectiveFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
-  afterEach(() => {
-    mockObjectiveService.saveObjective.mockReset();
-    mockObjectiveService.getObjectiveById.mockReset();
+    afterEach(() => {
+      mockObjectiveService.saveObjective.mockReset();
+      mockObjectiveService.getObjectiveById.mockReset();
 
-    mockUserService.getUsers.mockReset();
-    mockQuarterService.getQuarters.mockReset();
-    mockTeamService.getTeams.mockReset();
-    mockToastrService.success.mockReset();
-    mockToastrService.error.mockReset();
-  });
+      mockUserService.getUsers.mockReset();
+      mockQuarterService.getQuarters.mockReset();
+      mockTeamService.getTeams.mockReset();
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
 
-  test('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    test('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-  test('should trigger success notification', () => {
-    mockObjectiveService.saveObjective.mockReturnValue(objective);
+    test('should trigger success notification', () => {
+      mockObjectiveService.saveObjective.mockReturnValue(objective);
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).toHaveBeenCalledWith(
+        'Alles hat funktioniert!',
+        'Objective verarbeitet!',
+        { timeOut: 5000 }
+      );
+    });
 
-    const createbutton = fixture.debugElement.query(By.css('.create-button'));
-    createbutton.nativeElement.click();
-    fixture.detectChanges();
-    expect(mockToastrService.success).toHaveBeenCalledTimes(1);
-    expect(mockToastrService.success).toHaveBeenCalledWith(
-      'Alles hat funktioniert!',
-      'Objective verarbeitet!',
-      { timeOut: 5000 }
-    );
-  });
-
-  test('should trigger error notification', () => {
-    mockObjectiveService.saveObjective.mockReturnValue(
-      throwError(
-        () =>
-          new HttpErrorResponse({
-            status: 500,
-            error: { message: 'Something went wrong' },
-          })
-      )
-    );
-
-    const createbutton = fixture.debugElement.query(By.css('.create-button'));
-    createbutton.nativeElement.click();
-    fixture.detectChanges();
-    expect(mockToastrService.error).toHaveBeenCalledTimes(1);
-    expect(mockToastrService.error).toHaveBeenCalledWith(
-      'Objective konnte nicht verarbeitet werden!',
-      'Fehlerstatus: 500',
-      { timeOut: 5000 }
-    );
+    test('should trigger error notification', () => {
+      mockObjectiveService.saveObjective.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 500,
+              error: { message: 'Something went wrong' },
+            })
+        )
+      );
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Objective konnte nicht verarbeitet werden!',
+        'Fehlerstatus: 500',
+        { timeOut: 5000 }
+      );
+    });
   });
 });

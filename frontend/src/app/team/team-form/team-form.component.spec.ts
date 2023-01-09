@@ -177,7 +177,7 @@ describe('TeamFormComponent', () => {
     });
   });
 
-  describe('check if component makes call to tastrservice', () => {
+  describe('check if component makes call to toastrservice', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [

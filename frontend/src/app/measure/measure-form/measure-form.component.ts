@@ -126,7 +126,7 @@ export class MeasureFormComponent implements OnInit {
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              'Measure konnte nicht verarbeitet werden',
+              'Measure konnte nicht verarbeitet werden!',
               'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,

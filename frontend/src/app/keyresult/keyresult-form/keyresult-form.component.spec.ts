@@ -577,7 +577,7 @@ describe('KeyresultFormComponent', () => {
     });
   });
 
-  describe('Toastr notification when Keyresults is updated or saved', () => {
+  describe('Check if component makes call to toastrservice', () => {
     beforeEach(() => {
       //Standard mocks to create keyresult-form
       mockUserService.getUsers.mockReturnValue(userList);

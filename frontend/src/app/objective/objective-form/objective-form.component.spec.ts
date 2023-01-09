@@ -24,6 +24,8 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { ObjectiveModule } from '../objective.module';
 import { Quarter, QuarterService } from '../../shared/services/quarter.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 let loader: HarnessLoader;
 
@@ -71,8 +73,11 @@ describe('ObjectiveFormComponent', () => {
           HttpClientTestingModule,
           RouterTestingModule,
           ObjectiveModule,
+          FormsModule,
           ReactiveFormsModule,
           NoopAnimationsModule,
+          MatFormFieldModule,
+          MatIconModule,
         ],
         declarations: [ObjectiveFormComponent],
         providers: [

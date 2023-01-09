@@ -114,6 +114,11 @@ export class DiagramComponent implements OnInit {
           y: {
             suggestedMin: Math.min(this.goal.targetValue, this.goal.basicValue),
             suggestedMax: Math.max(this.goal.targetValue, this.goal.basicValue),
+            ticks: {
+              callback: function (value) {
+                return Number.isInteger(value) ? value : '';
+              },
+            },
           },
         },
         responsive: true,

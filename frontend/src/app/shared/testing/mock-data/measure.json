@@ -1,12 +1,34 @@
 {
-  "measure": {
-    "id": 1,
-    "keyResultId": 1,
-    "value": 60,
-    "changeInfo": "Changeinfo",
-    "initiatives": "Initiatives",
-    "createdBy": 1,
-    "createdOn": "2023-01-18",
-    "measureDate": "2022-12-23"
-  }
+  "measures": [
+    {
+      "id": 1,
+      "keyResultId": 1,
+      "value": 60,
+      "changeInfo": "Changeinfo 1",
+      "initiatives": "Initiatives 1",
+      "createdBy": 1,
+      "createdOn": "2023-01-18",
+      "measureDate": "2022-12-23"
+    },
+    {
+      "id": 2,
+      "keyResultId": 1,
+      "value": 40,
+      "changeInfo": "Changeinfo 2",
+      "initiatives": "Initiatives 2",
+      "createdBy": 1,
+      "createdOn": "2023-02-02",
+      "measureDate": "2023-03-18"
+    },
+    {
+      "id": 3,
+      "keyResultId": 1,
+      "value": 40,
+      "changeInfo": "Changeinfo 3",
+      "initiatives": "Initiatives 3",
+      "createdBy": 1,
+      "createdOn": "2023-02-02",
+      "measureDate": "2023-01-21"
+    }
+  ]
 }

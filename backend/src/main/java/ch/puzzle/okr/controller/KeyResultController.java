@@ -87,10 +87,8 @@ public class KeyResultController {
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Deleted keyresult by Id"),
-            @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id")
-    })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted keyresult by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id) {
         keyResultService.deleteKeyResultById(id);

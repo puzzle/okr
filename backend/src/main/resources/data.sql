@@ -18,12 +18,14 @@ insert into person(id, username, firstname, lastname, email) values
         (5, 'robin', 'Robin', 'Papierer', 'papierer@puzzle.ch');
 
 insert into quarter(id, label) values
-        (1, 'GJ 11/12-Q1');
+        (1, 'GJ 22/23-Q3'),
+        (2, 'GJ 22/23-Q2'),
+        (3, 'GJ 22/23-Q1');
 
 insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
         (1, 'Motivierte und glückliche Members', 1, 1, 1, '61', '2022-01-01', 'Puzzle ITC will motivierte und glückliche Members.'),
-        (2, 'Objective 2', 2, 2, 1, '0', '2019-01-01', 'This is the description of Objective 2'),
-        (3, 'Objective 3', 4, 3, 1, '0', '2020-01-01', 'This is the description of Objective 3');
+        (2, 'Objective 2', 2, 2, 2, '0', '2019-01-01', 'This is the description of Objective 2'),
+        (3, 'Objective 3', 4, 3, 3, '0', '2020-01-01', 'This is the description of Objective 3');
 
 insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
         (1, 1, 5, 1, 2, 0, 4, 1, '2022-08-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),

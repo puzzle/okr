@@ -22,6 +22,10 @@ public class Quarter {
         setLabel(builder.label);
     }
 
+    public Quarter(String label) {
+        this.label = label;
+    }
+
     public Long getId() {
         return id;
     }

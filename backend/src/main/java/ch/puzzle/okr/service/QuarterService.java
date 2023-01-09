@@ -29,21 +29,22 @@ public class QuarterService {
         int businessYearQuarter = getBusinessYearQuarter();
         int firstYear = getCurrentYear();
         String currentQuarterLabel = generateQuarterLabel(firstYear, businessYearQuarter);
-        Quarter currentQuarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).build();
 
-        List<Quarter> futureQuarter = getFutureQuarterLabels(firstYear, businessYearQuarter, 1);
-        List<Quarter> pastQuarter = getPastQuarters(firstYear, businessYearQuarter, 4);
+        List<String> futureQuarter = getFutureQuarterLabels(firstYear, businessYearQuarter, 1);
+        List<String> pastQuarter = getPastQuarters(firstYear, businessYearQuarter, 4);
 
-        List<Quarter> quarterList = new ArrayList<>();
-        quarterList.add(currentQuarter);
-        quarterList.addAll(toList(quarterRepository.saveAll(futureQuarter)));
-        quarterList.addAll(toList(quarterRepository.saveAll(pastQuarter)));
+        List<String > quarterLabelList = new ArrayList<>();
+        quarterLabelList.add(currentQuarterLabel);
+        quarterLabelList.addAll(futureQuarter);
+        quarterLabelList.addAll(pastQuarter);
 
-        return quarterList;
+        List<Quarter> quarterList = quarterLabelList.stream().map(Quarter::new).toList();
+
+        return toList(quarterRepository.saveAll(quarterList));
     }
 
-    public List<Quarter> getPastQuarters(int currentYear, int currentQuarter, int amount) {
-        List<Quarter> quarterList = new ArrayList<>();
+    public List<String> getPastQuarters(int currentYear, int currentQuarter, int amount) {
+        List<String> quarterList = new ArrayList<>();
         int quarterNumber = currentQuarter;
         int year = currentYear - 1;
         for (int i = 0; i < amount; i++) {
@@ -52,15 +53,13 @@ public class QuarterService {
                 quarterNumber = 4;
                 year--;
             }
-            String label = generateQuarterLabel(year, quarterNumber);
-            Quarter quarter = Quarter.Builder.builder().withLabel(label).build();
-            quarterList.add(quarter);
+            quarterList.add(generateQuarterLabel(year, quarterNumber));
         }
         return quarterList;
     }
 
-    public List<Quarter> getFutureQuarterLabels(int currentYear, int currentQuarter, int amount) {
-        List<Quarter> quarterList = new ArrayList<>();
+    public List<String> getFutureQuarterLabels(int currentYear, int currentQuarter, int amount) {
+        List<String> quarterList = new ArrayList<>();
         int quarterNumber = currentQuarter;
         int year = currentYear;
         for (int i = 0; i < amount; i++) {
@@ -69,9 +68,7 @@ public class QuarterService {
                 quarterNumber = 1;
                 year++;
             }
-            String label = generateQuarterLabel(year, quarterNumber);
-            Quarter quarter = Quarter.Builder.builder().withLabel(label).build();
-            quarterList.add(quarter);
+            quarterList.add(generateQuarterLabel(year, quarterNumber));
         }
         return quarterList;
     }
@@ -86,7 +83,7 @@ public class QuarterService {
     }
 
     public int getBusinessYearQuarter() {
-        int yearQuarter = getCurrentYear() / 3 + 1;
+        int yearQuarter = calendar.get(Calendar.MONTH) / 3 + 1;
         return yearToBusinessQuarterMap().get(yearQuarter);
     }
 

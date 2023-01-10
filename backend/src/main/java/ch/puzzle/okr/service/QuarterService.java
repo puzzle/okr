@@ -77,7 +77,11 @@ public class QuarterService {
     }
 
     public int getCurrentYear() {
-        return calendar.get(Calendar.YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        if(calendar.get(Calendar.MONTH) < Calendar.JULY){
+            return year-1;
+        }
+        return year;
     }
 
     public int shortenYear(int fullYear) {

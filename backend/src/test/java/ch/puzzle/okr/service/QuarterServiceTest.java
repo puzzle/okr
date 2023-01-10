@@ -79,21 +79,25 @@ class QuarterServiceTest {
                 Arguments.of(22, 4, "GJ 22/23-Q4"));
     }
 
+
+
+
     private static Stream<Arguments> shouldGetOrCreateQuarters() {
         return Stream.of(
                 Arguments.of(2023,
+                        2022,
                         1,
                         3,
-                        "GJ 23/24-Q1",
-                        List.of("GJ 23/24-Q2"),
-                        List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1"),
+                        "GJ 22/23-Q3",
+                        List.of("GJ 22/23-Q4"),
+                        List.of("GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3"),
                         List.of(
-                            Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build(),
-                            Quarter.Builder.builder().withLabel("GJ 23/24-Q2").build(),
-                            Quarter.Builder.builder().withLabel("GJ 22/23-Q4").build(),
                             Quarter.Builder.builder().withLabel("GJ 22/23-Q3").build(),
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q4").build(),
                             Quarter.Builder.builder().withLabel("GJ 22/23-Q2").build(),
-                            Quarter.Builder.builder().withLabel("GJ 22/23-Q1").build()
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q1").build(),
+                            Quarter.Builder.builder().withLabel("GJ 21/22-Q4").build(),
+                            Quarter.Builder.builder().withLabel("GJ 21/22-Q3").build()
                         ))
 
         );
@@ -151,7 +155,7 @@ class QuarterServiceTest {
     @ParameterizedTest
     @MethodSource
     void shouldReturnCurrentYear(int year, int shortedYear) {
-        calendar.set(year, Calendar.JANUARY, 1);
+        calendar.set(year, Calendar.DECEMBER, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
@@ -178,21 +182,41 @@ class QuarterServiceTest {
 
     @ParameterizedTest
     @MethodSource
-    void shouldGetOrCreateQuarters(int year, int quarter, int businessYearQuarter, String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters, List<Quarter> quarters) {
+    void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int quarter, int businessYearQuarter, String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters, List<Quarter> quarters) {
         int month = monthFromQuarter(quarter);
-        calendar.set(year, month, 1);
+        calendar.set(currentYear, month, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
+
         doReturn(currentQuarterLabel)
-                .when(this.quarterService).generateQuarterLabel(year, businessYearQuarter);
+                .when(this.quarterService).generateQuarterLabel(firstLabelYear, businessYearQuarter);
         doReturn(futureQuarters)
-                .when(this.quarterService).getFutureQuarterLabels(year, businessYearQuarter,1);
+                .when(this.quarterService).getFutureQuarterLabels(firstLabelYear, businessYearQuarter,1);
         doReturn(pastQuarters)
-                .when(this.quarterService).getPastQuarters(year, businessYearQuarter,4);
+                .when(this.quarterService).getPastQuarters(firstLabelYear, businessYearQuarter,4);
         doReturn(quarters)
                 .when(this.quarterRepository).saveAll(any());
 
         assertEquals(quarters, this.quarterService.getOrCreateQuarters());
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldGenerateCurrentQuarterLabel(int year, int month, String quarterLabel) {
+        calendar.set(year, month, 1);
+        calendarMock = calendar;
+        quarterService.calendar = calendarMock;
+        int quarter = quarterService.getBusinessYearQuarter();
+        int businessYear = quarterService.getCurrentYear();
+        assertEquals(quarterLabel, this.quarterService.generateQuarterLabel(businessYear, quarter));
+    }
+
+    private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
+        return Stream.of(
+                Arguments.of(2023, 1, "GJ 22/23-Q3"),
+                Arguments.of(2022, 4, "GJ 21/22-Q4"),
+                Arguments.of(2021, 7, "GJ 21/22-Q1"),
+                Arguments.of(2022, 10, "GJ 22/23-Q2"));
     }
 
     private int monthFromQuarter(int quarter) {

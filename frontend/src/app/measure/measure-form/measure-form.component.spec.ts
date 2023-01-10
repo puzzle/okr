@@ -121,7 +121,9 @@ describe('MeasureFormComponent', () => {
       component.measure$.subscribe((measure) => {
         expect(measure.id).toEqual(1);
         expect(measure.value).toEqual(42);
-        expect(measure.measureDate).toEqual(new Date('2023-01-05'));
+        expect(measure.measureDate).toEqual(
+          new Date('2023-01-05T00:00:00.000Z')
+        );
 
         expect(component.measureForm.get('value')?.value).toEqual(33);
         expect(component.measureForm.get('measureDate')?.value).toEqual(

@@ -35,7 +35,10 @@ class QuarterServiceTest {
     private QuarterService quarterService;
 
     private static Stream<Arguments> shouldGetCurrentBusinessYearQuarter() {
-        return Stream.of(Arguments.of(Calendar.JANUARY, 3), Arguments.of(Calendar.MARCH, 3), Arguments.of(Calendar.APRIL, 4), Arguments.of(Calendar.JUNE, 4), Arguments.of(Calendar.JULY, 1), Arguments.of(Calendar.SEPTEMBER, 1), Arguments.of(Calendar.OCTOBER, 2), Arguments.of(Calendar.DECEMBER, 2));
+        return Stream.of(Arguments.of(Calendar.JANUARY, 3), Arguments.of(Calendar.MARCH, 3),
+                Arguments.of(Calendar.APRIL, 4), Arguments.of(Calendar.JUNE, 4), Arguments.of(Calendar.JULY, 1),
+                Arguments.of(Calendar.SEPTEMBER, 1), Arguments.of(Calendar.OCTOBER, 2),
+                Arguments.of(Calendar.DECEMBER, 2));
     }
 
     private static Stream<Arguments> shouldReturnCurrentYear() {
@@ -43,37 +46,44 @@ class QuarterServiceTest {
     }
 
     private static Stream<Arguments> shouldGetFutureQuarters() {
-        return Stream.of(Arguments.of(23, 1, List.of("GJ 23/24-Q2")), Arguments.of(22, 2, List.of("GJ 22/23-Q3")), Arguments.of(21, 3, List.of("GJ 21/22-Q4")), Arguments.of(22, 4, List.of("GJ 23/24-Q1")));
+        return Stream.of(Arguments.of(23, 1, List.of("GJ 23/24-Q2")), Arguments.of(22, 2, List.of("GJ 22/23-Q3")),
+                Arguments.of(21, 3, List.of("GJ 21/22-Q4")), Arguments.of(22, 4, List.of("GJ 23/24-Q1")));
     }
 
     private static Stream<Arguments> shouldGetPastQuarters() {
-        return Stream.of(Arguments.of(23, 1, List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1")), Arguments.of(22, 2, List.of("GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3", "GJ 21/22-Q2")), Arguments.of(21, 3, List.of("GJ 21/22-Q2", "GJ 21/22-Q1", "GJ 20/21-Q4", "GJ 20/21-Q3")), Arguments.of(22, 4, List.of("GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4")));
+        return Stream.of(Arguments.of(23, 1, List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1")),
+                Arguments.of(22, 2, List.of("GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3", "GJ 21/22-Q2")),
+                Arguments.of(21, 3, List.of("GJ 21/22-Q2", "GJ 21/22-Q1", "GJ 20/21-Q4", "GJ 20/21-Q3")),
+                Arguments.of(22, 4, List.of("GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4")));
     }
 
     private static Stream<Arguments> shouldGenerateQuarterLabel() {
-        return Stream.of(Arguments.of(23, 1, "GJ 23/24-Q1"), Arguments.of(22, 2, "GJ 22/23-Q2"), Arguments.of(21, 3, "GJ 21/22-Q3"), Arguments.of(22, 4, "GJ 22/23-Q4"));
+        return Stream.of(Arguments.of(23, 1, "GJ 23/24-Q1"), Arguments.of(22, 2, "GJ 22/23-Q2"),
+                Arguments.of(21, 3, "GJ 21/22-Q3"), Arguments.of(22, 4, "GJ 22/23-Q4"));
     }
 
     private static Stream<Arguments> shouldGetOrCreateQuarters() {
-        return Stream.of(Arguments.of(2023, 2022, 1, 3, "GJ 22/23-Q3", List.of("GJ 22/23-Q4"), List.of("GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3"), List.of(Quarter.Builder.builder().withLabel("GJ 22/23-Q3").build(), Quarter.Builder.builder().withLabel("GJ 22/23-Q4").build(), Quarter.Builder.builder().withLabel("GJ 22/23-Q2").build(), Quarter.Builder.builder().withLabel("GJ 22/23-Q1").build(), Quarter.Builder.builder().withLabel("GJ 21/22-Q4").build(), Quarter.Builder.builder().withLabel("GJ 21/22-Q3").build()))
+        return Stream.of(Arguments.of(2023, 2022, 1, 3, "GJ 22/23-Q3", List.of("GJ 22/23-Q4"),
+                List.of("GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3"),
+                List.of(Quarter.Builder.builder().withLabel("GJ 22/23-Q3").build(),
+                        Quarter.Builder.builder().withLabel("GJ 22/23-Q4").build(),
+                        Quarter.Builder.builder().withLabel("GJ 22/23-Q2").build(),
+                        Quarter.Builder.builder().withLabel("GJ 22/23-Q1").build(),
+                        Quarter.Builder.builder().withLabel("GJ 21/22-Q4").build(),
+                        Quarter.Builder.builder().withLabel("GJ 21/22-Q3").build()))
 
         );
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
-        return Stream.of(Arguments.of(2023, 1, "GJ 22/23-Q3"), Arguments.of(2022, 4, "GJ 21/22-Q4"), Arguments.of(2021, 7, "GJ 21/22-Q1"), Arguments.of(2022, 10, "GJ 22/23-Q2"));
+        return Stream.of(Arguments.of(2023, 1, "GJ 22/23-Q3"), Arguments.of(2022, 4, "GJ 21/22-Q4"),
+                Arguments.of(2021, 7, "GJ 21/22-Q1"), Arguments.of(2022, 10, "GJ 22/23-Q2"));
     }
 
     private static Stream<Arguments> shouldShortenYear() {
-        return Stream.of(
-                Arguments.of(2000,"00"),
-                Arguments.of(2005,"05"),
-                Arguments.of(2014,"14"),
-                Arguments.of(2020,"20"),
-                Arguments.of(2023,"23")
-        );
+        return Stream.of(Arguments.of(2000, "00"), Arguments.of(2005, "05"), Arguments.of(2014, "14"),
+                Arguments.of(2020, "20"), Arguments.of(2023, "23"));
     }
-
 
     @BeforeEach
     void beforeEach() {
@@ -154,14 +164,18 @@ class QuarterServiceTest {
 
     @ParameterizedTest
     @MethodSource
-    void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int quarter, int businessYearQuarter, String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters, List<Quarter> quarters) {
+    void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int quarter, int businessYearQuarter,
+            String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters,
+            List<Quarter> quarters) {
         int month = monthFromQuarter(quarter);
         calendar.set(currentYear, month, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        doReturn(currentQuarterLabel).when(this.quarterService).generateQuarterLabel(firstLabelYear, businessYearQuarter);
-        doReturn(futureQuarters).when(this.quarterService).getFutureQuarterLabels(firstLabelYear, businessYearQuarter, 1);
+        doReturn(currentQuarterLabel).when(this.quarterService).generateQuarterLabel(firstLabelYear,
+                businessYearQuarter);
+        doReturn(futureQuarters).when(this.quarterService).getFutureQuarterLabels(firstLabelYear, businessYearQuarter,
+                1);
         doReturn(pastQuarters).when(this.quarterService).getPastQuarters(firstLabelYear, businessYearQuarter, 4);
         doReturn(quarters).when(this.quarterRepository).saveAll(any());
 

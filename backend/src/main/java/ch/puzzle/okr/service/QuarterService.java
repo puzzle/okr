@@ -112,6 +112,6 @@ public class QuarterService {
     }
 
     public String padWithZeros(int amount, int number) {
-        return String.format("%0"+amount+"d", number);
+        return String.format("%0" + amount + "d", number);
     }
 }

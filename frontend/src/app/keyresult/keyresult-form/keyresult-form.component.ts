@@ -116,13 +116,13 @@ export class KeyresultFormComponent implements OnInit {
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => {
             this.router.navigate(['/dashboard']);
-            this.toastr.success('', 'Keyresult gespeichert!', {
+            this.toastr.success('', 'Key Result gespeichert!', {
               timeOut: 5000,
             });
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              'Keyresult konnte nicht gespeichert werden!',
+              'Key Result konnte nicht gespeichert werden!',
               'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,

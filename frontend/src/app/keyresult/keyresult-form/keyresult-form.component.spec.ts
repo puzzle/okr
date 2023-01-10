@@ -636,7 +636,7 @@ describe('KeyresultFormComponent', () => {
       expect(mockToastrService.error).not.toHaveBeenCalled();
       expect(mockToastrService.success).toHaveBeenCalledWith(
         '',
-        'Keyresult gespeichert!',
+        'Key Result gespeichert!',
         { timeOut: 5000 }
       );
     });
@@ -659,7 +659,7 @@ describe('KeyresultFormComponent', () => {
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
       expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Keyresult konnte nicht gespeichert werden!',
+        'Key Result konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
         { timeOut: 5000 }
       );

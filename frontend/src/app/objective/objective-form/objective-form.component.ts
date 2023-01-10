@@ -12,6 +12,8 @@ import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
 import { Team, TeamService } from '../../shared/services/team.service';
 import { Quarter, QuarterService } from '../../shared/services/quarter.service';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-objective-form',
@@ -57,7 +59,8 @@ export class ObjectiveFormComponent implements OnInit {
     private quarterService: QuarterService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -103,9 +106,21 @@ export class ObjectiveFormComponent implements OnInit {
       )
       .subscribe((objective) =>
         this.objectiveService.saveObjective(objective, this.create).subscribe({
-          next: () => this.router.navigate(['/dashboard']),
-          error: () => {
-            return new Error('can not save objective');
+          next: () => {
+            this.toastr.success('', 'Objective gespeichert!', {
+              timeOut: 5000,
+            });
+            this.router.navigate(['/dashboard']);
+          },
+          error: (e: HttpErrorResponse) => {
+            this.toastr.error(
+              'Objective konnte nicht gespeichert werden!',
+              'Fehlerstatus: ' + e.status,
+              {
+                timeOut: 5000,
+              }
+            );
+            return new Error('can not process objective');
           },
         })
       );

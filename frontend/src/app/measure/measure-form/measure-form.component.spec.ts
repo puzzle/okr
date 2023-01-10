@@ -15,8 +15,7 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
-import * as measureData from '../../shared/testing/mock-data/measure.json';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { MeasureService } from '../../shared/services/measure.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { By } from '@angular/platform-browser';
@@ -26,6 +25,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { loadMeasure } from '../../shared/testing/Loader';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -51,6 +52,11 @@ describe('MeasureFormComponent', () => {
     getKeyResultById: jest.fn(),
   };
 
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
+
   describe('Edit Measure', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -70,10 +76,12 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -267,10 +275,12 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -290,6 +300,9 @@ describe('MeasureFormComponent', () => {
       mockMeasureService.saveMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     it('should create', () => {
@@ -351,6 +364,48 @@ describe('MeasureFormComponent', () => {
         true
       );
     });
+
+    test('should trigger success notification', () => {
+      mockMeasureService.saveMeasure.mockReturnValue(measure1);
+      component.measureForm = createMeasureForm;
+      fixture.detectChanges();
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
+      expect(mockToastrService.success).toHaveBeenCalledWith(
+        '',
+        'Messung gespeichert!',
+        { timeOut: 5000 }
+      );
+    });
+
+    test('should trigger error notification', () => {
+      mockMeasureService.saveMeasure.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 500,
+              error: { message: 'Something went wrong' },
+            })
+        )
+      );
+      component.measureForm = createMeasureForm;
+      fixture.detectChanges();
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Messung konnte nicht gespeichert werden!',
+        'Fehlerstatus: 500',
+        { timeOut: 5000 }
+      );
+    });
   });
 
   describe('Create throw error when keyresult id is null', () => {
@@ -375,6 +430,7 @@ describe('MeasureFormComponent', () => {
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {

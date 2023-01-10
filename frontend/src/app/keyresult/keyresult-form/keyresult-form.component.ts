@@ -13,6 +13,8 @@ import {
 } from '../../shared/services/key-result.service';
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -51,7 +53,8 @@ export class KeyresultFormComponent implements OnInit {
     private objectiveService: ObjectiveService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -111,8 +114,20 @@ export class KeyresultFormComponent implements OnInit {
       )
       .subscribe((keyresult) =>
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
-          next: () => this.router.navigate(['/dashboard']),
-          error: () => {
+          next: () => {
+            this.router.navigate(['/dashboard']);
+            this.toastr.success('', 'Key Result gespeichert!', {
+              timeOut: 5000,
+            });
+          },
+          error: (e: HttpErrorResponse) => {
+            this.toastr.error(
+              'Key Result konnte nicht gespeichert werden!',
+              'Fehlerstatus: ' + e.status,
+              {
+                timeOut: 5000,
+              }
+            );
             console.log('Can not save this keyresult: ', keyresult);
             return new Error('ups sommething happend');
           },

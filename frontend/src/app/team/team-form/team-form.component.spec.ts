@@ -5,23 +5,37 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { Team } from '../../shared/services/team.service';
+import { Team, TeamService } from '../../shared/services/team.service';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import * as teamsData from '../../shared/testing/mock-data/teams.json';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 let component: TeamFormComponent;
 let fixture: ComponentFixture<TeamFormComponent>;
 
 let team: Team = teamsData.teams[0];
 
+const mockToastrService = {
+  success: jest.fn(),
+  error: jest.fn(),
+};
+
+const mockTeamService = {
+  save: jest.fn(),
+  getTeam: jest.fn(),
+  getInitTeam: jest.fn(),
+};
+
 describe('TeamFormComponent', () => {
   describe('Create new Team', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
@@ -89,6 +103,7 @@ describe('TeamFormComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           NoopAnimationsModule,
           HttpClientTestingModule,
           RouterTestingModule,
@@ -159,6 +174,78 @@ describe('TeamFormComponent', () => {
       expect(component.teamForm.valid).toBeFalsy();
       expect(inputField.nativeElement.value).toEqual('');
       expect(buttons.nativeElement.disabled).toEqual(true);
+    });
+  });
+
+  describe('check if component makes call to toastrservice', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          ToastrModule.forRoot(),
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          RouterTestingModule,
+          ReactiveFormsModule,
+          MatInputModule,
+        ],
+        declarations: [TeamFormComponent],
+        providers: [
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: TeamService, useValue: mockTeamService },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(TeamFormComponent);
+      component = fixture.componentInstance;
+
+      component.teamForm.get('name')?.setValue(team.name);
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
+
+    test('should display success notification', () => {
+      //Return Team to trigger success notification of ToastrService
+      mockTeamService.save.mockReturnValue(of(team));
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
+      expect(mockToastrService.success).toHaveBeenCalledWith(
+        '',
+        'Team gespeichert!',
+        { timeOut: 5000 }
+      );
+    });
+
+    test('should display error notification', () => {
+      //Return Error to trigger error notification of ToastrService
+      mockTeamService.save.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 500,
+              error: { message: 'Something went wrong' },
+            })
+        )
+      );
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Team konnte nicht gespeichert werden!',
+        'Fehlerstatus: 500',
+        { timeOut: 5000 }
+      );
     });
   });
 });

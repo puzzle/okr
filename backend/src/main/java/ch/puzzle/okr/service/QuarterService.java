@@ -38,9 +38,7 @@ public class QuarterService {
         quarterLabelList.addAll(futureQuarter);
         quarterLabelList.addAll(pastQuarter);
 
-        List<Quarter> quarterList = quarterLabelList
-                .stream()
-                .map(e -> Quarter.Builder.builder().withLabel(e).build())
+        List<Quarter> quarterList = quarterLabelList.stream().map(e -> Quarter.Builder.builder().withLabel(e).build())
                 .toList();
 
         return toList(quarterRepository.saveAll(quarterList));
@@ -78,14 +76,14 @@ public class QuarterService {
 
     public int getCurrentYear() {
         int year = calendar.get(Calendar.YEAR);
-        if(calendar.get(Calendar.MONTH) < Calendar.JULY){
-            return year-1;
+        if (calendar.get(Calendar.MONTH) < Calendar.JULY) {
+            return year - 1;
         }
         return year;
     }
 
     public int shortenYear(int fullYear) {
-        return fullYear %100;
+        return fullYear % 100;
     }
 
     public String generateQuarterLabel(int firstYear, int currentQuarter) {
@@ -94,9 +92,9 @@ public class QuarterService {
     }
 
     public int getBusinessYearQuarter() {
-        //Add 1 because Calendar.Month is zero based
+        // Add 1 because Calendar.Month is zero based
         int month = calendar.get(Calendar.MONTH);
-        int yearQuarter =  month / 3 + 1;
+        int yearQuarter = month / 3 + 1;
         return yearToBusinessQuarterMap().get(yearQuarter);
     }
 
@@ -110,7 +108,6 @@ public class QuarterService {
     }
 
     public <T> List<T> toList(final Iterable<T> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .toList();
+        return StreamSupport.stream(iterable.spliterator(), false).toList();
     }
 }

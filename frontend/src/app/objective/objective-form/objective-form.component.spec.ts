@@ -117,9 +117,10 @@ describe('ObjectiveFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Alles hat funktioniert!',
-        'Objective verarbeitet!',
+        '',
+        'Objective gespeichert!',
         { timeOut: 5000 }
       );
     });
@@ -138,8 +139,9 @@ describe('ObjectiveFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Objective konnte nicht verarbeitet werden!',
+        'Objective konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
         { timeOut: 5000 }
       );

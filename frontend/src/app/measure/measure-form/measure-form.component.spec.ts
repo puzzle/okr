@@ -292,6 +292,9 @@ describe('MeasureFormComponent', () => {
       mockMeasureService.saveMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     it('should create', () => {
@@ -363,10 +366,11 @@ describe('MeasureFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Alles hat funktioniert!',
-        'Measure verarbeitet!',
-        {timeOut: 5000}
+        '',
+        'Messung gespeichert!',
+        { timeOut: 5000 }
       );
     });
 
@@ -387,8 +391,9 @@ describe('MeasureFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Measure konnte nicht verarbeitet werden!',
+        'Messung konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
         {timeOut: 5000}
       );

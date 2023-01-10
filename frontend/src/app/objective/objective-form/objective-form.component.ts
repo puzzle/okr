@@ -107,18 +107,14 @@ export class ObjectiveFormComponent implements OnInit {
       .subscribe((objective) =>
         this.objectiveService.saveObjective(objective, this.create).subscribe({
           next: () => {
-            this.toastr.success(
-              'Alles hat funktioniert!',
-              'Objective verarbeitet!',
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.success('', 'Objective gespeichert!', {
+              timeOut: 5000,
+            });
             this.router.navigate(['/dashboard']);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              'Objective konnte nicht verarbeitet werden!',
+              'Objective konnte nicht gespeichert werden!',
               'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,

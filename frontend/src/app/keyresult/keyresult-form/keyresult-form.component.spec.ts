@@ -633,9 +633,10 @@ describe('KeyresultFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Alles hat funktioniert!',
-        'Keyresult verarbeitet!',
+        '',
+        'Keyresult gespeichert!',
         { timeOut: 5000 }
       );
     });
@@ -656,8 +657,9 @@ describe('KeyresultFormComponent', () => {
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Keyresult konnte nicht verarbeitet werden!',
+        'Keyresult konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
         { timeOut: 5000 }
       );

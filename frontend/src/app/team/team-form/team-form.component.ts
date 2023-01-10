@@ -46,14 +46,14 @@ export class TeamFormComponent implements OnInit {
     } as Team;
     this.teamService.save(saveTeam).subscribe({
       next: () => {
-        this.toastr.success('Alles hat funktioniert!', 'Team verarbeitet!', {
+        this.toastr.success('', 'Team gespeichert!', {
           timeOut: 5000,
         });
         this.router.navigate(['/', 'teams']);
       },
       error: (e: HttpErrorResponse) => {
         this.toastr.error(
-          'Team konnte nicht verarbeitet werden!',
+          'Team konnte nicht gespeichert werden!',
           'Fehlerstatus: ' + e.status,
           {
             timeOut: 5000,

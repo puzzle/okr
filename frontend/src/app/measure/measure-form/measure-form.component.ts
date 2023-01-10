@@ -115,18 +115,14 @@ export class MeasureFormComponent implements OnInit {
         measure.measureDate = new Date(measure.measureDate.toString() + 'UTC');
         this.measureService.saveMeasure(measure, this.create).subscribe({
           next: () => {
-            this.toastr.success(
-              'Alles hat funktioniert!',
-              'Measure verarbeitet!',
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.success('', 'Messung gespeichert!', {
+              timeOut: 5000,
+            });
             this.router.navigate(['/dashboard']);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              'Measure konnte nicht verarbeitet werden!',
+              'Messung konnte nicht gespeichert werden!',
               'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,

@@ -202,6 +202,11 @@ describe('TeamFormComponent', () => {
       fixture.detectChanges();
     });
 
+    afterEach(() => {
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
+
     test('should display success notification', () => {
       //Return Team to trigger success notification of ToastrService
       mockTeamService.save.mockReturnValue(of(team));
@@ -211,9 +216,10 @@ describe('TeamFormComponent', () => {
       fixture.detectChanges();
 
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
       expect(mockToastrService.success).toHaveBeenCalledWith(
-        'Alles hat funktioniert!',
-        'Team verarbeitet!',
+        '',
+        'Team gespeichert!',
         { timeOut: 5000 }
       );
     });
@@ -234,8 +240,9 @@ describe('TeamFormComponent', () => {
       fixture.detectChanges();
 
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Team konnte nicht verarbeitet werden!',
+        'Team konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
         { timeOut: 5000 }
       );

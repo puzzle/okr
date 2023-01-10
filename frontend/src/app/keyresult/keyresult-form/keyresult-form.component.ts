@@ -14,7 +14,7 @@ import {
 import { User, UserService } from '../../shared/services/user.service';
 import { getNumberOrNull } from '../../shared/common';
 import { ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -116,17 +116,13 @@ export class KeyresultFormComponent implements OnInit {
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => {
             this.router.navigate(['/dashboard']);
-            this.toastr.success(
-              'Alles hat funktioniert!',
-              'Keyresult verarbeitet!',
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.success('', 'Keyresult gespeichert!', {
+              timeOut: 5000,
+            });
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
-              'Keyresult konnte nicht verarbeitet werden!',
+              'Keyresult konnte nicht gespeichert werden!',
               'Fehlerstatus: ' + e.status,
               {
                 timeOut: 5000,

@@ -33,12 +33,15 @@ public class QuarterService {
         List<String> futureQuarter = getFutureQuarterLabels(firstYear, businessYearQuarter, 1);
         List<String> pastQuarter = getPastQuarters(firstYear, businessYearQuarter, 4);
 
-        List<String > quarterLabelList = new ArrayList<>();
+        List<String> quarterLabelList = new ArrayList<>();
         quarterLabelList.add(currentQuarterLabel);
         quarterLabelList.addAll(futureQuarter);
         quarterLabelList.addAll(pastQuarter);
 
-        List<Quarter> quarterList = quarterLabelList.stream().map(Quarter::new).toList();
+        List<Quarter> quarterList = quarterLabelList
+                .stream()
+                .map(e -> Quarter.Builder.builder().withLabel(e).build())
+                .toList();
 
         return toList(quarterRepository.saveAll(quarterList));
     }
@@ -46,7 +49,7 @@ public class QuarterService {
     public List<String> getPastQuarters(int currentYear, int currentQuarter, int amount) {
         List<String> quarterList = new ArrayList<>();
         int quarterNumber = currentQuarter;
-        int year = currentYear - 1;
+        int year = currentYear;
         for (int i = 0; i < amount; i++) {
             quarterNumber--;
             if (quarterNumber < 1) {
@@ -74,16 +77,22 @@ public class QuarterService {
     }
 
     public int getCurrentYear() {
-        return calendar.get(Calendar.YEAR) % 100;
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public int shortenYear(int fullYear) {
+        return fullYear %100;
     }
 
     public String generateQuarterLabel(int firstYear, int currentQuarter) {
-        int secondYear = getSecondYear(firstYear, currentQuarter);
-        return "GJ " + Math.min(firstYear, secondYear) + "/" + Math.max(firstYear, secondYear) + "-Q" + currentQuarter;
+        int nextYear = firstYear + 1;
+        return "GJ " + shortenYear(firstYear) + "/" + shortenYear(nextYear) + "-Q" + currentQuarter;
     }
 
     public int getBusinessYearQuarter() {
-        int yearQuarter = calendar.get(Calendar.MONTH) / 3 + 1;
+        //Add 1 because Calendar.Month is zero based
+        int month = calendar.get(Calendar.MONTH);
+        int yearQuarter =  month / 3 + 1;
         return yearToBusinessQuarterMap().get(yearQuarter);
     }
 
@@ -94,10 +103,6 @@ public class QuarterService {
         hashMap.put(3, 1);
         hashMap.put(4, 2);
         return hashMap;
-    }
-
-    public int getSecondYear(int firstYear, int businessQuarter) {
-        return businessQuarter > 2 ? firstYear - 1 : firstYear + 1;
     }
 
     public <T> List<T> toList(final Iterable<T> iterable) {

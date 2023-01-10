@@ -2,19 +2,24 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,23 +28,81 @@ class QuarterServiceTest {
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
 
     @InjectMocks
+    @Spy
     private QuarterService quarterService;
 
     @Mock
     Calendar calendarMock;
+    Calendar calendar;
 
-    Quarter quarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ 21/22-Q2").build();
-    Quarter quarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ 21/22-Q3").build();
-    Quarter quarter3 = Quarter.Builder.builder().withId(3L).withLabel("GJ 21/22-Q4").build();
-    Quarter quarter4 = Quarter.Builder.builder().withId(4L).withLabel("GJ 22/23-Q1").build();
-    Quarter quarter5 = Quarter.Builder.builder().withId(4L).withLabel("GJ 22/23-Q2").build();
-    Quarter quarter6 = Quarter.Builder.builder().withId(4L).withLabel("GJ 22/23-Q3").build();
-    List<Quarter> quarterList = new ArrayList<>(Arrays.asList(quarter1, quarter2, quarter3, quarter4));
+    private static Stream<Arguments> shouldGetCurrentBusinessYearQuarter() {
+        return Stream.of(
+                Arguments.of(Calendar.JANUARY, 3),
+                Arguments.of(Calendar.MARCH, 3),
+                Arguments.of(Calendar.APRIL, 4),
+                Arguments.of(Calendar.JUNE, 4),
+                Arguments.of(Calendar.JULY, 1),
+                Arguments.of(Calendar.SEPTEMBER, 1),
+                Arguments.of(Calendar.OCTOBER, 2),
+                Arguments.of(Calendar.DECEMBER, 2));
+    }
+
+    private static Stream<Arguments> shouldReturnCurrentYear() {
+        return Stream.of(
+                Arguments.of(2010, 2010),
+                Arguments.of(2004, 2004),
+                Arguments.of(2022, 2022));
+    }
+
+    private static Stream<Arguments> shouldGetFutureQuarters() {
+        return Stream.of(
+                Arguments.of(23, 1, List.of("GJ 23/24-Q2")),
+                Arguments.of(22, 2, List.of("GJ 22/23-Q3")),
+                Arguments.of(21, 3, List.of("GJ 21/22-Q4")),
+                Arguments.of(22, 4, List.of("GJ 23/24-Q1")));
+    }
+
+    private static Stream<Arguments> shouldGetPastQuarters() {
+        return Stream.of(
+                Arguments.of(23, 1, List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1")),
+                Arguments.of(22, 2, List.of("GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3", "GJ 21/22-Q2")),
+                Arguments.of(21, 3, List.of("GJ 21/22-Q2", "GJ 21/22-Q1", "GJ 20/21-Q4", "GJ 20/21-Q3")),
+                Arguments.of(22, 4, List.of("GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4"))
+        );
+    }
+
+    private static Stream<Arguments> shouldGenerateQuarterLabel() {
+        return Stream.of(
+                Arguments.of(23, 1, "GJ 23/24-Q1"),
+                Arguments.of(22, 2, "GJ 22/23-Q2"),
+                Arguments.of(21, 3, "GJ 21/22-Q3"),
+                Arguments.of(22, 4, "GJ 22/23-Q4"));
+    }
+
+    private static Stream<Arguments> shouldGetOrCreateQuarters() {
+        return Stream.of(
+                Arguments.of(2023,
+                        1,
+                        3,
+                        "GJ 23/24-Q1",
+                        List.of("GJ 23/24-Q2"),
+                        List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1"),
+                        List.of(
+                            Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build(),
+                            Quarter.Builder.builder().withLabel("GJ 23/24-Q2").build(),
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q4").build(),
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q3").build(),
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q2").build(),
+                            Quarter.Builder.builder().withLabel("GJ 22/23-Q1").build()
+                        ))
+
+        );
+    }
 
     @BeforeEach
     void beforeEach() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2022, 10, 01);
+        calendar = Calendar.getInstance();
+        calendar.set(2022, Calendar.JANUARY, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
     }
@@ -67,7 +130,7 @@ class QuarterServiceTest {
     }
 
     @Test
-    void shouldFillHasMap() {
+    void shouldFillHashMap() {
         Map<Integer, Integer> hashMap = this.quarterService.yearToBusinessQuarterMap();
         assertEquals(3, hashMap.get(1));
         assertEquals(4, hashMap.get(2));
@@ -75,118 +138,64 @@ class QuarterServiceTest {
         assertEquals(2, hashMap.get(4));
     }
 
-    @Test
-    void shouldSetCurrentBusinessYearQuarter() {
-        assertEquals(2, this.quarterService.getBusinessYearQuarter());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2022, 07, 01);
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetCurrentBusinessYearQuarter(int month, int businessYearQuarter) {
+        calendar.set(2022, month, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        assertEquals(1, this.quarterService.getBusinessYearQuarter());
+        assertEquals(businessYearQuarter, this.quarterService.getBusinessYearQuarter());
     }
 
-    @Test
-    void shouldReturnCurrentYear() {
-        assertEquals(22, this.quarterService.getCurrentYear());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2004, 01, 01);
+    @ParameterizedTest
+    @MethodSource
+    void shouldReturnCurrentYear(int year, int shortedYear) {
+        calendar.set(year, Calendar.JANUARY, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
 
-        assertEquals(04, this.quarterService.getCurrentYear());
+        assertEquals(shortedYear, this.quarterService.getCurrentYear());
     }
 
-    @Disabled
-    @Test
-    void shouldGenerateCurrentQuarterInFirst() {
-//        assertEquals("GJ 22/23-Q2", this.quarterService.generateCurrentQuarter());
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetFutureQuarters(int year, int quarter, List<String> futureQuarters) {
+        assertEquals(futureQuarters, this.quarterService.getFutureQuarterLabels(year, quarter, 1));
+    }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2022, 05, 01);
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetPastQuarters(int year, int quarter, List<String> pastQuarters) {
+        assertEquals(pastQuarters, this.quarterService.getPastQuarters(year, quarter, 4));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldGenerateQuarterLabel(int year, int quarter, String quarterLabel) {
+        assertEquals(quarterLabel, this.quarterService.generateQuarterLabel(year, quarter));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetOrCreateQuarters(int year, int quarter, int businessYearQuarter, String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters, List<Quarter> quarters) {
+        int month = monthFromQuarter(quarter);
+        calendar.set(year, month, 1);
         calendarMock = calendar;
         quarterService.calendar = calendarMock;
+        doReturn(currentQuarterLabel)
+                .when(this.quarterService).generateQuarterLabel(year, businessYearQuarter);
+        doReturn(futureQuarters)
+                .when(this.quarterService).getFutureQuarterLabels(year, businessYearQuarter,1);
+        doReturn(pastQuarters)
+                .when(this.quarterService).getPastQuarters(year, businessYearQuarter,4);
+        doReturn(quarters)
+                .when(this.quarterRepository).saveAll(any());
 
-//        assertEquals("GJ 21/22-Q4", this.quarterService.generateCurrentQuarter());
+        assertEquals(quarters, this.quarterService.getOrCreateQuarters());
     }
 
-    @Test
-    void shouldGenerateFutureQuater() {
-        assertEquals("GJ 22/23-Q3", this.quarterService.getFutureQuarterLabels(22, 2,1));
-    }
-
-    @Test
-    void shouldGenerateFutureQuaterOnBusinessYearChange() {
-        assertEquals("GJ 23/24-Q1", this.quarterService.getFutureQuarterLabels(22, 4,1 ));
-    }
-
-    @Test
-    void shouldReturnPastQuartersOverYearChange() {
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q3")).thenReturn(quarter2);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
-
-        Collections.reverse(quarterList);
-
-        assertEquals(this.quarterService.getPastQuarters(22, 2, 4), quarterList);
-    }
-
-    @Test
-    void shouldGeneratePastQuartersInRepository() {
-        when(this.quarterRepository.findByLabel(anyString())).thenReturn(null);
-        when(this.quarterRepository.save(any())).thenReturn(quarter1).thenReturn(quarter2).thenReturn(quarter3)
-                .thenReturn(quarter4);
-
-        assertEquals(this.quarterService.getPastQuarters(22, 2,4 ), quarterList);
-    }
-
-    @Test
-    void shouldGenerateFullQuarterListWhenHavingAllQuartersInRepository() {
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q3")).thenReturn(quarter2);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q2")).thenReturn(quarter5);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q3")).thenReturn(quarter6);
-
-        List<Quarter> finalQuarterList = new ArrayList<>(
-                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
-
-        assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
-    }
-
-    @Test
-    void shouldSaveFutureAndCurrentQuarterInRepository() {
-        when(this.quarterRepository.save(any())).thenReturn(quarter5).thenReturn(quarter6);
-        when(this.quarterRepository.findByLabel(anyString())).thenReturn(null);
-
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q3")).thenReturn(quarter2);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
-
-        List<Quarter> finalQuarterList = new ArrayList<>(
-                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
-
-        assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
-    }
-
-    @Test
-    void shouldSaveFutureQuarterInRepository() {
-        when(this.quarterRepository.save(any())).thenReturn(quarter6);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q2")).thenReturn(quarter5);
-
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q2")).thenReturn(quarter1);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q3")).thenReturn(quarter2);
-        when(this.quarterRepository.findByLabel("GJ 21/22-Q4")).thenReturn(quarter3);
-        when(this.quarterRepository.findByLabel("GJ 22/23-Q1")).thenReturn(quarter4);
-
-        List<Quarter> finalQuarterList = new ArrayList<>(
-                Arrays.asList(quarter4, quarter3, quarter2, quarter1, quarter5, quarter6));
-
-        assertEquals(this.quarterService.getOrCreateQuarters(), finalQuarterList);
+    private int monthFromQuarter(int quarter) {
+        return quarter * 3 - 1;
     }
 }

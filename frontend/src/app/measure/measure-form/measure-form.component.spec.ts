@@ -1,24 +1,32 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {MeasureFormComponent} from './measure-form.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {MatIconModule} from '@angular/material/icon';
-import {FormControl, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {KeyResultMeasure, KeyResultService,} from '../../shared/services/key-result.service';
+import { MeasureFormComponent } from './measure-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  KeyResultMeasure,
+  KeyResultService,
+} from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
-import {Observable, of, throwError} from 'rxjs';
-import {MeasureService} from '../../shared/services/measure.service';
-import {ActivatedRoute, convertToParamMap} from '@angular/router';
-import {By} from '@angular/platform-browser';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {loadMeasure} from '../../shared/testing/Loader';
-import {ToastrModule, ToastrService} from 'ngx-toastr';
-import {HttpErrorResponse} from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { MeasureService } from '../../shared/services/measure.service';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { loadMeasure } from '../../shared/testing/Loader';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -71,14 +79,14 @@ describe('MeasureFormComponent', () => {
           ToastrModule.forRoot(),
         ],
         providers: [
-          {provide: KeyResultService, useValue: mockKeyResultService},
-          {provide: MeasureService, useValue: mockMeasureService},
-          {provide: ToastrService, useValue: mockToastrService},
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
               paramMap: of(
-                convertToParamMap({keyresultId: '1', measureId: '1'})
+                convertToParamMap({ keyresultId: '1', measureId: '1' })
               ),
             },
           },
@@ -270,13 +278,13 @@ describe('MeasureFormComponent', () => {
           ToastrModule.forRoot(),
         ],
         providers: [
-          {provide: KeyResultService, useValue: mockKeyResultService},
-          {provide: MeasureService, useValue: mockMeasureService},
-          {provide: ToastrService, useValue: mockToastrService},
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(convertToParamMap({keyresultId: '1'})),
+              paramMap: of(convertToParamMap({ keyresultId: '1' })),
             },
           },
         ],
@@ -380,7 +388,7 @@ describe('MeasureFormComponent', () => {
           () =>
             new HttpErrorResponse({
               status: 500,
-              error: {message: 'Something went wrong'},
+              error: { message: 'Something went wrong' },
             })
         )
       );
@@ -395,7 +403,7 @@ describe('MeasureFormComponent', () => {
       expect(mockToastrService.error).toHaveBeenCalledWith(
         'Messung konnte nicht gespeichert werden!',
         'Fehlerstatus: 500',
-        {timeOut: 5000}
+        { timeOut: 5000 }
       );
     });
   });
@@ -420,9 +428,9 @@ describe('MeasureFormComponent', () => {
           MatNativeDateModule,
         ],
         providers: [
-          {provide: KeyResultService, useValue: mockKeyResultService},
-          {provide: MeasureService, useValue: mockMeasureService},
-          {provide: ToastrService, useValue: mockToastrService},
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {

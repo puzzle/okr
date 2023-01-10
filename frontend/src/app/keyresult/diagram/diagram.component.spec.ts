@@ -9,12 +9,13 @@ import {
 } from '../../shared/services/key-result.service';
 import * as measureData from '../../shared/testing/mock-data/measure.json';
 import * as goalData from '../../shared/testing/mock-data/goals.json';
+import { loadAllMeasure } from '../../shared/testing/Loader';
 
 describe('DiagramComponent', () => {
   let component: DiagramComponent;
   let fixture: ComponentFixture<DiagramComponent>;
 
-  let measures: Observable<Measure[]> = of(measureData.measures);
+  let measures: Observable<any[]> = of(loadAllMeasure(true));
 
   const mockKeyResultService = {
     getMeasuresOfKeyResult: jest.fn(),
@@ -76,7 +77,7 @@ describe('DiagramComponent', () => {
     measures.subscribe((item) => {
       diagrammObjects = component.generateDiagrammObjects(item);
     });
-    expect(diagrammObjects[1].x).toEqual('2023-01-21');
-    expect(diagrammObjects[2].x).toEqual('2023-03-18');
+    expect(diagrammObjects[1].x).toEqual('2022-12-23T01:00:00.000Z');
+    expect(diagrammObjects[2].x).toEqual('2023-01-05T01:00:00.000Z');
   });
 });

@@ -9,15 +9,17 @@ import { MatInputModule } from '@angular/material/input';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
-import { OkrQuarter, Team } from '../../shared/services/team.service';
+import { Team } from '../../shared/services/team.service';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../shared/services/user.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { Objective } from '../../shared/services/objective.service';
+import { Quarter } from '../../shared/services/quarter.service';
 
 describe('ObjectiveFormComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
-  let objective = {
+  let objective: Objective = {
     id: 1,
     title: 'This is a title',
     description: 'This is the description',
@@ -26,8 +28,7 @@ describe('ObjectiveFormComponent', () => {
     ownerId: 4,
     ownerFirstname: '',
     ownerLastname: '',
-    quarterYear: 2022,
-    quarterNumber: 1,
+    quarterLabel: '',
     teamName: 'teamName',
     progress: 0,
     created: '',
@@ -69,10 +70,10 @@ describe('ObjectiveFormComponent', () => {
       username: 'username3',
     },
   ];
-  let quarters: OkrQuarter[] = [
-    { quarter: '1' },
-    { quarter: '2' },
-    { quarter: '3' },
+  let quarters: Quarter[] = [
+    { id: 1, label: 'quarter1' },
+    { id: 2, label: 'quarter2' },
+    { id: 3, label: 'quarter3' },
   ];
 
   describe('Create new Objective', () => {
@@ -169,19 +170,19 @@ describe('ObjectiveFormComponent', () => {
     });
 
     //Todo Implement test after quarter service is implemented
-    test.skip('should have Zyklus dropdown with values', () => {
+    test('should have Zyklus dropdown with values', () => {
       const input = fixture.debugElement.query(
-        By.css('mat-select[formControlName="zyklusID"]')
+        By.css('mat-select[formControlName="quarterId"]')
       )!.nativeElement;
 
-      component.quarterList = quarters;
+      component.quarters$ = of(quarters);
       fixture.detectChanges();
 
       input.click();
       fixture.detectChanges();
 
       const selectOptions = fixture.debugElement.queryAll(By.css('mat-option'));
-      expect(selectOptions.length).toEqual(4);
+      expect(selectOptions.length).toEqual(3);
     });
 
     test('should have 2 buttons', () => {
@@ -272,7 +273,7 @@ describe('ObjectiveFormComponent', () => {
       component.objectives$ = of(objective);
       fixture.detectChanges();
 
-      let value: number = +select.getAttribute('ng-reflect-value');
+      let value: number = select.getAttribute('ng-reflect-value');
       expect(value).toEqual(2);
     });
 
@@ -317,7 +318,7 @@ describe('ObjectiveFormComponent', () => {
         By.css('mat-select[formControlName="zyklusID"]')
       )!.nativeElement;
 
-      component.quarterList = quarters;
+      component.quarters$ = of(quarters);
       fixture.detectChanges();
 
       input.click();

@@ -16,8 +16,8 @@
     "changeInfo": "Changeinfo",
     "initiatives": "Initiatives",
     "createdBy": 1,
-    "createdOn": "2022-12-28T00:00:00.000Z",
-    "measureDate": "2023-01-05T00:00:00.000Z"
+    "createdOn": "2022-12-28",
+    "measureDate": "2023-01-05 01:00:00"
   },
   "receivedEditedMeasure": {
     "id": 1,
@@ -37,6 +37,6 @@
     "initiatives": "Initiatives 1",
     "createdBy": 0,
     "createdOn": "2022-12-01T00:00:00.000Z",
-    "measureDate": "2022-12-01T01:00:00.000Z"
+    "measureDate": "2022-12-01T00:00:00.000Z"
   }
 }

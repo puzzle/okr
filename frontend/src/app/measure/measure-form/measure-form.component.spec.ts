@@ -15,8 +15,9 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import * as measureData from '../../shared/testing/mock-data/measure.json';
 import { Observable, of } from 'rxjs';
-import { Measure, MeasureService } from '../../shared/services/measure.service';
+import { MeasureService } from '../../shared/services/measure.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
@@ -31,49 +32,35 @@ describe('MeasureFormComponent', () => {
 
   let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
-  let initMeasure: Measure = {
-    id: null,
-    keyResultId: 1,
-    value: 0,
-    changeInfo: '',
-    initiatives: '',
-    createdBy: 0,
-    createdOn: new Date('2022-12-01'),
-    measureDate: new Date('2022-12-23'),
-  };
-
-  let measure1: Observable<Measure> = of({
-    id: 1,
-    keyResultId: 1,
-    value: 42,
-    changeInfo: 'Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: new Date('2022-12-28'),
-    measureDate: new Date('2023-01-05 01:00:00'),
+  let initMeasure = Object.assign({}, measureData.initMeasure, {
+    createdOn: new Date(measureData.initMeasure.createdOn),
+    measureDate: new Date(measureData.initMeasure.measureDate),
   });
 
-  let receivedEditedMeasure: Measure = {
-    id: 1,
-    keyResultId: 1,
-    value: 30,
-    changeInfo: 'New Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: new Date('2022-12-28T00:00:00.000Z'),
-    measureDate: new Date('2023-01-05T01:00:00.000Z'),
-  };
+  let measure1 = of(
+    Object.assign({}, measureData.measure, {
+      createdOn: new Date(measureData.measure.createdOn),
+      measureDate: new Date(measureData.measure.measureDate),
+    })
+  );
 
-  let receivedCreatedMeasure: Measure = {
-    id: null,
-    keyResultId: 1,
-    value: 33,
-    changeInfo: 'Changeinfo 1',
-    initiatives: 'Initiatives 1',
-    createdBy: 0,
-    createdOn: new Date('2022-12-01T00:00:00.000Z'),
-    measureDate: new Date('2022-12-01T00:00:00.000Z'),
-  };
+  let receivedEditedMeasure = Object.assign(
+    {},
+    measureData.receivedEditedMeasure,
+    {
+      createdOn: new Date(measureData.receivedEditedMeasure.createdOn),
+      measureDate: new Date(measureData.receivedEditedMeasure.measureDate),
+    }
+  );
+
+  let receivedCreatedMeasure = Object.assign(
+    {},
+    measureData.receivedCreatedMeasure,
+    {
+      createdOn: new Date(measureData.receivedCreatedMeasure.createdOn),
+      measureDate: new Date(measureData.receivedCreatedMeasure.measureDate),
+    }
+  );
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),

@@ -82,8 +82,8 @@ public class QuarterService {
         return year;
     }
 
-    public int shortenYear(int fullYear) {
-        return fullYear % 100;
+    public String shortenYear(int fullYear) {
+        return padWithZeros(2, fullYear % 100);
     }
 
     public String generateQuarterLabel(int firstYear, int currentQuarter) {
@@ -109,5 +109,9 @@ public class QuarterService {
 
     public <T> List<T> toList(final Iterable<T> iterable) {
         return StreamSupport.stream(iterable.spliterator(), false).toList();
+    }
+
+    public String padWithZeros(int amount, int number) {
+        return String.format("%0"+amount+"d", number);
     }
 }

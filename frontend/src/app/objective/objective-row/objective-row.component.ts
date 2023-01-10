@@ -1,10 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
-import { Objective } from '../../shared/services/objective.service';
+import {
+  Objective,
+  ObjectiveService,
+} from '../../shared/services/objective.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import {
   KeyResultMeasure,
@@ -23,8 +28,10 @@ export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
+  @Output() onKeyresultChange: EventEmitter<any> = new EventEmitter();
   constructor(
     private keyResultService: KeyResultService,
+    private objectiveService: ObjectiveService,
     private router: Router
   ) {}
 
@@ -51,5 +58,15 @@ export class ObjectiveRowComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     this.router.navigate([menuEntry.routeLine]);
+  }
+
+  removeKeyResultFromListAndReloadObjective(id: number) {
+    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
+    this.onKeyresultChange.emit(this.objective.id);
+    this.objectiveService
+      .getObjectiveById(this.objective.id!)
+      .subscribe((objective) => {
+        this.objective = objective;
+      });
   }
 }

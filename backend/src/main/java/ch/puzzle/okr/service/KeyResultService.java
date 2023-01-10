@@ -91,4 +91,14 @@ public class KeyResultService {
                         .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
                 .toList();
     }
+
+    public void deleteKeyResultById(Long id) {
+        List<Measure> measures = measureRepository.findByKeyResultId(id);
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
+        for (Measure measure : measures) {
+            measureRepository.deleteById(measure.getId());
+        }
+        keyResultRepository.deleteById(id);
+        progressService.updateObjectiveProgress(objectiveId);
+    }
 }

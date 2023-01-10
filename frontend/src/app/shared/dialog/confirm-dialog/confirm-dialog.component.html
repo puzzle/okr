@@ -1,0 +1,10 @@
+<mat-dialog-content>
+  <p>{{ title }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="close()">{{ closeText }}</button>
+  <button class="mat-raised-button mat-primary" (click)="confirm()">
+    {{ confirmText }}
+  </button>
+</mat-dialog-actions>

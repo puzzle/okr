@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { DiagramComponent } from './diagram/diagram.component';
 import { ProgressModule } from '../progress/progress.module';
 import { MeasureModule } from '../measure/measure.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { MeasureModule } from '../measure/measure.module';
     MatIconModule,
     MatMenuModule,
     RouterLink,
+    MatDialogModule,
     MatButtonModule,
     MatCardModule,
     ReactiveFormsModule,

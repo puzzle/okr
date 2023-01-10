@@ -25,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { loadMeasure } from '../../shared/testing/Loader';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -32,35 +33,10 @@ describe('MeasureFormComponent', () => {
 
   let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
-  let initMeasure = Object.assign({}, measureData.initMeasure, {
-    createdOn: new Date(measureData.initMeasure.createdOn),
-    measureDate: new Date(measureData.initMeasure.measureDate),
-  });
-
-  let measure1 = of(
-    Object.assign({}, measureData.measure, {
-      createdOn: new Date(measureData.measure.createdOn),
-      measureDate: new Date(measureData.measure.measureDate),
-    })
-  );
-
-  let receivedEditedMeasure = Object.assign(
-    {},
-    measureData.receivedEditedMeasure,
-    {
-      createdOn: new Date(measureData.receivedEditedMeasure.createdOn),
-      measureDate: new Date(measureData.receivedEditedMeasure.measureDate),
-    }
-  );
-
-  let receivedCreatedMeasure = Object.assign(
-    {},
-    measureData.receivedCreatedMeasure,
-    {
-      createdOn: new Date(measureData.receivedCreatedMeasure.createdOn),
-      measureDate: new Date(measureData.receivedCreatedMeasure.measureDate),
-    }
-  );
+  let initMeasure = loadMeasure('initMeasure');
+  let measure1 = of(loadMeasure('measure'));
+  let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
+  let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),

@@ -5,9 +5,9 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
-import * as measureData from '../testing/mock-data/measure.json';
+import { loadMeasure } from '../testing/Loader';
 
-const respons = measureData.measures[0];
+const respons = loadMeasure('measure');
 
 describe('MeasureService', () => {
   let service: MeasureService;

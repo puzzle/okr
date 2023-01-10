@@ -15,8 +15,9 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import * as measureData from '../../shared/testing/mock-data/measure.json';
 import { Observable, of } from 'rxjs';
-import { Measure, MeasureService } from '../../shared/services/measure.service';
+import { MeasureService } from '../../shared/services/measure.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { loadMeasure } from '../../shared/testing/Loader';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -31,49 +33,10 @@ describe('MeasureFormComponent', () => {
 
   let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
-  let initMeasure: Measure = {
-    id: null,
-    keyResultId: 1,
-    value: 0,
-    changeInfo: '',
-    initiatives: '',
-    createdBy: 0,
-    createdOn: new Date('2022-12-01'),
-    measureDate: new Date('2022-12-23'),
-  };
-
-  let measure1: Observable<Measure> = of({
-    id: 1,
-    keyResultId: 1,
-    value: 42,
-    changeInfo: 'Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: new Date('2022-12-28'),
-    measureDate: new Date('2023-01-05 01:00:00'),
-  });
-
-  let receivedEditedMeasure: Measure = {
-    id: 1,
-    keyResultId: 1,
-    value: 30,
-    changeInfo: 'New Changeinfo',
-    initiatives: 'Initiatives',
-    createdBy: 1,
-    createdOn: new Date('2022-12-28T00:00:00.000Z'),
-    measureDate: new Date('2023-01-05T01:00:00.000Z'),
-  };
-
-  let receivedCreatedMeasure: Measure = {
-    id: null,
-    keyResultId: 1,
-    value: 33,
-    changeInfo: 'Changeinfo 1',
-    initiatives: 'Initiatives 1',
-    createdBy: 0,
-    createdOn: new Date('2022-12-01T00:00:00.000Z'),
-    measureDate: new Date('2022-12-01T00:00:00.000Z'),
-  };
+  let initMeasure = loadMeasure('initMeasure');
+  let measure1 = of(loadMeasure('measure'));
+  let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
+  let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -158,7 +121,9 @@ describe('MeasureFormComponent', () => {
       component.measure$.subscribe((measure) => {
         expect(measure.id).toEqual(1);
         expect(measure.value).toEqual(42);
-        expect(measure.measureDate).toEqual(new Date('2023-01-05'));
+        expect(measure.measureDate).toEqual(
+          new Date('2023-01-05T00:00:00.000Z')
+        );
 
         expect(component.measureForm.get('value')?.value).toEqual(33);
         expect(component.measureForm.get('measureDate')?.value).toEqual(

@@ -1,63 +1,65 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ObjectiveFormComponent} from './objective-form.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {ToastrModule, ToastrService} from 'ngx-toastr';
-import {By} from '@angular/platform-browser';
-import {Observable, of, throwError} from 'rxjs';
-import {Objective, ObjectiveService,} from '../../shared/services/objective.service';
-import {HttpErrorResponse} from '@angular/common/http';
-import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
-import {HarnessLoader} from '@angular/cdk/testing';
-import {ObjectiveModule} from '../objective.module';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {User, UserService} from '../../shared/services/user.service';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
+import { ObjectiveFormComponent } from './objective-form.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { By } from '@angular/platform-browser';
+import { Observable, of, throwError } from 'rxjs';
+import {
+  Objective,
+  ObjectiveService,
+} from '../../shared/services/objective.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { ObjectiveModule } from '../objective.module';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { User, UserService } from '../../shared/services/user.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 import * as usersData from '../../shared/testing/mock-data/users.json';
 import * as quartersData from '../../shared/testing/mock-data/quarters.json';
 import * as teamsData from '../../shared/testing/mock-data/teams.json';
-import {Team, TeamService} from '../../shared/services/team.service';
-import {Quarter, QuarterService} from '../../shared/services/quarter.service';
-import {ActivatedRoute, convertToParamMap} from '@angular/router';
-import {MatSelectHarness} from '@angular/material/select/testing';
+import { Team, TeamService } from '../../shared/services/team.service';
+import { Quarter, QuarterService } from '../../shared/services/quarter.service';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { MatSelectHarness } from '@angular/material/select/testing';
 
-describe('ObjectiveFormComponent', () => {
-  let component: ObjectiveFormComponent;
-  let fixture: ComponentFixture<ObjectiveFormComponent>;
+let component: ObjectiveFormComponent;
+let fixture: ComponentFixture<ObjectiveFormComponent>;
 
-  let userList: Observable<User[]> = of(usersData.users);
-  let quarterList: Observable<Quarter[]> = of(quartersData.quarters);
-  let teamList: Observable<Team[]> = of(teamsData.teams);
-  let objective: Observable<Objective> = of(objectivesData.objectives[0]);
-  let initObjective: Objective = objectivesData.initObjective;
+let userList: Observable<User[]> = of(usersData.users);
+let quarterList: Observable<Quarter[]> = of(quartersData.quarters);
+let teamList: Observable<Team[]> = of(teamsData.teams);
+let objective: Observable<Objective> = of(objectivesData.objectives[0]);
+let initObjective: Objective = objectivesData.initObjective;
 
-  const mockUserService = {
-    getUsers: jest.fn(),
-  };
-  const mockQuarterService = {
-    getQuarters: jest.fn(),
-  };
-  const teamServiceMock = {
-    getTeams: jest.fn(),
-  };
-  const mockToastrService = {
-    success: jest.fn(),
-    error: jest.fn(),
-  };
-  const mockGetNumerOrNull = {
-    getNumberOrNull: jest.fn(),
-  };
-  const mockObjectiveService = {
-    saveObjective: jest.fn(),
-    getObjectiveById: jest.fn(),
-    getInitObjective: jest.fn(),
-  };
+const mockUserService = {
+  getUsers: jest.fn(),
+};
+const mockQuarterService = {
+  getQuarters: jest.fn(),
+};
+const teamServiceMock = {
+  getTeams: jest.fn(),
+};
+const mockToastrService = {
+  success: jest.fn(),
+  error: jest.fn(),
+};
+const mockGetNumerOrNull = {
+  getNumberOrNull: jest.fn(),
+};
+const mockObjectiveService = {
+  saveObjective: jest.fn(),
+  getObjectiveById: jest.fn(),
+  getInitObjective: jest.fn(),
+};
 
-  let loader: HarnessLoader;
+let loader: HarnessLoader;
 
 describe('ObjectiveFormComponent', () => {
   describe('Check if component makes call to toastrservice', () => {
@@ -118,7 +120,9 @@ describe('ObjectiveFormComponent', () => {
 
     test('should trigger success notification', () => {
       mockObjectiveService.saveObjective.mockReturnValue(objective);
-      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      const createbutton = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
@@ -140,7 +144,9 @@ describe('ObjectiveFormComponent', () => {
             })
         )
       );
-      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      const createbutton = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
@@ -162,6 +168,7 @@ describe('ObjectiveFormComponent', () => {
 
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           HttpClientTestingModule,
           RouterTestingModule,
           FormsModule,
@@ -364,6 +371,7 @@ describe('ObjectiveFormComponent', () => {
 
       TestBed.configureTestingModule({
         imports: [
+          ToastrModule.forRoot(),
           HttpClientTestingModule,
           RouterTestingModule,
           FormsModule,
@@ -552,7 +560,4 @@ describe('ObjectiveFormComponent', () => {
       expect(await quarterSelect.isOpen()).toBeFalsy();
     });
   });
-  });
 });
-
-

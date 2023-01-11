@@ -9,7 +9,8 @@ export interface Measure {
   changeInfo: string;
   initiatives: string;
   createdBy: number;
-  createdOn: Date;
+  createdOn: string;
+  measureDate: string;
 }
 
 export interface KeyResultMeasure {
@@ -38,6 +39,12 @@ export class KeyResultService {
   ): Observable<KeyResultMeasure[]> {
     return this.httpClient.get<KeyResultMeasure[]>(
       '/api/v1/objectives/' + objectiveId + '/keyresults'
+    );
+  }
+
+  public getMeasuresOfKeyResult(keyresultId: number): Observable<Measure[]> {
+    return this.httpClient.get<Measure[]>(
+      '/api/v1/keyresults/' + keyresultId + '/measures'
     );
   }
 

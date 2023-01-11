@@ -7,21 +7,13 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { By } from '@angular/platform-browser';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterTestingModule } from '@angular/router/testing';
+import * as teamsData from '../../shared/testing/mock-data/teams.json';
 
 describe('TeamListComponent', () => {
   let component: TeamListComponent;
   let fixture: ComponentFixture<TeamListComponent>;
 
-  let teamList: Observable<Team[]> = of([
-    {
-      id: 1,
-      name: 'Team1',
-    },
-    {
-      id: 2,
-      name: 'Team2',
-    },
-  ]);
+  let teamList: Observable<Team[]> = of(teamsData.teams);
 
   const teamServiceMock = {
     getTeams: jest.fn(),
@@ -61,33 +53,33 @@ describe('TeamListComponent', () => {
     ).toEqual(' Team erstellen ');
   });
 
-  test('should display two teams', () => {
+  test('should display three teams', () => {
     const teamRows = fixture.debugElement.queryAll(By.css('.team-row'));
-    expect(teamRows.length).toEqual(2);
+    expect(teamRows.length).toEqual(3);
   });
 
   test('should have right name on teams', () => {
     const teamRows = fixture.debugElement.queryAll(By.css('.team-row'));
     expect(teamRows[0].nativeElement.querySelector('p').textContent).toEqual(
-      'Team1'
+      'Team 1'
     );
     expect(teamRows[1].nativeElement.querySelector('p').textContent).toEqual(
-      'Team2'
+      'Team 2'
     );
   });
 
-  test('should have two edit buttons', () => {
+  test('should have three edit buttons', () => {
     const editButtons = fixture.debugElement.queryAll(By.css('.edit-icon'));
-    expect(editButtons.length).toEqual(2);
+    expect(editButtons.length).toEqual(3);
   });
 
-  test('should have two delete buttons', () => {
+  test('should have three delete buttons', () => {
     const editButtons = fixture.debugElement.queryAll(By.css('.delete-icon'));
-    expect(editButtons.length).toEqual(2);
+    expect(editButtons.length).toEqual(3);
   });
 
-  test('should have two lines under the teams', () => {
+  test('should have three lines under the teams', () => {
     const dividers = fixture.debugElement.queryAll(By.css('.divider'));
-    expect(dividers.length).toEqual(2);
+    expect(dividers.length).toEqual(3);
   });
 });

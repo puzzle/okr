@@ -28,24 +28,30 @@ class TeamServiceTest {
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
     Team teamPuzzle;
+    Team team1;
+    Team team2;
+
     List<Team> teamsPuzzle;
     @InjectMocks
     private TeamService teamService;
 
     @BeforeEach
     void setUp() {
-        this.teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
-        this.teamsPuzzle = List.of(teamPuzzle, teamPuzzle, teamPuzzle);
+        this.teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle ITC").build();
+        this.team1 = Team.Builder.builder().withName("Team 1").build();
+        this.team2 = Team.Builder.builder().withName("Team 2").build();
+        this.teamsPuzzle = List.of(teamPuzzle, team1, team2);
     }
 
     @Test
     void shouldGetAllTeams() throws ResponseStatusException {
         Mockito.when(teamRepository.findAll()).thenReturn(teamsPuzzle);
+        Mockito.when(teamRepository.findByName("Puzzle ITC")).thenReturn(teamPuzzle);
 
         List<Team> teams = teamService.getAllTeams();
 
         assertEquals(3, teams.size());
-        assertEquals("Puzzle", teams.get(0).getName());
+        assertEquals("Puzzle ITC", teams.get(0).getName());
     }
 
     @Test
@@ -62,7 +68,7 @@ class TeamServiceTest {
         Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
 
         Team team = teamService.getTeamById(5);
-        Assertions.assertThat(team.getName()).isEqualTo("Puzzle");
+        Assertions.assertThat(team.getName()).isEqualTo("Puzzle ITC");
     }
 
     @Test

@@ -48,15 +48,19 @@ export class KeyResultRowComponent implements OnInit {
         routeLine: 'keyresults/' + this.keyResult.id,
       },
       { displayName: 'KeyResult löschen', routeLine: 'result/add' },
-      { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
+      {
+        displayName: 'Messung hinzufügen',
+        routeLine: 'keyresults/' + this.keyResult.id + '/measure/new',
+      },
     ];
   }
 
   public formatDate(): string {
-    const formattedDate = this.datePipe.transform(
-      this.keyResult.measure?.createdOn,
-      'dd.MM.yyyy'
-    );
+    if (this.keyResult.measure?.measureDate == undefined) {
+      return '-';
+    }
+    var convertedDate: Date = new Date(this.keyResult.measure?.measureDate!);
+    const formattedDate = this.datePipe.transform(convertedDate, 'dd.MM.yyyy');
     if (formattedDate === null) {
       return '-';
     } else {

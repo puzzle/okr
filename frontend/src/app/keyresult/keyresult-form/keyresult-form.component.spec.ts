@@ -6,7 +6,7 @@ import {
   KeyResultMeasure,
   KeyResultService,
 } from '../../shared/services/key-result.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { KeyresultModule } from '../keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -21,94 +21,27 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import * as usersData from '../../shared/testing/mock-data/users.json';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
+//Create ToastrService object, insert it in providers and then check if calls to it has been made
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
   let fixture: ComponentFixture<KeyresultFormComponent>;
 
-  let keyResult: Observable<KeyResultMeasure> = of({
-    id: 1,
-    objectiveId: 1,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    basicValue: 0,
-    targetValue: 100,
-    measure: {
-      id: 1,
-      keyResultId: 1,
-      value: 20,
-      changeInfo: 'Change Infos',
-      initiatives: 'Initatives',
-      createdBy: 2,
-      createdOn: new Date('2022-12-07T00:00:00'),
-    },
-  });
+  let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
-  let objective: Observable<Objective> = of({
-    id: 1,
-    teamName: 'Team Name',
-    teamId: 1,
-    title: 'Wir wollen unseren Umsatz verdoppeln',
-    ownerId: 1,
-    ownerFirstname: 'Alice',
-    ownerLastname: 'Wunderland',
-    description: 'Description',
-    progress: 5,
-    quarterId: 1,
-    quarterLabel: 'GJ 22/23-Q1',
-    created: '01.01.2022',
-  });
+  let objective: Observable<Objective> = of(objectivesData.objectives[0]);
 
-  let userList: Observable<User[]> = of([
-    {
-      id: 1,
-      username: 'alice',
-      firstname: 'Alice',
-      lastname: 'Wunderland',
-      email: 'alice@wunerland.ch',
-    },
-    {
-      id: 2,
-      username: 'pago',
-      firstname: 'Paco',
-      lastname: 'Egiiman',
-      email: 'paco@egiiman.ch',
-    },
-  ]);
+  let userList: Observable<User[]> = of(usersData.users);
 
-  let initKeyResult: KeyResultMeasure = {
-    id: null,
-    title: '',
-    description: '',
-    expectedEvolution: '',
-    unit: '',
-    ownerId: 0,
-    ownerLastname: '',
-    ownerFirstname: '',
-    targetValue: 1,
-    basicValue: 1,
-    objectiveId: 3000,
-    measure: undefined,
-  };
+  let initKeyResult: KeyResultMeasure = keyresultData.initKeyResult;
 
-  let createKeyResultObject: KeyResultMeasure = {
-    id: null,
-    title: 'Keyresult 1',
-    description: 'This is a description',
-    expectedEvolution: 'INCREASE',
-    unit: 'PERCENT',
-    ownerId: 2,
-    ownerLastname: '',
-    ownerFirstname: '',
-    targetValue: 100,
-    basicValue: 0,
-    objectiveId: 1,
-  };
+  let createKeyResultObject: KeyResultMeasure =
+    keyresultData.createKeyResultObject;
 
   let createKeyResultForm = new FormGroup({
     title: new FormControl<string>('Keyresult 1', [
@@ -146,6 +79,11 @@ describe('KeyresultFormComponent', () => {
     getNumberOrNull: jest.fn(),
   };
 
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
+
   let loader: HarnessLoader;
 
   describe('KeyresultFormComponent Edit KeyResult', () => {
@@ -159,6 +97,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
@@ -220,7 +159,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-title')
       );
       expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Wir wollen unseren Umsatz verdoppeln'
+        ' Objective 1 '
       );
     });
 
@@ -232,9 +171,7 @@ describe('KeyresultFormComponent', () => {
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-teamname')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Team Name'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
     });
 
     test('should have objective description', () => {
@@ -246,7 +183,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-description')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Description'
+        ' This is the description of Objective 1 '
       );
     });
 
@@ -346,7 +283,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.description-textarea')
       );
       expect(descriptionTextArea.nativeElement.value).toContain(
-        'This is a description'
+        'This is the description'
       );
       expect(descriptionTextArea.nativeElement.placeholder).toContain(
         'Beschreibung'
@@ -369,10 +306,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('Alice Wunderland');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      const bugOption = await select.getOptions({ text: 'Paco Egiman' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiman');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -423,6 +360,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
@@ -494,7 +432,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-title')
       );
       expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Wir wollen unseren Umsatz verdoppeln'
+        ' Objective 1 '
       );
     });
 
@@ -506,9 +444,7 @@ describe('KeyresultFormComponent', () => {
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-teamname')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Team Name'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
     });
 
     test('should have objective description', () => {
@@ -520,7 +456,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.objective-description')
       );
       expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'Description'
+        'This is the description of Objective 1'
       );
     });
 
@@ -576,10 +512,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'Paco Egiiman' });
+      const bugOption = await select.getOptions({ text: 'Paco Egiman' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Paco Egiiman');
+      expect(await select.getValueText()).toEqual('Paco Egiman');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -607,6 +543,7 @@ describe('KeyresultFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [KeyresultFormComponent],
         imports: [
+          ToastrModule.forRoot(),
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
@@ -637,6 +574,95 @@ describe('KeyresultFormComponent', () => {
 
     test('should not create', () => {
       expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledTimes(0);
+    });
+  });
+
+  describe('Check if component makes call to toastrservice', () => {
+    beforeEach(() => {
+      //Standard mocks to create keyresult-form
+      mockUserService.getUsers.mockReturnValue(userList);
+      mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
+      mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
+
+      TestBed.configureTestingModule({
+        declarations: [KeyresultFormComponent],
+        imports: [
+          ToastrModule.forRoot(),
+          RouterTestingModule,
+          KeyresultModule,
+          HttpClientTestingModule,
+          NoopAnimationsModule,
+        ],
+        providers: [
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: UserService, useValue: mockUserService },
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of(
+                convertToParamMap({ objectiveId: '1', keyresultId: '1' })
+              ),
+            },
+          },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(KeyresultFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      //ToastrService Reset
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+
+      //Standard Services Reset
+      mockUserService.getUsers.mockReset();
+      mockKeyResultService.getKeyResultById.mockReset();
+      mockKeyResultService.getInitKeyResult.mockReset();
+    });
+
+    test('should display success notification', () => {
+      //Return Keyresult to trigger success notification of ToastrService
+      mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.success).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.error).not.toHaveBeenCalled();
+      expect(mockToastrService.success).toHaveBeenCalledWith(
+        '',
+        'Key Result gespeichert!',
+        { timeOut: 5000 }
+      );
+    });
+
+    test('should display error notification', () => {
+      //Return Error to trigger error notification of ToastrService
+      mockKeyResultService.saveKeyresult.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 500,
+              error: { message: 'Something went wrong' },
+            })
+        )
+      );
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Key Result konnte nicht gespeichert werden!',
+        'Fehlerstatus: 500',
+        { timeOut: 5000 }
+      );
     });
   });
 });

@@ -164,7 +164,7 @@ class KeyResultServiceTest {
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
                 "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
-                new MeasureDto(1L, 1L, 10, "", "", 1L, null)));
+                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null)));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 

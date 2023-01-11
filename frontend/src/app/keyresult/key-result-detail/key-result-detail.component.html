@@ -9,7 +9,7 @@
   </div>
   <mat-card class="w-50">
     <mat-card-content class="w-50">
-      <p><strong>Letzte Messung</strong></p>
+      <p><strong>Messungszeitpunkt</strong></p>
       <p
         *ngIf="keyResult.measure === null; else measures"
         class="emptyLastMeasure"
@@ -19,7 +19,7 @@
       <ng-template #measures>
         <p>
           <strong class="lastMeasureDate">{{
-            keyResult.measure?.createdOn | date
+            keyResult.measure?.measureDate | date
           }}</strong>
         </p>
         <p class="lastMeasurechangeInfo">{{ keyResult.measure?.changeInfo }}</p>

@@ -58,8 +58,10 @@ class ObjectiveControllerIT {
             "GJ 22/23-Q2", "This is a description", 20L);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null);
-    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null);
+    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null,
+            LocalDateTime.of(2022, 8, 12, 1, 1));
+    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null,
+            LocalDateTime.of(2022, 8, 12, 1, 1));
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
             new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
                     ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto),

@@ -16,6 +16,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { DiagramComponent } from './diagram/diagram.component';
+import { ProgressModule } from '../progress/progress.module';
+import { MeasureModule } from '../measure/measure.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
     KeyResultDetailComponent,
     KeyresultFormComponent,
     KeyResultOverviewComponent,
+    DiagramComponent,
   ],
   providers: [KeyResultService, DatePipe],
   exports: [KeyResultRowComponent],
@@ -39,6 +43,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatInputModule,
     MatSelectModule,
+    ProgressModule,
+    MeasureModule,
   ],
 })
 export class KeyresultModule {}

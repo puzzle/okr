@@ -1,17 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DashboardComponent } from './dashboard.component';
-import { TeamService } from '../shared/services/team.service';
-import { By } from '@angular/platform-browser';
-import { of } from 'rxjs';
+import { Team, TeamService } from '../shared/services/team.service';
+import { Observable, of } from 'rxjs';
 import { AppModule } from '../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { QuarterService } from '../shared/services/quarter.service';
+import { Quarter, QuarterService } from '../shared/services/quarter.service';
+import * as teamsData from '../shared/testing/mock-data/teams.json';
+import * as quartersData from '../shared/testing/mock-data/quarters.json';
+import * as overviewData from '../shared/testing/mock-data/overview.json';
+import { Overview, OverviewService } from '../shared/services/overview.service';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+
+  let quarters: Observable<Quarter[]> = of(quartersData.quarters);
+
+  let teams: Observable<Team[]> = of(teamsData.teams);
+  let overview: Observable<Overview[]> = of(overviewData.overview);
 
   const teamServiceMock = {
     getTeams: jest.fn(),
@@ -21,34 +33,34 @@ describe('DashboardComponent', () => {
     getQuarters: jest.fn(),
   };
 
+  const overviewServiceMock = {
+    getOverview: jest.fn(),
+  };
+
+  let loader: HarnessLoader;
+
   beforeEach(() => {
-    quarterServiceMock.getQuarters.mockReturnValue(
-      of([
-        { quarter: 'GJ 21/22-Q1' },
-        { quarter: 'GJ 21/22-Q2' },
-        { quarter: 'GJ 21/22-Q3' },
-        { quarter: 'GJ 21/22-Q4' },
-        { quarter: 'GJ 22/23-Q1' },
-        { quarter: 'GJ 22/23-Q2' },
-      ])
-    );
-    teamServiceMock.getTeams.mockReturnValue(
-      of([
-        { id: 1, name: 'Team1' },
-        { id: 2, name: 'Team2' },
-      ])
-    );
+    overviewServiceMock.getOverview.mockReturnValue(overview);
+    quarterServiceMock.getQuarters.mockReturnValue(quarters);
+    teamServiceMock.getTeams.mockReturnValue(teams);
 
     TestBed.configureTestingModule({
-      imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule],
+      imports: [
+        AppModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        HttpClientTestingModule,
+      ],
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
+        { provide: OverviewService, useValue: overviewServiceMock },
       ],
       declarations: [DashboardComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
+    loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -74,27 +86,56 @@ describe('DashboardComponent', () => {
     ).toEqual(2);
   });
 
-  test('should display 6 items in quarter dropdown', () => {
-    fixture.debugElement
-      .queryAll(By.css('mat-select'))[1]
-      .nativeElement.click();
-    fixture.detectChanges();
-    const options = fixture.debugElement.queryAll(By.css('mat-option'));
-
-    expect(options.length).toEqual(6);
-  });
-
-  test('should display 2 teams in team dropdown', () => {
-    fixture.debugElement.query(By.css('mat-select')).nativeElement.click();
-    fixture.detectChanges();
-    const options = fixture.debugElement.queryAll(By.css('mat-option'));
-
-    expect(options.length).toEqual(2);
-  });
-
-  test('should display 2 team detail components when having 2 teams', () => {
+  test('should display 3 team detail components when having 3 teams', () => {
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
-    ).toEqual(2);
+    ).toEqual(3);
+  });
+
+  test('should select quarter filter in dropdown and change filter', async () => {
+    const select = await loader.getHarness(
+      MatSelectHarness.with({
+        selector: '#quarterDropdown',
+      })
+    );
+
+    await select.open();
+    const dropDownElements = await select.getOptions();
+    const bugOption = await select.getOptions({ text: 'GJ 22/23-Q1' });
+    await bugOption[0].click();
+
+    expect(component.quarterFilter).toEqual(1);
+    expect(dropDownElements.length).toEqual(5);
+    expect(await select.getValueText()).toEqual('GJ 22/23-Q1');
+    expect(await select.isDisabled()).toBeFalsy();
+    expect(await select.isOpen()).toBeFalsy();
+  });
+
+  test('should select team filter in dropdown and change filter', async () => {
+    const select = await loader.getHarness(
+      MatSelectHarness.with({
+        selector: '#teamDropdown',
+      })
+    );
+
+    await select.open();
+    const dropDownElements = await select.getOptions();
+    const bugOptionFirstTeam = await select.getOptions({ text: 'Team 1' });
+    const bugOptionSecondTeam = await select.getOptions({ text: 'Team 2' });
+    await bugOptionFirstTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 1');
+    expect(component.teamFilter.length).toEqual(1);
+    expect(component.teamFilter[0]).toEqual(1);
+
+    await bugOptionSecondTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 1, Team 2');
+    expect(component.teamFilter.length).toEqual(2);
+    expect(component.teamFilter[0]).toEqual(1);
+    expect(component.teamFilter[1]).toEqual(2);
+
+    expect(dropDownElements.length).toEqual(3);
+    expect(await select.isDisabled()).toBeFalsy();
   });
 });

@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { ProgressModule } from '../progress/progress.module';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { MatInputModule } from '@angular/material/input';
     ReactiveFormsModule,
     MatSelectModule,
     MatInputModule,
+    ProgressModule,
   ],
 })
 export class ObjectiveModule {}

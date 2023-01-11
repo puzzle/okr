@@ -3,83 +3,60 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {ObjectiveFormComponent} from './objective-form.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ToastrModule, ToastrService} from 'ngx-toastr';
 import {By} from '@angular/platform-browser';
 import {Observable, of, throwError} from 'rxjs';
 import {Objective, ObjectiveService,} from '../../shared/services/objective.service';
-import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
-import * as teamsData from '../../shared/testing/mock-data/teams.json';
-import * as quarterData from '../../shared/testing/mock-data/quarters.json';
 import {HttpErrorResponse} from '@angular/common/http';
 import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
 import {HarnessLoader} from '@angular/cdk/testing';
 import {ObjectiveModule} from '../objective.module';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {User, UserService} from '../../shared/services/user.service';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 import * as usersData from '../../shared/testing/mock-data/users.json';
+import * as quartersData from '../../shared/testing/mock-data/quarters.json';
+import * as teamsData from '../../shared/testing/mock-data/teams.json';
 import {Team, TeamService} from '../../shared/services/team.service';
 import {Quarter, QuarterService} from '../../shared/services/quarter.service';
 import {ActivatedRoute, convertToParamMap} from '@angular/router';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
 import {MatSelectHarness} from '@angular/material/select/testing';
 
 describe('ObjectiveFormComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
 
-let objective: Observable<Objective> = of(objectivesData.objectives[0]);
-let userList: Observable<User[]> = of(usersData.users);
-let teamList: Observable<Team[]> = of(teamsData.teams);
-let quarterList: Observable<Quarter[]> = of(quarterData.quarters);
+  let userList: Observable<User[]> = of(usersData.users);
+  let quarterList: Observable<Quarter[]> = of(quartersData.quarters);
+  let teamList: Observable<Team[]> = of(teamsData.teams);
+  let objective: Observable<Objective> = of(objectivesData.objectives[0]);
   let initObjective: Objective = objectivesData.initObjective;
-  let objectiveForm = new FormGroup({
-    teamId: new FormControl<number | null>(1, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
-    title: new FormControl<string>('Title', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250),
-    ]),
-    description: new FormControl<string>('Description', [
-      Validators.required,
-      Validators.maxLength(4096),
-      Validators.minLength(2),
-    ]),
-    ownerId: new FormControl<number | null>(1, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
-    quarterId: new FormControl<number | null>(1, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
-  });
 
-const mockObjectiveService = {
-  saveObjective: jest.fn(),
-  getObjectiveById: jest.fn(),
-  getInitObjective: jest.fn(),
-};
-const mockUserService = {
-  getUsers: jest.fn(),
-};
-const mockToastrService = {
-  success: jest.fn(),
-  error: jest.fn(),
-};
-const mockQuarterService = {
-  getQuarters: jest.fn(),
-};
+  const mockUserService = {
+    getUsers: jest.fn(),
+  };
+  const mockQuarterService = {
+    getQuarters: jest.fn(),
+  };
+  const teamServiceMock = {
+    getTeams: jest.fn(),
+  };
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
   };
-const teamServiceMock = {
-  getTeams: jest.fn(),
-};
+  const mockObjectiveService = {
+    saveObjective: jest.fn(),
+    getObjectiveById: jest.fn(),
+    getInitObjective: jest.fn(),
+  };
+
   let loader: HarnessLoader;
 
 describe('ObjectiveFormComponent', () => {
@@ -228,10 +205,12 @@ describe('ObjectiveFormComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should set create boolean to false', () => {
+    test('should set create boolean to false and dont disable create button', () => {
       expect(component.create).toBeFalsy();
 
-      const createButton = fixture.debugElement.query(By.css('.create-button'));
+      const createButton = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
       expect(createButton.nativeElement.disabled).toBeFalsy();
       expect(component.objectiveForm.valid).toBeTruthy();
     });
@@ -248,6 +227,14 @@ describe('ObjectiveFormComponent', () => {
 
     test('should set objective form and validate it', () => {
       expect(component.objectiveForm.valid).toEqual(true);
+    });
+
+    test('should have 2 buttons', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      expect(buttons.length).toEqual(2);
+
+      expect(buttons[0].nativeElement.textContent).toContain('Abbrechen');
+      expect(buttons[1].nativeElement.textContent).toContain('Aktualisieren');
     });
 
     test('should have right title objective bearbeiten', () => {
@@ -286,19 +273,84 @@ describe('ObjectiveFormComponent', () => {
       expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should have input field named Title', () => {
-      const input = fixture.debugElement.query(
+    test('should have input field named Title and should validate it', () => {
+      const titleInput = fixture.debugElement.query(
         By.css('input[formControlName="title"]')
       )!.nativeElement;
 
-      expect(input.value).toEqual('Objective 1');
-      expect(input.placeholder).toEqual('Titel');
+      expect(titleInput.value).toEqual('Objective 1');
+      expect(titleInput.placeholder).toEqual('Titel');
       expect(component.objectiveForm.get('title')?.valid).toBeTruthy();
 
       component.objectiveForm.get('title')?.setValue('');
       fixture.detectChanges();
 
       expect(component.objectiveForm.get('title')?.valid).toBeFalsy();
+      const createButton = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+      expect(createButton.nativeElement.disabled).toBeTruthy();
+    });
+
+    test('should have input field named description and should validate it', () => {
+      const descriptionInput = fixture.debugElement.query(
+        By.css('textarea[formControlName="description"]')
+      )!.nativeElement;
+
+      expect(descriptionInput.value).toEqual(
+        'This is the description of Objective 1'
+      );
+      expect(descriptionInput.placeholder).toEqual('Beschreibung');
+      expect(component.objectiveForm.get('title')?.valid).toBeTruthy();
+
+      component.objectiveForm.get('description')?.setValue('');
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.get('description')?.valid).toBeFalsy();
+      const createButton = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+      expect(createButton.nativeElement.disabled).toBeTruthy();
+    });
+
+    test('should set owner in mat select and set it new on item change', async () => {
+      const ownerSelect = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      expect(await ownerSelect.getValueText()).toEqual('Alice Wunderland');
+
+      await ownerSelect.open();
+      const bugOption = await ownerSelect.getOptions({ text: 'Robin Papier' });
+      await bugOption[0].click();
+
+      expect(await ownerSelect.getValueText()).toEqual('Robin Papier');
+      expect(await ownerSelect.isDisabled()).toBeFalsy();
+      expect(await ownerSelect.isOpen()).toBeFalsy();
+    });
+
+    test('should not have quarter mat select on edit', async () => {
+      const quarterMatSelect = fixture.debugElement.query(
+        By.css('mat-select[formControlName="quarterId"]')
+      );
+      expect(quarterMatSelect).toBeNull();
+    });
+
+    test('should disable create button if form is invalid', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+
+      component.objectiveForm.controls['teamId'].setValue(1);
+      component.objectiveForm.controls['title'].setValue('Title');
+      component.objectiveForm.controls['description'].setValue('Description');
+      component.objectiveForm.controls['ownerId'].setValue(null);
+      component.objectiveForm.controls['quarterId'].setValue(1);
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.valid).toBeFalsy();
+      expect(submit.nativeElement.disabled).toEqual(true);
     });
   });
 
@@ -367,6 +419,14 @@ describe('ObjectiveFormComponent', () => {
       });
     });
 
+    test('should have 2 buttons', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      expect(buttons.length).toEqual(2);
+
+      expect(buttons[0].nativeElement.textContent).toContain('Abbrechen');
+      expect(buttons[1].nativeElement.textContent).toContain('Erstellen');
+    });
+
     test('should have title objective hinzufügen', () => {
       const objectiveTitle = fixture.debugElement.query(
         By.css('.heading-label')
@@ -375,6 +435,124 @@ describe('ObjectiveFormComponent', () => {
         'Objective hinzufügen'
       );
     });
+
+    test('should disable create button with init objective', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+
+      expect(component.objectiveForm.valid).toBeFalsy();
+      expect(submit.nativeElement.disabled).toEqual(true);
+    });
+
+    test('should enable button if form is valid', () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+
+      component.objectiveForm.controls['teamId'].setValue(1);
+      component.objectiveForm.controls['title'].setValue('Title');
+      component.objectiveForm.controls['description'].setValue('Description');
+      component.objectiveForm.controls['ownerId'].setValue(1);
+      component.objectiveForm.controls['quarterId'].setValue(1);
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.valid).toBeTruthy();
+      expect(submit.nativeElement.disabled).toEqual(false);
+    });
+
+    test('should have right titles infront of input fields', () => {
+      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
+      expect(titles.length).toEqual(5);
+      expect(titles[0].nativeElement.textContent).toContain('Team');
+      expect(titles[1].nativeElement.textContent).toContain('Titel');
+      expect(titles[2].nativeElement.textContent).toContain('Beschreibung');
+      expect(titles[3].nativeElement.textContent).toContain('Besitzer');
+      expect(titles[4].nativeElement.textContent).toContain('Zyklus');
+    });
+
+    test('should set team in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="teamId"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Team 2' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('Team 2');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
+    });
+
+    test('should have input field named Title and should validate it', () => {
+      const titleInput = fixture.debugElement.query(
+        By.css('input[formControlName="title"]')
+      )!.nativeElement;
+
+      expect(titleInput.value).toEqual('');
+      expect(titleInput.placeholder).toEqual('Titel');
+      expect(component.objectiveForm.get('title')?.valid).toBeFalsy();
+
+      component.objectiveForm.get('title')?.setValue('Titel 1');
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.get('title')?.valid).toBeTruthy();
+    });
+
+    test('should have input field named description and should validate it', () => {
+      const descriptionInput = fixture.debugElement.query(
+        By.css('textarea[formControlName="description"]')
+      )!.nativeElement;
+
+      expect(descriptionInput.value).toEqual('');
+      expect(descriptionInput.placeholder).toEqual('Beschreibung');
+      expect(component.objectiveForm.get('title')?.valid).toBeFalsy();
+
+      component.objectiveForm.get('description')?.setValue('Description 1');
+      fixture.detectChanges();
+
+      expect(component.objectiveForm.get('description')?.valid).toBeTruthy();
+    });
+
+    test('should set owner in mat select and set it new on item change', async () => {
+      const ownerSelect = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="ownerId"]',
+        })
+      );
+      expect(await ownerSelect.getValueText()).toEqual('');
+
+      await ownerSelect.open();
+      const bugOption = await ownerSelect.getOptions({ text: 'Robin Papier' });
+      await bugOption[0].click();
+
+      expect(await ownerSelect.getValueText()).toEqual('Robin Papier');
+      expect(await ownerSelect.isDisabled()).toBeFalsy();
+      expect(await ownerSelect.isOpen()).toBeFalsy();
+    });
+
+    test('should set quarter in mat select and set it new on item change', async () => {
+      const quarterSelect = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="quarterId"]',
+        })
+      );
+      expect(await quarterSelect.getValueText()).toEqual('');
+
+      await quarterSelect.open();
+      const bugOption = await quarterSelect.getOptions({ text: 'GJ 22/23-Q3' });
+      await bugOption[0].click();
+
+      expect(await quarterSelect.getValueText()).toEqual('GJ 22/23-Q3');
+      expect(await quarterSelect.isDisabled()).toBeFalsy();
+      expect(await quarterSelect.isOpen()).toBeFalsy();
+    });
+  });
   });
 });
-});
+
+

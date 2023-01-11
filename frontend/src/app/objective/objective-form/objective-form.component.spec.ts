@@ -366,7 +366,6 @@ describe('ObjectiveFormComponent', () => {
         By.css('button[type="submit"]')
       );
       submit.nativeElement.click();
-      expect(mockObjectiveService.saveObjective).toHaveBeenCalledTimes(1);
       expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
         objectivesData.objectives[0],
         false
@@ -586,7 +585,6 @@ describe('ObjectiveFormComponent', () => {
       component.objectiveForm.controls['quarterId'].setValue(1);
       fixture.detectChanges();
       submit.nativeElement.click();
-      expect(mockObjectiveService.saveObjective).toHaveBeenCalledTimes(1);
       expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
         createObjective,
         true

@@ -6,11 +6,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.YearMonth;
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
 @Service
 public class QuarterService {
+
+    protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
+    static {
+        yearToBusinessQuarterMap.put(1, 3);
+        yearToBusinessQuarterMap.put(2, 4);
+        yearToBusinessQuarterMap.put(3, 1);
+        yearToBusinessQuarterMap.put(4, 2);
+    }
 
     private final QuarterRepository quarterRepository;
     public Calendar calendar;
@@ -26,60 +36,44 @@ public class QuarterService {
     }
 
     public List<Quarter> getOrCreateQuarters() {
-        int businessYearQuarter = getBusinessYearQuarter();
-        int firstYear = getCurrentYear();
-        String currentQuarterLabel = generateQuarterLabel(firstYear, businessYearQuarter);
+        YearMonth now = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
 
-        List<String> futureQuarter = getFutureQuarterLabels(firstYear, businessYearQuarter, 1);
-        List<String> pastQuarter = getPastQuarters(firstYear, businessYearQuarter, 4);
+        String currentQuarterLabel = this.getQuarter(now);
+        List<String> futureQuarter = getFutureQuarters(now, 1);
+        List<String> pastQuarter = getPastQuarters(now, 4);
 
         List<String> quarterLabelList = new ArrayList<>();
         quarterLabelList.add(currentQuarterLabel);
         quarterLabelList.addAll(futureQuarter);
         quarterLabelList.addAll(pastQuarter);
 
-        List<Quarter> quarterList = quarterLabelList.stream().map(e -> Quarter.Builder.builder().withLabel(e).build())
+        return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
+    }
+
+    protected Quarter getOrCreateQuarter(String label) {
+        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
+        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
+    }
+
+    public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
+        return IntStream.range(1, amount + 1).map(e -> e * 3).mapToObj(e -> getQuarter(yearMonth.minusMonths(e)))
                 .toList();
-
-        return toList(quarterRepository.saveAll(quarterList));
     }
 
-    public List<String> getPastQuarters(int currentYear, int currentQuarter, int amount) {
-        List<String> quarterList = new ArrayList<>();
-        int quarterNumber = currentQuarter;
-        int year = currentYear;
-        for (int i = 0; i < amount; i++) {
-            quarterNumber--;
-            if (quarterNumber < 1) {
-                quarterNumber = 4;
-                year--;
-            }
-            quarterList.add(generateQuarterLabel(year, quarterNumber));
-        }
-        return quarterList;
+    public List<String> getFutureQuarters(YearMonth yearMonth, int amount) {
+        return IntStream.range(1, amount + 1).map(e -> e * 3).mapToObj(e -> getQuarter(yearMonth.plusMonths(e)))
+                .toList();
     }
 
-    public List<String> getFutureQuarterLabels(int currentYear, int currentQuarter, int amount) {
-        List<String> quarterList = new ArrayList<>();
-        int quarterNumber = currentQuarter;
-        int year = currentYear;
-        for (int i = 0; i < amount; i++) {
-            quarterNumber++;
-            if (quarterNumber > 4) {
-                quarterNumber = 1;
-                year++;
-            }
-            quarterList.add(generateQuarterLabel(year, quarterNumber));
-        }
-        return quarterList;
-    }
+    public String getQuarter(YearMonth yearMonth) {
+        int currentYear = yearMonth.getYear();
+        int currentMonth = yearMonth.getMonthValue();
+        int yearQuarter = currentMonth / 3 + 1;
+        int firstLabelYear = currentMonth < Calendar.JULY ? currentYear - 1 : currentYear;
 
-    public int getCurrentYear() {
-        int year = calendar.get(Calendar.YEAR);
-        if (calendar.get(Calendar.MONTH) < Calendar.JULY) {
-            return year - 1;
-        }
-        return year;
+        int businessQuarter = yearToBusinessQuarterMap.get(yearQuarter);
+
+        return generateQuarterLabel(firstLabelYear, businessQuarter);
     }
 
     public String shortenYear(int fullYear) {
@@ -89,22 +83,6 @@ public class QuarterService {
     public String generateQuarterLabel(int firstYear, int currentQuarter) {
         int nextYear = firstYear + 1;
         return "GJ " + shortenYear(firstYear) + "/" + shortenYear(nextYear) + "-Q" + currentQuarter;
-    }
-
-    public int getBusinessYearQuarter() {
-        // Add 1 because Calendar.Month is zero based
-        int month = calendar.get(Calendar.MONTH);
-        int yearQuarter = month / 3 + 1;
-        return yearToBusinessQuarterMap().get(yearQuarter);
-    }
-
-    public Map<Integer, Integer> yearToBusinessQuarterMap() {
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
-        hashMap.put(1, 3);
-        hashMap.put(2, 4);
-        hashMap.put(3, 1);
-        hashMap.put(4, 2);
-        return hashMap;
     }
 
     public <T> List<T> toList(final Iterable<T> iterable) {

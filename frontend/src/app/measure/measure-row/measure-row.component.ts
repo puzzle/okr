@@ -31,10 +31,5 @@ export class MeasureRowComponent implements OnInit {
         }
       })
     );
-
-    this.measures$.subscribe((measures) => {
-      console.log(measures);
-      console.log(measures[0].createdBy);
-    });
   }
 }

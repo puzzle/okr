@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.YearMonth;
 import java.util.Calendar;
 
 @SpringBootApplication
@@ -13,7 +14,7 @@ public class OkrApplication {
     }
 
     @Bean
-    Calendar calendar() {
-        return Calendar.getInstance();
+    YearMonth yearMonth() {
+        return YearMonth.now();
     }
 }

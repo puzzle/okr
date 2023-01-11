@@ -42,5 +42,33 @@
       "progress": 20,
       "created": "01.01.2022"
     }
-  ]
+  ],
+  "initObjective": {
+    "id": null,
+    "title": "",
+    "description": "",
+    "teamId": null,
+    "ownerId": null,
+    "ownerFirstname": "",
+    "ownerLastname": "",
+    "quarterId": null,
+    "quarterLabel": "",
+    "teamName": "",
+    "progress": 0,
+    "created": ""
+  },
+  "createObjectiveObject": {
+    "id": null,
+    "title": "Objective 1",
+    "description": "Objective 1 description",
+    "teamId": 1,
+    "ownerId": 1,
+    "ownerFirstname": "",
+    "ownerLastname": "",
+    "quarterId": 1,
+    "quarterLabel": "",
+    "teamName": "",
+    "progress": 0,
+    "created": ""
+  }
 }

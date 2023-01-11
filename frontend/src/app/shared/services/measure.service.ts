@@ -7,7 +7,7 @@ export interface Measure {
   value: number;
   changeInfo: string;
   initiatives: string;
-  createdBy: number;
+  createdById: number;
   createdOn: Date;
   measureDate: Date;
 }
@@ -29,7 +29,7 @@ export class MeasureService {
       value: 0,
       changeInfo: '',
       initiatives: '',
-      createdBy: 0,
+      createdById: 0,
       createdOn: new Date(),
       measureDate: new Date(),
     };

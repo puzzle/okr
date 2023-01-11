@@ -5,7 +5,7 @@
     "value": 0,
     "changeInfo": "",
     "initiatives": "",
-    "createdBy": 0,
+    "createdById": 0,
     "createdOn": "2022-12-01",
     "measureDate": "2022-12-23"
   },
@@ -13,19 +13,41 @@
     "id": 1,
     "keyResultId": 1,
     "value": 42,
-    "changeInfo": "Changeinfo",
-    "initiatives": "Initiatives",
-    "createdBy": 1,
+    "changeInfo": "Changeinfo 1",
+    "initiatives": "Initiatives 1",
+    "createdById": 1,
     "createdOn": "2022-12-28",
     "measureDate": "2023-01-05 01:00:00"
   },
+  "measures": [
+    {
+      "id": 1,
+      "keyResultId": 1,
+      "value": 42,
+      "changeInfo": "Changeinfo 1",
+      "initiatives": "Initiatives 1",
+      "createdById": 1,
+      "createdOn": "2022-12-28",
+      "measureDate": "2023-01-05 01:00:00"
+    },
+    {
+      "id": 2,
+      "keyResultId": 1,
+      "value": 50,
+      "changeInfo": "Changeinfo 2",
+      "initiatives": "Initiatives 2",
+      "createdById": 1,
+      "createdOn": "2023-01-10",
+      "measureDate": "2023-01-23 12:00:00"
+    }
+  ],
   "receivedEditedMeasure": {
     "id": 1,
     "keyResultId": 1,
     "value": 30,
     "changeInfo": "New Changeinfo",
-    "initiatives": "Initiatives",
-    "createdBy": 1,
+    "initiatives": "Initiatives 1",
+    "createdById": 1,
     "createdOn": "2022-12-28T00:00:00.000Z",
     "measureDate": "2023-01-05T01:00:00.000Z"
   },
@@ -35,7 +57,7 @@
     "value": 33,
     "changeInfo": "Changeinfo 1",
     "initiatives": "Initiatives 1",
-    "createdBy": 0,
+    "createdById": 0,
     "createdOn": "2022-12-01T00:00:00.000Z",
     "measureDate": "2022-12-01T00:00:00.000Z"
   }

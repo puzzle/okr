@@ -8,7 +8,7 @@ export interface Measure {
   value: number;
   changeInfo: string;
   initiatives: string;
-  createdBy: number;
+  createdById: number;
   createdOn: string;
   measureDate: string;
 }

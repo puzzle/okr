@@ -76,7 +76,7 @@ export class MeasureFormComponent implements OnInit {
           return this.keyresult$.pipe(
             map((keyresult) => {
               measure.keyResultId = keyresult.id!;
-              // measure.createdBy = loggedInUser
+              // measure.createdById = loggedInUser
               if (keyresult.unit == 'BINARY') {
                 this.measureForm
                   .get('value')
@@ -95,7 +95,8 @@ export class MeasureFormComponent implements OnInit {
     );
 
     this.measure$.subscribe((measure) => {
-      const { id, keyResultId, createdBy, createdOn, ...restMeasure } = measure;
+      const { id, keyResultId, createdById, createdOn, ...restMeasure } =
+        measure;
       restMeasure.measureDate = new Date(measure.measureDate);
       this.measureForm.setValue(restMeasure);
     });

@@ -26,9 +26,7 @@ import static org.mockito.Mockito.*;
 class QuarterServiceTest {
     @MockBean
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
-    @Mock
-    Calendar calendarMock;
-    Calendar calendar;
+
     @InjectMocks
     @Spy
     private QuarterService quarterService;
@@ -73,10 +71,8 @@ class QuarterServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        calendar = Calendar.getInstance();
-        calendar.set(2022, Calendar.JANUARY, 1);
-        calendarMock = calendar;
-        quarterService.calendar = calendarMock;
+
+        quarterService.now = YearMonth.of(2022, 1);
     }
 
     @Test
@@ -137,9 +133,7 @@ class QuarterServiceTest {
 
         Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
         YearMonth yearMonth = YearMonth.of(currentYear, month);
-        calendar.set(currentYear, month - 1, 1);
-        calendarMock = calendar;
-        quarterService.calendar = calendarMock;
+        quarterService.now = yearMonth;
 
         doReturn(currentQuarterLabel).when(this.quarterService).generateQuarterLabel(firstLabelYear,
                 businessYearQuarter);
@@ -154,10 +148,8 @@ class QuarterServiceTest {
     @ParameterizedTest
     @MethodSource
     void shouldGenerateCurrentQuarterLabel(int year, int month, String quarterLabel) {
-        calendar.set(year, month, 1);
-        calendarMock = calendar;
-        quarterService.calendar = calendarMock;
         YearMonth yearMonth = YearMonth.of(year, month);
+        quarterService.now = yearMonth;
         assertEquals(quarterLabel, quarterService.getQuarter(yearMonth));
     }
 

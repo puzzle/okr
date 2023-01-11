@@ -23,11 +23,11 @@ public class QuarterService {
     }
 
     private final QuarterRepository quarterRepository;
-    public Calendar calendar;
+    public YearMonth now;
 
-    public QuarterService(QuarterRepository quarterRepository, Calendar calendar) {
+    public QuarterService(QuarterRepository quarterRepository, YearMonth now) {
         this.quarterRepository = quarterRepository;
-        this.calendar = calendar;
+        this.now = now;
     }
 
     public Quarter getQuarterById(Long quarterId) {
@@ -36,7 +36,6 @@ public class QuarterService {
     }
 
     public List<Quarter> getOrCreateQuarters() {
-        YearMonth now = YearMonth.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1);
 
         String currentQuarterLabel = this.getQuarter(now);
         List<String> futureQuarter = getFutureQuarters(now, 1);

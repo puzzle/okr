@@ -18,12 +18,12 @@
   <mat-card class="measure-card">
     <mat-card-content>
       <mat-panel-description class="d-flex space-between">
-        <div class="d-flex w-10">
+        <div class="d-flex w-15">
           <p class="measureMeasureDate">
-            {{ measure.measureDate }}
+            {{ formatDate(measure.measureDate) }}
           </p>
         </div>
-        <div class="d-flex justify-content-around w-15">
+        <div class="d-flex justify-content-around w-10">
           <p class="measureValue">
             {{ measure.value }}
           </p>

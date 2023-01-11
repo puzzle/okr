@@ -6,6 +6,7 @@ import {
 } from '../../shared/services/key-result.service';
 import { getNumberOrNull } from '../../shared/common';
 import { ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-measure-row',
@@ -17,7 +18,8 @@ export class MeasureRowComponent implements OnInit {
 
   constructor(
     private keyresultService: KeyResultService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -31,5 +33,14 @@ export class MeasureRowComponent implements OnInit {
         }
       })
     );
+  }
+
+  formatDate(date: string) {
+    var convertedDate: Date = new Date(date);
+    var formattedDate = this.datePipe.transform(
+      convertedDate,
+      'dd.MM.yyyy hh:mm:ss'
+    );
+    return formattedDate;
   }
 }

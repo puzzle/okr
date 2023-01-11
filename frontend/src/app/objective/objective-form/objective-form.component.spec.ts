@@ -36,6 +36,7 @@ let quarterList: Observable<Quarter[]> = of(quartersData.quarters);
 let teamList: Observable<Team[]> = of(teamsData.teams);
 let objective: Observable<Objective> = of(objectivesData.objectives[0]);
 let initObjective: Objective = objectivesData.initObjective;
+let createObjective: Objective = objectivesData.createObjectiveObject;
 
 const mockUserService = {
   getUsers: jest.fn(),
@@ -264,23 +265,23 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should set team in mat select and set it new on item change', async () => {
-      const select = await loader.getHarness(
+      const teamSelect = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="teamId"]',
         })
       );
-      expect(await select.getValueText()).toEqual('Team 1');
+      expect(await teamSelect.getValueText()).toEqual('Team 1');
 
-      await select.open();
-      const bugOption = await select.getOptions({ text: 'Team 2' });
+      await teamSelect.open();
+      const bugOption = await teamSelect.getOptions({ text: 'Team 2' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Team 2');
-      expect(await select.isDisabled()).toBeFalsy();
-      expect(await select.isOpen()).toBeFalsy();
+      expect(await teamSelect.getValueText()).toEqual('Team 2');
+      expect(await teamSelect.isDisabled()).toBeFalsy();
+      expect(await teamSelect.isOpen()).toBeFalsy();
     });
 
-    test('should have input field named Title and should validate it', () => {
+    test('should set title in input field and should validate it', () => {
       const titleInput = fixture.debugElement.query(
         By.css('input[formControlName="title"]')
       )!.nativeElement;
@@ -299,7 +300,7 @@ describe('ObjectiveFormComponent', () => {
       expect(createButton.nativeElement.disabled).toBeTruthy();
     });
 
-    test('should have input field named description and should validate it', () => {
+    test('should set description in input field and should validate it', () => {
       const descriptionInput = fixture.debugElement.query(
         By.css('textarea[formControlName="description"]')
       )!.nativeElement;
@@ -358,6 +359,18 @@ describe('ObjectiveFormComponent', () => {
 
       expect(component.objectiveForm.valid).toBeFalsy();
       expect(submit.nativeElement.disabled).toEqual(true);
+    });
+
+    test('should call save method in objectiveService when save button is clicked', async () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+      submit.nativeElement.click();
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledTimes(1);
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
+        objectivesData.objectives[0],
+        false
+      );
     });
   });
 
@@ -479,21 +492,21 @@ describe('ObjectiveFormComponent', () => {
       expect(titles[4].nativeElement.textContent).toContain('Zyklus');
     });
 
-    test('should set team in mat select and set it new on item change', async () => {
-      const select = await loader.getHarness(
+    test('should have mat select for team and set it on item change', async () => {
+      const teamSelect = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="teamId"]',
         })
       );
-      expect(await select.getValueText()).toEqual('');
+      expect(await teamSelect.getValueText()).toEqual('');
 
-      await select.open();
-      const bugOption = await select.getOptions({ text: 'Team 2' });
+      await teamSelect.open();
+      const bugOption = await teamSelect.getOptions({ text: 'Team 2' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Team 2');
-      expect(await select.isDisabled()).toBeFalsy();
-      expect(await select.isOpen()).toBeFalsy();
+      expect(await teamSelect.getValueText()).toEqual('Team 2');
+      expect(await teamSelect.isDisabled()).toBeFalsy();
+      expect(await teamSelect.isOpen()).toBeFalsy();
     });
 
     test('should have input field named Title and should validate it', () => {
@@ -526,7 +539,7 @@ describe('ObjectiveFormComponent', () => {
       expect(component.objectiveForm.get('description')?.valid).toBeTruthy();
     });
 
-    test('should set owner in mat select and set it new on item change', async () => {
+    test('should have mat select for owner and set it on item change', async () => {
       const ownerSelect = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="ownerId"]',
@@ -543,7 +556,7 @@ describe('ObjectiveFormComponent', () => {
       expect(await ownerSelect.isOpen()).toBeFalsy();
     });
 
-    test('should set quarter in mat select and set it new on item change', async () => {
+    test('should have mat select for quarter and set it on item change', async () => {
       const quarterSelect = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="quarterId"]',
@@ -558,6 +571,26 @@ describe('ObjectiveFormComponent', () => {
       expect(await quarterSelect.getValueText()).toEqual('GJ 22/23-Q3');
       expect(await quarterSelect.isDisabled()).toBeFalsy();
       expect(await quarterSelect.isOpen()).toBeFalsy();
+    });
+
+    test('should call save method in objectiveService when save button is clicked and form is valid', async () => {
+      const submit = fixture.debugElement.query(
+        By.css('button[type="submit"]')
+      );
+      component.objectiveForm.controls['teamId'].setValue(1);
+      component.objectiveForm.controls['title'].setValue('Objective 1');
+      component.objectiveForm.controls['description'].setValue(
+        'Objective 1 description'
+      );
+      component.objectiveForm.controls['ownerId'].setValue(1);
+      component.objectiveForm.controls['quarterId'].setValue(1);
+      fixture.detectChanges();
+      submit.nativeElement.click();
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledTimes(1);
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
+        createObjective,
+        true
+      );
     });
   });
 });

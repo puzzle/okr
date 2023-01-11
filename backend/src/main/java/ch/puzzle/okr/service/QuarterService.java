@@ -56,12 +56,12 @@ public class QuarterService {
     }
 
     public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
-        return IntStream.range(1, amount + 1).map(e -> e * 3).mapToObj(e -> getQuarter(yearMonth.minusMonths(e)))
+        return IntStream.range(1, amount + 1).map(quarter -> quarter * 3).mapToObj(quarter -> getQuarter(yearMonth.minusMonths(quarter)))
                 .toList();
     }
 
     public List<String> getFutureQuarters(YearMonth yearMonth, int amount) {
-        return IntStream.range(1, amount + 1).map(e -> e * 3).mapToObj(e -> getQuarter(yearMonth.plusMonths(e)))
+        return IntStream.range(1, amount + 1).map(quarter -> quarter * 3).mapToObj(quarter -> getQuarter(yearMonth.plusMonths(quarter)))
                 .toList();
     }
 

@@ -43,7 +43,7 @@ const mockUserService = {
 const mockQuarterService = {
   getQuarters: jest.fn(),
 };
-const teamServiceMock = {
+const mockTeamService = {
   getTeams: jest.fn(),
 };
 const mockToastrService = {
@@ -67,7 +67,7 @@ describe('ObjectiveFormComponent', () => {
       mockObjectiveService.getObjectiveById.mockReturnValue(objective);
       mockUserService.getUsers.mockReturnValue(userList);
       mockQuarterService.getQuarters.mockReturnValue(quarterList);
-      teamServiceMock.getTeams.mockReturnValue(teamList);
+      mockTeamService.getTeams.mockReturnValue(teamList);
 
       TestBed.configureTestingModule({
         imports: [
@@ -87,7 +87,7 @@ describe('ObjectiveFormComponent', () => {
           { provide: ToastrService, useValue: mockToastrService },
           { provide: UserService, useValue: mockUserService },
           { provide: QuarterService, useValue: mockQuarterService },
-          { provide: TeamService, useValue: teamServiceMock },
+          { provide: TeamService, useValue: mockTeamService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -109,7 +109,7 @@ describe('ObjectiveFormComponent', () => {
 
       mockUserService.getUsers.mockReset();
       mockQuarterService.getQuarters.mockReset();
-      teamServiceMock.getTeams.mockReset();
+      mockTeamService.getTeams.mockReset();
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
@@ -162,7 +162,7 @@ describe('ObjectiveFormComponent', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockQuarterService.getQuarters.mockReturnValue(quarterList);
-      teamServiceMock.getTeams.mockReturnValue(teamList);
+      mockTeamService.getTeams.mockReturnValue(teamList);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockObjectiveService.getObjectiveById.mockReturnValue(objective);
 
@@ -181,7 +181,7 @@ describe('ObjectiveFormComponent', () => {
         providers: [
           { provide: UserService, useValue: mockUserService },
           { provide: QuarterService, useValue: mockQuarterService },
-          { provide: TeamService, useValue: teamServiceMock },
+          { provide: TeamService, useValue: mockTeamService },
           { provide: ObjectiveService, useValue: mockObjectiveService },
           {
             provide: ActivatedRoute,
@@ -203,7 +203,7 @@ describe('ObjectiveFormComponent', () => {
     afterEach(() => {
       mockUserService.getUsers.mockReset();
       mockQuarterService.getQuarters.mockReset();
-      teamServiceMock.getTeams.mockReset();
+      mockTeamService.getTeams.mockReset();
       mockObjectiveService.getObjectiveById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
@@ -365,7 +365,7 @@ describe('ObjectiveFormComponent', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockQuarterService.getQuarters.mockReturnValue(quarterList);
-      teamServiceMock.getTeams.mockReturnValue(teamList);
+      mockTeamService.getTeams.mockReturnValue(teamList);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockObjectiveService.getInitObjective.mockReturnValue(initObjective);
 
@@ -384,7 +384,7 @@ describe('ObjectiveFormComponent', () => {
         providers: [
           { provide: UserService, useValue: mockUserService },
           { provide: QuarterService, useValue: mockQuarterService },
-          { provide: TeamService, useValue: teamServiceMock },
+          { provide: TeamService, useValue: mockTeamService },
           { provide: ObjectiveService, useValue: mockObjectiveService },
           {
             provide: ActivatedRoute,
@@ -406,7 +406,7 @@ describe('ObjectiveFormComponent', () => {
     afterEach(() => {
       mockUserService.getUsers.mockReset();
       mockQuarterService.getQuarters.mockReset();
-      teamServiceMock.getTeams.mockReset();
+      mockTeamService.getTeams.mockReset();
       mockObjectiveService.getObjectiveById.mockReset();
       mockObjectiveService.getInitObjective.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();

@@ -49,20 +49,27 @@ export class KeyResultRowComponent implements OnInit {
     this.menuEntries = [
       {
         displayName: 'KeyResult bearbeiten',
+        showDialog: false,
         routeLine:
           'objective/' +
           this.objectiveId +
           '/keyresult/edit/' +
           this.keyResult.id,
       },
-      { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
+      {
+        displayName: 'KeyResult duplizieren',
+        showDialog: false,
+        routeLine: 'objective/edit',
+      },
       {
         displayName: 'Details einsehen',
+        showDialog: false,
         routeLine: 'keyresults/' + this.keyResult.id,
       },
-      { displayName: 'KeyResult löschen', routeLine: 'result/delete' },
+      { displayName: 'KeyResult löschen', showDialog: true },
       {
         displayName: 'Messung hinzufügen',
+        showDialog: false,
         routeLine: 'keyresults/' + this.keyResult.id + '/measure/new',
       },
     ];
@@ -82,7 +89,7 @@ export class KeyResultRowComponent implements OnInit {
   }
 
   redirect(menuEntry: MenuEntry) {
-    if (menuEntry.routeLine == 'result/delete') {
+    if (menuEntry.showDialog) {
       this.openDialog();
     } else {
       this.router.navigate([menuEntry.routeLine]);
@@ -94,14 +101,14 @@ export class KeyResultRowComponent implements OnInit {
       width: '400px',
       data: {
         title:
-          'Willst du dieses Keyresult und die dazugehörigen Messungen wirklich löschen?',
+          'Willst du dieses Key Result und die dazugehörigen Messungen wirklich löschen?',
         confirmText: 'Bestätigen',
         closeText: 'Abbrechen',
       },
     });
 
-    dialogRef.afterClosed().subscribe((data) => {
-      if (data) {
+    dialogRef.afterClosed().subscribe((success) => {
+      if (success) {
         this.keyResultService
           .deleteKeyResultById(this.keyResult.id!)
           .subscribe((data) => {

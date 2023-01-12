@@ -42,7 +42,9 @@ class KeyResultServiceTest {
     Objective objective;
     Quarter quarter;
     KeyResult keyResult;
-    Measure measure;
+    Measure measure1;
+    Measure measure2;
+    Measure measure3;
     List<Measure> measures;
     @InjectMocks
     private KeyResultService keyResultService;
@@ -58,9 +60,11 @@ class KeyResultServiceTest {
         this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(this.objective)
                 .withOwner(this.user).build();
 
-        measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure2 = Measure.Builder.builder().withId(2L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure3 = Measure.Builder.builder().withId(3L).withKeyResult(keyResult).withCreatedBy(user).build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
-        this.measures = List.of(measure, measure, measure);
+        this.measures = List.of(measure1, measure2, measure3);
     }
 
     @Test
@@ -164,7 +168,7 @@ class KeyResultServiceTest {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(keyResult, measure)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
+        when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
                 "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
                 new MeasureDto(1L, 1L, 10, "", "", 1L, null, null)));
 
@@ -199,6 +203,9 @@ class KeyResultServiceTest {
 
         verify(keyResultRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).findByKeyResultId(1L);
-        verify(measureRepository, times(3)).deleteById(any());
+        verify(measureRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).deleteById(2L);
+        verify(measureRepository, times(1)).deleteById(3L);
+        verify(progressService, times(1)).updateObjectiveProgress(any());
     }
 }

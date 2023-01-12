@@ -1,4 +1,5 @@
 export interface MenuEntry {
   displayName: string;
-  routeLine: string;
+  showDialog: boolean;
+  routeLine?: string;
 }

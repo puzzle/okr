@@ -28,7 +28,6 @@ export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
-  @Output() onKeyresultChange: EventEmitter<any> = new EventEmitter();
   constructor(
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
@@ -42,17 +41,24 @@ export class ObjectiveRowComponent implements OnInit {
     this.menuEntries = [
       {
         displayName: 'KeyResult hinzufügen',
+        showDialog: false,
         routeLine: 'objective/' + this.objective.id + '/keyresult/new',
       },
       {
         displayName: 'Objective bearbeiten',
+        showDialog: false,
         routeLine: 'objectives/edit/' + this.objective.id,
       },
       {
         displayName: 'Objective duplizieren',
+        showDialog: false,
         routeLine: 'objective/duplicate',
       },
-      { displayName: 'Objective löschen', routeLine: 'objective/delete' },
+      {
+        displayName: 'Objective löschen',
+        showDialog: false,
+        routeLine: 'objective/delete',
+      },
     ];
   }
 
@@ -62,7 +68,6 @@ export class ObjectiveRowComponent implements OnInit {
 
   removeKeyResultFromListAndReloadObjective(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
-    this.onKeyresultChange.emit(this.objective.id);
     this.objectiveService
       .getObjectiveById(this.objective.id!)
       .subscribe((objective) => {

@@ -80,4 +80,11 @@ public class MeasureService {
         return this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Measure with id %d not found", id)));
     }
+
+    public void deleteMeasureById(Long measureId) {
+        measureRepository.findById(measureId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Measure with measureId %d not found", measureId)));
+
+        measureRepository.deleteById(measureId);
+    }
 }

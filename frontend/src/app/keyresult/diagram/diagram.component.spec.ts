@@ -7,7 +7,6 @@ import {
   KeyResultService,
   Measure,
 } from '../../shared/services/key-result.service';
-import * as measureData from '../../shared/testing/mock-data/measure.json';
 import * as goalData from '../../shared/testing/mock-data/goals.json';
 import { loadAllMeasure } from '../../shared/testing/Loader';
 
@@ -77,7 +76,9 @@ describe('DiagramComponent', () => {
     measures.subscribe((item) => {
       diagrammObjects = component.generateDiagrammObjects(item);
     });
-    expect(diagrammObjects[1].x).toEqual('2022-12-23');
-    expect(diagrammObjects[2].x).toEqual('2023-01-05 01:00:00');
+    expect(diagrammObjects[0].x).toEqual('2022-12-23');
+    expect(diagrammObjects[0].y).toEqual(0);
+    expect(diagrammObjects[1].x).toEqual('2023-01-05 01:00:00');
+    expect(diagrammObjects[1].y).toEqual(42);
   });
 });

@@ -18,7 +18,7 @@
         "value": 60,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2023-01-18",
         "measureDate": "2022-12-23"
       }
@@ -41,7 +41,7 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2019-08-22",
         "measureDate": "2020-11-03"
       }
@@ -64,7 +64,7 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2023-02-14",
         "measureDate": "2023-03-06"
       }
@@ -114,7 +114,7 @@
       "value": 0,
       "changeInfo": "Changeinfo",
       "initiatives": "Initiatives",
-      "createdBy": 1,
+      "createdById": 1,
       "createdOn": "2023-02-14",
       "measureDate": "2023-03-06"
     }

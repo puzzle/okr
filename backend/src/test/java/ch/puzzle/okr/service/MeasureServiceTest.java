@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MeasureServiceTest {
@@ -99,5 +101,23 @@ class MeasureServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> this.measureService.updateMeasure(1L, measure));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+    }
+
+    @Test
+    void shouldDeleteMeasure() {
+        Mockito.when(measureRepository.findById(1L)).thenReturn(Optional.of(measure));
+
+        measureService.deleteMeasureById(1L);
+
+        verify(measureRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    void shouldThrowErrorWhenMeasureNotExistsAndNotCallMeasureRepository() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.measureService.deleteMeasureById(33L));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        verify(measureRepository, times(0)).deleteById(1L);
     }
 }

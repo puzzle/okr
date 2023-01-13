@@ -88,7 +88,7 @@ describe('MeasureRowComponent', () => {
       });
     });
 
-    it('should set right title', () => {
+    it('should set right heading title', () => {
       const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
 
       expect(headingLabel.nativeElement.textContent).toContain(
@@ -109,7 +109,7 @@ describe('MeasureRowComponent', () => {
       expect(spans[5].nativeElement.textContent).toContain('Massnahmen');
     });
 
-    it('should create 2 mat cards for 2 measures', () => {
+    it('should create two mat cards for 2 measures', () => {
       const matCards = fixture.debugElement.queryAll(By.css('mat-card'));
 
       expect(matCards.length).toEqual(2);

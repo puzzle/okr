@@ -13,7 +13,7 @@ import {
 } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';

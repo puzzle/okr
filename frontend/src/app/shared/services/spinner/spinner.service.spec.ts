@@ -21,5 +21,4 @@ describe('SpinnerService', () => {
     service.hide();
     expect(service.visibility.value).toBe(false);
   });
-
 });

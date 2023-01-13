@@ -29,19 +29,19 @@ describe('ConfirmDialog', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display correct labels', function () {
+  it('should display correct labels', () => {
     const title = fixture.debugElement.query(By.css('#title'));
     expect(title.nativeElement.textContent).toContain(
       'Willst du diese Aktion wirklich ausführen?'
     );
   });
 
-  it('should display correct confirm button text', function () {
+  it('should display correct confirm button text', () => {
     const title = fixture.debugElement.query(By.css('#confirm'));
     expect(title.nativeElement.textContent).toContain('Bestätigen');
   });
 
-  it('should display correct close button text', function () {
+  it('should display correct close button text', () => {
     const title = fixture.debugElement.query(By.css('#close'));
     expect(title.nativeElement.textContent).toContain('Abbrechen');
   });

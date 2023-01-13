@@ -15,6 +15,9 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { SpinnerService } from '../../shared/services/spinner/spinner.service';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -33,6 +36,8 @@ export class KeyResultRowComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private keyResultService: KeyResultService,
+    private spinnerService: SpinnerService,
+    private toastr: ToastrService,
     private dialog: MatDialog
   ) {}
 
@@ -107,12 +112,29 @@ export class KeyResultRowComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((success) => {
+    dialogRef.beforeClosed().subscribe((success) => {
+      this.spinnerService.show();
       if (success) {
         this.keyResultService
           .deleteKeyResultById(this.keyResult.id!)
-          .subscribe((data) => {
-            this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
+          .subscribe({
+            next: () => {
+              this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
+              this.spinnerService.hide();
+              this.toastr.success('', 'Key Result gelöscht!', {
+                timeOut: 5000,
+              });
+            },
+            error: (e: HttpErrorResponse) => {
+              this.spinnerService.hide();
+              this.toastr.error(
+                'Key Result konnte nicht gelöscht werden!',
+                'Fehlerstatus: ' + e.status,
+                {
+                  timeOut: 5000,
+                }
+              );
+            },
           });
       }
     });

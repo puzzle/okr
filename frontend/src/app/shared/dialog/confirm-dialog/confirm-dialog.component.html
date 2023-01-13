@@ -1,16 +1,24 @@
-<mat-dialog-content>
-  <p id="title">{{ title }}</p>
-</mat-dialog-content>
+<div
+  class="d-flex justify-content-center"
+  *ngIf="spinnerService.visibility | async; else dialog"
+>
+  <mat-spinner [diameter]="50"></mat-spinner>
+</div>
+<ng-template #dialog>
+  <mat-dialog-content>
+    <p id="title">{{ title }}</p>
+  </mat-dialog-content>
 
-<mat-dialog-actions class="d-flex justify-content-center">
-  <button id="close" class="mat-raised-button" (click)="close()">
-    {{ closeText }}
-  </button>
-  <button
-    id="confirm"
-    class="mat-raised-button mat-primary"
-    (click)="confirm()"
-  >
-    {{ confirmText }}
-  </button>
-</mat-dialog-actions>
+  <mat-dialog-actions class="d-flex justify-content-center">
+    <button id="close" class="mat-raised-button" (click)="close()">
+      {{ closeText }}
+    </button>
+    <button
+      id="confirm"
+      class="mat-raised-button mat-primary"
+      (click)="confirm()"
+    >
+      {{ confirmText }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

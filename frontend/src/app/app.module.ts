@@ -16,9 +16,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { TeamModule } from './team/team.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { KeyresultDeleteDialogComponent } from './shared/dialog/keyresult-delete-dialog/keyresult-delete-dialog.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent],
@@ -39,6 +39,7 @@ import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-d
     MatInputModule,
     TeamModule,
     ToastrModule.forRoot(),
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

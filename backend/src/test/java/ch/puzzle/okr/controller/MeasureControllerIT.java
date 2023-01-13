@@ -167,7 +167,8 @@ class MeasureControllerIT {
 
     @Test
     void throwExceptionWhenMeasureWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found")).when(measureService).deleteMeasureById(any());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
+                .when(measureService).deleteMeasureById(any());
 
         mvc.perform(delete("/api/v1/measures/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }

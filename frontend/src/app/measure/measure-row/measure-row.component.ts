@@ -37,10 +37,6 @@ export class MeasureRowComponent implements OnInit {
 
   formatDate(date: string) {
     var convertedDate: Date = new Date(date);
-    return this.datePipe.transform(
-      convertedDate,
-      'dd.MM.yyyy HH:mm:ss',
-      'CEST'
-    );
+    return this.datePipe.transform(convertedDate, 'dd.MM.yyyy', 'CEST');
   }
 }

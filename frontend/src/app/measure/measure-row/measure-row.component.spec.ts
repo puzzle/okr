@@ -19,7 +19,6 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
-import { compareSegments } from '@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -30,14 +29,10 @@ describe('MeasureRowComponent', () => {
   const mockKeyResultService = {
     getMeasuresOfKeyResult: jest.fn(),
   };
-  const mockGetNumerOrNull = {
-    getNumberOrNull: jest.fn(),
-  };
 
   describe('Get Measures from existing keyresult', () => {
     beforeEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
         imports: [
@@ -69,7 +64,6 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
-      mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
     it('should create', () => {
@@ -121,12 +115,8 @@ describe('MeasureRowComponent', () => {
       );
 
       expect(measureDates.length).toEqual(2);
-      expect(measureDates[0].nativeElement.textContent).toContain(
-        '05.01.2023 01:00:00'
-      );
-      expect(measureDates[1].nativeElement.textContent).toContain(
-        '23.01.2023 12:00:00'
-      );
+      expect(measureDates[0].nativeElement.textContent).toContain('05.01.2023');
+      expect(measureDates[1].nativeElement.textContent).toContain('23.01.2023');
     });
 
     it('should have two measure values for 2 measures', () => {
@@ -175,16 +165,15 @@ describe('MeasureRowComponent', () => {
 
     it('should format date in right format dd.MM.yyyy hh:mm:ss', () => {
       let formattedDate = component.formatDate('2022-09-01T00:00:00');
-      expect(formattedDate).toEqual('01.09.2022 00:00:00');
+      expect(formattedDate).toEqual('01.09.2022');
       formattedDate = component.formatDate('2023-02-20T10:00:00');
-      expect(formattedDate).toEqual('20.02.2023 10:00:00');
+      expect(formattedDate).toEqual('20.02.2023');
     });
   });
 
   describe('Empty keyresult id', () => {
     beforeEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
         imports: [
@@ -216,7 +205,6 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
-      mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
     it('should create', () => {

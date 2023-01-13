@@ -1,52 +1,47 @@
 .heading-label {
-  margin-left: 10px;
-  margin-bottom: 30px;
+  margin: 30px 0 30px 10px;
   font-weight: 400;
   font-size: 28px;
-}
-
-.w-35 {
-  width: 35%;
-}
-
-.w-15 {
-  width: 15%;
-}
-
-.w-65 {
-  width: 65%;
-}
-
-.w-55 {
-  width: 55%;
-}
-
-.w-40 {
-  width: 40%;
 }
 
 .w-10 {
   width: 10%;
 }
 
-.measure-date {
+.w-15 {
+  width: 15%;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-55 {
+  width: 55%;
+}
+
+.measure-date-title {
   margin-left: 150px;
 }
 
 .measureValue {
+  margin-top: 16px;
   margin-left: 85%;
 }
 
-.measureMeasureDate {
+.measureDate {
+  margin-top: 16px;
   margin-left: 20%;
 }
 
 .measureChangeinfo {
-  margin-left: 14%;
+  margin-top: 16px;
+  margin-left: 15%;
 }
 
 .measureInitiatives {
-  margin-left: 13%;
+  margin-top: 16px;
+  margin-left: 15%;
 }
 
 .edit-icon {
@@ -57,4 +52,8 @@
 
 .measure-card {
   margin-bottom: 15px;
+}
+
+.titles {
+  margin-top: 30px;
 }

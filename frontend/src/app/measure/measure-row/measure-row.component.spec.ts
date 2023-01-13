@@ -19,6 +19,7 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
+import { compareSegments } from '@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -177,6 +178,58 @@ describe('MeasureRowComponent', () => {
       expect(formattedDate).toEqual('01.09.2022 00:00:00');
       formattedDate = component.formatDate('2023-02-20T10:00:00');
       expect(formattedDate).toEqual('20.02.2023 10:00:00');
+    });
+  });
+
+  describe('Empty keyresult id', () => {
+    beforeEach(() => {
+      mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
+      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
+
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          BrowserDynamicTestingModule,
+          BrowserAnimationsModule,
+          NoopAnimationsModule,
+          RouterTestingModule,
+          MatCardModule,
+          MatExpansionModule,
+        ],
+        providers: [
+          DatePipe,
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              paramMap: of(convertToParamMap({})),
+            },
+          },
+        ],
+        declarations: [MeasureRowComponent],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(MeasureRowComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockGetNumerOrNull.getNumberOrNull.mockReset();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should not get measures from keyresult', () => {
+      expect(
+        mockKeyResultService.getMeasuresOfKeyResult
+      ).not.toHaveBeenCalled();
+      component.measures$.subscribe((measures) => {
+        expect(measures).toBeNull();
+      });
     });
   });
 });

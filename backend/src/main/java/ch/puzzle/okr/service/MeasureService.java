@@ -5,7 +5,6 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
-import ch.puzzle.okr.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -79,5 +78,12 @@ public class MeasureService {
     public Measure getMeasureById(long id) {
         return this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Measure with id %d not found", id)));
+    }
+
+    public void deleteMeasureById(Long measureId) {
+        measureRepository.findById(measureId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Measure with measureId %d not found", measureId)));
+
+        measureRepository.deleteById(measureId);
     }
 }

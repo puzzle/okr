@@ -15,6 +15,10 @@ import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { By } from '@angular/platform-browser';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -38,6 +42,8 @@ describe('MeasureRowComponent', () => {
         imports: [
           HttpClientTestingModule,
           BrowserDynamicTestingModule,
+          BrowserAnimationsModule,
+          NoopAnimationsModule,
           RouterTestingModule,
           MatCardModule,
           MatExpansionModule,
@@ -92,11 +98,14 @@ describe('MeasureRowComponent', () => {
     it('should have right titles for past measures', () => {
       const spans = fixture.debugElement.queryAll(By.css('span'));
 
-      expect(spans.length).toEqual(4);
-      expect(spans[0].nativeElement.textContent).toContain('Datum');
-      expect(spans[1].nativeElement.textContent).toContain('Aktueller Wert');
-      expect(spans[2].nativeElement.textContent).toContain('Veränderungen');
-      expect(spans[3].nativeElement.textContent).toContain('Massnahmen');
+      expect(spans.length).toEqual(6);
+      expect(spans[0].nativeElement.textContent).toContain(
+        'Vergangene Messung'
+      );
+      expect(spans[2].nativeElement.textContent).toContain('Datum');
+      expect(spans[3].nativeElement.textContent).toContain('Aktueller Wert');
+      expect(spans[4].nativeElement.textContent).toContain('Veränderungen');
+      expect(spans[5].nativeElement.textContent).toContain('Massnahmen');
     });
 
     it('should create 2 mat cards for 2 measures', () => {
@@ -107,7 +116,7 @@ describe('MeasureRowComponent', () => {
 
     it('should have two measure dates for 2 measures', () => {
       const measureDates = fixture.debugElement.queryAll(
-        By.css('.measureMeasureDate')
+        By.css('.measureDate')
       );
 
       expect(measureDates.length).toEqual(2);

@@ -168,8 +168,8 @@ class KeyResultServiceTest {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
+        when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
+                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
                 new MeasureDto(1L, 1L, 10, "", "", 1L, null, null)));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
@@ -196,13 +196,13 @@ class KeyResultServiceTest {
 
     @Test
     void shouldDeleteKeyResultAndAssociatedMeasures() {
-        when(measureRepository.findByKeyResultId(1L)).thenReturn(measures);
+        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
         keyResultService.deleteKeyResultById(1L);
 
         verify(keyResultRepository, times(1)).deleteById(1L);
-        verify(measureRepository, times(1)).findByKeyResultId(1L);
+        verify(measureRepository, times(1)).findByKeyResult(keyResult);
         verify(measureRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).deleteById(2L);
         verify(measureRepository, times(1)).deleteById(3L);

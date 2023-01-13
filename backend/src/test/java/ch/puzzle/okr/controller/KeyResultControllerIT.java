@@ -295,7 +295,8 @@ class KeyResultControllerIT {
 
     @Test
     void throwExceptionWhenKeyresultWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultService).deleteKeyResultById(any());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultService)
+                .deleteKeyResultById(any());
 
         mvc.perform(delete("/api/v1/keyresults/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }

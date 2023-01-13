@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Goal, GoalService } from '../../shared/services/goal.service';
+import { Location } from '@angular/common';
+import { getNumberOrNull } from '../../shared/common';
 
 @Component({
   selector: 'app-key-result-overview',
@@ -13,12 +15,24 @@ export class KeyResultOverviewComponent implements OnInit {
 
   constructor(
     private goalService: GoalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
-    this.goal$ = this.goalService.getGoalByKeyResultId(
-      this.route.snapshot.params['id']
+    this.goal$ = this.route.paramMap.pipe(
+      switchMap((params) => {
+        const keyResultId = getNumberOrNull(params.get('keyresultId'));
+        if (keyResultId) {
+          return this.goalService.getGoalByKeyResultId(keyResultId);
+        } else {
+          throw Error('KeyResult with Id ' + keyResultId + " doesn't exist");
+        }
+      })
     );
+  }
+
+  navigateBack() {
+    this.location.back();
   }
 }

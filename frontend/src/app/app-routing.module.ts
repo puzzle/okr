@@ -7,7 +7,6 @@ import { KeyResultOverviewComponent } from './keyresult/key-result-overview/key-
 import { ObjectiveFormComponent } from './objective/objective-form/objective-form.component';
 import { TeamFormComponent } from './team/team-form/team-form.component';
 import { MeasureFormComponent } from './measure/measure-form/measure-form.component';
-import { MeasureRowComponent } from './measure/measure-row/measure-row.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
@@ -20,7 +19,7 @@ const routes: Routes = [
     component: KeyresultFormComponent,
   },
   { path: 'teams', component: TeamListComponent },
-  { path: 'keyresults/:id', component: KeyResultOverviewComponent },
+  { path: 'keyresults/:keyresultId', component: KeyResultOverviewComponent },
   {
     path: 'keyresults/:keyresultId/measure/new',
     component: MeasureFormComponent,
@@ -29,10 +28,7 @@ const routes: Routes = [
     path: 'keyresults/:keyresultId/measure/edit/:measureId',
     component: MeasureFormComponent,
   },
-  {
-    path: 'keyresults/:keyresultId/measures',
-    component: MeasureRowComponent,
-  },
+
   { path: 'objectives/new', component: ObjectiveFormComponent },
   { path: 'objectives/edit/:objectiveId', component: ObjectiveFormComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },

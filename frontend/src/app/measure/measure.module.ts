@@ -27,5 +27,6 @@ import { RouterModule } from '@angular/router';
     RouterModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
+  exports: [MeasureRowComponent],
 })
 export class MeasureModule {}

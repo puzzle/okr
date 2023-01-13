@@ -30,7 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     DiagramComponent,
   ],
   providers: [KeyResultService, DatePipe],
-  exports: [KeyResultRowComponent],
+  exports: [KeyResultRowComponent, KeyResultDetailComponent],
   imports: [
     CommonModule,
     MatExpansionModule,

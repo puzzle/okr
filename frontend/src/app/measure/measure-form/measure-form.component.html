@@ -6,6 +6,17 @@
 <p class="fs-2 heading-label">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
+
+<mat-divider class="divider"></mat-divider>
+<app-key-result-detail></app-key-result-detail>
+<mat-divider class="divider"></mat-divider>
+<app-measure-row></app-measure-row>
+<mat-divider class="divider"></mat-divider>
+
+<p class="fs-2 headline-large">
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
+</p>
+
 <div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
   <form
     (ngSubmit)="save()"

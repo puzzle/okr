@@ -11,6 +11,8 @@ import { MeasureRowComponent } from './measure-row/measure-row.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { KeyresultModule } from '../keyresult/keyresult.module';
 
 @NgModule({
   declarations: [MeasureFormComponent, MeasureRowComponent],
@@ -25,6 +27,8 @@ import { RouterModule } from '@angular/router';
     MatExpansionModule,
     MatCardModule,
     RouterModule,
+    MatDividerModule,
+    KeyresultModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
   exports: [MeasureRowComponent],

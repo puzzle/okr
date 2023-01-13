@@ -12,5 +12,14 @@ describe('SpinnerService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+    expect(service.visibility.value).toBe(false);
   });
+
+  it('should switch visibility', () => {
+    service.show();
+    expect(service.visibility.value).toBe(true);
+    service.hide();
+    expect(service.visibility.value).toBe(false);
+  });
+
 });

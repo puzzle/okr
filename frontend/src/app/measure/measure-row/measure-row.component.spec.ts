@@ -162,5 +162,12 @@ describe('MeasureRowComponent', () => {
 
       expect(editIcons.length).toEqual(2);
     });
+
+    it('should format date in right format dd.MM.yyyy hh:mm:ss', () => {
+      let formattedDate = component.formatDate('2022-09-01T00:00:00');
+      expect(formattedDate).toEqual('01.09.2022 00:00:00');
+      formattedDate = component.formatDate('2023-02-20T10:00:00');
+      expect(formattedDate).toEqual('20.02.2023 10:00:00');
+    });
   });
 });

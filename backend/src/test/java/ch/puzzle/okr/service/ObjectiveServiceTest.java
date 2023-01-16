@@ -118,7 +118,7 @@ class ObjectiveServiceTest {
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("This is our description", savedObjective.getDescription());
-        assertEquals(0, savedObjective.getProgress());
+        assertEquals(null, savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
         assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());

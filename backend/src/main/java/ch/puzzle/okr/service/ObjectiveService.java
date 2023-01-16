@@ -83,7 +83,7 @@ public class ObjectiveService {
         }
     }
 
-    public List<Objective> getObjectiveByTeamIdAndQuarterId(long teamId, Long quarterId) {
+    public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
         return quarterId == null ? objectiveRepository.findByTeamId(teamId)
                 : objectiveRepository.findByQuarterIdAndTeamId(quarterId, teamId);
     }

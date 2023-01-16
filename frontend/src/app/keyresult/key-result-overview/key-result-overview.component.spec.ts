@@ -4,7 +4,6 @@ import { KeyResultOverviewComponent } from './key-result-overview.component';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { MatCardModule } from '@angular/material/card';
-import { KeyResultDetailComponent } from '../key-result-detail/key-result-detail.component';
 import { By } from '@angular/platform-browser';
 
 describe('KeyResultOverviewComponent', () => {
@@ -16,10 +15,10 @@ describe('KeyResultOverviewComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [MatCardModule],
-        declarations: [KeyResultDetailComponent],
+        declarations: [KeyResultOverviewComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDetailComponent);
+      fixture = TestBed.createComponent(KeyResultOverviewComponent);
       component = fixture.componentInstance;
 
       component.keyResult = keyResult;
@@ -69,10 +68,10 @@ describe('KeyResultOverviewComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [MatCardModule],
-        declarations: [KeyResultDetailComponent],
+        declarations: [KeyResultOverviewComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDetailComponent);
+      fixture = TestBed.createComponent(KeyResultOverviewComponent);
       component = fixture.componentInstance;
 
       let emptyMeasureKeyResult = keyResult;

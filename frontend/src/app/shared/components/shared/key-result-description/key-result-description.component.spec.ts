@@ -1,15 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ObjectiveModule } from '../../../../objective/objective.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  RouterLinkWithHref,
+} from '@angular/router';
 import { KeyResultDescriptionComponent } from './key-result-description.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 
 describe('KeyResultDescriptionComponent', () => {
   let component: KeyResultDescriptionComponent;
@@ -33,9 +51,21 @@ describe('KeyResultDescriptionComponent', () => {
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
-          ObjectiveModule,
-          NoopAnimationsModule,
+          BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
           RouterTestingModule,
+          MatIconModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          MatButtonModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
         ],
         providers: [
           { provide: GoalService, useValue: mockGoalService },
@@ -46,7 +76,7 @@ describe('KeyResultDescriptionComponent', () => {
             },
           },
         ],
-        declarations: [KeyResultDescriptionComponent],
+        declarations: [KeyResultDescriptionComponent, DiagramComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDescriptionComponent);
@@ -103,6 +133,13 @@ describe('KeyResultDescriptionComponent', () => {
     test('should set quarter from keyresult', () => {
       const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
       expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
+    });
+
+    it('should have one app diagram', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-diagram')
+      );
+      expect(keyResultDescription.length).toEqual(1);
     });
   });
 });

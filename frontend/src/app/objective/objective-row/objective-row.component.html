@@ -6,9 +6,11 @@
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex w-50 margin-left">
         <div class="w-100" id="progressContainer">
-          <span class="h6" id="progressSpan">{{ objective!.progress }}%</span>
+          <span class="h6" id="progressSpan">{{
+            objective!.progress != null ? objective!.progress + "%" : "-"
+          }}</span>
           <app-progress-bar
-            [value]="objective!.progress!"
+            [value]="objective!.progress! != null ? objective!.progress! : 0"
             [colorLow]="'#FF1A0C'"
             [colorMiddle]="'#FFA012'"
             [colorHigh]="'#29DF0B'"

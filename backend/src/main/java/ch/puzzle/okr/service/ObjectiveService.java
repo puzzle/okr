@@ -49,7 +49,7 @@ public class ObjectiveService {
         if (objective.getProgress() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
         }
-        objective.setProgress(0L);
+        objective.setProgress(null);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }

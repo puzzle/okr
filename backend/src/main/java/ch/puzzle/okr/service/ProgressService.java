@@ -27,6 +27,9 @@ public class ProgressService {
         Objective objective = this.objectiveService.getObjective(objectiveId);
         Long progress = this
                 .calculateObjectiveProgress(this.objectiveRepository.getCalculationValuesForProgress(objectiveId));
+        if (progress == null && !this.keyResultRepository.findByObjective(objective).isEmpty()) {
+            progress = 0L;
+        }
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
     }
@@ -39,7 +42,10 @@ public class ProgressService {
         return null;
     }
 
-    public long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {
+    public Long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {
+        if (keyResultMeasureValues.isEmpty()) {
+            return null;
+        }
         return (long) Math.floor(keyResultMeasureValues.stream().mapToDouble(this::returnCheckedProgress).average()
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                         "Progress calculation failed!")));

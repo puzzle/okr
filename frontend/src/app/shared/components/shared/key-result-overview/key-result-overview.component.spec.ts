@@ -2,13 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyResultOverviewComponent } from './key-result-overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ObjectiveModule } from '../../objective/objective.module';
+import { ObjectiveModule } from '../../../../objective/objective.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { Goal, GoalService } from '../../shared/services/goal.service';
-import * as goalsData from '../../shared/testing/mock-data/goals.json';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
 
 describe('KeyresultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
-import { Goal, GoalService } from '../../shared/services/goal.service';
+import { Goal, GoalService } from '../../../services/goal.service';
 import { Location } from '@angular/common';
-import { getNumberOrNull } from '../../shared/common';
+import { getNumberOrNull } from '../../../common';
 
 @Component({
   selector: 'app-key-result-overview',

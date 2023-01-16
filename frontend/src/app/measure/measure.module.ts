@@ -7,12 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { MeasureRowComponent } from './measure-row/measure-row.component';
+import { MeasureRowComponent } from '../shared/components/shared/measure-row/measure-row.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
-import { KeyresultModule } from '../keyresult/keyresult.module';
 
 @NgModule({
   declarations: [MeasureFormComponent, MeasureRowComponent],
@@ -28,7 +27,6 @@ import { KeyresultModule } from '../keyresult/keyresult.module';
     MatCardModule,
     RouterModule,
     MatDividerModule,
-    KeyresultModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'de-DE' }],
   exports: [MeasureRowComponent],

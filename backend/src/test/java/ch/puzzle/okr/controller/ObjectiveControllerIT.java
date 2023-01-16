@@ -64,13 +64,13 @@ class ObjectiveControllerIT {
             LocalDateTime.of(2022, 8, 12, 1, 1));
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
             new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto),
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto, 0L),
             new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto));
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto, 0L));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
 
     @Autowired
     private MockMvc mvc;

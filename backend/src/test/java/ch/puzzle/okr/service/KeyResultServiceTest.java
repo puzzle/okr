@@ -170,7 +170,7 @@ class KeyResultServiceTest {
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
                 "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
-                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null)));
+                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null), 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
@@ -186,7 +186,7 @@ class KeyResultServiceTest {
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null));
+                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null, 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 

@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.helper.KeyResultMeasureValue;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,13 @@ import java.util.List;
 public class ProgressService {
     private final ObjectiveService objectiveService;
     private final ObjectiveRepository objectiveRepository;
+    private final KeyResultRepository keyResultRepository;
 
-    public ProgressService(ObjectiveService objectiveService, ObjectiveRepository objectiveRepository) {
+    public ProgressService(ObjectiveService objectiveService, ObjectiveRepository objectiveRepository,
+            KeyResultRepository keyResultRepository) {
         this.objectiveService = objectiveService;
         this.objectiveRepository = objectiveRepository;
+        this.keyResultRepository = keyResultRepository;
     }
 
     public void updateObjectiveProgress(Long objectiveId) {
@@ -25,6 +29,11 @@ public class ProgressService {
                 .calculateObjectiveProgress(this.objectiveRepository.getCalculationValuesForProgress(objectiveId));
         objective.setProgress(progress);
         this.objectiveRepository.save(objective);
+    }
+
+    public long updateKeyResultProgress(Long keyResultId) {
+        return (long) Math
+                .floor(returnCheckedProgress(this.keyResultRepository.getProgressValuesKeyResult(keyResultId)));
     }
 
     public long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {

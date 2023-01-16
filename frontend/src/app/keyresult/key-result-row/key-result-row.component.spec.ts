@@ -15,6 +15,15 @@ import { KeyresultModule } from '../keyresult.module';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+
+export class MatDialogMock {
+  open() {
+    return {
+      beforeClosed: jest.fn(),
+    };
+  }
+}
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
@@ -43,6 +52,7 @@ describe('KeyResultKeyResultRowComponent', () => {
         providers: [
           DatePipe,
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useClass: MatDialogMock },
         ],
         declarations: [KeyResultRowComponent],
       })
@@ -101,6 +111,18 @@ describe('KeyResultKeyResultRowComponent', () => {
       expect(fixture.nativeElement.querySelector('button').textContent).toEqual(
         'more_vert'
       );
+    });
+
+    test('should open dialog when deleting keyresult', () => {
+      let button = fixture.debugElement.nativeElement.querySelector(
+        'button[mat-icon-button]'
+      );
+      button.click();
+      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+      let children = Array.from(matMenu.children).map(
+        (e) => e.querySelector('span')!
+      );
+      children[3].click();
     });
 
     test.each([

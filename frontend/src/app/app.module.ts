@@ -19,9 +19,15 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    ConfirmDialogComponent,
+    SpinnerComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

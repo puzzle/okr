@@ -1,10 +1,6 @@
-<div
-  class="d-flex justify-content-center"
-  *ngIf="spinnerService.visibility | async; else dialog"
->
-  <mat-spinner [diameter]="50"></mat-spinner>
-</div>
-<ng-template #dialog>
+<app-spinner [visibility]="displaySpinner"></app-spinner>
+
+<div *ngIf="!displaySpinner">
   <mat-dialog-content>
     <p id="title">{{ title }}</p>
   </mat-dialog-content>
@@ -21,4 +17,4 @@
       {{ confirmText }}
     </button>
   </mat-dialog-actions>
-</ng-template>
+</div>

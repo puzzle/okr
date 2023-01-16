@@ -15,7 +15,6 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { SpinnerService } from '../../shared/services/spinner/spinner.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -36,7 +35,6 @@ export class KeyResultRowComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private keyResultService: KeyResultService,
-    private spinnerService: SpinnerService,
     private toastr: ToastrService,
     private dialog: MatDialog
   ) {}
@@ -104,6 +102,7 @@ export class KeyResultRowComponent implements OnInit {
   openDialog() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
+      disableClose: true,
       data: {
         title:
           'Willst du dieses Key Result und die dazugehörigen Messungen wirklich löschen?',
@@ -112,21 +111,22 @@ export class KeyResultRowComponent implements OnInit {
       },
     });
 
-    dialogRef.beforeClosed().subscribe((success) => {
-      this.spinnerService.show();
-      if (success) {
+    dialogRef.componentInstance.closeDialog.subscribe((confirm) => {
+      if (confirm) {
+        dialogRef.componentInstance.displaySpinner = true;
         this.keyResultService
           .deleteKeyResultById(this.keyResult.id!)
           .subscribe({
             next: () => {
+              dialogRef.componentInstance.displaySpinner = false;
+              dialogRef.close();
               this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
-              this.spinnerService.hide();
               this.toastr.success('', 'Key Result gelöscht!', {
                 timeOut: 5000,
               });
             },
             error: (e: HttpErrorResponse) => {
-              this.spinnerService.hide();
+              dialogRef.componentInstance.displaySpinner = false;
               this.toastr.error(
                 'Key Result konnte nicht gelöscht werden!',
                 'Fehlerstatus: ' + e.status,
@@ -136,6 +136,8 @@ export class KeyResultRowComponent implements OnInit {
               );
             },
           });
+      } else {
+        dialogRef.close();
       }
     });
   }

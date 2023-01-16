@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SpinnerService } from '../../services/spinner/spinner.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-keyresult-delete-dialog',
@@ -8,12 +8,13 @@ import { SpinnerService } from '../../services/spinner/spinner.service';
   styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent implements OnInit {
+  closeDialog: Subject<boolean> = new Subject<boolean>();
   title: string;
   confirmText: string;
   closeText: string;
+  displaySpinner: boolean = false;
   constructor(
     private dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    public spinnerService: SpinnerService,
     @Inject(MAT_DIALOG_DATA) data: any
   ) {
     this.title = data.title;
@@ -24,10 +25,10 @@ export class ConfirmDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   close() {
-    this.dialogRef.close(false);
+    this.closeDialog.next(false);
   }
 
   confirm() {
-    this.dialogRef.close(true);
+    this.closeDialog.next(true);
   }
 }

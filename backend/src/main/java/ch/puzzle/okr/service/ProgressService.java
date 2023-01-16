@@ -31,9 +31,12 @@ public class ProgressService {
         this.objectiveRepository.save(objective);
     }
 
-    public long updateKeyResultProgress(Long keyResultId) {
-        return (long) Math
-                .floor(returnCheckedProgress(this.keyResultRepository.getProgressValuesKeyResult(keyResultId)));
+    public Long updateKeyResultProgress(Long keyResultId) {
+        KeyResultMeasureValue keyResultMeasureValue = this.keyResultRepository.getProgressValuesKeyResult(keyResultId);
+        if (keyResultMeasureValue != null) {
+            return (long) Math.floor(returnCheckedProgress(keyResultMeasureValue));
+        }
+        return null;
     }
 
     public long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {

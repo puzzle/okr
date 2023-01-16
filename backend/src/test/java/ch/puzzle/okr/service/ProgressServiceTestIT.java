@@ -31,10 +31,10 @@ class ProgressServiceTestIT {
     void checkUpdateProgressMethod() {
         Objective objective = new Objective.Builder().withId(1L).withProgress(30L).build();
         when(this.objectiveService.getObjective(1L)).thenReturn(objective);
-//        when(this.objectiveRepository.getProgressOfObjective(1L)).thenReturn(30D);
-//
-//        this.progressService.updateObjectiveProgress(1L);
-//        verify(this.objectiveRepository, times(1)).getProgressOfObjective(1L);
+        // when(this.objectiveRepository.getProgressOfObjective(1L)).thenReturn(30D);
+        //
+        // this.progressService.updateObjectiveProgress(1L);
+        // verify(this.objectiveRepository, times(1)).getProgressOfObjective(1L);
         verify(this.objectiveRepository, times(1)).save(objective);
     }
 }

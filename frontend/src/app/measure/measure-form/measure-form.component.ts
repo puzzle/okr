@@ -48,7 +48,7 @@ export class MeasureFormComponent implements OnInit {
         if (keyresultId) {
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
-          throw Error('KeyResult with Id ' + keyresultId + " doesn't exist");
+          throw Error('Key Result with Id ' + keyresultId + " doesn't exist");
         }
       })
     );

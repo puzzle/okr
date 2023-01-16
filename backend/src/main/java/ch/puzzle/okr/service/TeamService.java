@@ -30,10 +30,10 @@ public class TeamService {
             puzzleTeam.ifPresent(teamList::add);
             teamList.addAll(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE));
         } else {
-            teamList.addAll(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE));
             if(teamIds.stream().anyMatch(puzzleTeam.map(Team::getId).orElse(-1L)::equals)){
-                puzzleTeam.ifPresent(team -> teamList.add(0, team));
+                puzzleTeam.ifPresent(teamList::add);
             }
+            teamList.addAll(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE));
         }
         return teamList;
     }

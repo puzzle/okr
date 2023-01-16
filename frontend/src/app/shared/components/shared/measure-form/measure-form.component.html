@@ -35,9 +35,13 @@
     [formGroup]="measureForm"
     class="d-flex flex-column fit-content"
   >
-    <div class="d-flex align-items-center justify-content-end gap-4">
+    <div
+      class="d-flex align-items-center justify-content-end gap-4"
+      *ngIf="keyresult$ | async as keyresult"
+    >
       <p class="fw-bold">Aktueller Wert</p>
       <mat-form-field
+        *ngIf="keyresult.unit != 'BINARY'"
         appearance="outline"
         class="form-field-width form-field-height"
       >
@@ -51,7 +55,24 @@
           type="text"
         />
       </mat-form-field>
-      <mat-label *ngIf="keyresult$ | async as keyresult" class="unit-label"
+
+      <mat-card *ngIf="keyresult.unit == 'BINARY'" class="radioBtn-card">
+        <mat-card-content>
+          <section class="radioBtn-selection">
+            <label class="button-margin">Wert:</label>
+            <mat-radio-group formControlName="value">
+              <mat-radio-button class="button-margin" value="0">
+                0
+              </mat-radio-button>
+              <mat-radio-button class="button-margin" value="1">
+                1
+              </mat-radio-button>
+            </mat-radio-group>
+          </section>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-label class="unit-label"
         ><b>{{ keyresult.unit }}</b></mat-label
       >
     </div>

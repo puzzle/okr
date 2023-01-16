@@ -62,7 +62,7 @@ class OverviewServiceTest {
 
         this.overviewTeam1Objective1And2 = new OverviewDto(new TeamDto(team1.getId(), team1.getName()),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
-                                objective1.getQuarter().getId(), null, null, null),
+                        objective1.getQuarter().getId(), null, null, null),
                         new ObjectiveDto(objective2.getId(), objective2.getTitle(), null, null, null, null, null,
                                 objective2.getQuarter().getId(), null, null, null)));
 

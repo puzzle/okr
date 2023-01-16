@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KeyResultDetailComponent } from './key-result-detail.component';
+import { KeyResultOverviewComponent } from './key-result-overview.component';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
-import { By } from '@angular/platform-browser';
-import { MatCardModule } from '@angular/material/card';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import { MatCardModule } from '@angular/material/card';
+import { KeyResultDetailComponent } from '../key-result-detail/key-result-detail.component';
+import { By } from '@angular/platform-browser';
 
-describe('KeyResultDetailComponent', () => {
-  let component: KeyResultDetailComponent;
-  let fixture: ComponentFixture<KeyResultDetailComponent>;
+describe('KeyResultOverviewComponent', () => {
+  let component: KeyResultOverviewComponent;
+  let fixture: ComponentFixture<KeyResultOverviewComponent>;
   let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
   describe('KeyResultDetail with measures', () => {

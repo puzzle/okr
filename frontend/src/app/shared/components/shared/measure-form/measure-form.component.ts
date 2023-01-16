@@ -119,7 +119,7 @@ export class MeasureFormComponent implements OnInit {
             this.toastr.success('', 'Messung gespeichert!', {
               timeOut: 5000,
             });
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/keyresults/' + measure.keyResultId]);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(

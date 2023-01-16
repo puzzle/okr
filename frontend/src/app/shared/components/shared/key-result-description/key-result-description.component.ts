@@ -1,30 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { Goal, GoalService } from '../../../services/goal.service';
-import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { getNumberOrNull } from '../../../common';
 
 @Component({
-  selector: 'app-key-result-overview',
-  templateUrl: './key-result-overview.component.html',
-  styleUrls: ['./key-result-overview.component.scss'],
+  selector: 'app-key-result-description',
+  templateUrl: './key-result-description.component.html',
+  styleUrls: ['./key-result-description.component.scss'],
 })
-export class KeyResultOverviewComponent implements OnInit {
+export class KeyResultDescriptionComponent implements OnInit {
   public goal$!: Observable<Goal>;
-  public isKeyResultOverview!: boolean;
 
   constructor(
     private goalService: GoalService,
-    private route: ActivatedRoute,
-    private location: Location
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    window.location.href.includes('measure')
-      ? (this.isKeyResultOverview = false)
-      : (this.isKeyResultOverview = true);
-
     this.goal$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const keyResultId = getNumberOrNull(params.get('keyresultId'));
@@ -35,9 +28,5 @@ export class KeyResultOverviewComponent implements OnInit {
         }
       })
     );
-  }
-
-  navigateBack() {
-    this.location.back();
   }
 }

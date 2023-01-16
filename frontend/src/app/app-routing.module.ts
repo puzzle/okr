@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { KeyresultFormComponent } from './keyresult/keyresult-form/keyresult-form.component';
 import { TeamListComponent } from './team/team-list/team-list.component';
-import { KeyResultOverviewComponent } from './shared/components/shared/key-result-overview/key-result-overview.component';
 import { ObjectiveFormComponent } from './objective/objective-form/objective-form.component';
 import { TeamFormComponent } from './team/team-form/team-form.component';
 import { MeasureFormComponent } from './shared/components/shared/measure-form/measure-form.component';
+import { KeyResultDetailComponent } from './shared/components/shared/key-result-detail/key-result-detail.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
@@ -19,7 +19,7 @@ const routes: Routes = [
     component: KeyresultFormComponent,
   },
   { path: 'teams', component: TeamListComponent },
-  { path: 'keyresults/:keyresultId', component: KeyResultOverviewComponent },
+  { path: 'keyresults/:keyresultId', component: KeyResultDetailComponent },
   {
     path: 'keyresults/:keyresultId/measure/new',
     component: MeasureFormComponent,

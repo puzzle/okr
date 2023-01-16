@@ -38,7 +38,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { KeyResultOverviewComponent } from '../key-result-overview/key-result-overview.component';
+import { KeyResultOverviewComponent } from '../key-result-description-old/key-result-overview.component';
 import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -141,6 +141,18 @@ describe('MeasureFormComponent', () => {
         By.css('app-key-result-overview')
       );
       expect(keyResultOverview.length).toEqual(1);
+    });
+
+    it('should have three mat accordion for keyresult overview and measure row', () => {
+      const matAccordions = fixture.debugElement.queryAll(
+        By.css('mat-accordion')
+      );
+      expect(matAccordions.length).toEqual(3);
+    });
+
+    it('should have two mat dividers', () => {
+      const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
+      expect(dividers.length).toEqual(2);
     });
 
     it('should have one measure row tag', () => {

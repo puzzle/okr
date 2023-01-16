@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;
@@ -37,7 +38,7 @@ class TeamServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle ITC").build();
+        this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
         this.team1 = Team.Builder.builder().withName("Team 1").build();
         this.team2 = Team.Builder.builder().withName("Team 2").build();
         this.teamsPuzzle = List.of(teamPuzzle, team1, team2);
@@ -45,13 +46,14 @@ class TeamServiceTest {
 
     @Test
     void shouldGetAllTeams() throws ResponseStatusException {
-        Mockito.when(teamRepository.findAll()).thenReturn(teamsPuzzle);
-        Mockito.when(teamRepository.findByName("Puzzle ITC")).thenReturn(teamPuzzle);
+        Mockito.when(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE))
+                .thenReturn(List.of(team1, team2));
+        Mockito.when(teamRepository.findByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
 
         List<Team> teams = teamService.getAllTeams();
 
         assertEquals(3, teams.size());
-        assertEquals("Puzzle ITC", teams.get(0).getName());
+        assertEquals(Constants.TEAM_PUZZLE, teams.get(0).getName());
     }
 
     @Test
@@ -68,7 +70,7 @@ class TeamServiceTest {
         Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
 
         Team team = teamService.getTeamById(5);
-        Assertions.assertThat(team.getName()).isEqualTo("Puzzle ITC");
+        Assertions.assertThat(team.getName()).isEqualTo(Constants.TEAM_PUZZLE);
     }
 
     @Test

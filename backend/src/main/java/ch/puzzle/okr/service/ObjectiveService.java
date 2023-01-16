@@ -82,4 +82,9 @@ public class ObjectiveService {
                     "Failed to generate attribute createdOn when creating objective");
         }
     }
+
+    public List<Objective> getObjectiveByTeamIdAndQuarterId(long teamId, Long quarterId) {
+        return quarterId == null ? objectiveRepository.findByTeamId(teamId)
+                : objectiveRepository.findByQuarterIdAndTeamId(quarterId, teamId);
+    }
 }

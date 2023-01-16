@@ -1,38 +1,41 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.Collator;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Stream;
+import java.util.*;
 
 @Service
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    Collator collator = Collator.getInstance(Locale.GERMAN);
 
     public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
     }
 
     public List<Team> getAllTeams() {
-        Team puzzleTeam = teamRepository.findByName("Puzzle ITC");
-        List<Team> teamList = (List<Team>) teamRepository.findAll();
-        if (teamList.isEmpty()) {
-            return teamList;
+        return getAllTeams(Collections.emptyList());
+    }
+
+    public List<Team> getAllTeams(List<Long> teamIds) {
+        Optional<Team> puzzleTeam = teamRepository.findByName(Constants.TEAM_PUZZLE);
+        List<Team> teamList = new ArrayList<>();
+
+        if (teamIds.isEmpty()) {
+            puzzleTeam.ifPresent(teamList::add);
+            teamList.addAll(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE));
         } else {
-            return Stream
-                    .concat(Stream.of(puzzleTeam),
-                            teamList.stream().filter(team -> !"Puzzle ITC".equals(team.getName()))
-                                    .sorted((team1, team2) -> collator.compare(team1.getName(), team2.getName())))
-                    .toList();
+            teamList.addAll(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE));
+            if(teamIds.stream().anyMatch(puzzleTeam.map(Team::getId).orElse(-1L)::equals)){
+                puzzleTeam.ifPresent(team -> teamList.add(0, team));
+            }
         }
+        return teamList;
     }
 
     public Team getTeamById(long id) {

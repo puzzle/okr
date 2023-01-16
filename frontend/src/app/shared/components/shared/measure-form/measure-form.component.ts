@@ -37,7 +37,6 @@ export class MeasureFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private measureService: MeasureService,
-    private location: Location,
     private toastr: ToastrService
   ) {}
 
@@ -137,6 +136,6 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.location.back();
+    this.router.navigate(['/dashboard']);
   }
 }

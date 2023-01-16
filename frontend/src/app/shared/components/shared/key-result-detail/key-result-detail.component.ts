@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-key-result-detail',
@@ -7,9 +7,9 @@ import { Location } from '@angular/common';
   styleUrls: ['./key-result-detail.component.scss'],
 })
 export class KeyResultDetailComponent {
-  constructor(private location: Location) {}
+  constructor(private router: Router) {}
 
   navigateBack() {
-    this.location.back();
+    this.router.navigate(['/dashboard']);
   }
 }

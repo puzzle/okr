@@ -17,16 +17,31 @@ import {
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import { Observable, of, throwError } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  RouterLinkWithHref,
+} from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
 import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { KeyResultOverviewComponent } from '../key-result-overview/key-result-overview.component';
+import { MeasureRowComponent } from '../measure-row/measure-row.component';
+import { DatePipe } from '@angular/common';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -65,10 +80,15 @@ describe('MeasureFormComponent', () => {
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
 
       TestBed.configureTestingModule({
-        declarations: [MeasureFormComponent],
+        declarations: [
+          MeasureFormComponent,
+          KeyResultOverviewComponent,
+          MeasureRowComponent,
+        ],
         imports: [
           HttpClientTestingModule,
           BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
           RouterTestingModule,
           MatIconModule,
           ReactiveFormsModule,
@@ -76,9 +96,16 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
           ToastrModule.forRoot(),
         ],
         providers: [
+          DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
@@ -107,6 +134,20 @@ describe('MeasureFormComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should have one key result overview tag', () => {
+      const keyResultOverview = fixture.debugElement.queryAll(
+        By.css('app-key-result-overview')
+      );
+      expect(keyResultOverview.length).toEqual(1);
+    });
+
+    it('should have one measure row tag', () => {
+      const keyResultOverview = fixture.debugElement.queryAll(
+        By.css('app-measure-row')
+      );
+      expect(keyResultOverview.length).toEqual(1);
     });
 
     it('should set keyresult', () => {
@@ -264,20 +305,32 @@ describe('MeasureFormComponent', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
-        declarations: [MeasureFormComponent],
+        declarations: [
+          MeasureFormComponent,
+          KeyResultOverviewComponent,
+          MeasureRowComponent,
+        ],
         imports: [
           HttpClientTestingModule,
+          BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
           RouterTestingModule,
           MatIconModule,
-          BrowserAnimationsModule,
           ReactiveFormsModule,
           MatInputModule,
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
           ToastrModule.forRoot(),
         ],
         providers: [
+          DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
@@ -307,6 +360,20 @@ describe('MeasureFormComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should have one key result overview tag', () => {
+      const keyResultOverview = fixture.debugElement.queryAll(
+        By.css('app-key-result-overview')
+      );
+      expect(keyResultOverview.length).toEqual(1);
+    });
+
+    it('should have one measure row tag', () => {
+      const keyResultOverview = fixture.debugElement.queryAll(
+        By.css('app-measure-row')
+      );
+      expect(keyResultOverview.length).toEqual(1);
     });
 
     it('should set create to true and set title right', () => {
@@ -418,14 +485,21 @@ describe('MeasureFormComponent', () => {
         declarations: [MeasureFormComponent],
         imports: [
           HttpClientTestingModule,
+          BrowserAnimationsModule,
           RouterTestingModule,
           MatIconModule,
-          BrowserAnimationsModule,
           ReactiveFormsModule,
           MatInputModule,
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },

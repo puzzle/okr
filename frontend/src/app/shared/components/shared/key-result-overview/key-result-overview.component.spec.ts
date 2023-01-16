@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('KeyresultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
@@ -20,8 +21,13 @@ describe('KeyresultOverviewComponent', () => {
     getGoalByKeyResultId: jest.fn(),
   };
 
+  const mockGetNumerOrNull = {
+    getNumberOrNull: jest.fn(),
+  };
+
   beforeEach(() => {
     mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+    mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
     TestBed.configureTestingModule({
       imports: [
@@ -30,7 +36,15 @@ describe('KeyresultOverviewComponent', () => {
         NoopAnimationsModule,
         RouterTestingModule,
       ],
-      providers: [{ provide: GoalService, useValue: mockGoalService }],
+      providers: [
+        { provide: GoalService, useValue: mockGoalService },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of(convertToParamMap({ keyresultId: '1' })),
+          },
+        },
+      ],
       declarations: [KeyResultOverviewComponent],
     }).compileComponents();
 
@@ -42,6 +56,7 @@ describe('KeyresultOverviewComponent', () => {
 
   afterEach(() => {
     mockGoalService.getGoalByKeyResultId.mockReset();
+    mockGetNumerOrNull.getNumberOrNull.mockReset();
   });
 
   test('should create', () => {
@@ -49,7 +64,11 @@ describe('KeyresultOverviewComponent', () => {
   });
 
   test('should set goal of component', () => {
-    expect(component.goal$).toEqual(goal);
+    component.goal$.subscribe((componentGoal) => {
+      goal.subscribe((testGoal) => {
+        expect(componentGoal).toEqual(testGoal);
+      });
+    });
   });
 
   test('should have 4 strong titles', () => {
@@ -57,10 +76,10 @@ describe('KeyresultOverviewComponent', () => {
     expect(titles.length).toEqual(4);
   });
 
-  test('should set title from keyresult', () => {
+  test('should set title key result title', () => {
     const title = fixture.debugElement.query(By.css('.key-result-title'));
     expect(title.nativeElement.textContent).toContain(
-      'KeyResult KeyResult title'
+      'Key Result KeyResult title'
     );
   });
 

@@ -12,6 +12,7 @@ import { getNumberOrNull } from '../../../common';
 })
 export class KeyResultOverviewComponent implements OnInit {
   public goal$!: Observable<Goal>;
+  public isKeyResultOverview!: boolean;
 
   constructor(
     private goalService: GoalService,
@@ -20,6 +21,10 @@ export class KeyResultOverviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    window.location.href.includes('measure')
+      ? (this.isKeyResultOverview = false)
+      : (this.isKeyResultOverview = true);
+
     this.goal$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const keyResultId = getNumberOrNull(params.get('keyresultId'));

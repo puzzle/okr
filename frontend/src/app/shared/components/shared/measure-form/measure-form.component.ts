@@ -3,12 +3,12 @@ import { map, Observable, switchMap } from 'rxjs';
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
+} from '../../../services/key-result.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { getNumberOrNull } from '../../shared/common';
-import { Measure, MeasureService } from '../../shared/services/measure.service';
+import { getNumberOrNull } from '../../../common';
+import { Measure, MeasureService } from '../../../services/measure.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 

@@ -8,9 +8,18 @@
 </p>
 
 <mat-divider class="divider"></mat-divider>
-<app-key-result-detail></app-key-result-detail>
-<mat-divider class="divider"></mat-divider>
-<app-measure-row></app-measure-row>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p class="panel-title">Key Result Details</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-key-result-overview></app-key-result-overview>
+  </mat-expansion-panel>
+</mat-accordion>
+
 <mat-divider class="divider"></mat-divider>
 
 <p class="fs-2 headline-large">

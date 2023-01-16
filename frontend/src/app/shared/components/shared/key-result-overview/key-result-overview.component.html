@@ -1,9 +1,9 @@
-<span class="d-flex back-btn">
+<span *ngIf="isKeyResultOverview" class="d-flex back-btn">
   <mat-icon>chevron_left</mat-icon>
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
-<p class="heading-label">Key Result Details</p>
+<p *ngIf="isKeyResultOverview" class="heading-label">Key Result Details</p>
 
 <div class="row d-flex w-100 keyresult-detail" *ngIf="goal$ | async as goal">
   <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">

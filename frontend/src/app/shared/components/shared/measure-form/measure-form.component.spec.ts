@@ -13,10 +13,10 @@ import {
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
-import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+} from '../../../services/key-result.service';
+import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import { Observable, of, throwError } from 'rxjs';
-import { MeasureService } from '../../shared/services/measure.service';
+import { MeasureService } from '../../../services/measure.service';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
@@ -24,7 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { loadMeasure } from '../../shared/testing/Loader';
+import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 

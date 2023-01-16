@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.component';
 import { MatCardModule } from '@angular/material/card';
-import { KeyResultOverviewComponent } from '../shared/components/shared/key-result-overview/key-result-overview.component';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
@@ -18,7 +17,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { DiagramComponent } from './diagram/diagram.component';
 import { ProgressModule } from '../progress/progress.module';
-import { MeasureModule } from '../measure/measure.module';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
@@ -26,11 +24,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     KeyResultRowComponent,
     KeyResultDetailComponent,
     KeyresultFormComponent,
-    KeyResultOverviewComponent,
     DiagramComponent,
   ],
   providers: [KeyResultService, DatePipe],
-  exports: [KeyResultRowComponent, KeyResultDetailComponent],
+  exports: [KeyResultRowComponent, KeyResultDetailComponent, DiagramComponent],
   imports: [
     CommonModule,
     MatExpansionModule,
@@ -46,7 +43,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatSelectModule,
     ProgressModule,
-    MeasureModule,
   ],
 })
 export class KeyresultModule {}

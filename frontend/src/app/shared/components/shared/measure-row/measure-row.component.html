@@ -45,14 +45,17 @@
               </p>
             </div>
 
-            <img
-              class="edit-icon"
-              alt="edit icon"
-              src="../../../../../assets/edit-icon.svg"
+            <a
               routerLink="/keyresults/{{ measure.keyResultId }}/measure/edit/{{
                 measure.id
               }}"
-            />
+            >
+              <img
+                class="edit-icon"
+                alt="edit icon"
+                src="../../../../../assets/edit-icon.svg"
+              />
+            </a>
           </mat-panel-description>
         </mat-card-content>
       </mat-card>

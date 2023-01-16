@@ -129,7 +129,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenPuttingIdCreatingObjective() {
         Objective objective1 = Objective.Builder.builder().withId(9L).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveService.saveObjective(objective1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(objective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
 
@@ -152,7 +153,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
         this.fullObjective1.setDescription(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveService.saveObjective(this.fullObjective1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(this.fullObjective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute description when creating objective"), exception.getReason());
     }
@@ -161,7 +163,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyCreatedOn() {
         this.fullObjective1.setCreatedOn(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveService.saveObjective(this.fullObjective1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(this.fullObjective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Failed to generate attribute createdOn when creating objective"), exception.getReason());
     }
@@ -172,7 +175,8 @@ class ObjectiveServiceTest {
         Objective objective1 = Objective.Builder.builder().withTitle(passedName).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(objective1);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveService.saveObjective(objective1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(objective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute title when creating objective"), exception.getReason());
     }
@@ -208,14 +212,16 @@ class ObjectiveServiceTest {
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
         Mockito.when(keyResultRepository.findAll()).thenReturn(keyResultList);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> this.objectiveService.updateObjective(1L, newObjective));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.objectiveService.updateObjective(1L, newObjective));
         assertEquals("Can't set the progress of an objective if you have already defined keyresults!",
                 exception.getReason());
     }
 
     @Test
     void shouldThrowNotFoundException() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> this.objectiveService.getObjectivesByTeam(13L));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.objectiveService.getObjectivesByTeam(13L));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(("Could not find team with id 13"), exception.getReason());
     }

@@ -23,15 +23,15 @@ public class TeamService {
     }
 
     public List<Team> getAllTeams(List<Long> teamIds) {
-        Optional<Team> puzzleTeam = teamRepository.findByName(Constants.TEAM_PUZZLE);
         List<Team> teamList = new ArrayList<>();
+        Optional<Team> puzzleItcOptional = teamRepository.findByName(Constants.TEAM_PUZZLE);
 
         if (teamIds.isEmpty()) {
-            puzzleTeam.ifPresent(teamList::add);
+            puzzleItcOptional.ifPresent(teamList::add);
             teamList.addAll(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE));
         } else {
-            if (teamIds.stream().anyMatch(puzzleTeam.map(Team::getId).orElse(-1L)::equals)) {
-                puzzleTeam.ifPresent(teamList::add);
+            if (puzzleItcOptional.isPresent() && teamIds.contains(puzzleItcOptional.get().getId())) {
+                puzzleItcOptional.ifPresent(teamList::add);
             }
             teamList.addAll(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE));
         }

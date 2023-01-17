@@ -96,11 +96,16 @@ public class KeyResultService {
     @Transactional
     public void deleteKeyResultById(Long id) {
         List<Measure> measures = getAllMeasuresByKeyResult(id);
-        Long objectiveId = getKeyResultById(id).getObjective().getId();
         for (Measure measure : measures) {
             measureRepository.deleteById(measure.getId());
         }
         keyResultRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteKeyResultAndUpdateProgress(Long id) {
+        deleteKeyResultById(id);
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
         this.progressService.updateObjectiveProgress(objectiveId);
     }
 }

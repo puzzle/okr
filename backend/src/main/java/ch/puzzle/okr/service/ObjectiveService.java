@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,7 +21,7 @@ public class ObjectiveService {
     private final KeyResultService keyResultService;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository, KeyResultService keyResultService) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
@@ -87,7 +88,7 @@ public class ObjectiveService {
     public void deleteKeyObjectiveById(Long id) {
         List<KeyResult> keyResults = this.keyResultRepository.findByObjective(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
-            // TODO: Call KeyResultService to delete every Measure on the keyresult
+            this.keyResultService.deleteKeyResultById(keyResult.getId());
         }
         this.objectiveRepository.deleteById(id);
     }

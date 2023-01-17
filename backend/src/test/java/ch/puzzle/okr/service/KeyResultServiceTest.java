@@ -199,7 +199,7 @@ class KeyResultServiceTest {
         when(measureRepository.findByKeyResult(any())).thenReturn(measures);
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
-        keyResultService.deleteKeyResultById(1L);
+        keyResultService.deleteKeyResultAndUpdateProgress(1L);
 
         verify(keyResultRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).findByKeyResult(keyResult);

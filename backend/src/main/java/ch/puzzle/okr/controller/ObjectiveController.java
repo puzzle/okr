@@ -90,4 +90,12 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true) @PathVariable Long id) {
         return keyResultService.getAllKeyResultsByObjectiveWithMeasure(id);
     }
+
+    @Operation(summary = "Delete Objective by Id", description = "Delete Objective by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted objective by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the objective with requested id") })
+    @DeleteMapping("/{id}")
+    public void deleteObjectiveById(@PathVariable long id) {
+        this.objectiveService.deleteObjectiveById(id);
+    }
 }

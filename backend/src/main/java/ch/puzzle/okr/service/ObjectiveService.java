@@ -85,7 +85,7 @@ public class ObjectiveService {
     }
 
     @Transactional
-    public void deleteKeyObjectiveById(Long id) {
+    public void deleteObjectiveById(Long id) {
         List<KeyResult> keyResults = this.keyResultRepository.findByObjective(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
             this.keyResultService.deleteKeyResultById(keyResult.getId());

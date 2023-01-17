@@ -61,7 +61,7 @@ public class ProgressService {
         return percentValue;
     }
 
-    private double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
+    protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
         if (keyResultMeasureValue.getBasisValue() > keyResultMeasureValue.getTargetValue()) {
             return calculate(keyResultMeasureValue.getBasisValue().doubleValue(),
                     keyResultMeasureValue.getTargetValue().doubleValue(),
@@ -71,7 +71,7 @@ public class ProgressService {
                 keyResultMeasureValue.getBasisValue().doubleValue(), keyResultMeasureValue.getValue().doubleValue());
     }
 
-    private double calculate(double targetValue, double basisValue, double value) {
+    protected double calculate(double targetValue, double basisValue, double value) {
         return basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue)));
     }
 }

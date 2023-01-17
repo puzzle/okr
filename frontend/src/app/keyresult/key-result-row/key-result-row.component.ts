@@ -29,7 +29,6 @@ export class KeyResultRowComponent implements OnInit {
   @Input() objectiveId!: number;
   @Output() onKeyresultListUpdate: EventEmitter<any> = new EventEmitter();
   menuEntries!: MenuEntry[];
-  progressPercentage!: number;
 
   constructor(
     private datePipe: DatePipe,
@@ -40,15 +39,6 @@ export class KeyResultRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const elementMeasureValue =
-      this.keyResult.measure != null ? this.keyResult.measure?.value : 0;
-    const elementMeasureTargetValue = this.keyResult.targetValue;
-    const elementMeasureBasicValue = this.keyResult.basicValue;
-    this.calculateProgress(
-      elementMeasureValue,
-      elementMeasureTargetValue,
-      elementMeasureBasicValue
-    );
     this.menuEntries = [
       {
         displayName: 'KeyResult bearbeiten',
@@ -141,23 +131,5 @@ export class KeyResultRowComponent implements OnInit {
         dialogRef.close();
       }
     });
-  }
-
-  private calculateProgress(
-    elementMeasureValue: number,
-    elementMeasureTargetValue: number,
-    elementMeasureBasicValue: number
-  ) {
-    if (elementMeasureValue === 0) {
-      this.progressPercentage = 0;
-    } else {
-      this.progressPercentage = Math.abs(
-        Math.round(
-          (elementMeasureValue /
-            (elementMeasureTargetValue - elementMeasureBasicValue)) *
-            100
-        )
-      );
-    }
   }
 }

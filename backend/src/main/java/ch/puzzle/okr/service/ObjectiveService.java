@@ -49,21 +49,13 @@ public class ObjectiveService {
         if (objective.getProgress() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
         }
-        objective.setProgress(0L);
+        objective.setProgress(null);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }
 
-    public Objective updateObjective(Long id, Objective objective) {
-        if (objective.getProgress() != null) {
-            List<KeyResult> keyResultList = (List<KeyResult>) this.keyResultRepository.findAll();
-            if (keyResultList.stream()
-                    .anyMatch(keyResult -> keyResult.getObjective().getId().equals(objective.getId()))) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Can't set the progress of an objective if you have already defined keyresults!");
-            }
-        }
-        Objective existingObjective = this.getObjective(id);
+    public Objective updateObjective(Objective objective) {
+        Objective existingObjective = this.getObjective(objective.getId());
         objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);

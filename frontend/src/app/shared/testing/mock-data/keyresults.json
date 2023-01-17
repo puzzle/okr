@@ -21,7 +21,8 @@
         "createdById": 1,
         "createdOn": "2023-01-18",
         "measureDate": "2022-12-23"
-      }
+      },
+      "progress": 60
     },
     {
       "id": 2,
@@ -44,7 +45,8 @@
         "createdById": 1,
         "createdOn": "2019-08-22",
         "measureDate": "2020-11-03"
-      }
+      },
+      "progress": 0
     },
     {
       "id": 3,
@@ -67,7 +69,8 @@
         "createdById": 1,
         "createdOn": "2023-02-14",
         "measureDate": "2023-03-06"
-      }
+      },
+      "progress": 0
     }
   ],
   "createKeyResultObject": {
@@ -81,7 +84,8 @@
     "ownerFirstname": "",
     "targetValue": 100,
     "basicValue": 0,
-    "objectiveId": 1
+    "objectiveId": 1,
+    "progress": 0
   },
   "initKeyResult": {
     "id": null,
@@ -94,7 +98,8 @@
     "ownerFirstname": "",
     "targetValue": 1,
     "basicValue": 1,
-    "objectiveId": 3000
+    "objectiveId": 3000,
+    "progress": 0
   },
   "binaryKeyresult": {
     "id": 5,
@@ -117,6 +122,7 @@
       "createdById": 1,
       "createdOn": "2023-02-14",
       "measureDate": "2023-03-06"
-    }
+    },
+    "progress": 0
   }
 }

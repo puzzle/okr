@@ -16,10 +16,11 @@ public class KeyResultMeasureDto {
     private Long basicValue;
     private Long targetValue;
     private MeasureDto measure;
+    private Long progress;
 
     public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
             String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
-            Long basicValue, Long targetValue, MeasureDto measureDto) {
+            Long basicValue, Long targetValue, MeasureDto measureDto, Long progress) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -32,6 +33,7 @@ public class KeyResultMeasureDto {
         this.basicValue = basicValue;
         this.targetValue = targetValue;
         this.measure = measureDto;
+        this.progress = progress;
     }
 
     public Long getId() {
@@ -128,5 +130,13 @@ public class KeyResultMeasureDto {
 
     public void setMeasure(MeasureDto measure) {
         this.measure = measure;
+    }
+
+    public Long getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Long progress) {
+        this.progress = progress;
     }
 }

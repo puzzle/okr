@@ -35,7 +35,6 @@ public class Objective {
     @Size(min = 2, max = 1024 * 4)
     private String description;
 
-    @NotNull
     private Long progress;
 
     @NotNull

@@ -101,6 +101,6 @@ public class KeyResultService {
             measureRepository.deleteById(measure.getId());
         }
         keyResultRepository.deleteById(id);
-        progressService.updateObjectiveProgress(objectiveId);
+        this.progressService.updateObjectiveProgress(objectiveId);
     }
 }

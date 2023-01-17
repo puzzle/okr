@@ -15,10 +15,11 @@ public class KeyResultDto {
     private Unit unit;
     private Long basicValue;
     private Long targetValue;
+    private Long progress;
 
     public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId,
             String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
-            Long basicValue, Long targetValue) {
+            Long basicValue, Long targetValue, Long progress) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -30,6 +31,7 @@ public class KeyResultDto {
         this.unit = unit;
         this.basicValue = basicValue;
         this.targetValue = targetValue;
+        this.progress = progress;
     }
 
     public Long getId() {
@@ -118,5 +120,13 @@ public class KeyResultDto {
 
     public void setTargetValue(Long targetValue) {
         this.targetValue = targetValue;
+    }
+
+    public Long getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Long progress) {
+        this.progress = progress;
     }
 }

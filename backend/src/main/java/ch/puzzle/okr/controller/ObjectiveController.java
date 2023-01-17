@@ -76,8 +76,7 @@ public class ObjectiveController {
             @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveService.updateObjective(id, objective));
+        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 

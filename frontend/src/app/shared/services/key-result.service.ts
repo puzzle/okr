@@ -27,6 +27,7 @@ export interface KeyResultMeasure {
   basicValue: number;
   targetValue: number;
   measure?: Measure;
+  progress: number;
 }
 
 @Injectable({
@@ -68,6 +69,7 @@ export class KeyResultService {
       targetValue: 1,
       basicValue: 1,
       objectiveId: 1,
+      progress: 0,
     };
   }
 

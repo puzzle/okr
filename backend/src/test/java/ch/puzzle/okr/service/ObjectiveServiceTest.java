@@ -183,7 +183,7 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldReturnObjectiveProperly() {
-        Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
+        Objective newObjective = Objective.Builder.builder().withTitle("Hello World").withId(1L)
                 .withDescription("This is a cool objective")
                 .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
                 .withCreatedOn(LocalDateTime.now())
@@ -191,31 +191,11 @@ class ObjectiveServiceTest {
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
 
-        Objective returnedObjective = objectiveService.updateObjective(1L, newObjective);
+        Objective returnedObjective = objectiveService.updateObjective(newObjective);
         assertEquals("Hello World", returnedObjective.getTitle());
         assertEquals("Best Team", returnedObjective.getTeam().getName());
         assertEquals("rudi", returnedObjective.getOwner().getUsername());
         assertEquals("This is a cool objective", returnedObjective.getDescription());
-    }
-
-    @Test
-    void shouldThrowBadRequestException() {
-        Objective newObjective = Objective.Builder.builder().withId(1L).withTitle("Hello World")
-                .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
-                .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
-                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
-        KeyResult testKeyResult = KeyResult.Builder.builder().withObjective(newObjective).build();
-        List<KeyResult> keyResultList = List.of(testKeyResult);
-
-        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
-        Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
-        Mockito.when(keyResultRepository.findAll()).thenReturn(keyResultList);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.objectiveService.updateObjective(1L, newObjective));
-        assertEquals("Can't set the progress of an objective if you have already defined keyresults!",
-                exception.getReason());
     }
 
     @Test

@@ -190,7 +190,7 @@ class ObjectiveControllerIT {
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
+        BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective);
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -204,7 +204,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
@@ -217,7 +217,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());

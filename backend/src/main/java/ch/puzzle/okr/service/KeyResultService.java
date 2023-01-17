@@ -21,6 +21,7 @@ public class KeyResultService {
     private final ObjectiveRepository objectiveRepository;
     private final MeasureRepository measureRepository;
     private final KeyResultMeasureMapper keyResultMeasureMapper;
+    private final ProgressService progressService;
 
     public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository,
             UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
@@ -31,6 +32,7 @@ public class KeyResultService {
         this.objectiveRepository = objectiveRepository;
         this.measureRepository = measureRepository;
         this.keyResultMeasureMapper = keyResultMeasureMapper;
+        this.progressService = progressService;
     }
 
     public List<KeyResult> getAllKeyResults() {
@@ -99,6 +101,6 @@ public class KeyResultService {
             measureRepository.deleteById(measure.getId());
         }
         keyResultRepository.deleteById(id);
-        progressService.updateObjectiveProgress(objectiveId);
+        this.progressService.updateObjectiveProgress(objectiveId);
     }
 }

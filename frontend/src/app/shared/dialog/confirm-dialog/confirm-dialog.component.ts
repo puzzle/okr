@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
 })
-export class ConfirmDialogComponent implements OnInit {
+export class ConfirmDialogComponent {
   closeDialog: Subject<boolean> = new Subject<boolean>();
   title: string;
   confirmText: string;
@@ -21,8 +21,6 @@ export class ConfirmDialogComponent implements OnInit {
     this.confirmText = data.confirmText;
     this.closeText = data.closeText;
   }
-
-  ngOnInit(): void {}
 
   close() {
     this.closeDialog.next(false);

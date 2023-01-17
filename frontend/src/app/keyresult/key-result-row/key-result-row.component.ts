@@ -127,6 +127,7 @@ export class KeyResultRowComponent implements OnInit {
             },
             error: (e: HttpErrorResponse) => {
               dialogRef.componentInstance.displaySpinner = false;
+              dialogRef.close();
               this.toastr.error(
                 'Key Result konnte nicht gelöscht werden!',
                 'Fehlerstatus: ' + e.status,

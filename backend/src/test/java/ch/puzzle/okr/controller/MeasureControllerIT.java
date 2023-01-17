@@ -32,6 +32,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -162,13 +163,14 @@ class MeasureControllerIT {
 
     @Test
     void shouldDeleteMeasure() throws Exception {
+        when(measureService.getMeasureById(anyLong())).thenReturn(measure);
         mvc.perform(delete("/api/v1/measures/10")).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void throwExceptionWhenMeasureWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
-                .when(measureService).deleteMeasureById(any());
+                .when(measureService).getMeasureById(anyLong());
 
         mvc.perform(delete("/api/v1/measures/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }

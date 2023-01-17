@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -284,5 +286,18 @@ class KeyResultControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
 
         mvc.perform(put("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteKeyResult() throws Exception {
+        mvc.perform(delete("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void throwExceptionWhenKeyresultWithIdCantBeFoundWhileDeleting() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultService)
+                .deleteKeyResultById(any());
+
+        mvc.perform(delete("/api/v1/keyresults/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

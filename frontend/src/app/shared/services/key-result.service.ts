@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 export interface Measure {
   id: number;
@@ -82,5 +83,11 @@ export class KeyResultService {
         keyresult
       );
     }
+  }
+
+  deleteKeyResultById(keyresultId: number): Observable<KeyResultMeasure> {
+    return this.httpClient.delete<KeyResultMeasure>(
+      '/api/v1/keyresults/' + keyresultId
+    );
   }
 }

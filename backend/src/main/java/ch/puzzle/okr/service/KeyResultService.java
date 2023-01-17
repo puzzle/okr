@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -90,5 +91,16 @@ public class KeyResultService {
                 .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
                         .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
                 .toList();
+    }
+
+    @Transactional
+    public void deleteKeyResultById(Long id) {
+        List<Measure> measures = getAllMeasuresByKeyResult(id);
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
+        for (Measure measure : measures) {
+            measureRepository.deleteById(measure.getId());
+        }
+        keyResultRepository.deleteById(id);
+        progressService.updateObjectiveProgress(objectiveId);
     }
 }

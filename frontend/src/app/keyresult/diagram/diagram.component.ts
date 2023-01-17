@@ -93,7 +93,7 @@ export class DiagramComponent implements OnInit {
         spanGaps: true,
         plugins: {
           legend: { display: false },
-          tooltip: { enabled: true, displayColors: false },
+          tooltip: {},
           chart_area_background_color: {},
         },
 
@@ -108,7 +108,7 @@ export class DiagramComponent implements OnInit {
               displayFormats: {
                 hour: 'dd/MM/yyyy', //second = 'dd/MM/yyyy HH:mm:ss'
               },
-              tooltipFormat: 'DD/MM/yyyy',
+              tooltipFormat: 'DD.MM.yyyy',
             },
           },
           y: {

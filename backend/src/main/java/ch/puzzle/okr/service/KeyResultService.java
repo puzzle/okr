@@ -69,7 +69,7 @@ public class KeyResultService {
         KeyResult keyResult = keyResultRepository.findById(keyResultId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("KeyResult with id %d not found", keyResultId)));
-        return measureRepository.findByKeyResult(keyResult);
+        return measureRepository.findByKeyResult(keyResult.getId());
     }
 
     public List<Measure> getLastMeasures(Long objectiveId) {

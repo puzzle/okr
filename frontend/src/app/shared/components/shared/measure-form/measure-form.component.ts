@@ -3,12 +3,12 @@ import { map, Observable, switchMap } from 'rxjs';
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
+} from '../../../services/key-result.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { getNumberOrNull } from '../../shared/common';
-import { Measure, MeasureService } from '../../shared/services/measure.service';
+import { getNumberOrNull } from '../../../common';
+import { Measure, MeasureService } from '../../../services/measure.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -37,8 +37,8 @@ export class MeasureFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private measureService: MeasureService,
-    private location: Location,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +48,7 @@ export class MeasureFormComponent implements OnInit {
         if (keyresultId) {
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
-          throw Error('KeyResult with Id ' + keyresultId + " doesn't exist");
+          throw Error('Key Result with Id ' + keyresultId + " doesn't exist");
         }
       })
     );
@@ -119,7 +119,7 @@ export class MeasureFormComponent implements OnInit {
             this.toastr.success('', 'Messung gespeichert!', {
               timeOut: 5000,
             });
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/keyresults/' + measure.keyResultId]);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
@@ -137,6 +137,6 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.location.back();
+    this.create ? this.router.navigate(['/dashboard']) : this.location.back();
   }
 }

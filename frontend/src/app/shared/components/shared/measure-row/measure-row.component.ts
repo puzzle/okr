@@ -3,8 +3,8 @@ import { Observable, switchMap } from 'rxjs';
 import {
   KeyResultService,
   Measure,
-} from '../../shared/services/key-result.service';
-import { getNumberOrNull } from '../../shared/common';
+} from '../../../services/key-result.service';
+import { getNumberOrNull } from '../../../common';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 

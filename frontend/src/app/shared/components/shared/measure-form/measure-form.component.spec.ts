@@ -13,20 +13,35 @@ import {
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
-import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+} from '../../../services/key-result.service';
+import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import { Observable, of, throwError } from 'rxjs';
-import { MeasureService } from '../../shared/services/measure.service';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { MeasureService } from '../../../services/measure.service';
+import {
+  ActivatedRoute,
+  convertToParamMap,
+  RouterLinkWithHref,
+} from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { loadMeasure } from '../../shared/testing/Loader';
+import {
+  BrowserAnimationsModule,
+  NoopAnimationsModule,
+} from '@angular/platform-browser/animations';
+import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MeasureRowComponent } from '../measure-row/measure-row.component';
+import { DatePipe } from '@angular/common';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -65,10 +80,15 @@ describe('MeasureFormComponent', () => {
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
 
       TestBed.configureTestingModule({
-        declarations: [MeasureFormComponent],
+        declarations: [
+          MeasureFormComponent,
+          KeyResultDescriptionComponent,
+          MeasureRowComponent,
+        ],
         imports: [
           HttpClientTestingModule,
           BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
           RouterTestingModule,
           MatIconModule,
           ReactiveFormsModule,
@@ -76,9 +96,16 @@ describe('MeasureFormComponent', () => {
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
           ToastrModule.forRoot(),
         ],
         providers: [
+          DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
@@ -109,6 +136,43 @@ describe('MeasureFormComponent', () => {
       expect(component).toBeTruthy();
     });
 
+    it('should have one key result description tag with right panel title', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-key-result-description')
+      );
+      expect(keyResultDescription.length).toEqual(1);
+
+      const panelTitle = fixture.debugElement.query(By.css('.panel-title'));
+      expect(panelTitle.nativeElement.textContent).toContain(
+        'Key Result Beschreibung'
+      );
+    });
+
+    it('should have two mat accordion for keyresult description and measure row', () => {
+      const matAccordions = fixture.debugElement.queryAll(
+        By.css('mat-accordion')
+      );
+      expect(matAccordions.length).toEqual(2);
+    });
+
+    it('should have three mat dividers', () => {
+      const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
+      expect(dividers.length).toEqual(3);
+    });
+
+    it('should have one measure row tag with right panel title', () => {
+      const measureRow = fixture.debugElement.queryAll(
+        By.css('app-measure-row')
+      );
+      expect(measureRow.length).toEqual(1);
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[0].nativeElement.textContent).toContain(
+        'Vergangene Messungen'
+      );
+    });
+
     it('should set keyresult', () => {
       component.keyresult$.subscribe((keyresult) => {
         expect(keyresult.title).toContain('Keyresult 1');
@@ -121,8 +185,14 @@ describe('MeasureFormComponent', () => {
     it('should set create to false and set title right', () => {
       expect(component.create).toEqual(false);
 
-      const title = fixture.debugElement.query(By.css('.heading-label'));
+      const title = fixture.debugElement.query(By.css('.headline-large'));
       expect(title.nativeElement.textContent).toContain('Messung bearbeiten');
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[1].nativeElement.textContent).toContain(
+        'Messung bearbeiten'
+      );
     });
 
     it('should set measure and measureform', () => {
@@ -264,20 +334,32 @@ describe('MeasureFormComponent', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
       TestBed.configureTestingModule({
-        declarations: [MeasureFormComponent],
+        declarations: [
+          MeasureFormComponent,
+          KeyResultDescriptionComponent,
+          MeasureRowComponent,
+        ],
         imports: [
           HttpClientTestingModule,
+          BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
           RouterTestingModule,
           MatIconModule,
-          BrowserAnimationsModule,
           ReactiveFormsModule,
           MatInputModule,
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
           ToastrModule.forRoot(),
         ],
         providers: [
+          DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
@@ -309,11 +391,58 @@ describe('MeasureFormComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should set create to true and set title right', () => {
+    it('should have one key result description tag', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-key-result-description')
+      );
+      expect(keyResultDescription.length).toEqual(1);
+    });
+
+    it('should set create to true and set title right two times', () => {
       expect(component.create).toEqual(true);
 
+      const title1 = fixture.debugElement.query(By.css('.headline-large'));
+      expect(title1.nativeElement.textContent).toContain('Messung hinzufügen');
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[1].nativeElement.textContent).toContain(
+        'Messung hinzufügen'
+      );
+    });
+
+    it('should have one key result description tag with right panel title', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-key-result-description')
+      );
+      expect(keyResultDescription.length).toEqual(1);
+
+      const panelTitle = fixture.debugElement.query(By.css('.panel-title'));
+      expect(panelTitle.nativeElement.textContent).toContain(
+        'Key Result Beschreibung'
+      );
+    });
+
+    it('should have two mat accordion for keyresult description and measure row', () => {
+      const matAccordions = fixture.debugElement.queryAll(
+        By.css('mat-accordion')
+      );
+      expect(matAccordions.length).toEqual(2);
+    });
+
+    it('should have three mat dividers', () => {
+      const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
+      expect(dividers.length).toEqual(3);
+    });
+
+    it('should have one measure row tag with right title', () => {
+      const measureRow = fixture.debugElement.queryAll(
+        By.css('app-measure-row')
+      );
+      expect(measureRow.length).toEqual(1);
+
       const title = fixture.debugElement.query(By.css('.heading-label'));
-      expect(title.nativeElement.textContent).toContain('Messung hinzufügen');
+      expect(title.nativeElement.textContent).toContain('Vergangene Messungen');
     });
 
     it('should set all input fields empty except datepicker and have invalid form', () => {
@@ -418,14 +547,21 @@ describe('MeasureFormComponent', () => {
         declarations: [MeasureFormComponent],
         imports: [
           HttpClientTestingModule,
+          BrowserAnimationsModule,
           RouterTestingModule,
           MatIconModule,
-          BrowserAnimationsModule,
           ReactiveFormsModule,
           MatInputModule,
           MatButtonModule,
           MatDatepickerModule,
           MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
+          ToastrModule.forRoot(),
         ],
         providers: [
           { provide: KeyResultService, useValue: mockKeyResultService },

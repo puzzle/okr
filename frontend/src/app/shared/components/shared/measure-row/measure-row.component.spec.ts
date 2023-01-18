@@ -5,11 +5,11 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DatePipe } from '@angular/common';
-import * as measureData from '../../shared/testing/mock-data/measure.json';
+import * as measureData from '../../../testing/mock-data/measure.json';
 import {
   KeyResultService,
   Measure,
-} from '../../shared/services/key-result.service';
+} from '../../../services/key-result.service';
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';

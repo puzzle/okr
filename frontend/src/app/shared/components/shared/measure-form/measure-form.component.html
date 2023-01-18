@@ -3,9 +3,32 @@
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
+<p class="fs-2 headline-large">
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
+</p>
+
+<mat-divider class="divider"></mat-divider>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p class="panel-title">Key Result Beschreibung</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-key-result-description></app-key-result-description>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-divider class="divider"></mat-divider>
+
+<app-measure-row></app-measure-row>
+
+<mat-divider class="divider"></mat-divider>
+
 <p class="fs-2 heading-label">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
+
 <div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
   <form
     (ngSubmit)="save()"

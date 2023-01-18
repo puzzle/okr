@@ -148,7 +148,8 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoMeasuresInKeyResult() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(Collections.emptyList());
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any()))
+                .thenReturn(Collections.emptyList());
 
         List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
 

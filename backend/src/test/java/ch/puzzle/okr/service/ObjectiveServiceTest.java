@@ -33,7 +33,8 @@ class ObjectiveServiceTest {
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
-
+    @MockBean
+    KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
 
@@ -228,5 +229,16 @@ class ObjectiveServiceTest {
         objectiveService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
         verify(objectiveRepository, times(invocationsByTeam)).findByTeamId(teamId);
         verify(objectiveRepository, times(invocationsByTeamAndQuarter)).findByQuarterIdAndTeamId(teamId, quarterId);
+    }
+
+    @Test
+    void shouldDeleteObjectiveAndAssociatedKeyResults() {
+        when(this.objectiveRepository.findById(anyLong())).thenReturn(Optional.of(objective));
+        when(this.keyResultRepository.findByObjective(objective)).thenReturn(keyResults);
+
+        this.objectiveService.deleteObjectiveById(1L);
+
+        verify(this.keyResultService, times(3)).deleteKeyResultById(5L);
+        verify(this.objectiveRepository, times(1)).deleteById(anyLong());
     }
 }

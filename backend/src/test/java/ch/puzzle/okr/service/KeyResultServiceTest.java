@@ -195,11 +195,26 @@ class KeyResultServiceTest {
     }
 
     @Test
-    void shouldDeleteKeyResultAndAssociatedMeasures() {
+    void shouldDeleteKeyResultWithoutUpdateProgress() {
         when(measureRepository.findByKeyResult(any())).thenReturn(measures);
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
         keyResultService.deleteKeyResultById(1L);
+
+        verify(measureRepository, times(1)).findByKeyResult(keyResult);
+        verify(measureRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).deleteById(2L);
+        verify(measureRepository, times(1)).deleteById(3L);
+        verify(keyResultRepository, times(1)).deleteById(1L);
+        verify(progressService, never()).updateObjectiveProgress(any());
+    }
+
+    @Test
+    void shouldDeleteKeyResultAndAssociatedMeasures() {
+        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+
+        keyResultService.deleteKeyResultAndUpdateProgress(1L);
 
         verify(keyResultRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).findByKeyResult(keyResult);

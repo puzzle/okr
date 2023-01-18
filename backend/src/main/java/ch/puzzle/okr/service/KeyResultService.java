@@ -16,18 +16,16 @@ import java.util.Objects;
 public class KeyResultService {
 
     private final KeyResultRepository keyResultRepository;
-    private final QuarterRepository quarterRepository;
     private final UserRepository userRepository;
     private final ObjectiveRepository objectiveRepository;
     private final MeasureRepository measureRepository;
     private final KeyResultMeasureMapper keyResultMeasureMapper;
     private final ProgressService progressService;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository,
-            UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
+    public KeyResultService(KeyResultRepository keyResultRepository, UserRepository userRepository,
+            ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
             KeyResultMeasureMapper keyResultMeasureMapper, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
-        this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
         this.measureRepository = measureRepository;
@@ -96,11 +94,16 @@ public class KeyResultService {
     @Transactional
     public void deleteKeyResultById(Long id) {
         List<Measure> measures = getAllMeasuresByKeyResult(id);
-        Long objectiveId = getKeyResultById(id).getObjective().getId();
         for (Measure measure : measures) {
             measureRepository.deleteById(measure.getId());
         }
         keyResultRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteKeyResultAndUpdateProgress(Long id) {
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
+        deleteKeyResultById(id);
         this.progressService.updateObjectiveProgress(objectiveId);
     }
 }

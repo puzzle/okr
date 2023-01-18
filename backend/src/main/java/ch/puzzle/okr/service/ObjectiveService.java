@@ -5,10 +5,12 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -16,12 +18,14 @@ public class ObjectiveService {
     private final ObjectiveRepository objectiveRepository;
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
+    private final KeyResultService keyResultService;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
+        this.keyResultService = keyResultService;
     }
 
     public List<Objective> getAllObjectives() {
@@ -78,5 +82,14 @@ public class ObjectiveService {
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
         return quarterId == null ? objectiveRepository.findByTeamId(teamId)
                 : objectiveRepository.findByQuarterIdAndTeamId(quarterId, teamId);
+    }
+
+    @Transactional
+    public void deleteObjectiveById(Long id) {
+        List<KeyResult> keyResults = this.keyResultRepository.findByObjective(this.getObjective(id));
+        for (KeyResult keyResult : keyResults) {
+            this.keyResultService.deleteKeyResultById(keyResult.getId());
+        }
+        this.objectiveRepository.deleteById(id);
     }
 }

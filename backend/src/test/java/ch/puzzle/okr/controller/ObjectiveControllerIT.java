@@ -32,8 +32,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -221,5 +220,18 @@ class ObjectiveControllerIT {
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteObjective() throws Exception {
+        mvc.perform(delete("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveService)
+                .deleteObjectiveById(anyLong());
+
+        mvc.perform(delete("/api/v1/objectives/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

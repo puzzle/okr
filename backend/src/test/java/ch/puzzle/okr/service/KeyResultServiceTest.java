@@ -134,7 +134,7 @@ class KeyResultServiceTest {
     @Test
     void shouldGetAllMeasuresByKeyResult() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDate(any())).thenReturn(measures);
 
         List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
 
@@ -148,7 +148,7 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoMeasuresInKeyResult() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-        when(measureRepository.findByKeyResult(any())).thenReturn(Collections.emptyList());
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDate(any())).thenReturn(Collections.emptyList());
 
         List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
 
@@ -196,12 +196,12 @@ class KeyResultServiceTest {
 
     @Test
     void shouldDeleteKeyResultWithoutUpdateProgress() {
-        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDate(any())).thenReturn(measures);
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
         keyResultService.deleteKeyResultById(1L);
 
-        verify(measureRepository, times(1)).findByKeyResult(keyResult);
+        verify(measureRepository, times(1)).findMeasuresByKeyResultIdOrderByMeasureDate(keyResult.getId());
         verify(measureRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).deleteById(2L);
         verify(measureRepository, times(1)).deleteById(3L);
@@ -211,13 +211,13 @@ class KeyResultServiceTest {
 
     @Test
     void shouldDeleteKeyResultAndAssociatedMeasures() {
-        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDate(any())).thenReturn(measures);
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
 
         keyResultService.deleteKeyResultAndUpdateProgress(1L);
 
         verify(keyResultRepository, times(1)).deleteById(1L);
-        verify(measureRepository, times(1)).findByKeyResult(keyResult);
+        verify(measureRepository, times(1)).findMeasuresByKeyResultIdOrderByMeasureDate(keyResult.getId());
         verify(measureRepository, times(1)).deleteById(1L);
         verify(measureRepository, times(1)).deleteById(2L);
         verify(measureRepository, times(1)).deleteById(3L);

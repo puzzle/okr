@@ -37,7 +37,8 @@ export class MeasureFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private measureService: MeasureService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -136,6 +137,6 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.router.navigate(['/dashboard']);
+    this.create ? this.router.navigate(['/dashboard']) : this.location.back();
   }
 }

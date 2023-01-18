@@ -120,6 +120,9 @@ describe('MeasureFormComponent', () => {
                   measureId: '1',
                 }),
               },
+              paramMap: of(
+                convertToParamMap({ keyresultId: '1', measureId: '1' })
+              ),
             },
           },
         ],
@@ -379,6 +382,9 @@ describe('MeasureFormComponent', () => {
                   keyresultId: '1',
                 }),
               },
+              paramMap: of(
+                convertToParamMap({ keyresultId: '1', measureId: '1' })
+              ),
             },
           },
         ],

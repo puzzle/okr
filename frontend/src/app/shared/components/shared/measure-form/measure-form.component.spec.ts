@@ -42,7 +42,7 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
-import {MeasureValueValidatorDirective} from "../../../validators";
+import { MeasureValueValidatorDirective } from '../../../validators';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -85,7 +85,7 @@ describe('MeasureFormComponent', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          MeasureValueValidatorDirective
+          MeasureValueValidatorDirective,
         ],
         imports: [
           HttpClientTestingModule,

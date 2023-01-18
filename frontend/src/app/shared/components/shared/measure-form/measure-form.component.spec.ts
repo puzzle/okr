@@ -49,9 +49,12 @@ describe('MeasureFormComponent', () => {
   let fixture: ComponentFixture<MeasureFormComponent>;
 
   let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
+  let binaryKeyResult: Observable<KeyResultMeasure> = of(
+    keyresultData.binaryKeyResult
+  );
 
   let initMeasure = loadMeasure('initMeasure');
-  let measure1 = of(loadMeasure('measure'));
+  let measure1 = of(loadMeasure('measureBinaryKeyResult'));
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
@@ -190,6 +193,10 @@ describe('MeasureFormComponent', () => {
       expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledWith(1);
     });
 
+    it('should set keyresult unit right', () => {
+      expect(component.keyResultUnit).toContain('PERCENT');
+    });
+
     it('should set create to false and set title right', () => {
       expect(component.create).toEqual(false);
 
@@ -323,9 +330,81 @@ describe('MeasureFormComponent', () => {
     });
   });
 
+  describe('Edit Measure for Unit Binary', () => {
+    beforeEach(() => {
+      mockKeyResultService.getKeyResultById.mockReturnValue(binaryKeyResult);
+      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
+      mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
+      mockMeasureService.getMeasureById.mockReturnValue(measure1);
+
+      TestBed.configureTestingModule({
+        declarations: [
+          MeasureFormComponent,
+          KeyResultDescriptionComponent,
+          MeasureRowComponent,
+          MeasureValueValidatorDirective,
+        ],
+        imports: [
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          BrowserDynamicTestingModule,
+          RouterTestingModule,
+          MatIconModule,
+          ReactiveFormsModule,
+          MatInputModule,
+          MatButtonModule,
+          MatDatepickerModule,
+          MatNativeDateModule,
+          MatDividerModule,
+          MatFormFieldModule,
+          MatExpansionModule,
+          MatCardModule,
+          NoopAnimationsModule,
+          RouterLinkWithHref,
+          ToastrModule.forRoot(),
+        ],
+        providers: [
+          DatePipe,
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: MeasureService, useValue: mockMeasureService },
+          { provide: ToastrService, useValue: mockToastrService },
+          {
+            provide: ActivatedRoute,
+            useValue: {
+              snapshot: {
+                paramMap: convertToParamMap({
+                  keyresultId: '1',
+                  measureId: '1',
+                }),
+              },
+              paramMap: of(
+                convertToParamMap({ keyresultId: '1', measureId: '1' })
+              ),
+            },
+          },
+        ],
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(MeasureFormComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockMeasureService.getMeasureById.mockReset();
+      mockMeasureService.getInitMeasure.mockReset();
+      mockKeyResultService.getKeyResultById.mockReset();
+      mockGetNumerOrNull.getNumberOrNull.mockReset();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+  });
+
   describe('Create new Measure', () => {
     let createMeasureForm = new FormGroup({
-      value: new FormControl<number>(33, [
+      value: new FormControl<number | boolean>(33, [
         Validators.required,
         Validators.pattern('^[0-9]*$'),
       ]),

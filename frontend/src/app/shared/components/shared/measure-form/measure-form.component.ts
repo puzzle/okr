@@ -83,7 +83,7 @@ export class MeasureFormComponent implements OnInit {
 
   correctValueForBinarySliderToData() {
     if (this.keyResultUnit === 'BINARY') {
-      if (this.measureForm.get('value')?.value == true) {
+      if (this.measureForm.get('value')?.value === true) {
         this.measureForm.get('value')?.setValue(1);
       } else {
         this.measureForm.get('value')?.setValue(0);

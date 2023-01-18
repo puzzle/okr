@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import {
   KeyResultMeasure,
   KeyResultService,
@@ -21,10 +21,7 @@ export class MeasureFormComponent implements OnInit {
   measure$!: Observable<Measure>;
 
   measureForm = new FormGroup({
-    value: new FormControl<number>(0, [
-      Validators.required,
-      Validators.pattern('^[0-9]*$'),
-    ]),
+    value: new FormControl<number>(0, [Validators.required]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
     changeInfo: new FormControl<string>('', [Validators.required]),
     initiatives: new FormControl<string>(''),
@@ -42,63 +39,34 @@ export class MeasureFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keyresult$ = this.route.paramMap.pipe(
-      switchMap((params) => {
-        const keyresultId = getNumberOrNull(params.get('keyresultId'));
-        if (keyresultId) {
-          return this.keyResultService.getKeyResultById(keyresultId);
-        } else {
-          throw Error('Key Result with Id ' + keyresultId + " doesn't exist");
-        }
-      })
+    let keyResultId = getNumberOrNull(
+      this.route.snapshot.paramMap.get('keyresultId')
     );
-    this.measure$ = this.route.paramMap.pipe(
-      switchMap((params) => {
-        const measureId = getNumberOrNull(params.get('measureId'));
-        if (measureId) {
-          this.create = false;
-          this.keyresult$.subscribe((keyresult) => {
-            if (keyresult.unit == 'BINARY') {
-              this.measureForm
-                .get('value')
-                ?.addValidators(Validators.pattern('^[0-1]{1}$'));
-            } else if (keyresult.unit == 'PERCENT') {
-              this.measureForm
-                .get('value')
-                ?.addValidators(Validators.pattern('^[0-9][0-9]?$|^100$'));
-            }
-          });
 
-          return this.measureService.getMeasureById(measureId);
-        } else {
-          this.create = true;
-          let measure: Measure = this.measureService.getInitMeasure();
-          return this.keyresult$.pipe(
-            map((keyresult) => {
-              measure.keyResultId = keyresult.id!;
-              // measure.createdById = loggedInUser
-              if (keyresult.unit == 'BINARY') {
-                this.measureForm
-                  .get('value')
-                  ?.addValidators(Validators.pattern('^[0-1]{1}$'));
-              } else if (keyresult.unit == 'PERCENT') {
-                this.measureForm
-                  .get('value')
-                  ?.addValidators(Validators.pattern('^[0-9][0-9]?$|^100$'));
-              }
-
-              return measure;
-            })
-          );
-        }
-      })
+    let measureId = getNumberOrNull(
+      this.route.snapshot.paramMap.get('measureId')
     );
+
+    this.create = !measureId;
+    if (keyResultId) {
+      this.keyresult$ = this.keyResultService.getKeyResultById(keyResultId);
+    }
+
+    if (measureId) {
+      this.measure$ = this.measureService.getMeasureById(measureId);
+    } else {
+      let measure = this.measureService.getInitMeasure();
+      measure.keyResultId = keyResultId!;
+      this.measure$ = of(measure);
+    }
 
     this.measure$.subscribe((measure) => {
-      const { id, keyResultId, createdById, createdOn, ...restMeasure } =
-        measure;
-      restMeasure.measureDate = new Date(measure.measureDate);
-      this.measureForm.setValue(restMeasure);
+      this.measureForm.setValue({
+        value: measure.value,
+        measureDate: measure.measureDate,
+        changeInfo: measure.changeInfo,
+        initiatives: measure.initiatives,
+      });
     });
   }
 

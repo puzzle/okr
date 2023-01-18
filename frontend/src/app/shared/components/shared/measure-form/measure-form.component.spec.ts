@@ -42,6 +42,7 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
+import { MeasureValueValidatorDirective } from '../../../validators';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -84,6 +85,7 @@ describe('MeasureFormComponent', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
+          MeasureValueValidatorDirective,
         ],
         imports: [
           HttpClientTestingModule,
@@ -112,6 +114,12 @@ describe('MeasureFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
+              snapshot: {
+                paramMap: convertToParamMap({
+                  keyresultId: '1',
+                  measureId: '1',
+                }),
+              },
               paramMap: of(
                 convertToParamMap({ keyresultId: '1', measureId: '1' })
               ),
@@ -230,7 +238,9 @@ describe('MeasureFormComponent', () => {
     });
 
     it('should set measure value', () => {
-      const value = fixture.debugElement.query(By.css('.value-input'));
+      const value = fixture.debugElement.query(
+        By.css('input[formControlName="value"]')
+      );
       expect(value.nativeElement.value).toEqual('42');
     });
 
@@ -336,6 +346,7 @@ describe('MeasureFormComponent', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
+          MeasureValueValidatorDirective,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],
@@ -366,7 +377,14 @@ describe('MeasureFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(convertToParamMap({ keyresultId: '1' })),
+              snapshot: {
+                paramMap: convertToParamMap({
+                  keyresultId: '1',
+                }),
+              },
+              paramMap: of(
+                convertToParamMap({ keyresultId: '1', measureId: '1' })
+              ),
             },
           },
         ],
@@ -544,7 +562,7 @@ describe('MeasureFormComponent', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(null);
 
       TestBed.configureTestingModule({
-        declarations: [MeasureFormComponent],
+        declarations: [MeasureFormComponent, MeasureValueValidatorDirective],
         imports: [
           HttpClientTestingModule,
           BrowserAnimationsModule,
@@ -570,7 +588,9 @@ describe('MeasureFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(convertToParamMap({})),
+              snapshot: {
+                paramMap: convertToParamMap({}),
+              },
             },
           },
         ],

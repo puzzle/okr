@@ -16,6 +16,7 @@ import { RouterLinkWithHref, RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.component';
 import { KeyResultDescriptionComponent } from './key-result-description/key-result-description.component';
+import { MeasureValueValidatorDirective } from '../../validators';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { KeyResultDescriptionComponent } from './key-result-description/key-resu
     MeasureRowComponent,
     KeyResultDetailComponent,
     KeyResultDescriptionComponent,
+    MeasureValueValidatorDirective,
   ],
   imports: [
     CommonModule,

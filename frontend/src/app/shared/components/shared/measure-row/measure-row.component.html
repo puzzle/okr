@@ -46,16 +46,19 @@
             </div>
 
             <a
-              routerLink="/keyresults/{{ measure.keyResultId }}/measure/edit/{{
+              [routerLink]="[
+                '/keyresults',
+                measure.keyResultId,
+                'measure',
+                'edit',
                 measure.id
-              }}"
+              ]"
             >
-              <img
-                class="edit-icon"
-                alt="edit icon"
-                src="../../../../../assets/edit-icon.svg"
-              />
+              <mat-icon class="icon" fontIcon="edit"></mat-icon>
             </a>
+            <button (click)="delete()">
+              <mat-icon class="icon" fontIcon="delete" color="warn"></mat-icon>
+            </button>
           </mat-panel-description>
         </mat-card-content>
       </mat-card>

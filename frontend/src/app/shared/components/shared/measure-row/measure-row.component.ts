@@ -7,6 +7,9 @@ import {
 import { getNumberOrNull } from '../../../common';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MeasureService } from '../../../services/measure.service';
 
 @Component({
   selector: 'app-measure-row',
@@ -19,7 +22,9 @@ export class MeasureRowComponent implements OnInit {
   constructor(
     private keyresultService: KeyResultService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dialog: MatDialog,
+    private measureService: MeasureService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +41,26 @@ export class MeasureRowComponent implements OnInit {
   }
 
   formatDate(date: string) {
-    var convertedDate: Date = new Date(date);
+    let convertedDate: Date = new Date(date);
     return this.datePipe.transform(convertedDate, 'dd.MM.yyyy', 'CEST');
+  }
+
+  delete() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        title:
+          'Willst du dieses Key Result und die dazugehörigen Messungen wirklich löschen?',
+        confirmText: 'Bestätigen',
+        closeText: 'Abbrechen',
+      },
+    });
+    dialogRef.componentInstance.closeDialog.subscribe((confirm) => {
+      if (confirm) {
+        dialogRef.componentInstance.displaySpinner = true;
+        //implement delete + toaster
+      }
+    });
   }
 }

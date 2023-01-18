@@ -46,4 +46,8 @@ export class MeasureService {
       );
     }
   }
+
+  deleteMeasure(id: number) {
+    return this.httpClient.delete('/api/v1/measures/' + id);
+  }
 }

@@ -17,6 +17,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.component';
 import { KeyResultDescriptionComponent } from './key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../validators';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MeasureValueValidatorDirective } from '../../validators';
     RouterLinkWithHref,
     MatNativeDateModule,
     RouterModule,
+    MatSlideToggleModule,
   ],
 })
 export class SharedModule {}

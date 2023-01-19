@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { KeyResultMeasure } from './key-result.service';
 
 export interface Measure {
   id: number | null;
@@ -35,6 +37,10 @@ export class MeasureService {
     };
   }
 
+  deleteMeasureById(measureId: number): Observable<Measure> {
+    return this.httpClient.delete<Measure>('/api/v1/measures/' + measureId);
+  }
+
   saveMeasure(measure: Measure, post: boolean) {
     if (post) {
       measure.createdOn = new Date();
@@ -45,9 +51,5 @@ export class MeasureService {
         measure
       );
     }
-  }
-
-  deleteMeasure(id: number) {
-    return this.httpClient.delete('/api/v1/measures/' + id);
   }
 }

@@ -58,6 +58,7 @@ export class MeasureRowComponent implements OnInit {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
             this.reloadMeasures();
+            this.onMeasureDelete.emit();
             this.toastr.success('', 'Messung gelöscht!', {
               timeOut: 5000,
             });

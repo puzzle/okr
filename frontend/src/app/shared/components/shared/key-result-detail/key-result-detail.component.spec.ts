@@ -23,10 +23,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLinkWithHref } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
   let fixture: ComponentFixture<KeyResultDetailComponent>;
+
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -35,7 +42,11 @@ describe('KeyResultDetailComponent', () => {
         KeyResultDescriptionComponent,
         MeasureRowComponent,
       ],
-      providers: [DatePipe],
+      providers: [
+        DatePipe,
+        { provide: MatDialog, useValue: {} },
+        { provide: ToastrService, useValue: mockToastrService },
+      ],
       imports: [
         HttpClientTestingModule,
         BrowserAnimationsModule,
@@ -59,6 +70,11 @@ describe('KeyResultDetailComponent', () => {
     fixture = TestBed.createComponent(KeyResultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    mockToastrService.success.mockReset();
+    mockToastrService.error.mockReset();
   });
 
   it('should create', () => {

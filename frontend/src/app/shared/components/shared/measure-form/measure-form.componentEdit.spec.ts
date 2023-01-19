@@ -37,6 +37,7 @@ import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -101,6 +102,7 @@ describe('MeasureFormComponent Edit', () => {
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
             useValue: {

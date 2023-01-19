@@ -11,4 +11,7 @@
 
 <mat-divider class="divider"></mat-divider>
 
-<app-measure-row class="measure-row"></app-measure-row>
+<app-measure-row
+  (onMeasureDelete)="reloadDiagram()"
+  class="measure-row"
+></app-measure-row>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, switchMap } from 'rxjs';
 import {
   KeyResultService,
@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./measure-row.component.scss'],
 })
 export class MeasureRowComponent implements OnInit {
+  @Output() onMeasureDelete: EventEmitter<any> = new EventEmitter();
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
 
   constructor(

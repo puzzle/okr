@@ -12,4 +12,8 @@ export class KeyResultDetailComponent {
   navigateBack() {
     this.router.navigate(['/dashboard']);
   }
+
+  reloadDiagram() {
+    //TODO
+  }
 }

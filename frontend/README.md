@@ -6,8 +6,7 @@ This is the Angular Frontend for the OKR-Tool.
 
 Environment:
 
-- We use the Node version 18.?.?
--
+- We use one of the 18 Node version for development.
 
 Install:
 

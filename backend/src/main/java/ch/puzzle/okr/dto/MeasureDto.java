@@ -1,5 +1,6 @@
 package ch.puzzle.okr.dto;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class MeasureDto {
@@ -8,12 +9,12 @@ public class MeasureDto {
     private Integer value;
     private String changeInfo;
     private String initiatives;
-    private LocalDateTime measureDate;
+    private Instant measureDate;
     private Long createdById;
     private LocalDateTime createdOn;
 
     public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById,
-            LocalDateTime createdOn, LocalDateTime measureDate) {
+            LocalDateTime createdOn, Instant measureDate) {
         this.id = id;
         this.keyResultId = keyResultId;
         this.value = value;
@@ -80,11 +81,11 @@ public class MeasureDto {
         this.createdOn = createdOn;
     }
 
-    public void setMeasureDate(LocalDateTime measureDate) {
+    public void setMeasureDate(Instant measureDate) {
         this.measureDate = measureDate;
     }
 
-    public LocalDateTime getMeasureDate() {
+    public Instant getMeasureDate() {
         return measureDate;
     }
 }

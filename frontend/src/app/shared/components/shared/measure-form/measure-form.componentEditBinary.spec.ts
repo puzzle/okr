@@ -41,11 +41,18 @@ import { SharedModule } from '../shared.module';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSlideToggleHarness } from '@angular/material/slide-toggle/testing';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
+import { MatDialog } from '@angular/material/dialog';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import * as measureData from '../../../testing/mock-data/measure.json';
 
 describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
   let fixture: ComponentFixture<MeasureFormComponent>;
 
+  let goal: Observable<Goal> = of(goalsData.goals[0]);
+  let measures: Observable<any[]> = of(measureData.measures);
   let binaryKeyResult: Observable<KeyResultMeasure> = of(
     keyresultData.binaryKeyResult
   );
@@ -56,12 +63,18 @@ describe('MeasureFormComponent Edit Binary', () => {
     getNumberOrNull: jest.fn(),
   };
 
+  const mockGoalService = {
+    getGoalByKeyResultId: jest.fn(),
+  };
+
+  const mockKeyResultService = {
+    getKeyResultById: jest.fn(),
+    getMeasuresOfKeyResult: jest.fn(),
+  };
+
   const mockMeasureService = {
     getMeasureById: jest.fn(),
     saveMeasure: jest.fn(),
-  };
-  const mockKeyResultService = {
-    getKeyResultById: jest.fn(),
   };
 
   const mockToastrService = {
@@ -72,7 +85,9 @@ describe('MeasureFormComponent Edit Binary', () => {
   describe('Unit Binary edit Measure', () => {
     let loader: HarnessLoader;
     beforeEach(() => {
+      mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
       mockKeyResultService.getKeyResultById.mockReturnValue(binaryKeyResult);
+      mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockMeasureService.getMeasureById.mockReturnValue(binaryMeasure);
 
@@ -82,6 +97,7 @@ describe('MeasureFormComponent Edit Binary', () => {
           KeyResultDescriptionComponent,
           MeasureRowComponent,
           MeasureValueValidatorDirective,
+          DiagramComponent,
         ],
         imports: [
           HttpClientTestingModule,
@@ -105,9 +121,11 @@ describe('MeasureFormComponent Edit Binary', () => {
         ],
         providers: [
           DatePipe,
+          { provide: GoalService, useValue: mockGoalService },
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -133,6 +151,7 @@ describe('MeasureFormComponent Edit Binary', () => {
     });
 
     afterEach(() => {
+      mockGoalService.getGoalByKeyResultId.mockReset();
       mockMeasureService.getMeasureById.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();

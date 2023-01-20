@@ -35,10 +35,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MeasureValueValidatorDirective } from '../../../validators';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureRowComponent } from '../measure-row/measure-row.component';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('MeasureFormComponent3', () => {
   let component: MeasureFormComponent;
   let fixture: ComponentFixture<MeasureFormComponent>;
+
+  let goal: Observable<Goal> = of(goalsData.goals[0]);
 
   let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
 
@@ -48,13 +53,18 @@ describe('MeasureFormComponent3', () => {
     getNumberOrNull: jest.fn(),
   };
 
+  const mockGoalService = {
+    getGoalByKeyResultId: jest.fn(),
+  };
+
+  const mockKeyResultService = {
+    getKeyResultById: jest.fn(),
+  };
+
   const mockMeasureService = {
     getMeasureById: jest.fn(),
     getInitMeasure: jest.fn(),
     saveMeasure: jest.fn(),
-  };
-  const mockKeyResultService = {
-    getKeyResultById: jest.fn(),
   };
 
   const mockToastrService = {
@@ -64,6 +74,7 @@ describe('MeasureFormComponent3', () => {
 
   describe('Create throw error when keyresult id is null', () => {
     beforeEach(() => {
+      mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(null);
@@ -95,9 +106,11 @@ describe('MeasureFormComponent3', () => {
         ],
         providers: [
           DatePipe,
+          { provide: GoalService, useValue: mockGoalService },
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -116,8 +129,9 @@ describe('MeasureFormComponent3', () => {
     });
 
     afterEach(() => {
-      mockMeasureService.getInitMeasure.mockReset();
+      mockGoalService.getGoalByKeyResultId.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
+      mockMeasureService.getInitMeasure.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
       mockMeasureService.saveMeasure.mockReset();
     });

@@ -11,7 +11,7 @@ import {
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import * as measureData from '../../../testing/mock-data/measure.json';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
 import {
   ActivatedRoute,
@@ -29,7 +29,6 @@ import {
 } from '@angular/platform-browser/animations';
 import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse } from '@angular/common/http';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
@@ -52,7 +51,6 @@ describe('MeasureFormComponent Edit', () => {
 
   let measure1 = of(loadMeasure('measure'));
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
-  let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
   let goal: Observable<Goal> = of(goalsData.goals[0]);
   let measures: Observable<any[]> = of(measureData.measures);
 

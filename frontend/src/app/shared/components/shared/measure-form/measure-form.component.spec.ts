@@ -46,7 +46,6 @@ import { MeasureValueValidatorDirective } from '../../../validators';
 import { SharedModule } from '../shared.module';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatSlideToggleHarness } from '@angular/material/slide-toggle/testing';
 
 describe('MeasureFormComponent', () => {

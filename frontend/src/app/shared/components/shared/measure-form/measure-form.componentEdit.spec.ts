@@ -10,6 +10,7 @@ import {
   KeyResultService,
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
+import * as measureData from '../../../testing/mock-data/measure.json';
 import { Observable, of } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
 import {
@@ -37,6 +38,10 @@ import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
+import { MatDialog } from '@angular/material/dialog';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -46,6 +51,8 @@ describe('MeasureFormComponent Edit', () => {
 
   let measure1 = of(loadMeasure('measure'));
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
+  let goal: Observable<Goal> = of(goalsData.goals[0]);
+  let measures: Observable<any[]> = of(measureData.measures);
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -55,8 +62,14 @@ describe('MeasureFormComponent Edit', () => {
     getMeasureById: jest.fn(),
     saveMeasure: jest.fn(),
   };
+
+  const mockGoalService = {
+    getGoalByKeyResultId: jest.fn(),
+  };
+
   const mockKeyResultService = {
     getKeyResultById: jest.fn(),
+    getMeasuresOfKeyResult: jest.fn(),
   };
 
   const mockToastrService = {
@@ -69,6 +82,8 @@ describe('MeasureFormComponent Edit', () => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
+      mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+      mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
 
       TestBed.configureTestingModule({
         declarations: [
@@ -76,6 +91,7 @@ describe('MeasureFormComponent Edit', () => {
           KeyResultDescriptionComponent,
           MeasureRowComponent,
           MeasureValueValidatorDirective,
+          DiagramComponent,
         ],
         imports: [
           HttpClientTestingModule,
@@ -101,6 +117,8 @@ describe('MeasureFormComponent Edit', () => {
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useValue: {} },
+          { provide: GoalService, useValue: mockGoalService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -127,10 +145,20 @@ describe('MeasureFormComponent Edit', () => {
       mockMeasureService.getMeasureById.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+      mockGoalService.getGoalByKeyResultId.mockReset();
+      mockKeyResultService.getMeasuresOfKeyResult.mockReset();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    test('should set goal of component', () => {
+      component.goal$.subscribe((componentGoal) => {
+        goal.subscribe((testGoal) => {
+          expect(componentGoal).toEqual(testGoal);
+        });
+      });
     });
 
     it('should have one key result description tag with right panel title', () => {
@@ -150,6 +178,13 @@ describe('MeasureFormComponent Edit', () => {
         By.css('mat-accordion')
       );
       expect(matAccordions.length).toEqual(2);
+    });
+
+    it('should have one app diagram tag', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-diagram')
+      );
+      expect(keyResultDescription.length).toEqual(1);
     });
 
     it('should have three mat dividers', () => {

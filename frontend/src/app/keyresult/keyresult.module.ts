@@ -25,11 +25,13 @@ import { KeyResultOverviewComponent } from './key-result-overview/key-result-ove
     KeyresultFormComponent,
     DiagramComponent,
     KeyResultOverviewComponent,
+    DiagramComponent,
   ],
   providers: [KeyResultService, DatePipe],
   exports: [
     KeyResultRowComponent,
     KeyResultOverviewComponent,
+    DiagramComponent,
     DiagramComponent,
   ],
   imports: [

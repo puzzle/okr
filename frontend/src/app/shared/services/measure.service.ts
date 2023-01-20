@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface Measure {
   id: number | null;
@@ -33,6 +34,10 @@ export class MeasureService {
       createdOn: new Date(),
       measureDate: new Date(),
     };
+  }
+
+  deleteMeasureById(measureId: number): Observable<Measure> {
+    return this.httpClient.delete<Measure>('/api/v1/measures/' + measureId);
   }
 
   saveMeasure(measure: Measure, post: boolean) {

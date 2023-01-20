@@ -19,6 +19,8 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -28,6 +30,11 @@ describe('MeasureRowComponent', () => {
 
   const mockKeyResultService = {
     getMeasuresOfKeyResult: jest.fn(),
+  };
+
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
   };
 
   describe('Get Measures from existing keyresult', () => {
@@ -47,6 +54,8 @@ describe('MeasureRowComponent', () => {
         providers: [
           DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -64,6 +73,8 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     it('should create', () => {
@@ -188,6 +199,8 @@ describe('MeasureRowComponent', () => {
         providers: [
           DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: MatDialog, useValue: {} },
+          { provide: ToastrService, useValue: mockToastrService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -205,6 +218,8 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     it('should create', () => {

@@ -7,7 +7,16 @@
 
 <p class="headline-large">Key Result Beschreibung</p>
 
-<app-key-result-description></app-key-result-description>
+<div class="keyresult-detail-container" *ngIf="goal$ | async as goal">
+  <div class="row d-flex w-100 keyresult-detail">
+    <app-key-result-description [goal]="goal"></app-key-result-description>
+  </div>
+  <div>
+    <div class="diagram">
+      <app-diagram [goal]="goal"></app-diagram>
+    </div>
+  </div>
+</div>
 
 <mat-divider class="divider"></mat-divider>
 

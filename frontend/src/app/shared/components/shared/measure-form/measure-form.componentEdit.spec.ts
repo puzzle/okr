@@ -26,8 +26,9 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
-import { loadMeasure } from '../../../testing/Loader';
+import { loadAllMeasure, loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
@@ -38,6 +39,9 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
 import { MatDialog } from '@angular/material/dialog';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -47,6 +51,9 @@ describe('MeasureFormComponent Edit', () => {
 
   let measure1 = of(loadMeasure('measure'));
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
+  let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
+  let goal: Observable<Goal> = of(goalsData.goals[0]);
+  let measures: Observable<any[]> = of(loadAllMeasure(true));
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -56,8 +63,14 @@ describe('MeasureFormComponent Edit', () => {
     getMeasureById: jest.fn(),
     saveMeasure: jest.fn(),
   };
+
+  const mockGoalService = {
+    getGoalByKeyResultId: jest.fn(),
+  };
+
   const mockKeyResultService = {
     getKeyResultById: jest.fn(),
+    getMeasuresOfKeyResult: jest.fn(),
   };
 
   const mockToastrService = {
@@ -70,6 +83,8 @@ describe('MeasureFormComponent Edit', () => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
+      mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+      mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
 
       TestBed.configureTestingModule({
         declarations: [
@@ -77,6 +92,7 @@ describe('MeasureFormComponent Edit', () => {
           KeyResultDescriptionComponent,
           MeasureRowComponent,
           MeasureValueValidatorDirective,
+          DiagramComponent,
         ],
         imports: [
           HttpClientTestingModule,
@@ -103,6 +119,7 @@ describe('MeasureFormComponent Edit', () => {
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
           { provide: MatDialog, useValue: {} },
+          { provide: GoalService, useValue: mockGoalService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -129,10 +146,20 @@ describe('MeasureFormComponent Edit', () => {
       mockMeasureService.getMeasureById.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+      mockGoalService.getGoalByKeyResultId.mockReset();
+      mockKeyResultService.getMeasuresOfKeyResult.mockReset();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    test('should set goal of component', () => {
+      component.goal$.subscribe((componentGoal) => {
+        goal.subscribe((testGoal) => {
+          expect(componentGoal).toEqual(testGoal);
+        });
+      });
     });
 
     it('should have one key result description tag with right panel title', () => {

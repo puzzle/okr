@@ -6,15 +6,10 @@ import {
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { Goal, GoalService } from '../../../services/goal.service';
+import { Goal } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
-import {
-  ActivatedRoute,
-  convertToParamMap,
-  RouterLinkWithHref,
-} from '@angular/router';
+import { RouterLinkWithHref } from '@angular/router';
 import { KeyResultDescriptionComponent } from './key-result-description.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,27 +22,15 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
-import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 
 describe('KeyResultDescriptionComponent', () => {
   let component: KeyResultDescriptionComponent;
   let fixture: ComponentFixture<KeyResultDescriptionComponent>;
 
-  let goal: Observable<Goal> = of(goalsData.goals[0]);
+  let goal: Goal = goalsData.goals[0];
 
-  const mockGoalService = {
-    getGoalByKeyResultId: jest.fn(),
-  };
-
-  const mockGetNumerOrNull = {
-    getNumberOrNull: jest.fn(),
-  };
-
-  describe('Key Result Overview', () => {
+  describe('Key Result Description', () => {
     beforeEach(() => {
-      mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
-
       TestBed.configureTestingModule({
         imports: [
           HttpClientTestingModule,
@@ -67,39 +50,17 @@ describe('KeyResultDescriptionComponent', () => {
           NoopAnimationsModule,
           RouterLinkWithHref,
         ],
-        providers: [
-          { provide: GoalService, useValue: mockGoalService },
-          {
-            provide: ActivatedRoute,
-            useValue: {
-              paramMap: of(convertToParamMap({ keyresultId: '1' })),
-            },
-          },
-        ],
-        declarations: [KeyResultDescriptionComponent, DiagramComponent],
+        declarations: [KeyResultDescriptionComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDescriptionComponent);
       component = fixture.componentInstance;
-
+      component.goal = goal;
       fixture.detectChanges();
-    });
-
-    afterEach(() => {
-      mockGoalService.getGoalByKeyResultId.mockReset();
-      mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
     test('should create', () => {
       expect(component).toBeTruthy();
-    });
-
-    test('should set goal of component', () => {
-      component.goal$.subscribe((componentGoal) => {
-        goal.subscribe((testGoal) => {
-          expect(componentGoal).toEqual(testGoal);
-        });
-      });
     });
 
     test('should have 4 strong titles', () => {
@@ -133,13 +94,6 @@ describe('KeyResultDescriptionComponent', () => {
     test('should set quarter from keyresult', () => {
       const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
       expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
-    });
-
-    it('should have one app diagram', () => {
-      const keyResultDescription = fixture.debugElement.queryAll(
-        By.css('app-diagram')
-      );
-      expect(keyResultDescription.length).toEqual(1);
     });
   });
 });

@@ -11,6 +11,7 @@ import { getNumberOrNull } from '../../../common';
 import { Measure, MeasureService } from '../../../services/measure.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Goal, GoalService } from '../../../services/goal.service';
 
 @Component({
   selector: 'app-measure-form',
@@ -28,6 +29,7 @@ export class MeasureFormComponent implements OnInit {
     initiatives: new FormControl<string>(''),
   });
   public keyresult$!: Observable<KeyResultMeasure>;
+  public goal$!: Observable<Goal>;
   public create!: boolean;
 
   constructor(
@@ -36,7 +38,8 @@ export class MeasureFormComponent implements OnInit {
     private router: Router,
     private measureService: MeasureService,
     private toastr: ToastrService,
-    private location: Location
+    private location: Location,
+    private goalService: GoalService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +57,7 @@ export class MeasureFormComponent implements OnInit {
       this.keyresult$.subscribe((keyResult) => {
         this.keyResultUnit = keyResult.unit;
       });
+      this.goal$ = this.goalService.getGoalByKeyResultId(keyResultId);
     }
 
     if (measureId) {

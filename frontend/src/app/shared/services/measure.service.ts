@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 export interface Measure {
   id: number | null;
   keyResultId: number;
-  value: number;
+  value: number | boolean;
   changeInfo: string;
   initiatives: string;
   createdById: number;

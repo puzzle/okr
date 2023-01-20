@@ -19,9 +19,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class MeasureFormComponent implements OnInit {
   measure$!: Observable<Measure>;
+  keyResultUnit!: string;
 
   measureForm = new FormGroup({
-    value: new FormControl<number>(0, [Validators.required]),
+    value: new FormControl<number | boolean>(0, [Validators.required]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
     changeInfo: new FormControl<string>('', [Validators.required]),
     initiatives: new FormControl<string>(''),
@@ -50,6 +51,9 @@ export class MeasureFormComponent implements OnInit {
     this.create = !measureId;
     if (keyResultId) {
       this.keyresult$ = this.keyResultService.getKeyResultById(keyResultId);
+      this.keyresult$.subscribe((keyResult) => {
+        this.keyResultUnit = keyResult.unit;
+      });
     }
 
     if (measureId) {
@@ -62,7 +66,7 @@ export class MeasureFormComponent implements OnInit {
 
     this.measure$.subscribe((measure) => {
       this.measureForm.setValue({
-        value: measure.value,
+        value: this.correctValueForBinaryDataToSlider(measure.value),
         measureDate: measure.measureDate,
         changeInfo: measure.changeInfo,
         initiatives: measure.initiatives,
@@ -70,7 +74,25 @@ export class MeasureFormComponent implements OnInit {
     });
   }
 
+  correctValueForBinaryDataToSlider(measureValue: number | boolean) {
+    if (this.keyResultUnit === 'BINARY') {
+      measureValue === 1 ? (measureValue = true) : (measureValue = false);
+    }
+    return measureValue;
+  }
+
+  correctValueForBinarySliderToData() {
+    if (this.keyResultUnit === 'BINARY') {
+      if (this.measureForm.get('value')?.value === true) {
+        this.measureForm.get('value')?.setValue(1);
+      } else {
+        this.measureForm.get('value')?.setValue(0);
+      }
+    }
+  }
+
   save() {
+    this.correctValueForBinarySliderToData();
     this.measure$
       .pipe(
         map((measure) => {

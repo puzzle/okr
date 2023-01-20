@@ -54,11 +54,30 @@
 }
 
 .unit-label {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .margin-right {
   margin-right: 90px;
+}
+
+.slider-selection {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 20px;
+  width: 200px;
+  margin-right: 20px;
+}
+
+.button-margin {
+  margin: 10px;
+}
+
+.slider-card {
+  margin-bottom: 30px;
+  margin-left: 100px;
+  width: 150px;
 }
 
 .divider {

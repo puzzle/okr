@@ -1,4 +1,5 @@
-<h1 class="goal-heading">{{ overview.team.name }} Objectives</h1>
+<h1 class="goal-heading">{{ overview.team.name }}</h1>
+
 <div class="objective-rows">
   <div class="objective-row" *ngFor="let objective of overview.objectives">
     <hr />
@@ -6,4 +7,12 @@
       <app-objective-row [objective]="objective"> </app-objective-row>
     </mat-accordion>
   </div>
+
+  <button class="create-button" mat-stroked-button routerLink="/objectives/new">
+    <img
+      class="add-icon"
+      src="assets/add-icon.svg"
+      alt="create new Objective"
+    />Objective
+  </button>
 </div>

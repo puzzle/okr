@@ -478,6 +478,7 @@ describe('MeasureFormComponent', () => {
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2023-01-05')
       );
+
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
         'Changeinfo 1'
       );
@@ -567,6 +568,8 @@ describe('MeasureFormComponent', () => {
 
     it('should save edited measure', () => {
       component.measureForm.get('value')?.setValue(true);
+      component.measureForm.get('changeInfo')?.setValue('Changeinfo 1');
+      component.measureForm.get('initiatives')?.setValue('Initiatives 1');
       component.measureForm
         .get('measureDate')
         ?.setValue(new Date('2023-01-04'));

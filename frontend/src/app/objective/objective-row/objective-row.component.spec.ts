@@ -107,10 +107,11 @@ describe('ObjectiveComponent', () => {
   test('should have menu button with icon', () => {
     let buttons: HTMLButtonElement[] =
       fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toEqual(2);
+    expect(buttons.length).toEqual(3);
 
     expect(buttons[0].textContent).toEqual('edit-icon');
     expect(buttons[1].textContent).toEqual('more_vert');
+    expect(buttons[2].textContent).toEqual('Key Result hinzufügen');
   });
 
   test.each([

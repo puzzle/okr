@@ -1,29 +1,43 @@
 <div class="d-flex w-100 justify-content-center">
-  <div class="w-50 d-flex justify-content-start">
-    <mat-card class="w-95">
-      <mat-card-content>
-        <p><strong>Details</strong></p>
-        <p>{{ this.keyResult.description }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <mat-card class="w-50">
-    <mat-card-content class="w-50">
-      <p><strong>Messungszeitpunkt</strong></p>
-      <p
-        *ngIf="keyResult.measure === null; else measures"
-        class="emptyLastMeasure"
-      >
-        -
-      </p>
-      <ng-template #measures>
-        <p>
-          <strong class="lastMeasureDate">{{
-            keyResult.measure?.measureDate | date
-          }}</strong>
-        </p>
-        <p class="lastMeasurechangeInfo">{{ keyResult.measure?.changeInfo }}</p>
-      </ng-template>
+  <mat-card class="w-100 outer-cards">
+    <mat-card-content>
+      <div class="d-flex w-100 justify-content-center gap-3">
+        <mat-card class="w-100 inner-cards">
+          <mat-card-title class="fs-6">Details</mat-card-title>
+
+          <mat-card-content>
+            {{ this.keyResult.description }}
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button class="edit-button" mat-button color="primary">
+              Ändern
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="w-100 inner-cards">
+          <mat-card-title class="fs-6">Letzte Messung</mat-card-title>
+
+          <mat-card-content *ngIf="keyResult.measure !== null; else noMeasures">
+            <strong class="lastMeasureDate">{{
+              keyResult.measure?.measureDate | date
+            }}</strong>
+            <br />
+            {{ keyResult.measure?.changeInfo }}
+
+            <mat-card-actions align="end">
+              <button mat-button>Anzeigen</button>
+            </mat-card-actions>
+          </mat-card-content>
+
+          <ng-template #noMeasures>
+            <mat-card-content data-test-marker="emptyLastMeasure">
+              -
+            </mat-card-content>
+          </ng-template>
+        </mat-card>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

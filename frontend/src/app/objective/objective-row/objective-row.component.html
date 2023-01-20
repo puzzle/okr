@@ -3,7 +3,19 @@
     <mat-panel-title class="objective-title">{{
       this.objective!.title
     }}</mat-panel-title>
+
     <mat-panel-description class="d-flex space-between">
+      <div class="objective-row-buttons">
+        <button
+          (click)="$event.stopPropagation()"
+          mat-stroked-button
+          matTooltip="Objective bearbeiten"
+          matTooltipPosition="above"
+        >
+          <mat-icon class="pointer">edit-icon</mat-icon>
+        </button>
+      </div>
+
       <div class="d-flex w-50 margin-left">
         <div class="w-100" id="progressContainer">
           <span class="h6" id="progressSpan">{{
@@ -40,6 +52,7 @@
       </mat-menu>
     </mat-panel-description>
   </mat-expansion-panel-header>
+
   <app-objective-detail
     [objective]="objective"
     [keyResultList]="keyResultList"

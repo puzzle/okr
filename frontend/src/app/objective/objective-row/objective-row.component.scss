@@ -19,3 +19,14 @@
   font-weight: 400;
   font-size: 22px;
 }
+
+.objective-row-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  & button {
+    cursor: pointer;
+    border-radius: 20px;
+  }
+}

@@ -1,13 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeamDetailComponent } from './team-detail.component';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
-import { Observable, of } from 'rxjs';
+
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Team } from '../../shared/services/team.service';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -56,7 +51,7 @@ describe('TeamDetailComponent', () => {
   test('should have title Puzzle ITC Objectives', () => {
     expect(
       fixtureTeamDetails.nativeElement.querySelector('h1').textContent
-    ).toEqual('Team 1 Objectives');
+    ).toEqual('Team 1');
   });
 
   test('should create 3 hr when having 1 team with 1 objectives', () => {

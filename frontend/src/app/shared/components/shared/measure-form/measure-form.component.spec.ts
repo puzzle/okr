@@ -44,6 +44,10 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
 import { SharedModule } from '../shared.module';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatSlideToggleHarness } from '@angular/material/slide-toggle/testing';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -78,6 +82,8 @@ describe('MeasureFormComponent', () => {
     success: jest.fn(),
     error: jest.fn(),
   };
+
+  let loader: HarnessLoader;
 
   describe('Edit Measure', () => {
     beforeEach(() => {
@@ -387,6 +393,8 @@ describe('MeasureFormComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(MeasureFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
+
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -514,15 +522,17 @@ describe('MeasureFormComponent', () => {
       expect(datepicker.nativeElement.value).toEqual('1/5/2023');
     });
 
-    it('should have slider with right value and change value on change', () => {
-      let slider = fixture.debugElement.query(By.css('mat-slide-toggle'));
-      expect(slider.nativeElement.checked).toBeFalsy();
+    it('should have slider with right value and change value on change', async () => {
+      const toggleSlide = await loader.getHarness(
+        MatSlideToggleHarness.with({
+          selector: 'mat-slide-toggle',
+        })
+      );
+      expect(await toggleSlide.isChecked()).toBeFalsy();
+      await toggleSlide.toggle();
+      expect(await toggleSlide.isChecked()).toBeTruthy();
 
-      slider.nativeElement.click();
-      fixture.detectChanges();
-
-      expect(slider.nativeElement.checked).toBeTruthy();
-      expect(component.measureForm.get('value')?.value).toEqual(1);
+      expect(component.measureForm.get('value')?.value).toEqual(true);
     });
 
     it('should set form valid when no changes and set to invalid if empty input', () => {

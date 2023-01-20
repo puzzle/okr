@@ -107,26 +107,31 @@ export class MeasureFormComponent implements OnInit {
         })
       )
       .subscribe((measure) => {
-        measure.measureDate = new Date(measure.measureDate.toString() + 'UTC');
-        this.measureService.saveMeasure(measure, this.create).subscribe({
-          next: () => {
-            this.toastr.success('', 'Messung gespeichert!', {
-              timeOut: 5000,
-            });
-            this.router.navigate(['/keyresults/' + measure.keyResultId]);
-          },
-          error: (e: HttpErrorResponse) => {
-            this.toastr.error(
-              'Messung konnte nicht gespeichert werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
-            console.log('Can not save this measure: ', measure);
-            return new Error('ups sommething happend');
-          },
-        });
+
+        console.log(new Date(measure.measureDate));
+        console.log(new Date(measure.measureDate).toUTCString());
+
+   //   measure.measureDate = new Date(measure.measureDate);
+
+   //   this.measureService.saveMeasure(measure, this.create).subscribe({
+   //     next: () => {
+   //       this.toastr.success('', 'Messung gespeichert!', {
+   //         timeOut: 5000,
+   //       });
+   //       this.router.navigate(['/keyresults/' + measure.keyResultId]);
+   //     },
+   //     error: (e: HttpErrorResponse) => {
+   //       this.toastr.error(
+   //         'Messung konnte nicht gespeichert werden!',
+   //         'Fehlerstatus: ' + e.status,
+   //         {
+   //           timeOut: 5000,
+   //         }
+   //       );
+   //       console.log('Can not save this measure: ', measure);
+   //       return new Error('ups sommething happend');
+   //     },
+   //   });
       });
   }
 

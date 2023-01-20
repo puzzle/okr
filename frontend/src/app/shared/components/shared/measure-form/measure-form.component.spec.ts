@@ -475,7 +475,7 @@ describe('MeasureFormComponent', () => {
 
     it('should set measureform', () => {
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2023-01-05')
+        new Date(2023, 0, 5, 1, 0, 0)
       );
 
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
@@ -521,7 +521,7 @@ describe('MeasureFormComponent', () => {
       expect(datepicker.nativeElement.value).toEqual('1/5/2023');
     });
 
-    xit('should have slider with right value and change value on change', async () => {
+    it('should have slider with right value and change value on change', async () => {
       const toggleSlide = await loader.getHarness(
         MatSlideToggleHarness.with({
           selector: 'mat-slide-toggle',
@@ -571,7 +571,7 @@ describe('MeasureFormComponent', () => {
       component.measureForm.get('initiatives')?.setValue('Initiatives 1');
       component.measureForm
         .get('measureDate')
-        ?.setValue(new Date('2023-01-04'));
+        ?.setValue(new Date(2023, 0, 4, 1, 0, 0));
       fixture.detectChanges();
       component.save();
 

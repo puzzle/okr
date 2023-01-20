@@ -43,6 +43,7 @@ import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
+import { SharedModule } from '../shared.module';
 
 describe('MeasureFormComponent', () => {
   let component: MeasureFormComponent;
@@ -54,8 +55,10 @@ describe('MeasureFormComponent', () => {
   );
 
   let initMeasure = loadMeasure('initMeasure');
-  let measure1 = of(loadMeasure('measureBinaryKeyResult'));
+  let measure1 = of(loadMeasure('measure'));
+  let binaryMeasure = of(loadMeasure('measureBinaryKeyResult'));
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
+  let receivedEditedBinaryMeasure = loadMeasure('receivedEditedBinaryMeasure');
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
   const mockGetNumerOrNull = {
@@ -80,7 +83,6 @@ describe('MeasureFormComponent', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
-      mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
 
       TestBed.configureTestingModule({
@@ -138,7 +140,6 @@ describe('MeasureFormComponent', () => {
 
     afterEach(() => {
       mockMeasureService.getMeasureById.mockReset();
-      mockMeasureService.getInitMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
@@ -330,12 +331,11 @@ describe('MeasureFormComponent', () => {
     });
   });
 
-  describe('Edit Measure for Unit Binary', () => {
+  describe('Unit Binary edit Measure', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(binaryKeyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
-      mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
-      mockMeasureService.getMeasureById.mockReturnValue(measure1);
+      mockMeasureService.getMeasureById.mockReturnValue(binaryMeasure);
 
       TestBed.configureTestingModule({
         declarations: [
@@ -361,6 +361,7 @@ describe('MeasureFormComponent', () => {
           MatCardModule,
           NoopAnimationsModule,
           RouterLinkWithHref,
+          SharedModule,
           ToastrModule.forRoot(),
         ],
         providers: [
@@ -392,13 +393,182 @@ describe('MeasureFormComponent', () => {
 
     afterEach(() => {
       mockMeasureService.getMeasureById.mockReset();
-      mockMeasureService.getInitMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should set keyresult', () => {
+      binaryKeyResult.subscribe((testKeyResult) => {
+        component.keyresult$.subscribe((componentKeyResult) => {
+          expect(testKeyResult).toEqual(componentKeyResult);
+        });
+      });
+    });
+
+    it('should set measure', () => {
+      binaryMeasure.subscribe((testMeasure) => {
+        component.measure$.subscribe((componentMeasure) => {
+          expect(testMeasure).toEqual(componentMeasure);
+        });
+      });
+    });
+
+    it('should set create to false and set title right', () => {
+      expect(component.create).toEqual(false);
+
+      const title = fixture.debugElement.query(By.css('.headline-large'));
+      expect(title.nativeElement.textContent).toContain('Messung bearbeiten');
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[1].nativeElement.textContent).toContain(
+        'Messung bearbeiten'
+      );
+    });
+
+    it('should have one key result description tag with right panel title', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-key-result-description')
+      );
+      expect(keyResultDescription.length).toEqual(1);
+
+      const panelTitle = fixture.debugElement.query(By.css('.panel-title'));
+      expect(panelTitle.nativeElement.textContent).toContain(
+        'Key Result Beschreibung'
+      );
+    });
+
+    it('should have two mat accordion for keyresult description and measure row', () => {
+      const matAccordions = fixture.debugElement.queryAll(
+        By.css('mat-accordion')
+      );
+      expect(matAccordions.length).toEqual(2);
+    });
+
+    it('should have three mat dividers', () => {
+      const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
+      expect(dividers.length).toEqual(3);
+    });
+
+    it('should have one measure row tag with right panel title', () => {
+      const measureRow = fixture.debugElement.queryAll(
+        By.css('app-measure-row')
+      );
+      expect(measureRow.length).toEqual(1);
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[0].nativeElement.textContent).toContain(
+        'Vergangene Messungen'
+      );
+    });
+
+    it('should set measureform', () => {
+      expect(component.measureForm.get('measureDate')?.value).toEqual(
+        new Date('2023-01-05')
+      );
+      expect(component.measureForm.get('changeInfo')?.value).toEqual(
+        'Changeinfo 1'
+      );
+      expect(component.measureForm.get('initiatives')?.value).toEqual(
+        'Initiatives 1'
+      );
+      expect(component.measureForm.get('value')?.value).toBeFalsy();
+    });
+
+    it('should set keyresultUnit to BINARY', () => {
+      expect(component.keyResultUnit).toContain('BINARY');
+    });
+
+    it('should have 3 buttons for edit', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      expect(buttons.length).toEqual(3);
+      expect(buttons[1].nativeElement.textContent).toContain('Abbrechen');
+      expect(buttons[2].nativeElement.textContent).toContain('Aktualisieren');
+    });
+
+    it('should have changeinfo', () => {
+      const textareas = fixture.debugElement.queryAll(
+        By.css('.description-textarea')
+      );
+      expect(textareas.length).toEqual(2);
+      expect(textareas[0].nativeElement.value).toContain('Changeinfo 1');
+    });
+
+    it('should have initiatives', () => {
+      const textareas = fixture.debugElement.queryAll(
+        By.css('.description-textarea')
+      );
+      expect(textareas.length).toEqual(2);
+      expect(textareas[1].nativeElement.value).toContain('Initiatives 1');
+    });
+
+    it('should have datepicker value', () => {
+      const datepicker = fixture.debugElement.query(
+        By.css('.datepicker-input')
+      );
+      expect(datepicker.nativeElement.value).toEqual('1/5/2023');
+    });
+
+    it('should have slider with right value and change value on change', () => {
+      let slider = fixture.debugElement.query(By.css('mat-slide-toggle'));
+      expect(slider.nativeElement.checked).toBeFalsy();
+
+      slider.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(slider.nativeElement.checked).toBeTruthy();
+      expect(component.measureForm.get('value')?.value).toEqual(1);
+    });
+
+    it('should set form valid when no changes and set to invalid if empty input', () => {
+      let button = fixture.debugElement.query(By.css('.create-button'));
+      expect(button.nativeElement.disabled).toEqual(false);
+      expect(component.measureForm.valid).toEqual(true);
+
+      component.measureForm.get('changeInfo')?.setValue('');
+      fixture.detectChanges();
+
+      button = fixture.debugElement.query(By.css('.create-button'));
+      expect(component.measureForm.valid).toEqual(false);
+      expect(button.nativeElement.disabled).toEqual(true);
+    });
+
+    it('should have 4 titles', () => {
+      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
+      expect(titles.length).toEqual(4);
+      expect(titles[0].nativeElement.textContent).toContain('Aktueller Wert');
+      expect(titles[1].nativeElement.textContent).toContain(
+        'Datum der Messung'
+      );
+      expect(titles[2].nativeElement.textContent).toContain(
+        'Veränderung seit letzter Messung'
+      );
+      expect(titles[3].nativeElement.textContent).toContain('Massnahmen');
+    });
+
+    it('should have keyresult unit in html', () => {
+      const unit = fixture.debugElement.query(By.css('.unit-label'));
+      expect(unit.nativeElement.textContent).toEqual('BINARY');
+    });
+
+    it('should save edited measure', () => {
+      component.measureForm.get('value')?.setValue(true);
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-01-04'));
+      fixture.detectChanges();
+      component.save();
+
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalled();
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
+        receivedEditedBinaryMeasure,
+        false
+      );
     });
   });
 

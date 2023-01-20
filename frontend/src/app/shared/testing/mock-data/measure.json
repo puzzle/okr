@@ -19,16 +19,6 @@
     "createdOn": "2022-12-28",
     "measureDate": "2023-01-05 01:00:00"
   },
-  "measureBinaryKeyResult": {
-    "id": 12,
-    "keyResultId": 3,
-    "value": 0,
-    "changeInfo": "Changeinfo 1",
-    "initiatives": "Initiatives 1",
-    "createdById": 1,
-    "createdOn": "2022-12-28",
-    "measureDate": "2023-01-05 01:00:00"
-  },
   "measures": [
     {
       "id": 1,
@@ -60,6 +50,26 @@
     "createdById": 1,
     "createdOn": "2022-12-28T00:00:00.000Z",
     "measureDate": "2023-01-05T01:00:00.000Z"
+  },
+  "measureBinaryKeyResult": {
+    "id": 12,
+    "keyResultId": 3,
+    "value": 0,
+    "changeInfo": "Changeinfo 1",
+    "initiatives": "Initiatives 1",
+    "createdById": 1,
+    "createdOn": "2022-12-28",
+    "measureDate": "2023-01-05 01:00:00"
+  },
+  "receivedEditedBinaryMeasure": {
+    "id": 12,
+    "keyResultId": 3,
+    "value": 1,
+    "changeInfo": "Changeinfo 1",
+    "initiatives": "Initiatives 1",
+    "createdById": 1,
+    "createdOn": "2022-12-28",
+    "measureDate": "2023-01-04 01:00:00Z"
   },
   "receivedCreatedMeasure": {
     "id": null,

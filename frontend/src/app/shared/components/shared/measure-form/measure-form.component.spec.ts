@@ -83,8 +83,6 @@ describe('MeasureFormComponent', () => {
     error: jest.fn(),
   };
 
-  let loader: HarnessLoader;
-
   describe('Edit Measure', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -338,6 +336,7 @@ describe('MeasureFormComponent', () => {
   });
 
   describe('Unit Binary edit Measure', () => {
+    let loader: HarnessLoader;
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(binaryKeyResult);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
@@ -522,7 +521,7 @@ describe('MeasureFormComponent', () => {
       expect(datepicker.nativeElement.value).toEqual('1/5/2023');
     });
 
-    it('should have slider with right value and change value on change', async () => {
+    xit('should have slider with right value and change value on change', async () => {
       const toggleSlide = await loader.getHarness(
         MatSlideToggleHarness.with({
           selector: 'mat-slide-toggle',

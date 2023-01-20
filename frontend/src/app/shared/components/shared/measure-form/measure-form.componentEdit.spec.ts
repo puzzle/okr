@@ -10,7 +10,8 @@ import {
   KeyResultService,
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
-import { Observable, of } from 'rxjs';
+import * as measureData from '../../../testing/mock-data/measure.json';
+import { Observable, of, throwError } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
 import {
   ActivatedRoute,
@@ -26,7 +27,7 @@ import {
   BrowserAnimationsModule,
   NoopAnimationsModule,
 } from '@angular/platform-browser/animations';
-import { loadAllMeasure, loadMeasure } from '../../../testing/Loader';
+import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDividerModule } from '@angular/material/divider';
@@ -53,7 +54,7 @@ describe('MeasureFormComponent Edit', () => {
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
   let goal: Observable<Goal> = of(goalsData.goals[0]);
-  let measures: Observable<any[]> = of(loadAllMeasure(true));
+  let measures: Observable<any[]> = of(measureData.measures);
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -179,6 +180,13 @@ describe('MeasureFormComponent Edit', () => {
         By.css('mat-accordion')
       );
       expect(matAccordions.length).toEqual(2);
+    });
+
+    it('should have one app diagram tag', () => {
+      const keyResultDescription = fixture.debugElement.queryAll(
+        By.css('app-diagram')
+      );
+      expect(keyResultDescription.length).toEqual(1);
     });
 
     it('should have three mat dividers', () => {

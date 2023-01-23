@@ -228,17 +228,16 @@ describe('MeasureFormComponent Edit Binary', () => {
     });
 
     it('should set measureform', () => {
+      expect(component.measureForm.get('value')?.value).toBeFalsy();
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date(2023, 0, 5, 1, 0, 0)
+        new Date('2023-01-05T00:00:00.000Z')
       );
-
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
         'Changeinfo 1'
       );
       expect(component.measureForm.get('initiatives')?.value).toEqual(
         'Initiatives 1'
       );
-      expect(component.measureForm.get('value')?.value).toBeFalsy();
     });
 
     it('should set keyresultUnit to BINARY', () => {
@@ -273,6 +272,30 @@ describe('MeasureFormComponent Edit Binary', () => {
         By.css('.datepicker-input')
       );
       expect(datepicker.nativeElement.value).toEqual('1/5/2023');
+    });
+
+    it('should update datepicker with right value from measureForm wintertime', () => {
+      const datepicker = fixture.debugElement.query(
+        By.css('.datepicker-input')
+      );
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-02-23T23:00:00Z'));
+      fixture.detectChanges();
+
+      expect(datepicker.nativeElement.value).toEqual('2/24/2023');
+    });
+
+    it('should update datepicker with right value from measureForm summertime', () => {
+      const datepicker = fixture.debugElement.query(
+        By.css('.datepicker-input')
+      );
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-07-01T22:00:00Z'));
+      fixture.detectChanges();
+
+      expect(datepicker.nativeElement.value).toEqual('7/2/2023');
     });
 
     it('should have slider with right value and change value on change', async () => {

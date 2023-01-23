@@ -69,7 +69,7 @@
     "initiatives": "Initiatives 1",
     "createdById": 1,
     "createdOn": "2022-12-28",
-    "measureDate": "2023-01-04 01:00:00Z"
+    "measureDate": "2023-01-04T00:00:00.000Z"
   },
   "receivedCreatedMeasure": {
     "id": null,

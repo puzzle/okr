@@ -145,7 +145,9 @@ export class KeyresultFormComponent implements OnInit {
 
   enableTargetAndBasicValue(): void {
     this.keyResultForm.controls['basicValue'].enable();
+    this.keyResultForm.controls['basicValue'].setValue(null);
     this.keyResultForm.controls['targetValue'].enable();
+    this.keyResultForm.controls['targetValue'].setValue(null);
   }
 
   navigateBack() {

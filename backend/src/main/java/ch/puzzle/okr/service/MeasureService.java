@@ -62,7 +62,10 @@ public class MeasureService {
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
         }
-        List<Measure> measureList = measureRepository.findLastMeasureOfKeyResult(measure.getKeyResult().getId());
+        Measure lastMeasureOfKeyResult = measureRepository.findLastMeasureOfKeyResultByCreatedOn(measure.getKeyResult().getId());
+        if (measure.getCreatedOn() == lastMeasureOfKeyResult.getCreatedOn()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one Messung is allowed per day and Key Result!");
+        }
 
     }
 

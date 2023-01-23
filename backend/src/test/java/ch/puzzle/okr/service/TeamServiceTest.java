@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;
@@ -7,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,9 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,23 +35,42 @@ class TeamServiceTest {
     @InjectMocks
     private TeamService teamService;
 
+    private static Stream<Arguments> shouldGetTeamsByIds() {
+        return Stream.of(Arguments.of(List.of(1L, 2L),
+                List.of(Team.Builder.builder().withId(1L).build(), Team.Builder.builder().withId(2L).build()), 2
+
+        ), Arguments.of(List.of(1L, 5L), List.of(Team.Builder.builder().withId(1L).build()), 2
+
+        ), Arguments.of(List.of(5L), Collections.emptyList(), 1));
+    }
+
     @BeforeEach
     void setUp() {
-        this.teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle ITC").build();
+        this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
         this.team1 = Team.Builder.builder().withName("Team 1").build();
         this.team2 = Team.Builder.builder().withName("Team 2").build();
         this.teamsPuzzle = List.of(teamPuzzle, team1, team2);
     }
 
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetTeamsByIds(List<Long> teamIds, List<Team> teamList, int expectedTeamsAmount) {
+        Mockito.when(teamRepository.findByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
+        Mockito.when(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE))
+                .thenReturn(teamList);
+        assertEquals(expectedTeamsAmount, teamService.getAllTeams(teamIds).size());
+    }
+
     @Test
     void shouldGetAllTeams() throws ResponseStatusException {
-        Mockito.when(teamRepository.findAll()).thenReturn(teamsPuzzle);
-        Mockito.when(teamRepository.findByName("Puzzle ITC")).thenReturn(teamPuzzle);
+        Mockito.when(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE))
+                .thenReturn(List.of(team1, team2));
+        Mockito.when(teamRepository.findByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
 
         List<Team> teams = teamService.getAllTeams();
 
         assertEquals(3, teams.size());
-        assertEquals("Puzzle ITC", teams.get(0).getName());
+        assertEquals(Constants.TEAM_PUZZLE, teams.get(0).getName());
     }
 
     @Test
@@ -66,9 +85,8 @@ class TeamServiceTest {
     @Test
     void shouldGetTheTeam() throws ResponseStatusException {
         Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
-
         Team team = teamService.getTeamById(5);
-        Assertions.assertThat(team.getName()).isEqualTo("Puzzle ITC");
+        Assertions.assertThat(team.getName()).isEqualTo(Constants.TEAM_PUZZLE);
     }
 
     @Test
@@ -95,9 +113,8 @@ class TeamServiceTest {
     void shouldThrowResponseStatusExceptionWhenPuttingId() {
         Team team = Team.Builder.builder().withId(2L).withName("TestTeam").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            teamService.saveTeam(team);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
     }
@@ -116,9 +133,8 @@ class TeamServiceTest {
     void shouldNotCreateTeamWithNoName() {
         Team team = Team.Builder.builder().build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            teamService.saveTeam(team);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute name when creating team"), exception.getReason());
     }
@@ -129,9 +145,8 @@ class TeamServiceTest {
         Team team = Team.Builder.builder().withName(passedName).build();
         Mockito.when(teamRepository.save(any())).thenReturn(team);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            teamService.saveTeam(team);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute name when creating team"), exception.getReason());
     }
@@ -151,17 +166,13 @@ class TeamServiceTest {
     void shouldThrowNotFoundException() {
         Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.empty());
         Team team = Team.Builder.builder().withId(1L).withName("New Team").build();
-        assertThrows(ResponseStatusException.class, () -> {
-            teamService.updateTeam(1L, team);
-        });
+        assertThrows(ResponseStatusException.class, () -> teamService.updateTeam(1L, team));
     }
 
     @Test
     void shouldNotUpdateTeamWithEmptyName() {
         Team team = Team.Builder.builder().withId(1L).withName("").build();
-        assertThrows(ResponseStatusException.class, () -> {
-            teamService.updateTeam(1L, team);
-        });
+        assertThrows(ResponseStatusException.class, () -> teamService.updateTeam(1L, team));
     }
 
     @Test
@@ -177,18 +188,16 @@ class TeamServiceTest {
 
     @Test
     void shouldThrowReponseStatusExceptionWhenFindingTeamNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            teamService.getTeamById(422L);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.getTeamById(422L));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("Team with id 422 not found", exception.getReason());
     }
 
     @Test
     void shouldThrowResponseStatusExceptionWhenGetTeamWithNullId() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            teamService.getTeamById(null);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamService.getTeamById(null));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Missing attribute team id", exception.getReason());
     }

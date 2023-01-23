@@ -18,10 +18,11 @@
         "value": 60,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2023-01-18",
         "measureDate": "2022-12-23"
-      }
+      },
+      "progress": 60
     },
     {
       "id": 2,
@@ -41,10 +42,11 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2019-08-22",
         "measureDate": "2020-11-03"
-      }
+      },
+      "progress": 0
     },
     {
       "id": 3,
@@ -64,10 +66,11 @@
         "value": 15,
         "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
         "initiatives": "",
-        "createdBy": 1,
+        "createdById": 1,
         "createdOn": "2023-02-14",
         "measureDate": "2023-03-06"
-      }
+      },
+      "progress": 0
     }
   ],
   "createKeyResultObject": {
@@ -81,7 +84,8 @@
     "ownerFirstname": "",
     "targetValue": 100,
     "basicValue": 0,
-    "objectiveId": 1
+    "objectiveId": 1,
+    "progress": 0
   },
   "initKeyResult": {
     "id": null,
@@ -94,16 +98,17 @@
     "ownerFirstname": "",
     "targetValue": 1,
     "basicValue": 1,
-    "objectiveId": 3000
+    "objectiveId": 3000,
+    "progress": 0
   },
-  "binaryKeyresult": {
-    "id": 5,
+  "binaryKeyResult": {
+    "id": 3,
     "objectiveId": 1,
-    "title": "Keyresult 5",
-    "description": "description of Keyresult 5",
+    "title": "Keyresult 3",
+    "description": "This is the description of Keyresult 3",
     "ownerId": 1,
-    "ownerFirstname": "OwnerFirstname",
-    "ownerLastname": "OwnerLastname",
+    "ownerFirstname": "Alice",
+    "ownerLastname": "Wunderland",
     "expectedEvolution": "INCREASE",
     "unit": "BINARY",
     "basicValue": 0,
@@ -112,11 +117,12 @@
       "id": 5,
       "keyResultId": 3,
       "value": 0,
-      "changeInfo": "Changeinfo",
-      "initiatives": "Initiatives",
-      "createdBy": 1,
+      "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+      "initiatives": "Initiatives key result 3",
+      "createdById": 1,
       "createdOn": "2023-02-14",
       "measureDate": "2023-03-06"
-    }
+    },
+    "progress": 0
   }
 }

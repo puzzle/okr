@@ -1,37 +1,29 @@
-<div class="row d-flex w-100" *ngIf="goal$ | async as goal">
-  <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
-    <div class="key-result-overview-container">
-      <p class="headline-large">Keyresult Beschreibung</p>
-      <div class="key-result-overview-text w-100">
-        <p class="key-result-title">
-          <strong>KeyResult</strong>
-          <br />
-          {{ goal.keyresult.title }}
-        </p>
-
-        <p class="key-result-description">
-          <strong>Beschreibung</strong>
-          <br />
-          {{ goal.keyresult.description }}
-        </p>
-
-        <p class="key-result-Ziel">
-          <strong>{{ goal.teamName }} Objective</strong>
-          <br />
-          {{ goal.objective.title }}
-        </p>
-
-        <p class="key-result-quarter">
-          <strong>Zyklus</strong>
-          <br />
-          {{ goal.quarterLabel }}
-        </p>
-      </div>
-    </div>
+<div class="d-flex w-100 justify-content-center">
+  <div class="w-50 d-flex justify-content-start">
+    <mat-card class="w-95">
+      <mat-card-content>
+        <p><strong>Details</strong></p>
+        <p>{{ this.keyResult.description }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
-    <div class="mt-sm-0 mt-lg-5" *ngIf="goal$ | async as goal">
-      <app-diagram [goal]="goal"></app-diagram>
-    </div>
-  </div>
+  <mat-card class="w-50">
+    <mat-card-content class="w-50">
+      <p><strong>Messungszeitpunkt</strong></p>
+      <p
+        *ngIf="keyResult.measure === null; else measures"
+        class="emptyLastMeasure"
+      >
+        -
+      </p>
+      <ng-template #measures>
+        <p>
+          <strong class="lastMeasureDate">{{
+            keyResult.measure?.measureDate | date
+          }}</strong>
+        </p>
+        <p class="lastMeasurechangeInfo">{{ keyResult.measure?.changeInfo }}</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
 </div>

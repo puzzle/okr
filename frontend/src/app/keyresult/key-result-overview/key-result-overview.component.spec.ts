@@ -1,87 +1,91 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyResultOverviewComponent } from './key-result-overview.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ObjectiveModule } from '../../objective/objective.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Observable, of } from 'rxjs';
+import { KeyResultMeasure } from '../../shared/services/key-result.service';
+import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
-import { Goal, GoalService } from '../../shared/services/goal.service';
-import * as goalsData from '../../shared/testing/mock-data/goals.json';
 
-describe('KeyresultOverviewComponent', () => {
+describe('KeyResultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
   let fixture: ComponentFixture<KeyResultOverviewComponent>;
+  let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
-  let goal: Observable<Goal> = of(goalsData.goals[0]);
+  describe('KeyResultDetail with measures', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [MatCardModule],
+        declarations: [KeyResultOverviewComponent],
+      }).compileComponents();
 
-  const mockGoalService = {
-    getGoalByKeyResultId: jest.fn(),
-  };
+      fixture = TestBed.createComponent(KeyResultOverviewComponent);
+      component = fixture.componentInstance;
 
-  beforeEach(() => {
-    mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+      component.keyResult = keyResult;
 
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        ObjectiveModule,
-        NoopAnimationsModule,
-        RouterTestingModule,
-      ],
-      providers: [{ provide: GoalService, useValue: mockGoalService }],
-      declarations: [KeyResultOverviewComponent],
-    }).compileComponents();
+      fixture.detectChanges();
+    });
 
-    fixture = TestBed.createComponent(KeyResultOverviewComponent);
-    component = fixture.componentInstance;
+    test('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-    fixture.detectChanges();
+    test('should have right strong titles', () => {
+      const strongs = fixture.debugElement.queryAll(By.css('strong'));
+
+      expect(strongs.length).toEqual(3);
+
+      expect(strongs[0].nativeElement.textContent).toEqual('Details');
+
+      expect(strongs[1].nativeElement.textContent).toEqual('Messungszeitpunkt');
+    });
+
+    test('should have keyresult description', () => {
+      const paragraphs = fixture.debugElement.queryAll(By.css('p'));
+      expect(paragraphs[1].nativeElement.textContent).toEqual(
+        'This is the description'
+      );
+    });
+
+    test('should have last measure date', () => {
+      const lastMeasureDate = fixture.debugElement.query(
+        By.css('.lastMeasureDate')
+      );
+      expect(lastMeasureDate.nativeElement.textContent).toEqual('Dec 23, 2022');
+    });
+
+    test('should have change info title', () => {
+      const lastMeasureDate = fixture.debugElement.query(
+        By.css('.lastMeasurechangeInfo')
+      );
+      expect(lastMeasureDate.nativeElement.textContent).toEqual(
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+      );
+    });
   });
 
-  afterEach(() => {
-    mockGoalService.getGoalByKeyResultId.mockReset();
-  });
+  describe('KeyResultDetail with no measures', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [MatCardModule],
+        declarations: [KeyResultOverviewComponent],
+      }).compileComponents();
 
-  test('should create', () => {
-    expect(component).toBeTruthy();
-  });
+      fixture = TestBed.createComponent(KeyResultOverviewComponent);
+      component = fixture.componentInstance;
 
-  test('should set goal of component', () => {
-    expect(component.goal$).toEqual(goal);
-  });
+      let emptyMeasureKeyResult = keyResult;
+      emptyMeasureKeyResult.measure = null!;
+      component.keyResult = emptyMeasureKeyResult;
 
-  test('should have 4 strong titles', () => {
-    const titles = fixture.debugElement.queryAll(By.css('strong'));
-    expect(titles.length).toEqual(4);
-  });
+      fixture.detectChanges();
+    });
 
-  test('should set title from keyresult', () => {
-    const title = fixture.debugElement.query(By.css('.key-result-title'));
-    expect(title.nativeElement.textContent).toContain(
-      'KeyResult KeyResult title'
-    );
-  });
-
-  test('should set title from keyresult', () => {
-    const description = fixture.debugElement.query(
-      By.css('.key-result-description')
-    );
-    expect(description.nativeElement.textContent).toContain(
-      'Beschreibung KeyResult description'
-    );
-  });
-
-  test('should set teamname from objective', () => {
-    const teamname = fixture.debugElement.query(By.css('.key-result-Ziel'));
-    expect(teamname.nativeElement.textContent).toContain(
-      'Team 1 Objective Objective title'
-    );
-  });
-
-  test('should set quarter from keyresult', () => {
-    const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
-    expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
+    test('should display - when measure is null', () => {
+      const lastMeasureDate = fixture.debugElement.query(
+        By.css('.emptyLastMeasure')
+      );
+      expect(lastMeasureDate.nativeElement.textContent).toContain('-');
+    });
   });
 });

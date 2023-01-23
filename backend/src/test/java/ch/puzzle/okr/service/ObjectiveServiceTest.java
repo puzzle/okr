@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,11 +20,12 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveServiceTest {
@@ -32,7 +33,8 @@ class ObjectiveServiceTest {
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @MockBean
     KeyResultRepository keyResultRepository = Mockito.mock(KeyResultRepository.class);
-
+    @MockBean
+    KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
 
@@ -117,7 +119,7 @@ class ObjectiveServiceTest {
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("This is our description", savedObjective.getDescription());
-        assertEquals(0, savedObjective.getProgress());
+        assertNull(savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
         assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
@@ -128,9 +130,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenPuttingIdCreatingObjective() {
         Objective objective1 = Objective.Builder.builder().withId(9L).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            objectiveService.saveObjective(objective1);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(objective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
 
@@ -153,9 +154,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
         this.fullObjective1.setDescription(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            objectiveService.saveObjective(this.fullObjective1);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(this.fullObjective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute description when creating objective"), exception.getReason());
     }
@@ -164,9 +164,8 @@ class ObjectiveServiceTest {
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyCreatedOn() {
         this.fullObjective1.setCreatedOn(null);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            objectiveService.saveObjective(this.fullObjective1);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(this.fullObjective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Failed to generate attribute createdOn when creating objective"), exception.getReason());
     }
@@ -177,16 +176,15 @@ class ObjectiveServiceTest {
         Objective objective1 = Objective.Builder.builder().withTitle(passedName).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(objective1);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            objectiveService.saveObjective(objective1);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectiveService.saveObjective(objective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals(("Missing attribute title when creating objective"), exception.getReason());
     }
 
     @Test
     void shouldReturnObjectiveProperly() {
-        Objective newObjective = Objective.Builder.builder().withTitle("Hello World")
+        Objective newObjective = Objective.Builder.builder().withTitle("Hello World").withId(1L)
                 .withDescription("This is a cool objective")
                 .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
                 .withCreatedOn(LocalDateTime.now())
@@ -194,7 +192,7 @@ class ObjectiveServiceTest {
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
 
-        Objective returnedObjective = objectiveService.updateObjective(1L, newObjective);
+        Objective returnedObjective = objectiveService.updateObjective(newObjective);
         assertEquals("Hello World", returnedObjective.getTitle());
         assertEquals("Best Team", returnedObjective.getTeam().getName());
         assertEquals("rudi", returnedObjective.getOwner().getUsername());
@@ -202,38 +200,16 @@ class ObjectiveServiceTest {
     }
 
     @Test
-    void shouldThrowBadRequestException() {
-        Objective newObjective = Objective.Builder.builder().withId(1L).withTitle("Hello World")
-                .withDescription("This is a cool objective")
-                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L)
-                .withQuarter(new Quarter()).withCreatedOn(LocalDateTime.now())
-                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
-        KeyResult testKeyResult = KeyResult.Builder.builder().withObjective(newObjective).build();
-        List<KeyResult> keyResultList = List.of(testKeyResult);
-
-        Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
-        Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
-        Mockito.when(keyResultRepository.findAll()).thenReturn(keyResultList);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            this.objectiveService.updateObjective(1L, newObjective);
-        });
-        assertEquals("Can't set the progress of an objective if you have already defined keyresults!",
-                exception.getReason());
-    }
-
-    @Test
     void shouldThrowNotFoundException() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            this.objectiveService.getObjectivesByTeam(13L);
-        });
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.objectiveService.getObjectivesByTeam(13L));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(("Could not find team with id 13"), exception.getReason());
     }
 
     @Test
     void shouldReturnObjectiveByTeamId() {
-        Mockito.when(teamRepository.findById(1l)).thenReturn(Optional.ofNullable(this.team1));
+        Mockito.when(teamRepository.findById(1L)).thenReturn(Optional.ofNullable(this.team1));
         Mockito.when(objectiveRepository.findByTeamId(1L)).thenReturn(this.fullObjectiveInTeam1List);
 
         List<Objective> realObjectiveList = objectiveService.getObjectivesByTeam(1L);
@@ -241,5 +217,28 @@ class ObjectiveServiceTest {
         assertEquals(2, realObjectiveList.size());
         assertEquals("FullObjective1", realObjectiveList.get(0).getTitle());
         assertEquals("FullObjective2", realObjectiveList.get(1).getTitle());
+    }
+
+    private static Stream<Arguments> shouldReturnObjectives() {
+        return Stream.of(Arguments.of(1L, 1L, 0, 1), Arguments.of(1L, null, 1, 0));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldReturnObjectives(Long teamId, Long quarterId, int invocationsByTeam, int invocationsByTeamAndQuarter) {
+        objectiveService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
+        verify(objectiveRepository, times(invocationsByTeam)).findByTeamId(teamId);
+        verify(objectiveRepository, times(invocationsByTeamAndQuarter)).findByQuarterIdAndTeamId(teamId, quarterId);
+    }
+
+    @Test
+    void shouldDeleteObjectiveAndAssociatedKeyResults() {
+        when(this.objectiveRepository.findById(anyLong())).thenReturn(Optional.of(objective));
+        when(this.keyResultRepository.findByObjective(objective)).thenReturn(keyResults);
+
+        this.objectiveService.deleteObjectiveById(1L);
+
+        verify(this.keyResultService, times(3)).deleteKeyResultById(5L);
+        verify(this.objectiveRepository, times(1)).deleteById(anyLong());
     }
 }

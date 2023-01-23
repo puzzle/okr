@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,18 +16,16 @@ import java.util.Objects;
 public class KeyResultService {
 
     private final KeyResultRepository keyResultRepository;
-    private final QuarterRepository quarterRepository;
     private final UserRepository userRepository;
     private final ObjectiveRepository objectiveRepository;
     private final MeasureRepository measureRepository;
     private final KeyResultMeasureMapper keyResultMeasureMapper;
     private final ProgressService progressService;
 
-    public KeyResultService(KeyResultRepository keyResultRepository, QuarterRepository quarterRepository,
-            UserRepository userRepository, ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
+    public KeyResultService(KeyResultRepository keyResultRepository, UserRepository userRepository,
+            ObjectiveRepository objectiveRepository, MeasureRepository measureRepository,
             KeyResultMeasureMapper keyResultMeasureMapper, ProgressService progressService) {
         this.keyResultRepository = keyResultRepository;
-        this.quarterRepository = quarterRepository;
         this.userRepository = userRepository;
         this.objectiveRepository = objectiveRepository;
         this.measureRepository = measureRepository;
@@ -70,7 +69,7 @@ public class KeyResultService {
         KeyResult keyResult = keyResultRepository.findById(keyResultId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("KeyResult with id %d not found", keyResultId)));
-        return measureRepository.findByKeyResult(keyResult);
+        return measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
     }
 
     public List<Measure> getLastMeasures(Long objectiveId) {
@@ -90,5 +89,21 @@ public class KeyResultService {
                 .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
                         .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
                 .toList();
+    }
+
+    @Transactional
+    public void deleteKeyResultById(Long id) {
+        List<Measure> measures = getAllMeasuresByKeyResult(id);
+        for (Measure measure : measures) {
+            measureRepository.deleteById(measure.getId());
+        }
+        keyResultRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteKeyResultAndUpdateProgress(Long id) {
+        Long objectiveId = getKeyResultById(id).getObjective().getId();
+        deleteKeyResultById(id);
+        this.progressService.updateObjectiveProgress(objectiveId);
     }
 }

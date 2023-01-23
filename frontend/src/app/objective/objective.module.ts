@@ -17,6 +17,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ProgressModule } from '../progress/progress.module';
+import { SharedModule } from '../shared/components/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ProgressModule } from '../progress/progress.module';
     MatSelectModule,
     MatInputModule,
     ProgressModule,
+    SharedModule,
   ],
 })
 export class ObjectiveModule {}

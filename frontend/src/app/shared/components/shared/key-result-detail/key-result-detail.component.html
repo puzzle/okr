@@ -1,0 +1,26 @@
+<span class="d-flex back-btn">
+  <mat-icon>chevron_left</mat-icon>
+  <p (click)="navigateBack()">Zurück</p>
+</span>
+
+<p class="heading-label">Key Result Details</p>
+
+<p class="headline-large">Key Result Beschreibung</p>
+
+<div class="keyresult-detail-container" *ngIf="goal$ | async as goal">
+  <div class="row d-flex w-100 keyresult-detail">
+    <app-key-result-description [goal]="goal"></app-key-result-description>
+  </div>
+  <div>
+    <div class="diagram">
+      <app-diagram [goal]="goal"></app-diagram>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="divider"></mat-divider>
+
+<app-measure-row
+  (onMeasureDelete)="reloadDiagram()"
+  class="measure-row"
+></app-measure-row>

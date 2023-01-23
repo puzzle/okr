@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -53,7 +55,7 @@ class KeyResultControllerIT {
     static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX,
             LocalDateTime.of(2022, 10, 18, 10, 33));
     static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", ExpectedEvolution.INCREASE,
-            Unit.PERCENT, 0L, 1L);
+            Unit.PERCENT, 0L, 1L, 0L);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective)
             .withOwner(user).build();
@@ -134,7 +136,7 @@ class KeyResultControllerIT {
     @Test
     void shouldGetKeyresultWithId() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
         BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
 
@@ -158,7 +160,7 @@ class KeyResultControllerIT {
     void shouldReturnUpdatedKeyResult() throws Exception {
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withTitle("Updated Keyresult 1").build();
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
 
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
@@ -183,7 +185,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResult() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
 
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
@@ -200,7 +202,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResultWithEnumKeys() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
 
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
@@ -284,5 +286,18 @@ class KeyResultControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
 
         mvc.perform(put("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteKeyResult() throws Exception {
+        mvc.perform(delete("/api/v1/keyresults/10")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void throwExceptionWhenKeyresultWithIdCantBeFoundWhileDeleting() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultService)
+                .deleteKeyResultAndUpdateProgress(any());
+
+        mvc.perform(delete("/api/v1/keyresults/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

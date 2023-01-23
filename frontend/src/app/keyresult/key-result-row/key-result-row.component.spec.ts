@@ -14,17 +14,33 @@ import { By } from '@angular/platform-browser';
 import { KeyresultModule } from '../keyresult.module';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+
+export class MatDialogMock {
+  open() {
+    return {
+      beforeClosed: jest.fn(),
+    };
+  }
+}
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
   let fixture: ComponentFixture<KeyResultRowComponent>;
   let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
+  };
+
   describe('KeyResultRow with set measure', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
           BrowserDynamicTestingModule,
+          ToastrModule.forRoot(),
           NoopAnimationsModule,
           MatMenuModule,
           MatExpansionModule,
@@ -33,7 +49,11 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
         ],
-        providers: [DatePipe],
+        providers: [
+          DatePipe,
+          { provide: ToastrService, useValue: mockToastrService },
+          { provide: MatDialog, useClass: MatDialogMock },
+        ],
         declarations: [KeyResultRowComponent],
       })
         .overrideComponent(KeyResultRowComponent, {
@@ -47,6 +67,12 @@ describe('KeyResultKeyResultRowComponent', () => {
       component = fixture.componentInstance;
       component.keyResult = keyResult;
       fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      //ToastrService Reset
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     test('should create', () => {
@@ -87,17 +113,42 @@ describe('KeyResultKeyResultRowComponent', () => {
       );
     });
 
+    test('should open dialog when deleting keyresult', () => {
+      let button = fixture.debugElement.nativeElement.querySelector(
+        'button[mat-icon-button]'
+      );
+      button.click();
+      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+      let children = Array.from(matMenu.children).map(
+        (e) => e.querySelector('span')!
+      );
+      children[3].click();
+    });
+
     test.each([
       [
         [
           {
             displayName: 'KeyResult bearbeiten',
+            showDialog: false,
             routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
           },
-          { displayName: 'KeyResult duplizieren', routeLine: 'objective/edit' },
-          { displayName: 'Details einsehen', routeLine: 'result/add' },
-          { displayName: 'KeyResult löschen', routeLine: 'result/add' },
-          { displayName: 'Messung hinzufügen', routeLine: 'result/add' },
+          {
+            displayName: 'KeyResult duplizieren',
+            showDialog: false,
+            routeLine: 'objective/edit',
+          },
+          {
+            displayName: 'Details einsehen',
+            showDialog: false,
+            routeLine: 'result/add',
+          },
+          { displayName: 'KeyResult löschen', showDialog: true },
+          {
+            displayName: 'Messung hinzufügen',
+            showDialog: false,
+            routeLine: 'result/add',
+          },
         ] as MenuEntry[],
       ],
     ])('should have menu items', (menuEntries: MenuEntry[]) => {
@@ -133,7 +184,10 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
         ],
-        providers: [DatePipe],
+        providers: [
+          DatePipe,
+          { provide: ToastrService, useValue: mockToastrService },
+        ],
         declarations: [KeyResultRowComponent],
       })
         .overrideComponent(KeyResultRowComponent, {
@@ -151,6 +205,12 @@ describe('KeyResultKeyResultRowComponent', () => {
       component.keyResult = emptyMeasureKeyResult;
 
       fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      //ToastrService Reset
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
     });
 
     test('should have right last measure when measure is set', () => {

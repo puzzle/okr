@@ -1,0 +1,66 @@
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p class="heading-label">Vergangene Messungen</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="d-flex titles">
+      <div class="d-flex w-10 measure-date-title">
+        <span class="h6">Datum</span>
+      </div>
+      <div class="d-flex w-15">
+        <span class="h6">Aktueller Wert</span>
+      </div>
+      <div class="d-flex w-55">
+        <span class="h6">Veränderungen</span>
+      </div>
+      <div class="d-flex w-40">
+        <span class="h6">Massnahmen</span>
+      </div>
+    </div>
+    <div *ngFor="let measure of measures$ | async">
+      <mat-card class="measure-card">
+        <mat-card-content>
+          <mat-panel-description class="d-flex space-between">
+            <div class="d-flex w-15">
+              <p class="measureDate">
+                {{ formatDate(measure.measureDate) }}
+              </p>
+            </div>
+            <div class="d-flex justify-content-around w-10">
+              <p class="measureValue">
+                {{ measure.value }}
+              </p>
+            </div>
+            <div class="d-flex w-55">
+              <p class="measureChangeinfo">
+                {{ measure.changeInfo }}
+              </p>
+            </div>
+            <div class="d-flex w-40">
+              <p class="measureInitiatives">
+                {{ measure.initiatives }}
+              </p>
+            </div>
+            <img
+              src="assets/edit-icon.svg"
+              alt="edit-icon"
+              class="edit-icon"
+              routerLink="/keyresults/{{ measure.keyResultId }}/measure/edit/{{
+                measure.id
+              }}"
+            />
+            <img
+              src="assets/delete-icon.svg"
+              (click)="openDeleteDialog(measure.id)"
+              alt="delete-icon"
+              class="delete-icon"
+            />
+          </mat-panel-description>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

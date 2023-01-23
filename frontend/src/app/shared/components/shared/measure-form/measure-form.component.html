@@ -3,32 +3,76 @@
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
+<p class="fs-2 headline-large">
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
+</p>
+
+<mat-divider class="divider"></mat-divider>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <p class="panel-title">Key Result Beschreibung</p>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="keyresult-detail-container" *ngIf="goal$ | async as goal">
+      <div class="row d-flex w-100 keyresult-detail">
+        <app-key-result-description [goal]="goal"></app-key-result-description>
+      </div>
+      <div>
+        <div class="diagram">
+          <app-diagram [goal]="goal"></app-diagram>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-divider class="divider"></mat-divider>
+
+<app-measure-row></app-measure-row>
+
+<mat-divider class="divider"></mat-divider>
+
 <p class="fs-2 heading-label">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
+
 <div *ngIf="measure$ | async as measure" class="d-flex w-100 form-container">
   <form
     (ngSubmit)="save()"
     [formGroup]="measureForm"
     class="d-flex flex-column fit-content"
   >
-    <div class="d-flex align-items-center justify-content-end gap-4">
+    <div
+      class="d-flex align-items-center justify-content-end gap-4"
+      *ngIf="keyresult$ | async as keyresult"
+    >
       <p class="fw-bold">Aktueller Wert</p>
       <mat-form-field
+        *ngIf="keyresult.unit !== 'BINARY'"
         appearance="outline"
         class="form-field-width form-field-height"
       >
         <mat-label>Aktueller Wert</mat-label>
         <input
-          [value]="measure.value"
+          [measureValueValidator]="(keyresult$ | async)?.unit!"
+          class="value-input"
           formControlName="value"
           matInput
           placeholder="Aktueller Wert"
           type="text"
-          class="value-input"
         />
       </mat-form-field>
-      <mat-label *ngIf="keyresult$ | async as keyresult" class="unit-label"
+
+      <div class="slider-card" *ngIf="keyresult.unit === 'BINARY'">
+        <section class="slider-selection">
+          <mat-slide-toggle class="button-margin" formControlName="value">
+          </mat-slide-toggle>
+        </section>
+      </div>
+
+      <mat-label class="unit-label"
         ><b>{{ keyresult.unit }}</b></mat-label
       >
     </div>
@@ -42,9 +86,9 @@
           matInput
           [matDatepicker]="picker"
           formControlName="measureDate"
-          [value]="measure.measureDate"
           class="datepicker-input"
         />
+
         <mat-label>Datum der Messung</mat-label>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -58,12 +102,11 @@
       <mat-form-field appearance="outline" class="form-field-width">
         <mat-label>Text hinzufügen</mat-label>
         <textarea
-          [value]="measure.changeInfo"
+          class="description-textarea"
           formControlName="changeInfo"
           matInput
           placeholder="Text hinzufügen"
           type="text"
-          class="description-textarea"
         ></textarea>
       </mat-form-field>
     </div>
@@ -75,12 +118,11 @@
       <mat-form-field appearance="outline" class="form-field-width">
         <mat-label>Text hinzufügen</mat-label>
         <textarea
-          [value]="measure.initiatives"
+          class="description-textarea"
           formControlName="initiatives"
           matInput
           placeholder="Text hinzufügen"
           type="text"
-          class="description-textarea"
         ></textarea>
       </mat-form-field>
     </div>
@@ -97,11 +139,11 @@
       </button>
 
       <button
+        [disabled]="!measureForm.valid"
         class="rounded-5 create-button"
         color="primary"
         mat-raised-button
         type="submit"
-        [disabled]="!measureForm.valid"
       >
         {{ this.create ? "Erstellen" : "Aktualisieren" }}
       </button>

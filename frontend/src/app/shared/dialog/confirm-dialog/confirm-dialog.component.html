@@ -1,0 +1,20 @@
+<app-spinner [visibility]="displaySpinner"></app-spinner>
+
+<div *ngIf="!displaySpinner">
+  <mat-dialog-content>
+    <p id="title">{{ title }}</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="d-flex justify-content-center">
+    <button id="close" class="mat-raised-button" (click)="close()">
+      {{ closeText }}
+    </button>
+    <button
+      id="confirm"
+      class="mat-raised-button mat-primary"
+      (click)="confirm()"
+    >
+      {{ confirmText }}
+    </button>
+  </mat-dialog-actions>
+</div>

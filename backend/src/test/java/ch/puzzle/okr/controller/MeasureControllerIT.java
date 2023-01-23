@@ -31,6 +31,8 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -157,5 +159,19 @@ class MeasureControllerIT {
                 .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteMeasure() throws Exception {
+        when(measureService.getMeasureById(anyLong())).thenReturn(measure);
+        mvc.perform(delete("/api/v1/measures/10")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void throwExceptionWhenMeasureWithIdCantBeFoundWhileDeleting() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
+                .when(measureService).getMeasureById(anyLong());
+
+        mvc.perform(delete("/api/v1/measures/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

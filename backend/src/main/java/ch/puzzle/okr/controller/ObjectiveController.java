@@ -76,8 +76,7 @@ public class ObjectiveController {
             @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveService.updateObjective(id, objective));
+        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 
@@ -90,5 +89,13 @@ public class ObjectiveController {
     public List<KeyResultMeasureDto> getAllKeyResultsByObjective(
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true) @PathVariable Long id) {
         return keyResultService.getAllKeyResultsByObjectiveWithMeasure(id);
+    }
+
+    @Operation(summary = "Delete Objective by Id", description = "Delete Objective by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted objective by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the objective with requested id") })
+    @DeleteMapping("/{id}")
+    public void deleteObjectiveById(@PathVariable long id) {
+        this.objectiveService.deleteObjectiveById(id);
     }
 }

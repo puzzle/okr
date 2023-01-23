@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultServiceTest {
@@ -35,12 +35,16 @@ class KeyResultServiceTest {
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
     @MockBean
     KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
+    @MockBean
+    ProgressService progressService = Mockito.mock(ProgressService.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
     Quarter quarter;
     KeyResult keyResult;
-    Measure measure;
+    Measure measure1;
+    Measure measure2;
+    Measure measure3;
     List<Measure> measures;
     @InjectMocks
     private KeyResultService keyResultService;
@@ -56,9 +60,11 @@ class KeyResultServiceTest {
         this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(this.objective)
                 .withOwner(this.user).build();
 
-        measure = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure2 = Measure.Builder.builder().withId(2L).withKeyResult(keyResult).withCreatedBy(user).build();
+        measure3 = Measure.Builder.builder().withId(3L).withKeyResult(keyResult).withCreatedBy(user).build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
-        this.measures = List.of(measure, measure, measure);
+        this.measures = List.of(measure1, measure2, measure3);
     }
 
     @Test
@@ -128,7 +134,7 @@ class KeyResultServiceTest {
     @Test
     void shouldGetAllMeasuresByKeyResult() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-        when(measureRepository.findByKeyResult(any())).thenReturn(measures);
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
 
         List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
 
@@ -142,7 +148,8 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoMeasuresInKeyResult() {
         when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
-        when(measureRepository.findByKeyResult(any())).thenReturn(Collections.emptyList());
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any()))
+                .thenReturn(Collections.emptyList());
 
         List<Measure> measureList = keyResultService.getAllMeasuresByKeyResult(1);
 
@@ -162,9 +169,9 @@ class KeyResultServiceTest {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(keyResult, measure)).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
-                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null)));
+        when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
+                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
+                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null), 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
@@ -180,11 +187,41 @@ class KeyResultServiceTest {
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null));
+                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null, 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
         assertEquals(3, keyResultList.size());
         assertNull(keyResultList.get(0).getMeasure());
+    }
+
+    @Test
+    void shouldDeleteKeyResultWithoutUpdateProgress() {
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+
+        keyResultService.deleteKeyResultById(1L);
+
+        verify(measureRepository, times(1)).findMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        verify(measureRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).deleteById(2L);
+        verify(measureRepository, times(1)).deleteById(3L);
+        verify(keyResultRepository, times(1)).deleteById(1L);
+        verify(progressService, never()).updateObjectiveProgress(any());
+    }
+
+    @Test
+    void shouldDeleteKeyResultAndAssociatedMeasures() {
+        when(measureRepository.findMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
+        when(keyResultRepository.findById(1L)).thenReturn(Optional.of(keyResult));
+
+        keyResultService.deleteKeyResultAndUpdateProgress(1L);
+
+        verify(keyResultRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).findMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        verify(measureRepository, times(1)).deleteById(1L);
+        verify(measureRepository, times(1)).deleteById(2L);
+        verify(measureRepository, times(1)).deleteById(3L);
+        verify(progressService, times(1)).updateObjectiveProgress(any());
     }
 }

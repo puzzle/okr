@@ -80,4 +80,14 @@ public class MeasureController {
         this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
+
+    @Operation(summary = "Delete Measure by Id", description = "Delete Measure by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Measure by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the Measure with requested id") })
+    @DeleteMapping("/{id}")
+    public void deleteMeasureById(@PathVariable long id) {
+        Measure measure = this.measureService.getMeasureById(id);
+        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
+        measureService.deleteMeasureById(id);
+    }
 }

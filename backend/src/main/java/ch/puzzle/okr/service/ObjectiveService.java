@@ -5,10 +5,12 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -16,12 +18,14 @@ public class ObjectiveService {
     private final ObjectiveRepository objectiveRepository;
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
+    private final KeyResultService keyResultService;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
+        this.keyResultService = keyResultService;
     }
 
     public List<Objective> getAllObjectives() {
@@ -49,21 +53,13 @@ public class ObjectiveService {
         if (objective.getProgress() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
         }
-        objective.setProgress(0L);
+        objective.setProgress(null);
         this.checkObjective(objective);
         return objectiveRepository.save(objective);
     }
 
-    public Objective updateObjective(Long id, Objective objective) {
-        if (objective.getProgress() != null) {
-            List<KeyResult> keyResultList = (List<KeyResult>) this.keyResultRepository.findAll();
-            if (keyResultList.stream()
-                    .anyMatch(keyResult -> keyResult.getObjective().getId().equals(objective.getId()))) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Can't set the progress of an objective if you have already defined keyresults!");
-            }
-        }
-        Objective existingObjective = this.getObjective(id);
+    public Objective updateObjective(Objective objective) {
+        Objective existingObjective = this.getObjective(objective.getId());
         objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);
@@ -81,5 +77,19 @@ public class ObjectiveService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Failed to generate attribute createdOn when creating objective");
         }
+    }
+
+    public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
+        return quarterId == null ? objectiveRepository.findByTeamId(teamId)
+                : objectiveRepository.findByQuarterIdAndTeamId(quarterId, teamId);
+    }
+
+    @Transactional
+    public void deleteObjectiveById(Long id) {
+        List<KeyResult> keyResults = this.keyResultRepository.findByObjective(this.getObjective(id));
+        for (KeyResult keyResult : keyResults) {
+            this.keyResultService.deleteKeyResultById(keyResult.getId());
+        }
+        this.objectiveRepository.deleteById(id);
     }
 }

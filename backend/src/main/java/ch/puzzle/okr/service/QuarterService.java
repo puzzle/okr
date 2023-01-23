@@ -9,12 +9,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 
 @Service
 public class QuarterService {
 
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
+
     static {
         yearToBusinessQuarterMap.put(1, 3);
         yearToBusinessQuarterMap.put(2, 4);
@@ -81,14 +81,11 @@ public class QuarterService {
 
     public String generateQuarterLabel(int firstYear, int currentQuarter) {
         int nextYear = firstYear + 1;
-        return "GJ " + shortenYear(firstYear) + "/" + shortenYear(nextYear) + "-Q" + currentQuarter;
-    }
-
-    public <T> List<T> toList(final Iterable<T> iterable) {
-        return StreamSupport.stream(iterable.spliterator(), false).toList();
+        return String.format("GJ %s/%s-Q%x", shortenYear(firstYear), shortenYear(nextYear), currentQuarter);
     }
 
     public String padWithZeros(int amount, int number) {
-        return String.format("%0" + amount + "d", number);
+        String format = "%0" + amount + "d";
+        return String.format(format, number);
     }
 }

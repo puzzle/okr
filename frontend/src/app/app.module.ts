@@ -15,10 +15,19 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { TeamModule } from './team/team.module';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    ConfirmDialogComponent,
+    SpinnerComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,12 +38,14 @@ import { ToastrModule } from 'ngx-toastr';
     MatMenuModule,
     MatButtonModule,
     MatProgressBarModule,
+    MatDialogModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatExpansionModule,
     MatInputModule,
     TeamModule,
     ToastrModule.forRoot(),
+    MatProgressSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

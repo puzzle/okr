@@ -32,8 +32,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,13 +63,13 @@ class ObjectiveControllerIT {
             LocalDateTime.of(2022, 8, 12, 1, 1));
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
             new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto),
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto, 0L),
             new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto));
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto, 0L));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
 
     @Autowired
     private MockMvc mvc;
@@ -190,7 +189,7 @@ class ObjectiveControllerIT {
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
+        BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective);
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -204,7 +203,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
@@ -217,9 +216,22 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    void shouldDeleteObjective() throws Exception {
+        mvc.perform(delete("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveService)
+                .deleteObjectiveById(anyLong());
+
+        mvc.perform(delete("/api/v1/objectives/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

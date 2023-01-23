@@ -96,6 +96,7 @@ export class KeyresultFormComponent implements OnInit {
         ownerFirstname,
         ownerLastname,
         measure,
+        progress,
         ...restKeyresult
       } = keyresult;
       this.keyResultForm.setValue(restKeyresult);

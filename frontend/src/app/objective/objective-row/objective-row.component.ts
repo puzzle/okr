@@ -1,10 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
-import { Objective } from '../../shared/services/objective.service';
+import {
+  Objective,
+  ObjectiveService,
+} from '../../shared/services/objective.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import {
   KeyResultMeasure,
@@ -25,6 +30,7 @@ export class ObjectiveRowComponent implements OnInit {
   menuEntries!: MenuEntry[];
   constructor(
     private keyResultService: KeyResultService,
+    private objectiveService: ObjectiveService,
     private router: Router
   ) {}
 
@@ -35,21 +41,37 @@ export class ObjectiveRowComponent implements OnInit {
     this.menuEntries = [
       {
         displayName: 'KeyResult hinzufügen',
+        showDialog: false,
         routeLine: 'objective/' + this.objective.id + '/keyresult/new',
       },
       {
         displayName: 'Objective bearbeiten',
+        showDialog: false,
         routeLine: 'objectives/edit/' + this.objective.id,
       },
       {
         displayName: 'Objective duplizieren',
+        showDialog: false,
         routeLine: 'objective/duplicate',
       },
-      { displayName: 'Objective löschen', routeLine: 'objective/delete' },
+      {
+        displayName: 'Objective löschen',
+        showDialog: false,
+        routeLine: 'objective/delete',
+      },
     ];
   }
 
   redirect(menuEntry: MenuEntry) {
     this.router.navigate([menuEntry.routeLine]);
+  }
+
+  removeKeyResultFromListAndReloadObjective(id: number) {
+    this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
+    this.objectiveService
+      .getObjectiveById(this.objective.id!)
+      .subscribe((objective) => {
+        this.objective = objective;
+      });
   }
 }

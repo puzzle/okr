@@ -18,13 +18,13 @@
       <div class="d-flex w-50">
         <div class="w-100" id="progressContainer">
           <span class="h6" *ngIf="keyResult.measure; else noMeasure"
-            >{{ progressPercentage }}%</span
+            >{{ keyResult.progress }}%</span
           >
           <ng-template #noMeasure>
             <span class="h6">-</span>
           </ng-template>
           <app-progress-bar
-            [value]="progressPercentage"
+            [value]="keyResult.progress"
             [colorLow]="'#FF1A0C'"
             [colorMiddle]="'#FFA012'"
             [colorHigh]="'#29DF0B'"
@@ -55,5 +55,5 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  <app-key-result-detail [keyResult]="keyResult"></app-key-result-detail>
+  <app-key-result-overview [keyResult]="keyResult"></app-key-result-overview>
 </mat-expansion-panel>

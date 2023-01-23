@@ -107,7 +107,7 @@ export class MeasureFormComponent implements OnInit {
         })
       )
       .subscribe((measure) => {
-        measure.measureDate = new Date(measure.measureDate.toString() + 'UTC');
+        measure.measureDate = new Date(measure.measureDate);
         this.measureService.saveMeasure(measure, this.create).subscribe({
           next: () => {
             this.toastr.success('', 'Messung gespeichert!', {

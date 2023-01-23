@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,9 +53,9 @@ class MeasureControllerIT {
             .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0L).withTargetValue(100L).build())
             .withValue(35).withChangeInfo("ChangeInfo").build();
     static MeasureDto measureDto = new MeasureDto(5L, 8L, 30, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
-            LocalDateTime.of(2022, 8, 12, 1, 1));
+            Instant.parse("2022-08-12T01:01:00.00Z"));
     static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L, LocalDateTime.MAX,
-            LocalDateTime.of(2022, 8, 12, 1, 1));
+            Instant.parse("2022-08-12T01:01:00.00Z"));
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
 
     @Autowired
@@ -86,7 +87,7 @@ class MeasureControllerIT {
                 .andExpect(jsonPath("$[0].createdById", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(4)))
                 .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35)))
                 .andExpect(jsonPath("$[1].changeInfo", Is.is("changeInfo")))
-                .andExpect(jsonPath("$[1].measureDate", Is.is("2022-08-12T01:01:00")))
+                .andExpect(jsonPath("$[1].measureDate", Is.is("2022-08-12T01:01:00Z")))
                 .andExpect(jsonPath("$[1].createdById", Is.is(2)));
     }
 
@@ -101,7 +102,7 @@ class MeasureControllerIT {
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
-                LocalDateTime.of(2022, 8, 12, 1, 1));
+                Instant.parse("2022-08-12T01:01:00.00Z"));
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
@@ -127,7 +128,7 @@ class MeasureControllerIT {
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
-                LocalDateTime.of(2022, 8, 12, 1, 1));
+                Instant.parse("2022-08-12T01:01:00.00Z"));
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
@@ -137,7 +138,7 @@ class MeasureControllerIT {
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30)))
                 .andExpect(jsonPath("$.createdById", Is.is(1)))
-                .andExpect(jsonPath("$.measureDate", Is.is("2022-08-12T01:01:00")))
+                .andExpect(jsonPath("$.measureDate", Is.is("2022-08-12T01:01:00Z")))
                 .andExpect(jsonPath("$.initiatives", Is.is("initiatives")));
     }
 

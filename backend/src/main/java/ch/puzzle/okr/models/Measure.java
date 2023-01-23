@@ -2,6 +2,7 @@ package ch.puzzle.okr.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -31,7 +32,7 @@ public class Measure {
     private User createdBy;
 
     @NotNull
-    private LocalDateTime measureDate;
+    private Instant measureDate;
 
     @NotNull
     private LocalDateTime createdOn;
@@ -94,11 +95,11 @@ public class Measure {
         this.createdBy = createdBy;
     }
 
-    public LocalDateTime getMeasureDate() {
+    public Instant getMeasureDate() {
         return measureDate;
     }
 
-    public void setMeasureDate(LocalDateTime measureDate) {
+    public void setMeasureDate(Instant measureDate) {
         this.measureDate = measureDate;
     }
 
@@ -142,7 +143,7 @@ public class Measure {
         private @NotNull @NotBlank String changeInfo;
         private @Size(max = 4096) String initiatives;
         private @NotNull User createdBy;
-        private @NotNull LocalDateTime measureDate;
+        private @NotNull Instant measureDate;
         private @NotNull LocalDateTime createdOn;
 
         private Builder() {
@@ -182,7 +183,7 @@ public class Measure {
             return this;
         }
 
-        public Builder withMeasureDate(@NotNull LocalDateTime measureDate) {
+        public Builder withMeasureDate(@NotNull Instant measureDate) {
             this.measureDate = measureDate;
             return this;
         }

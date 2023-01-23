@@ -43,6 +43,8 @@ import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureValueValidatorDirective } from '../../../validators';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
@@ -250,6 +252,19 @@ describe('MeasureFormComponent Create', () => {
     it('should have keyresult unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('PERCENT');
+    });
+
+    it('should update measureDate with datepicker', async () => {
+      const datePickerInputHarnes =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture)
+          .getAllHarnesses(MatDatepickerInputHarness)
+          .then((datepickerInputHarnesses) => datepickerInputHarnesses[0]);
+
+      datePickerInputHarnes.setValue('22/12/2022');
+
+      expect(component.measureForm.get('measureDate')?.value).toEqual(
+        new Date('2022-12-23T00:00:00.000Z')
+      );
     });
 
     it('should have 3 buttons for create', () => {

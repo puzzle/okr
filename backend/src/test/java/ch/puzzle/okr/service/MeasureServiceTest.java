@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -47,7 +48,7 @@ class MeasureServiceTest {
                 .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
-                .withMeasureDate(LocalDateTime.of(2021, 11, 3, 5, 55)).build();
+                .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }
 

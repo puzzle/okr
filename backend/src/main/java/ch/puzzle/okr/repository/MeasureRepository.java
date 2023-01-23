@@ -12,4 +12,8 @@ public interface MeasureRepository extends CrudRepository<Measure, Long> {
 
     @Query(value = "select m.* from key_result as k, measure as m, (select max(measure_date) as measure_date, key_result_id from measure group by key_result_id) as t where t.key_result_id = m.key_result_id and t.measure_date = m.measure_date and k.id = m.key_result_id and k.objective_id = :objective_id", nativeQuery = true)
     List<Measure> findLastMeasuresOfKeyresults(@Param("objective_id") Long objectiveId);
+
+    @Query(value = "select m.* from key_result as k, measure as m, (select max(created_on), key_result_id from measure group by key_result_id) as t where t.key_result_id = m.key_result_id", nativeQuery = true)
+    List<Measure> findLastMeasureOfKeyResult(@Param("keyResult_id") Long keyResultId);
+
 }

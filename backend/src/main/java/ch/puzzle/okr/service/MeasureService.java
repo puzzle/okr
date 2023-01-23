@@ -62,6 +62,8 @@ public class MeasureService {
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
         }
+        List<Measure> measureList = measureRepository.findLastMeasureOfKeyResult(measure.getKeyResult().getId());
+
     }
 
     public KeyResult mapKeyResult(MeasureDto measureDto) {

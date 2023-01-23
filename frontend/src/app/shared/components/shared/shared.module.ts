@@ -24,11 +24,11 @@ import { ValueValidatorDirective } from '../../validators';
 @NgModule({
   declarations: [
     MeasureFormComponent,
-    KeyresultFormComponent,
     MeasureRowComponent,
     KeyResultDetailComponent,
     KeyResultDescriptionComponent,
     ValueValidatorDirective,
+    KeyresultFormComponent,
   ],
   imports: [
     CommonModule,
@@ -48,5 +48,6 @@ import { ValueValidatorDirective } from '../../validators';
     MatSlideToggleModule,
     MatSelectModule,
   ],
+  exports: [ValueValidatorDirective],
 })
 export class SharedModule {}

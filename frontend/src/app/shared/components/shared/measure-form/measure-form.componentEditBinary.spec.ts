@@ -36,7 +36,6 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
-import { MeasureValueValidatorDirective } from '../../../validators';
 import { SharedModule } from '../shared.module';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -46,6 +45,7 @@ import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import * as measureData from '../../../testing/mock-data/measure.json';
+import { ValueValidatorDirective } from '../../../validators';
 
 describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
@@ -96,7 +96,7 @@ describe('MeasureFormComponent Edit Binary', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          MeasureValueValidatorDirective,
+          ValueValidatorDirective,
           DiagramComponent,
         ],
         imports: [

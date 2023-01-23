@@ -32,12 +32,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MeasureValueValidatorDirective } from '../../../validators';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
+import { ValueValidatorDirective } from '../../../validators';
 
 describe('MeasureFormComponent3', () => {
   let component: MeasureFormComponent;
@@ -82,7 +82,7 @@ describe('MeasureFormComponent3', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          MeasureValueValidatorDirective,
+          ValueValidatorDirective,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],

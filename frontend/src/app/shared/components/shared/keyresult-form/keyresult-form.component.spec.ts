@@ -8,7 +8,6 @@ import {
 } from '../../../services/key-result.service';
 import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KeyresultModule } from '../../../../keyresult/keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
@@ -26,8 +25,8 @@ import * as usersData from '../../../testing/mock-data/users.json';
 import * as objectivesData from '../../../testing/mock-data/objectives.json';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedModule } from '../shared.module';
 
-//Create ToastrService object, insert it in providers and then check if calls to it has been made
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
   let fixture: ComponentFixture<KeyresultFormComponent>;
@@ -99,7 +98,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -253,7 +252,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.basicValue-input')
       );
       expect(basicValueIputfield.nativeElement.value).toContain('0');
-      expect(basicValueIputfield.nativeElement.placeholder).toContain('0.0');
+      expect(basicValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
 
       component.keyResultForm.get('basicValue')?.setValue(null);
@@ -268,7 +267,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.targetValue-input')
       );
       expect(targetValueIputfield.nativeElement.value).toContain('100');
-      expect(targetValueIputfield.nativeElement.placeholder).toContain('0.0');
+      expect(targetValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
 
       component.keyResultForm.get('targetValue')?.setValue(null);
@@ -362,7 +361,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -545,7 +544,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -589,7 +588,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],

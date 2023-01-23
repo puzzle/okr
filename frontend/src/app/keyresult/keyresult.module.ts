@@ -9,7 +9,6 @@ import { KeyResultService } from '../shared/services/key-result.service';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
@@ -22,7 +21,6 @@ import { KeyResultOverviewComponent } from './key-result-overview/key-result-ove
 @NgModule({
   declarations: [
     KeyResultRowComponent,
-    KeyresultFormComponent,
     DiagramComponent,
     KeyResultOverviewComponent,
     DiagramComponent,

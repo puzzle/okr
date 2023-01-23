@@ -42,12 +42,13 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
-import { MeasureValueValidatorDirective } from '../../../validators';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
+import { NUMBER_REGEX } from '../../../regexLibrary';
+import { ValueValidatorDirective } from '../../../validators';
 
 describe('MeasureFormComponent Create', () => {
   let component: MeasureFormComponent;
@@ -87,7 +88,7 @@ describe('MeasureFormComponent Create', () => {
     let createMeasureForm = new FormGroup({
       value: new FormControl<number | boolean>(33, [
         Validators.required,
-        Validators.pattern('^[0-9]*$'),
+        Validators.pattern(NUMBER_REGEX),
       ]),
       measureDate: new FormControl<Date>(new Date('2022-12-01 00:00:00:'), [
         Validators.required,
@@ -107,7 +108,7 @@ describe('MeasureFormComponent Create', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          MeasureValueValidatorDirective,
+          ValueValidatorDirective,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],

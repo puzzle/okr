@@ -1,29 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyresultFormComponent } from './keyresult-form.component';
-import { User, UserService } from '../../shared/services/user.service';
+import { User, UserService } from '../../../services/user.service';
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
+} from '../../../services/key-result.service';
 import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KeyresultModule } from '../keyresult.module';
+import { KeyresultModule } from '../../../../keyresult/keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
   Objective,
   ObjectiveService,
-} from '../../shared/services/objective.service';
+} from '../../../services/objective.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
-import * as usersData from '../../shared/testing/mock-data/users.json';
-import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import * as keyresultData from '../../../testing/mock-data/keyresults.json';
+import * as usersData from '../../../testing/mock-data/users.json';
+import * as objectivesData from '../../../testing/mock-data/objectives.json';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 

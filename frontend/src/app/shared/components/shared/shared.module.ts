@@ -19,7 +19,7 @@ import { KeyResultDescriptionComponent } from './key-result-description/key-resu
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { MatSelectModule } from '@angular/material/select';
-import { ValueValidatorDirective } from '../../validators';
+import { MeasureValueValidator } from '../../validators';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import { ValueValidatorDirective } from '../../validators';
     MeasureRowComponent,
     KeyResultDetailComponent,
     KeyResultDescriptionComponent,
-    ValueValidatorDirective,
+    MeasureValueValidator,
     KeyresultFormComponent,
   ],
   imports: [
@@ -48,6 +48,6 @@ import { ValueValidatorDirective } from '../../validators';
     MatSlideToggleModule,
     MatSelectModule,
   ],
-  exports: [ValueValidatorDirective],
+  exports: [MeasureValueValidator],
 })
 export class SharedModule {}

@@ -56,7 +56,7 @@
       >
         <mat-label>Aktueller Wert</mat-label>
         <input
-          [unitValueValidator]="(keyresult$ | async)?.unit!"
+          [measureValueValidator]="(keyresult$ | async)?.unit!"
           class="value-input"
           formControlName="value"
           matInput

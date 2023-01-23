@@ -44,6 +44,7 @@ import { DiagramComponent } from '../../../../keyresult/diagram/diagram.componen
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { ValueValidatorDirective } from '../../../validators';
+import { MeasureValueValidator } from '../../../validators';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -92,7 +93,7 @@ describe('MeasureFormComponent Edit', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          ValueValidatorDirective,
+          MeasureValueValidator,
           DiagramComponent,
         ],
         imports: [

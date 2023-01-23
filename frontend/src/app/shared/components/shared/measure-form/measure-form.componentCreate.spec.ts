@@ -48,7 +48,7 @@ import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { NUMBER_REGEX } from '../../../regexLibrary';
-import { ValueValidatorDirective } from '../../../validators';
+import { MeasureValueValidator } from '../../../validators';
 
 describe('MeasureFormComponent Create', () => {
   let component: MeasureFormComponent;
@@ -108,7 +108,7 @@ describe('MeasureFormComponent Create', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          ValueValidatorDirective,
+          MeasureValueValidator,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],

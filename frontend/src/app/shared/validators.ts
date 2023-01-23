@@ -8,17 +8,17 @@ import { Directive, Input } from '@angular/core';
 import { BINARY_REGEX, NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
 @Directive({
-  selector: '[unitValueValidator]',
+  selector: '[measureValueValidator]',
   providers: [
     {
       provide: NG_VALIDATORS,
-      useExisting: ValueValidatorDirective,
+      useExisting: MeasureValueValidator,
       multi: true,
     },
   ],
 })
-export class ValueValidatorDirective implements Validator {
-  @Input('unitValueValidator') unit: string | null = '';
+export class MeasureValueValidator implements Validator {
+  @Input('measureValueValidator') unit: string | null = '';
 
   validate(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;

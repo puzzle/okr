@@ -15,6 +15,7 @@ import { User, UserService } from '../../../services/user.service';
 import { getNumberOrNull } from '../../../common';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -33,14 +34,8 @@ export class KeyresultFormComponent implements OnInit {
     ]),
     unit: new FormControl<string>('', [Validators.required]),
     expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>(
-      { value: 0, disabled: true },
-      Validators.required
-    ),
-    targetValue: new FormControl<number>(
-      { value: 0, disabled: true },
-      Validators.required
-    ),
+    basicValue: new FormControl<number>({ value: 0, disabled: true }),
+    targetValue: new FormControl<number>({ value: 0, disabled: true }),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number>(0, [
       Validators.required,
@@ -145,9 +140,44 @@ export class KeyresultFormComponent implements OnInit {
 
   enableTargetAndBasicValue(): void {
     this.keyResultForm.controls['basicValue'].enable();
-    this.keyResultForm.controls['basicValue'].setValue(null);
     this.keyResultForm.controls['targetValue'].enable();
-    this.keyResultForm.controls['targetValue'].setValue(null);
+  }
+
+  resetValidatorOfForm(): void {
+    let regex: string | null = null;
+    switch (this.keyResultForm.controls['unit'].value) {
+      case 'NUMBER': {
+        regex = NUMBER_REGEX;
+        break;
+      }
+      case 'PERCENT': {
+        regex = PERCENT_REGEX;
+        break;
+      }
+      case 'CHF': {
+        regex = NUMBER_REGEX;
+        break;
+      }
+    }
+    this.setValidatorsWithRegex(regex);
+    this.keyResultForm.controls['basicValue'].updateValueAndValidity();
+    this.keyResultForm.controls['targetValue'].updateValueAndValidity();
+  }
+
+  setValidatorsWithRegex(regex: string | null) {
+    if (regex) {
+      this.keyResultForm.controls['basicValue'].setValidators([
+        Validators.required,
+        Validators.pattern(regex),
+      ]);
+      this.keyResultForm.controls['targetValue'].setValidators([
+        Validators.required,
+        Validators.pattern(regex),
+      ]);
+      return;
+    }
+    this.keyResultForm.controls['basicValue'].setValidators(null);
+    this.keyResultForm.controls['targetValue'].setValidators(null);
   }
 
   navigateBack() {

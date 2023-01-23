@@ -45,7 +45,7 @@ import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import * as measureData from '../../../testing/mock-data/measure.json';
-import { ValueValidatorDirective } from '../../../validators';
+import { MeasureValueValidator } from '../../../validators';
 
 describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
@@ -96,7 +96,7 @@ describe('MeasureFormComponent Edit Binary', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          ValueValidatorDirective,
+          MeasureValueValidator,
           DiagramComponent,
         ],
         imports: [

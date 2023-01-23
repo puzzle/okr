@@ -62,6 +62,14 @@ describe('KeyResultOverviewComponent', () => {
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
       );
     });
+
+    test('should hava correct link', () => {
+      const button = fixture.debugElement.query(By.css('button'));
+
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        '/keyresults,1'
+      );
+    });
   });
 
   describe('KeyResultDetail with no measures', () => {

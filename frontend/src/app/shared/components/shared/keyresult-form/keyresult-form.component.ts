@@ -34,8 +34,12 @@ export class KeyresultFormComponent implements OnInit {
     ]),
     unit: new FormControl<string>('', [Validators.required]),
     expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>({ value: 0, disabled: true }),
-    targetValue: new FormControl<number>({ value: 0, disabled: true }),
+    basicValue: new FormControl<number>({ value: 0, disabled: true }, [
+      Validators.required,
+    ]),
+    targetValue: new FormControl<number>({ value: 0, disabled: true }, [
+      Validators.required,
+    ]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number>(0, [
       Validators.required,

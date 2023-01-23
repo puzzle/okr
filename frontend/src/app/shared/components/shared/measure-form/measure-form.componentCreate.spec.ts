@@ -274,7 +274,7 @@ describe('MeasureFormComponent Create', () => {
       expect(buttons[2].nativeElement.textContent).toContain('Erstellen');
     });
 
-    it('should save new measure', async () => {
+    it('should save new measure', () => {
       component.measureForm = createMeasureForm;
       fixture.detectChanges();
       let button = fixture.debugElement.query(By.css('.create-button'));

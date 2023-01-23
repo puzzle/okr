@@ -44,7 +44,7 @@ describe('KeyresultFormComponent', () => {
     keyresultData.createKeyResultObject;
 
   let createKeyResultForm = new FormGroup({
-    title: new FormControl<string>('Keyresult 1', [
+    title: new FormControl<string>('Key Result 1', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(20),
@@ -86,7 +86,7 @@ describe('KeyresultFormComponent', () => {
 
   let loader: HarnessLoader;
 
-  describe('KeyresultFormComponent Edit KeyResult', () => {
+  describe('KeyresultFormComponent Edit Key Result', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -146,7 +146,7 @@ describe('KeyresultFormComponent', () => {
       const titles = fixture.debugElement.queryAll(By.css('.title'));
       expect(titles.length).toEqual(3);
       expect(titles[0].nativeElement.textContent).toContain(
-        'Keyresult bearbeiten'
+        'Key Result bearbeiten'
       );
       expect(titles[1].nativeElement.textContent).toContain(
         'Objective Beschreibung'
@@ -200,11 +200,11 @@ describe('KeyresultFormComponent', () => {
       );
     });
 
-    test('should set keyresult title in input field and set input invalid when empty value', () => {
+    test('should set Key Result title in input field and set input invalid when empty value', () => {
       const titleinputfield = fixture.debugElement.query(
         By.css('.title-input')
       );
-      expect(titleinputfield.nativeElement.value).toContain('Keyresult 1');
+      expect(titleinputfield.nativeElement.value).toContain('Key Result 1');
       expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
       component.keyResultForm.get('title')?.setValue('');
@@ -214,7 +214,7 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set keyresult unit in mat select and set it new on item change', async () => {
+    test('should set Key Result unit in mat select and set it new on item change', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
@@ -231,7 +231,7 @@ describe('KeyresultFormComponent', () => {
       expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should set keyresult evolution in mat select and set it new on item change', async () => {
+    test('should set Key Result evolution in mat select and set it new on item change', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="expectedEvolution"]',
@@ -248,7 +248,7 @@ describe('KeyresultFormComponent', () => {
       expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should set keyresult basicvalue in input field and set input invalid when empty value', () => {
+    test('should set Key Result basicvalue in input field and set input invalid when empty value', () => {
       const basicValueIputfield = fixture.debugElement.query(
         By.css('.basicValue-input')
       );
@@ -263,7 +263,7 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set keyresult targetValue in input field and set input invalid when empty value', () => {
+    test('should set Key Result targetValue in input field and set input invalid when empty value', () => {
       const targetValueIputfield = fixture.debugElement.query(
         By.css('.targetValue-input')
       );
@@ -278,7 +278,7 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set keyresult description in text area and dont set input invalid when empty value', () => {
+    test('should set Key Result description in text area and dont set input invalid when empty value', () => {
       const descriptionTextArea = fixture.debugElement.query(
         By.css('.description-textarea')
       );
@@ -297,7 +297,7 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    test('should set keyresult owner in mat select and set it new on item change', async () => {
+    test('should set Key Result owner in mat select and set it new on item change', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="ownerId"]',
@@ -330,7 +330,7 @@ describe('KeyresultFormComponent', () => {
       expect(createbutton.nativeElement.disabled).toEqual(true);
     });
 
-    test('should save keyresult', () => {
+    test('should save Key Result', () => {
       const createbutton = fixture.debugElement.query(By.css('.create-button'));
 
       expect(component.keyResultForm.valid).toBeTruthy();
@@ -349,7 +349,7 @@ describe('KeyresultFormComponent', () => {
     });
   });
 
-  describe('KeyresultFormComponent Create KeyResult', () => {
+  describe('KeyresultFormComponent Create Key Result', () => {
     beforeEach(() => {
       mockUserService.getUsers.mockReturnValue(userList);
       mockObjectiveService.getObjectiveById.mockReturnValue(objective);
@@ -406,7 +406,7 @@ describe('KeyresultFormComponent', () => {
       expect(mockKeyResultService.getInitKeyResult).toHaveBeenCalled();
     });
 
-    test('should set init keyresult', () => {
+    test('should set init Key Result', () => {
       component.keyresult$.subscribe((keyresult) => {
         expect(keyresult.title).toEqual(initKeyResult.title);
         expect(keyresult.description).toEqual(initKeyResult.description);
@@ -419,7 +419,7 @@ describe('KeyresultFormComponent', () => {
       const titles = fixture.debugElement.queryAll(By.css('.title'));
       expect(titles.length).toEqual(3);
       expect(titles[0].nativeElement.textContent).toContain(
-        'Keyresult hinzufügen'
+        'Key Result hinzufügen'
       );
       expect(titles[1].nativeElement.textContent).toContain(
         'Objective Beschreibung'
@@ -503,7 +503,7 @@ describe('KeyresultFormComponent', () => {
       expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should be possible to set keyresult owner in mat select', async () => {
+    test('should be possible to set Key Result owner in mat select', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="ownerId"]',
@@ -520,7 +520,7 @@ describe('KeyresultFormComponent', () => {
       expect(await select.isOpen()).toBeFalsy();
     });
 
-    test('should save new keyresult', () => {
+    test('should save new Key Result', () => {
       component.keyResultForm = createKeyResultForm;
       fixture.detectChanges();
 

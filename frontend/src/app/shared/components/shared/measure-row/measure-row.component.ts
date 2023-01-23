@@ -91,7 +91,7 @@ export class MeasureRowComponent implements OnInit {
             this.measures$.next(data);
           });
       } else {
-        throw Error('KeyResult with Id ' + keyResultId + " doesn't exist");
+        throw Error('Key Result with Id ' + keyResultId + " doesn't exist");
       }
     });
   }

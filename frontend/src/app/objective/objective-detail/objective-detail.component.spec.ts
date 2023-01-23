@@ -54,13 +54,13 @@ describe('ObjectiveDetailComponent', () => {
   test('should have owner with right first- and lastname', () => {
     const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
     expect(ownerText.nativeElement.textContent).toEqual(
-      'Ziel Besitzer Alice Wunderland '
+      'Objective Besitzer Alice Wunderland '
     );
   });
 
   test('should have right table titles', () => {
     const spanTextes = fixture.debugElement.queryAll(By.css('span'));
-    expect(spanTextes[0].nativeElement.textContent).toEqual('KeyResult');
+    expect(spanTextes[0].nativeElement.textContent).toEqual('Key Result');
     expect(spanTextes[1].nativeElement.textContent).toEqual('Besitzer');
     expect(spanTextes[2].nativeElement.textContent).toEqual('Letzte Messung');
     expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');

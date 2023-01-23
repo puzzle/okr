@@ -161,7 +161,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should set keyresult', () => {
+    it('should set Key Result', () => {
       binaryKeyResult.subscribe((testKeyResult) => {
         component.keyresult$.subscribe((componentKeyResult) => {
           expect(testKeyResult).toEqual(componentKeyResult);
@@ -190,7 +190,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       );
     });
 
-    it('should have one key result description tag with right panel title', () => {
+    it('should have one Key Result description tag with right panel title', () => {
       const keyResultDescription = fixture.debugElement.queryAll(
         By.css('app-key-result-description')
       );
@@ -202,7 +202,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       );
     });
 
-    it('should have two mat accordion for keyresult description and measure row', () => {
+    it('should have two mat accordion for Key Result description and measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
@@ -314,7 +314,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       expect(titles[3].nativeElement.textContent).toContain('Massnahmen');
     });
 
-    it('should have keyresult unit in html', () => {
+    it('should have Key Result unit in html', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('BINARY');
     });

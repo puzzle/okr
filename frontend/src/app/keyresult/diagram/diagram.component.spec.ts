@@ -46,7 +46,7 @@ describe('DiagramComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get keyresult by id', () => {
+  it('should get Key Result by id', () => {
     expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledTimes(
       1
     );

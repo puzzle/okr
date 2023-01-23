@@ -40,7 +40,7 @@ describe('KeyResultOverviewComponent', () => {
       expect(strongs[1].nativeElement.textContent).toEqual('Messungszeitpunkt');
     });
 
-    test('should have keyresult description', () => {
+    test('should have Key Result description', () => {
       const paragraphs = fixture.debugElement.queryAll(By.css('p'));
       expect(paragraphs[1].nativeElement.textContent).toEqual(
         'This is the description'

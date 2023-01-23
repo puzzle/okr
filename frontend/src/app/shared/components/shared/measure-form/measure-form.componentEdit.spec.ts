@@ -173,7 +173,7 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    it('should have two mat accordion for keyresult description and measure row', () => {
+    it('should have two mat accordion for Key Result description and measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
@@ -205,16 +205,16 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    it('should set keyresult', () => {
+    it('should set Key Result', () => {
       component.keyresult$.subscribe((keyresult) => {
-        expect(keyresult.title).toContain('Keyresult 1');
+        expect(keyresult.title).toContain('Key Result 1');
         expect(keyresult.id).toContain(1);
       });
       expect(mockMeasureService.getMeasureById).toHaveBeenCalledWith(1);
       expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledWith(1);
     });
 
-    it('should set keyresult unit right', () => {
+    it('should set Key Result unit right', () => {
       expect(component.keyResultUnit).toContain('PERCENT');
     });
 
@@ -272,12 +272,12 @@ describe('MeasureFormComponent Edit', () => {
       expect(value.nativeElement.value).toEqual('42');
     });
 
-    it('should have keyresult unit', () => {
+    it('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('PERCENT');
     });
 
-    it('should be invalid when not matching pattern of keyresult unit', () => {
+    it('should be invalid when not matching pattern of Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('PERCENT');
       component.measureForm.get('value')?.setValue(333);

@@ -29,7 +29,7 @@ export class KeyResultDetailComponent implements OnInit {
         if (keyResultId) {
           return this.goalService.getGoalByKeyResultId(keyResultId);
         } else {
-          throw Error('KeyResult with Id ' + keyResultId + " doesn't exist");
+          throw Error('Key Result with Id ' + keyResultId + " doesn't exist");
         }
       })
     );

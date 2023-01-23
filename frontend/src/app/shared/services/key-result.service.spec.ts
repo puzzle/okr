@@ -26,7 +26,7 @@ describe('KeyResultService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should get KeyResults of Objective', (done) => {
+  test('should get Key Results of Objective', (done) => {
     service.getKeyResultsOfObjective(42).subscribe({
       next(response: KeyResultMeasure[]) {
         expect(response.length).toBe(3);

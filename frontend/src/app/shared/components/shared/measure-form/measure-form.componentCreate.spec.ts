@@ -205,7 +205,7 @@ describe('MeasureFormComponent Create', () => {
       );
     });
 
-    it('should have two mat accordion for keyresult description and measure row', () => {
+    it('should have two mat accordion for Key Result description and measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
@@ -249,7 +249,7 @@ describe('MeasureFormComponent Create', () => {
       expect(textareas[1].nativeElement.value).toContain('');
     });
 
-    it('should have keyresult unit', () => {
+    it('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
       expect(unit.nativeElement.textContent).toEqual('PERCENT');
     });

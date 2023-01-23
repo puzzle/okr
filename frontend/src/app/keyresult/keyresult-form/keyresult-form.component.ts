@@ -129,7 +129,7 @@ export class KeyresultFormComponent implements OnInit {
                 timeOut: 5000,
               }
             );
-            console.log('Can not save this keyresult: ', keyresult);
+            console.log('Can not save this Key Result: ', keyresult);
             return new Error('ups sommething happend');
           },
         })

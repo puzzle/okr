@@ -72,7 +72,7 @@ describe('MeasureFormComponent3', () => {
     error: jest.fn(),
   };
 
-  describe('Create throw error when keyresult id is null', () => {
+  describe('Create throw error when Key Result id is null', () => {
     beforeEach(() => {
       mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);

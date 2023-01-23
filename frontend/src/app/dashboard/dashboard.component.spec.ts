@@ -74,7 +74,7 @@ describe('DashboardComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should display Objectives und Keyresults headline', () => {
+  test('should display Objectives und Key Results headline', () => {
     expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
       'Objectives und Key Results'
     );

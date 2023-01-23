@@ -38,7 +38,7 @@ export class ObjectiveRowComponent implements OnInit {
   ngOnInit(): void {
     this.menuEntries = [
       {
-        displayName: 'KeyResult hinzufügen',
+        displayName: 'Key Result hinzufügen',
         showDialog: false,
         routeLine: 'objective/' + this.objective.id + '/keyresult/new',
       },

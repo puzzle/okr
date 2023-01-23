@@ -79,10 +79,10 @@ describe('KeyResultKeyResultRowComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should have objetive title as class objectiveTitle', () => {
+    test('should have objective title as class objectiveTitle', () => {
       expect(
         fixture.nativeElement.querySelector('mat-panel-title').textContent
-      ).toEqual('Keyresult 1');
+      ).toEqual('Key Result 1');
     });
 
     test('should have right owner', () => {
@@ -113,7 +113,7 @@ describe('KeyResultKeyResultRowComponent', () => {
       );
     });
 
-    test('should open dialog when deleting keyresult', () => {
+    test('should open dialog when deleting Key Result', () => {
       let button = fixture.debugElement.nativeElement.querySelector(
         'button[mat-icon-button]'
       );
@@ -129,12 +129,12 @@ describe('KeyResultKeyResultRowComponent', () => {
       [
         [
           {
-            displayName: 'KeyResult bearbeiten',
+            displayName: 'Key Result bearbeiten',
             showDialog: false,
             routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
           },
           {
-            displayName: 'KeyResult duplizieren',
+            displayName: 'Key Result duplizieren',
             showDialog: false,
             routeLine: 'objective/edit',
           },
@@ -143,7 +143,7 @@ describe('KeyResultKeyResultRowComponent', () => {
             showDialog: false,
             routeLine: 'result/add',
           },
-          { displayName: 'KeyResult löschen', showDialog: true },
+          { displayName: 'Key Result löschen', showDialog: true },
           {
             displayName: 'Messung hinzufügen',
             showDialog: false,

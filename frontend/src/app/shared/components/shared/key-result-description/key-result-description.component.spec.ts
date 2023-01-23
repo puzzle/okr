@@ -71,27 +71,29 @@ describe('KeyResultDescriptionComponent', () => {
     test('should set title key result title', () => {
       const title = fixture.debugElement.query(By.css('.key-result-title'));
       expect(title.nativeElement.textContent).toContain(
-        'Key Result KeyResult title'
+        'Key Result Key Result title'
       );
     });
 
-    test('should set title from keyresult', () => {
+    test('should set title from Key Result', () => {
       const description = fixture.debugElement.query(
         By.css('.key-result-description')
       );
       expect(description.nativeElement.textContent).toContain(
-        'Beschreibung KeyResult description'
+        'Beschreibung Key Result description'
       );
     });
 
     test('should set teamname from objective', () => {
-      const teamname = fixture.debugElement.query(By.css('.key-result-Ziel'));
+      const teamname = fixture.debugElement.query(
+        By.css('.key-result-objective')
+      );
       expect(teamname.nativeElement.textContent).toContain(
         'Team 1 Objective Objective title'
       );
     });
 
-    test('should set quarter from keyresult', () => {
+    test('should set quarter from Key Result', () => {
       const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
       expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
     });

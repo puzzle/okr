@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import {
   KeyResultService,
   Measure,
@@ -91,7 +91,7 @@ export class MeasureRowComponent implements OnInit {
             this.measures$.next(data);
           });
       } else {
-        throw Error('KeyResult with Id ' + keyResultId + " doesn't exist");
+        throw Error('Key Result with Id ' + keyResultId + " doesn't exist");
       }
     });
   }

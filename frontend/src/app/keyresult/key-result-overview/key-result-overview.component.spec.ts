@@ -5,6 +5,7 @@ import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('KeyResultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
@@ -14,7 +15,7 @@ describe('KeyResultOverviewComponent', () => {
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [MatCardModule],
+        imports: [MatCardModule, RouterTestingModule],
         declarations: [KeyResultOverviewComponent],
       }).compileComponents();
 
@@ -60,6 +61,14 @@ describe('KeyResultOverviewComponent', () => {
       );
       expect(lastMeasureDate.nativeElement.textContent).toEqual(
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+      );
+    });
+
+    test('should hava correct link', () => {
+      const button = fixture.debugElement.query(By.css('button'));
+
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        '/keyresults,1'
       );
     });
   });

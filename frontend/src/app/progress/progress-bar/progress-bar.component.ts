@@ -1,13 +1,12 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { SvgService } from '../../shared/services/svg/svg.service';
 
 @Component({
   selector: 'app-progress-bar',
@@ -15,9 +14,8 @@ import { SvgService } from '../../shared/services/svg/svg.service';
   styleUrls: ['./progress-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressBarComponent implements OnInit {
-  @ViewChild('progressbar')
-  progressBar?: ElementRef<HTMLDivElement>;
+export class ProgressBarComponent implements OnInit, OnChanges {
+  @ViewChild('progressbar') progressBar?: ElementRef;
 
   @Input() value!: number;
   @Input() colorLow!: string;
@@ -25,63 +23,25 @@ export class ProgressBarComponent implements OnInit {
   @Input() colorHigh!: string;
   @Input() limitLow!: number;
   @Input() limitHigh!: number;
+  color!: string;
 
-  constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private svgService: SvgService
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.paintProgressBar();
+    this.setColor();
   }
 
-  private static stringToSvgElement(str: string): SVGElement {
-    let ele = document.createElement('div');
-    ele.innerHTML = str;
-    return ele.firstElementChild as SVGElement;
+  ngOnChanges(): void {
+    this.setColor();
   }
 
-  public addSvgToContainer(
-    svg: SVGElement,
-    value: number,
-    colorLow: string,
-    colorMiddle: string,
-    colorHigh: string,
-    limitLow: number,
-    limitHigh: number
-  ): void {
-    svg.setAttribute('value', value.toString());
-    if (value >= limitHigh) {
-      svg
-        .querySelector('#progress')!
-        .setAttribute('style', 'fill: ' + colorHigh);
-    } else if (value < limitLow) {
-      svg
-        .querySelector('#progress')!
-        .setAttribute('style', 'fill: ' + colorLow);
+  public setColor() {
+    if (this.value >= this.limitHigh) {
+      this.color = this.colorHigh;
+    } else if (this.value < this.limitLow) {
+      this.color = this.colorLow;
     } else {
-      svg
-        .querySelector('#progress')!
-        .setAttribute('style', 'fill: ' + colorMiddle);
+      this.color = this.colorMiddle;
     }
-    svg.querySelector('#progress')!.setAttribute('width', value.toString());
-    svg.classList.add('progress-bar');
-
-    this.progressBar!.nativeElement.append(svg);
-    this.changeDetectorRef.markForCheck();
-  }
-
-  public paintProgressBar(svgFilename: string = 'progress_bar.svg') {
-    this.svgService.getSvg(svgFilename).subscribe((data: string) => {
-      this.addSvgToContainer(
-        ProgressBarComponent.stringToSvgElement(data),
-        this.value,
-        this.colorLow,
-        this.colorMiddle,
-        this.colorHigh,
-        this.limitLow,
-        this.limitHigh
-      );
-    });
   }
 }

@@ -42,6 +42,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -233,23 +235,20 @@ describe('MeasureFormComponent Edit', () => {
 
     it('should set measure and measureform', () => {
       component.measure$.subscribe((measure) => {
-        expect(measure.id).toEqual(1);
-        expect(measure.value).toEqual(42);
-        expect(measure.measureDate).toEqual(
-          new Date('2023-01-05T00:00:00.000Z')
-        );
-
-        expect(component.measureForm.get('value')?.value).toEqual(33);
-        expect(component.measureForm.get('measureDate')?.value).toEqual(
-          new Date('2023-01-04')
-        );
-        expect(component.measureForm.get('changeInfo')?.value).toEqual(
-          'Changeinfo'
-        );
-        expect(component.measureForm.get('initiatives')?.value).toEqual(
-          'Inititatives'
-        );
+        measure1.subscribe((testMeasure) => {
+          expect(measure).toEqual(testMeasure);
+        });
       });
+      expect(component.measureForm.get('value')?.value).toEqual(42);
+      expect(component.measureForm.get('measureDate')?.value).toEqual(
+        new Date('2023-01-10T22:00:00.000Z')
+      );
+      expect(component.measureForm.get('changeInfo')?.value).toEqual(
+        'Changeinfo 1'
+      );
+      expect(component.measureForm.get('initiatives')?.value).toEqual(
+        'Initiatives 1'
+      );
     });
 
     it('should have 4 titles', () => {
@@ -298,7 +297,44 @@ describe('MeasureFormComponent Edit', () => {
       const datepicker = fixture.debugElement.query(
         By.css('.datepicker-input')
       );
-      expect(datepicker.nativeElement.value).toEqual('1/5/2023');
+      expect(datepicker.nativeElement.value).toEqual('1/10/2023');
+    });
+
+    it('should update datepicker with right value from measureForm wintertime', () => {
+      const datepicker = fixture.debugElement.query(
+        By.css('.datepicker-input')
+      );
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-02-23T23:00:00Z'));
+      fixture.detectChanges();
+
+      expect(datepicker.nativeElement.value).toEqual('2/24/2023');
+    });
+
+    it('should update datepicker with right value from measureForm summertime', () => {
+      const datepicker = fixture.debugElement.query(
+        By.css('.datepicker-input')
+      );
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-07-01T22:00:00Z'));
+      fixture.detectChanges();
+
+      expect(datepicker.nativeElement.value).toEqual('7/2/2023');
+    });
+
+    it('should update measureDate with datepicker', async () => {
+      const datePickerInputHarnes =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture)
+          .getAllHarnesses(MatDatepickerInputHarness)
+          .then((datepickerInputHarnesses) => datepickerInputHarnesses[0]);
+
+      datePickerInputHarnes.setValue('22/12/2022');
+
+      expect(component.measureForm.get('measureDate')?.value).toEqual(
+        new Date('2023-01-10T22:00:00.000Z')
+      );
     });
 
     it('should have changeinfo', () => {

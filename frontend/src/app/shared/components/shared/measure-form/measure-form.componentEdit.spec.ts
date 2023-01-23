@@ -44,6 +44,11 @@ import * as goalsData from '../../../testing/mock-data/goals.json';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
+import { Goal, GoalService } from '../../../services/goal.service';
+import * as goalsData from '../../../testing/mock-data/goals.json';
+import * as measureData from '../../../testing/mock-data/measure.json';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;

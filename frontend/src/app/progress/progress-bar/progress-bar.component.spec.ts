@@ -31,7 +31,7 @@ describe('ProgressBarComponent', () => {
   test('should detect colorHigh', () => {
     component.value = 80;
 
-    component.detectColor();
+    component.setColor();
 
     expect(component.color).toEqual('#29DF0B');
   });
@@ -39,7 +39,7 @@ describe('ProgressBarComponent', () => {
   test('should detect colorLow', () => {
     component.value = 20;
 
-    component.detectColor();
+    component.setColor();
 
     expect(component.color).toEqual('#FF1A0C');
   });
@@ -47,7 +47,7 @@ describe('ProgressBarComponent', () => {
   test('should detect colorMiddle', () => {
     component.value = 50;
 
-    component.detectColor();
+    component.setColor();
 
     expect(component.color).toEqual('#FFA012');
   });

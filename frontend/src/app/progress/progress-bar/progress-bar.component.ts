@@ -28,14 +28,14 @@ export class ProgressBarComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit(): void {
-    this.detectColor();
+    this.setColor();
   }
 
   ngOnChanges(): void {
-    this.detectColor();
+    this.setColor();
   }
 
-  public detectColor() {
+  public setColor() {
     if (this.value >= this.limitHigh) {
       this.color = this.colorHigh;
     } else if (this.value < this.limitLow) {

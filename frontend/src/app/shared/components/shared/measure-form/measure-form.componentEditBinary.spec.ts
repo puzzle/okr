@@ -47,6 +47,10 @@ import { DiagramComponent } from '../../../../keyresult/diagram/diagram.componen
 import * as measureData from '../../../testing/mock-data/measure.json';
 import { MeasureValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import {
+  QuarterService,
+  StartEndDateDTO,
+} from '../../../services/quarter.service';
 
 describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
@@ -83,6 +87,15 @@ describe('MeasureFormComponent Edit Binary', () => {
     error: jest.fn(),
   };
 
+  let startAndEndDate: StartEndDateDTO = {
+    startDate: new Date(Date.UTC(2020, 9, 1)),
+    endDate: new Date(Date.UTC(2028, 11, 31)),
+  };
+
+  const mockQuarterService = {
+    getStartAndEndDateOfKeyresult: jest.fn(),
+  };
+
   describe('Unit Binary edit Measure', () => {
     let loader: HarnessLoader;
     beforeEach(() => {
@@ -91,6 +104,9 @@ describe('MeasureFormComponent Edit Binary', () => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockMeasureService.getMeasureById.mockReturnValue(binaryMeasure);
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
+        of(startAndEndDate)
+      );
 
       TestBed.configureTestingModule({
         declarations: [
@@ -130,6 +146,7 @@ describe('MeasureFormComponent Edit Binary', () => {
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
           { provide: MatDialog, useValue: {} },
+          { provide: QuarterService, useValue: mockQuarterService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -159,6 +176,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       mockMeasureService.getMeasureById.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReset();
     });
 
     it('should create', () => {
@@ -273,7 +291,7 @@ describe('MeasureFormComponent Edit Binary', () => {
 
     it('should have datepicker value', () => {
       const datepicker = fixture.debugElement.query(
-        By.css('.datepicker-input')
+        By.css('input[formControlName="measureDate"]')
       );
       expect(datepicker.nativeElement.value).toEqual('1/5/2023');
     });

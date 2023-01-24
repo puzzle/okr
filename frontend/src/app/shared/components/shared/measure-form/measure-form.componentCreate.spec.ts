@@ -67,10 +67,6 @@ describe('MeasureFormComponent Create', () => {
   let measure1 = of(loadMeasure('measure'));
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
-  let startAndEndDate: StartEndDateDTO = {
-    startDate: new Date(Date.UTC(2022, 9, 1)),
-    endDate: new Date(Date.UTC(2022, 11, 31)),
-  };
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
   };
@@ -93,6 +89,10 @@ describe('MeasureFormComponent Create', () => {
     error: jest.fn(),
   };
 
+  let startAndEndDate: StartEndDateDTO = {
+    startDate: new Date(Date.UTC(2022, 9, 1)),
+    endDate: new Date(Date.UTC(2022, 11, 31)),
+  };
   const mockQuarterService = {
     getStartAndEndDateOfKeyresult: jest.fn(),
   };

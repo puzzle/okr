@@ -90,7 +90,7 @@ export class MeasureFormComponent implements OnInit {
 
   correctValueForBinaryDataToSlider(measureValue: number | boolean) {
     if (this.keyResultUnit === 'BINARY') {
-      measureValue === 1 ? (measureValue = true) : (measureValue = false);
+      measureValue = measureValue === 1;
     }
     return measureValue;
   }

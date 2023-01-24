@@ -41,8 +41,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
+import {
+  QuarterService,
+  StartEndDateDTO,
+} from '../../../services/quarter.service';
 import { MeasureValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
@@ -56,6 +58,11 @@ describe('MeasureFormComponent Edit', () => {
   let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
   let goal: Observable<Goal> = of(goalsData.goals[0]);
   let measures: Observable<any[]> = of(measureData.measures);
+
+  let startAndEndDate: StartEndDateDTO = {
+    startDate: new Date(Date.UTC(2020, 9, 1)),
+    endDate: new Date(Date.UTC(2028, 11, 31)),
+  };
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -80,6 +87,10 @@ describe('MeasureFormComponent Edit', () => {
     error: jest.fn(),
   };
 
+  const mockQuarterService = {
+    getStartAndEndDateOfKeyresult: jest.fn(),
+  };
+
   describe('Edit Measure', () => {
     beforeEach(() => {
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -87,6 +98,9 @@ describe('MeasureFormComponent Edit', () => {
       mockMeasureService.getMeasureById.mockReturnValue(measure1);
       mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
+        of(startAndEndDate)
+      );
 
       TestBed.configureTestingModule({
         declarations: [
@@ -123,8 +137,9 @@ describe('MeasureFormComponent Edit', () => {
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
-          { provide: MatDialog, useValue: {} },
           { provide: GoalService, useValue: mockGoalService },
+          { provide: QuarterService, useValue: mockQuarterService },
+          { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -153,6 +168,7 @@ describe('MeasureFormComponent Edit', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReset();
       mockGoalService.getGoalByKeyResultId.mockReset();
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReset();
     });
 
     it('should create', () => {
@@ -299,7 +315,7 @@ describe('MeasureFormComponent Edit', () => {
 
     it('should have datepicker value', () => {
       const datepicker = fixture.debugElement.query(
-        By.css('.datepicker-input')
+        By.css('input[formControlName="measureDate"]')
       );
       expect(datepicker.nativeElement.value).toEqual('1/10/2023');
     });

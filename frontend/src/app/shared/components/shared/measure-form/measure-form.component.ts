@@ -12,6 +12,10 @@ import { Measure, MeasureService } from '../../../services/measure.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Goal, GoalService } from '../../../services/goal.service';
+import {
+  QuarterService,
+  StartEndDateDTO,
+} from '../../../services/quarter.service';
 
 @Component({
   selector: 'app-measure-form',
@@ -21,6 +25,7 @@ import { Goal, GoalService } from '../../../services/goal.service';
 export class MeasureFormComponent implements OnInit {
   measure$!: Observable<Measure>;
   keyResultUnit!: string;
+  startEndDate$!: Observable<StartEndDateDTO>;
 
   measureForm = new FormGroup({
     value: new FormControl<number | boolean>(0, [Validators.required]),
@@ -39,7 +44,8 @@ export class MeasureFormComponent implements OnInit {
     private measureService: MeasureService,
     private toastr: ToastrService,
     private location: Location,
-    private goalService: GoalService
+    private goalService: GoalService,
+    private quarterService: QuarterService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +55,10 @@ export class MeasureFormComponent implements OnInit {
 
     let measureId = getNumberOrNull(
       this.route.snapshot.paramMap.get('measureId')
+    );
+
+    this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(
+      keyResultId!
     );
 
     this.create = !measureId;

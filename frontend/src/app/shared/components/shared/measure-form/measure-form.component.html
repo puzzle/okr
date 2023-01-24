@@ -78,6 +78,7 @@
     </div>
 
     <div
+      *ngIf="startEndDate$ | async as startEndDate"
       class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right"
     >
       <p class="fw-bold">Datum der Messung</p>
@@ -85,7 +86,8 @@
         <input
           matInput
           [matDatepicker]="picker"
-          [min]=""
+          [min]="startEndDate.startDate"
+          [max]="startEndDate.endDate"
           formControlName="measureDate"
           class="datepicker-input"
         />

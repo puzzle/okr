@@ -6,6 +6,11 @@ export interface Quarter {
   id: number;
   label: string;
 }
+
+export interface StartEndDateDTO {
+  startDate: Date;
+  endDate: Date;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -14,5 +19,13 @@ export class QuarterService {
 
   public getQuarters(): Observable<Quarter[]> {
     return this.httpClient.get<Quarter[]>('api/v1/quarters');
+  }
+
+  public getStartAndEndDateOfKeyresult(
+    keyResultId: number
+  ): Observable<StartEndDateDTO> {
+    return this.httpClient.get<StartEndDateDTO>(
+      'api/v1/quarters/dates/keyresult/' + keyResultId
+    );
   }
 }

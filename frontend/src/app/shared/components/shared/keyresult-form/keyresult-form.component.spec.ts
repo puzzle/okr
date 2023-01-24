@@ -533,6 +533,58 @@ describe('KeyresultFormComponent', () => {
         true
       );
     });
+
+    test('should be invalid form if unit is changed and values do not match regex', async () => {
+      //Set Values
+      component.keyResultForm.controls['ownerId'].setValue(1);
+      component.keyResultForm.controls['title'].setValue('Title');
+      component.keyResultForm.controls['expectedEvolution'].setValue(
+        'INCREASE'
+      );
+      component.keyResultForm.controls['description'].setValue('Description');
+      component.keyResultForm.controls['targetValue'].setValue(1000);
+      component.keyResultForm.controls['basicValue'].setValue(50);
+
+      //Chose PERCENT as unit and check if form is now invalid
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'PERCENT' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+
+      //Change unit to binary which accepts every number
+      await select.open();
+      bugOption = await select.getOptions({ text: 'BINARY' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be invalid form if targetValue or basicValue is a double', async () => {
+      //Set Values
+      component.keyResultForm.controls['ownerId'].setValue(3);
+      component.keyResultForm.controls['title'].setValue('Title');
+      component.keyResultForm.controls['expectedEvolution'].setValue(
+        'INCREASE'
+      );
+      component.keyResultForm.controls['description'].setValue('Description');
+      component.keyResultForm.controls['targetValue'].setValue(10.5);
+      component.keyResultForm.controls['basicValue'].setValue(57.897);
+
+      //Chose unit and check validation of form
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'NUMBER' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+    });
   });
 
   describe('KeyresultFormComponent with no id in url', () => {

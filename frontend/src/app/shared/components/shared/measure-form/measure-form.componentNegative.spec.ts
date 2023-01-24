@@ -38,6 +38,7 @@ import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { MeasureValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent3', () => {
   let component: MeasureFormComponent;
@@ -103,6 +104,9 @@ describe('MeasureFormComponent3', () => {
           NoopAnimationsModule,
           RouterLinkWithHref,
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,

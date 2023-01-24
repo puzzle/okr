@@ -26,6 +26,7 @@ import * as objectivesData from '../../../testing/mock-data/objectives.json';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../shared.module';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
@@ -97,6 +98,9 @@ describe('KeyresultFormComponent', () => {
         declarations: [KeyresultFormComponent],
         imports: [
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
           RouterTestingModule,
           SharedModule,
           HttpClientTestingModule,
@@ -116,7 +120,6 @@ describe('KeyresultFormComponent', () => {
           },
         ],
       }).compileComponents();
-
       fixture = TestBed.createComponent(KeyresultFormComponent);
       loader = TestbedHarnessEnvironment.loader(fixture);
       component = fixture.componentInstance;
@@ -177,7 +180,7 @@ describe('KeyresultFormComponent', () => {
       const teamNameTitle = fixture.debugElement.query(
         By.css('.description-title')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Description');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-description')
       );
@@ -219,13 +222,13 @@ describe('KeyresultFormComponent', () => {
           selector: 'mat-select[formControlName="unit"]',
         })
       );
-      expect(await select.getValueText()).toEqual('PERCENT');
+      expect(await select.getValueText()).toEqual('PROZENT');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'NUMBER' });
+      const bugOption = await select.getOptions({ text: 'ZAHL' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('NUMBER');
+      expect(await select.getValueText()).toEqual('ZAHL');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -236,13 +239,13 @@ describe('KeyresultFormComponent', () => {
           selector: 'mat-select[formControlName="expectedEvolution"]',
         })
       );
-      expect(await select.getValueText()).toEqual('INCREASE');
+      expect(await select.getValueText()).toEqual('ERHÖHT');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('DECREASE');
+      expect(await select.getValueText()).toEqual('VERMINDERT');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -360,6 +363,9 @@ describe('KeyresultFormComponent', () => {
         declarations: [KeyresultFormComponent],
         imports: [
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
           RouterTestingModule,
           SharedModule,
           HttpClientTestingModule,
@@ -450,7 +456,7 @@ describe('KeyresultFormComponent', () => {
       const teamNameTitle = fixture.debugElement.query(
         By.css('.description-title')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Description');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
       const objectiveTeamName = fixture.debugElement.query(
         By.css('.objective-description')
       );
@@ -494,10 +500,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('DECREASE');
+      expect(await select.getValueText()).toEqual('VERMINDERT');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -639,6 +645,9 @@ describe('KeyresultFormComponent', () => {
         declarations: [KeyresultFormComponent],
         imports: [
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
           RouterTestingModule,
           SharedModule,
           HttpClientTestingModule,

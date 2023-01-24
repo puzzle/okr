@@ -163,6 +163,10 @@ export class KeyresultFormComponent implements OnInit {
         break;
       }
     }
+    if (this.keyResultForm.controls['unit'].value == 'BINARY') {
+      this.keyResultForm.controls['basicValue'].disable();
+      this.keyResultForm.controls['targetValue'].disable();
+    }
     this.setValidatorsWithRegex(regex);
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();
     this.keyResultForm.controls['targetValue'].updateValueAndValidity();

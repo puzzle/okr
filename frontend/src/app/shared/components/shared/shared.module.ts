@@ -20,6 +20,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MeasureValueValidator } from '../../validators';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MeasureValueValidator } from '../../validators';
     RouterModule,
     MatSlideToggleModule,
     MatSelectModule,
+    TranslateModule,
   ],
   exports: [MeasureValueValidator],
 })

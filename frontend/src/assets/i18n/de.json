@@ -1,0 +1,13 @@
+{
+  "EXPECTED_EVOLUTION": {
+    "INCREASE": "ERHÖHT",
+    "DECREASE": "VERMINDERT",
+    "CONSTANT": "KONSTANT"
+  },
+  "UNIT": {
+    "PERCENT": "PROZENT",
+    "CHF": "CHF",
+    "NUMBER": "ZAHL",
+    "BINARY": "BINÄR"
+  }
+}

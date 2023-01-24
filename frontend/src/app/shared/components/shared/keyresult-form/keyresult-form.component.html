@@ -14,7 +14,7 @@
   >
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Title</p>
+        <p class="fw-bold max-content">Titel</p>
       </span>
 
       <p class="w-100 objective-title">
@@ -34,7 +34,7 @@
 
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content description-title">Description</p>
+        <p class="fw-bold max-content description-title">Beschreibung</p>
       </span>
 
       <p class="w-100 objective-description">
@@ -99,7 +99,7 @@
             class="unit-select"
           >
             <mat-option *ngFor="let unit of unit$" [value]="unit">
-              {{ unit }}
+              {{ "UNIT." + unit | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -121,7 +121,7 @@
               *ngFor="let evolution of expectedEvolution$"
               [value]="evolution"
             >
-              {{ evolution }}
+              {{ "EXPECTED_EVOLUTION." + evolution | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>

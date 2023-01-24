@@ -17,6 +17,7 @@ import { DiagramComponent } from './diagram/diagram.component';
 import { ProgressModule } from '../progress/progress.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeyResultOverviewComponent } from './key-result-overview/key-result-overview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { KeyResultOverviewComponent } from './key-result-overview/key-result-ove
     MatInputModule,
     MatSelectModule,
     ProgressModule,
+    TranslateModule,
   ],
 })
 export class KeyresultModule {}

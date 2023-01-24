@@ -94,7 +94,6 @@ export class KeyresultFormComponent implements OnInit {
         }
       })
     );
-
     this.keyresult$.subscribe((keyresult) => {
       const {
         id,

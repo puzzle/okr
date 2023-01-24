@@ -13,14 +13,14 @@ public class KeyResultMeasureDto {
     private String ownerLastname;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
-    private Long basicValue;
-    private Long targetValue;
+    private Double basicValue;
+    private Double targetValue;
     private MeasureDto measure;
     private Long progress;
 
     public KeyResultMeasureDto(Long id, Long objectiveId, String title, String description, Long ownerId,
             String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
-            Long basicValue, Long targetValue, MeasureDto measureDto, Long progress) {
+            Double basicValue, Double targetValue, MeasureDto measureDto, Long progress) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -108,19 +108,19 @@ public class KeyResultMeasureDto {
         this.unit = unit;
     }
 
-    public Long getBasicValue() {
+    public Double getBasicValue() {
         return basicValue;
     }
 
-    public void setBasicValue(Long basicValue) {
+    public void setBasicValue(Double basicValue) {
         this.basicValue = basicValue;
     }
 
-    public Long getTargetValue() {
+    public Double getTargetValue() {
         return targetValue;
     }
 
-    public void setTargetValue(Long targetValue) {
+    public void setTargetValue(Double targetValue) {
         this.targetValue = targetValue;
     }
 

@@ -46,17 +46,17 @@ class KeyResultControllerIT {
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static Measure measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult1).withCreatedBy(user)
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1").withInitiatives("Initiatives1")
-            .withValue(23).withMeasureDate(Instant.parse("2021-11-03T05:55:00.00Z")).build();
+            .withValue(23D).withMeasureDate(Instant.parse("2021-11-03T05:55:00.00Z")).build();
     static Measure measure2 = Measure.Builder.builder().withId(4L).withKeyResult(keyResult1).withCreatedBy(user)
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2")
-            .withValue(12).withMeasureDate(Instant.parse("2022-08-29T22:44:00.00Z")).build();
+            .withValue(12D).withMeasureDate(Instant.parse("2022-08-29T22:44:00.00Z")).build();
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX,
+    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34D, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX,
             Instant.parse("2022-03-24T18:45:00.00Z"));
-    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX,
+    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12D, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX,
             Instant.parse("2022-10-18T10:33:00.00Z"));
     static KeyResultDto keyResultDto = new KeyResultDto(5L, 5L, "Keyresult", "", 5L, "", "", ExpectedEvolution.INCREASE,
-            Unit.PERCENT, 0L, 1L, 0L);
+            Unit.PERCENT, 0D, 1D, 0L);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static KeyResult keyResult = KeyResult.Builder.builder().withId(5L).withTitle("test").withObjective(objective)
             .withOwner(user).build();
@@ -137,7 +137,7 @@ class KeyResultControllerIT {
     @Test
     void shouldGetKeyresultWithId() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
         BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
 
@@ -161,7 +161,7 @@ class KeyResultControllerIT {
     void shouldReturnUpdatedKeyResult() throws Exception {
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withTitle("Updated Keyresult 1").build();
         KeyResultDto testKeyResult = new KeyResultDto(1L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
 
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
@@ -186,7 +186,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResult() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
 
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
@@ -203,7 +203,7 @@ class KeyResultControllerIT {
     @Test
     void createKeyResultWithEnumKeys() throws Exception {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
-                ExpectedEvolution.INCREASE, Unit.PERCENT, 4L, 12L, 0L);
+                ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
 
         BDDMockito.given(this.keyResultService.getOwnerById(5)).willReturn(user);
         BDDMockito.given(this.keyResultService.getObjectivebyId(5)).willReturn(objective);
@@ -232,11 +232,11 @@ class KeyResultControllerIT {
 
         mvc.perform(get("/api/v1/keyresults/5/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].value", Is.is(34)))
+                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].value", Is.is(34D)))
                 .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdById", Is.is(1)))
                 .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo1")))
                 .andExpect(jsonPath("$[0].initiatives", Is.is("Ininitatives1")))
-                .andExpect(jsonPath("$[1].id", Is.is(4))).andExpect(jsonPath("$[1].value", Is.is(12)))
+                .andExpect(jsonPath("$[1].id", Is.is(4))).andExpect(jsonPath("$[1].value", Is.is(12D)))
                 .andExpect(jsonPath("$[1].createdById", Is.is(1)))
                 .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo2")))
                 .andExpect(jsonPath("$[1].initiatives", Is.is("Ininitatives2")))

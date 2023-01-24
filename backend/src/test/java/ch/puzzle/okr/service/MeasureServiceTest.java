@@ -45,9 +45,9 @@ class MeasureServiceTest {
         this.measure = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
     }

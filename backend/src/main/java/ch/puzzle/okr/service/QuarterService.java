@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -16,7 +17,6 @@ import java.util.stream.IntStream;
 public class QuarterService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
 
-    private final KeyResultService keyResultService;
     static {
         yearToBusinessQuarterMap.put(1, 3);
         yearToBusinessQuarterMap.put(2, 4);
@@ -24,6 +24,7 @@ public class QuarterService {
         yearToBusinessQuarterMap.put(4, 2);
     }
 
+    private final KeyResultService keyResultService;
     private final QuarterRepository quarterRepository;
     public YearMonth now;
 
@@ -96,20 +97,21 @@ public class QuarterService {
         KeyResult keyResult = this.keyResultService.getKeyResultById(keyResultId);
         String quarterLabel = keyResult.getObjective().getQuarter().getLabel();
 
-        YearMonth endYearMonth = getYearMonthFromLabel(quarterLabel);
-        YearMonth startYearMonth = endYearMonth.minusMonths(2);
+        YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);
+        YearMonth endYearMonth = startYearMonth.plusMonths(2);
         LocalDate startDate = LocalDate.of(startYearMonth.getYear(), startYearMonth.getMonthValue(), 1);
         LocalDate endDate = LocalDate.of(endYearMonth.getYear(), endYearMonth.getMonthValue(),
                 endYearMonth.lengthOfMonth());
         return StartEndDateDTO.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
     }
 
-    private YearMonth getYearMonthFromLabel(String quarterLabel) {
+    protected YearMonth getYearMonthFromLabel(String quarterLabel) {
         quarterLabel = quarterLabel.trim().replace("GJ ", "");
         int quarter = Integer.parseInt(quarterLabel.substring(quarterLabel.length() - 1));
-        int year = Integer.parseInt(quarterLabel.substring(0, 2));
         int yearQuarter = yearToBusinessQuarterMap.get(quarter);
+        int year = Integer.parseInt(quarterLabel.substring(0, 2));
+        year = quarter > 2 ? year + 1 : year;
         int month = yearQuarter * 3;
-        return YearMonth.of(year + 2000, month);
+        return YearMonth.of(year + 2000, month).minusMonths(2);
     }
 }

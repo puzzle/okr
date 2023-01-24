@@ -1,6 +1,7 @@
 package ch.puzzle.okr.dto;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class StartEndDateDTO {
     private LocalDate startDate;
@@ -56,5 +57,19 @@ public class StartEndDateDTO {
         public StartEndDateDTO build() {
             return new StartEndDateDTO(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof StartEndDateDTO that))
+            return false;
+        return Objects.equals(getStartDate(), that.getStartDate()) && Objects.equals(getEndDate(), that.getEndDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStartDate(), getEndDate());
     }
 }

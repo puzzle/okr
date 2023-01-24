@@ -35,6 +35,7 @@ public class QuarterController {
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getOrCreateQuarters());
     }
 
+    @Operation(summary = "Get start and end date of quarter by keyResultId", description = "Get start and end date of quarter by keyResultId")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns a object containing the start date and the end date of quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = StartEndDateDTO.class)) }),

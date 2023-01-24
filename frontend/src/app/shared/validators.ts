@@ -5,7 +5,7 @@ import {
   Validator,
 } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
-import { BINARY_REGEX, NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
+import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
 @Directive({
   selector: '[measureValueValidator]',
@@ -23,9 +23,6 @@ export class MeasureValueValidator implements Validator {
   validate(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     switch (this.unit) {
-      case 'BINARY': {
-        return this.proceedRegex(value, BINARY_REGEX);
-      }
       case 'PERCENT': {
         return this.proceedRegex(value, PERCENT_REGEX);
       }

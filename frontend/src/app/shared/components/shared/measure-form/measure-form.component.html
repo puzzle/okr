@@ -85,8 +85,6 @@
         *ngIf="startEndDate$ | async as startEndDate"
         appearance="fill"
       >
-        <p>{{ startEndDate.startDate }}</p>
-        <p>{{ startEndDate.endDate }}</p>
         <input
           matInput
           [min]="startEndDate.startDate"
@@ -94,7 +92,10 @@
           [matDatepicker]="picker"
           formControlName="measureDate"
         />
-
+        <mat-hint
+          >{{ startEndDate.startDate | date: "dd.MM.yyyy" }} –
+          {{ startEndDate.endDate | date: "dd.MM.yyyy" }}</mat-hint
+        >
         <mat-label>Datum der Messung</mat-label>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

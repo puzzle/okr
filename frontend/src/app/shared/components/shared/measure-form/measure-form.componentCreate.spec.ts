@@ -68,8 +68,8 @@ describe('MeasureFormComponent Create', () => {
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
   let startAndEndDate: StartEndDateDTO = {
-    startDate: new Date(2021, 7, 1),
-    endDate: new Date(2021, 9, 30),
+    startDate: new Date(Date.UTC(2022, 9, 1)),
+    endDate: new Date(Date.UTC(2022, 11, 31)),
   };
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
@@ -263,8 +263,8 @@ describe('MeasureFormComponent Create', () => {
       );
 
       expect(datepicker.nativeElement.value).toEqual('12/23/2022');
-      expect(datepicker.attributes['min']).toEqual('2021-07-31');
-      expect(datepicker.attributes['max']).toEqual('2021-10-29');
+      expect(datepicker.attributes['min']).toEqual('2022-10-01');
+      expect(datepicker.attributes['max']).toEqual('2022-12-31');
 
       const textareas = fixture.debugElement.queryAll(
         By.css('.description-textarea')

@@ -1,33 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyresultFormComponent } from './keyresult-form.component';
-import { User, UserService } from '../../shared/services/user.service';
+import { User, UserService } from '../../../services/user.service';
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
+} from '../../../services/key-result.service';
 import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KeyresultModule } from '../keyresult.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
   Objective,
   ObjectiveService,
-} from '../../shared/services/objective.service';
+} from '../../../services/objective.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
-import * as usersData from '../../shared/testing/mock-data/users.json';
-import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
+import * as keyresultData from '../../../testing/mock-data/keyresults.json';
+import * as usersData from '../../../testing/mock-data/users.json';
+import * as objectivesData from '../../../testing/mock-data/objectives.json';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedModule } from '../shared.module';
 
-//Create ToastrService object, insert it in providers and then check if calls to it has been made
 describe('KeyresultFormComponent', () => {
   let component: KeyresultFormComponent;
   let fixture: ComponentFixture<KeyresultFormComponent>;
@@ -99,7 +98,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -253,7 +252,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.basicValue-input')
       );
       expect(basicValueIputfield.nativeElement.value).toContain('0');
-      expect(basicValueIputfield.nativeElement.placeholder).toContain('0.0');
+      expect(basicValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
 
       component.keyResultForm.get('basicValue')?.setValue(null);
@@ -268,7 +267,7 @@ describe('KeyresultFormComponent', () => {
         By.css('.targetValue-input')
       );
       expect(targetValueIputfield.nativeElement.value).toContain('100');
-      expect(targetValueIputfield.nativeElement.placeholder).toContain('0.0');
+      expect(targetValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
 
       component.keyResultForm.get('targetValue')?.setValue(null);
@@ -362,7 +361,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -534,6 +533,58 @@ describe('KeyresultFormComponent', () => {
         true
       );
     });
+
+    test('should be invalid form if unit is changed and values do not match regex', async () => {
+      //Set Values
+      component.keyResultForm.controls['ownerId'].setValue(1);
+      component.keyResultForm.controls['title'].setValue('Title');
+      component.keyResultForm.controls['expectedEvolution'].setValue(
+        'INCREASE'
+      );
+      component.keyResultForm.controls['description'].setValue('Description');
+      component.keyResultForm.controls['targetValue'].setValue(1000);
+      component.keyResultForm.controls['basicValue'].setValue(50);
+
+      //Chose PERCENT as unit and check if form is now invalid
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'PERCENT' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+
+      //Change unit to binary which accepts every number
+      await select.open();
+      bugOption = await select.getOptions({ text: 'BINARY' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be invalid form if targetValue or basicValue is a double', async () => {
+      //Set Values
+      component.keyResultForm.controls['ownerId'].setValue(3);
+      component.keyResultForm.controls['title'].setValue('Title');
+      component.keyResultForm.controls['expectedEvolution'].setValue(
+        'INCREASE'
+      );
+      component.keyResultForm.controls['description'].setValue('Description');
+      component.keyResultForm.controls['targetValue'].setValue(10.5);
+      component.keyResultForm.controls['basicValue'].setValue(57.897);
+
+      //Chose unit and check validation of form
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'NUMBER' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+    });
   });
 
   describe('KeyresultFormComponent with no id in url', () => {
@@ -545,7 +596,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],
@@ -589,7 +640,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           RouterTestingModule,
-          KeyresultModule,
+          SharedModule,
           HttpClientTestingModule,
           NoopAnimationsModule,
         ],

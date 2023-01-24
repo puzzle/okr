@@ -6,15 +6,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   Objective,
   ObjectiveService,
-} from '../../shared/services/objective.service';
+} from '../../../services/objective.service';
 import {
   KeyResultMeasure,
   KeyResultService,
-} from '../../shared/services/key-result.service';
-import { User, UserService } from '../../shared/services/user.service';
-import { getNumberOrNull } from '../../shared/common';
+} from '../../../services/key-result.service';
+import { User, UserService } from '../../../services/user.service';
+import { getNumberOrNull } from '../../../common';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -33,8 +34,12 @@ export class KeyresultFormComponent implements OnInit {
     ]),
     unit: new FormControl<string>('', [Validators.required]),
     expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>(0, Validators.required),
-    targetValue: new FormControl<number>(0, Validators.required),
+    basicValue: new FormControl<number>({ value: 0, disabled: true }, [
+      Validators.required,
+    ]),
+    targetValue: new FormControl<number>({ value: 0, disabled: true }, [
+      Validators.required,
+    ]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number>(0, [
       Validators.required,
@@ -74,6 +79,7 @@ export class KeyresultFormComponent implements OnInit {
         const keyresultId = getNumberOrNull(params.get('keyresultId'));
         if (keyresultId) {
           this.create = false;
+          this.enableTargetAndBasicValue();
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
           this.create = true;
@@ -134,6 +140,52 @@ export class KeyresultFormComponent implements OnInit {
           },
         })
       );
+  }
+
+  enableTargetAndBasicValue(): void {
+    this.keyResultForm.controls['basicValue'].enable();
+    this.keyResultForm.controls['targetValue'].enable();
+  }
+
+  resetValidatorOfForm(): void {
+    let regex: string | null = null;
+    switch (this.keyResultForm.controls['unit'].value) {
+      case 'NUMBER': {
+        regex = NUMBER_REGEX;
+        break;
+      }
+      case 'PERCENT': {
+        regex = PERCENT_REGEX;
+        break;
+      }
+      case 'CHF': {
+        regex = NUMBER_REGEX;
+        break;
+      }
+    }
+    if (this.keyResultForm.controls['unit'].value == 'BINARY') {
+      this.keyResultForm.controls['basicValue'].disable();
+      this.keyResultForm.controls['targetValue'].disable();
+    }
+    this.setValidatorsWithRegex(regex);
+    this.keyResultForm.controls['basicValue'].updateValueAndValidity();
+    this.keyResultForm.controls['targetValue'].updateValueAndValidity();
+  }
+
+  setValidatorsWithRegex(regex: string | null) {
+    if (regex) {
+      this.keyResultForm.controls['basicValue'].setValidators([
+        Validators.required,
+        Validators.pattern(regex),
+      ]);
+      this.keyResultForm.controls['targetValue'].setValidators([
+        Validators.required,
+        Validators.pattern(regex),
+      ]);
+      return;
+    }
+    this.keyResultForm.controls['basicValue'].setValidators(null);
+    this.keyResultForm.controls['targetValue'].setValidators(null);
   }
 
   navigateBack() {

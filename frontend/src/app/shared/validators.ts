@@ -5,34 +5,32 @@ import {
   Validator,
 } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
+import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
 @Directive({
   selector: '[measureValueValidator]',
   providers: [
     {
       provide: NG_VALIDATORS,
-      useExisting: MeasureValueValidatorDirective,
+      useExisting: MeasureValueValidator,
       multi: true,
     },
   ],
 })
-export class MeasureValueValidatorDirective implements Validator {
-  @Input('measureValueValidator') unit: string = '';
+export class MeasureValueValidator implements Validator {
+  @Input('measureValueValidator') unit: string | null = '';
 
   validate(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
     switch (this.unit) {
-      case 'BINARY': {
-        return this.proceedRegex(value, '^[0-1]{1}$');
-      }
       case 'PERCENT': {
-        return this.proceedRegex(value, '^[0-9][0-9]?$|^100$');
+        return this.proceedRegex(value, PERCENT_REGEX);
       }
       case 'CHF': {
-        return this.proceedRegex(value, '^[0-9]*$');
+        return this.proceedRegex(value, NUMBER_REGEX);
       }
       case 'NUMBER': {
-        return this.proceedRegex(value, '^[0-9]*$');
+        return this.proceedRegex(value, NUMBER_REGEX);
       }
       default: {
         return null;

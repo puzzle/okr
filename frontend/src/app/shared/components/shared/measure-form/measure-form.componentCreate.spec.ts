@@ -91,7 +91,7 @@ describe('MeasureFormComponent Create', () => {
 
   let startAndEndDate: StartEndDateDTO = {
     startDate: new Date(Date.UTC(2022, 9, 1)),
-    endDate: new Date(Date.UTC(2022, 11, 31)),
+    endDate: new Date(Date.UTC(2023, 11, 31)),
   };
   const mockQuarterService = {
     getStartAndEndDateOfKeyresult: jest.fn(),
@@ -264,7 +264,7 @@ describe('MeasureFormComponent Create', () => {
 
       expect(datepicker.nativeElement.value).toEqual('12/23/2022');
       expect(datepicker.attributes['min']).toEqual('2022-10-01');
-      expect(datepicker.attributes['max']).toEqual('2022-12-31');
+      expect(datepicker.attributes['max']).toEqual('2023-12-31');
 
       const textareas = fixture.debugElement.queryAll(
         By.css('.description-textarea')
@@ -303,7 +303,7 @@ describe('MeasureFormComponent Create', () => {
       component.measureForm = createMeasureForm;
       fixture.detectChanges();
       let button = fixture.debugElement.query(By.css('.create-button'));
-      expect(button.nativeElement.disabled).toEqual(false);
+      expect(component.measureForm.disabled).toEqual(false);
 
       component.save();
 

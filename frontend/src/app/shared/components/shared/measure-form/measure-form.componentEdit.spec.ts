@@ -43,7 +43,6 @@ import * as goalsData from '../../../testing/mock-data/goals.json';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
-import { ValueValidatorDirective } from '../../../validators';
 import { MeasureValueValidator } from '../../../validators';
 
 describe('MeasureFormComponent Edit', () => {

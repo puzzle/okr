@@ -106,7 +106,7 @@
         </mat-form-field>
 
         <p *ngIf="!create" class="form-field-width keyresult-unit">
-          {{ keyresult.unit }}
+          {{ "UNIT." + keyresult.unit | translate }}
         </p>
       </div>
 

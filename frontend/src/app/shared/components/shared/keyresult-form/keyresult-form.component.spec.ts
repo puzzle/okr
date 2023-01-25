@@ -500,10 +500,10 @@ describe('KeyresultFormComponent', () => {
       );
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'NUMBER' });
+      const bugOption = await select.getOptions({ text: 'ZAHL' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('NUMBER');
+      expect(await select.getValueText()).toEqual('ZAHL');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });

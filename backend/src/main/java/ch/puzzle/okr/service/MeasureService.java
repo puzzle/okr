@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -28,7 +30,7 @@ public class MeasureService {
         if (measure.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Measure has already an Id");
         }
-        this.checkMeasure(measure, true);
+        this.checkMeasure(measure);
         Measure createdMeasure = this.measureRepository.save(measure);
         this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
@@ -37,13 +39,13 @@ public class MeasureService {
     public Measure updateMeasure(Long id, Measure measure) {
         this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Measure with id %d not found", id)));
-        this.checkMeasure(measure, false);
+        this.checkMeasure(measure);
         Measure createdMeasure = this.measureRepository.save(measure);
         this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
     }
 
-    private void checkMeasure(Measure measure, boolean isCreating) {
+    private void checkMeasure(Measure measure) {
         if (measure.getKeyResult() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given keyresult does not exist");
         }
@@ -62,10 +64,17 @@ public class MeasureService {
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
         }
-        if (isCreating) {
-            Measure lastMeasureOfKeyResult = measureRepository.findLastMeasureOfKeyResultByCreatedOn(measure.getKeyResult().getId());
-            if (lastMeasureOfKeyResult.getCreatedOn().toLocalDate().equals(measure.getCreatedOn().toLocalDate())) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one Messung is allowed per day and Key Result!");
+        List<Measure> measureList = measureRepository
+                .findMeasuresByKeyResultIdOrderByMeasureDateDesc(measure.getKeyResult().getId());
+        ZoneId zone = ZoneId.of("Europe/Paris");
+        LocalDate measureDate = LocalDate.ofInstant(measure.getMeasureDate(), zone);
+        for (Measure measureElement : measureList) {
+            if (measureElement.getId() != measure.getId()) {
+                LocalDate measureElementDate = LocalDate.ofInstant(measureElement.getMeasureDate(), zone);
+                if (measureDate.equals(measureElementDate)) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                            "Only one Messung is allowed per day and Key Result!");
+                }
             }
         }
     }

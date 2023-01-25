@@ -126,13 +126,9 @@ export class MeasureFormComponent implements OnInit {
             this.router.navigate(['/keyresults/' + measure.keyResultId]);
           },
           error: (e: HttpErrorResponse) => {
-            this.toastr.error(
-              'Messung konnte nicht gespeichert werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.error(e.error.message, 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
             console.log('Can not save this measure: ', measure);
             return new Error('ups sommething happend');
           },

@@ -88,6 +88,7 @@
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
+          *ngIf="create"
         >
           <mat-label>Einheit</mat-label>
           <mat-select
@@ -103,6 +104,10 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <p *ngIf="!create" class="form-field-width keyresult-unit">
+          {{ "UNIT." + keyresult.unit | translate }}
+        </p>
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">

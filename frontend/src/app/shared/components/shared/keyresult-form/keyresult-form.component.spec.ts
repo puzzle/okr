@@ -216,24 +216,20 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set Key Result unit in mat select and set it new on item change', async () => {
-      const select = await loader.getHarness(
-        MatSelectHarness.with({
-          selector: 'mat-select[formControlName="unit"]',
-        })
-      );
-      expect(await select.getValueText()).toEqual('PROZENT');
+    test('should have label for Key Result unit', () => {
+      const unitLabel = fixture.debugElement.query(By.css('.keyresult-unit'));
 
-      await select.open();
-      const bugOption = await select.getOptions({ text: 'ZAHL' });
-      await bugOption[0].click();
-
-      expect(await select.getValueText()).toEqual('ZAHL');
-      expect(await select.isDisabled()).toBeFalsy();
-      expect(await select.isOpen()).toBeFalsy();
+      expect(unitLabel.nativeElement.textContent).toContain('PROZENT');
     });
 
-    test('should set Key Result evolution in mat select and set it new on item change', async () => {
+    test('should not have Key Result unit drop down', () => {
+      const unitMatSelect = fixture.debugElement.query(
+        By.css('mat-select[formControlName="unit"]')
+      );
+      expect(unitMatSelect).toBeNull();
+    });
+
+    test('should set keyresult evolution in mat select and set it new on item change', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="expectedEvolution"]',
@@ -489,6 +485,27 @@ describe('KeyresultFormComponent', () => {
       expect(objectiveTeamName.nativeElement.textContent).toContain(
         'GJ 22/23-Q1 '
       );
+    });
+
+    test('should be possible to set Key Result unit in mat select when creating', async () => {
+      const unitMatSelect = fixture.debugElement.query(
+        By.css('mat-select[formControlName="unit"]')
+      );
+      expect(unitMatSelect).not.toBeNull();
+
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'ZAHL' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('ZAHL');
+      expect(await select.isDisabled()).toBeFalsy();
+      expect(await select.isOpen()).toBeFalsy();
     });
 
     test('should be possible to set expected evolution in mat select', async () => {

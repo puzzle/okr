@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,10 @@ import { filter, map } from 'rxjs';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private translate: TranslateService) {
+    translate.setDefaultLang('de');
+    translate.use('de');
+  }
 
   ngOnInit(): void {
     this.router.events

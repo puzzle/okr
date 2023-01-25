@@ -49,6 +49,7 @@ import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { NUMBER_REGEX } from '../../../regexLibrary';
 import { MeasureValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent Create', () => {
   let component: MeasureFormComponent;
@@ -113,6 +114,9 @@ describe('MeasureFormComponent Create', () => {
           MeasureRowComponent,
         ],
         imports: [
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
           HttpClientTestingModule,
           BrowserAnimationsModule,
           BrowserDynamicTestingModule,
@@ -252,7 +256,7 @@ describe('MeasureFormComponent Create', () => {
 
     it('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PERCENT');
+      expect(unit.nativeElement.textContent).toEqual('PROZENT');
     });
 
     it('should update measureDate with datepicker', async () => {

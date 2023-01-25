@@ -46,6 +46,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import * as measureData from '../../../testing/mock-data/measure.json';
 import { MeasureValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
@@ -118,6 +119,9 @@ describe('MeasureFormComponent Edit Binary', () => {
           RouterLinkWithHref,
           SharedModule,
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,
@@ -341,7 +345,7 @@ describe('MeasureFormComponent Edit Binary', () => {
 
     it('should have Key Result unit in html', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('BINARY');
+      expect(unit.nativeElement.textContent).toEqual('BINÄR');
     });
 
     it('should save edited measure', () => {

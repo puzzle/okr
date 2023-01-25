@@ -44,6 +44,7 @@ import { DiagramComponent } from '../../../../keyresult/diagram/diagram.componen
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { MeasureValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -113,6 +114,9 @@ describe('MeasureFormComponent Edit', () => {
           NoopAnimationsModule,
           RouterLinkWithHref,
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,
@@ -273,12 +277,12 @@ describe('MeasureFormComponent Edit', () => {
 
     it('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PERCENT');
+      expect(unit.nativeElement.textContent).toEqual('PROZENT');
     });
 
     it('should be invalid when not matching pattern of Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PERCENT');
+      expect(unit.nativeElement.textContent).toEqual('PROZENT');
       component.measureForm.get('value')?.setValue(333);
       expect(component.measureForm.get('value')?.valid).toEqual(false);
 

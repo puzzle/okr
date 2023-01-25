@@ -522,6 +522,25 @@ describe('KeyresultFormComponent', () => {
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
+    //Test funktioniert noch nicht
+    xtest('should be possible to unselect expected Evolution option', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'DECREASE' });
+      await bugOption[0].click();
+
+      expect(await select.getValueText()).toEqual('DECREASE');
+
+      const noneOption = await select.getOptions({ text: 'NONE' });
+      await noneOption[0].click();
+      expect(await select.getValueText()).toEqual('NONE');
+    });
 
     test('should be possible to set Key Result owner in mat select', async () => {
       const select = await loader.getHarness(

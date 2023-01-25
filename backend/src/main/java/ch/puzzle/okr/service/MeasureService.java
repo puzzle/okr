@@ -63,13 +63,17 @@ public class MeasureService {
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
         }
-        if ((measure.getMeasureDate().atZone(ZoneId.systemDefault()).getHour()) != 0 || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getMinute()) != 0 || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getSecond() != 0)) {
+        if ((measure.getMeasureDate().atZone(ZoneId.systemDefault()).getHour()) != 0
+                || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getMinute()) != 0
+                || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getSecond() != 0)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Time of MeasureDate should be 00:00:00");
         }
 
-        List<Measure> measureList = measureRepository.findMeasuresByKeyResultIdAndMeasureDate(measure.getKeyResult().getId(), measure.getMeasureDate());
+        List<Measure> measureList = measureRepository
+                .findMeasuresByKeyResultIdAndMeasureDate(measure.getKeyResult().getId(), measure.getMeasureDate());
         if (!measureList.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one Messung is allowed per day and Key Result!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Only one Messung is allowed per day and Key Result!");
         }
     }
 

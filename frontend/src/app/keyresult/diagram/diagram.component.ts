@@ -61,7 +61,7 @@ export class DiagramComponent implements OnInit {
     });
   }
 
-  generateDiagrammObjects(measures: Measure[]): DiagramObject[] {
+  generateDiagrammObjects(measures: Measure[]): any[] {
     measures.sort(
       (measureA, measureB) =>
         new Date(measureA.measureDate).getTime() -
@@ -115,7 +115,7 @@ export class DiagramComponent implements OnInit {
               displayFormats: {
                 hour: 'dd/MM/yyyy', //second = 'dd/MM/yyyy HH:mm:ss'
               },
-              tooltipFormat: 'DD/MM/yyyy',
+              tooltipFormat: 'DD.MM.yyyy',
             },
           },
           y: {
@@ -135,8 +135,7 @@ export class DiagramComponent implements OnInit {
   }
 
   public reloadDiagram(measures: Measure[]) {
-    let diagramObjects: any[] = this.generateDiagrammObjects(measures);
-    this.diagram.data.datasets[0].data = diagramObjects;
+    this.diagram.data.datasets[0].data = this.generateDiagrammObjects(measures);
     this.diagram.update();
   }
 }

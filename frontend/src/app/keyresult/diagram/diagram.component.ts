@@ -55,9 +55,9 @@ export class DiagramComponent implements OnInit {
     this.measures = this.keyresultService.getMeasuresOfKeyResult(
       this.goal.keyresult.id
     );
+
     this.measures.subscribe((measures) => {
-      // console.log("subscribe")
-      // this.reloadDiagram(measures)
+      this.reloadDiagram(measures);
     });
   }
 
@@ -73,7 +73,11 @@ export class DiagramComponent implements OnInit {
     });
   }
 
-  generateDiagram(min: number, max: number): Chart {
+  generateDiagram(
+    min: number,
+    max: number,
+    values: DiagramObject[] = []
+  ): Chart {
     return new Chart('myChart', {
       type: 'scatter',
       data: {
@@ -83,7 +87,7 @@ export class DiagramComponent implements OnInit {
             borderColor: ['black'],
             borderWidth: 2,
             label: 'Messung am',
-            data: [],
+            data: values,
             pointRadius: 5,
             pointStyle: 'circle',
           },
@@ -131,12 +135,8 @@ export class DiagramComponent implements OnInit {
   }
 
   public reloadDiagram(measures: Measure[]) {
-    console.log(this.diagram.data.datasets[0]);
-    let diagramObjects: DiagramObject[] =
-      this.generateDiagrammObjects(measures);
-    // let dataSet = this.diagram.data.datasets[0];
-    // dataSet.data = diagramObjects;
-    // console.log(dataSet);
-    this.diagram.data.datasets[0].data = diagramObjects.map((e) => e.y);
+    let diagramObjects: any[] = this.generateDiagrammObjects(measures);
+    this.diagram.data.datasets[0].data = diagramObjects;
+    this.diagram.update();
   }
 }

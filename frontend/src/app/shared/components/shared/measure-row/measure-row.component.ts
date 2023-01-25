@@ -58,7 +58,6 @@ export class MeasureRowComponent implements OnInit {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
             this.reloadMeasures();
-            this.onMeasureDelete.emit(data);
             this.toastr.success('', 'Messung gelöscht!', {
               timeOut: 5000,
             });
@@ -89,6 +88,7 @@ export class MeasureRowComponent implements OnInit {
           .getMeasuresOfKeyResult(keyResultId)
           .subscribe((data) => {
             this.measures$.next(data);
+            this.onMeasureDelete.emit(data);
           });
       } else {
         throw Error('Key Result with Id ' + keyResultId + " doesn't exist");

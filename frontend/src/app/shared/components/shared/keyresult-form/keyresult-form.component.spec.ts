@@ -99,7 +99,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../../assets/i18n/de.json'),
           }),
           RouterTestingModule,
           SharedModule,
@@ -364,7 +364,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../../assets/i18n/de.json'),
           }),
           RouterTestingModule,
           SharedModule,
@@ -558,13 +558,13 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'PERCENT' });
+      let bugOption = await select.getOptions({ text: 'PROZENT' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
 
       //Change unit to binary which accepts every number
       await select.open();
-      bugOption = await select.getOptions({ text: 'BINARY' });
+      bugOption = await select.getOptions({ text: 'BINÄR' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });
@@ -587,7 +587,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'NUMBER' });
+      let bugOption = await select.getOptions({ text: 'ZAHL' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
     });
@@ -646,7 +646,7 @@ describe('KeyresultFormComponent', () => {
         imports: [
           ToastrModule.forRoot(),
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../../assets/i18n/de.json'),
           }),
           RouterTestingModule,
           SharedModule,

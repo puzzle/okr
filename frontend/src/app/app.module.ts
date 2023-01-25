@@ -22,16 +22,16 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 import {
   DateAdapter,
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 export const MY_FORMATS = {
   parse: {
@@ -44,6 +44,7 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'DD.MM.YYYY',
   },
 };
+
 @NgModule({
   declarations: [
     AppComponent,

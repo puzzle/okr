@@ -11,7 +11,7 @@ import {
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import * as measureData from '../../../testing/mock-data/measure.json';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
 import {
   ActivatedRoute,
@@ -49,6 +49,7 @@ import { MeasureValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 
 describe('MeasureFormComponent Edit', () => {
   let component: MeasureFormComponent;
@@ -418,6 +419,47 @@ describe('MeasureFormComponent Edit', () => {
       expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
         receivedEditedMeasure,
         false
+      );
+    });
+
+    it('should set measureDate time to midnight when save edited measure', () => {
+      component.measureForm.get('changeInfo')?.setValue('New Changeinfo');
+      component.measureForm.get('value')?.setValue(30);
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-01-10 14:30:48'));
+      fixture.detectChanges();
+      component.save();
+
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
+        receivedEditedMeasure,
+        false
+      );
+    });
+
+    test('should trigger error notification when multiple measures on one day', () => {
+      mockMeasureService.saveMeasure.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 400,
+              error: {
+                message: 'Only one Messung is allowed per day and Key Result!',
+              },
+            })
+        )
+      );
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Only one Messung is allowed per day and Key Result!',
+        'Fehlerstatus: 400',
+        { timeOut: 5000 }
       );
     });
   });

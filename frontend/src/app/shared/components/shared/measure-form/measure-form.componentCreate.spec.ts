@@ -313,6 +313,24 @@ describe('MeasureFormComponent Create', () => {
       );
     });
 
+    it('should set measureDate time to midnight when save new measure', () => {
+      component.measureForm = createMeasureForm;
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2022-12-01 14:30:48'));
+      fixture.detectChanges();
+
+      expect(component.measureForm.disabled).toEqual(false);
+
+      component.save();
+
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
+        receivedCreatedMeasure,
+        true
+      );
+    });
+
     test('should trigger success notification', () => {
       mockMeasureService.saveMeasure.mockReturnValue(measure1);
       component.measureForm = createMeasureForm;
@@ -326,6 +344,33 @@ describe('MeasureFormComponent Create', () => {
       expect(mockToastrService.success).toHaveBeenCalledWith(
         '',
         'Messung gespeichert!',
+        { timeOut: 5000 }
+      );
+    });
+
+    test('should trigger error notification when multiple measures on one day', () => {
+      mockMeasureService.saveMeasure.mockReturnValue(
+        throwError(
+          () =>
+            new HttpErrorResponse({
+              status: 400,
+              error: {
+                message: 'Only one Messung is allowed per day and Key Result!',
+              },
+            })
+        )
+      );
+      component.measureForm = createMeasureForm;
+      fixture.detectChanges();
+
+      const createbutton = fixture.debugElement.query(By.css('.create-button'));
+      createbutton.nativeElement.click();
+      fixture.detectChanges();
+      expect(mockToastrService.error).toHaveBeenCalledTimes(1);
+      expect(mockToastrService.success).not.toHaveBeenCalled();
+      expect(mockToastrService.error).toHaveBeenCalledWith(
+        'Only one Messung is allowed per day and Key Result!',
+        'Fehlerstatus: 400',
         { timeOut: 5000 }
       );
     });

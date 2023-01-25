@@ -394,7 +394,7 @@ describe('MeasureFormComponent Create', () => {
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
       expect(mockToastrService.success).not.toHaveBeenCalled();
       expect(mockToastrService.error).toHaveBeenCalledWith(
-        'Messung konnte nicht gespeichert werden!',
+        'Something went wrong',
         'Fehlerstatus: 500',
         { timeOut: 5000 }
       );

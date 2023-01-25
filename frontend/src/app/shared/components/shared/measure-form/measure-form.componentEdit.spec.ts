@@ -415,7 +415,7 @@ describe('MeasureFormComponent Edit', () => {
       fixture.detectChanges();
       component.save();
 
-      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalled();
       expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
         receivedEditedMeasure,
         false

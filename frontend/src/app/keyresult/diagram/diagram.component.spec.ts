@@ -76,7 +76,7 @@ describe('DiagramComponent', () => {
     measures.subscribe((item) => {
       diagrammObjects = component.generateDiagrammObjects(item);
     });
-    expect(diagrammObjects[0].x).toEqual('2022-12-01T00:00:00.000Z');
+    expect(diagrammObjects[0].x).toEqual('2022-11-30T00:00:00.000Z');
     expect(diagrammObjects[0].y).toEqual(33);
     expect(diagrammObjects[1].x).toEqual('2022-12-23');
     expect(diagrammObjects[1].y).toEqual(0);

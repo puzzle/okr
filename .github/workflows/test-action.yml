@@ -1,0 +1,19 @@
+name: 'Show Variables'
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  display-variables:
+    name: Show GitHub Variables
+    steps:
+    - name: Try to show GitHub Variables
+      run: |
+        echo "repository variable : ${{ vars.REPOSITORY_VAR }}"
+        echo "organization variable : ${{ vars.ORGANIZATION_VAR }}"
+        echo "overridden variable : ${{ vars.OVERRIDE_VAR }}"
+        echo "variable from shell environment : $env_var"
+        echo "IMAGE_TAG : $IMAGE_TAG"
+        echo "QUAY_URL : $QUAY_URL"
+    

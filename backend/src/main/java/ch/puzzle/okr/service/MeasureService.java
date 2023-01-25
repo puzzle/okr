@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -64,18 +63,13 @@ public class MeasureService {
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
         }
-        List<Measure> measureList = measureRepository
-                .findMeasuresByKeyResultIdOrderByMeasureDateDesc(measure.getKeyResult().getId());
-        ZoneId zone = ZoneId.of("Europe/Paris");
-        LocalDate measureDate = LocalDate.ofInstant(measure.getMeasureDate(), zone);
-        for (Measure measureElement : measureList) {
-            if (measureElement.getId() != measure.getId()) {
-                LocalDate measureElementDate = LocalDate.ofInstant(measureElement.getMeasureDate(), zone);
-                if (measureDate.equals(measureElementDate)) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                            "Only one Messung is allowed per day and Key Result!");
-                }
-            }
+        if ((measure.getMeasureDate().atZone(ZoneId.systemDefault()).getHour()) != 0 || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getMinute()) != 0 || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getSecond() != 0)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Time of MeasureDate should be 00:00:00");
+        }
+
+        List<Measure> measureList = measureRepository.findMeasuresByKeyResultIdAndMeasureDate(measure.getKeyResult().getId(), measure.getMeasureDate());
+        if (!measureList.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only one Messung is allowed per day and Key Result!");
         }
     }
 

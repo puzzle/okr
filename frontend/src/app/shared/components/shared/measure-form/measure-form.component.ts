@@ -118,6 +118,7 @@ export class MeasureFormComponent implements OnInit {
       )
       .subscribe((measure) => {
         measure.measureDate = new Date(measure.measureDate);
+        measure.measureDate.setHours(0, 0, 0, 0);
         this.measureService.saveMeasure(measure, this.create).subscribe({
           next: () => {
             this.toastr.success('', 'Messung gespeichert!', {

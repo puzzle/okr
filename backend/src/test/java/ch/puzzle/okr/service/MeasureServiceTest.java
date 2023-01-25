@@ -78,15 +78,6 @@ class MeasureServiceTest {
     }
 
     @Test
-    void shouldThrowErrorWhenMeasureDateTimeIsNotMidnight() {
-        Mockito.when(measureRepository.save(any())).thenReturn(falseMeasureDate);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.measureService.saveMeasure(falseMeasureDate));
-        assertEquals(400, exception.getRawStatusCode());
-        assertEquals("Time of MeasureDate should be 00:00:00", exception.getReason());
-    }
-
-    @Test
     void shouldThrowErrorWhenInDbIsSameMeasureDateWithSameKeyResultId() {
         Mockito.when(measureRepository.findMeasuresByKeyResultIdAndMeasureDate(any(), any())).thenReturn(measures);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,

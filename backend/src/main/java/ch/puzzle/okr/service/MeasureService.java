@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -62,11 +61,6 @@ public class MeasureService {
         }
         if (measure.getMeasureDate() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given measure date is null");
-        }
-        if ((measure.getMeasureDate().atZone(ZoneId.systemDefault()).getHour()) != 0
-                || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getMinute()) != 0
-                || (measure.getMeasureDate().atZone(ZoneId.systemDefault()).getSecond() != 0)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Time of MeasureDate should be 00:00:00");
         }
 
         List<Measure> measureList = measureRepository

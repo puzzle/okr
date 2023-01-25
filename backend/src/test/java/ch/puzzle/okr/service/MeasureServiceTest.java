@@ -40,6 +40,7 @@ class MeasureServiceTest {
     private MeasureService measureService;
 
     private Measure measure;
+    private Measure measureWithId;
     private List<Measure> measures = new ArrayList<>();
     private Measure falseMeasureDate;
     private Measure falseMeasure;
@@ -53,6 +54,13 @@ class MeasureServiceTest {
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T23:00:00.00Z")).build();
+        this.measureWithId = Measure.Builder.builder().withId(1L)
+                .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
+                .withCreatedOn(LocalDateTime.MAX)
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withTargetValue(50L)
+                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
+                .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withMeasureDate(Instant.parse("2021-11-03T23:00:00.00Z")).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
         this.falseMeasureDate = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
@@ -63,7 +71,7 @@ class MeasureServiceTest {
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
 
 
-        this.measures.add(measure);
+        this.measures.add(measureWithId);
     }
 
     @Test

@@ -41,7 +41,6 @@ const plugin = {
 })
 export class DiagramComponent implements OnInit {
   @Input() goal!: Goal;
-  measures!: Observable<Measure[]>;
   diagram!: Chart;
 
   constructor(private keyresultService: KeyResultService) {}
@@ -52,13 +51,11 @@ export class DiagramComponent implements OnInit {
       this.goal.targetValue
     );
 
-    this.measures = this.keyresultService.getMeasuresOfKeyResult(
-      this.goal.keyresult.id
-    );
-
-    this.measures.subscribe((measures) => {
-      this.reloadDiagram(measures);
-    });
+    this.keyresultService
+      .getMeasuresOfKeyResult(this.goal.keyresult.id)
+      .subscribe((measures) => {
+        this.reloadDiagram(measures);
+      });
   }
 
   generateDiagrammObjects(measures: Measure[]): any[] {

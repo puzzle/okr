@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DiagramComponent } from './diagram.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import {
   KeyResultService,
   Measure,
@@ -14,14 +14,14 @@ describe('DiagramComponent', () => {
   let component: DiagramComponent;
   let fixture: ComponentFixture<DiagramComponent>;
 
-  let measures: Observable<any[]> = of(loadAllMeasure(true));
+  let measures: any[] = loadAllMeasure(true);
 
   const mockKeyResultService = {
     getMeasuresOfKeyResult: jest.fn(),
   };
 
   beforeEach(() => {
-    mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
+    mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(of(measures));
 
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -53,34 +53,32 @@ describe('DiagramComponent', () => {
     expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledWith(1);
   });
 
-  it('should set measures in component', () => {
-    expect(component.measures).toEqual(measures);
-  });
-
   it('should create correct Diagram Objects', () => {
     let diagrammObjects: any[] = [];
-    let measuresOriginal: Measure[] = [];
-    measures.subscribe((item) => {
-      diagrammObjects = component.generateDiagrammObjects(item);
-      measuresOriginal = item;
-    });
-    measuresOriginal.forEach((measure) => {
-      let number = measuresOriginal.indexOf(measure);
+    diagrammObjects = component.generateDiagrammObjects(measures);
+    measures.forEach((measure) => {
+      let number = measures.indexOf(measure);
       expect(diagrammObjects[number].y).toEqual(measure.value);
       expect(diagrammObjects[number].x).toEqual(measure.measureDate);
     });
   });
 
   it('should sort measures ascending by date (lowest date at the top)', () => {
-    let diagrammObjects: any[] = [];
-    measures.subscribe((item) => {
-      diagrammObjects = component.generateDiagrammObjects(item);
-    });
+    let diagrammObjects = component.generateDiagrammObjects(measures);
+
     expect(diagrammObjects[0].x).toEqual('2022-12-01T00:00:00.000Z');
     expect(diagrammObjects[0].y).toEqual(33);
     expect(diagrammObjects[1].x).toEqual('2022-12-23');
     expect(diagrammObjects[1].y).toEqual(0);
     expect(diagrammObjects[2].x).toEqual('2023-01-10T22:00:00Z');
     expect(diagrammObjects[2].y).toEqual(42);
+  });
+
+  it('should update chart', () => {
+    jest.spyOn(component.diagram, 'update').mockReturnValue();
+    expect(component.diagram.data.datasets[0].data.length).toEqual(7);
+    let slicedMeasures: Measure[] = measures.slice(0, measures.length - 1);
+    component.reloadDiagram(slicedMeasures);
+    expect(component.diagram.data.datasets[0].data.length).toEqual(6);
   });
 });

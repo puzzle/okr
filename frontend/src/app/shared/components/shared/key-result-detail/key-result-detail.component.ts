@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { getNumberOrNull } from '../../../common';
@@ -12,6 +12,7 @@ import { Goal, GoalService } from '../../../services/goal.service';
 export class KeyResultDetailComponent implements OnInit {
   public goal$!: Observable<Goal>;
 
+  @ViewChild('diagram') private diagram: any;
   constructor(
     private router: Router,
     private goalService: GoalService,

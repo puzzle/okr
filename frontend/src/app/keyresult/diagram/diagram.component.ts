@@ -15,6 +15,25 @@ export interface DiagramObject {
   y: number;
 }
 
+const plugin = {
+  id: 'chart_area_background_color',
+  beforeDraw: (
+    chart: { width?: any; height?: any; ctx?: any },
+    args: any,
+    options: { color: any }
+  ) => {
+    const { ctx } = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = options.color;
+    ctx.fillRect(27, 10, chart.width - 35, chart.height - 62);
+    ctx.restore();
+  },
+  defaults: {
+    color: 'lightgray',
+  },
+};
+
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
@@ -23,55 +42,39 @@ export interface DiagramObject {
 export class DiagramComponent implements OnInit {
   @Input() goal!: Goal;
   measures!: Observable<Measure[]>;
+  diagram!: Chart;
 
   constructor(private keyresultService: KeyResultService) {}
 
   ngOnInit(): void {
+    this.diagram = this.generateDiagram(
+      this.goal.basicValue,
+      this.goal.targetValue
+    );
+
     this.measures = this.keyresultService.getMeasuresOfKeyResult(
       this.goal.keyresult.id
     );
     this.measures.subscribe((measures) => {
-      this.generateDiagram(measures);
+      // console.log("subscribe")
+      // this.reloadDiagram(measures)
     });
   }
 
-  generateDiagrammObjects(measures: Measure[]): any[] {
+  generateDiagrammObjects(measures: Measure[]): DiagramObject[] {
     measures.sort(
       (measureA, measureB) =>
         new Date(measureA.measureDate).getTime() -
         new Date(measureB.measureDate).getTime()
     );
-    let arrayWithPoints: any[] = [];
-    measures.forEach(function (item) {
-      let point: DiagramObject = { x: item.measureDate, y: item.value };
-      arrayWithPoints.push(point);
+
+    return measures.map((item) => {
+      return { x: item.measureDate, y: item.value } as DiagramObject;
     });
-    return arrayWithPoints;
   }
 
-  generateDiagram(measures: Measure[]) {
-    let arrayWithPoints: any[] = this.generateDiagrammObjects(measures);
-
-    const plugin = {
-      id: 'chart_area_background_color',
-      beforeDraw: (
-        chart: { width?: any; height?: any; ctx?: any },
-        args: any,
-        options: { color: any }
-      ) => {
-        const { ctx } = chart;
-        ctx.save();
-        ctx.globalCompositeOperation = 'destination-over';
-        ctx.fillStyle = options.color;
-        ctx.fillRect(27, 10, chart.width - 35, chart.height - 62);
-        ctx.restore();
-      },
-      defaults: {
-        color: 'lightgray',
-      },
-    };
-
-    new Chart('myChart', {
+  generateDiagram(min: number, max: number): Chart {
+    return new Chart('myChart', {
       type: 'scatter',
       data: {
         datasets: [
@@ -80,7 +83,7 @@ export class DiagramComponent implements OnInit {
             borderColor: ['black'],
             borderWidth: 2,
             label: 'Messung am',
-            data: arrayWithPoints,
+            data: [],
             pointRadius: 5,
             pointStyle: 'circle',
           },
@@ -112,8 +115,8 @@ export class DiagramComponent implements OnInit {
             },
           },
           y: {
-            suggestedMin: Math.min(this.goal.targetValue, this.goal.basicValue),
-            suggestedMax: Math.max(this.goal.targetValue, this.goal.basicValue),
+            suggestedMin: Math.min(max, min),
+            suggestedMax: Math.max(max, min),
             ticks: {
               callback: function (value) {
                 return Number.isInteger(value) ? value : '';
@@ -125,5 +128,15 @@ export class DiagramComponent implements OnInit {
       },
       plugins: [plugin],
     });
+  }
+
+  public reloadDiagram(measures: Measure[]) {
+    console.log(this.diagram.data.datasets[0]);
+    let diagramObjects: DiagramObject[] =
+      this.generateDiagrammObjects(measures);
+    // let dataSet = this.diagram.data.datasets[0];
+    // dataSet.data = diagramObjects;
+    // console.log(dataSet);
+    this.diagram.data.datasets[0].data = diagramObjects.map((e) => e.y);
   }
 }

@@ -19,7 +19,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./measure-row.component.scss'],
 })
 export class MeasureRowComponent implements OnInit {
-  @Output() onMeasureDelete: EventEmitter<any> = new EventEmitter();
+  @Output() onMeasureDelete: EventEmitter<Measure[]> = new EventEmitter();
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
 
   constructor(
@@ -58,7 +58,7 @@ export class MeasureRowComponent implements OnInit {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
             this.reloadMeasures();
-            this.onMeasureDelete.emit();
+            this.onMeasureDelete.emit(data);
             this.toastr.success('', 'Messung gelöscht!', {
               timeOut: 5000,
             });

@@ -1,8 +1,7 @@
 name: 'Show Variables'
 
 on:
-  push:
-    branches: [ production ]
+  workflow_dispatch:
 
 jobs:
   display-variables:
@@ -14,6 +13,7 @@ jobs:
         echo "organization variable : ${{ vars.ORGANIZATION_VAR }}"
         echo "overridden variable : ${{ vars.OVERRIDE_VAR }}"
         echo "variable from shell environment : $env_var"
+        echo "IMAGE_TAG : $vars.ENV_CONTEXT_VAR"
         echo "IMAGE_TAG : $IMAGE_TAG"
         echo "QUAY_URL : $QUAY_URL"
     

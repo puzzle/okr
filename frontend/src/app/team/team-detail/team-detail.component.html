@@ -10,7 +10,11 @@
       </app-objective-row>
     </mat-accordion>
   </div>
-  <button mat-stroked-button color="primary" [routerLink]="['objectives/new']">
+  <button
+    mat-stroked-button
+    color="primary"
+    [routerLink]="['team/' + overview.team.id + '/objectives/new']"
+  >
     Objective hinzufügen
   </button>
 </div>

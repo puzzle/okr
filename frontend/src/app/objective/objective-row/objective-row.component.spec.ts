@@ -113,14 +113,13 @@ describe('ObjectiveRowComponent', () => {
     );
   });
 
-  test('should have menu button with icon', () => {
-    let buttons: HTMLButtonElement[] =
-      fixture.nativeElement.querySelectorAll('button');
-    expect(buttons.length).toEqual(3);
+  test('should have add keyresult button', () => {
+    const button = fixture.debugElement.query(By.css('#add-keyresult-button'));
 
-    expect(buttons[0].textContent).toEqual('edit-icon');
-    expect(buttons[1].textContent).toEqual('more_vert');
-    expect(buttons[2].textContent).toEqual('Key Result hinzufügen');
+    expect(button.nativeElement.textContent).toEqual(' Key Result hinzufügen ');
+    expect(button.attributes['ng-reflect-router-link']).toEqual(
+      'objective/1/keyresult/new'
+    );
   });
 
   test.each([

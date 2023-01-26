@@ -11,6 +11,7 @@
 
           <mat-card-actions align="start">
             <button
+              id="edit-keyresult-button"
               mat-stroked-button
               color="primary"
               [routerLink]="[
@@ -33,10 +34,13 @@
               keyResult.measure?.measureDate | date
             }}</strong>
             <br />
-            {{ keyResult.measure?.changeInfo }}
+            <p class="lastMeasurechangeInfo">
+              {{ keyResult.measure?.changeInfo }}
+            </p>
 
             <mat-card-actions align="start">
               <button
+                id="show-details-button"
                 mat-stroked-button
                 color="primary"
                 [routerLink]="['keyresults/' + this.keyResult.id]"
@@ -44,6 +48,7 @@
                 Details anzeigen
               </button>
               <button
+                id="add-measure-button"
                 mat-stroked-button
                 color="primary"
                 [routerLink]="[

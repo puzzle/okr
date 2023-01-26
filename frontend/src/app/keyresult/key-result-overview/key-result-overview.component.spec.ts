@@ -34,17 +34,35 @@ describe('KeyResultOverviewComponent', () => {
     test('should have right strong titles', () => {
       const strongs = fixture.debugElement.queryAll(By.css('strong'));
 
-      expect(strongs.length).toEqual(3);
+      expect(strongs.length).toEqual(1);
 
-      expect(strongs[0].nativeElement.textContent).toEqual('Details');
-
-      expect(strongs[1].nativeElement.textContent).toEqual('Messungszeitpunkt');
+      expect(strongs[0].nativeElement.textContent).toEqual('Dec 23, 2022');
     });
 
-    test('should have Key Result description', () => {
-      const paragraphs = fixture.debugElement.queryAll(By.css('p'));
-      expect(paragraphs[1].nativeElement.textContent).toEqual(
-        'This is the description'
+    test('should have right mat-card-titles', () => {
+      const matcardtitles = fixture.debugElement.queryAll(
+        By.css('mat-card-title')
+      );
+
+      expect(matcardtitles.length).toEqual(2);
+
+      expect(matcardtitles[0].nativeElement.textContent).toEqual(
+        'Beschreibung'
+      );
+      expect(matcardtitles[1].nativeElement.textContent).toEqual(
+        'Letzte Messung'
+      );
+    });
+
+    test('should have right mat-card-content', () => {
+      const matcardcontens = fixture.debugElement.queryAll(
+        By.css('mat-card-content')
+      );
+      expect(matcardcontens[1].nativeElement.textContent).toEqual(
+        ' This is the description '
+      );
+      expect(matcardcontens[2].nativeElement.textContent).toEqual(
+        'Dec 23, 2022Lorem Ipsum is simply dummy text of the printing and typesetting industry. Details anzeigen  Messung hinzufügen '
       );
     });
 
@@ -64,11 +82,29 @@ describe('KeyResultOverviewComponent', () => {
       );
     });
 
-    test('should hava correct link', () => {
-      const button = fixture.debugElement.query(By.css('button'));
+    test('should hava correct link in add measure button', () => {
+      const button = fixture.debugElement.query(By.css('#add-measure-button'));
 
       expect(button.attributes['ng-reflect-router-link']).toEqual(
-        '/keyresults,1'
+        'keyresults/1/measure/new'
+      );
+    });
+
+    test('should hava correct link in show detail button', () => {
+      const button = fixture.debugElement.query(By.css('#show-details-button'));
+
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        'keyresults/1'
+      );
+    });
+
+    test('should hava correct link in edit keyresult button', () => {
+      const button = fixture.debugElement.query(
+        By.css('#edit-keyresult-button')
+      );
+
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        'objective/1/keyresult/edit/1'
       );
     });
   });

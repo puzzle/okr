@@ -36,8 +36,8 @@ export class ObjectiveFormComponent implements OnInit {
     ]),
     description: new FormControl<string>('', [
       Validators.required,
-      Validators.maxLength(4096),
       Validators.minLength(2),
+      Validators.maxLength(4096),
     ]),
     ownerId: new FormControl<number | null>(null, [
       Validators.required,

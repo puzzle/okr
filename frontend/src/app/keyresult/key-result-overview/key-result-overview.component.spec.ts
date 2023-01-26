@@ -62,7 +62,7 @@ describe('KeyResultOverviewComponent', () => {
         ' This is the description '
       );
       expect(matcardcontens[2].nativeElement.textContent).toEqual(
-        'Dec 23, 2022Lorem Ipsum is simply dummy text of the printing and typesetting industry. Details anzeigen  Messung hinzufügen '
+        'Dec 23, 2022 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Details anzeigen  Messung hinzufügen '
       );
     });
 
@@ -78,7 +78,7 @@ describe('KeyResultOverviewComponent', () => {
         By.css('.lastMeasurechangeInfo')
       );
       expect(lastMeasureDate.nativeElement.textContent).toEqual(
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'
+        ' Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
       );
     });
 

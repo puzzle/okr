@@ -16,3 +16,14 @@
 .objective-rows {
   margin-bottom: 70px;
 }
+
+.create-button {
+  margin-top: 10px;
+  border-radius: 20px;
+
+  & .add-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+  }
+}

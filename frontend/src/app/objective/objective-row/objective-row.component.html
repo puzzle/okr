@@ -57,4 +57,11 @@
     >
     </app-keyresult-row>
   </mat-accordion>
+  <button
+    mat-stroked-button
+    color="primary"
+    [routerLink]="['objective/' + this.objective.id + '/keyresult/new']"
+  >
+    Key Result hinzufügen
+  </button>
 </mat-expansion-panel>

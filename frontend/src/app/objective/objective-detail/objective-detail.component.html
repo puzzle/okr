@@ -1,3 +1,10 @@
+<button
+  mat-stroked-button
+  color="primary"
+  [routerLink]="['objectives/edit/' + this.objective.id]"
+>
+  Objective bearbeiten
+</button>
 <div>
   <p class="objective-cycle">
     <strong>Zyklus</strong> {{ this.objective.quarterLabel }}

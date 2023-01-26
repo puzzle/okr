@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Overview } from '../../shared/services/overview.service';
 
 @Component({
@@ -9,6 +16,11 @@ import { Overview } from '../../shared/services/overview.service';
 })
 export class TeamDetailComponent {
   @Input() overview!: Overview;
+  @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
+
+  reloadObjectives() {
+    this.onObjectivesListUpdate.emit();
+  }
 }

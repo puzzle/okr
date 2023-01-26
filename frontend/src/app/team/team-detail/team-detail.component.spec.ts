@@ -10,6 +10,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as overviewData from '../../shared/testing/mock-data/overview.json';
 import { Overview } from '../../shared/services/overview.service';
+import { ToastrService } from 'ngx-toastr';
+
+const mockToastrService = {
+  success: jest.fn(),
+  error: jest.fn(),
+};
 
 describe('TeamDetailComponent', () => {
   let componentTeamDetails: TeamDetailComponent;
@@ -28,13 +34,18 @@ describe('TeamDetailComponent', () => {
         NoopAnimationsModule,
       ],
       declarations: [TeamDetailComponent, DashboardComponent],
-      providers: [],
+      providers: [{ provide: ToastrService, useValue: mockToastrService }],
     }).compileComponents();
 
     fixtureTeamDetails = TestBed.createComponent(TeamDetailComponent);
     componentTeamDetails = fixtureTeamDetails.componentInstance;
     componentTeamDetails.overview = overview;
     fixtureTeamDetails.detectChanges();
+  });
+
+  afterEach(() => {
+    mockToastrService.success.mockReset();
+    mockToastrService.error.mockReset();
   });
 
   test('should create', () => {

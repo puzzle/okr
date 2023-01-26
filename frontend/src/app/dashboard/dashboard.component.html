@@ -46,6 +46,9 @@
   </div>
 
   <div *ngFor="let team of teams$ | async">
-    <app-team-detail [overview]="team"></app-team-detail>
+    <app-team-detail
+      (onObjectivesListUpdate)="reloadOverview()"
+      [overview]="team"
+    ></app-team-detail>
   </div>
 </div>

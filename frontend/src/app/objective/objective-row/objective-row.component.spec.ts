@@ -22,8 +22,9 @@ import { By } from '@angular/platform-browser';
 import { ObjectiveModule } from '../objective.module';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
+import { ToastrService } from 'ngx-toastr';
 
-describe('ObjectiveComponent', () => {
+describe('ObjectiveRowComponent', () => {
   let component: ObjectiveRowComponent;
   let fixture: ComponentFixture<ObjectiveRowComponent>;
 
@@ -35,6 +36,11 @@ describe('ObjectiveComponent', () => {
 
   const mockKeyResultService = {
     getKeyResultsOfObjective: jest.fn(),
+  };
+
+  const mockToastrService = {
+    success: jest.fn(),
+    error: jest.fn(),
   };
 
   beforeEach(() => {
@@ -58,6 +64,7 @@ describe('ObjectiveComponent', () => {
       declarations: [ObjectiveRowComponent],
       providers: [
         { provide: KeyResultService, useValue: mockKeyResultService },
+        { provide: ToastrService, useValue: mockToastrService },
       ],
     })
       .overrideComponent(ObjectiveRowComponent, {
@@ -77,6 +84,8 @@ describe('ObjectiveComponent', () => {
 
   afterEach(() => {
     mockKeyResultService.getKeyResultsOfObjective.mockReset();
+    mockToastrService.success.mockReset();
+    mockToastrService.error.mockReset();
   });
 
   test('should create', () => {

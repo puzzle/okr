@@ -91,7 +91,7 @@ describe('MeasureFormComponent Create', () => {
         Validators.required,
         Validators.pattern(NUMBER_REGEX),
       ]),
-      measureDate: new FormControl<Date>(new Date('2022-12-01 00:00:00:'), [
+      measureDate: new FormControl<Date>(new Date('2022-12-01T00:00:00Z'), [
         Validators.required,
       ]),
       changeInfo: new FormControl<string>('Changeinfo 1', [

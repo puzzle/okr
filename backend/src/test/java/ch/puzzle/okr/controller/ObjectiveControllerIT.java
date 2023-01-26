@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -58,9 +59,9 @@ class ObjectiveControllerIT {
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
     static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null,
-            LocalDateTime.of(2022, 8, 12, 1, 1));
+            Instant.parse("2022-08-12T01:01:00.00Z"));
     static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null,
-            LocalDateTime.of(2022, 8, 12, 1, 1));
+            Instant.parse("2022-08-12T01:01:00.00Z"));
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
             new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
                     ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto, 0L),

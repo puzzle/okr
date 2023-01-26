@@ -23,6 +23,13 @@
           }}</strong>
         </p>
         <p class="lastMeasurechangeInfo">{{ keyResult.measure?.changeInfo }}</p>
+        <button
+          mat-stroked-button
+          color="primary"
+          [routerLink]="['/keyresults', keyResult.id]"
+        >
+          Details anzeigen
+        </button>
       </ng-template>
     </mat-card-content>
   </mat-card>

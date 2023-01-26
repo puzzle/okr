@@ -32,12 +32,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MeasureValueValidatorDirective } from '../../../validators';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
 import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
+import { MeasureValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent3', () => {
   let component: MeasureFormComponent;
@@ -72,7 +73,7 @@ describe('MeasureFormComponent3', () => {
     error: jest.fn(),
   };
 
-  describe('Create throw error when keyresult id is null', () => {
+  describe('Create throw error when Key Result id is null', () => {
     beforeEach(() => {
       mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
@@ -82,7 +83,7 @@ describe('MeasureFormComponent3', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          MeasureValueValidatorDirective,
+          MeasureValueValidator,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],
@@ -103,6 +104,9 @@ describe('MeasureFormComponent3', () => {
           NoopAnimationsModule,
           RouterLinkWithHref,
           ToastrModule.forRoot(),
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,

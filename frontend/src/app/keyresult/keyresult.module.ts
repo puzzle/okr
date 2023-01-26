@@ -9,7 +9,6 @@ import { KeyResultService } from '../shared/services/key-result.service';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
@@ -18,11 +17,11 @@ import { DiagramComponent } from './diagram/diagram.component';
 import { ProgressModule } from '../progress/progress.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeyResultOverviewComponent } from './key-result-overview/key-result-overview.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     KeyResultRowComponent,
-    KeyresultFormComponent,
     DiagramComponent,
     KeyResultOverviewComponent,
     DiagramComponent,
@@ -49,6 +48,7 @@ import { KeyResultOverviewComponent } from './key-result-overview/key-result-ove
     MatInputModule,
     MatSelectModule,
     ProgressModule,
+    TranslateModule,
   ],
 })
 export class KeyresultModule {}

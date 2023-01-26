@@ -3,7 +3,7 @@
     {
       "id": 1,
       "objectiveId": 1,
-      "title": "Keyresult 1",
+      "title": "Key Result 1",
       "description": "This is the description",
       "ownerId": 1,
       "ownerFirstname": "Alice",
@@ -27,8 +27,8 @@
     {
       "id": 2,
       "objectiveId": 1,
-      "title": "Keyresult 2",
-      "description": "This is the description of Keyresult 2",
+      "title": "Key Result 2",
+      "description": "This is the description of Key Result 2",
       "ownerId": 1,
       "ownerFirstname": "Alice",
       "ownerLastname": "Wunderland",
@@ -51,8 +51,8 @@
     {
       "id": 3,
       "objectiveId": 1,
-      "title": "Keyresult 3",
-      "description": "This is the description of Keyresult 3",
+      "title": "Key Result 3",
+      "description": "This is the description of Key Result 3",
       "ownerId": 1,
       "ownerFirstname": "Alice",
       "ownerLastname": "Wunderland",
@@ -75,7 +75,7 @@
   ],
   "createKeyResultObject": {
     "id": null,
-    "title": "Keyresult 1",
+    "title": "Key Result 1",
     "description": "This is a description",
     "expectedEvolution": "INCREASE",
     "unit": "PERCENT",
@@ -104,8 +104,8 @@
   "binaryKeyResult": {
     "id": 3,
     "objectiveId": 1,
-    "title": "Keyresult 3",
-    "description": "This is the description of Keyresult 3",
+    "title": "Key Result 3",
+    "description": "This is the description of Key Result 3",
     "ownerId": 1,
     "ownerFirstname": "Alice",
     "ownerLastname": "Wunderland",
@@ -118,7 +118,7 @@
       "keyResultId": 3,
       "value": 0,
       "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-      "initiatives": "Initiatives key result 3",
+      "initiatives": "Initiatives Key Result 3",
       "createdById": 1,
       "createdOn": "2023-02-14",
       "measureDate": "2023-03-06"

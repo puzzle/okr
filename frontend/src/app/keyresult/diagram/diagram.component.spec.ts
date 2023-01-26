@@ -46,7 +46,7 @@ describe('DiagramComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get keyresult by id', () => {
+  it('should get Key Result by id', () => {
     expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledTimes(
       1
     );
@@ -80,7 +80,7 @@ describe('DiagramComponent', () => {
     expect(diagrammObjects[0].y).toEqual(33);
     expect(diagrammObjects[1].x).toEqual('2022-12-23');
     expect(diagrammObjects[1].y).toEqual(0);
-    expect(diagrammObjects[2].x).toEqual('2023-01-05 01:00:00');
+    expect(diagrammObjects[2].x).toEqual('2023-01-10T22:00:00Z');
     expect(diagrammObjects[2].y).toEqual(42);
   });
 });

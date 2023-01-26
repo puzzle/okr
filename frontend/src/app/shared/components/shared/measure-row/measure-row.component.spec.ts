@@ -37,7 +37,7 @@ describe('MeasureRowComponent', () => {
     error: jest.fn(),
   };
 
-  describe('Get Measures from existing keyresult', () => {
+  describe('Get Measures from existing Key Result', () => {
     beforeEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
 
@@ -182,7 +182,7 @@ describe('MeasureRowComponent', () => {
     });
   });
 
-  describe('Empty keyresult id', () => {
+  describe('Empty Key Result id', () => {
     beforeEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
 
@@ -226,7 +226,7 @@ describe('MeasureRowComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should not get measures from keyresult', () => {
+    it('should not get measures from Key Result', () => {
       expect(
         mockKeyResultService.getMeasuresOfKeyResult
       ).not.toHaveBeenCalled();

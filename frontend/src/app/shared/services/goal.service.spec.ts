@@ -26,7 +26,7 @@ describe('GoalService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should get goal by keyresult id', (done) => {
+  test('should get goal by Key Result id', (done) => {
     service.getGoalByKeyResultId(42).subscribe({
       next(response: Goal) {
         expect(response).toEqual(response);

@@ -113,7 +113,7 @@ describe('ObjectiveComponent', () => {
   test.each([
     [
       [
-        { displayName: 'KeyResult hinzufügen', routeLine: 'result/add' },
+        { displayName: 'Key Result hinzufügen', routeLine: 'result/add' },
         { displayName: 'Objective bearbeiten', routeLine: 'objective/edit' },
         {
           displayName: 'Objective duplizieren',

@@ -4,7 +4,7 @@
 </span>
 
 <p class="fs-2 title">
-  {{ this.create ? "Keyresult hinzufügen" : "Keyresult bearbeiten" }}
+  {{ this.create ? "Key Result hinzufügen" : "Key Result bearbeiten" }}
 </p>
 <p class="fs-4 title">Objective Beschreibung</p>
 <div>
@@ -14,7 +14,7 @@
   >
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Title</p>
+        <p class="fw-bold max-content">Titel</p>
       </span>
 
       <p class="w-100 objective-title">
@@ -34,7 +34,7 @@
 
     <div class="d-flex justify-content-center gap-3">
       <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content description-title">Description</p>
+        <p class="fw-bold max-content description-title">Beschreibung</p>
       </span>
 
       <p class="w-100 objective-description">
@@ -88,18 +88,26 @@
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
+          *ngIf="create"
         >
           <mat-label>Einheit</mat-label>
           <mat-select
+            (selectionChange)="
+              this.enableTargetAndBasicValue(); this.resetValidatorOfForm()
+            "
             [value]="keyresult.unit"
             formControlName="unit"
             class="unit-select"
           >
             <mat-option *ngFor="let unit of unit$" [value]="unit">
-              {{ unit }}
+              {{ "UNIT." + unit | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <p *ngIf="!create" class="form-field-width keyresult-unit">
+          {{ "UNIT." + keyresult.unit | translate }}
+        </p>
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
@@ -118,7 +126,7 @@
               *ngFor="let evolution of expectedEvolution$"
               [value]="evolution"
             >
-              {{ evolution }}
+              {{ "EXPECTED_EVOLUTION." + evolution | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -135,7 +143,7 @@
             [value]="keyresult.basicValue"
             formControlName="basicValue"
             matInput
-            placeholder="0.0"
+            placeholder="0"
             type="text"
             class="basicValue-input"
           />
@@ -153,7 +161,7 @@
             [value]="keyresult.targetValue"
             formControlName="targetValue"
             matInput
-            placeholder="0.0"
+            placeholder="0"
             type="text"
             class="targetValue-input"
           />

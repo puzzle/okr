@@ -1,18 +1,20 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.StartEndDateDTO;
+import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.IntStream;
 
 @Service
 public class QuarterService {
-
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
 
     static {
@@ -22,10 +24,12 @@ public class QuarterService {
         yearToBusinessQuarterMap.put(4, 2);
     }
 
+    private final KeyResultService keyResultService;
     private final QuarterRepository quarterRepository;
     public YearMonth now;
 
-    public QuarterService(QuarterRepository quarterRepository, YearMonth now) {
+    public QuarterService(KeyResultService keyResultService, QuarterRepository quarterRepository, YearMonth now) {
+        this.keyResultService = keyResultService;
         this.quarterRepository = quarterRepository;
         this.now = now;
     }
@@ -87,5 +91,27 @@ public class QuarterService {
     public String padWithZeros(int amount, int number) {
         String format = "%0" + amount + "d";
         return String.format(format, number);
+    }
+
+    public StartEndDateDTO getStartAndEndDateOfKeyresult(long keyResultId) {
+        KeyResult keyResult = this.keyResultService.getKeyResultById(keyResultId);
+        String quarterLabel = keyResult.getObjective().getQuarter().getLabel();
+
+        YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);
+        YearMonth endYearMonth = startYearMonth.plusMonths(2);
+        LocalDate startDate = LocalDate.of(startYearMonth.getYear(), startYearMonth.getMonthValue(), 1);
+        LocalDate endDate = LocalDate.of(endYearMonth.getYear(), endYearMonth.getMonthValue(),
+                endYearMonth.lengthOfMonth());
+        return StartEndDateDTO.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
+    }
+
+    protected YearMonth getYearMonthFromLabel(String quarterLabel) {
+        quarterLabel = quarterLabel.trim().replace("GJ ", "");
+        int quarter = Integer.parseInt(quarterLabel.substring(quarterLabel.length() - 1));
+        int yearQuarter = yearToBusinessQuarterMap.get(quarter);
+        int year = Integer.parseInt(quarterLabel.substring(0, 2));
+        year = quarter > 2 ? year + 1 : year;
+        int month = yearQuarter * 3;
+        return YearMonth.of(year + 2000, month).minusMonths(2);
     }
 }

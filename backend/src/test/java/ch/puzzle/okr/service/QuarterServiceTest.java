@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.dto.StartEndDateDTO;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.stream.Stream;
@@ -26,6 +28,8 @@ import static org.mockito.Mockito.*;
 class QuarterServiceTest {
     @MockBean
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
+    @MockBean
+    KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
 
     @InjectMocks
     @Spy
@@ -163,6 +167,50 @@ class QuarterServiceTest {
     @MethodSource
     void shouldGetFirstMonthFromQuarter(int quarter, int month) {
         assertEquals(month, monthFromQuarter(quarter));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldGetYearMonthFromLabel(String label, YearMonth yearMonth) {
+        YearMonth yearMonthFromLabel = this.quarterService.getYearMonthFromLabel(label);
+        assertEquals(yearMonth, yearMonthFromLabel);
+    }
+
+    private static Stream<Arguments> shouldGetYearMonthFromLabel() {
+        return Stream.of(Arguments.of("GJ 21/22-Q1", YearMonth.of(2021, 7)),
+                Arguments.of("GJ 21/22-Q2", YearMonth.of(2021, 10)), Arguments.of("GJ 21/22-Q3", YearMonth.of(2022, 1)),
+                Arguments.of("GJ 21/22-Q4", YearMonth.of(2022, 4)));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldStartEndDateFromKeyResult(int keyResultId, String label, YearMonth yearMonth,
+            StartEndDateDTO startEndDateExpected) {
+        Quarter quarter = Quarter.Builder.builder().withLabel(label).build();
+        Objective objective = Objective.Builder.builder().withQuarter(quarter).build();
+        KeyResult keyResult = KeyResult.Builder.builder().withObjective(objective).build();
+
+        doReturn(keyResult).when(this.keyResultService).getKeyResultById(keyResultId);
+        doReturn(yearMonth).when(this.quarterService).getYearMonthFromLabel(label);
+
+        StartEndDateDTO startEndDate = this.quarterService.getStartAndEndDateOfKeyresult(keyResultId);
+
+        assertEquals(startEndDateExpected, startEndDate);
+    }
+
+    private static Stream<Arguments> shouldStartEndDateFromKeyResult() {
+        return Stream.of(
+                Arguments.of(1, "GJ 21/22-Q1", YearMonth.of(2021, 7),
+                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2021, 7, 1))
+                                .withEndDate(LocalDate.of(2021, 9, 30)).build()),
+                Arguments.of(2, "GJ 21/22-Q2", YearMonth.of(2021, 10),
+                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2021, 10, 1))
+                                .withEndDate(LocalDate.of(2021, 12, 31)).build()),
+                Arguments.of(3, "GJ 21/22-Q3", YearMonth.of(2022, 1),
+                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2022, 1, 1))
+                                .withEndDate(LocalDate.of(2022, 3, 31)).build()),
+                Arguments.of(4, "GJ 21/22-Q4", YearMonth.of(2022, 4), StartEndDateDTO.Builder.builder()
+                        .withStartDate(LocalDate.of(2022, 4, 1)).withEndDate(LocalDate.of(2022, 6, 30)).build()));
     }
 
     private int monthFromQuarter(int quarter) {

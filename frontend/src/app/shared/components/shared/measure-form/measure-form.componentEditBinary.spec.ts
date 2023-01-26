@@ -354,7 +354,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       component.measureForm.get('initiatives')?.setValue('Initiatives 1');
       component.measureForm
         .get('measureDate')
-        ?.setValue(new Date(2023, 0, 4, 1, 0, 0));
+        ?.setValue(new Date('2023-01-04T00:00:00Z'));
       fixture.detectChanges();
       component.save();
 

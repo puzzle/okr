@@ -92,7 +92,7 @@ describe('KeyResultOverviewComponent', () => {
 
     test('should display - when measure is null', () => {
       const lastMeasureDate = fixture.debugElement.query(
-        By.css('.emptyLastMeasure')
+        By.css('mat-card-content[data-test-marker="emptyLastMeasure"]')
       );
       expect(lastMeasureDate.nativeElement.textContent).toContain('-');
     });

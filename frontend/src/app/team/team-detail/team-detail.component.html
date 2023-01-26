@@ -3,7 +3,11 @@
   <div class="objective-row" *ngFor="let objective of overview.objectives">
     <hr />
     <mat-accordion>
-      <app-objective-row [objective]="objective"> </app-objective-row>
+      <app-objective-row
+        (onObjectivesListUpdate)="reloadObjectives()"
+        [objective]="objective"
+      >
+      </app-objective-row>
     </mat-accordion>
   </div>
 </div>

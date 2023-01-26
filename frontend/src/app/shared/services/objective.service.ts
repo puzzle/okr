@@ -65,4 +65,10 @@ export class ObjectiveService {
       created: '',
     };
   }
+
+  deleteObjectiveById(objectiveId: number): Observable<Objective> {
+    return this.httpClient.delete<Objective>(
+      '/api/v1/objectives/' + objectiveId
+    );
+  }
 }

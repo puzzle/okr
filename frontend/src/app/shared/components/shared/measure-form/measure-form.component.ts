@@ -31,7 +31,7 @@ export class MeasureFormComponent implements OnInit {
     value: new FormControl<number | boolean>(0, [Validators.required]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
     changeInfo: new FormControl<string>('', [Validators.required]),
-    initiatives: new FormControl<string>(''),
+    initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
   public keyresult$!: Observable<KeyResultMeasure>;
   public goal$!: Observable<Goal>;

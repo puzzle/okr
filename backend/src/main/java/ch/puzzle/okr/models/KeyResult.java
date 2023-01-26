@@ -20,7 +20,7 @@ public class KeyResult {
     @Size(min = 2, max = 250)
     private String title;
 
-    @Size(max = 4096)
+    @Size(min = 2, max = 4096)
     private String description;
 
     @NotNull
@@ -179,7 +179,7 @@ public class KeyResult {
         private @NotNull Long id;
         private @NotNull Objective objective;
         private @NotBlank @Size(min = 2, max = 250) String title;
-        private @Size(max = 4096) String description;
+        private @Size(min = 2, max = 4096) String description;
         private @NotNull User owner;
         private @Size(min = 2, max = 250) ExpectedEvolution expectedEvolution;
         private @NotNull @NotBlank Unit unit;
@@ -210,7 +210,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder withDescription(@Size(max = 4096) String description) {
+        public Builder withDescription(@Size(min = 2, max = 4096) String description) {
             this.description = description;
             return this;
         }

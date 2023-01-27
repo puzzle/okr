@@ -37,32 +37,32 @@
             <p class="lastMeasurechangeInfo">
               {{ keyResult.measure?.changeInfo }}
             </p>
-
-            <mat-card-actions align="start">
-              <button
-                id="show-details-button"
-                mat-stroked-button
-                color="primary"
-                [routerLink]="['keyresults/' + this.keyResult.id]"
-              >
-                Details anzeigen
-              </button>
-              <button
-                id="add-measure-button"
-                mat-stroked-button
-                color="primary"
-                [routerLink]="[
-                  'keyresults/' + this.keyResult.id + '/measure/new'
-                ]"
-              >
-                Messung hinzufügen
-              </button>
-            </mat-card-actions>
           </mat-card-content>
+          <mat-card-actions align="start">
+            <button
+              *ngIf="keyResult.measure !== null"
+              id="show-details-button"
+              mat-stroked-button
+              color="primary"
+              [routerLink]="['keyresults/' + this.keyResult.id]"
+            >
+              Details anzeigen
+            </button>
+            <button
+              id="add-measure-button"
+              mat-stroked-button
+              color="primary"
+              [routerLink]="[
+                'keyresults/' + this.keyResult.id + '/measure/new'
+              ]"
+            >
+              Messung hinzufügen
+            </button>
+          </mat-card-actions>
 
           <ng-template #noMeasures>
             <mat-card-content data-test-marker="emptyLastMeasure">
-              -
+              <p>-</p>
             </mat-card-content>
           </ng-template>
         </mat-card>

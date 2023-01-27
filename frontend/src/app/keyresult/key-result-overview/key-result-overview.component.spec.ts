@@ -62,7 +62,7 @@ describe('KeyResultOverviewComponent', () => {
         ' This is the description '
       );
       expect(matcardcontens[2].nativeElement.textContent).toEqual(
-        'Dec 23, 2022 Lorem Ipsum is simply dummy text of the printing and typesetting industry.  Details anzeigen  Messung hinzufügen '
+        'Dec 23, 2022 Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
       );
     });
 
@@ -112,7 +112,7 @@ describe('KeyResultOverviewComponent', () => {
   describe('KeyResultDetail with no measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [MatCardModule],
+        imports: [MatCardModule, RouterTestingModule],
         declarations: [KeyResultOverviewComponent],
       }).compileComponents();
 
@@ -131,6 +131,15 @@ describe('KeyResultOverviewComponent', () => {
         By.css('mat-card-content[data-test-marker="emptyLastMeasure"]')
       );
       expect(lastMeasureDate.nativeElement.textContent).toContain('-');
+    });
+
+    test('should hava correct link in add measure button', () => {
+      const button = fixture.debugElement.query(By.css('#add-measure-button'));
+
+      expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        'keyresults/1/measure/new'
+      );
     });
   });
 });

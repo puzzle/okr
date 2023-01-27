@@ -103,7 +103,7 @@ describe('MeasureFormComponent Create', () => {
         Validators.required,
         Validators.pattern(NUMBER_REGEX),
       ]),
-      measureDate: new FormControl<Date>(new Date('2022-12-01T00:00:00Z'), [
+      measureDate: new FormControl<Date>(new Date('2022-12-01T23:00:00Z'), [
         Validators.required,
       ]),
       changeInfo: new FormControl<string>('Changeinfo 1', [
@@ -317,7 +317,7 @@ describe('MeasureFormComponent Create', () => {
       component.measureForm = createMeasureForm;
       component.measureForm
         .get('measureDate')
-        ?.setValue(new Date('2022-12-01 14:30:48'));
+        ?.setValue(new Date('2022-12-02T11:24:45Z'));
       fixture.detectChanges();
 
       expect(component.measureForm.disabled).toEqual(false);

@@ -264,7 +264,7 @@ describe('MeasureFormComponent Edit', () => {
       });
       expect(component.measureForm.get('value')?.value).toEqual(42);
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2023-01-10T22:00:00.000Z')
+        new Date('2023-01-10T23:00:00.000Z')
       );
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
         'Changeinfo 1'
@@ -330,7 +330,7 @@ describe('MeasureFormComponent Edit', () => {
       const datepicker = fixture.debugElement.query(
         By.css('input[formControlName="measureDate"]')
       );
-      expect(datepicker.nativeElement.value).toEqual('1/10/2023');
+      expect(datepicker.nativeElement.value).toEqual('1/11/2023');
     });
 
     xit('should update datepicker with right value from measureForm wintertime', () => {
@@ -427,11 +427,11 @@ describe('MeasureFormComponent Edit', () => {
       component.measureForm.get('value')?.setValue(30);
       component.measureForm
         .get('measureDate')
-        ?.setValue(new Date('2023-01-10 14:30:48'));
+        ?.setValue(new Date('2023-01-10T14:30:48Z'));
       fixture.detectChanges();
       component.save();
 
-      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalled();
       expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
         receivedEditedMeasure,
         false

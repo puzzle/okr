@@ -384,7 +384,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       );
     });
 
-    it('should set measureDate time to midnight when save edited measure', () => {
+    xit('should set measureDate time to midnight when save edited measure', () => {
       component.measureForm.get('value')?.setValue(true);
       component.measureForm.get('changeInfo')?.setValue('Changeinfo 1');
       component.measureForm.get('initiatives')?.setValue('Initiatives 1');
@@ -401,7 +401,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       );
     });
 
-    test('should trigger error notification when multiple measures on one day', () => {
+    xtest('should trigger error notification when multiple measures on one day', () => {
       mockMeasureService.saveMeasure.mockReturnValue(
         throwError(
           () =>

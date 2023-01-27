@@ -112,7 +112,7 @@ describe('KeyResultOverviewComponent', () => {
   describe('KeyResultDetail with no measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [MatCardModule],
+        imports: [MatCardModule, RouterTestingModule],
         declarations: [KeyResultOverviewComponent],
       }).compileComponents();
 
@@ -135,8 +135,8 @@ describe('KeyResultOverviewComponent', () => {
 
     test('should hava correct link in add measure button', () => {
       const button = fixture.debugElement.query(By.css('#add-measure'));
-      console.log(button.attributes['ng-reflect-router-link']);
 
+      expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
       expect(button.attributes['ng-reflect-router-link']).toEqual(
         'keyresults/1/measure/new'
       );

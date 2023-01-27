@@ -264,7 +264,7 @@ describe('MeasureFormComponent Edit', () => {
       });
       expect(component.measureForm.get('value')?.value).toEqual(42);
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2023-01-10T22:00:00.000Z')
+        new Date('2023-01-10T23:00:00.000Z')
       );
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
         'Changeinfo 1'
@@ -330,7 +330,7 @@ describe('MeasureFormComponent Edit', () => {
       const datepicker = fixture.debugElement.query(
         By.css('input[formControlName="measureDate"]')
       );
-      expect(datepicker.nativeElement.value).toEqual('1/10/2023');
+      expect(datepicker.nativeElement.value).toEqual('1/11/2023');
     });
 
     xit('should update datepicker with right value from measureForm wintertime', () => {

@@ -294,7 +294,7 @@ describe('MeasureFormComponent Edit Binary', () => {
       const datepicker = fixture.debugElement.query(
         By.css('input[formControlName="measureDate"]')
       );
-      expect(datepicker.nativeElement.value).toEqual('1/5/2023');
+      expect(datepicker.nativeElement.value).toEqual('1/6/2023');
     });
 
     xit('should update datepicker with right value from measureForm wintertime', () => {

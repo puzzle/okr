@@ -63,6 +63,18 @@
           <ng-template #noMeasures>
             <mat-card-content data-test-marker="emptyLastMeasure">
               -
+              <mat-card-actions align="start">
+                <button
+                  id="add-measure"
+                  mat-stroked-button
+                  color="primary"
+                  [routerLink]="[
+                    'keyresults/' + this.keyResult.id + '/measure/new'
+                  ]"
+                >
+                  Messung hinzufügen
+                </button>
+              </mat-card-actions>
             </mat-card-content>
           </ng-template>
         </mat-card>

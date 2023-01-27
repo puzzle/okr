@@ -132,5 +132,14 @@ describe('KeyResultOverviewComponent', () => {
       );
       expect(lastMeasureDate.nativeElement.textContent).toContain('-');
     });
+
+    test('should hava correct link in add measure button', () => {
+      const button = fixture.debugElement.query(By.css('#add-measure'));
+      console.log(button.attributes['ng-reflect-router-link']);
+
+      expect(button.attributes['ng-reflect-router-link']).toEqual(
+        'keyresults/1/measure/new'
+      );
+    });
   });
 });

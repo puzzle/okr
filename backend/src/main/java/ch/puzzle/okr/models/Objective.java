@@ -32,7 +32,7 @@ public class Objective {
 
     @NotBlank
     @NotNull
-    @Size(min = 2, max = 1024 * 4)
+    @Size(min = 2, max = 4096)
     private String description;
 
     private Long progress;

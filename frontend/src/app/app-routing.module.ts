@@ -29,7 +29,7 @@ const routes: Routes = [
     component: MeasureFormComponent,
   },
 
-  { path: 'objectives/new', component: ObjectiveFormComponent },
+  { path: 'team/:teamId/objectives/new', component: ObjectiveFormComponent },
   { path: 'objectives/edit/:objectiveId', component: ObjectiveFormComponent },
   { path: 'team/edit/:id', component: TeamFormComponent },
   { path: 'team/edit', component: TeamFormComponent },

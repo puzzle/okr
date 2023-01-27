@@ -47,20 +47,19 @@ describe('KeyresultFormComponent', () => {
     title: new FormControl<string>('Key Result 1', [
       Validators.required,
       Validators.minLength(2),
-      Validators.maxLength(20),
+      Validators.maxLength(250),
     ]),
     unit: new FormControl<string>('PERCENT', [Validators.required]),
-    expectedEvolution: new FormControl<string>('INCREASE', [
-      Validators.required,
-    ]),
+    expectedEvolution: new FormControl<string>('INCREASE'),
     basicValue: new FormControl<number>(0, Validators.required),
     targetValue: new FormControl<number>(100, Validators.required),
     description: new FormControl<string>('This is a description', [
+      Validators.minLength(2),
       Validators.maxLength(4096),
     ]),
-    ownerId: new FormControl<number>(2, [
+    ownerId: new FormControl<number | null>(2, [
       Validators.required,
-      Validators.min(1),
+      Validators.nullValidator,
     ]),
   });
 

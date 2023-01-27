@@ -1,8 +1,10 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
 } from '@angular/core';
 import {
   Objective,
@@ -15,6 +17,10 @@ import {
 } from '../../shared/services/key-result.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-objective-row',
@@ -24,12 +30,15 @@ import { Router } from '@angular/router';
 })
 export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
+  @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
   constructor(
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private dialog: MatDialog
   ) {}
 
   public getKeyResults(id: number) {
@@ -54,14 +63,61 @@ export class ObjectiveRowComponent implements OnInit {
       },
       {
         displayName: 'Objective löschen',
-        showDialog: false,
-        routeLine: 'objective/delete',
+        showDialog: true,
       },
     ];
   }
 
   redirect(menuEntry: MenuEntry) {
-    this.router.navigate([menuEntry.routeLine]);
+    if (menuEntry.showDialog) {
+      this.openDialog();
+    } else {
+      this.router.navigate([menuEntry.routeLine]);
+    }
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      disableClose: true,
+      data: {
+        title:
+          'Willst du dieses Objective und die dazugehörigen KeyResults und Messungen wirklich löschen?',
+        confirmText: 'Bestätigen',
+        closeText: 'Abbrechen',
+      },
+    });
+
+    dialogRef.componentInstance.closeDialog.subscribe((confirm) => {
+      if (confirm) {
+        dialogRef.componentInstance.displaySpinner = true;
+        this.objectiveService
+          .deleteObjectiveById(this.objective.id!)
+          .subscribe({
+            next: () => {
+              dialogRef.componentInstance.displaySpinner = false;
+              dialogRef.close();
+              this.onObjectivesListUpdate.emit();
+              this.toastr.success('', 'Objective gelöscht!', {
+                timeOut: 5000,
+              });
+            },
+            error: (e: HttpErrorResponse) => {
+              dialogRef.componentInstance.displaySpinner = false;
+              dialogRef.close();
+              this.toastr.error(
+                'Objective konnte nicht gelöscht werden!',
+                'Fehlerstatus: ' + e.status,
+                {
+                  timeOut: 5000,
+                }
+              );
+            },
+          });
+      } else {
+        dialogRef.close();
+      }
+    });
   }
 
   removeKeyResultFromListAndReloadObjective(id: number) {

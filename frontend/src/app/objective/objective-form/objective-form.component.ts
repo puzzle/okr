@@ -36,8 +36,8 @@ export class ObjectiveFormComponent implements OnInit {
     ]),
     description: new FormControl<string>('', [
       Validators.required,
-      Validators.maxLength(4096),
       Validators.minLength(2),
+      Validators.maxLength(4096),
     ]),
     ownerId: new FormControl<number | null>(null, [
       Validators.required,
@@ -75,7 +75,9 @@ export class ObjectiveFormComponent implements OnInit {
           return this.objectiveService.getObjectiveById(objectiveId);
         } else {
           this.create = true;
-          return of<Objective>(this.objectiveService.getInitObjective());
+          const objective = this.objectiveService.getInitObjective();
+          objective.teamId = getNumberOrNull(params.get('teamId'));
+          return of<Objective>(objective);
         }
       })
     );

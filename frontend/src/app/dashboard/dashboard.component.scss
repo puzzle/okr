@@ -3,7 +3,7 @@
 }
 
 .headline-large {
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 32px;
   font-weight: 400;
 }
@@ -11,20 +11,6 @@
 .title-create-button {
   display: flex;
   flex-direction: row;
-}
-
-.create-button {
-  margin-top: 5px;
-  margin-left: 30px;
-  height: 40px;
-  border-radius: 20px;
-}
-
-.add-icon {
-  height: 20px;
-  width: 20px;
-  margin-right: 10px;
-  margin-bottom: 3px;
 }
 
 .filter-dropdown {

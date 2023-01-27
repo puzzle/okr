@@ -126,8 +126,8 @@ describe('MeasureRowComponent', () => {
       );
 
       expect(measureDates.length).toEqual(2);
-      expect(measureDates[0].nativeElement.textContent).toContain('05.01.2023');
-      expect(measureDates[1].nativeElement.textContent).toContain('23.01.2023');
+      expect(measureDates[0].nativeElement.textContent).toContain('06.01.2023');
+      expect(measureDates[1].nativeElement.textContent).toContain('24.01.2023');
     });
 
     it('should have two measure values for 2 measures', () => {

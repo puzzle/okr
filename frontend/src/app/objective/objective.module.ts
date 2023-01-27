@@ -18,7 +18,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ProgressModule } from '../progress/progress.module';
 import { SharedModule } from '../shared/components/shared/shared.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -46,7 +45,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ReactiveFormsModule,
     MatSelectModule,
     MatInputModule,
-    MatTooltipModule,
     ProgressModule,
     SharedModule,
   ],

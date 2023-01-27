@@ -75,7 +75,9 @@ export class ObjectiveFormComponent implements OnInit {
           return this.objectiveService.getObjectiveById(objectiveId);
         } else {
           this.create = true;
-          return of<Objective>(this.objectiveService.getInitObjective());
+          const objective = this.objectiveService.getInitObjective();
+          objective.teamId = getNumberOrNull(params.get('teamId'));
+          return of<Objective>(objective);
         }
       })
     );

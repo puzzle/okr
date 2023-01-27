@@ -31,6 +31,7 @@
 
       <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
         <button
+          id="menu-entries"
           *ngFor="let menuEntry of menuEntries"
           (click)="redirect(menuEntry)"
           mat-menu-item
@@ -57,4 +58,13 @@
     >
     </app-keyresult-row>
   </mat-accordion>
+  <button
+    id="add-keyresult-button"
+    class="create-button"
+    mat-stroked-button
+    color="primary"
+    [routerLink]="['objective/' + this.objective.id + '/keyresult/new']"
+  >
+    Key Result hinzufügen
+  </button>
 </mat-expansion-panel>

@@ -134,7 +134,7 @@ describe('KeyResultOverviewComponent', () => {
     });
 
     test('should hava correct link in add measure button', () => {
-      const button = fixture.debugElement.query(By.css('#add-measure'));
+      const button = fixture.debugElement.query(By.css('#add-measure-button'));
 
       expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
       expect(button.attributes['ng-reflect-router-link']).toEqual(

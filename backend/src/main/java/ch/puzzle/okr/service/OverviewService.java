@@ -24,6 +24,6 @@ public class OverviewService {
         return teams.stream()
                 .map(team -> overviewMapper.toDto(team,
                         objectiveService.getObjectiveByTeamIdAndQuarterId(team.getId(), quarterId)))
-                .filter(e -> !e.getObjectives().isEmpty()).toList();
+                .toList();
     }
 }

@@ -39,21 +39,22 @@
             </p>
           </mat-card-content>
           <mat-card-actions align="start">
-            <button *ngIf="keyResult.measure !== null"
-                    id="show-details-button"
-                    mat-stroked-button
-                    color="primary"
-                    [routerLink]="['keyresults/' + this.keyResult.id]"
+            <button
+              *ngIf="keyResult.measure !== null"
+              id="show-details-button"
+              mat-stroked-button
+              color="primary"
+              [routerLink]="['keyresults/' + this.keyResult.id]"
             >
               Details anzeigen
             </button>
             <button
-                    id="add-measure-button"
-                    mat-stroked-button
-                    color="primary"
-                    [routerLink]="[
-                  'keyresults/' + this.keyResult.id + '/measure/new'
-                ]"
+              id="add-measure-button"
+              mat-stroked-button
+              color="primary"
+              [routerLink]="[
+                'keyresults/' + this.keyResult.id + '/measure/new'
+              ]"
             >
               Messung hinzufügen
             </button>

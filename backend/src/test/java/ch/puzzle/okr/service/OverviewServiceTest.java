@@ -87,10 +87,11 @@ class OverviewServiceTest {
 
         List<OverviewDto> overview = overviewService.getOverview(Collections.emptyList(), null);
 
-        assertEquals(2, overview.size());
+        assertEquals(3, overview.size());
         assertEquals(1, overview.get(0).getTeam().getId());
         assertEquals(2, overview.get(0).getObjectives().size());
         assertEquals(2, overview.get(1).getTeam().getId());
+        assertEquals(0, overview.get(2).getObjectives().size());
     }
 
     @Test
@@ -103,9 +104,10 @@ class OverviewServiceTest {
 
         List<OverviewDto> overview = overviewService.getOverview(List.of(1L, 3L), null);
 
-        assertEquals(1, overview.size());
+        assertEquals(2, overview.size());
         assertEquals(1, overview.get(0).getTeam().getId());
         assertEquals(2, overview.get(0).getObjectives().size());
+        assertEquals(0, overview.get(1).getObjectives().size());
     }
 
     @Test
@@ -117,11 +119,12 @@ class OverviewServiceTest {
 
         List<OverviewDto> overview = overviewService.getOverview(Collections.emptyList(), 1L);
 
-        assertEquals(2, overview.size());
+        assertEquals(3, overview.size());
         assertEquals(1, overview.get(0).getTeam().getId());
         assertEquals(2, overview.get(0).getObjectives().size());
         assertEquals(2, overview.get(1).getTeam().getId());
         assertEquals(1, overview.get(1).getObjectives().size());
+        assertEquals(0, overview.get(2).getObjectives().size());
     }
 
     @Test

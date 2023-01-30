@@ -326,47 +326,61 @@ describe('MeasureFormComponent Edit', () => {
       expect(component.measureForm.get('value')?.valid).toEqual(false);
     });
 
-    test('should have datepicker value', () => {
-      const datepicker = fixture.debugElement.query(
-        By.css('input[formControlName="measureDate"]')
-      );
-      expect(datepicker.nativeElement.value).toEqual('1/10/2023');
+    test('should have datepicker value', async () => {
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
+
+      expect(await datePickerInputHarness.getValue()).toEqual('1/10/2023');
     });
 
-    xtest('should update datepicker with right value from measureForm wintertime', () => {
+    xtest('should update datepicker with right value from measureForm wintertime', async () => {
       // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
-      const datepicker = fixture.debugElement.query(
-        By.css('.datepicker-input')
-      );
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
+
       component.measureForm
         .get('measureDate')
         ?.setValue(new Date('2023-02-23T23:00:00Z'));
       fixture.detectChanges();
 
-      expect(datepicker.nativeElement.value).toEqual('2/24/2023');
+      expect(await datePickerInputHarness.getValue()).toEqual('2/24/2023');
     });
 
-    xtest('should update datepicker with right value from measureForm summertime', () => {
+    xtest('should update datepicker with right value from measureForm summertime', async () => {
       // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
-      const datepicker = fixture.debugElement.query(
-        By.css('.datepicker-input')
-      );
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
+
       component.measureForm
         .get('measureDate')
         ?.setValue(new Date('2023-07-01T22:00:00Z'));
       fixture.detectChanges();
 
-      expect(datepicker.nativeElement.value).toEqual('7/2/2023');
+      expect(await datePickerInputHarness.getValue()).toEqual('7/2/2023');
     });
 
     xtest('should update measureDate with datepicker', async () => {
       // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
-      const datePickerInputHarnes =
-        await TestbedHarnessEnvironment.documentRootLoader(fixture)
-          .getAllHarnesses(MatDatepickerInputHarness)
-          .then((datepickerInputHarnesses) => datepickerInputHarnesses[0]);
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
 
-      datePickerInputHarnes.setValue('22/12/2022');
+      datePickerInputHarness.setValue('22/12/2022');
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2023-01-10T22:00:00.000Z')

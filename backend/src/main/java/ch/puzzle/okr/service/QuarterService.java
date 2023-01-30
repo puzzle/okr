@@ -112,7 +112,7 @@ public class QuarterService {
 
     protected YearMonth getYearMonthFromLabel(String quarterLabel) {
         Matcher matcher = getValuesFromLabel.matcher(quarterLabel);
-        if(!matcher.find()){
+        if (!matcher.find()) {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Label isn't valid");
         }
 
@@ -121,7 +121,7 @@ public class QuarterService {
 
         int calendarQuarter = yearToBusinessQuarterMap.get(businessQuarter);
         int calendarYear = businessQuarter > 2 ? businessYear + 1 : businessYear;
-        //Add 2000 since year in quarter is in two digit format
+        // Add 2000 since year in quarter is in two digit format
         calendarYear += 2000;
 
         int month = calendarQuarter * 3 - 2;

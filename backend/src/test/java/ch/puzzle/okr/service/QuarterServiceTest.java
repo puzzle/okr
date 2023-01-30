@@ -174,8 +174,9 @@ class QuarterServiceTest {
         YearMonth yearMonthFromLabel = this.quarterService.getYearMonthFromLabel(label);
         assertEquals(yearMonth, yearMonthFromLabel);
     }
+
     @ParameterizedTest
-    @ValueSource(strings = {""," ","GJ 21/22-Q0", "GJ 21/22-Q5", "gj 21/22-Q4"})
+    @ValueSource(strings = { "", " ", "GJ 21/22-Q0", "GJ 21/22-Q5", "gj 21/22-Q4" })
     void shouldThrowErrorWhileGettingYearMonthFromLabel(String label) {
         assertThrows(ResponseStatusException.class, () -> this.quarterService.getYearMonthFromLabel(label));
     }

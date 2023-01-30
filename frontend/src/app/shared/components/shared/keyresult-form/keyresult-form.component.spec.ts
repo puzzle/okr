@@ -221,13 +221,13 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      const bugOption = await select.getOptions({ text: 'KEINE' });
+      const bugOption = await select.getOptions({ text: 'Keine' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('');
+      expect(await select.getValueText()).toEqual('Keine');
       expect(
         component.keyResultForm.controls['expectedEvolution'].value
-      ).toBeNull();
+      ).toEqual('NONE');
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
@@ -244,13 +244,13 @@ describe('KeyresultFormComponent', () => {
           selector: 'mat-select[formControlName="expectedEvolution"]',
         })
       );
-      expect(await select.getValueText()).toEqual('ERHÖHT');
+      expect(await select.getValueText()).toEqual('Erhöht');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
+      const bugOption = await select.getOptions({ text: 'Vermindert' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('VERMINDERT');
+      expect(await select.getValueText()).toEqual('Vermindert');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -357,7 +357,7 @@ describe('KeyresultFormComponent', () => {
 
     test('should have label for Key Result unit', () => {
       const unitLabel = fixture.debugElement.query(By.css('.keyresult-unit'));
-      expect(unitLabel.nativeElement.textContent).toContain('PROZENT');
+      expect(unitLabel.nativeElement.textContent).toContain('Prozent');
     });
   });
 
@@ -430,7 +430,7 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'PROZENT' });
+      const bugOption = await select.getOptions({ text: 'Prozent' });
       await bugOption[0].click();
       expect(component.keyResultForm.controls['unit'].value).toContain(
         'PERCENT'
@@ -530,10 +530,10 @@ describe('KeyresultFormComponent', () => {
       );
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'ZAHL' });
+      const bugOption = await select.getOptions({ text: 'Zahl' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('ZAHL');
+      expect(await select.getValueText()).toEqual('Zahl');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -547,10 +547,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
+      const bugOption = await select.getOptions({ text: 'Vermindert' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('VERMINDERT');
+      expect(await select.getValueText()).toEqual('Vermindert');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -605,13 +605,13 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'PROZENT' });
+      let bugOption = await select.getOptions({ text: 'Prozent' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
 
       //Change unit to binary which accepts every number
       await select.open();
-      bugOption = await select.getOptions({ text: 'BINÄR' });
+      bugOption = await select.getOptions({ text: 'Binär' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });
@@ -634,7 +634,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'ZAHL' });
+      let bugOption = await select.getOptions({ text: 'Zahl' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });
@@ -652,7 +652,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'PROZENT' });
+      let bugOption = await select.getOptions({ text: 'Prozent' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });
@@ -670,7 +670,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'ZAHL' });
+      let bugOption = await select.getOptions({ text: 'Zahl' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
     });

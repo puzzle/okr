@@ -276,7 +276,7 @@ describe('MeasureFormComponent Create', () => {
 
     test('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PROZENT');
+      expect(unit.nativeElement.textContent).toEqual('Prozent');
     });
 
     test('should update measureDate with datepicker', async () => {

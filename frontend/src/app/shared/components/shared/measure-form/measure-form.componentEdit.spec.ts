@@ -296,12 +296,12 @@ describe('MeasureFormComponent Edit', () => {
 
     test('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PROZENT');
+      expect(unit.nativeElement.textContent).toEqual('Prozent');
     });
 
     test('should be invalid when not matching pattern of Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('PROZENT');
+      expect(unit.nativeElement.textContent).toEqual('Prozent');
       component.measureForm.get('value')?.setValue(333);
       expect(component.measureForm.get('value')?.valid).toEqual(false);
 

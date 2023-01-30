@@ -16,7 +16,7 @@ import {
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import { Observable, of, throwError } from 'rxjs';
-import { MeasureService } from '../../../services/measure.service';
+import { Measure, MeasureService } from '../../../services/measure.service';
 import {
   ActivatedRoute,
   convertToParamMap,
@@ -65,6 +65,7 @@ describe('MeasureFormComponent Create', () => {
 
   let initMeasure = loadMeasure('initMeasure');
   let measure1 = of(loadMeasure('measure'));
+  let measures: Observable<Measure[]> = of([loadMeasure('measure')]);
   let receivedCreatedMeasure = loadMeasure('receivedCreatedMeasure');
 
   const mockGetNumerOrNull = {
@@ -77,6 +78,7 @@ describe('MeasureFormComponent Create', () => {
 
   const mockKeyResultService = {
     getKeyResultById: jest.fn(),
+    getMeasuresOfKeyResult: jest.fn(),
   };
 
   const mockMeasureService = {
@@ -114,6 +116,7 @@ describe('MeasureFormComponent Create', () => {
 
     beforeEach(() => {
       mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+      mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
@@ -182,6 +185,7 @@ describe('MeasureFormComponent Create', () => {
     afterEach(() => {
       mockGoalService.getGoalByKeyResultId.mockReset();
       mockMeasureService.getInitMeasure.mockReset();
+      mockKeyResultService.getMeasuresOfKeyResult.mockReset();
       mockMeasureService.saveMeasure.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
@@ -250,7 +254,7 @@ describe('MeasureFormComponent Create', () => {
       expect(title.nativeElement.textContent).toContain('Vergangene Messungen');
     });
 
-    test('should set all input fields empty except datepicker and have invalid form', () => {
+    test('should set all input fields empty except datepicker and have invalid form', async () => {
       let button = fixture.debugElement.query(By.css('.create-button'));
       expect(button.nativeElement.disabled).toEqual(true);
       expect(component.measureForm.valid).toEqual(false);
@@ -258,13 +262,17 @@ describe('MeasureFormComponent Create', () => {
       const valueInput = fixture.debugElement.query(By.css('.value-input'));
       expect(valueInput.nativeElement.value).toEqual('0');
       fixture.detectChanges();
-      const datepicker = fixture.debugElement.query(
-        By.css('input[formControlName="measureDate"]')
-      );
 
-      expect(datepicker.nativeElement.value).toEqual('12/23/2022');
-      expect(datepicker.attributes['min']).toEqual('2022-10-01');
-      expect(datepicker.attributes['max']).toEqual('2023-12-31');
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
+
+      expect(await datePickerInputHarness.getValue()).toEqual('12/23/2022');
+      expect(await datePickerInputHarness.getMin()).toEqual('2022-10-01');
+      expect(await datePickerInputHarness.getMax()).toEqual('2023-12-31');
 
       const textareas = fixture.debugElement.queryAll(
         By.css('.description-textarea')
@@ -280,12 +288,14 @@ describe('MeasureFormComponent Create', () => {
     });
 
     test('should update measureDate with datepicker', async () => {
-      const datePickerInputHarnes =
-        await TestbedHarnessEnvironment.documentRootLoader(fixture)
-          .getAllHarnesses(MatDatepickerInputHarness)
-          .then((datepickerInputHarnesses) => datepickerInputHarnesses[0]);
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
 
-      datePickerInputHarnes.setValue('22/12/2022');
+      datePickerInputHarness.setValue('22/12/2022');
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2022-12-23T00:00:00.000Z')

@@ -80,7 +80,7 @@ export class MeasureFormComponent implements OnInit {
 
     this.measure$.subscribe((measure) => {
       this.measureForm.setValue({
-        value: this.correctValueForBinaryDataToSlider(measure.value),
+        value: measure.value,
         measureDate: measure.measureDate,
         changeInfo: measure.changeInfo,
         initiatives: measure.initiatives,
@@ -88,25 +88,7 @@ export class MeasureFormComponent implements OnInit {
     });
   }
 
-  correctValueForBinaryDataToSlider(measureValue: number | boolean) {
-    if (this.keyResultUnit === 'BINARY') {
-      measureValue = measureValue === 1;
-    }
-    return measureValue;
-  }
-
-  correctValueForBinarySliderToData() {
-    if (this.keyResultUnit === 'BINARY') {
-      if (this.measureForm.get('value')?.value === true) {
-        this.measureForm.get('value')?.setValue(1);
-      } else {
-        this.measureForm.get('value')?.setValue(0);
-      }
-    }
-  }
-
   save() {
-    this.correctValueForBinarySliderToData();
     this.measure$
       .pipe(
         map((measure) => {

@@ -100,29 +100,5 @@
     "basicValue": 1,
     "objectiveId": 3000,
     "progress": 0
-  },
-  "binaryKeyResult": {
-    "id": 3,
-    "objectiveId": 1,
-    "title": "Key Result 3",
-    "description": "This is the description of Key Result 3",
-    "ownerId": 1,
-    "ownerFirstname": "Alice",
-    "ownerLastname": "Wunderland",
-    "expectedEvolution": "INCREASE",
-    "unit": "BINARY",
-    "basicValue": 0,
-    "targetValue": 1,
-    "measure": {
-      "id": 5,
-      "keyResultId": 3,
-      "value": 0,
-      "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-      "initiatives": "Initiatives Key Result 3",
-      "createdById": 1,
-      "createdOn": "2023-02-14",
-      "measureDate": "2023-03-06"
-    },
-    "progress": 0
   }
 }

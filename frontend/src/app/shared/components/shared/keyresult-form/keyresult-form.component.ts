@@ -48,7 +48,7 @@ export class KeyresultFormComponent implements OnInit {
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER', 'BINARY'];
+  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER'];
   public expectedEvolution$: string[] = [
     'INCREASE',
     'DECREASE',
@@ -166,10 +166,6 @@ export class KeyresultFormComponent implements OnInit {
         regex = NUMBER_REGEX;
         break;
       }
-    }
-    if (this.keyResultForm.controls['unit'].value == 'BINARY') {
-      this.keyResultForm.controls['basicValue'].disable();
-      this.keyResultForm.controls['targetValue'].disable();
     }
     this.setValidatorsWithRegex(regex);
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();

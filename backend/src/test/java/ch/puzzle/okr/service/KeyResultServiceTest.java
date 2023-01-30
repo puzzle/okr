@@ -115,7 +115,7 @@ class KeyResultServiceTest {
         this.keyResultService.createKeyResult(this.keyResultBinary);
 
         KeyResult changedKeyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY)
-                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0L).withTargetValue(1L)
+                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0D).withTargetValue(1D)
                 .withOwner(this.user).build();
         verify(this.keyResultRepository, times(1)).save(changedKeyResult);
     }

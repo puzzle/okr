@@ -140,7 +140,7 @@ describe('MeasureFormComponent3', () => {
       mockMeasureService.saveMeasure.mockReset();
     });
 
-    it('should create', () => {
+    test('should create', () => {
       expect(component).toBeTruthy();
 
       expect(mockMeasureService.getMeasureById).toHaveBeenCalledTimes(0);

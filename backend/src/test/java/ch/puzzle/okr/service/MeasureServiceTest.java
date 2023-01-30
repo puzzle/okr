@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +40,9 @@ class MeasureServiceTest {
     private MeasureService measureService;
 
     private Measure measure;
+    private Measure measureWithId;
+    private List<Measure> measures = new ArrayList<>();
+    private Measure falseMeasureDate;
     private Measure falseMeasure;
 
     @BeforeEach
@@ -49,7 +54,23 @@ class MeasureServiceTest {
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
+        this.measureWithId = Measure.Builder.builder().withId(1L)
+                .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
+                .withCreatedOn(LocalDateTime.MAX)
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
+                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
+                .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
+        this.falseMeasureDate = Measure.Builder.builder()
+                .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
+                .withCreatedOn(LocalDateTime.MAX)
+                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
+                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
+                .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
+
+        this.measures.add(measureWithId);
     }
 
     @Test
@@ -61,6 +82,15 @@ class MeasureServiceTest {
         assertEquals(returnMeasure.getInitiatives(), "Initiatives");
         assertEquals(returnMeasure.getKeyResult().getId(), 8);
         assertEquals(returnMeasure.getCreatedBy().getFirstname(), "Frank");
+    }
+
+    @Test
+    void shouldThrowErrorWhenInDbIsSameMeasureDateWithSameKeyResultId() {
+        Mockito.when(measureRepository.findMeasuresByKeyResultIdAndMeasureDate(any(), any())).thenReturn(measures);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.measureService.saveMeasure(measure));
+        assertEquals(400, exception.getRawStatusCode());
+        assertEquals("Only one Messung is allowed per day and Key Result!", exception.getReason());
     }
 
     @Test

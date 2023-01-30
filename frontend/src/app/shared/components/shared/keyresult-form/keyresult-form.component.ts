@@ -33,7 +33,7 @@ export class KeyresultFormComponent implements OnInit {
       Validators.maxLength(250),
     ]),
     unit: new FormControl<string>('', [Validators.required]),
-    expectedEvolution: new FormControl<string>(''),
+    expectedEvolution: new FormControl<string>('', [Validators.required]),
     basicValue: new FormControl<number>({ value: 0, disabled: true }, [
       Validators.required,
     ]),
@@ -49,7 +49,12 @@ export class KeyresultFormComponent implements OnInit {
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
   public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER', 'BINARY'];
-  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT'];
+  public expectedEvolution$: string[] = [
+    'INCREASE',
+    'DECREASE',
+    'CONSTANT',
+    'NONE',
+  ];
   public create!: boolean;
 
   constructor(
@@ -94,7 +99,6 @@ export class KeyresultFormComponent implements OnInit {
         }
       })
     );
-
     this.keyresult$.subscribe((keyresult) => {
       const {
         id,

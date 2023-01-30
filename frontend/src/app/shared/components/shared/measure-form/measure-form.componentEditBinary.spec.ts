@@ -378,7 +378,7 @@ describe('MeasureFormComponent Edit Binary', () => {
 
     test('should have Key Result unit in html', () => {
       const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('BINÄR');
+      expect(unit.nativeElement.textContent).toEqual('Binär');
     });
 
     xtest('should save edited measure', () => {

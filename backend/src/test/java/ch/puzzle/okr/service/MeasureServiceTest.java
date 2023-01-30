@@ -70,7 +70,6 @@ class MeasureServiceTest {
                 .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
 
-
         this.measures.add(measureWithId);
     }
 

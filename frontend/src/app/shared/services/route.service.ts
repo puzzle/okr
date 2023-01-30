@@ -109,7 +109,10 @@ export class RouteService {
       .subscribe((params) => {
         if (this.previousUrl !== this.currentUrl) {
           this.router.navigate([this.previousUrl!.split('?')[0]], {
-            queryParams: { objectives: params['objectives'] },
+            queryParams: {
+              objectives: params['objectives'],
+              keyresults: params['keyresults'],
+            },
           });
         } else {
           this.router.navigate(['/'], {

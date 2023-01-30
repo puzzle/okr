@@ -23,6 +23,7 @@ import { ObjectiveModule } from '../objective.module';
 import * as objectivesData from '../../shared/testing/mock-data/objectives.json';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../shared/services/route.service';
 
 describe('ObjectiveRowComponent', () => {
   let component: ObjectiveRowComponent;
@@ -36,6 +37,10 @@ describe('ObjectiveRowComponent', () => {
 
   const mockKeyResultService = {
     getKeyResultsOfObjective: jest.fn(),
+  };
+
+  const mockRouteService = {
+    navigate: jest.fn(),
   };
 
   const mockToastrService = {
@@ -64,6 +69,7 @@ describe('ObjectiveRowComponent', () => {
       declarations: [ObjectiveRowComponent],
       providers: [
         { provide: KeyResultService, useValue: mockKeyResultService },
+        { provide: RouteService, useValue: mockRouteService },
         { provide: ToastrService, useValue: mockToastrService },
       ],
     })
@@ -84,6 +90,7 @@ describe('ObjectiveRowComponent', () => {
 
   afterEach(() => {
     mockKeyResultService.getKeyResultsOfObjective.mockReset();
+    mockRouteService.navigate.mockReset();
     mockToastrService.success.mockReset();
     mockToastrService.error.mockReset();
   });
@@ -117,7 +124,8 @@ describe('ObjectiveRowComponent', () => {
     const button = fixture.debugElement.query(By.css('#add-keyresult-button'));
 
     expect(button.nativeElement.textContent).toEqual(' Key Result hinzufügen ');
-    expect(button.attributes['ng-reflect-router-link']).toEqual(
+    button.nativeElement.click();
+    expect(mockRouteService.navigate).toHaveBeenCalledWith(
       'objective/1/keyresult/new'
     );
   });

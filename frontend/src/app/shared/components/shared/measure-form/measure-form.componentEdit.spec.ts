@@ -224,7 +224,7 @@ describe('MeasureFormComponent Edit', () => {
     test('should set Key Result', () => {
       component.keyresult$.subscribe((keyresult) => {
         expect(keyresult.title).toContain('Key Result 1');
-        expect(keyresult.id).toContain(1);
+        expect(keyresult.id).toEqual(1);
       });
       expect(mockMeasureService.getMeasureById).toHaveBeenCalledWith(1);
       expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledWith(1);

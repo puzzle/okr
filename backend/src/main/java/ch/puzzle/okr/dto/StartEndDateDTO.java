@@ -21,16 +21,8 @@ public class StartEndDateDTO {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
     public LocalDate getEndDate() {
         return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public static final class Builder {

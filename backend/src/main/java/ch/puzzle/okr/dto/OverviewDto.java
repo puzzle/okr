@@ -15,15 +15,8 @@ public class OverviewDto {
         return team;
     }
 
-    public void setTeam(TeamDto team) {
-        this.team = team;
-    }
-
     public List<ObjectiveDto> getObjectives() {
         return objectives;
     }
 
-    public void setObjectives(List<ObjectiveDto> objectives) {
-        this.objectives = objectives;
-    }
 }

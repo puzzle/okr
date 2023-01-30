@@ -46,87 +46,40 @@ public class KeyResultDto {
         return objectiveId;
     }
 
-    public void setObjectiveId(Long objectiveId) {
-        this.objectiveId = objectiveId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long getOwnerId() {
         return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public String getOwnerFirstname() {
         return ownerFirstname;
     }
 
-    public void setOwnerFirstname(String ownerFirstname) {
-        this.ownerFirstname = ownerFirstname;
-    }
-
     public String getOwnerLastname() {
         return ownerLastname;
-    }
-
-    public void setOwnerLastname(String ownerLastname) {
-        this.ownerLastname = ownerLastname;
     }
 
     public ExpectedEvolution getExpectedEvolution() {
         return expectedEvolution;
     }
 
-    public void setExpectedEvolution(ExpectedEvolution expectedEvolution) {
-        this.expectedEvolution = expectedEvolution;
-    }
-
     public Unit getUnit() {
         return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
     }
 
     public Double getBasicValue() {
         return basicValue;
     }
 
-    public void setBasicValue(Double basicValue) {
-        this.basicValue = basicValue;
-    }
-
     public Double getTargetValue() {
         return targetValue;
     }
 
-    public void setTargetValue(Double targetValue) {
-        this.targetValue = targetValue;
-    }
-
-    public Long getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Long progress) {
-        this.progress = progress;
-    }
 }

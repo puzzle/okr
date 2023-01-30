@@ -27,6 +27,7 @@ public class KeyResult {
     @ManyToOne
     private User owner;
 
+    @NotNull
     private ExpectedEvolution expectedEvolution;
 
     @NotNull

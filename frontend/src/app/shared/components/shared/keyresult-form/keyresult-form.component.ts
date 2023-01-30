@@ -33,7 +33,7 @@ export class KeyresultFormComponent implements OnInit {
       Validators.maxLength(250),
     ]),
     unit: new FormControl<string>('', [Validators.required]),
-    expectedEvolution: new FormControl<string>(''),
+    expectedEvolution: new FormControl<string>('', [Validators.required]),
     basicValue: new FormControl<number>({ value: 0, disabled: true }, [
       Validators.required,
     ]),

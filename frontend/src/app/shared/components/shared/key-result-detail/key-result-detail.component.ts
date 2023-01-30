@@ -34,8 +34,4 @@ export class KeyResultDetailComponent implements OnInit {
       })
     );
   }
-
-  reloadDiagram() {
-    //TODO
-  }
 }

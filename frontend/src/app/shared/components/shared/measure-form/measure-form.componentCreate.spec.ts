@@ -302,7 +302,6 @@ describe('MeasureFormComponent Create', () => {
     it('should save new measure', () => {
       component.measureForm = createMeasureForm;
       fixture.detectChanges();
-      let button = fixture.debugElement.query(By.css('.create-button'));
       expect(component.measureForm.disabled).toEqual(false);
 
       component.save();

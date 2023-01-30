@@ -315,6 +315,16 @@ describe('MeasureFormComponent Edit', () => {
       expect(component.measureForm.get('value')?.valid).toEqual(true);
     });
 
+    it('should be invalid when value has more than one number behind comma', () => {
+      component.measureForm.get('value')?.setValue(33.456);
+      expect(component.measureForm.get('value')?.valid).toEqual(false);
+    });
+
+    it('should be invalid when value is greater than 100 and has numbers behind comma', () => {
+      component.measureForm.get('value')?.setValue(133.456);
+      expect(component.measureForm.get('value')?.valid).toEqual(false);
+    });
+
     it('should have datepicker value', () => {
       const datepicker = fixture.debugElement.query(
         By.css('input[formControlName="measureDate"]')

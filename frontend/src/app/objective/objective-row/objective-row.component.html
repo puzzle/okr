@@ -1,4 +1,8 @@
-<mat-expansion-panel (opened)="getKeyResults(this.objective.id!)">
+<mat-expansion-panel
+  [expanded]="isSelected"
+  (closed)="removeObjectiveSelection(this.objective.id!)"
+  (opened)="getKeyResults(this.objective.id!)"
+>
   <mat-expansion-panel-header>
     <mat-panel-title class="objective-title">{{
       this.objective!.title
@@ -63,7 +67,9 @@
     class="create-button"
     mat-stroked-button
     color="primary"
-    [routerLink]="['objective/' + this.objective.id + '/keyresult/new']"
+    (click)="
+      routeService.navigate('objective/' + this.objective.id + '/keyresult/new')
+    "
   >
     Key Result hinzufügen
   </button>

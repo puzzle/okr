@@ -14,12 +14,14 @@
               id="edit-keyresult-button"
               mat-stroked-button
               color="primary"
-              [routerLink]="[
-                'objective/' +
-                  keyResult.objectiveId +
-                  '/keyresult/edit/' +
-                  keyResult.id
-              ]"
+              (click)="
+                routeService.navigate(
+                  'objective/' +
+                    keyResult.objectiveId +
+                    '/keyresult/edit/' +
+                    keyResult.id
+                )
+              "
             >
               Key Result bearbeiten
             </button>
@@ -44,7 +46,7 @@
               id="show-details-button"
               mat-stroked-button
               color="primary"
-              [routerLink]="['keyresults/' + this.keyResult.id]"
+              (click)="routeService.navigate('keyresults/' + this.keyResult.id)"
             >
               Details anzeigen
             </button>
@@ -52,9 +54,11 @@
               id="add-measure-button"
               mat-stroked-button
               color="primary"
-              [routerLink]="[
-                'keyresults/' + this.keyResult.id + '/measure/new'
-              ]"
+              (click)="
+                routeService.navigate(
+                  'keyresults/' + this.keyResult.id + '/measure/new'
+                )
+              "
             >
               Messung hinzufügen
             </button>

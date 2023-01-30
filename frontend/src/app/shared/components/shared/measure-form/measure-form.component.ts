@@ -16,6 +16,7 @@ import {
   QuarterService,
   StartEndDateDTO,
 } from '../../../services/quarter.service';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-measure-form',
@@ -45,7 +46,8 @@ export class MeasureFormComponent implements OnInit {
     private toastr: ToastrService,
     private location: Location,
     private goalService: GoalService,
-    private quarterService: QuarterService
+    private quarterService: QuarterService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +108,7 @@ export class MeasureFormComponent implements OnInit {
             this.toastr.success('', 'Messung gespeichert!', {
               timeOut: 5000,
             });
-            this.router.navigate(['/keyresults/' + measure.keyResultId]);
+            this.routeService.navigate('/keyresults/' + measure.keyResultId);
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(e.error.message, 'Fehlerstatus: ' + e.status, {
@@ -120,6 +122,8 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.create ? this.router.navigate(['/dashboard']) : this.location.back();
+    this.create
+      ? this.routeService.navigate('/dashboard')
+      : this.routeService.back();
   }
 }

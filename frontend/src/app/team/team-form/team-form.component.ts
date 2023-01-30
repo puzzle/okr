@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../shared/services/route.service';
 
 @Component({
   selector: 'app-team-form',
@@ -28,7 +29,8 @@ export class TeamFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class TeamFormComponent implements OnInit {
         this.toastr.success('', 'Team gespeichert!', {
           timeOut: 5000,
         });
-        this.router.navigate(['/', 'teams']);
+        this.routeService.navigate('/teams');
       },
       error: (e: HttpErrorResponse) => {
         this.toastr.error(
@@ -65,6 +67,6 @@ export class TeamFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.location.back();
+    this.routeService.back();
   }
 }

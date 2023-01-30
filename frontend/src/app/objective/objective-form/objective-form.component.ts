@@ -14,6 +14,7 @@ import { Team, TeamService } from '../../shared/services/team.service';
 import { Quarter, QuarterService } from '../../shared/services/quarter.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouteService } from '../../shared/services/route.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -60,7 +61,8 @@ export class ObjectiveFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -112,7 +114,7 @@ export class ObjectiveFormComponent implements OnInit {
             this.toastr.success('', 'Objective gespeichert!', {
               timeOut: 5000,
             });
-            this.router.navigate(['/dashboard']);
+            this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
@@ -128,6 +130,6 @@ export class ObjectiveFormComponent implements OnInit {
       );
   }
   navigateBack() {
-    this.location.back();
+    this.routeService.back();
   }
 }

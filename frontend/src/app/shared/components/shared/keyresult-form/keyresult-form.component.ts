@@ -17,6 +17,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 import { comparisonValidator } from '../../../validators';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -65,7 +66,8 @@ export class KeyresultFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -128,7 +130,7 @@ export class KeyresultFormComponent implements OnInit {
       .subscribe((keyresult) =>
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => {
-            this.router.navigate(['/dashboard']);
+            this.routeService.navigate('/dashboard');
             this.toastr.success('', 'Key Result gespeichert!', {
               timeOut: 5000,
             });
@@ -192,7 +194,7 @@ export class KeyresultFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.location.back();
+    this.routeService.back();
   }
 
   update() {

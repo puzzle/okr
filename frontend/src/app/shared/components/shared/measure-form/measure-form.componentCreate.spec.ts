@@ -296,10 +296,12 @@ describe('MeasureFormComponent Create', () => {
           })
         );
 
-      await datePickerInputHarness.setValue('22/12/2022');
+      await datePickerInputHarness.setValue(
+        new Date(Date.UTC(2022, 11, 23)).toISOString()
+      );
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2022-12-23T00:00:00.000Z')
+        new Date('2022-12-22T23:00:00.000Z')
       );
     });
 

@@ -115,7 +115,7 @@ class KeyResultServiceTest {
         this.keyResultService.createKeyResult(this.keyResultBinary);
 
         KeyResult changedKeyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY)
-                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0L).withTargetValue(1L)
+                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0D).withTargetValue(1D)
                 .withOwner(this.user).build();
         verify(this.keyResultRepository, times(1)).save(changedKeyResult);
     }
@@ -185,8 +185,8 @@ class KeyResultServiceTest {
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
-                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
-                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null), 0L));
+                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D,
+                new MeasureDto(1L, 1L, 10D, "", "", 1L, null, null), 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
@@ -202,7 +202,7 @@ class KeyResultServiceTest {
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null, 0L));
+                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, null, 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 

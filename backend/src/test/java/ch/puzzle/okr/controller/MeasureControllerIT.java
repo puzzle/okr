@@ -44,18 +44,18 @@ class MeasureControllerIT {
     static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12L).withObjective(objective)
-                    .withTargetValue(50L).build())
-            .withValue(30).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
+            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withObjective(objective)
+                    .withTargetValue(50D).build())
+            .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
     static Measure anotherMeasure = Measure.Builder.builder().withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0L).withTargetValue(100L).build())
-            .withValue(35).withChangeInfo("ChangeInfo").build();
-    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
+            .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0D).withTargetValue(100D).build())
+            .withValue(35D).withChangeInfo("ChangeInfo").build();
+    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
             Instant.parse("2022-08-12T01:01:00.00Z"));
-    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35, "changeInfo", "Initiatives", 2L, LocalDateTime.MAX,
-            Instant.parse("2022-08-12T01:01:00.00Z"));
+    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35D, "changeInfo", "Initiatives", 2L,
+            LocalDateTime.MAX, Instant.parse("2022-08-12T01:01:00.00Z"));
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
 
     @Autowired
@@ -81,11 +81,11 @@ class MeasureControllerIT {
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].keyResultId", Is.is(8)))
-                .andExpect(jsonPath("$[0].value", Is.is(30)))
+                .andExpect(jsonPath("$[0].value", Is.is(30D)))
                 .andExpect(jsonPath("$[0].changeInfo", Is.is("changeInfo")))
                 .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives")))
                 .andExpect(jsonPath("$[0].createdById", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(4)))
-                .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35)))
+                .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35D)))
                 .andExpect(jsonPath("$[1].changeInfo", Is.is("changeInfo")))
                 .andExpect(jsonPath("$[1].measureDate", Is.is("2022-08-12T01:01:00Z")))
                 .andExpect(jsonPath("$[1].createdById", Is.is(2)));
@@ -101,7 +101,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
 
         BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
@@ -111,7 +111,7 @@ class MeasureControllerIT {
         mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30)))
+                .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30D)))
                 .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
     }
 
@@ -127,7 +127,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
         BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
@@ -136,7 +136,7 @@ class MeasureControllerIT {
         mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30)))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30D)))
                 .andExpect(jsonPath("$.createdById", Is.is(1)))
                 .andExpect(jsonPath("$.measureDate", Is.is("2022-08-12T01:01:00Z")))
                 .andExpect(jsonPath("$.initiatives", Is.is("initiatives")));

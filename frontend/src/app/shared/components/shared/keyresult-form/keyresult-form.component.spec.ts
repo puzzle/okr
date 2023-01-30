@@ -585,7 +585,7 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    test('should be invalid form if targetValue or basicValue is a double', async () => {
+    test('should be valid form if targetValue or basicValue is a double', async () => {
       //Set Values
       component.keyResultForm.controls['ownerId'].setValue(3);
       component.keyResultForm.controls['title'].setValue('Title');
@@ -594,7 +594,43 @@ describe('KeyresultFormComponent', () => {
       );
       component.keyResultForm.controls['description'].setValue('Description');
       component.keyResultForm.controls['targetValue'].setValue(10.5);
-      component.keyResultForm.controls['basicValue'].setValue(57.897);
+      component.keyResultForm.controls['basicValue'].setValue(57.8);
+
+      //Chose unit and check validation of form
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'ZAHL' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be valid form if targetValue or basicValue is a double and unit is percent', async () => {
+      //Set Values
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['targetValue'].setValue(50.6);
+      component.keyResultForm.controls['basicValue'].setValue(23.5);
+
+      //Chose unit and check validation of form
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'PROZENT' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be invalid form if targetValue or basicValue have more numbers behind the comma than 1', async () => {
+      //Set Values
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['targetValue'].setValue(50.667);
+      component.keyResultForm.controls['basicValue'].setValue(23.53);
 
       //Chose unit and check validation of form
       const select = await loader.getHarness(

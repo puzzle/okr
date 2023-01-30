@@ -18,7 +18,7 @@ public class Measure {
     private KeyResult keyResult;
 
     @NotNull
-    private Integer value;
+    private Double value;
 
     @NotNull
     @NotBlank
@@ -63,11 +63,11 @@ public class Measure {
         this.keyResult = keyResult;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
@@ -139,7 +139,7 @@ public class Measure {
     public static final class Builder {
         private @NotNull Long id;
         private @NotNull KeyResult keyResult;
-        private @NotNull Integer value;
+        private @NotNull Double value;
         private @NotNull @NotBlank String changeInfo;
         private @Size(max = 4096) String initiatives;
         private @NotNull User createdBy;
@@ -163,7 +163,7 @@ public class Measure {
             return this;
         }
 
-        public Builder withValue(@NotNull Integer value) {
+        public Builder withValue(@NotNull Double value) {
             this.value = value;
             return this;
         }

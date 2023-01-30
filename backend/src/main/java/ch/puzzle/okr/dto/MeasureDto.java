@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 public class MeasureDto {
     private java.lang.Long id;
     private Long keyResultId;
-    private Integer value;
+    private Double value;
     private String changeInfo;
     private String initiatives;
     private Instant measureDate;
     private Long createdById;
     private LocalDateTime createdOn;
 
-    public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById,
+    public MeasureDto(Long id, Long keyResultId, Double value, String changeInfo, String initiatives, Long createdById,
             LocalDateTime createdOn, Instant measureDate) {
         this.id = id;
         this.keyResultId = keyResultId;
@@ -41,11 +41,11 @@ public class MeasureDto {
         this.keyResultId = keyResultId;
     }
 
-    public Integer getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Integer value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 

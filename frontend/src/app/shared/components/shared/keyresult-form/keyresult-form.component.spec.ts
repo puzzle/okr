@@ -221,7 +221,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      const bugOption = await select.getOptions({ text: 'NONE' });
+      const bugOption = await select.getOptions({ text: 'KEINE' });
       await bugOption[0].click();
 
       expect(await select.getValueText()).toEqual('');

@@ -2,7 +2,8 @@
   "EXPECTED_EVOLUTION": {
     "INCREASE": "ERHÖHT",
     "DECREASE": "VERMINDERT",
-    "CONSTANT": "KONSTANT"
+    "CONSTANT": "KONSTANT",
+    "NONE": "KEINE"
   },
   "UNIT": {
     "PERCENT": "PROZENT",

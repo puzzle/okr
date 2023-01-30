@@ -76,9 +76,11 @@ describe('DiagramComponent', () => {
     measures.subscribe((item) => {
       diagrammObjects = component.generateDiagrammObjects(item);
     });
-    expect(diagrammObjects[0].x).toEqual('2022-11-30T23:00:00.000Z');
-    expect(diagrammObjects[0].y).toEqual(33);
-    expect(diagrammObjects[2].x).toEqual('2023-01-10T22:00:00Z');
-    expect(diagrammObjects[2].y).toEqual(42);
+    expect(diagrammObjects[1].x).toEqual('2023-01-10T22:00:00Z');
+    expect(diagrammObjects[1].y).toEqual(42);
+    expect(diagrammObjects[3].x).toEqual('2022-11-30T23:00:00.000Z');
+    expect(diagrammObjects[3].y).toEqual(33);
+    expect(diagrammObjects[4].x).toEqual('2023-01-09T23:00:00.000Z');
+    expect(diagrammObjects[4].y).toEqual(30);
   });
 });

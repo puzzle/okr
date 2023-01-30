@@ -213,10 +213,15 @@ describe('KeyResultKeyResultRowComponent', () => {
       mockToastrService.error.mockReset();
     });
 
-    test('should have right last measure when measure is set', () => {
+    test('should have "-" at position date when last measure ist null', () => {
       const measureTag = fixture.debugElement.query(
         By.css('.measure-null-date')
       );
+      expect(measureTag.nativeElement.textContent).toContain('-');
+    });
+
+    test('should have "-" at position progress when last measure ist null', () => {
+      const measureTag = fixture.debugElement.query(By.css('.h6'));
       expect(measureTag.nativeElement.textContent).toContain('-');
     });
   });

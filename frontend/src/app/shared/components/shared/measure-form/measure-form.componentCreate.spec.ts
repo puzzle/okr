@@ -233,11 +233,11 @@ describe('MeasureFormComponent Create', () => {
       );
     });
 
-    test('should have two mat accordion for Key Result description and measure row', () => {
+    test('should have one mat accordion for measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
-      expect(matAccordions.length).toEqual(2);
+      expect(matAccordions.length).toEqual(1);
     });
 
     test('should have three mat dividers', () => {

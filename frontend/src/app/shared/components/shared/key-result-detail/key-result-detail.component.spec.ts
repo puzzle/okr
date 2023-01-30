@@ -32,6 +32,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
@@ -75,6 +76,9 @@ describe('KeyResultDetailComponent', () => {
         },
       ],
       imports: [
+        TranslateTestingModule.withTranslations({
+          de: require('../../../../../assets/i18n/de.json'),
+        }),
         HttpClientTestingModule,
         BrowserAnimationsModule,
         BrowserDynamicTestingModule,

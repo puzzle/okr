@@ -11,11 +11,14 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 @Service
 public class QuarterService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
+    private final Pattern getValuesFromLabel = Pattern.compile("^GJ (\\d{2})/\\d{2}-Q([1-4])$");
 
     static {
         yearToBusinessQuarterMap.put(1, 3);
@@ -99,19 +102,29 @@ public class QuarterService {
 
         YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);
         YearMonth endYearMonth = startYearMonth.plusMonths(2);
+
         LocalDate startDate = LocalDate.of(startYearMonth.getYear(), startYearMonth.getMonthValue(), 1);
         LocalDate endDate = LocalDate.of(endYearMonth.getYear(), endYearMonth.getMonthValue(),
                 endYearMonth.lengthOfMonth());
+
         return StartEndDateDTO.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
     }
 
     protected YearMonth getYearMonthFromLabel(String quarterLabel) {
-        quarterLabel = quarterLabel.trim().replace("GJ ", "");
-        int quarter = Integer.parseInt(quarterLabel.substring(quarterLabel.length() - 1));
-        int yearQuarter = yearToBusinessQuarterMap.get(quarter);
-        int year = Integer.parseInt(quarterLabel.substring(0, 2));
-        year = quarter > 2 ? year + 1 : year;
-        int month = yearQuarter * 3;
-        return YearMonth.of(year + 2000, month).minusMonths(2);
+        Matcher matcher = getValuesFromLabel.matcher(quarterLabel);
+        if(!matcher.find()){
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Label isn't valid");
+        }
+
+        int businessYear = Integer.parseInt(matcher.group(1));
+        int businessQuarter = Integer.parseInt(matcher.group(2));
+
+        int calendarQuarter = yearToBusinessQuarterMap.get(businessQuarter);
+        int calendarYear = businessQuarter > 2 ? businessYear + 1 : businessYear;
+        //Add 2000 since year in quarter is in two digit format
+        calendarYear += 2000;
+
+        int month = calendarQuarter * 3 - 2;
+        return YearMonth.of(calendarYear, month);
     }
 }

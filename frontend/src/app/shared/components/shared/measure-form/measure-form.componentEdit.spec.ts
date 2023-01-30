@@ -371,7 +371,7 @@ describe('MeasureFormComponent Edit', () => {
           })
         );
 
-      datePickerInputHarness.setValue('22/12/2022');
+      await datePickerInputHarness.setValue('22/12/2022');
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2023-01-10T22:00:00.000Z')

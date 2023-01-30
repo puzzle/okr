@@ -72,6 +72,7 @@
           [max]="startEndDate.endDate"
           [matDatepicker]="picker"
           formControlName="measureDate"
+          readonly
         />
         <mat-hint
           >{{ startEndDate.startDate | date: "dd.MM.yyyy" }} –

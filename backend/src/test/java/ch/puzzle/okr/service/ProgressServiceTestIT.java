@@ -82,7 +82,7 @@ class ProgressServiceTestIT {
         when(this.objectiveRepository.getCalculationValuesForProgress(anyLong()))
                 .thenReturn(List.of(keyResultMeasureValue, keyResultMeasureValue));
         when(this.progressService.calculateObjectiveProgress(anyList())).thenReturn(null);
-        when(this.keyResultRepository.findByObjective(objective)).thenReturn(List.of(new KeyResult()));
+        when(this.keyResultRepository.findByObjectiveOrderByTitle(objective)).thenReturn(List.of(new KeyResult()));
 
         this.progressService.updateObjectiveProgress(1L);
 

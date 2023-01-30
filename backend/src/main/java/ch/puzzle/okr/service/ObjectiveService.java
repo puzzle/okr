@@ -39,7 +39,7 @@ public class ObjectiveService {
 
     public List<Objective> getObjectivesByTeam(Long id) {
         if (teamRepository.findById(id).isPresent()) {
-            return objectiveRepository.findByTeamId(id);
+            return objectiveRepository.findByTeamIdOrderByTitleAsc(id);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Could not find team with id %d", id));
@@ -80,13 +80,13 @@ public class ObjectiveService {
     }
 
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
-        return quarterId == null ? objectiveRepository.findByTeamId(teamId)
-                : objectiveRepository.findByQuarterIdAndTeamId(quarterId, teamId);
+        return quarterId == null ? objectiveRepository.findByTeamIdOrderByTitleAsc(teamId)
+                : objectiveRepository.findByQuarterIdAndTeamIdOrderByTitleAsc(quarterId, teamId);
     }
 
     @Transactional
     public void deleteObjectiveById(Long id) {
-        List<KeyResult> keyResults = this.keyResultRepository.findByObjective(this.getObjective(id));
+        List<KeyResult> keyResults = this.keyResultRepository.findByObjectiveOrderByTitle(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
             this.keyResultService.deleteKeyResultById(keyResult.getId());
         }

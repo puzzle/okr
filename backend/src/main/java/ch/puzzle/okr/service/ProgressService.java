@@ -27,7 +27,7 @@ public class ProgressService {
         Objective objective = this.objectiveService.getObjective(objectiveId);
         Long progress = this
                 .calculateObjectiveProgress(this.objectiveRepository.getCalculationValuesForProgress(objectiveId));
-        if (progress == null && !this.keyResultRepository.findByObjective(objective).isEmpty()) {
+        if (progress == null && !this.keyResultRepository.findByObjectiveOrderByTitle(objective).isEmpty()) {
             progress = 0L;
         }
         objective.setProgress(progress);

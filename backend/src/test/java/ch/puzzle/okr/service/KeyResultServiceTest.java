@@ -132,7 +132,7 @@ class KeyResultServiceTest {
     @Test
     void shouldGetAllKeyresultsByObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -143,7 +143,7 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(Collections.emptyList());
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -192,7 +192,7 @@ class KeyResultServiceTest {
     void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
                 "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D,
                 new MeasureDto(1L, 1L, 10D, "", "", 1L, null, null), 0L));
@@ -209,7 +209,7 @@ class KeyResultServiceTest {
     void shouldReturnNullObjectWhenMeasureIsNull() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
                 "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, null, 0L));
 

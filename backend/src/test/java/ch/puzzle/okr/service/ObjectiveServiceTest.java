@@ -210,7 +210,7 @@ class ObjectiveServiceTest {
     @Test
     void shouldReturnObjectiveByTeamId() {
         Mockito.when(teamRepository.findById(1L)).thenReturn(Optional.ofNullable(this.team1));
-        Mockito.when(objectiveRepository.findByTeamIdOrderBy(1L)).thenReturn(this.fullObjectiveInTeam1List);
+        Mockito.when(objectiveRepository.findByTeamIdOrderByTitleAsc(1L)).thenReturn(this.fullObjectiveInTeam1List);
 
         List<Objective> realObjectiveList = objectiveService.getObjectivesByTeam(1L);
 
@@ -227,7 +227,7 @@ class ObjectiveServiceTest {
     @MethodSource
     void shouldReturnObjectives(Long teamId, Long quarterId, int invocationsByTeam, int invocationsByTeamAndQuarter) {
         objectiveService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
-        verify(objectiveRepository, times(invocationsByTeam)).findByTeamIdOrderBy(teamId);
+        verify(objectiveRepository, times(invocationsByTeam)).findByTeamIdOrderByTitleAsc(teamId);
         verify(objectiveRepository, times(invocationsByTeamAndQuarter)).findByQuarterIdAndTeamIdOrderByTitleAsc(teamId,
                 quarterId);
     }

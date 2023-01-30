@@ -54,7 +54,6 @@ describe('KeyresultFormComponent', () => {
     basicValue: new FormControl<number>(0, Validators.required),
     targetValue: new FormControl<number>(100, Validators.required),
     description: new FormControl<string>('This is a description', [
-      Validators.minLength(2),
       Validators.maxLength(4096),
     ]),
     ownerId: new FormControl<number | null>(2, [

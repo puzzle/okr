@@ -110,6 +110,15 @@ class KeyResultServiceTest {
     }
 
     @Test
+    void shouldBePossibleToCreateKeyResultWithoutDescription() {
+        Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResult);
+        this.keyResult.setDescription("");
+        KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
+        assertEquals("Keyresult 1", keyResult.getTitle());
+        assertEquals("", keyResult.getDescription());
+    }
+
+    @Test
     void shouldCreateKeyResultBinary() {
         Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResultBinary);
         this.keyResultService.createKeyResult(this.keyResultBinary);

@@ -40,10 +40,7 @@ export class KeyresultFormComponent implements OnInit {
     targetValue: new FormControl<number>({ value: 0, disabled: true }, [
       Validators.required,
     ]),
-    description: new FormControl<string>('', [
-      Validators.minLength(2),
-      Validators.maxLength(4096),
-    ]),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number | null>(null, [
       Validators.required,
       Validators.nullValidator,

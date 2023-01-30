@@ -16,7 +16,6 @@ import { RouterLinkWithHref, RouterModule } from '@angular/router';
 import { MatNativeDateModule } from '@angular/material/core';
 import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.component';
 import { KeyResultDescriptionComponent } from './key-result-description/key-result-description.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MeasureValueValidator } from '../../validators';
@@ -46,7 +45,6 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterLinkWithHref,
     MatNativeDateModule,
     RouterModule,
-    MatSlideToggleModule,
     MatSelectModule,
     TranslateModule,
   ],

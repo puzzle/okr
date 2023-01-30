@@ -50,7 +50,6 @@
     >
       <p class="fw-bold">Aktueller Wert</p>
       <mat-form-field
-        *ngIf="keyresult.unit !== 'BINARY'"
         appearance="outline"
         class="form-field-width form-field-height"
       >
@@ -64,13 +63,6 @@
           type="text"
         />
       </mat-form-field>
-
-      <div class="slider-card" *ngIf="keyresult.unit === 'BINARY'">
-        <section class="slider-selection">
-          <mat-slide-toggle class="button-margin" formControlName="value">
-          </mat-slide-toggle>
-        </section>
-      </div>
 
       <mat-label class="unit-label"
         ><b>{{ "UNIT." + keyresult.unit | translate }}</b></mat-label

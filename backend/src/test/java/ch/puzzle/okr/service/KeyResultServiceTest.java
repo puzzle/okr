@@ -42,7 +42,6 @@ class KeyResultServiceTest {
     Objective objective;
     Quarter quarter;
     KeyResult keyResult;
-    KeyResult keyResultBinary;
     Measure measure1;
     Measure measure2;
     Measure measure3;
@@ -59,9 +58,6 @@ class KeyResultServiceTest {
         this.quarter = Quarter.Builder.builder().withId(5L).withLabel("GJ 22/23-Q2").build();
 
         this.keyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.PERCENT).withTitle("Keyresult 1")
-                .withObjective(this.objective).withOwner(this.user).build();
-
-        this.keyResultBinary = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY).withTitle("Keyresult 1")
                 .withObjective(this.objective).withOwner(this.user).build();
 
         measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
@@ -116,17 +112,6 @@ class KeyResultServiceTest {
         KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
         assertEquals("Keyresult 1", keyResult.getTitle());
         assertEquals("", keyResult.getDescription());
-    }
-
-    @Test
-    void shouldCreateKeyResultBinary() {
-        Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResultBinary);
-        this.keyResultService.createKeyResult(this.keyResultBinary);
-
-        KeyResult changedKeyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY)
-                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0D).withTargetValue(1D)
-                .withOwner(this.user).build();
-        verify(this.keyResultRepository, times(1)).save(changedKeyResult);
     }
 
     @Test

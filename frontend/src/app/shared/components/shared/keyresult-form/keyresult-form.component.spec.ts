@@ -609,9 +609,9 @@ describe('KeyresultFormComponent', () => {
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
 
-      //Change unit to binary which accepts every number
+      //Change unit to chf which accepts every number
       await select.open();
-      bugOption = await select.getOptions({ text: 'Binär' });
+      bugOption = await select.getOptions({ text: 'CHF' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });

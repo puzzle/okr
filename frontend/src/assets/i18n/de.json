@@ -8,7 +8,6 @@
   "UNIT": {
     "PERCENT": "Prozent",
     "CHF": "CHF",
-    "NUMBER": "Zahl",
-    "BINARY": "Binär"
+    "NUMBER": "Zahl"
   }
 }

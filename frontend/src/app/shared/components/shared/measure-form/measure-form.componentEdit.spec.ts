@@ -40,7 +40,6 @@ import { KeyResultDescriptionComponent } from '../key-result-description/key-res
 import { MatDialog } from '@angular/material/dialog';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
-import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
 import {
   QuarterService,
   StartEndDateDTO,
@@ -111,7 +110,6 @@ describe('MeasureFormComponent Edit', () => {
           KeyResultDescriptionComponent,
           MeasureRowComponent,
           MeasureValueValidator,
-          DiagramComponent,
         ],
         imports: [
           HttpClientTestingModule,
@@ -198,18 +196,11 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    test('should have two mat accordion for Key Result description and measure row', () => {
+    test('should have one mat accordion for measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
-      expect(matAccordions.length).toEqual(2);
-    });
-
-    test('should have one app diagram tag', () => {
-      const keyResultDescription = fixture.debugElement.queryAll(
-        By.css('app-diagram')
-      );
-      expect(keyResultDescription.length).toEqual(1);
+      expect(matAccordions.length).toEqual(1);
     });
 
     test('should have three mat dividers', () => {

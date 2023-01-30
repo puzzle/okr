@@ -32,7 +32,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
-import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
@@ -62,7 +62,6 @@ describe('KeyResultDetailComponent', () => {
         KeyResultDetailComponent,
         KeyResultDescriptionComponent,
         MeasureRowComponent,
-        DiagramComponent,
       ],
       providers: [
         DatePipe,
@@ -77,6 +76,9 @@ describe('KeyResultDetailComponent', () => {
         },
       ],
       imports: [
+        TranslateTestingModule.withTranslations({
+          de: require('../../../../../assets/i18n/de.json'),
+        }),
         HttpClientTestingModule,
         BrowserAnimationsModule,
         BrowserDynamicTestingModule,
@@ -123,13 +125,6 @@ describe('KeyResultDetailComponent', () => {
   it('should have one key result description tag', () => {
     const keyResultDescription = fixture.debugElement.queryAll(
       By.css('app-key-result-description')
-    );
-    expect(keyResultDescription.length).toEqual(1);
-  });
-
-  it('should have one app diagram tag', () => {
-    const keyResultDescription = fixture.debugElement.queryAll(
-      By.css('app-diagram')
     );
     expect(keyResultDescription.length).toEqual(1);
   });

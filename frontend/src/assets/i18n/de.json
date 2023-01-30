@@ -9,5 +9,9 @@
     "PERCENT": "Prozent",
     "CHF": "CHF",
     "NUMBER": "Zahl"
+  },
+  "KEY_RESULT_DESCRIPTION": {
+    "BASIC_VALUE": "Startwert",
+    "TARGET_VALUE": "Zielwert"
   }
 }

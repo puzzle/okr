@@ -70,7 +70,6 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
@@ -208,7 +207,6 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });

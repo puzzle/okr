@@ -32,7 +32,6 @@ describe('test common functions', () => {
 
     test('should get null if the argument has no digit', () => {
       expect(getNumberOrNull(null)).toBe(null);
-      // expect(getNumberOrNull(undefined)).toBe(null);
       expect(getNumberOrNull('')).toBe(null);
       expect(getNumberOrNull(' ')).toBe(null);
       expect(getNumberOrNull('foo')).toBe(null);

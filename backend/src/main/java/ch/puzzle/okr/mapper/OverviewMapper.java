@@ -12,11 +12,9 @@ import java.util.List;
 @Component
 public class OverviewMapper {
 
-    ObjectiveService objectiveService;
     ObjectiveMapper objectiveMapper;
 
-    public OverviewMapper(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
-        this.objectiveService = objectiveService;
+    public OverviewMapper(ObjectiveMapper objectiveMapper) {
         this.objectiveMapper = objectiveMapper;
     }
 

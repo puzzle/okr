@@ -69,7 +69,6 @@ class MeasureControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup team mapper
         BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
     }

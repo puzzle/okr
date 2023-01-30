@@ -41,7 +41,6 @@ class ObjectiveServiceTest {
     Objective objective;
     Objective fullObjective1;
     Objective fullObjective2;
-    Objective fullObjective3;
     KeyResult keyResult;
     List<Objective> objectiveList;
     List<KeyResult> keyResults;
@@ -60,15 +59,11 @@ class ObjectiveServiceTest {
         User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
-        Team team2 = Team.Builder.builder().withId(2L).withName("Team2").build();
         Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(null)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
-                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
-                .withCreatedOn(LocalDateTime.MAX).build();
-        this.fullObjective3 = Objective.Builder.builder().withTitle("FullObjective3").withOwner(user).withTeam(team2)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
                 .withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);

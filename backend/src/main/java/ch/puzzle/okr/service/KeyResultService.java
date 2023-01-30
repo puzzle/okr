@@ -33,10 +33,6 @@ public class KeyResultService {
         this.progressService = progressService;
     }
 
-    public List<KeyResult> getAllKeyResults() {
-        return (List<KeyResult>) this.keyResultRepository.findAll();
-    }
-
     public KeyResult createKeyResult(KeyResult keyResult) {
         return this.keyResultRepository.save(keyResult);
     }

@@ -588,7 +588,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should be invalid form if unit is changed and values do not match regex', async () => {
-      //Set Values
       component.keyResultForm.controls['ownerId'].setValue(1);
       component.keyResultForm.controls['title'].setValue('Title');
       component.keyResultForm.controls['expectedEvolution'].setValue(
@@ -598,7 +597,6 @@ describe('KeyresultFormComponent', () => {
       component.keyResultForm.controls['targetValue'].setValue(1000);
       component.keyResultForm.controls['basicValue'].setValue(50);
 
-      //Chose PERCENT as unit and check if form is now invalid
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
@@ -609,7 +607,6 @@ describe('KeyresultFormComponent', () => {
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
 
-      //Change unit to chf which accepts every number
       await select.open();
       bugOption = await select.getOptions({ text: 'CHF' });
       await bugOption[0].click();
@@ -617,7 +614,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should be valid form if targetValue or basicValue is a double', async () => {
-      //Set Values
       component.keyResultForm.controls['ownerId'].setValue(3);
       component.keyResultForm.controls['title'].setValue('Title');
       component.keyResultForm.controls['expectedEvolution'].setValue(
@@ -627,7 +623,6 @@ describe('KeyresultFormComponent', () => {
       component.keyResultForm.controls['targetValue'].setValue(10.5);
       component.keyResultForm.controls['basicValue'].setValue(57.8);
 
-      //Chose unit and check validation of form
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
@@ -640,13 +635,11 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should be valid form if targetValue or basicValue is a double and unit is percent', async () => {
-      //Set Values
       component.keyResultForm.controls['title'].setValue('KeyResult');
       component.keyResultForm.controls['expectedEvolution'].setValue('NONE');
       component.keyResultForm.controls['targetValue'].setValue(50.6);
       component.keyResultForm.controls['basicValue'].setValue(23.5);
 
-      //Chose unit and check validation of form
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
@@ -659,12 +652,10 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should be invalid form if targetValue or basicValue have more numbers behind the comma than 1', async () => {
-      //Set Values
       component.keyResultForm.controls['title'].setValue('KeyResult');
       component.keyResultForm.controls['targetValue'].setValue(50.667);
       component.keyResultForm.controls['basicValue'].setValue(23.53);
 
-      //Chose unit and check validation of form
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
@@ -720,7 +711,6 @@ describe('KeyresultFormComponent', () => {
 
   describe('Check if component makes call to toastrservice', () => {
     beforeEach(() => {
-      //Standard mocks to create keyresult-form
       mockUserService.getUsers.mockReturnValue(userList);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
@@ -759,11 +749,8 @@ describe('KeyresultFormComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
-
-      //Standard Services Reset
       mockUserService.getUsers.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockKeyResultService.getInitKeyResult.mockReset();

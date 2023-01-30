@@ -40,7 +40,6 @@ class KeyResultServiceTest {
     List<KeyResult> keyResults;
     User user;
     Objective objective;
-    Quarter quarter;
     KeyResult keyResult;
     Measure measure1;
     Measure measure2;
@@ -54,8 +53,6 @@ class KeyResultServiceTest {
         this.user = User.Builder.builder().withId(1L).withEmail("newMail@tese.com").build();
 
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-
-        this.quarter = Quarter.Builder.builder().withId(5L).withLabel("GJ 22/23-Q2").build();
 
         this.keyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.PERCENT).withTitle("Keyresult 1")
                 .withObjective(this.objective).withOwner(this.user).build();

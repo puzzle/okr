@@ -642,6 +642,7 @@ describe('KeyresultFormComponent', () => {
     test('should be valid form if targetValue or basicValue is a double and unit is percent', async () => {
       //Set Values
       component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['expectedEvolution'].setValue('NONE');
       component.keyResultForm.controls['targetValue'].setValue(50.6);
       component.keyResultForm.controls['basicValue'].setValue(23.5);
 

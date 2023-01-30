@@ -38,10 +38,6 @@ public class KeyResultService {
     }
 
     public KeyResult createKeyResult(KeyResult keyResult) {
-        if (keyResult.getUnit().equals(Unit.BINARY)) {
-            keyResult.setTargetValue(1D);
-            keyResult.setBasisValue(0D);
-        }
         return this.keyResultRepository.save(keyResult);
     }
 

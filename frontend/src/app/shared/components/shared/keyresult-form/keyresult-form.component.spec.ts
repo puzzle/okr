@@ -216,6 +216,26 @@ describe('KeyresultFormComponent', () => {
 
     test('should have label for Key Result unit', () => {
       const unitLabel = fixture.debugElement.query(By.css('.keyresult-unit'));
+    test('should set ExpectedEvolution to NONE', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'NONE' });
+      await bugOption[0].click();
+      expect(await select.getValueText()).toEqual('');
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should set Key Result unit in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('PERCENT');
 
       expect(unitLabel.nativeElement.textContent).toContain('PROZENT');
     });

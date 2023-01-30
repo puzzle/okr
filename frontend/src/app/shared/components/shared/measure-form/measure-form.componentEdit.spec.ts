@@ -305,11 +305,11 @@ describe('MeasureFormComponent Edit', () => {
       component.measureForm.get('value')?.setValue(333);
       expect(component.measureForm.get('value')?.valid).toEqual(false);
 
-      //Set Keyresult to BINARY Unit so that button has to be disabled in with value 333
+      //Set Keyresult to CHF Unit so that button has to be disabled in with value 333
       component.keyresult$ = of(keyresultData.keyresults[5]);
       fixture.detectChanges();
 
-      /* Check if button is really disabled, then set value to 0 which fits BINARY regex and
+      /* Check if button is really disabled, then set value to 1 which fits CHF regex and
        * check if button is not enabled */
       expect(component.measureForm.get('value')?.valid).toEqual(false);
       component.measureForm.get('value')?.setValue(0);

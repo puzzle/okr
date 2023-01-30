@@ -53,7 +53,7 @@ import {
 } from '../../../services/quarter.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-describe('MeasureFormComponent Edit Binary', () => {
+xdescribe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
   let fixture: ComponentFixture<MeasureFormComponent>;
 

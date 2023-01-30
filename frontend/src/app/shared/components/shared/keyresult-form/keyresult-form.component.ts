@@ -51,7 +51,7 @@ export class KeyresultFormComponent implements OnInit {
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER', 'BINARY'];
+  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER' /*, 'BINARY' */];
   public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT'];
   public create!: boolean;
 

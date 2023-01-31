@@ -1,41 +1,49 @@
 <div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
   <div class="key-result-overview-container">
-    <div class="key-result-overview-text w-100">
-      <p class="key-result-title">
-        <strong>Key Result</strong>
-        <br />
-        {{ goal.keyresult.title }}
-      </p>
+    <div class="key-result-overview-text w-100 d-flex flex-wrap gap-5">
+      <div>
+        <p class="key-result-title">
+          <strong>Key Result</strong>
+          <br />
+          {{ goal.keyresult.title }}
+        </p>
 
-      <p class="key-result-description">
-        <strong>Beschreibung</strong>
-        <br />
-        {{ goal.keyresult.description }}
-      </p>
+        <p class="key-result-description">
+          <strong>Beschreibung</strong>
+          <br />
+          {{ goal.keyresult.description }}
+        </p>
 
-      <p class="key-result-objective">
-        <strong>{{ goal.teamName }} Objective</strong>
-        <br />
-        {{ goal.objective.title }}
-      </p>
+        <p class="key-result-objective">
+          <strong>{{ goal.teamName }} Objective</strong>
+          <br />
+          {{ goal.objective.title }}
+        </p>
+      </div>
 
-      <p class="key-result-quarter">
-        <strong>Zyklus</strong>
-        <br />
-        {{ goal.quarterLabel }}
-      </p>
+      <div>
+        <p class="key-result-quarter">
+          <strong>Zyklus</strong>
+          <br />
+          {{ goal.quarterLabel }}
+        </p>
 
-      <p class="key-result-basicValue">
-        <strong>{{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}</strong>
-        <br />
-        {{ goal.basicValue }}
-      </p>
+        <p class="key-result-basicValue">
+          <strong>{{
+            "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate
+          }}</strong>
+          <br />
+          {{ goal.basicValue }}
+        </p>
 
-      <p class="key-result-targetValue">
-        <strong>{{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}</strong>
-        <br />
-        {{ goal.targetValue }}
-      </p>
+        <p class="key-result-targetValue">
+          <strong>{{
+            "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate
+          }}</strong>
+          <br />
+          {{ goal.targetValue }}
+        </p>
+      </div>
     </div>
   </div>
 </div>

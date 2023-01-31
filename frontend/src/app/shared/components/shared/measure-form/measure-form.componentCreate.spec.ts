@@ -288,7 +288,6 @@ describe('MeasureFormComponent Create', () => {
       expect(unit.nativeElement.textContent).toEqual('Prozent');
     });
 
-    //Doesn't run on pipeline due to different timezones
     test('should update measureDate with datepicker', async () => {
       const datePickerInputHarness =
         await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
@@ -296,14 +295,13 @@ describe('MeasureFormComponent Create', () => {
             selector: 'input[formControlName="measureDate"]',
           })
         );
-
-      await datePickerInputHarness.setValue(
-        new Date(Date.UTC(2022, 11, 23)).toISOString()
-      );
+      console.log(new Date(Date.UTC(2022, 11, 23, 0, 0, 0)).toISOString());
+      await datePickerInputHarness.setValue('2022-12-23T00:00:00.000Z');
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2022-12-22T23:00:00.000Z')
       );
+      // ).toEqual(1671750000000);
     });
 
     test('should have 3 buttons for create', () => {

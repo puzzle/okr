@@ -65,7 +65,7 @@ export class KeyResultService {
       ownerId: null,
       ownerLastname: '',
       ownerFirstname: '',
-      targetValue: 0,
+      targetValue: 1,
       basicValue: 0,
       objectiveId: 1,
       progress: 0,

@@ -64,6 +64,7 @@
     <form
       (ngSubmit)="save()"
       [formGroup]="keyResultForm"
+      (change)="update()"
       class="d-flex flex-column fit-content"
     >
       <div class="d-flex align-items-center justify-content-end gap-4">

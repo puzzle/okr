@@ -3,22 +3,23 @@ import {
   NG_VALIDATORS,
   ValidationErrors,
   Validator,
+  ValidatorFn,
 } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
 import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
 @Directive({
-  selector: '[measureValueValidator]',
+  selector: '[unitValueValidator]',
   providers: [
     {
       provide: NG_VALIDATORS,
-      useExisting: MeasureValueValidator,
+      useExisting: UnitValueValidator,
       multi: true,
     },
   ],
 })
-export class MeasureValueValidator implements Validator {
-  @Input('measureValueValidator') unit: string | null = '';
+export class UnitValueValidator implements Validator {
+  @Input('unitValueValidator') unit: string | null = '';
 
   validate(control: AbstractControl): ValidationErrors | null {
     let value: string = control.value;
@@ -41,4 +42,12 @@ export class MeasureValueValidator implements Validator {
   proceedRegex(value: string, regex: string) {
     return String(value).match(regex) ? null : { valid: false };
   }
+}
+
+export function comparisonValidator(
+  secondControl: AbstractControl
+): ValidatorFn {
+  return (firstControl: AbstractControl): ValidationErrors | null => {
+    return firstControl.value == secondControl.value ? { valid: false } : null;
+  };
 }

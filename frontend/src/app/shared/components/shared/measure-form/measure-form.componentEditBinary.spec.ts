@@ -10,7 +10,6 @@ import {
   KeyResultService,
 } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
-import * as measureData from '../../../testing/mock-data/measure.json';
 import { Observable, of, throwError } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
 import {
@@ -37,42 +36,38 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { DatePipe } from '@angular/common';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultDescriptionComponent } from '../key-result-description/key-result-description.component';
-import { MatDialog } from '@angular/material/dialog';
+import { SharedModule } from '../shared.module';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSlideToggleHarness } from '@angular/material/slide-toggle/testing';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
+import { MatDialog } from '@angular/material/dialog';
+import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import * as measureData from '../../../testing/mock-data/measure.json';
+import { UnitValueValidator } from '../../../validators';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import {
   QuarterService,
   StartEndDateDTO,
 } from '../../../services/quarter.service';
-import { UnitValueValidator } from '../../../validators';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 
-describe('MeasureFormComponent Edit', () => {
+describe('MeasureFormComponent Edit Binary', () => {
   let component: MeasureFormComponent;
   let fixture: ComponentFixture<MeasureFormComponent>;
 
-  let keyResult: Observable<KeyResultMeasure> = of(keyresultData.keyresults[0]);
-
-  let measure1 = of(loadMeasure('measure'));
-  let receivedEditedMeasure = loadMeasure('receivedEditedMeasure');
   let goal: Observable<Goal> = of(goalsData.goals[0]);
   let measures: Observable<any[]> = of(measureData.measures);
-
-  let startAndEndDate: StartEndDateDTO = {
-    startDate: new Date(Date.UTC(2020, 9, 1)),
-    endDate: new Date(Date.UTC(2028, 11, 31)),
-  };
+  let binaryKeyResult: Observable<KeyResultMeasure> = of(
+    keyresultData.binaryKeyResult
+  );
+  let binaryMeasure = of(loadMeasure('measureBinaryKeyResult'));
+  let receivedEditedBinaryMeasure = loadMeasure('receivedEditedBinaryMeasure');
 
   const mockGetNumerOrNull = {
     getNumberOrNull: jest.fn(),
-  };
-
-  const mockMeasureService = {
-    getMeasureById: jest.fn(),
-    saveMeasure: jest.fn(),
   };
 
   const mockGoalService = {
@@ -84,22 +79,33 @@ describe('MeasureFormComponent Edit', () => {
     getMeasuresOfKeyResult: jest.fn(),
   };
 
+  const mockMeasureService = {
+    getMeasureById: jest.fn(),
+    saveMeasure: jest.fn(),
+  };
+
   const mockToastrService = {
     success: jest.fn(),
     error: jest.fn(),
+  };
+
+  let startAndEndDate: StartEndDateDTO = {
+    startDate: new Date(Date.UTC(2020, 9, 1)),
+    endDate: new Date(Date.UTC(2028, 11, 31)),
   };
 
   const mockQuarterService = {
     getStartAndEndDateOfKeyresult: jest.fn(),
   };
 
-  describe('Edit Measure', () => {
+  describe('Unit Binary edit Measure', () => {
+    let loader: HarnessLoader;
     beforeEach(() => {
-      mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
-      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
-      mockMeasureService.getMeasureById.mockReturnValue(measure1);
       mockGoalService.getGoalByKeyResultId.mockReturnValue(goal);
+      mockKeyResultService.getKeyResultById.mockReturnValue(binaryKeyResult);
       mockKeyResultService.getMeasuresOfKeyResult.mockReturnValue(measures);
+      mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
+      mockMeasureService.getMeasureById.mockReturnValue(binaryMeasure);
       mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
         of(startAndEndDate)
       );
@@ -110,6 +116,7 @@ describe('MeasureFormComponent Edit', () => {
           KeyResultDescriptionComponent,
           MeasureRowComponent,
           UnitValueValidator,
+          DiagramComponent,
         ],
         imports: [
           HttpClientTestingModule,
@@ -128,6 +135,7 @@ describe('MeasureFormComponent Edit', () => {
           MatCardModule,
           NoopAnimationsModule,
           RouterLinkWithHref,
+          SharedModule,
           ToastrModule.forRoot(),
           TranslateTestingModule.withTranslations({
             de: require('../../../../../assets/i18n/de.json'),
@@ -135,12 +143,12 @@ describe('MeasureFormComponent Edit', () => {
         ],
         providers: [
           DatePipe,
+          { provide: GoalService, useValue: mockGoalService },
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: MeasureService, useValue: mockMeasureService },
           { provide: ToastrService, useValue: mockToastrService },
-          { provide: GoalService, useValue: mockGoalService },
-          { provide: QuarterService, useValue: mockQuarterService },
           { provide: MatDialog, useValue: {} },
+          { provide: QuarterService, useValue: mockQuarterService },
           {
             provide: ActivatedRoute,
             useValue: {
@@ -159,16 +167,17 @@ describe('MeasureFormComponent Edit', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(MeasureFormComponent);
+      loader = TestbedHarnessEnvironment.loader(fixture);
+
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
 
     afterEach(() => {
+      mockGoalService.getGoalByKeyResultId.mockReset();
       mockMeasureService.getMeasureById.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockGetNumerOrNull.getNumberOrNull.mockReset();
-      mockGoalService.getGoalByKeyResultId.mockReset();
-      mockKeyResultService.getMeasuresOfKeyResult.mockReset();
       mockQuarterService.getStartAndEndDateOfKeyresult.mockReset();
     });
 
@@ -176,15 +185,36 @@ describe('MeasureFormComponent Edit', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should set goal of component', () => {
-      component.goal$.subscribe((componentGoal) => {
-        goal.subscribe((testGoal) => {
-          expect(componentGoal).toEqual(testGoal);
+    test('should set Key Result', () => {
+      binaryKeyResult.subscribe((testKeyResult) => {
+        component.keyresult$.subscribe((componentKeyResult) => {
+          expect(testKeyResult).toEqual(componentKeyResult);
         });
       });
     });
 
-    test('should have one key result description tag with right panel title', () => {
+    test('should set measure', () => {
+      binaryMeasure.subscribe((testMeasure) => {
+        component.measure$.subscribe((componentMeasure) => {
+          expect(testMeasure).toEqual(componentMeasure);
+        });
+      });
+    });
+
+    test('should set create to false and set title right', () => {
+      expect(component.create).toEqual(false);
+
+      const title = fixture.debugElement.query(By.css('.headline-large'));
+      expect(title.nativeElement.textContent).toContain('Messung bearbeiten');
+      const headingLabels = fixture.debugElement.queryAll(
+        By.css('.heading-label')
+      );
+      expect(headingLabels[1].nativeElement.textContent).toContain(
+        'Messung bearbeiten'
+      );
+    });
+
+    test('should have one Key Result description tag with right panel title', () => {
       const keyResultDescription = fixture.debugElement.queryAll(
         By.css('app-key-result-description')
       );
@@ -196,11 +226,11 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    test('should have one mat accordion for measure row', () => {
+    test('should have two mat accordion for Key Result description and measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
       );
-      expect(matAccordions.length).toEqual(1);
+      expect(matAccordions.length).toEqual(2);
     });
 
     test('should have three mat dividers', () => {
@@ -221,41 +251,11 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    test('should set Key Result', () => {
-      component.keyresult$.subscribe((keyresult) => {
-        expect(keyresult.title).toContain('Key Result 1');
-        expect(keyresult.id).toEqual(1);
-      });
-      expect(mockMeasureService.getMeasureById).toHaveBeenCalledWith(1);
-      expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledWith(1);
-    });
-
-    test('should set Key Result unit right', () => {
-      expect(component.keyResultUnit).toContain('PERCENT');
-    });
-
-    test('should set create to false and set title right', () => {
-      expect(component.create).toEqual(false);
-
-      const title = fixture.debugElement.query(By.css('.headline-large'));
-      expect(title.nativeElement.textContent).toContain('Messung bearbeiten');
-      const headingLabels = fixture.debugElement.queryAll(
-        By.css('.heading-label')
-      );
-      expect(headingLabels[1].nativeElement.textContent).toContain(
-        'Messung bearbeiten'
-      );
-    });
-
-    test('should set measure and measureform', () => {
-      component.measure$.subscribe((measure) => {
-        measure1.subscribe((testMeasure) => {
-          expect(measure).toEqual(testMeasure);
-        });
-      });
-      expect(component.measureForm.get('value')?.value).toEqual(42);
+    xtest('should set measureform', () => {
+      // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
+      expect(component.measureForm.get('value')?.value).toBeFalsy();
       expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2023-01-10T22:00:00.000Z')
+        new Date('2023-01-05T00:00:00.000Z')
       );
       expect(component.measureForm.get('changeInfo')?.value).toEqual(
         'Changeinfo 1'
@@ -265,56 +265,31 @@ describe('MeasureFormComponent Edit', () => {
       );
     });
 
-    test('should have 4 titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
-      expect(titles.length).toEqual(4);
-      expect(titles[0].nativeElement.textContent).toContain('Aktueller Wert');
-      expect(titles[1].nativeElement.textContent).toContain(
-        'Datum der Messung'
+    test('should set keyresultUnit to BINARY', () => {
+      expect(component.keyResultUnit).toContain('BINARY');
+    });
+
+    test('should have 3 buttons for edit', () => {
+      const buttons = fixture.debugElement.queryAll(By.css('button'));
+      expect(buttons.length).toEqual(3);
+      expect(buttons[1].nativeElement.textContent).toContain('Abbrechen');
+      expect(buttons[2].nativeElement.textContent).toContain('Aktualisieren');
+    });
+
+    test('should have changeinfo', () => {
+      const textareas = fixture.debugElement.queryAll(
+        By.css('.description-textarea')
       );
-      expect(titles[2].nativeElement.textContent).toContain(
-        'Veränderung seit letzter Messung'
+      expect(textareas.length).toEqual(2);
+      expect(textareas[0].nativeElement.value).toContain('Changeinfo 1');
+    });
+
+    test('should have initiatives', () => {
+      const textareas = fixture.debugElement.queryAll(
+        By.css('.description-textarea')
       );
-      expect(titles[3].nativeElement.textContent).toContain('Massnahmen');
-    });
-
-    test('should set measure value', () => {
-      const value = fixture.debugElement.query(
-        By.css('input[formControlName="value"]')
-      );
-      expect(value.nativeElement.value).toEqual('42');
-    });
-
-    test('should have Key Result unit', () => {
-      const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('Prozent');
-    });
-
-    test('should be invalid when not matching pattern of Key Result unit', () => {
-      const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('Prozent');
-      component.measureForm.get('value')?.setValue(333);
-      expect(component.measureForm.get('value')?.valid).toEqual(false);
-
-      //Set Keyresult to CHF Unit so that button has to be disabled in with value 333
-      component.keyresult$ = of(keyresultData.keyresults[5]);
-      fixture.detectChanges();
-
-      /* Check if button is really disabled, then set value to 1 which fits CHF regex and
-       * check if button is not enabled */
-      expect(component.measureForm.get('value')?.valid).toEqual(false);
-      component.measureForm.get('value')?.setValue(0);
-      expect(component.measureForm.get('value')?.valid).toEqual(true);
-    });
-
-    test('should be invalid when value has more than one number behind comma', () => {
-      component.measureForm.get('value')?.setValue(33.456);
-      expect(component.measureForm.get('value')?.valid).toEqual(false);
-    });
-
-    test('should be invalid when value is greater than 100 and has numbers behind comma', () => {
-      component.measureForm.get('value')?.setValue(133.456);
-      expect(component.measureForm.get('value')?.valid).toEqual(false);
+      expect(textareas.length).toEqual(2);
+      expect(textareas[1].nativeElement.value).toContain('Initiatives 1');
     });
 
     test('should have datepicker value', async () => {
@@ -325,7 +300,7 @@ describe('MeasureFormComponent Edit', () => {
           })
         );
 
-      expect(await datePickerInputHarness.getValue()).toEqual('1/10/2023');
+      expect(await datePickerInputHarness.getValue()).toEqual('1/5/2023');
     });
 
     xtest('should update datepicker with right value from measureForm wintertime', async () => {
@@ -362,43 +337,17 @@ describe('MeasureFormComponent Edit', () => {
       expect(await datePickerInputHarness.getValue()).toEqual('7/2/2023');
     });
 
-    xtest('should update measureDate with datepicker', async () => {
-      // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
-      const datePickerInputHarness =
-        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
-          MatDatepickerInputHarness.with({
-            selector: 'input[formControlName="measureDate"]',
-          })
-        );
-
-      await datePickerInputHarness.setValue('22/12/2022');
-
-      expect(component.measureForm.get('measureDate')?.value).toEqual(
-        new Date('2023-01-10T22:00:00.000Z')
+    test('should have slider with right value and change value on change', async () => {
+      const toggleSlide = await loader.getHarness(
+        MatSlideToggleHarness.with({
+          selector: 'mat-slide-toggle',
+        })
       );
-    });
+      expect(await toggleSlide.isChecked()).toBeFalsy();
+      await toggleSlide.toggle();
+      expect(await toggleSlide.isChecked()).toBeTruthy();
 
-    test('should have changeinfo', () => {
-      const textareas = fixture.debugElement.queryAll(
-        By.css('.description-textarea')
-      );
-      expect(textareas.length).toEqual(2);
-      expect(textareas[0].nativeElement.value).toContain('Changeinfo');
-    });
-
-    test('should have initiatives', () => {
-      const textareas = fixture.debugElement.queryAll(
-        By.css('.description-textarea')
-      );
-      expect(textareas.length).toEqual(2);
-      expect(textareas[1].nativeElement.value).toContain('Initiatives');
-    });
-
-    test('should have 3 buttons for edit', () => {
-      const buttons = fixture.debugElement.queryAll(By.css('button'));
-      expect(buttons.length).toEqual(3);
-      expect(buttons[1].nativeElement.textContent).toContain('Abbrechen');
-      expect(buttons[2].nativeElement.textContent).toContain('Aktualisieren');
+      expect(component.measureForm.get('value')?.value).toEqual(true);
     });
 
     test('should set form valid when no changes and set to invalid if empty input', () => {
@@ -414,32 +363,55 @@ describe('MeasureFormComponent Edit', () => {
       expect(button.nativeElement.disabled).toEqual(true);
     });
 
-    xtest('should save edited measure', () => {
-      // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
-      component.measureForm.get('changeInfo')?.setValue('New Changeinfo');
-      component.measureForm.get('value')?.setValue(30);
-      fixture.detectChanges();
-      component.save();
-
-      expect(mockMeasureService.saveMeasure).toHaveBeenCalledTimes(1);
-      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
-        receivedEditedMeasure,
-        false
+    test('should have 4 titles', () => {
+      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
+      expect(titles.length).toEqual(4);
+      expect(titles[0].nativeElement.textContent).toContain('Aktueller Wert');
+      expect(titles[1].nativeElement.textContent).toContain(
+        'Datum der Messung'
       );
+      expect(titles[2].nativeElement.textContent).toContain(
+        'Veränderung seit letzter Messung'
+      );
+      expect(titles[3].nativeElement.textContent).toContain('Massnahmen');
     });
 
-    xtest('should set measureDate time to midnight when save edited measure', () => {
-      component.measureForm.get('changeInfo')?.setValue('New Changeinfo');
-      component.measureForm.get('value')?.setValue(30);
+    test('should have Key Result unit in html', () => {
+      const unit = fixture.debugElement.query(By.css('.unit-label'));
+      expect(unit.nativeElement.textContent).toEqual('BINÄR');
+    });
+
+    xtest('should save edited measure', () => {
+      // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.
+      component.measureForm.get('value')?.setValue(true);
+      component.measureForm.get('changeInfo')?.setValue('Changeinfo 1');
+      component.measureForm.get('initiatives')?.setValue('Initiatives 1');
       component.measureForm
         .get('measureDate')
-        ?.setValue(new Date('2023-01-10T14:30:48Z'));
+        ?.setValue(new Date('2023-01-03T23:00:00Z'));
       fixture.detectChanges();
       component.save();
 
       expect(mockMeasureService.saveMeasure).toHaveBeenCalled();
       expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
-        receivedEditedMeasure,
+        receivedEditedBinaryMeasure,
+        false
+      );
+    });
+
+    xtest('should set measureDate time to midnight when save edited measure', () => {
+      component.measureForm.get('value')?.setValue(true);
+      component.measureForm.get('changeInfo')?.setValue('Changeinfo 1');
+      component.measureForm.get('initiatives')?.setValue('Initiatives 1');
+      component.measureForm
+        .get('measureDate')
+        ?.setValue(new Date('2023-01-04T00:00:00Z'));
+      fixture.detectChanges();
+      component.save();
+
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalled();
+      expect(mockMeasureService.saveMeasure).toHaveBeenCalledWith(
+        receivedEditedBinaryMeasure,
         false
       );
     });

@@ -87,7 +87,6 @@ export class MeasureRowComponent implements OnInit {
           .getMeasuresOfKeyResult(keyResultId)
           .subscribe((data) => {
             this.measures$.next(data);
-            this.onMeasureDelete.emit(data);
           });
       } else {
         throw Error('Key Result with Id ' + keyResultId + " doesn't exist");

@@ -289,7 +289,7 @@ describe('MeasureFormComponent Create', () => {
     });
 
     //Doesn't run on pipeline due to different timezones
-    xtest('should update measureDate with datepicker', async () => {
+    test('should update measureDate with datepicker', async () => {
       const datePickerInputHarness =
         await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
           MatDatepickerInputHarness.with({

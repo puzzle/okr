@@ -46,8 +46,8 @@ describe('QuarterService', () => {
     const response = quarterData.startAndEndDates[0];
     quarterService.getStartAndEndDateOfKeyresult(id).subscribe({
       next(response: StartEndDateDTO) {
-        expect(response.startDate).not.toBeNull();
-        expect(response.endDate).not.toBeNull();
+        expect(response.startDate).toEqual('2023-01-1T00:00:00.000Z');
+        expect(response.endDate).toEqual('2023-03-31T023:59:59.999Z');
         done();
       },
       error(error) {

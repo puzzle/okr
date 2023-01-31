@@ -12,7 +12,6 @@ import { Goal, GoalService } from '../../../services/goal.service';
 export class KeyResultDetailComponent implements OnInit {
   public goal$!: Observable<Goal>;
 
-  @ViewChild('diagram') private diagram: any;
   constructor(
     private router: Router,
     private goalService: GoalService,

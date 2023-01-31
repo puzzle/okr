@@ -69,6 +69,5 @@ insert into measure(id, key_result_id, measure_date, value, created_by_id, creat
         (11, 11,'2023-01-02', 0, 1, '2023-01-01', 'Das neue Jahr fängt ja gut an: keine Schokolade!', 'Wir sollten das Jahr 2023 auslasen.'),
         (12, 12,'2023-01-03', 3, 1, '2022-08-01', 'Wir haben sogar 3 Apéros gemacht.', 'Weiter so.'),
         (13, 13,'2023-01-03', 95, 4, '2022-08-01', 'Fast alle Members haben uns ihre Feedback gemeldet.', 'Keine Massnahmen'),
-        (14, 14,'2023-01-04', 1, 5, '2022-08-01', 'Mattenhof Keller hat versagt: Ein Dienstag ohne Cordon bleu.', 'Zur Sicherheit 10 auf Reserve haben.'),
         (15, 6,'2023-02-04', 10, 5, '2022-08-01', '', 'Initiatives einer Messung'),
         (16, 6,'2023-01-04', 1, 5, '2022-08-01', '', 'Initiatives einer Messung');

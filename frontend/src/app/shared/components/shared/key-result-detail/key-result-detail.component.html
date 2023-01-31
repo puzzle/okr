@@ -8,11 +8,9 @@
 <p class="headline-large">Key Result Beschreibung</p>
 
 <div *ngIf="goal$ | async as goal">
-  <div class="row d-flex w-100 keyresult-detail">
+  <div class="row d-flex w-100 px-5">
     <app-key-result-description [goal]="goal"></app-key-result-description>
   </div>
 </div>
-
-<mat-divider class="divider"></mat-divider>
 
 <app-measure-row class="measure-row"></app-measure-row>

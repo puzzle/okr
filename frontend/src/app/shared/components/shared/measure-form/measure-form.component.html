@@ -11,19 +11,15 @@
 
 <p class="panel-title">Key Result Beschreibung</p>
 
-<div *ngIf="goal$ | async as goal">
+<div *ngIf="goal$ | async as goal" class="my-3">
   <div class="row d-flex w-100 keyresult-detail">
     <app-key-result-description [goal]="goal"></app-key-result-description>
   </div>
 </div>
 
-<mat-divider class="divider"></mat-divider>
+<app-measure-row class="my-5"></app-measure-row>
 
-<app-measure-row></app-measure-row>
-
-<mat-divider class="divider"></mat-divider>
-
-<p class="fs-2 heading-label">
+<p class="fs-2 heading-label my-5">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
 
@@ -72,8 +68,8 @@
           [max]="startEndDate.endDate"
           [matDatepicker]="picker"
           formControlName="measureDate"
-          readonly
         />
+        <!--        readonly-->
 
         <mat-hint
           >{{ startEndDate.startDate | date: "dd.MM.yyyy" }} –

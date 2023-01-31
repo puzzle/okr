@@ -39,8 +39,9 @@ public class QuarterController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns a object containing the start date and the end date of quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = StartEndDateDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Could not find given keyresult", content = @Content) })
-    @GetMapping("/dates/keyresult/{keyResultId}")
+            @ApiResponse(responseCode = "404", description = "Could not find given keyresult", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Label is invalid", content = @Content) })
+    @GetMapping("/dates/{keyResultId}")
     public StartEndDateDTO getStartAndEndDateofKeyresult(@PathVariable long keyResultId) {
         return this.quarterService.getStartAndEndDateOfKeyresult(keyResultId);
     }

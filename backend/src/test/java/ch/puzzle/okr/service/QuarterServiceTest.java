@@ -7,8 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.*;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -174,6 +173,12 @@ class QuarterServiceTest {
     void shouldGetYearMonthFromLabel(String label, YearMonth yearMonth) {
         YearMonth yearMonthFromLabel = this.quarterService.getYearMonthFromLabel(label);
         assertEquals(yearMonth, yearMonthFromLabel);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", " ", "GJ 21/22-Q0", "GJ 21/22-Q5", "gj 21/22-Q4" })
+    void shouldThrowErrorWhileGettingYearMonthFromLabel(String label) {
+        assertThrows(ResponseStatusException.class, () -> this.quarterService.getYearMonthFromLabel(label));
     }
 
     private static Stream<Arguments> shouldGetYearMonthFromLabel() {

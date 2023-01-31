@@ -62,7 +62,7 @@ class QuarterControllerIT {
         BDDMockito.given(quarterService.getStartAndEndDateOfKeyresult(1)).willReturn(StartEndDateDTO.Builder.builder()
                 .withStartDate(LocalDate.of(2021, 7, 1)).withEndDate(LocalDate.of(2021, 9, 30)).build());
 
-        mvc.perform(get("/api/v1/quarters/dates/keyresult/1").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v1/quarters/dates/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.startDate", Is.is("2021-07-01")))
                 .andExpect(jsonPath("$.endDate", Is.is("2021-09-30")));

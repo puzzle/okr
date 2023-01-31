@@ -224,7 +224,7 @@ describe('MeasureFormComponent Edit', () => {
     test('should set Key Result', () => {
       component.keyresult$.subscribe((keyresult) => {
         expect(keyresult.title).toContain('Key Result 1');
-        expect(keyresult.id).toContain(1);
+        expect(keyresult.id).toEqual(1);
       });
       expect(mockMeasureService.getMeasureById).toHaveBeenCalledWith(1);
       expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledWith(1);
@@ -371,7 +371,7 @@ describe('MeasureFormComponent Edit', () => {
           })
         );
 
-      datePickerInputHarness.setValue('22/12/2022');
+      await datePickerInputHarness.setValue('22/12/2022');
 
       expect(component.measureForm.get('measureDate')?.value).toEqual(
         new Date('2023-01-10T22:00:00.000Z')

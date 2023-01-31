@@ -20,5 +20,11 @@
       "id": 5,
       "label": "GJ 23/24-Q1"
     }
+  ],
+  "startAndEndDates": [
+    {
+      "startDate": "2023-01-1T00:00:00.000Z",
+      "endDate": "2023-03-31T023:59:59.999Z"
+    }
   ]
 }

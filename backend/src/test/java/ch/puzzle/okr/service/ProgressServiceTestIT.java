@@ -63,7 +63,7 @@ class ProgressServiceTestIT {
     }
 
     private static Stream<Arguments> shouldReturnCorrectProgress() {
-        return Stream.of(Arguments.of(120, 100, 120, 100D), Arguments.of(50, 85, 65, 57.142857142857146D),
+        return Stream.of(Arguments.of(120, 100, 120, 100D), Arguments.of(50, 85, 65, 43D),
                 Arguments.of(100, 0, 80, 80D));
     }
 

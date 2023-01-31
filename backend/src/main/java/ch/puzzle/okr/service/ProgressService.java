@@ -65,9 +65,9 @@ public class ProgressService {
         double basisValue = keyResultMeasureValue.getBasisValue();
         double targetValue = keyResultMeasureValue.getTargetValue();
         double value = keyResultMeasureValue.getValue() == null ? 0 : keyResultMeasureValue.getValue();
-        if (keyResultMeasureValue.getBasisValue() > keyResultMeasureValue.getTargetValue()) {
-            return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
+        if (basisValue > targetValue) {
+            return Math.ceil((value - targetValue) * (100 / (basisValue - targetValue)));
         }
-        return basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue)));
+        return Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
     }
 }

@@ -24,8 +24,8 @@ insert into quarter(id, label) values
 
 --  quartal GJ 22/23-Q1 (1.7.2022 - 30.9.2022)
 insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
-        (1, 'Motivierte und glückliche Members', 1, 1, 3, '57', '2022-07-01', 'Puzzle ITC will motivierte und glückliche Members.'),
-        (2, 'Objective 2', 2, 2, 3, '0', '2019-01-01', 'This is the description of Objective 2'),
+        (1, 'Motivierte und glückliche Members', 1, 1, 3, '43', '2022-07-01', 'Puzzle ITC will motivierte und glückliche Members.'),
+        (2, 'Objective 2', 2, 2, 3, '5', '2019-01-01', 'This is the description of Objective 2'),
         (3, 'Objective 3', 4, 3, 3, '0', '2020-01-01', 'This is the description of Objective 3');
 
 insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
@@ -42,7 +42,7 @@ insert into measure(id, key_result_id, measure_date, value, created_by_id, creat
 
 --  quartal GJ 22/23-Q2 (1.10.2022 - 31.12.2022)
 insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
-        (4, 'Motivierte und glückliche Members', 1, 1, 2, '80', '2022-10-01', 'Puzzle ITC will motivierte und glückliche Members.');
+        (4, 'Motivierte und glückliche Members', 1, 1, 2, '73', '2022-10-01', 'Puzzle ITC will motivierte und glückliche Members.');
 
 insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
         (7, 4, 5, 1, 2, 0, 4, 1, '2022-10-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
@@ -58,7 +58,7 @@ insert into measure(id, key_result_id, measure_date, value, created_by_id, creat
 
 --  quartal GJ 22/23-Q3 (1.1.2023 - 31.3.2023)
 insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
-        (5, 'Motivierte und glückliche Members', 1, 1, 1, '73', '2023-01-01', 'Puzzle ITC will motivierte und glückliche Members.');
+        (5, 'Motivierte und glückliche Members', 1, 1, 1, '65', '2023-01-01', 'Puzzle ITC will motivierte und glückliche Members.');
 
 insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
         (11, 5, 5, 1, 2, 0, 4, 1, '2023-01-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),

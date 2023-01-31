@@ -47,7 +47,7 @@ class ProgressServiceTestIT {
 
     // Data for parameterized test
     private static Stream<Arguments> shouldReturnCorrectKeyResultProgress() {
-        return Stream.of(Arguments.of(null, 11.5D, null), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
+        return Stream.of(Arguments.of(null, 11.5D, 0L), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
                 Arguments.of(keyResultMeasureValue, 15.789D, 15L), Arguments.of(keyResultMeasureValue, 25D, 25L));
     }
 

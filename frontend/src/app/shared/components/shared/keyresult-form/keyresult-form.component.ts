@@ -110,6 +110,7 @@ export class KeyresultFormComponent implements OnInit {
         progress,
         ...restKeyresult
       } = keyresult;
+      this.resetValidatorOfForm(keyresult.unit);
       this.keyResultForm.setValue(restKeyresult);
     });
   }
@@ -140,7 +141,6 @@ export class KeyresultFormComponent implements OnInit {
                 timeOut: 5000,
               }
             );
-            console.log('Can not save this Key Result: ', keyresult);
             return new Error('ups sommething happend');
           },
         })
@@ -152,9 +152,9 @@ export class KeyresultFormComponent implements OnInit {
     this.keyResultForm.controls['targetValue'].enable();
   }
 
-  resetValidatorOfForm(): void {
+  resetValidatorOfForm(unit: string | null): void {
     let regex: string | null = null;
-    switch (this.keyResultForm.controls['unit'].value) {
+    switch (unit) {
       case 'NUMBER': {
         regex = NUMBER_REGEX;
         break;
@@ -174,7 +174,7 @@ export class KeyresultFormComponent implements OnInit {
   }
 
   setValidatorsWithRegex(regex: string | null) {
-    if (regex) {
+    if (regex != null) {
       this.keyResultForm.controls['basicValue'].setValidators([
         Validators.required,
         Validators.pattern(regex),

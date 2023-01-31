@@ -94,7 +94,10 @@
           <mat-label>Einheit</mat-label>
           <mat-select
             (selectionChange)="
-              this.enableTargetAndBasicValue(); this.resetValidatorOfForm()
+              this.enableTargetAndBasicValue();
+              this.resetValidatorOfForm(
+                this.keyResultForm.controls['unit'].value
+              )
             "
             [value]="keyresult.unit"
             formControlName="unit"

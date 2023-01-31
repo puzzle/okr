@@ -25,7 +25,7 @@ export class QuarterService {
     keyResultId: number
   ): Observable<StartEndDateDTO> {
     return this.httpClient.get<StartEndDateDTO>(
-      'api/v1/quarters/dates/keyresult/' + keyResultId
+      'api/v1/quarters/dates/' + keyResultId
     );
   }
 }

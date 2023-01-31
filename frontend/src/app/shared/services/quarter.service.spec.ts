@@ -56,7 +56,7 @@ describe('QuarterService', () => {
     });
 
     const request = httpTestingController.expectOne(
-      `api/v1/quarters/dates/keyresult/` + id
+      `api/v1/quarters/dates/` + id
     );
     expect(request.request.method).toEqual('GET');
     request.flush(response);

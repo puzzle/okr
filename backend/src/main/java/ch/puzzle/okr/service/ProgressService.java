@@ -39,7 +39,7 @@ public class ProgressService {
         if (keyResultMeasureValue != null) {
             return (long) Math.floor(returnCheckedProgress(keyResultMeasureValue));
         }
-        return 0L;
+        return null;
     }
 
     public Long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {
@@ -64,9 +64,10 @@ public class ProgressService {
     protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
         double basisValue = keyResultMeasureValue.getBasisValue();
         double targetValue = keyResultMeasureValue.getTargetValue();
-        double value = keyResultMeasureValue.getValue() == null ? 0 : keyResultMeasureValue.getValue();
+        double value = keyResultMeasureValue.getValue() == null ? keyResultMeasureValue.getBasisValue()
+                : keyResultMeasureValue.getValue();
         if (basisValue > targetValue) {
-            return Math.ceil((value - targetValue) * (100 / (basisValue - targetValue)));
+            return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
         }
         return Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
     }

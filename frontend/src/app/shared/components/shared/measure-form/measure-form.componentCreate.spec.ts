@@ -130,7 +130,7 @@ describe('MeasureFormComponent Create', () => {
           UnitValueValidator,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          MeasureValueValidator,
+          UnitValueValidator,
         ],
         imports: [
           TranslateTestingModule.withTranslations({

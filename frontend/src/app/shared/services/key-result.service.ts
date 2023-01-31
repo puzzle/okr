@@ -18,7 +18,7 @@ export interface KeyResultMeasure {
   objectiveId: number;
   title: string;
   description: string;
-  ownerId: number;
+  ownerId: number | null;
   ownerFirstname: string;
   ownerLastname: string;
   expectedEvolution: string | null;
@@ -62,7 +62,7 @@ export class KeyResultService {
       description: '',
       expectedEvolution: null,
       unit: '',
-      ownerId: 0,
+      ownerId: null,
       ownerLastname: '',
       ownerFirstname: '',
       targetValue: 0,

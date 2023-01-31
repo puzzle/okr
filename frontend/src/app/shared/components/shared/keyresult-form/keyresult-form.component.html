@@ -191,11 +191,7 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Besitzer</mat-label>
-          <mat-select
-            [value]="keyresult.ownerId"
-            formControlName="ownerId"
-            class="owner-select"
-          >
+          <mat-select formControlName="ownerId" class="owner-select">
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>

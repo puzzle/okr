@@ -675,6 +675,24 @@ describe('KeyresultFormComponent', () => {
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
     });
+
+    test('should be invalid form if targetValue and basicValue are the same', async () => {
+      //Set Values
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['targetValue'].setValue(50);
+      component.keyResultForm.controls['basicValue'].setValue(50);
+
+      //Chose unit and check validation of form
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'Zahl' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+    });
   });
 
   describe('KeyresultFormComponent with no id in url', () => {

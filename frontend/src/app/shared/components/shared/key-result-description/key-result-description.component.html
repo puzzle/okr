@@ -2,7 +2,7 @@
   <p class="h3">Key Result Details</p>
   <mat-card-content class="d-flex gap-2 flex-wrap">
     <mat-card class="inner-cards flex-grow-1">
-      <mat-card-content class="d-flex flex-column justify-content-between">
+      <mat-card-content class="d-flex flex-column justify-content-around">
         <div>
           <span class="lead fw-normal">Key Result: </span>
           <span class="lead">{{ goal.keyresult.title }}</span>
@@ -30,42 +30,24 @@
     </mat-card>
 
     <mat-card class="inner-cards flex-grow-1">
-      <mat-card-content>
+      <mat-card-content class="d-flex flex-column justify-content-around">
         <span>
-          <p class="lead">
-            {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}
-          </p>
-          <p>
+          <span class="lead fw-normal">
+            {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}:
+          </span>
+          <span class="lead">
             {{ goal.basicValue }}
-          </p>
+          </span>
         </span>
 
         <span>
-          <p class="lead">
-            {{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}
-          </p>
-          <p>
+          <span class="lead fw-normal">
+            {{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}:
+          </span>
+          <span class="lead">
             {{ goal.targetValue }}
-          </p>
+          </span>
         </span>
-        <div *ngIf="keyResultMeasures$ | async as kRB">
-          <span>
-            <p class="lead">Aktueller Wert</p>
-            <p>
-              {{
-                calculateEffectiveValue(
-                  kRB.basicValue,
-                  kRB.targetValue,
-                  kRB.progress
-                )
-              }}
-            </p>
-          </span>
-          <span>
-            <p class="lead">Fortschritt in Prozent</p>
-            <p>{{ kRB?.progress }}%</p>
-          </span>
-        </div>
       </mat-card-content>
     </mat-card>
   </mat-card-content>

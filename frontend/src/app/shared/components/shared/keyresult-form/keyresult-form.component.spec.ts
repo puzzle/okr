@@ -757,7 +757,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should display success notification', () => {
-      //Return Keyresult to trigger success notification of ToastrService
       mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
 
       const createbutton = fixture.debugElement.query(By.css('.create-button'));
@@ -773,7 +772,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should display error notification', () => {
-      //Return Error to trigger error notification of ToastrService
       mockKeyResultService.saveKeyresult.mockReturnValue(
         throwError(
           () =>

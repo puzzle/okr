@@ -50,11 +50,6 @@ public class OverviewControllerIT {
 
     static OverviewDto overviewDtoFindus = new OverviewDto(new TeamDto(4L, "Findus"), Collections.emptyList());
 
-    @BeforeEach
-    void setUp() {
-        // setup overview mapper
-    }
-
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
         BDDMockito.given(overviewService.getOverview(Collections.emptyList(), null))

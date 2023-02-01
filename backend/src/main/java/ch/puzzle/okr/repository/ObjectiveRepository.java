@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
-    @Query(value = "select k.target_value as targetValue, k.basis_value as basisValue, m.value as value from key_result as k, measure as m,(select max(measure_date) as measure_date, key_result_id from measure as m, key_result as k where k.objective_id = :objective_id and k.id = m.key_result_id group by key_result_id) as t where t.key_result_id = m.key_result_id and t.measure_date = m.measure_date and k.id = m.key_result_id and k.objective_id = :objective_id", nativeQuery = true)
-    List<KeyResultMeasureValue> getCalculationValuesForProgress(@Param("objective_id") Long objectiveId);
+    @Query(value = "select target_value as targetValue, basis_value as basisValue, value as value from (select key_result_id as krid, value from (select max(measure_date) as measure_date, k.id from measure as m, key_result as k where k.objective_id = :objectiveId and k.id = m.key_result_id group by k.id) as sub INNER JOIN measure as ms on sub.id = ms.key_result_id WHERE sub.measure_date = ms.measure_date) as sub RIGHT JOIN key_result as kr on kr.id = sub.krid where kr.objective_id = :objectiveId", nativeQuery = true)
+    List<KeyResultMeasureValue> getCalculationValuesForProgress(@Param("objectiveId") Long objectiveId);
 
     List<Objective> findByTeamIdOrderByTitleAsc(long id);
 

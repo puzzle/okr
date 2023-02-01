@@ -44,7 +44,7 @@ import {
   QuarterService,
   StartEndDateDTO,
 } from '../../../services/quarter.service';
-import { MeasureValueValidator } from '../../../validators';
+import { UnitValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
@@ -109,7 +109,7 @@ describe('MeasureFormComponent Edit', () => {
           MeasureFormComponent,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          MeasureValueValidator,
+          UnitValueValidator,
         ],
         imports: [
           HttpClientTestingModule,

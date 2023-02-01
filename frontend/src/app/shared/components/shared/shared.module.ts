@@ -18,7 +18,7 @@ import { KeyResultDetailComponent } from './key-result-detail/key-result-detail.
 import { KeyResultDescriptionComponent } from './key-result-description/key-result-description.component';
 import { KeyresultFormComponent } from './keyresult-form/keyresult-form.component';
 import { MatSelectModule } from '@angular/material/select';
-import { MeasureValueValidator } from '../../validators';
+import { UnitValueValidator } from '../../validators';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MeasureRowComponent,
     KeyResultDetailComponent,
     KeyResultDescriptionComponent,
-    MeasureValueValidator,
+    UnitValueValidator,
     KeyresultFormComponent,
   ],
   imports: [
@@ -48,6 +48,6 @@ import { TranslateModule } from '@ngx-translate/core';
     MatSelectModule,
     TranslateModule,
   ],
-  exports: [MeasureValueValidator],
+  exports: [UnitValueValidator],
 })
 export class SharedModule {}

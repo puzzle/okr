@@ -62,19 +62,13 @@ public class ProgressService {
     }
 
     protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
-        if (keyResultMeasureValue.getBasisValue() > keyResultMeasureValue.getTargetValue()) {
-            return turnedCalculation(keyResultMeasureValue.getTargetValue(), keyResultMeasureValue.getBasisValue(),
-                    keyResultMeasureValue.getValue());
+        double basisValue = keyResultMeasureValue.getBasisValue();
+        double targetValue = keyResultMeasureValue.getTargetValue();
+        double value = keyResultMeasureValue.getValue() == null ? keyResultMeasureValue.getBasisValue()
+                : keyResultMeasureValue.getValue();
+        if (basisValue > targetValue) {
+            return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
         }
-        return calculate(keyResultMeasureValue.getTargetValue(), keyResultMeasureValue.getBasisValue(),
-                keyResultMeasureValue.getValue());
-    }
-
-    public double turnedCalculation(double targetValue, double basisValue, double value) {
-        return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
-    }
-
-    protected double calculate(double targetValue, double basisValue, double value) {
-        return basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue)));
+        return Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
     }
 }

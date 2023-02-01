@@ -48,7 +48,7 @@ import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
 import { NUMBER_REGEX } from '../../../regexLibrary';
-import { MeasureValueValidator } from '../../../validators';
+import { UnitValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import {
   QuarterService,
@@ -127,10 +127,10 @@ describe('MeasureFormComponent Create', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          MeasureValueValidator,
+          UnitValueValidator,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
-          MeasureValueValidator,
+          UnitValueValidator,
         ],
         imports: [
           TranslateTestingModule.withTranslations({

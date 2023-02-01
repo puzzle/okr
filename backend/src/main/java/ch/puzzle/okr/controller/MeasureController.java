@@ -87,7 +87,7 @@ public class MeasureController {
     @DeleteMapping("/{id}")
     public void deleteMeasureById(@PathVariable long id) {
         Measure measure = this.measureService.getMeasureById(id);
-        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         measureService.deleteMeasureById(id);
+        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
     }
 }

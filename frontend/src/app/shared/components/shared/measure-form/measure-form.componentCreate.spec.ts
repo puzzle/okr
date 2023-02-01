@@ -255,7 +255,7 @@ describe('MeasureFormComponent Create', () => {
       expect(title.nativeElement.textContent).toContain('Vergangene Messungen');
     });
 
-    test('should set all input fields empty except datepicker and have invalid form', async () => {
+    test('should set all input fields empty except datepicker, set datepicker value to endDate and have invalid form', async () => {
       let button = fixture.debugElement.query(By.css('.create-button'));
       expect(button.nativeElement.disabled).toEqual(true);
       expect(component.measureForm.valid).toEqual(false);
@@ -271,7 +271,7 @@ describe('MeasureFormComponent Create', () => {
           })
         );
 
-      expect(await datePickerInputHarness.getValue()).toEqual('12/23/2022');
+      expect(await datePickerInputHarness.getValue()).toEqual('12/31/2023');
       expect(await datePickerInputHarness.getMin()).toEqual('2022-10-01');
       expect(await datePickerInputHarness.getMax()).toEqual('2023-12-31');
 

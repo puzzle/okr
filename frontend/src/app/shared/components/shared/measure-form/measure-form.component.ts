@@ -83,7 +83,7 @@ export class MeasureFormComponent implements OnInit {
         this.measureForm.setValue({
           value: measure.value,
           measureDate: this.create
-            ? this.returnQuarterEndDateDatOrCurrentDate(
+            ? this.returnQuarterEndDateOrCurrentDate(
                 new Date(startEndDate.endDate),
                 measure.measureDate
               )
@@ -95,7 +95,7 @@ export class MeasureFormComponent implements OnInit {
     });
   }
 
-  returnQuarterEndDateDatOrCurrentDate(endDate: Date, measureDate: Date) {
+  returnQuarterEndDateOrCurrentDate(endDate: Date, measureDate: Date) {
     if (measureDate > endDate) {
       return endDate;
     } else {

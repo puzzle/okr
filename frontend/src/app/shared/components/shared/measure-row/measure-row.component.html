@@ -3,6 +3,17 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <p class="h3">Vergangene Messungen</p>
+        <button
+          *ngIf="!isMeasureForm"
+          id="add-measure-button"
+          class="create-button"
+          mat-button
+          color="primary"
+          [routerLink]="['measure/new']"
+          (click)="$event.stopPropagation()"
+        >
+          Messung hinzufügen
+        </button>
       </mat-panel-title>
     </mat-expansion-panel-header>
 

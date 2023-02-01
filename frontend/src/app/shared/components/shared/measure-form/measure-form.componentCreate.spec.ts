@@ -230,6 +230,12 @@ describe('MeasureFormComponent Create', () => {
       expect(matAccordions.length).toEqual(1);
     });
 
+    test('should not have button to create measure', () => {
+      expect(
+        fixture.debugElement.query(By.css('#add-measure-button'))
+      ).toBeNull();
+    });
+
     test('should have two mat dividers', () => {
       const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
       expect(dividers.length).toEqual(2);

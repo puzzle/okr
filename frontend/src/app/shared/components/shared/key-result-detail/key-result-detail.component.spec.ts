@@ -147,4 +147,14 @@ describe('KeyResultDetailComponent', () => {
     );
     expect(keyResultDescription.length).toEqual(1);
   });
+
+  test('should have a button to create measure', () => {
+    const createButton = fixture.debugElement.query(
+      By.css('#add-measure-button')
+    );
+
+    expect(createButton.nativeElement.textContent).toContain(
+      ' Messung hinzufügen '
+    );
+  });
 });

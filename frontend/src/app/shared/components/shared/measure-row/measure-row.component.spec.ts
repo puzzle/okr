@@ -180,6 +180,16 @@ describe('MeasureRowComponent', () => {
       formattedDate = component.formatDate('2023-02-20T10:00:00');
       expect(formattedDate).toEqual('20.02.2023');
     });
+
+    test('should have a button to create measure', () => {
+      const createButton = fixture.debugElement.query(
+        By.css('#add-measure-button')
+      );
+
+      expect(createButton.nativeElement.textContent).toContain(
+        ' Messung hinzufügen '
+      );
+    });
   });
 
   describe('Empty Key Result id', () => {

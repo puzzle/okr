@@ -21,6 +21,7 @@ import { RouteService } from '../../../services/route.service';
 })
 export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
+  @Input() isMeasureForm!: boolean;
 
   @Input() open: boolean = false;
 

@@ -17,8 +17,6 @@ export class TeamDetailComponent {
   @Input() overview!: Overview;
   @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
-
   reloadObjectives() {
     this.onObjectivesListUpdate.emit();
   }

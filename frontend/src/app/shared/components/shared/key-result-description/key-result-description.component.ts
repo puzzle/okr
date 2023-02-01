@@ -8,6 +8,4 @@ import { Goal } from '../../../services/goal.service';
 })
 export class KeyResultDescriptionComponent {
   @Input() goal!: Goal;
-
-  constructor() {}
 }

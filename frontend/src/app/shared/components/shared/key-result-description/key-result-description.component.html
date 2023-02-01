@@ -2,38 +2,35 @@
   <p class="h3">Key Result Details</p>
   <mat-card-content class="d-flex gap-2 flex-wrap">
     <mat-card class="inner-cards flex-grow-1">
-      <mat-card-content>
-        <span>
-          <p class="lead">Key Result</p>
-          <p>
-            {{ goal.keyresult.title }}
-          </p>
-        </span>
+      <mat-card-content class="d-flex flex-column justify-content-between">
+        <div>
+          <span class="lead fw-normal">Key Result: </span>
+          <span class="lead">{{ goal.keyresult.title }}</span>
+        </div>
 
-        <span>
-          <p class="lead">Beschreibung</p>
-          <p>
+        <div class="d-flex flex-column">
+          <span class="lead fw-normal">Beschreibung:</span>
+          <span class="lead fs-5">
             {{ goal.keyresult.description }}
-          </p>
-        </span>
-        <span>
-          <p class="lead">{{ goal.teamName }} Objective</p>
-          <p>
-            {{ goal.objective.title }}
-          </p>
-        </span>
+          </span>
+        </div>
+
+        <div>
+          <span class="lead fw-normal">{{ goal.teamName }} Objective: </span>
+          <span class="lead">{{ goal.objective.title }}</span>
+        </div>
+
+        <div>
+          <span class="lead fw-normal">Zyklus: </span>
+          <span class="lead">
+            {{ goal.quarterLabel }}
+          </span>
+        </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card class="inner-cards flex-grow-1">
       <mat-card-content>
-        <span>
-          <p class="lead">Zyklus</p>
-          <p>
-            {{ goal.quarterLabel }}
-          </p>
-        </span>
-
         <span>
           <p class="lead">
             {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}
@@ -51,6 +48,24 @@
             {{ goal.targetValue }}
           </p>
         </span>
+        <div *ngIf="keyResultMeasures$ | async as kRB">
+          <span>
+            <p class="lead">Aktueller Wert</p>
+            <p>
+              {{
+                calculateEffectiveValue(
+                  kRB.basicValue,
+                  kRB.targetValue,
+                  kRB.progress
+                )
+              }}
+            </p>
+          </span>
+          <span>
+            <p class="lead">Fortschritt in Prozent</p>
+            <p>{{ kRB?.progress }}%</p>
+          </span>
+        </div>
       </mat-card-content>
     </mat-card>
   </mat-card-content>

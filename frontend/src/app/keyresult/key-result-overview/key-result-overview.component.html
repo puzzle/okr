@@ -30,15 +30,46 @@
 
         <mat-card class="w-100 inner-cards">
           <mat-card-title class="fs-6">Letzte Messung</mat-card-title>
-
-          <mat-card-content *ngIf="keyResult.measure !== null; else noMeasures">
-            <strong class="lastMeasureDate">{{
-              keyResult.measure?.measureDate | date
-            }}</strong>
-            <br />
-            <p class="lastMeasurechangeInfo">
-              {{ keyResult.measure?.changeInfo }}
-            </p>
+          <mat-card-content
+            *ngIf="keyResult.measure !== null; else noMeasures"
+            class="matCardContent"
+          >
+            <div *ngIf="startEndDate$ | async as startEndDate">
+              <div>
+                <strong class="lastMeasureDateTitle sameElement firstElement"
+                  >Datum der Messung:
+                </strong>
+                <p class="sameElement lastMeasureDate">
+                  {{ formatDate(keyResult.measure?.measureDate!) }}
+                </p>
+              </div>
+              <div>
+                <strong
+                  class="lastMeasureChangeInfoTitle sameElement firstElement"
+                  >Änderungen:
+                </strong>
+                <p class="sameElement lastMeasureChangeInfo">
+                  {{ keyResult.measure?.changeInfo }}
+                </p>
+              </div>
+              <div>
+                <strong
+                  class="lastMeasureStartDateTitle sameElement firstElement"
+                  >Startdatum:
+                </strong>
+                <p class="sameElement lastMeasureStartDate">
+                  {{ formatDate(startEndDate.startDate.toString()) }}
+                </p>
+              </div>
+              <div>
+                <strong class="lastMeasureEndDateTitle sameElement firstElement"
+                  >Enddatum:
+                </strong>
+                <p class="sameElement lastMeasureEndDate">
+                  {{ formatDate(startEndDate.endDate.toString()) }}
+                </p>
+              </div>
+            </div>
           </mat-card-content>
           <mat-card-actions align="start">
             <button

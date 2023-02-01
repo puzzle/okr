@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
   KeyResultService,
@@ -20,6 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
+
+  @Input() open: boolean = false;
 
   constructor(
     private keyresultService: KeyResultService,

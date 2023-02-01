@@ -1,23 +1,21 @@
-<span class="d-flex back-btn">
+<span (click)="navigateBack()" class="d-flex btn px-4 pt-4">
   <mat-icon>chevron_left</mat-icon>
-  <p (click)="navigateBack()">Zurück</p>
+  <p>Zurück</p>
 </span>
 
 <p class="fs-2 headline-large">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
 
-<mat-divider class="divider"></mat-divider>
-
-<p class="panel-title">Key Result Beschreibung</p>
-
-<div *ngIf="goal$ | async as goal" class="my-3">
-  <div class="row d-flex w-100 keyresult-detail">
+<div class="row d-flex w-100 px-5">
+  <div *ngIf="goal$ | async as goal">
     <app-key-result-description [goal]="goal"></app-key-result-description>
   </div>
+  <mat-divider class="my-4"></mat-divider>
+  <app-measure-row></app-measure-row>
 </div>
 
-<app-measure-row class="my-5"></app-measure-row>
+<mat-divider class="my-4"></mat-divider>
 
 <p class="fs-2 heading-label my-5">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}

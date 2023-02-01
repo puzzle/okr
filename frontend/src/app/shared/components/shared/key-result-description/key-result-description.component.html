@@ -1,49 +1,57 @@
-<div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
-  <div class="key-result-overview-container">
-    <div class="key-result-overview-text w-100 d-flex flex-wrap gap-3">
-      <div>
-        <p class="key-result-title">
-          <strong>Key Result</strong>
-          <br />
-          {{ goal.keyresult.title }}
-        </p>
+<mat-card class="outer-cards w-100">
+  <p class="h3">Key Result Details</p>
+  <mat-card-content class="d-flex gap-2 flex-wrap">
+    <mat-card class="inner-cards flex-grow-1">
+      <mat-card-content>
+        <span>
+          <p class="lead">Key Result</p>
+          <p>
+            {{ goal.keyresult.title }}
+          </p>
+        </span>
 
-        <p class="key-result-description">
-          <strong>Beschreibung</strong>
-          <br />
-          {{ goal.keyresult.description }}
-        </p>
+        <span>
+          <p class="lead">Beschreibung</p>
+          <p>
+            {{ goal.keyresult.description }}
+          </p>
+        </span>
+        <span>
+          <p class="lead">{{ goal.teamName }} Objective</p>
+          <p>
+            {{ goal.objective.title }}
+          </p>
+        </span>
+      </mat-card-content>
+    </mat-card>
 
-        <p class="key-result-objective">
-          <strong>{{ goal.teamName }} Objective</strong>
-          <br />
-          {{ goal.objective.title }}
-        </p>
-      </div>
+    <mat-card class="inner-cards flex-grow-1">
+      <mat-card-content>
+        <span>
+          <p class="lead">Zyklus</p>
+          <p>
+            {{ goal.quarterLabel }}
+          </p>
+        </span>
 
-      <div>
-        <p class="key-result-quarter">
-          <strong>Zyklus</strong>
-          <br />
-          {{ goal.quarterLabel }}
-        </p>
+        <span>
+          <p class="lead">
+            {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}
+          </p>
+          <p>
+            {{ goal.basicValue }}
+          </p>
+        </span>
 
-        <p class="key-result-basicValue">
-          <strong>{{
-            "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate
-          }}</strong>
-          <br />
-          {{ goal.basicValue }}
-        </p>
-
-        <p class="key-result-targetValue">
-          <strong>{{
-            "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate
-          }}</strong>
-          <br />
-          {{ goal.targetValue }}
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+        <span>
+          <p class="lead">
+            {{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}
+          </p>
+          <p>
+            {{ goal.targetValue }}
+          </p>
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

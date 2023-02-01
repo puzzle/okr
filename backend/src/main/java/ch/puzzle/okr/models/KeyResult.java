@@ -131,16 +131,8 @@ public class KeyResult {
         this.targetValue = targetValue;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {

@@ -37,52 +37,20 @@ public class MeasureDto {
         return keyResultId;
     }
 
-    public void setKeyResultId(Long keyResultId) {
-        this.keyResultId = keyResultId;
-    }
-
     public Double getValue() {
         return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
     }
 
     public String getChangeInfo() {
         return changeInfo;
     }
 
-    public void setChangeInfo(String changeInfo) {
-        this.changeInfo = changeInfo;
-    }
-
     public String getInitiatives() {
         return initiatives;
     }
 
-    public void setInitiatives(String initiatives) {
-        this.initiatives = initiatives;
-    }
-
     public Long getCreatedById() {
         return createdById;
-    }
-
-    public void setCreatedById(Long createdById) {
-        this.createdById = createdById;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public void setMeasureDate(Instant measureDate) {
-        this.measureDate = measureDate;
     }
 
     public Instant getMeasureDate() {

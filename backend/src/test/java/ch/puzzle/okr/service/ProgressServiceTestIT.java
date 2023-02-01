@@ -32,7 +32,6 @@ import static org.mockito.Mockito.*;
 @Transactional
 @SpringBootTest(classes = OkrApplication.class)
 class ProgressServiceTestIT {
-    // Instances to test Methods which require projection
     private static ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
     private static KeyResultMeasureValue keyResultMeasureValue = factory.createProjection(KeyResultMeasureValue.class);
     @InjectMocks
@@ -45,7 +44,6 @@ class ProgressServiceTestIT {
     @Mock
     private KeyResultRepository keyResultRepository;
 
-    // Data for parameterized test
     private static Stream<Arguments> shouldReturnCorrectKeyResultProgress() {
         return Stream.of(Arguments.of(null, 11.5D, null), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
                 Arguments.of(keyResultMeasureValue, 15.789D, 15L), Arguments.of(keyResultMeasureValue, 25D, 25L));
@@ -69,7 +67,6 @@ class ProgressServiceTestIT {
 
     @BeforeEach
     void setUp() {
-        // Reset Values to zero
         keyResultMeasureValue.setTargetValue(0);
         keyResultMeasureValue.setBasisValue(0);
         keyResultMeasureValue.setValue(0);

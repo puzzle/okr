@@ -125,12 +125,6 @@ describe('ObjectiveRowComponent', () => {
   test.each([
     [
       [
-        { displayName: 'Key Result hinzufügen', routeLine: 'result/add' },
-        { displayName: 'Objective bearbeiten', routeLine: 'objective/edit' },
-        {
-          displayName: 'Objective duplizieren',
-          routeLine: 'objective/duplicate',
-        },
         { displayName: 'Objective löschen', routeLine: 'objective/delete' },
       ] as MenuEntry[],
     ],

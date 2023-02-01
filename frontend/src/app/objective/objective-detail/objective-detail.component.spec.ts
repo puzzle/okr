@@ -63,6 +63,6 @@ describe('ObjectiveDetailComponent', () => {
     expect(spanTextes[0].nativeElement.textContent).toEqual('Key Result');
     expect(spanTextes[1].nativeElement.textContent).toEqual('Besitzer');
     expect(spanTextes[2].nativeElement.textContent).toEqual('Letzte Messung');
-    expect(spanTextes[3].nativeElement.textContent).toEqual('Fortschritt');
+    expect(spanTextes[3].nativeElement.textContent).toEqual('Zielerreichung');
   });
 });

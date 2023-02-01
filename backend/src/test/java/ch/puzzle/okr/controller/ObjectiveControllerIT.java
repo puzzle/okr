@@ -85,7 +85,6 @@ class ObjectiveControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup objective mapper
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
         BDDMockito.given(keyResultMapper.toDto(keyResult1)).willReturn(keyresult1Dto);

@@ -208,7 +208,6 @@ describe('TeamFormComponent', () => {
     });
 
     test('should display success notification', () => {
-      //Return Team to trigger success notification of ToastrService
       mockTeamService.save.mockReturnValue(of(team));
 
       const createbutton = fixture.debugElement.query(By.css('.create-button'));
@@ -225,7 +224,6 @@ describe('TeamFormComponent', () => {
     });
 
     test('should display error notification', () => {
-      //Return Error to trigger error notification of ToastrService
       mockTeamService.save.mockReturnValue(
         throwError(
           () =>

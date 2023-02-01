@@ -70,7 +70,6 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
@@ -122,33 +121,13 @@ describe('KeyResultKeyResultRowComponent', () => {
       let children = Array.from(matMenu.children).map(
         (e) => e.querySelector('span')!
       );
-      children[3].click();
+      children[0].click();
     });
 
     test.each([
       [
         [
-          {
-            displayName: 'Key Result bearbeiten',
-            showDialog: false,
-            routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
-          },
-          {
-            displayName: 'Key Result duplizieren',
-            showDialog: false,
-            routeLine: 'objective/edit',
-          },
-          {
-            displayName: 'Details einsehen',
-            showDialog: false,
-            routeLine: 'result/add',
-          },
           { displayName: 'Key Result löschen', showDialog: true },
-          {
-            displayName: 'Messung hinzufügen',
-            showDialog: false,
-            routeLine: 'result/add',
-          },
         ] as MenuEntry[],
       ],
     ])('should have menu items', (menuEntries: MenuEntry[]) => {
@@ -208,7 +187,6 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });

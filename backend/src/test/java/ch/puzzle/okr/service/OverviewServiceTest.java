@@ -40,9 +40,7 @@ class OverviewServiceTest {
     Team team2;
     Team team3;
 
-    List<Objective> objectiveList;
     List<Team> teamList;
-    List<OverviewDto> overviewList;
 
     @InjectMocks
     OverviewService overviewService;
@@ -58,7 +56,6 @@ class OverviewServiceTest {
                 .withQuarter(Quarter.Builder.builder().withId(2L).build()).withTeam(team1).build();
         this.objective3 = Objective.Builder.builder().withId(3L).withTitle("Objective 3")
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withTeam(team2).build();
-        this.objectiveList = List.of(objective1, objective2, objective3);
 
         this.overviewTeam1Objective1And2 = new OverviewDto(new TeamDto(team1.getId(), team1.getName()),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
@@ -71,7 +68,6 @@ class OverviewServiceTest {
                         objective3.getQuarter().getId(), null, null, null)));
         this.overviewTeam3 = new OverviewDto(new TeamDto(team3.getId(), team3.getName()), Collections.emptyList());
         this.teamList = List.of(team1, team2, team3);
-        this.overviewList = List.of(overviewTeam1Objective1And2, overviewTeam2Objective3, overviewTeam3);
     }
 
     @Test

@@ -25,8 +25,6 @@ export class ProgressBarComponent implements OnInit, OnChanges {
   @Input() limitHigh!: number;
   color!: string;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.setColor();
   }

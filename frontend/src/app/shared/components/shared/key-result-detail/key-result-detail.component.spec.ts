@@ -110,7 +110,7 @@ describe('KeyResultDetailComponent', () => {
     mockGetNumerOrNull.getNumberOrNull.mockReset();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -122,21 +122,21 @@ describe('KeyResultDetailComponent', () => {
     });
   });
 
-  it('should have one key result description tag', () => {
+  test('should have one key result description tag', () => {
     const keyResultDescription = fixture.debugElement.queryAll(
       By.css('app-key-result-description')
     );
     expect(keyResultDescription.length).toEqual(1);
   });
 
-  it('should have two heading labels with right titles', () => {
+  test('should have two heading labels with right titles', () => {
     const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
     expect(headingLabel.nativeElement.textContent).toContain(
       'Key Result Details'
     );
   });
 
-  it('should have a title key result beschreibung', () => {
+  test('should have a title key result beschreibung', () => {
     const headingLabels = fixture.debugElement.queryAll(
       By.css('.headline-large')
     );
@@ -146,12 +146,12 @@ describe('KeyResultDetailComponent', () => {
     );
   });
 
-  it('should have one mat dividers', () => {
+  test('should have one mat dividers', () => {
     const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
     expect(dividers.length).toEqual(1);
   });
 
-  it('should have one measure row tag', () => {
+  test('should have one measure row tag', () => {
     const keyResultDescription = fixture.debugElement.queryAll(
       By.css('app-measure-row')
     );

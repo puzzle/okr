@@ -67,7 +67,6 @@ class TeamControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup team mapper
         BDDMockito.given(teamMapper.toDto(teamPuzzle)).willReturn(teamPuzzleDto);
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
@@ -79,7 +78,6 @@ class TeamControllerIT {
         BDDMockito.given(teamService.getTeamById(5)).willReturn(teamPuzzle);
 
         mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
-                // example for display the Response
                 .andDo((teams) -> System.out.println(teams.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.name", Is.is("Puzzle")));

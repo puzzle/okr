@@ -3,6 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './shared/services/route.service';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +15,25 @@ import { RouteService } from './shared/services/route.service';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
 
-  constructor(private router: Router, private translate: TranslateService, private routeService: RouteService) {
+  constructor(
+    private router: Router,
+    private translate: TranslateService,
+    private routeService: RouteService,
+    private oauthService: OAuthService
+  ) {
     translate.setDefaultLang('de');
     translate.use('de');
+
+    oauthService.configure(environment.oauth);
+
+    // Try to login via url state
+    oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
+      // if the login failed initialize code flow
+      if (!oauthService.hasValidAccessToken()) {
+        this.oauthService.initCodeFlow();
+      }
+    });
+    oauthService.setupAutomaticSilentRefresh();
   }
 
   ngOnInit(): void {
@@ -51,4 +69,6 @@ export class AppComponent implements OnInit {
     this.routeService.navigate(location);
     return false;
   }
+
+  login() {}
 }

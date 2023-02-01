@@ -82,4 +82,7 @@ public class KeyResultDto {
         return targetValue;
     }
 
+    public Long getProgress() {
+        return progress;
+    }
 }

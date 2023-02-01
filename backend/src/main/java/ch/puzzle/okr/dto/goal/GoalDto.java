@@ -43,7 +43,31 @@ public class GoalDto {
         return teamId;
     }
 
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public Long getProgress() {
+        return progress;
+    }
+
+    public String getQuarterLabel() {
+        return quarterLabel;
+    }
+
+    public ExpectedEvolution getExpectedEvolution() {
+        return expectedEvolution;
+    }
+
     public Unit getUnit() {
         return unit;
+    }
+
+    public Double getBasicValue() {
+        return basicValue;
+    }
+
+    public Double getTargetValue() {
+        return targetValue;
     }
 }

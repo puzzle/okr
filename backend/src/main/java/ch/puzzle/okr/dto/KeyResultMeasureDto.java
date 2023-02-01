@@ -48,7 +48,43 @@ public class KeyResultMeasureDto {
         return title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public String getOwnerFirstname() {
+        return ownerFirstname;
+    }
+
+    public String getOwnerLastname() {
+        return ownerLastname;
+    }
+
+    public ExpectedEvolution getExpectedEvolution() {
+        return expectedEvolution;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public Double getBasicValue() {
+        return basicValue;
+    }
+
+    public Double getTargetValue() {
+        return targetValue;
+    }
+
     public MeasureDto getMeasure() {
         return measure;
+    }
+
+    public Long getProgress() {
+        return progress;
     }
 }

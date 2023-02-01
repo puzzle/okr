@@ -40,31 +40,7 @@ export class KeyResultRowComponent implements OnInit {
 
   ngOnInit(): void {
     this.menuEntries = [
-      {
-        displayName: 'Key Result bearbeiten',
-        showDialog: false,
-        routeLine:
-          'objective/' +
-          this.objectiveId +
-          '/keyresult/edit/' +
-          this.keyResult.id,
-      },
-      {
-        displayName: 'Key Result duplizieren',
-        showDialog: false,
-        routeLine: 'objective/edit',
-      },
-      {
-        displayName: 'Details einsehen',
-        showDialog: false,
-        routeLine: 'keyresults/' + this.keyResult.id,
-      },
       { displayName: 'Key Result löschen', showDialog: true },
-      {
-        displayName: 'Messung hinzufügen',
-        showDialog: false,
-        routeLine: 'keyresults/' + this.keyResult.id + '/measure/new',
-      },
     ];
   }
 

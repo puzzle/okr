@@ -82,12 +82,25 @@ export class MeasureFormComponent implements OnInit {
       this.startEndDate$.subscribe((startEndDate) => {
         this.measureForm.setValue({
           value: measure.value,
-          measureDate: this.create ? startEndDate.endDate : measure.measureDate,
+          measureDate: this.create
+            ? this.returnQuarterEndDateDatOrCurrentDate(
+                new Date(startEndDate.endDate),
+                measure.measureDate
+              )
+            : measure.measureDate,
           changeInfo: measure.changeInfo,
           initiatives: measure.initiatives,
         });
       });
     });
+  }
+
+  returnQuarterEndDateDatOrCurrentDate(endDate: Date, measureDate: Date) {
+    if (measureDate > endDate) {
+      return endDate;
+    } else {
+      return measureDate;
+    }
   }
 
   save() {

@@ -132,17 +132,7 @@ describe('KeyResultDetailComponent', () => {
   test('should have two heading labels with right titles', () => {
     const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
     expect(headingLabel.nativeElement.textContent).toContain(
-      'Key Result Details'
-    );
-  });
-
-  test('should have a title key result beschreibung', () => {
-    const headingLabels = fixture.debugElement.queryAll(
-      By.css('.headline-large')
-    );
-    expect(headingLabels.length).toEqual(1);
-    expect(headingLabels[0].nativeElement.textContent).toContain(
-      'Key Result Beschreibung'
+      'Key Result Informationen'
     );
   });
 

@@ -39,13 +39,12 @@ export class DashboardComponent implements OnInit {
   }
 
   changeTeamFilter(value: number[]) {
-    this.teamFilter = value;
+    this.routeService.changeTeamFilter(value);
     this.reloadOverview();
   }
 
   changeQuarterFilter(value: number) {
     this.routeService.changeQuarterFilter(value);
-    this.quarterFilter = value;
     this.reloadOverview();
   }
 

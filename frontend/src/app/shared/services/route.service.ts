@@ -33,6 +33,7 @@ export class RouteService {
           queryParams: {
             objectives: selectedObjectives.toString(),
             keyresults: params['keyresults'],
+              quarter: params['quarter'],
           },
         });
       })
@@ -51,6 +52,7 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               keyresults: params['keyresults'],
+                quarter: params['quarter'],
             },
           });
         } else {
@@ -58,6 +60,7 @@ export class RouteService {
             queryParams: {
               objectives: selectedObjectives.toString(),
               keyresults: params['keyresults'],
+                quarter: params['quarter'],
             },
           });
         }
@@ -75,6 +78,7 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: selectedKeyResults.toString(),
+              quarter: params['quarter'],
           },
         });
       })
@@ -93,6 +97,7 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               objectives: params['objectives'],
+                quarter: params['quarter'],
             },
           });
         } else {
@@ -100,6 +105,7 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: selectedKeyResults.toString(),
+                quarter: params['quarter'],
             },
           });
         }
@@ -114,6 +120,7 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
+              quarter: params['quarter'],
           },
         });
       })
@@ -128,6 +135,7 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
+                quarter: params['quarter'],
             },
           });
         } else {
@@ -135,10 +143,25 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
+                quarter: params['quarter'],
             },
           });
         }
       })
       .unsubscribe();
   }
+
+    changeQuarterFilter(value: number) {
+        this.route.queryParams
+            .subscribe((params) => {
+                this.router.navigate(['/'], {
+                    queryParams: {
+                        objectives: params['objectives'],
+                        keyresults: params['keyresults'],
+                        quarter: value
+                    },
+                });
+            })
+            .unsubscribe();
+    }
 }

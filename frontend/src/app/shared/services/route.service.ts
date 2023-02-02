@@ -47,12 +47,20 @@ export class RouteService {
           if (getNumberOrNull(item) === objectiveId)
             selectedObjectives.splice(index, 1);
         });
-        this.router.navigate(['/'], {
-          queryParams: {
-            objectives: selectedObjectives.toString(),
-            keyresults: params['keyresults'],
-          },
-        });
+        if (selectedObjectives.length == 0) {
+          this.router.navigate(['/'], {
+            queryParams: {
+              keyresults: params['keyresults'],
+            },
+          });
+        } else {
+          this.router.navigate(['/'], {
+            queryParams: {
+              objectives: selectedObjectives.toString(),
+              keyresults: params['keyresults'],
+            },
+          });
+        }
       })
       .unsubscribe();
   }
@@ -81,12 +89,20 @@ export class RouteService {
           if (getNumberOrNull(item) === keyResultId)
             selectedKeyResults.splice(index, 1);
         });
-        this.router.navigate(['/'], {
-          queryParams: {
-            objectives: params['objectives'],
-            keyresults: selectedKeyResults.toString(),
-          },
-        });
+        if (selectedKeyResults.length === 0) {
+          this.router.navigate(['/'], {
+            queryParams: {
+              objectives: params['objectives'],
+            },
+          });
+        } else {
+          this.router.navigate(['/'], {
+            queryParams: {
+              objectives: params['objectives'],
+              keyresults: selectedKeyResults.toString(),
+            },
+          });
+        }
       })
       .unsubscribe();
   }

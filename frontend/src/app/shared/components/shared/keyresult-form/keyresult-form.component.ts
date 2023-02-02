@@ -130,10 +130,10 @@ export class KeyresultFormComponent implements OnInit {
       .subscribe((keyresult) =>
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => {
-            this.routeService.navigate('/dashboard');
             this.toastr.success('', 'Key Result gespeichert!', {
               timeOut: 5000,
             });
+            this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(

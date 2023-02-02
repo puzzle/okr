@@ -184,18 +184,6 @@ describe('MeasureFormComponent Edit', () => {
       });
     });
 
-    test('should have one key result description tag with right panel title', () => {
-      const keyResultDescription = fixture.debugElement.queryAll(
-        By.css('app-key-result-description')
-      );
-      expect(keyResultDescription.length).toEqual(1);
-
-      const panelTitle = fixture.debugElement.query(By.css('.panel-title'));
-      expect(panelTitle.nativeElement.textContent).toContain(
-        'Key Result Beschreibung'
-      );
-    });
-
     test('should have one mat accordion for measure row', () => {
       const matAccordions = fixture.debugElement.queryAll(
         By.css('mat-accordion')
@@ -205,7 +193,7 @@ describe('MeasureFormComponent Edit', () => {
 
     test('should have three mat dividers', () => {
       const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
-      expect(dividers.length).toEqual(3);
+      expect(dividers.length).toEqual(2);
     });
 
     test('should have one measure row tag with right panel title', () => {
@@ -217,7 +205,7 @@ describe('MeasureFormComponent Edit', () => {
         By.css('.heading-label')
       );
       expect(headingLabels[0].nativeElement.textContent).toContain(
-        'Vergangene Messungen'
+        'Messung bearbeiten'
       );
     });
 
@@ -232,19 +220,6 @@ describe('MeasureFormComponent Edit', () => {
 
     test('should set Key Result unit right', () => {
       expect(component.keyResultUnit).toContain('PERCENT');
-    });
-
-    test('should set create to false and set title right', () => {
-      expect(component.create).toEqual(false);
-
-      const title = fixture.debugElement.query(By.css('.headline-large'));
-      expect(title.nativeElement.textContent).toContain('Messung bearbeiten');
-      const headingLabels = fixture.debugElement.queryAll(
-        By.css('.heading-label')
-      );
-      expect(headingLabels[1].nativeElement.textContent).toContain(
-        'Messung bearbeiten'
-      );
     });
 
     test('should set measure and measureform', () => {

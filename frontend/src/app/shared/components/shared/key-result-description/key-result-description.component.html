@@ -1,41 +1,54 @@
-<div class="col-12 col-sm-12 col-md-12 col-sm-6 col-lg-6 col-xl-6 col-xxl-6">
-  <div class="key-result-overview-container">
-    <div class="key-result-overview-text w-100">
-      <p class="key-result-title">
-        <strong>Key Result</strong>
-        <br />
-        {{ goal.keyresult.title }}
-      </p>
+<mat-card class="outer-cards w-100">
+  <p class="h3">Key Result Details</p>
+  <mat-card-content class="d-flex gap-2 flex-wrap">
+    <mat-card class="inner-cards flex-grow-1">
+      <mat-card-content class="d-flex flex-column justify-content-around">
+        <div>
+          <span class="lead fw-normal">Key Result: </span>
+          <span class="lead">{{ goal.keyresult.title }}</span>
+        </div>
 
-      <p class="key-result-description">
-        <strong>Beschreibung</strong>
-        <br />
-        {{ goal.keyresult.description }}
-      </p>
+        <div class="d-flex flex-column">
+          <span class="lead fw-normal">Beschreibung:</span>
+          <span class="lead fs-5">
+            {{ goal.keyresult.description }}
+          </span>
+        </div>
 
-      <p class="key-result-objective">
-        <strong>{{ goal.teamName }} Objective</strong>
-        <br />
-        {{ goal.objective.title }}
-      </p>
+        <div>
+          <span class="lead fw-normal">{{ goal.teamName }} Objective: </span>
+          <span class="lead">{{ goal.objective.title }}</span>
+        </div>
 
-      <p class="key-result-quarter">
-        <strong>Zyklus</strong>
-        <br />
-        {{ goal.quarterLabel }}
-      </p>
+        <div>
+          <span class="lead fw-normal">Zyklus: </span>
+          <span class="lead">
+            {{ goal.quarterLabel }}
+          </span>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-      <p class="key-result-basicValue">
-        <strong>{{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}</strong>
-        <br />
-        {{ goal.basicValue }}
-      </p>
+    <mat-card class="inner-cards flex-grow-1">
+      <mat-card-content class="d-flex flex-column justify-content-around">
+        <span>
+          <span class="lead fw-normal">
+            {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}:
+          </span>
+          <span class="lead">
+            {{ goal.basicValue }}
+          </span>
+        </span>
 
-      <p class="key-result-targetValue">
-        <strong>{{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}</strong>
-        <br />
-        {{ goal.targetValue }}
-      </p>
-    </div>
-  </div>
-</div>
+        <span>
+          <span class="lead fw-normal">
+            {{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}:
+          </span>
+          <span class="lead">
+            {{ goal.targetValue }}
+          </span>
+        </span>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

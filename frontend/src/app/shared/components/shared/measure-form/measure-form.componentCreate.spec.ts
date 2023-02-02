@@ -215,26 +215,11 @@ describe('MeasureFormComponent Create', () => {
 
     test('should set create to true and set title right two times', () => {
       expect(component.create).toEqual(true);
-
-      const title1 = fixture.debugElement.query(By.css('.headline-large'));
-      expect(title1.nativeElement.textContent).toContain('Messung hinzufügen');
       const headingLabels = fixture.debugElement.queryAll(
         By.css('.heading-label')
       );
-      expect(headingLabels[1].nativeElement.textContent).toContain(
+      expect(headingLabels[0].nativeElement.textContent).toContain(
         'Messung hinzufügen'
-      );
-    });
-
-    test('should have one key result description tag with right panel title', () => {
-      const keyResultDescription = fixture.debugElement.queryAll(
-        By.css('app-key-result-description')
-      );
-      expect(keyResultDescription.length).toEqual(1);
-
-      const panelTitle = fixture.debugElement.query(By.css('.panel-title'));
-      expect(panelTitle.nativeElement.textContent).toContain(
-        'Key Result Beschreibung'
       );
     });
 
@@ -245,9 +230,9 @@ describe('MeasureFormComponent Create', () => {
       expect(matAccordions.length).toEqual(1);
     });
 
-    test('should have three mat dividers', () => {
+    test('should have two mat dividers', () => {
       const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
-      expect(dividers.length).toEqual(3);
+      expect(dividers.length).toEqual(2);
     });
 
     test('should have one measure row tag with right title', () => {
@@ -257,7 +242,7 @@ describe('MeasureFormComponent Create', () => {
       expect(measureRow.length).toEqual(1);
 
       const title = fixture.debugElement.query(By.css('.heading-label'));
-      expect(title.nativeElement.textContent).toContain('Vergangene Messungen');
+      expect(title.nativeElement.textContent).toContain('Messung hinzufügen');
     });
 
     test('should set all input fields empty except datepicker, set datepicker value to current date and have invalid form', async () => {

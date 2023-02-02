@@ -6,17 +6,23 @@ import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { RouteService } from '../../shared/services/route.service';
 
 describe('KeyResultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
   let fixture: ComponentFixture<KeyResultOverviewComponent>;
   let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
 
+  const mockRouteService = {
+    navigate: jest.fn(),
+  };
+
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [MatCardModule, RouterTestingModule],
         declarations: [KeyResultOverviewComponent],
+        providers: [{ provide: RouteService, useValue: mockRouteService }],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultOverviewComponent);
@@ -25,6 +31,10 @@ describe('KeyResultOverviewComponent', () => {
       component.keyResult = keyResult;
 
       fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockRouteService.navigate.mockReset();
     });
 
     test('should create', () => {
@@ -82,28 +92,34 @@ describe('KeyResultOverviewComponent', () => {
       );
     });
 
-    test('should hava correct link in add measure button', () => {
+    test('should have add measure button', () => {
       const button = fixture.debugElement.query(By.css('#add-measure-button'));
 
-      expect(button.attributes['ng-reflect-router-link']).toEqual(
+      expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
+      button.nativeElement.click();
+      expect(mockRouteService.navigate).toHaveBeenCalledWith(
         'keyresults/1/measure/new'
       );
     });
 
-    test('should hava correct link in show detail button', () => {
+    test('should have show detail button', () => {
       const button = fixture.debugElement.query(By.css('#show-details-button'));
 
-      expect(button.attributes['ng-reflect-router-link']).toEqual(
-        'keyresults/1'
-      );
+      expect(button.nativeElement.textContent).toEqual(' Details anzeigen ');
+      button.nativeElement.click();
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('keyresults/1');
     });
 
-    test('should hava correct link in edit keyresult button', () => {
+    test('should edit keyresult button', () => {
       const button = fixture.debugElement.query(
         By.css('#edit-keyresult-button')
       );
 
-      expect(button.attributes['ng-reflect-router-link']).toEqual(
+      expect(button.nativeElement.textContent).toEqual(
+        ' Key Result bearbeiten '
+      );
+      button.nativeElement.click();
+      expect(mockRouteService.navigate).toHaveBeenCalledWith(
         'objective/1/keyresult/edit/1'
       );
     });
@@ -114,6 +130,7 @@ describe('KeyResultOverviewComponent', () => {
       TestBed.configureTestingModule({
         imports: [MatCardModule, RouterTestingModule],
         declarations: [KeyResultOverviewComponent],
+        providers: [{ provide: RouteService, useValue: mockRouteService }],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultOverviewComponent);
@@ -126,6 +143,10 @@ describe('KeyResultOverviewComponent', () => {
       fixture.detectChanges();
     });
 
+    afterEach(() => {
+      mockRouteService.navigate.mockReset();
+    });
+
     test('should display - when measure is null', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('mat-card-content[data-test-marker="emptyLastMeasure"]')
@@ -133,11 +154,12 @@ describe('KeyResultOverviewComponent', () => {
       expect(lastMeasureDate.nativeElement.textContent).toContain('-');
     });
 
-    test('should hava correct link in add measure button', () => {
+    test('should have add measure button', () => {
       const button = fixture.debugElement.query(By.css('#add-measure-button'));
 
       expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
-      expect(button.attributes['ng-reflect-router-link']).toEqual(
+      button.nativeElement.click();
+      expect(mockRouteService.navigate).toHaveBeenCalledWith(
         'keyresults/1/measure/new'
       );
     });

@@ -12,11 +12,13 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouteService } from '../../shared/services/route.service';
+import { getNumberOrNull } from '../../shared/common';
 
 @Component({
   selector: 'app-keyresult-row',
@@ -29,19 +31,34 @@ export class KeyResultRowComponent implements OnInit {
   @Input() objectiveId!: number;
   @Output() onKeyresultListUpdate: EventEmitter<any> = new EventEmitter();
   menuEntries!: MenuEntry[];
+  isSelected: boolean = false;
 
   constructor(
     private datePipe: DatePipe,
     private router: Router,
     private keyResultService: KeyResultService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private routeService: RouteService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.menuEntries = [
       { displayName: 'Key Result löschen', showDialog: true },
     ];
+    this.route.queryParams.subscribe((params) => {
+      if (params['keyresults'] !== undefined) {
+        const selectedKeyResults: string[] = params['keyresults'].split(',');
+        if (
+          selectedKeyResults.some(
+            (x) => getNumberOrNull(x) === this.keyResult.id
+          )
+        ) {
+          this.isSelected = true;
+        }
+      }
+    });
   }
 
   public formatDate(): string {
@@ -61,7 +78,7 @@ export class KeyResultRowComponent implements OnInit {
     if (menuEntry.showDialog) {
       this.openDialog();
     } else {
-      this.router.navigate([menuEntry.routeLine]);
+      this.routeService.navigate(menuEntry.routeLine!);
     }
   }
 
@@ -107,5 +124,17 @@ export class KeyResultRowComponent implements OnInit {
         dialogRef.close();
       }
     });
+  }
+
+  removeKeyResultSelection(keyResultId: number) {
+    this.routeService.removeFromSelectedKeyresult(keyResultId);
+    this.isSelected = false;
+  }
+
+  addKeyResultSelection(keyResultId: number) {
+    if (!this.isSelected) {
+      this.isSelected = true;
+      this.routeService.addToSelectedKeyresults(keyResultId);
+    }
   }
 }

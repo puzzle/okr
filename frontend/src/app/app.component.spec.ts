@@ -30,8 +30,8 @@ describe('AppComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  test('should preventLinkAction return always false', () => {
-    expect(component.preventLinkAction()).toBeFalsy();
+  test('should navigate return always false', () => {
+    expect(component.navigate('')).toBeFalsy();
   });
 
   test('should render OKRs navigation item', () => {

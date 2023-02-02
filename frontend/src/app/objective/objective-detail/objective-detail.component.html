@@ -1,7 +1,7 @@
 <button
   mat-stroked-button
   color="primary"
-  [routerLink]="['objectives/edit/' + this.objective.id]"
+  (click)="routeService.navigate('objectives/edit/' + this.objective.id)"
 >
   Objective bearbeiten
 </button>

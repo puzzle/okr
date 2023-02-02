@@ -29,14 +29,13 @@
     <pzsh-subnav>
       <pzsh-nav-item
         routerLink=""
-        (click)="preventLinkAction()"
+        (click)="navigate('/')"
         class="okr-label"
         [attr.active]="isOverview()"
         >Overview</pzsh-nav-item
       >
       <pzsh-nav-item
-        routerLink="/teams"
-        (click)="preventLinkAction()"
+        (click)="navigate('/teams')"
         class="okr-label"
         [attr.active]="isTeam()"
         >Team</pzsh-nav-item

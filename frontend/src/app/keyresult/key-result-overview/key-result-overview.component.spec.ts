@@ -48,7 +48,7 @@ describe('KeyResultOverviewComponent', () => {
         providers: [
           DatePipe,
           { provide: QuarterService, useValue: mockQuarterService },
-          { provide: RouteService, useValue: mockRouteService }
+          { provide: RouteService, useValue: mockRouteService },
         ],
       }).compileComponents();
 
@@ -205,7 +205,7 @@ describe('KeyResultOverviewComponent', () => {
         providers: [
           DatePipe,
           { provide: QuarterService, useValue: mockQuarterService },
-          { provide: RouteService, useValue: mockRouteService }
+          { provide: RouteService, useValue: mockRouteService },
         ],
       }).compileComponents();
 

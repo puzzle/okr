@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { RouteService } from './shared/services/route.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,11 @@ import { TranslateService } from '@ngx-translate/core';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
 
-  constructor(private router: Router, private translate: TranslateService) {
+  constructor(
+    private router: Router,
+    private translate: TranslateService,
+    private routeService: RouteService
+  ) {
     translate.setDefaultLang('de');
     translate.use('de');
   }
@@ -46,7 +51,8 @@ export class AppComponent implements OnInit {
   /**
    * Disable Puzzle Shell link handling.
    */
-  preventLinkAction(): boolean {
+  navigate(location: string): boolean {
+    this.routeService.navigate(location);
     return false;
   }
 }

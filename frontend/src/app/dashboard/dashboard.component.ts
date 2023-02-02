@@ -4,6 +4,8 @@ import { Team, TeamService } from '../shared/services/team.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
+import {RouteService} from "../shared/services/route.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -22,12 +24,19 @@ export class DashboardComponent implements OnInit {
   constructor(
     private teamService: TeamService,
     private quarterService: QuarterService,
-    private overviewService: OverviewService
+    private overviewService: OverviewService,
+    private routeService: RouteService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.teamList = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
+    this.route.queryParams
+        .subscribe((params) => {
+
+        })
+        .unsubscribe();
     this.reloadOverview();
   }
 
@@ -37,6 +46,7 @@ export class DashboardComponent implements OnInit {
   }
 
   changeQuarterFilter(value: number) {
+    this.routeService.changeQuarterFilter(value);
     this.quarterFilter = value;
     this.reloadOverview();
   }

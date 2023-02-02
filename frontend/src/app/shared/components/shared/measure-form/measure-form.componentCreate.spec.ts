@@ -91,15 +91,20 @@ describe('MeasureFormComponent Create', () => {
     error: jest.fn(),
   };
 
-  let startAndEndDate: StartEndDateDTO = {
+  let startAndEndDateWide: StartEndDateDTO = {
     startDate: new Date(Date.UTC(2022, 9, 1)),
     endDate: new Date(Date.UTC(2023, 11, 31)),
+  };
+
+  let startAndEndDateSmall: StartEndDateDTO = {
+    startDate: new Date(Date.UTC(2022, 9, 1)),
+    endDate: new Date(Date.UTC(2022, 10, 30)),
   };
   const mockQuarterService = {
     getStartAndEndDateOfKeyresult: jest.fn(),
   };
 
-  describe('Create new Measure', () => {
+  describe('Create new Measure in the quarter', () => {
     let createMeasureForm = new FormGroup({
       value: new FormControl<number | boolean>(33, [
         Validators.required,
@@ -121,7 +126,7 @@ describe('MeasureFormComponent Create', () => {
       mockMeasureService.getInitMeasure.mockReturnValue(initMeasure);
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
       mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
-        of(startAndEndDate)
+        of(startAndEndDateWide)
       );
 
       TestBed.configureTestingModule({
@@ -255,7 +260,7 @@ describe('MeasureFormComponent Create', () => {
       expect(title.nativeElement.textContent).toContain('Vergangene Messungen');
     });
 
-    test('should set all input fields empty except datepicker and have invalid form', async () => {
+    test('should set all input fields empty except datepicker, set datepicker value to current date and have invalid form', async () => {
       let button = fixture.debugElement.query(By.css('.create-button'));
       expect(button.nativeElement.disabled).toEqual(true);
       expect(component.measureForm.valid).toEqual(false);
@@ -274,6 +279,44 @@ describe('MeasureFormComponent Create', () => {
       expect(await datePickerInputHarness.getValue()).toEqual('12/23/2022');
       expect(await datePickerInputHarness.getMin()).toEqual('2022-10-01');
       expect(await datePickerInputHarness.getMax()).toEqual('2023-12-31');
+
+      const textareas = fixture.debugElement.queryAll(
+        By.css('.description-textarea')
+      );
+      expect(textareas.length).toEqual(2);
+      expect(textareas[0].nativeElement.value).toContain('');
+      expect(textareas[1].nativeElement.value).toContain('');
+    });
+
+    xtest('should set all input fields empty except datepicker, set datepicker value to end date and have invalid form', async () => {
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
+        of(startAndEndDateSmall)
+      );
+
+      mockQuarterService
+        .getStartAndEndDateOfKeyresult()
+        .subscribe((startDate: any) => {
+          console.log(startDate);
+        });
+
+      let button = fixture.debugElement.query(By.css('.create-button'));
+      expect(button.nativeElement.disabled).toEqual(true);
+      expect(component.measureForm.valid).toEqual(false);
+
+      const valueInput = fixture.debugElement.query(By.css('.value-input'));
+      expect(valueInput.nativeElement.value).toEqual('0');
+      fixture.detectChanges();
+
+      const datePickerInputHarness =
+        await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(
+          MatDatepickerInputHarness.with({
+            selector: 'input[formControlName="measureDate"]',
+          })
+        );
+
+      expect(await datePickerInputHarness.getValue()).toEqual('11/30/2022');
+      expect(await datePickerInputHarness.getMin()).toEqual('2022-10-01');
+      expect(await datePickerInputHarness.getMax()).toEqual('2022-11-30');
 
       const textareas = fixture.debugElement.queryAll(
         By.css('.description-textarea')

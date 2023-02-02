@@ -33,7 +33,8 @@ export class RouteService {
           queryParams: {
             objectives: selectedObjectives.toString(),
             keyresults: params['keyresults'],
-            quarter: params['quarter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
           },
         });
       })
@@ -52,7 +53,8 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               keyresults: params['keyresults'],
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -60,7 +62,8 @@ export class RouteService {
             queryParams: {
               objectives: selectedObjectives.toString(),
               keyresults: params['keyresults'],
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         }
@@ -78,7 +81,8 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: selectedKeyResults.toString(),
-            quarter: params['quarter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
           },
         });
       })
@@ -97,7 +101,8 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               objectives: params['objectives'],
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -105,7 +110,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: selectedKeyResults.toString(),
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         }
@@ -120,7 +126,8 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
-            quarter: params['quarter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
           },
         });
       })
@@ -135,7 +142,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -143,7 +151,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
-              quarter: params['quarter'],
+                quarterFilter: params['quarterFilter'],
+                teamFilter: params['teamFilter'],
             },
           });
         }
@@ -158,10 +167,26 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
-            quarter: value,
+            quarterFilter: value,
+              teamFilter: params['teamFilter']
           },
         });
       })
       .unsubscribe();
   }
+
+    changeTeamFilter(value: number[]) {
+        this.route.queryParams
+            .subscribe((params) => {
+                this.router.navigate(['/'], {
+                    queryParams: {
+                        objectives: params['objectives'],
+                        keyresults: params['keyresults'],
+                        quarterFilter: params['quarterFilter'],
+                        teamFilter: value,
+                    },
+                });
+            })
+            .unsubscribe();
+    }
 }

@@ -8,9 +8,9 @@
       <mat-label>Team</mat-label>
       <mat-select
         id="teamDropdown"
-        [formControl]="teams"
         multiple
         (selectionChange)="changeTeamFilter($event.value)"
+        formControlName="teamsFilter"
       >
         <mat-option
           class="team-dropdown"
@@ -26,6 +26,7 @@
       <mat-select
         id="quarterDropdown"
         (selectionChange)="changeQuarterFilter($event.value)"
+        formControlName="quarterFilter"
       >
         <mat-option
           class="quarter-dropdown"

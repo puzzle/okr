@@ -183,7 +183,7 @@ export class RouteService {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
             quarterFilter: params['quarterFilter'],
-            teamFilter: value,
+            teamFilter: value.toString(),
           },
         });
       })

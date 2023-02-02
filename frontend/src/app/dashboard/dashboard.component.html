@@ -4,6 +4,7 @@
   </div>
 
   <div class="dashboard-filter">
+    <form [formGroup]="filters">
     <mat-form-field appearance="fill" class="filter-dropdown">
       <mat-label>Team</mat-label>
       <mat-select
@@ -24,7 +25,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Zyklus</mat-label>
       <mat-select
-        id="quarterDropdown"
+              id="quarterDropdown"
         (selectionChange)="changeQuarterFilter($event.value)"
         formControlName="quarterFilter"
       >
@@ -37,6 +38,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    </form>
   </div>
 
   <div *ngFor="let team of teams$ | async">

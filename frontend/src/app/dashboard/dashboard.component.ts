@@ -14,25 +14,9 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-  keyResultForm = new FormGroup({
-    teams: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250),
-    ]),
-    unit: new FormControl<string>('', [Validators.required]),
-    expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>({ value: 0, disabled: true }, [
-      Validators.required,
-    ]),
-    targetValue: new FormControl<number>({ value: 0, disabled: true }, [
-      Validators.required,
-    ]),
-    description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    ownerId: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
+  filters = new FormGroup({
+    teamsFilter: new FormControl<number[]>([]),
+    quarterFilter: new FormControl<number>(0),
   });
   teamList!: Observable<Team[]>;
   teams$: Subject<Overview[]> = new BehaviorSubject<Overview[]>([]);
@@ -51,7 +35,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.teamList = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
-    this.route.queryParams.subscribe((params) => {});
     this.reloadOverview();
   }
 
@@ -67,10 +50,13 @@ export class DashboardComponent implements OnInit {
   }
 
   reloadOverview() {
-    this.overviewService
-      .getOverview(this.quarterFilter, this.teamFilter)
-      .subscribe((data) => {
-        this.teams$.next(data);
-      });
+
+    this.route.queryParams.subscribe((params) => {
+      this.overviewService
+          .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
+          .subscribe((data) => {
+            this.teams$.next(data);
+          });
+    });
   }
 }

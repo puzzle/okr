@@ -50,13 +50,12 @@ export class DashboardComponent implements OnInit {
   }
 
   reloadOverview() {
-
     this.route.queryParams.subscribe((params) => {
       this.overviewService
-          .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
-          .subscribe((data) => {
-            this.teams$.next(data);
-          });
+        .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
+        .subscribe((data) => {
+          this.teams$.next(data);
+        });
     });
   }
 }

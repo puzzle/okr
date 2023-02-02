@@ -33,8 +33,8 @@ export class RouteService {
           queryParams: {
             objectives: selectedObjectives.toString(),
             keyresults: params['keyresults'],
-              quarterFilter: params['quarterFilter'],
-              teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: params['teamFilter'],
           },
         });
       })
@@ -53,8 +53,8 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               keyresults: params['keyresults'],
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -62,8 +62,8 @@ export class RouteService {
             queryParams: {
               objectives: selectedObjectives.toString(),
               keyresults: params['keyresults'],
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         }
@@ -81,8 +81,8 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: selectedKeyResults.toString(),
-              quarterFilter: params['quarterFilter'],
-              teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: params['teamFilter'],
           },
         });
       })
@@ -101,8 +101,8 @@ export class RouteService {
           this.router.navigate(['/'], {
             queryParams: {
               objectives: params['objectives'],
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -110,8 +110,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: selectedKeyResults.toString(),
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         }
@@ -126,8 +126,8 @@ export class RouteService {
           queryParams: {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
-              quarterFilter: params['quarterFilter'],
-              teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: params['teamFilter'],
           },
         });
       })
@@ -142,8 +142,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         } else {
@@ -151,8 +151,8 @@ export class RouteService {
             queryParams: {
               objectives: params['objectives'],
               keyresults: params['keyresults'],
-                quarterFilter: params['quarterFilter'],
-                teamFilter: params['teamFilter'],
+              quarterFilter: params['quarterFilter'],
+              teamFilter: params['teamFilter'],
             },
           });
         }
@@ -168,25 +168,25 @@ export class RouteService {
             objectives: params['objectives'],
             keyresults: params['keyresults'],
             quarterFilter: value,
-              teamFilter: params['teamFilter']
+            teamFilter: params['teamFilter'],
           },
         });
       })
       .unsubscribe();
   }
 
-    changeTeamFilter(value: number[]) {
-        this.route.queryParams
-            .subscribe((params) => {
-                this.router.navigate(['/'], {
-                    queryParams: {
-                        objectives: params['objectives'],
-                        keyresults: params['keyresults'],
-                        quarterFilter: params['quarterFilter'],
-                        teamFilter: value,
-                    },
-                });
-            })
-            .unsubscribe();
-    }
+  changeTeamFilter(value: number[]) {
+    this.route.queryParams
+      .subscribe((params) => {
+        this.router.navigate(['/'], {
+          queryParams: {
+            objectives: params['objectives'],
+            keyresults: params['keyresults'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: value,
+          },
+        });
+      })
+      .unsubscribe();
+  }
 }

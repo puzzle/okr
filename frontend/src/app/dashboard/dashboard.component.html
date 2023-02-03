@@ -15,7 +15,7 @@
         >
           <mat-option
             class="team-dropdown"
-            *ngFor="let team of teamList | async"
+            *ngFor="let team of teams$ | async"
             [value]="team.id"
             >{{ team.name }}</mat-option
           >
@@ -41,10 +41,10 @@
     </form>
   </div>
 
-  <div *ngFor="let team of teams$ | async">
+  <div *ngFor="let overview of overview$ | async">
     <app-team-detail
       (onObjectivesListUpdate)="reloadOverview()"
-      [overview]="team"
+      [overview]="overview"
     ></app-team-detail>
   </div>
 </div>

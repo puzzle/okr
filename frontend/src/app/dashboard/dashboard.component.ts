@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
@@ -19,11 +19,9 @@ export class DashboardComponent implements OnInit {
     teamsFilter: new FormControl<number[]>([]),
     quarterFilter: new FormControl<number>(0),
   });
-  teamList!: Observable<Team[]>;
-  teams$: Subject<Overview[]> = new BehaviorSubject<Overview[]>([]);
+  teams$!: Observable<Team[]>;
+  overview$: Subject<Overview[]> = new BehaviorSubject<Overview[]>([]);
   quarters$!: Observable<Quarter[]> | undefined;
-  teamFilter: number[] = [];
-  quarterFilter!: number;
 
   constructor(
     private teamService: TeamService,
@@ -34,7 +32,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.teamList = this.teamService.getTeams();
+    this.teams$ = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
     //select filter values from url
     this.route.queryParams
@@ -53,22 +51,26 @@ export class DashboardComponent implements OnInit {
   }
 
   changeTeamFilter(value: number[]) {
-    this.routeService.changeTeamFilter(value);
-    this.reloadOverview();
+    this.routeService.changeTeamFilter(value).subscribe(() => {
+      this.reloadOverview();
+    });
   }
 
   changeQuarterFilter(value: number) {
-    this.routeService.changeQuarterFilter(value);
-    this.reloadOverview();
+    this.routeService.changeQuarterFilter(value).subscribe(() => {
+      this.reloadOverview();
+    });
   }
 
   reloadOverview() {
-    this.route.queryParams.subscribe((params) => {
-      this.overviewService
-        .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
-        .subscribe((data) => {
-          this.teams$.next(data);
-        });
-    });
+    this.route.queryParams
+      .subscribe((params) => {
+        this.overviewService
+          .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
+          .subscribe((data) => {
+            this.overview$.next(data);
+          });
+      })
+      .unsubscribe();
   }
 }

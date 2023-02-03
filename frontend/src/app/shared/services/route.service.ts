@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { getNumberOrNull } from '../common';
+import { EMPTY, first, map, Observable, subscribeOn, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -160,33 +161,45 @@ export class RouteService {
       .unsubscribe();
   }
 
-  changeQuarterFilter(value: number) {
-    this.route.queryParams
-      .subscribe((params) => {
-        this.router.navigate(['/'], {
+  changeQuarterFilter(value: number): Observable<any> {
+    return this.route.paramMap.pipe(
+      first(),
+      switchMap((params) => {
+        return this.router.navigate(['/'], {
           queryParams: {
-            objectives: params['objectives'],
-            keyresults: params['keyresults'],
+            objectives: params.get('objectives'),
+            keyresults: params.get('keyresults'),
             quarterFilter: value,
-            teamFilter: params['teamFilter'],
+            teamFilter: params.get('teamFilter'),
           },
         });
       })
-      .unsubscribe();
+    );
   }
 
-  changeTeamFilter(value: number[]) {
-    this.route.queryParams
-      .subscribe((params) => {
-        this.router.navigate(['/'], {
-          queryParams: {
-            objectives: params['objectives'],
-            keyresults: params['keyresults'],
-            quarterFilter: params['quarterFilter'],
-            teamFilter: value.toString(),
-          },
-        });
+  changeTeamFilter(value: number[]): Observable<any> {
+    return this.route.paramMap.pipe(
+      first(),
+      switchMap((params) => {
+        if (value.length === 0) {
+          return this.router.navigate(['/'], {
+            queryParams: {
+              objectives: params.get('objectives'),
+              keyresults: params.get('keyresults'),
+              quarterFilter: params.get('quarterFilter'),
+            },
+          });
+        } else {
+          return this.router.navigate(['/'], {
+            queryParams: {
+              objectives: params.get('objectives'),
+              keyresults: params.get('keyresults'),
+              quarterFilter: params.get('quarterFilter'),
+              teamFilter: value.toString(),
+            },
+          });
+        }
       })
-      .unsubscribe();
+    );
   }
 }

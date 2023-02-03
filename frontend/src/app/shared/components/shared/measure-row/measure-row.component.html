@@ -48,9 +48,14 @@
               src="assets/edit-icon.svg"
               alt="edit-icon"
               class="edit-icon"
-              routerLink="/keyresults/{{ measure.keyResultId }}/measure/edit/{{
-                measure.id
-              }}"
+              (click)="
+                routeService.navigate(
+                  '/keyresults/' +
+                    measure.keyResultId +
+                    '/measure/edit/' +
+                    measure.id
+                )
+              "
             />
             <img
               src="assets/delete-icon.svg"

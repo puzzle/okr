@@ -98,6 +98,14 @@ describe('KeyResultDetailComponent', () => {
       ],
     }).compileComponents();
 
+    global.window = Object.create(window);
+    const url = 'keyresults/2';
+    Object.defineProperty(window, 'location', {
+      value: {
+        href: url,
+      },
+    });
+
     fixture = TestBed.createComponent(KeyResultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

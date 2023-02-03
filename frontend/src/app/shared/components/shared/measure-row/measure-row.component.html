@@ -9,7 +9,9 @@
           class="create-button"
           mat-button
           color="primary"
-          (click)="routeService.navigate('measure/new')"
+          (click)="
+            routeService.navigate('keyresults/' + keyResultId + '/measure/new')
+          "
         >
           Messung hinzufügen
         </button>

@@ -23,6 +23,7 @@ export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
   @Input() open: boolean = false;
   isMeasureForm!: boolean;
+  keyResultId!: number | null;
 
   constructor(
     private keyresultService: KeyResultService,
@@ -35,9 +36,18 @@ export class MeasureRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    window.location.toString().includes('measure/')
+    window.location.href.toString().includes('measure/')
       ? (this.isMeasureForm = true)
       : (this.isMeasureForm = false);
+
+    this.route.paramMap.subscribe((params) => {
+      const keyresultId = getNumberOrNull(params.get('keyresultId'));
+      if (keyresultId) {
+        this.keyResultId = keyresultId;
+      } else {
+        this.keyResultId = null;
+      }
+    });
     this.reloadMeasures();
   }
 

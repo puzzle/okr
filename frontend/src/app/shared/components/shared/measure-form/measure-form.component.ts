@@ -137,8 +137,6 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.create
-      ? this.routeService.navigate('/dashboard')
-      : this.routeService.back();
+    this.routeService.back();
   }
 }

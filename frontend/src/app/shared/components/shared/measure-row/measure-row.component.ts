@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MeasureService } from '../../../services/measure.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-measure-row',
@@ -29,7 +30,8 @@ export class MeasureRowComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private measureService: MeasureService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public routeService: RouteService
   ) {}
 
   ngOnInit(): void {

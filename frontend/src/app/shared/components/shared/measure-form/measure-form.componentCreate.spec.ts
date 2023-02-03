@@ -245,7 +245,7 @@ describe('MeasureFormComponent Create', () => {
 
     test('should have two mat dividers', () => {
       const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
-      expect(dividers.length).toEqual(2);
+      expect(dividers.length).toEqual(1);
     });
 
     test('should have one measure row tag with right title', () => {

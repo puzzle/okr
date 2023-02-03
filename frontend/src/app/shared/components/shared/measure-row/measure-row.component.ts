@@ -23,7 +23,7 @@ export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
   @Input() open: boolean = false;
   isMeasureForm!: boolean;
-  keyResultId!: number | null;
+  keyResultId!: number;
 
   constructor(
     private keyresultService: KeyResultService,
@@ -45,7 +45,7 @@ export class MeasureRowComponent implements OnInit {
       if (keyresultId) {
         this.keyResultId = keyresultId;
       } else {
-        this.keyResultId = null;
+        new Error('No Key Result id set!');
       }
     });
     this.reloadMeasures();

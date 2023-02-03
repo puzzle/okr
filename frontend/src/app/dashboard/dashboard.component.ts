@@ -6,6 +6,7 @@ import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
 import { ActivatedRoute } from '@angular/router';
+import { getNumberOrNull } from '../shared/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,6 +36,19 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.teamList = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
+    //select filter values from url
+    this.route.queryParams
+      .subscribe((params) => {
+        let selectedTeams: number[] = [];
+        (params['teamFilter']?.split(',') ?? []).forEach((item: string) =>
+          selectedTeams.push(getNumberOrNull(item)!)
+        );
+        this.filters.setValue({
+          quarterFilter: getNumberOrNull(params['quarterFilter']),
+          teamsFilter: selectedTeams,
+        });
+      })
+      .unsubscribe();
     this.reloadOverview();
   }
 

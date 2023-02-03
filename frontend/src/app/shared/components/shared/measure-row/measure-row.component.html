@@ -9,8 +9,7 @@
           class="create-button"
           mat-button
           color="primary"
-          [routerLink]="['measure/new']"
-          (click)="$event.stopPropagation()"
+          (click)="routeService.navigate('measure/new')"
         >
           Messung hinzufügen
         </button>

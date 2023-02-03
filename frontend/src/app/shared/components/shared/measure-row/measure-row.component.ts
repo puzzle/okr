@@ -21,9 +21,8 @@ import { RouteService } from '../../../services/route.service';
 })
 export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
-  @Input() isMeasureForm!: boolean;
-
   @Input() open: boolean = false;
+  isMeasureForm!: boolean;
 
   constructor(
     private keyresultService: KeyResultService,
@@ -36,6 +35,9 @@ export class MeasureRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    window.location.toString().includes('measure/')
+      ? (this.isMeasureForm = true)
+      : (this.isMeasureForm = false);
     this.reloadMeasures();
   }
 

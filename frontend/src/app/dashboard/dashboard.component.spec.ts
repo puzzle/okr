@@ -15,6 +15,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -55,6 +56,14 @@ describe('DashboardComponent', () => {
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
         { provide: OverviewService, useValue: overviewServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of(
+              convertToParamMap({ teamFilter: '', quarterFilter: '' })
+            ),
+          },
+        },
       ],
       declarations: [DashboardComponent],
     }).compileComponents();
@@ -104,14 +113,14 @@ describe('DashboardComponent', () => {
     const bugOption = await select.getOptions({ text: 'GJ 22/23-Q1' });
     await bugOption[0].click();
 
-    expect(component.quarterFilter).toEqual(1);
+    expect(component.filters.controls.quarterFilter.value).toEqual(1);
     expect(dropDownElements.length).toEqual(5);
     expect(await select.getValueText()).toEqual('GJ 22/23-Q1');
     expect(await select.isDisabled()).toBeFalsy();
     expect(await select.isOpen()).toBeFalsy();
   });
 
-  test('should select team filter in dropdown and change filter', async () => {
+  test('should select team filter in dropdown and change filter and url', async () => {
     const select = await loader.getHarness(
       MatSelectHarness.with({
         selector: '#teamDropdown',
@@ -125,15 +134,23 @@ describe('DashboardComponent', () => {
     await bugOptionFirstTeam[0].click();
 
     expect(await select.getValueText()).toEqual('Team 1');
-    expect(component.teamFilter.length).toEqual(1);
-    expect(component.teamFilter[0]).toEqual(1);
+    expect(component.filters.controls.teamsFilter.value).toEqual([1]);
+    expect(location.search).toEqual('?teamFilter=1');
+    expect(overviewServiceMock.getOverview).toHaveBeenCalledWith(undefined, [
+      1,
+    ]);
 
     await bugOptionSecondTeam[0].click();
 
     expect(await select.getValueText()).toEqual('Team 1, Team 2');
-    expect(component.teamFilter.length).toEqual(2);
-    expect(component.teamFilter[0]).toEqual(1);
-    expect(component.teamFilter[1]).toEqual(2);
+    expect(component.filters.controls.teamsFilter.value).toEqual([1, 2]);
+    expect(location.search).toEqual('?teamFilter=1,2');
+
+    await bugOptionFirstTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 2');
+    expect(component.filters.controls.teamsFilter.value).toEqual([2]);
+    expect(location.search).toEqual('?teamFilter=2');
 
     expect(dropDownElements.length).toEqual(3);
     expect(await select.isDisabled()).toBeFalsy();

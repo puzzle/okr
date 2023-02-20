@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { getNumberOrNull } from '../common';
-import { EMPTY, first, map, Observable, subscribeOn, switchMap } from 'rxjs';
+import { first, Observable, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +10,7 @@ import { EMPTY, first, map, Observable, subscribeOn, switchMap } from 'rxjs';
 export class RouteService {
   private currentUrl: string;
   private previousUrl?: string;
+
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -58,7 +59,17 @@ export class RouteService {
         relativeTo: this.route,
         queryParams,
       };
-      this.router.navigate([], navigationParams);
+      if (selectedObjectives.length === 0) {
+        this.router.navigate(['/'], {
+          queryParams: {
+            keyresults: params['keyresults'],
+            teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+          },
+        });
+      } else {
+        this.router.navigate([], navigationParams);
+      }
     });
   }
 
@@ -83,7 +94,9 @@ export class RouteService {
 
   public removeFromSelectedKeyresult(keyResultId: number) {
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      let selectedKeyResults: string[] = params['keyresults'].split(',');
+      let selectedKeyResults: string[] = params['keyresults']
+        ? params['keyresults'].split(',')
+        : [];
       selectedKeyResults = selectedKeyResults.filter(
         (item) => getNumberOrNull(item) !== keyResultId
       );
@@ -97,7 +110,17 @@ export class RouteService {
         relativeTo: this.route,
         queryParams,
       };
-      this.router.navigate([], navigationParams);
+      if (selectedKeyResults.length === 0) {
+        this.router.navigate(['/'], {
+          queryParams: {
+            objectives: params['objectives'],
+            teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+          },
+        });
+      } else {
+        this.router.navigate([], navigationParams);
+      }
     });
   }
 
@@ -116,14 +139,16 @@ export class RouteService {
     this.location.back();
   }
 
-  public changeQuarterFilter(value: number): Observable<any> {
+  public changeQuarterFilter(
+    value: number | null | undefined
+  ): Observable<any> {
     return this.route.queryParams.pipe(
       first(),
       switchMap((queryParams) => {
         const navExtras = {
           queryParams: {
             ...queryParams,
-            quarterFilter: value,
+            quarterFilter: value ?? undefined, // Remove parameter if value is null or undefined
           },
         };
         return this.router.navigate(['/'], navExtras);
@@ -138,7 +163,7 @@ export class RouteService {
         const navExtras = {
           queryParams: {
             ...queryParams,
-            teamFilter: value.toString(),
+            teamFilter: value.length > 0 ? value.toString() : undefined,
           },
         };
         return this.router.navigate(['/'], navExtras);

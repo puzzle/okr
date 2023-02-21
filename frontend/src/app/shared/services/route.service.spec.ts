@@ -125,15 +125,23 @@ describe('RouteService', () => {
     });
   }));
 
-  xit('should navigate to a location', () => {
-    const navigateSpy = jest.spyOn(service, 'navigate');
+  it('should navigate to the given location with the current query params', fakeAsync(() => {
+    const queryParams = {
+      objectives: '1,2,3',
+      keyresults: '1',
+      teamFilter: '1',
+    };
+    mockActivatedRoute.queryParams = of(queryParams);
 
-    mockActivatedRoute.queryParams = of({ keyresults: '1,2,3' });
+    const location = '/some-location';
+    service.navigate(location);
 
-    service.navigate('/?keyresult=1,2,3');
+    tick();
 
-    expect(navigateSpy).toHaveBeenCalledWith(activatedRoute);
-  });
+    expect(router.navigate).toHaveBeenCalledWith([location], {
+      queryParams: queryParams,
+    });
+  }));
 
   xit('should call location.back()', () => {
     const spy = jest.spyOn(service, 'back');

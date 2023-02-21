@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
   KeyResultService,
@@ -21,8 +21,9 @@ import { RouteService } from '../../../services/route.service';
 })
 export class MeasureRowComponent implements OnInit {
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
-
   @Input() open: boolean = false;
+  isMeasureForm!: boolean;
+  keyResultId!: number;
 
   constructor(
     private keyresultService: KeyResultService,
@@ -35,6 +36,18 @@ export class MeasureRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    window.location.href.toString().includes('measure/')
+      ? (this.isMeasureForm = true)
+      : (this.isMeasureForm = false);
+
+    this.route.paramMap.subscribe((params) => {
+      const keyresultId = getNumberOrNull(params.get('keyresultId'));
+      if (keyresultId) {
+        this.keyResultId = keyresultId;
+      } else {
+        new Error('No Key Result id set!');
+      }
+    });
     this.reloadMeasures();
   }
 

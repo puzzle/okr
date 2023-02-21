@@ -158,6 +158,13 @@ describe('MeasureFormComponent Edit', () => {
         ],
       }).compileComponents();
 
+      global.window = Object.create(window);
+      const url = 'keyresults/2/measure/edit/2';
+      Object.defineProperty(window, 'location', {
+        value: {
+          href: url,
+        },
+      });
       fixture = TestBed.createComponent(MeasureFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -191,9 +198,15 @@ describe('MeasureFormComponent Edit', () => {
       expect(matAccordions.length).toEqual(1);
     });
 
+    test('should not have have button to create measure', () => {
+      expect(
+        fixture.debugElement.query(By.css('#add-measure-button'))
+      ).toBeNull();
+    });
+
     test('should have three mat dividers', () => {
       const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
-      expect(dividers.length).toEqual(2);
+      expect(dividers.length).toEqual(1);
     });
 
     test('should have one measure row tag with right panel title', () => {

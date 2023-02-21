@@ -21,6 +21,7 @@ import {
 } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../../services/route.service';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -35,6 +36,10 @@ describe('MeasureRowComponent', () => {
   const mockToastrService = {
     success: jest.fn(),
     error: jest.fn(),
+  };
+
+  const mockRouteService = {
+    navigate: jest.fn(),
   };
 
   describe('Get Measures from existing Key Result', () => {
@@ -55,6 +60,7 @@ describe('MeasureRowComponent', () => {
           DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: RouteService, useValue: mockRouteService },
           { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
@@ -73,6 +79,7 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockRouteService.navigate.mockReset();
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
@@ -91,6 +98,20 @@ describe('MeasureRowComponent', () => {
           expect(componentMeasures).toEqual(testMeasures);
         });
       });
+    });
+
+    test('should set Key Result id', () => {
+      expect(component.keyResultId).toEqual(1);
+    });
+
+    test('should call route service when clicking create button', () => {
+      const button = fixture.debugElement.query(By.css('#add-measure-button'));
+      button.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockRouteService.navigate).toHaveBeenCalledWith(
+        'keyresults/1/measure/new'
+      );
     });
 
     test('should set right heading title', () => {
@@ -179,6 +200,16 @@ describe('MeasureRowComponent', () => {
       expect(formattedDate).toEqual('01.09.2022');
       formattedDate = component.formatDate('2023-02-20T10:00:00');
       expect(formattedDate).toEqual('20.02.2023');
+    });
+
+    test('should have a button to create measure', () => {
+      const createButton = fixture.debugElement.query(
+        By.css('#add-measure-button')
+      );
+
+      expect(createButton.nativeElement.textContent).toContain(
+        ' Messung hinzufügen '
+      );
     });
   });
 

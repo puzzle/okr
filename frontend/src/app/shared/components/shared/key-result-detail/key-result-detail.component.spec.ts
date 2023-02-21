@@ -98,6 +98,14 @@ describe('KeyResultDetailComponent', () => {
       ],
     }).compileComponents();
 
+    global.window = Object.create(window);
+    const url = 'keyresults/2';
+    Object.defineProperty(window, 'location', {
+      value: {
+        href: url,
+      },
+    });
+
     fixture = TestBed.createComponent(KeyResultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -146,5 +154,15 @@ describe('KeyResultDetailComponent', () => {
       By.css('app-measure-row')
     );
     expect(keyResultDescription.length).toEqual(1);
+  });
+
+  test('should have a button to create measure', () => {
+    const createButton = fixture.debugElement.query(
+      By.css('#add-measure-button')
+    );
+
+    expect(createButton.nativeElement.textContent).toContain(
+      ' Messung hinzufügen '
+    );
   });
 });

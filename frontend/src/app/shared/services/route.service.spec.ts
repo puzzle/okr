@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Location } from '@angular/common';
+import { Location, PopStateEvent } from '@angular/common';
 import { RouteService } from './route.service';
 import {
   ActivatedRoute,
@@ -45,8 +45,8 @@ describe('RouteService', () => {
       ],
     });
     service = TestBed.inject(RouteService);
-    location = TestBed.inject(Location);
     router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
   });
 
   it('should be created', () => {
@@ -143,11 +143,36 @@ describe('RouteService', () => {
     });
   }));
 
-  xit('should call location.back()', () => {
-    const spy = jest.spyOn(service, 'back');
-    const routeService = new RouteService(location, activatedRoute, router);
-    routeService.back();
-    expect(spy).toHaveBeenCalled();
+  it('should navigate back to previousUrl when back() method is called', () => {
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: undefined,
+      quarterFilter: undefined,
+    };
+
+    service.back();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(['/'], {
+      queryParams: queryParams,
+    });
+  });
+
+  it('should navigate to previousURL if previousUrl is available', () => {
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: undefined,
+      quarterFilter: undefined,
+    };
+
+    service.setPreviousUrl('http://localhost:4200/?objectives=1');
+    const location = service.getPreviousUrl();
+    service.back();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith([location?.split('?')[0]], {
+      queryParams: queryParams,
+    });
   });
 
   xit('should change quarterfilter', fakeAsync(() => {

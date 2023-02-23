@@ -11,6 +11,18 @@ export class RouteService {
   private currentUrl: string;
   private previousUrl?: string;
 
+  getPreviousUrl(): string | undefined {
+    return this.previousUrl;
+  }
+
+  setPreviousUrl(url: string) {
+    this.previousUrl = url;
+  }
+
+  getCurrentUrl(): string {
+    return this.currentUrl;
+  }
+
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -136,7 +148,27 @@ export class RouteService {
   }
 
   public back() {
-    this.location.back();
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      if (this.previousUrl !== this.currentUrl) {
+        this.router.navigate([this.previousUrl!.split('?')[0]], {
+          queryParams: {
+            objectives: params['objectives'],
+            keyresults: params['keyresults'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: params['teamFilter'],
+          },
+        });
+      } else {
+        this.router.navigate(['/'], {
+          queryParams: {
+            objectives: params['objectives'],
+            keyresults: params['keyresults'],
+            quarterFilter: params['quarterFilter'],
+            teamFilter: params['teamFilter'],
+          },
+        });
+      }
+    });
   }
 
   public changeQuarterFilter(

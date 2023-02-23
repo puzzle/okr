@@ -4,44 +4,47 @@
   </div>
 
   <div class="dashboard-filter">
-    <mat-form-field appearance="fill" class="filter-dropdown">
-      <mat-label>Team</mat-label>
-      <mat-select
-        id="teamDropdown"
-        [formControl]="teams"
-        multiple
-        (selectionChange)="changeTeamFilter($event.value)"
-      >
-        <mat-option
-          class="team-dropdown"
-          *ngFor="let team of teamList | async"
-          [value]="team.id"
-          >{{ team.name }}</mat-option
+    <form [formGroup]="filters">
+      <mat-form-field appearance="fill" class="filter-dropdown">
+        <mat-label>Team</mat-label>
+        <mat-select
+          id="teamDropdown"
+          multiple
+          (selectionChange)="changeTeamFilter($event.value)"
+          formControlName="teamsFilter"
         >
-      </mat-select>
-    </mat-form-field>
+          <mat-option
+            class="team-dropdown"
+            *ngFor="let team of teams$ | async"
+            [value]="team.id"
+            >{{ team.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Zyklus</mat-label>
-      <mat-select
-        id="quarterDropdown"
-        (selectionChange)="changeQuarterFilter($event.value)"
-      >
-        <mat-option
-          class="quarter-dropdown"
-          *ngFor="let quarter of quarters$ | async"
-          [value]="quarter.id"
+      <mat-form-field appearance="fill">
+        <mat-label>Zyklus</mat-label>
+        <mat-select
+          id="quarterDropdown"
+          (selectionChange)="changeQuarterFilter($event.value)"
+          formControlName="quarterFilter"
         >
-          {{ quarter.label }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+          <mat-option
+            class="quarter-dropdown"
+            *ngFor="let quarter of quarters$ | async"
+            [value]="quarter.id"
+          >
+            {{ quarter.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
   </div>
 
-  <div *ngFor="let team of teams$ | async">
+  <div *ngFor="let overview of overview$ | async">
     <app-team-detail
       (onObjectivesListUpdate)="reloadOverview()"
-      [overview]="team"
+      [overview]="overview"
     ></app-team-detail>
   </div>
 </div>

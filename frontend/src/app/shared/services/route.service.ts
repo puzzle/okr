@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { getNumberOrNull } from '../common';
+import { first, Observable, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { getNumberOrNull } from '../common';
 export class RouteService {
   private currentUrl: string;
   private previousUrl?: string;
+
   constructor(
     private location: Location,
     private route: ActivatedRoute,
@@ -24,121 +26,148 @@ export class RouteService {
   }
 
   public addToSelectedObjectives(objectiveId: number) {
-    this.route.queryParams
-      .subscribe((params) => {
-        let selectedObjectives: number[] =
-          params['objectives']?.split(',') ?? [];
-        selectedObjectives.push(objectiveId);
-        this.router.navigate(['/'], {
-          queryParams: {
-            objectives: selectedObjectives.toString(),
-            keyresults: params['keyresults'],
-          },
-        });
-      })
-      .unsubscribe();
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      let selectedObjectives: number[] = params['objectives']?.split(',') ?? [];
+      selectedObjectives.push(objectiveId);
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          objectives: selectedObjectives.toString(),
+          keyresults: params['keyresults'],
+          quarterFilter: params['quarterFilter'],
+          teamFilter: params['teamFilter'],
+        },
+      });
+    });
   }
 
   public removeFromSelectedObjectives(objectiveId: number) {
-    this.route.queryParams
-      .subscribe((params) => {
-        let selectedObjectives: string[] = params['objectives'].split(',');
-        selectedObjectives.forEach((item, index) => {
-          if (getNumberOrNull(item) === objectiveId)
-            selectedObjectives.splice(index, 1);
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      const selectedObjectives = (
+        params['objectives']?.split(',') ?? []
+      ).filter(
+        (item: string | null | undefined) =>
+          getNumberOrNull(item) !== objectiveId
+      );
+      const queryParams = {
+        objectives: selectedObjectives.join(','),
+        keyresults: params['keyresults'],
+        quarterFilter: params['quarterFilter'],
+        teamFilter: params['teamFilter'],
+      };
+      const navigationParams = {
+        relativeTo: this.route,
+        queryParams,
+      };
+      if (selectedObjectives.length === 0) {
+        this.router.navigate(['/'], {
+          queryParams: {
+            keyresults: params['keyresults'],
+            teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+          },
         });
-        if (selectedObjectives.length == 0) {
-          this.router.navigate(['/'], {
-            queryParams: {
-              keyresults: params['keyresults'],
-            },
-          });
-        } else {
-          this.router.navigate(['/'], {
-            queryParams: {
-              objectives: selectedObjectives.toString(),
-              keyresults: params['keyresults'],
-            },
-          });
-        }
-      })
-      .unsubscribe();
+      } else {
+        this.router.navigate([], navigationParams);
+      }
+    });
   }
 
   public addToSelectedKeyresults(keyResultId: number) {
-    this.route.queryParams
-      .subscribe((params) => {
-        let selectedKeyResults: number[] =
-          params['keyresults']?.split(',') ?? [];
-        selectedKeyResults.push(keyResultId);
-        this.router.navigate(['/'], {
-          queryParams: {
-            objectives: params['objectives'],
-            keyresults: selectedKeyResults.toString(),
-          },
-        });
-      })
-      .unsubscribe();
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      const selectedKeyResults = (
+        params['keyresults']?.split(',') ?? []
+      ).concat(keyResultId);
+      const queryParams = {
+        objectives: params['objectives'],
+        keyresults: selectedKeyResults.join(','),
+        quarterFilter: params['quarterFilter'],
+        teamFilter: params['teamFilter'],
+      };
+      const navigationParams = {
+        relativeTo: this.route,
+        queryParams,
+      };
+      this.router.navigate([], navigationParams);
+    });
   }
 
   public removeFromSelectedKeyresult(keyResultId: number) {
-    this.route.queryParams
-      .subscribe((params) => {
-        let selectedKeyResults: string[] = params['keyresults'].split(',');
-        selectedKeyResults.forEach((item, index) => {
-          if (getNumberOrNull(item) === keyResultId)
-            selectedKeyResults.splice(index, 1);
+    this.route.queryParams.pipe(first()).subscribe((params) => {
+      let selectedKeyResults: string[] = params['keyresults']
+        ? params['keyresults'].split(',')
+        : [];
+      selectedKeyResults = selectedKeyResults.filter(
+        (item) => getNumberOrNull(item) !== keyResultId
+      );
+      const queryParams = {
+        objectives: params['objectives'],
+        keyresults: selectedKeyResults.join(','),
+        quarterFilter: params['quarterFilter'],
+        teamFilter: params['teamFilter'],
+      };
+      const navigationParams = {
+        relativeTo: this.route,
+        queryParams,
+      };
+      if (selectedKeyResults.length === 0) {
+        this.router.navigate(['/'], {
+          queryParams: {
+            objectives: params['objectives'],
+            teamFilter: params['teamFilter'],
+            quarterFilter: params['quarterFilter'],
+          },
         });
-        if (selectedKeyResults.length === 0) {
-          this.router.navigate(['/'], {
-            queryParams: {
-              objectives: params['objectives'],
-            },
-          });
-        } else {
-          this.router.navigate(['/'], {
-            queryParams: {
-              objectives: params['objectives'],
-              keyresults: selectedKeyResults.toString(),
-            },
-          });
-        }
-      })
-      .unsubscribe();
+      } else {
+        this.router.navigate([], navigationParams);
+      }
+    });
   }
 
   public navigate(location: string) {
-    this.route.queryParams
-      .subscribe((params) => {
-        this.router.navigate([location], {
-          queryParams: {
-            objectives: params['objectives'],
-            keyresults: params['keyresults'],
-          },
-        });
-      })
-      .unsubscribe();
+    this.route.queryParams.pipe(first()).subscribe((queryParams) => {
+      const navExtras = {
+        queryParams: {
+          ...queryParams,
+        },
+      };
+      this.router.navigate([location], navExtras);
+    });
   }
 
   public back() {
-    this.route.queryParams
-      .subscribe((params) => {
-        if (this.previousUrl !== this.currentUrl) {
-          this.router.navigate([this.previousUrl!.split('?')[0]], {
-            queryParams: {
-              objectives: params['objectives'],
-              keyresults: params['keyresults'],
-            },
-          });
-        } else {
-          this.router.navigate(['/'], {
-            queryParams: {
-              objectives: params['objectives'],
-              keyresults: params['keyresults'],
-            },
-          });
-        }
+    this.location.back();
+  }
+
+  public changeQuarterFilter(
+    value: number | null | undefined
+  ): Observable<any> {
+    return this.route.queryParams.pipe(
+      first(),
+      switchMap((queryParams) => {
+        const navExtras = {
+          queryParams: {
+            ...queryParams,
+            quarterFilter: value ?? undefined, // Remove parameter if value is null or undefined
+          },
+        };
+        return this.router.navigate(['/'], navExtras);
       })
-      .unsubscribe();
+    );
+  }
+
+  public changeTeamFilter(value: number[]): Observable<any> {
+    return this.route.queryParams.pipe(
+      first(),
+      switchMap((queryParams) => {
+        const navExtras = {
+          queryParams: {
+            ...queryParams,
+            teamFilter: value.length > 0 ? value.toString() : undefined,
+          },
+        };
+        return this.router.navigate(['/'], navExtras);
+      })
+    );
   }
 }

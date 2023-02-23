@@ -12,22 +12,20 @@ import { of } from 'rxjs';
 describe('RouteService', () => {
   let service: RouteService;
   let location: Location;
-  let router: Router;
   let activatedRoute: ActivatedRoute;
+  let router: Router;
 
   const mockActivatedRoute = {
     queryParams: of({}),
   };
-
-  const mockRouter = {
-    navigate: jest.fn(),
-    events: of(
-      new NavigationEnd(0, 'http://localhost:4200', 'http://localhost:4200')
-    ),
-    url: 'http://localhost:4200',
-  };
-
   beforeEach(() => {
+    const mockRouter = {
+      navigate: jest.fn(),
+      events: of(
+        new NavigationEnd(0, 'http://localhost:4200', 'http://localhost:4200')
+      ),
+      url: 'http://localhost:4200',
+    };
     TestBed.configureTestingModule({
       providers: [
         RouteService,
@@ -45,20 +43,19 @@ describe('RouteService', () => {
       ],
     });
     service = TestBed.inject(RouteService);
-    location = TestBed.inject(Location);
     router = TestBed.inject(Router);
+    location = TestBed.inject(Location);
+    activatedRoute = TestBed.inject(ActivatedRoute);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add objective to selected objectives', fakeAsync(() => {
+  it('should add objective to selected objectives', () => {
     mockActivatedRoute.queryParams = of({ objectives: '1,2,3' });
 
     service.addToSelectedObjectives(4);
-
-    tick();
 
     expect(router.navigate).toHaveBeenCalledWith([], {
       relativeTo: mockActivatedRoute,
@@ -69,14 +66,12 @@ describe('RouteService', () => {
         teamFilter: undefined,
       },
     });
-  }));
+  });
 
-  it('should remove objective from selected objectives', fakeAsync(() => {
+  it('should remove objective from selected objectives', () => {
     mockActivatedRoute.queryParams = of({ objectives: '1,2,3,4' });
 
     service.removeFromSelectedObjectives(4);
-
-    tick();
 
     expect(router.navigate).toHaveBeenCalledWith([], {
       relativeTo: mockActivatedRoute,
@@ -87,14 +82,12 @@ describe('RouteService', () => {
         teamFilter: undefined,
       },
     });
-  }));
+  });
 
-  it('should add keyresult to selected keyresults', fakeAsync(() => {
+  it('should add keyresult to selected keyresults', () => {
     mockActivatedRoute.queryParams = of({ keyresults: '1,2,3' });
 
     service.addToSelectedKeyresults(4);
-
-    tick();
 
     expect(router.navigate).toHaveBeenCalledWith([], {
       relativeTo: mockActivatedRoute,
@@ -105,14 +98,12 @@ describe('RouteService', () => {
         teamFilter: undefined,
       },
     });
-  }));
+  });
 
-  it('should remove keyresult from selected keyresults', fakeAsync(() => {
+  it('should remove keyresult from selected keyresults', () => {
     mockActivatedRoute.queryParams = of({ keyresults: '1,2,3,4' });
 
     service.removeFromSelectedKeyresult(4);
-
-    tick();
 
     expect(router.navigate).toHaveBeenCalledWith([], {
       relativeTo: mockActivatedRoute,
@@ -123,9 +114,9 @@ describe('RouteService', () => {
         teamFilter: undefined,
       },
     });
-  }));
+  });
 
-  it('should navigate to the given location with the current query params', fakeAsync(() => {
+  it('should navigate to the given location with the current query params', () => {
     const queryParams = {
       objectives: '1,2,3',
       keyresults: '1',
@@ -136,18 +127,43 @@ describe('RouteService', () => {
     const location = '/some-location';
     service.navigate(location);
 
-    tick();
-
     expect(router.navigate).toHaveBeenCalledWith([location], {
       queryParams: queryParams,
     });
-  }));
+  });
 
-  xit('should call location.back()', () => {
-    const spy = jest.spyOn(service, 'back');
-    const routeService = new RouteService(location, activatedRoute, router);
-    routeService.back();
-    expect(spy).toHaveBeenCalled();
+  it('should navigate back to "/" when back() method is called', () => {
+    mockActivatedRoute.queryParams = of({});
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: undefined,
+      quarterFilter: undefined,
+    };
+
+    service.back();
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith(['/'], {
+      queryParams: queryParams,
+    });
+  });
+
+  it('should navigate to previousURL if previousUrl is available', () => {
+    mockActivatedRoute.queryParams = of({});
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: undefined,
+      quarterFilter: undefined,
+    };
+
+    service.setPreviousUrl('http://localhost:4200/?objectives=1');
+    const location = service.getPreviousUrl();
+    service.back();
+    expect(router.navigate).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith([location?.split('?')[0]], {
+      queryParams: queryParams,
+    });
   });
 
   xit('should change quarterfilter', fakeAsync(() => {

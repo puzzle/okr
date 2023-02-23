@@ -16,6 +16,7 @@ import {
   QuarterService,
   StartEndDateDTO,
 } from '../../../services/quarter.service';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-measure-form',
@@ -45,7 +46,8 @@ export class MeasureFormComponent implements OnInit {
     private toastr: ToastrService,
     private location: Location,
     private goalService: GoalService,
-    private quarterService: QuarterService
+    private quarterService: QuarterService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -79,34 +81,31 @@ export class MeasureFormComponent implements OnInit {
     }
 
     this.measure$.subscribe((measure) => {
-      this.measureForm.setValue({
-        value: this.correctValueForBinaryDataToSlider(measure.value),
-        measureDate: measure.measureDate,
-        changeInfo: measure.changeInfo,
-        initiatives: measure.initiatives,
+      this.startEndDate$.subscribe((startEndDate) => {
+        this.measureForm.setValue({
+          value: measure.value,
+          measureDate: this.create
+            ? this.returnQuarterEndDateOrCurrentDate(
+                new Date(startEndDate.endDate),
+                measure.measureDate
+              )
+            : measure.measureDate,
+          changeInfo: measure.changeInfo,
+          initiatives: measure.initiatives,
+        });
       });
     });
   }
 
-  correctValueForBinaryDataToSlider(measureValue: number | boolean) {
-    if (this.keyResultUnit === 'BINARY') {
-      measureValue = measureValue === 1;
-    }
-    return measureValue;
-  }
-
-  correctValueForBinarySliderToData() {
-    if (this.keyResultUnit === 'BINARY') {
-      if (this.measureForm.get('value')?.value === true) {
-        this.measureForm.get('value')?.setValue(1);
-      } else {
-        this.measureForm.get('value')?.setValue(0);
-      }
+  returnQuarterEndDateOrCurrentDate(endDate: Date, measureDate: Date) {
+    if (measureDate > endDate) {
+      return endDate;
+    } else {
+      return measureDate;
     }
   }
 
   save() {
-    this.correctValueForBinarySliderToData();
     this.measure$
       .pipe(
         map((measure) => {
@@ -118,21 +117,18 @@ export class MeasureFormComponent implements OnInit {
       )
       .subscribe((measure) => {
         measure.measureDate = new Date(measure.measureDate);
+        measure.measureDate.setHours(0, 0, 0, 0);
         this.measureService.saveMeasure(measure, this.create).subscribe({
           next: () => {
             this.toastr.success('', 'Messung gespeichert!', {
               timeOut: 5000,
             });
-            this.router.navigate(['/keyresults/' + measure.keyResultId]);
+            this.routeService.navigate('/keyresults/' + measure.keyResultId);
           },
           error: (e: HttpErrorResponse) => {
-            this.toastr.error(
-              'Messung konnte nicht gespeichert werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.error(e.error.message, 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
             console.log('Can not save this measure: ', measure);
             return new Error('ups sommething happend');
           },
@@ -141,6 +137,6 @@ export class MeasureFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.create ? this.router.navigate(['/dashboard']) : this.location.back();
+    this.routeService.back();
   }
 }

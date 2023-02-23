@@ -13,13 +13,13 @@ public class KeyResultDto {
     private String ownerLastname;
     private ExpectedEvolution expectedEvolution;
     private Unit unit;
-    private Long basicValue;
-    private Long targetValue;
+    private Double basicValue;
+    private Double targetValue;
     private Long progress;
 
     public KeyResultDto(Long id, Long objectiveId, String title, String description, Long ownerId,
             String ownerFirstname, String ownerLastname, ExpectedEvolution expectedEvolution, Unit unit,
-            Long basicValue, Long targetValue, Long progress) {
+            Double basicValue, Double targetValue, Long progress) {
         this.id = id;
         this.objectiveId = objectiveId;
         this.title = title;
@@ -46,87 +46,43 @@ public class KeyResultDto {
         return objectiveId;
     }
 
-    public void setObjectiveId(Long objectiveId) {
-        this.objectiveId = objectiveId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Long getOwnerId() {
         return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
     }
 
     public String getOwnerFirstname() {
         return ownerFirstname;
     }
 
-    public void setOwnerFirstname(String ownerFirstname) {
-        this.ownerFirstname = ownerFirstname;
-    }
-
     public String getOwnerLastname() {
         return ownerLastname;
-    }
-
-    public void setOwnerLastname(String ownerLastname) {
-        this.ownerLastname = ownerLastname;
     }
 
     public ExpectedEvolution getExpectedEvolution() {
         return expectedEvolution;
     }
 
-    public void setExpectedEvolution(ExpectedEvolution expectedEvolution) {
-        this.expectedEvolution = expectedEvolution;
-    }
-
     public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    public Long getBasicValue() {
+    public Double getBasicValue() {
         return basicValue;
     }
 
-    public void setBasicValue(Long basicValue) {
-        this.basicValue = basicValue;
-    }
-
-    public Long getTargetValue() {
+    public Double getTargetValue() {
         return targetValue;
-    }
-
-    public void setTargetValue(Long targetValue) {
-        this.targetValue = targetValue;
     }
 
     public Long getProgress() {
         return progress;
-    }
-
-    public void setProgress(Long progress) {
-        this.progress = progress;
     }
 }

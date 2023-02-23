@@ -58,19 +58,19 @@ class ObjectiveControllerIT {
             "GJ 22/23-Q2", "This is a description", 20L);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10, "foo", "boo", 1L, null,
+    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
             Instant.parse("2022-08-12T01:01:00.00Z"));
-    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10, "foo", "boo", 1L, null,
+    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10D, "foo", "boo", 1L, null,
             Instant.parse("2022-08-12T01:01:00.00Z"));
     static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
             new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure1Dto, 0L),
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, measure1Dto, 0L),
             new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, measure2Dto, 0L));
+                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, measure2Dto, 0L));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, 0L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, 0L);
+            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, 0L);
 
     @Autowired
     private MockMvc mvc;
@@ -85,7 +85,6 @@ class ObjectiveControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup objective mapper
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
         BDDMockito.given(keyResultMapper.toDto(keyResult1)).willReturn(keyresult1Dto);

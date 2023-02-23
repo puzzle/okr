@@ -20,23 +20,24 @@ public class KeyResult {
     @Size(min = 2, max = 250)
     private String title;
 
-    @Size(min = 2, max = 4096)
+    @Size(max = 4096)
     private String description;
 
     @NotNull
     @ManyToOne
     private User owner;
 
+    @NotNull
     private ExpectedEvolution expectedEvolution;
 
     @NotNull
     private Unit unit;
 
     @NotNull
-    private Long basisValue;
+    private Double basisValue;
 
     @NotNull
-    private Long targetValue;
+    private Double targetValue;
 
     @NotNull
     @ManyToOne
@@ -114,32 +115,24 @@ public class KeyResult {
         this.unit = unit;
     }
 
-    public Long getBasisValue() {
+    public Double getBasisValue() {
         return basisValue;
     }
 
-    public void setBasisValue(Long basisValue) {
+    public void setBasisValue(Double basisValue) {
         this.basisValue = basisValue;
     }
 
-    public Long getTargetValue() {
+    public Double getTargetValue() {
         return targetValue;
     }
 
-    public void setTargetValue(Long targetValue) {
+    public void setTargetValue(Double targetValue) {
         this.targetValue = targetValue;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
     }
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -183,8 +176,8 @@ public class KeyResult {
         private @NotNull User owner;
         private @Size(min = 2, max = 250) ExpectedEvolution expectedEvolution;
         private @NotNull @NotBlank Unit unit;
-        private @NotNull Long basisValue;
-        private @NotNull Long targetValue;
+        private @NotNull Double basisValue;
+        private @NotNull Double targetValue;
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
 
@@ -230,12 +223,12 @@ public class KeyResult {
             return this;
         }
 
-        public Builder withBasisValue(@NotNull Long basisValue) {
+        public Builder withBasisValue(@NotNull Double basisValue) {
             this.basisValue = basisValue;
             return this;
         }
 
-        public Builder withTargetValue(@NotNull Long targetValue) {
+        public Builder withTargetValue(@NotNull Double targetValue) {
             this.targetValue = targetValue;
             return this;
         }

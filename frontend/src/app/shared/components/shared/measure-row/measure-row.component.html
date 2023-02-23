@@ -1,8 +1,20 @@
-<mat-accordion>
-  <mat-expansion-panel>
+<mat-accordion class="border-1 border-dark">
+  <mat-expansion-panel class="outer-cards" [(expanded)]="open">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <p class="heading-label">Vergangene Messungen</p>
+        <p class="h3">Vergangene Messungen</p>
+        <button
+          *ngIf="!isMeasureForm"
+          id="add-measure-button"
+          class="create-button"
+          mat-button
+          color="primary"
+          (click)="
+            routeService.navigate('keyresults/' + keyResultId + '/measure/new')
+          "
+        >
+          Messung hinzufügen
+        </button>
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -21,7 +33,7 @@
       </div>
     </div>
     <div *ngFor="let measure of measures$ | async">
-      <mat-card class="measure-card">
+      <mat-card class="measure-card inner-cards">
         <mat-card-content>
           <mat-panel-description class="d-flex space-between">
             <div class="d-flex w-15">
@@ -48,9 +60,14 @@
               src="assets/edit-icon.svg"
               alt="edit-icon"
               class="edit-icon"
-              routerLink="/keyresults/{{ measure.keyResultId }}/measure/edit/{{
-                measure.id
-              }}"
+              (click)="
+                routeService.navigate(
+                  '/keyresults/' +
+                    measure.keyResultId +
+                    '/measure/edit/' +
+                    measure.id
+                )
+              "
             />
             <img
               src="assets/delete-icon.svg"

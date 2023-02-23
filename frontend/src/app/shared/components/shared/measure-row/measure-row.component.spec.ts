@@ -21,6 +21,7 @@ import {
 } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../../services/route.service';
 
 describe('MeasureRowComponent', () => {
   let component: MeasureRowComponent;
@@ -35,6 +36,10 @@ describe('MeasureRowComponent', () => {
   const mockToastrService = {
     success: jest.fn(),
     error: jest.fn(),
+  };
+
+  const mockRouteService = {
+    navigate: jest.fn(),
   };
 
   describe('Get Measures from existing Key Result', () => {
@@ -55,6 +60,7 @@ describe('MeasureRowComponent', () => {
           DatePipe,
           { provide: KeyResultService, useValue: mockKeyResultService },
           { provide: ToastrService, useValue: mockToastrService },
+          { provide: RouteService, useValue: mockRouteService },
           { provide: MatDialog, useValue: {} },
           {
             provide: ActivatedRoute,
@@ -73,15 +79,16 @@ describe('MeasureRowComponent', () => {
 
     afterEach(() => {
       mockKeyResultService.getMeasuresOfKeyResult.mockReset();
+      mockRouteService.navigate.mockReset();
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
 
-    it('should create', () => {
+    test('should create', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should set measures from keyresultService', () => {
+    test('should set measures from keyresultService', () => {
       expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledWith(
         1
       );
@@ -93,15 +100,29 @@ describe('MeasureRowComponent', () => {
       });
     });
 
-    it('should set right heading title', () => {
-      const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
+    test('should set Key Result id', () => {
+      expect(component.keyResultId).toEqual(1);
+    });
 
-      expect(headingLabel.nativeElement.textContent).toContain(
+    test('should call route service when clicking create button', () => {
+      const button = fixture.debugElement.query(By.css('#add-measure-button'));
+      button.nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockRouteService.navigate).toHaveBeenCalledWith(
+        'keyresults/1/measure/new'
+      );
+    });
+
+    test('should set right heading title', () => {
+      const headingLabels = fixture.debugElement.queryAll(By.css('.h3'));
+
+      expect(headingLabels[0].nativeElement.textContent).toContain(
         'Vergangene Messungen'
       );
     });
 
-    it('should have right titles for past measures', () => {
+    test('should have right titles for past measures', () => {
       const spans = fixture.debugElement.queryAll(By.css('span'));
 
       expect(spans.length).toEqual(6);
@@ -114,13 +135,13 @@ describe('MeasureRowComponent', () => {
       expect(spans[5].nativeElement.textContent).toContain('Massnahmen');
     });
 
-    it('should create two mat cards for 2 measures', () => {
+    test('should create two mat cards for 2 measures', () => {
       const matCards = fixture.debugElement.queryAll(By.css('mat-card'));
 
       expect(matCards.length).toEqual(2);
     });
 
-    it('should have two measure dates for 2 measures', () => {
+    test('should have two measure dates for 2 measures', () => {
       const measureDates = fixture.debugElement.queryAll(
         By.css('.measureDate')
       );
@@ -130,7 +151,7 @@ describe('MeasureRowComponent', () => {
       expect(measureDates[1].nativeElement.textContent).toContain('23.01.2023');
     });
 
-    it('should have two measure values for 2 measures', () => {
+    test('should have two measure values for 2 measures', () => {
       const measureValues = fixture.debugElement.queryAll(
         By.css('.measureValue')
       );
@@ -140,7 +161,7 @@ describe('MeasureRowComponent', () => {
       expect(measureValues[1].nativeElement.textContent).toContain('50');
     });
 
-    it('should have two measure changeInfos for 2 measures', () => {
+    test('should have two measure changeInfos for 2 measures', () => {
       const measureChangeInfos = fixture.debugElement.queryAll(
         By.css('.measureChangeinfo')
       );
@@ -154,7 +175,7 @@ describe('MeasureRowComponent', () => {
       );
     });
 
-    it('should have two measure initiatives for 2 measures', () => {
+    test('should have two measure initiatives for 2 measures', () => {
       const measureInitiatives = fixture.debugElement.queryAll(
         By.css('.measureInitiatives')
       );
@@ -168,17 +189,27 @@ describe('MeasureRowComponent', () => {
       );
     });
 
-    it('should have two edit icons for 2 measures', () => {
+    test('should have two edit icons for 2 measures', () => {
       const editIcons = fixture.debugElement.queryAll(By.css('.edit-icon'));
 
       expect(editIcons.length).toEqual(2);
     });
 
-    it('should format date in right format dd.MM.yyyy hh:mm:ss', () => {
+    test('should format date in right format dd.MM.yyyy hh:mm:ss', () => {
       let formattedDate = component.formatDate('2022-09-01T00:00:00');
       expect(formattedDate).toEqual('01.09.2022');
       formattedDate = component.formatDate('2023-02-20T10:00:00');
       expect(formattedDate).toEqual('20.02.2023');
+    });
+
+    test('should have a button to create measure', () => {
+      const createButton = fixture.debugElement.query(
+        By.css('#add-measure-button')
+      );
+
+      expect(createButton.nativeElement.textContent).toContain(
+        ' Messung hinzufügen '
+      );
     });
   });
 
@@ -222,11 +253,11 @@ describe('MeasureRowComponent', () => {
       mockToastrService.error.mockReset();
     });
 
-    it('should create', () => {
+    test('should create', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should not get measures from Key Result', () => {
+    test('should not get measures from Key Result', () => {
       expect(
         mockKeyResultService.getMeasuresOfKeyResult
       ).not.toHaveBeenCalled();

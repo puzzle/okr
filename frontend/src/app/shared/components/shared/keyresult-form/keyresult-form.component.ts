@@ -16,6 +16,8 @@ import { getNumberOrNull } from '../../../common';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
+import { comparisonValidator } from '../../../validators';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -33,17 +35,14 @@ export class KeyresultFormComponent implements OnInit {
       Validators.maxLength(250),
     ]),
     unit: new FormControl<string>('', [Validators.required]),
-    expectedEvolution: new FormControl<string>(''),
+    expectedEvolution: new FormControl<string>('', [Validators.required]),
     basicValue: new FormControl<number>({ value: 0, disabled: true }, [
       Validators.required,
     ]),
     targetValue: new FormControl<number>({ value: 0, disabled: true }, [
       Validators.required,
     ]),
-    description: new FormControl<string>('', [
-      Validators.minLength(2),
-      Validators.maxLength(4096),
-    ]),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number | null>(null, [
       Validators.required,
       Validators.nullValidator,
@@ -51,8 +50,13 @@ export class KeyresultFormComponent implements OnInit {
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
-  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER', 'BINARY'];
-  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT'];
+  public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER'];
+  public expectedEvolution$: string[] = [
+    'INCREASE',
+    'DECREASE',
+    'CONSTANT',
+    'NONE',
+  ];
   public create!: boolean;
 
   constructor(
@@ -62,7 +66,8 @@ export class KeyresultFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private routeService: RouteService
   ) {}
 
   ngOnInit(): void {
@@ -97,7 +102,6 @@ export class KeyresultFormComponent implements OnInit {
         }
       })
     );
-
     this.keyresult$.subscribe((keyresult) => {
       const {
         id,
@@ -108,6 +112,7 @@ export class KeyresultFormComponent implements OnInit {
         progress,
         ...restKeyresult
       } = keyresult;
+      this.resetValidatorOfForm(keyresult.unit);
       this.keyResultForm.setValue(restKeyresult);
     });
   }
@@ -125,10 +130,10 @@ export class KeyresultFormComponent implements OnInit {
       .subscribe((keyresult) =>
         this.keyResultService.saveKeyresult(keyresult, this.create).subscribe({
           next: () => {
-            this.router.navigate(['/dashboard']);
             this.toastr.success('', 'Key Result gespeichert!', {
               timeOut: 5000,
             });
+            this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error(
@@ -138,7 +143,6 @@ export class KeyresultFormComponent implements OnInit {
                 timeOut: 5000,
               }
             );
-            console.log('Can not save this Key Result: ', keyresult);
             return new Error('ups sommething happend');
           },
         })
@@ -150,9 +154,9 @@ export class KeyresultFormComponent implements OnInit {
     this.keyResultForm.controls['targetValue'].enable();
   }
 
-  resetValidatorOfForm(): void {
+  resetValidatorOfForm(unit: string | null): void {
     let regex: string | null = null;
-    switch (this.keyResultForm.controls['unit'].value) {
+    switch (unit) {
       case 'NUMBER': {
         regex = NUMBER_REGEX;
         break;
@@ -166,24 +170,22 @@ export class KeyresultFormComponent implements OnInit {
         break;
       }
     }
-    if (this.keyResultForm.controls['unit'].value == 'BINARY') {
-      this.keyResultForm.controls['basicValue'].disable();
-      this.keyResultForm.controls['targetValue'].disable();
-    }
     this.setValidatorsWithRegex(regex);
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();
     this.keyResultForm.controls['targetValue'].updateValueAndValidity();
   }
 
   setValidatorsWithRegex(regex: string | null) {
-    if (regex) {
+    if (regex != null) {
       this.keyResultForm.controls['basicValue'].setValidators([
         Validators.required,
         Validators.pattern(regex),
+        comparisonValidator(this.keyResultForm.controls['targetValue']),
       ]);
       this.keyResultForm.controls['targetValue'].setValidators([
         Validators.required,
         Validators.pattern(regex),
+        comparisonValidator(this.keyResultForm.controls['basicValue']),
       ]);
       return;
     }
@@ -192,6 +194,11 @@ export class KeyresultFormComponent implements OnInit {
   }
 
   navigateBack() {
-    this.location.back();
+    this.routeService.back();
+  }
+
+  update() {
+    this.keyResultForm.controls['targetValue'].updateValueAndValidity();
+    this.keyResultForm.controls['basicValue'].updateValueAndValidity();
   }
 }

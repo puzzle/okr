@@ -27,7 +27,7 @@ public class ProgressService {
         Objective objective = this.objectiveService.getObjective(objectiveId);
         Long progress = this
                 .calculateObjectiveProgress(this.objectiveRepository.getCalculationValuesForProgress(objectiveId));
-        if (progress == null && !this.keyResultRepository.findByObjective(objective).isEmpty()) {
+        if (progress == null && !this.keyResultRepository.findByObjectiveOrderByTitle(objective).isEmpty()) {
             progress = 0L;
         }
         objective.setProgress(progress);
@@ -62,20 +62,13 @@ public class ProgressService {
     }
 
     protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
-        if (keyResultMeasureValue.getBasisValue() > keyResultMeasureValue.getTargetValue()) {
-            return turnedCalculation(keyResultMeasureValue.getTargetValue().doubleValue(),
-                    keyResultMeasureValue.getBasisValue().doubleValue(),
-                    keyResultMeasureValue.getValue().doubleValue());
+        double basisValue = keyResultMeasureValue.getBasisValue();
+        double targetValue = keyResultMeasureValue.getTargetValue();
+        double value = keyResultMeasureValue.getValue() == null ? keyResultMeasureValue.getBasisValue()
+                : keyResultMeasureValue.getValue();
+        if (basisValue > targetValue) {
+            return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
         }
-        return calculate(keyResultMeasureValue.getTargetValue().doubleValue(),
-                keyResultMeasureValue.getBasisValue().doubleValue(), keyResultMeasureValue.getValue().doubleValue());
-    }
-
-    public double turnedCalculation(double targetValue, double basisValue, double value) {
-        return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
-    }
-
-    protected double calculate(double targetValue, double basisValue, double value) {
-        return basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue)));
+        return Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
     }
 }

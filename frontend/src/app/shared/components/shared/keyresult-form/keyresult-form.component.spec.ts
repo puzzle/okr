@@ -54,7 +54,6 @@ describe('KeyresultFormComponent', () => {
     basicValue: new FormControl<number>(0, Validators.required),
     targetValue: new FormControl<number>(100, Validators.required),
     description: new FormControl<string>('This is a description', [
-      Validators.minLength(2),
       Validators.maxLength(4096),
     ]),
     ownerId: new FormControl<number | null>(2, [
@@ -215,10 +214,21 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should have label for Key Result unit', () => {
-      const unitLabel = fixture.debugElement.query(By.css('.keyresult-unit'));
+    test('should set ExpectedEvolution to NONE', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Keine' });
+      await bugOption[0].click();
 
-      expect(unitLabel.nativeElement.textContent).toContain('PROZENT');
+      expect(await select.getValueText()).toEqual('Keine');
+      expect(
+        component.keyResultForm.controls['expectedEvolution'].value
+      ).toEqual('NONE');
+      expect(component.keyResultForm.valid).toBeTruthy();
     });
 
     test('should not have Key Result unit drop down', () => {
@@ -234,13 +244,13 @@ describe('KeyresultFormComponent', () => {
           selector: 'mat-select[formControlName="expectedEvolution"]',
         })
       );
-      expect(await select.getValueText()).toEqual('ERHÖHT');
+      expect(await select.getValueText()).toEqual('Erhöht');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
+      const bugOption = await select.getOptions({ text: 'Vermindert' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('VERMINDERT');
+      expect(await select.getValueText()).toEqual('Vermindert');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -344,6 +354,11 @@ describe('KeyresultFormComponent', () => {
         expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
       });
     });
+
+    test('should have label for Key Result unit', () => {
+      const unitLabel = fixture.debugElement.query(By.css('.keyresult-unit'));
+      expect(unitLabel.nativeElement.textContent).toContain('Prozent');
+    });
   });
 
   describe('KeyresultFormComponent Create Key Result', () => {
@@ -404,6 +419,22 @@ describe('KeyresultFormComponent', () => {
       expect(mockObjectiveService.getObjectiveById).toHaveBeenCalledWith(1);
       expect(mockKeyResultService.getKeyResultById).toHaveBeenCalledTimes(0);
       expect(mockKeyResultService.getInitKeyResult).toHaveBeenCalled();
+    });
+
+    test('should set Key Result unit in mat select and set it new on item change', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('');
+
+      await select.open();
+      const bugOption = await select.getOptions({ text: 'Prozent' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.controls['unit'].value).toContain(
+        'PERCENT'
+      );
     });
 
     test('should set init Key Result', () => {
@@ -499,10 +530,10 @@ describe('KeyresultFormComponent', () => {
       );
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'ZAHL' });
+      const bugOption = await select.getOptions({ text: 'Zahl' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('ZAHL');
+      expect(await select.getValueText()).toEqual('Zahl');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -516,10 +547,10 @@ describe('KeyresultFormComponent', () => {
       expect(await select.getValueText()).toEqual('');
 
       await select.open();
-      const bugOption = await select.getOptions({ text: 'VERMINDERT' });
+      const bugOption = await select.getOptions({ text: 'Vermindert' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('VERMINDERT');
+      expect(await select.getValueText()).toEqual('Vermindert');
       expect(await select.isDisabled()).toBeFalsy();
       expect(await select.isOpen()).toBeFalsy();
     });
@@ -557,7 +588,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should be invalid form if unit is changed and values do not match regex', async () => {
-      //Set Values
       component.keyResultForm.controls['ownerId'].setValue(1);
       component.keyResultForm.controls['title'].setValue('Title');
       component.keyResultForm.controls['expectedEvolution'].setValue(
@@ -567,26 +597,23 @@ describe('KeyresultFormComponent', () => {
       component.keyResultForm.controls['targetValue'].setValue(1000);
       component.keyResultForm.controls['basicValue'].setValue(50);
 
-      //Chose PERCENT as unit and check if form is now invalid
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="unit"]',
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'PROZENT' });
+      let bugOption = await select.getOptions({ text: 'Prozent' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
 
-      //Change unit to binary which accepts every number
       await select.open();
-      bugOption = await select.getOptions({ text: 'BINÄR' });
+      bugOption = await select.getOptions({ text: 'CHF' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
-    test('should be invalid form if targetValue or basicValue is a double', async () => {
-      //Set Values
+    test('should be valid form if targetValue or basicValue is a double', async () => {
       component.keyResultForm.controls['ownerId'].setValue(3);
       component.keyResultForm.controls['title'].setValue('Title');
       component.keyResultForm.controls['expectedEvolution'].setValue(
@@ -594,7 +621,57 @@ describe('KeyresultFormComponent', () => {
       );
       component.keyResultForm.controls['description'].setValue('Description');
       component.keyResultForm.controls['targetValue'].setValue(10.5);
-      component.keyResultForm.controls['basicValue'].setValue(57.897);
+      component.keyResultForm.controls['basicValue'].setValue(57.8);
+
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'Zahl' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be valid form if targetValue or basicValue is a double and unit is percent', async () => {
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['expectedEvolution'].setValue('NONE');
+      component.keyResultForm.controls['targetValue'].setValue(50.6);
+      component.keyResultForm.controls['basicValue'].setValue(23.5);
+
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'Prozent' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeTruthy();
+    });
+
+    test('should be invalid form if targetValue or basicValue have more numbers behind the comma than 1', async () => {
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['targetValue'].setValue(50.667);
+      component.keyResultForm.controls['basicValue'].setValue(23.53);
+
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="unit"]',
+        })
+      );
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'Zahl' });
+      await bugOption[0].click();
+      expect(component.keyResultForm.valid).toBeFalsy();
+    });
+
+    test('should be invalid form if targetValue and basicValue are the same', async () => {
+      //Set Values
+      component.keyResultForm.controls['title'].setValue('KeyResult');
+      component.keyResultForm.controls['targetValue'].setValue(50);
+      component.keyResultForm.controls['basicValue'].setValue(50);
 
       //Chose unit and check validation of form
       const select = await loader.getHarness(
@@ -603,7 +680,7 @@ describe('KeyresultFormComponent', () => {
         })
       );
       await select.open();
-      let bugOption = await select.getOptions({ text: 'ZAHL' });
+      let bugOption = await select.getOptions({ text: 'Zahl' });
       await bugOption[0].click();
       expect(component.keyResultForm.valid).toBeFalsy();
     });
@@ -652,7 +729,6 @@ describe('KeyresultFormComponent', () => {
 
   describe('Check if component makes call to toastrservice', () => {
     beforeEach(() => {
-      //Standard mocks to create keyresult-form
       mockUserService.getUsers.mockReturnValue(userList);
       mockKeyResultService.getKeyResultById.mockReturnValue(keyResult);
       mockKeyResultService.getInitKeyResult.mockReturnValue(initKeyResult);
@@ -691,18 +767,14 @@ describe('KeyresultFormComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
-
-      //Standard Services Reset
       mockUserService.getUsers.mockReset();
       mockKeyResultService.getKeyResultById.mockReset();
       mockKeyResultService.getInitKeyResult.mockReset();
     });
 
     test('should display success notification', () => {
-      //Return Keyresult to trigger success notification of ToastrService
       mockKeyResultService.saveKeyresult.mockReturnValue(keyResult);
 
       const createbutton = fixture.debugElement.query(By.css('.create-button'));
@@ -718,7 +790,6 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should display error notification', () => {
-      //Return Error to trigger error notification of ToastrService
       mockKeyResultService.saveKeyresult.mockReturnValue(
         throwError(
           () =>

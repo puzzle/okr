@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { getNumberOrNull } from '../../../common';
 import { Goal, GoalService } from '../../../services/goal.service';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-key-result-detail',
@@ -15,11 +16,12 @@ export class KeyResultDetailComponent implements OnInit {
   constructor(
     private router: Router,
     private goalService: GoalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private routeService: RouteService
   ) {}
 
   navigateBack() {
-    this.router.navigate(['/dashboard']);
+    this.routeService.navigate('/dashboard');
   }
 
   ngOnInit(): void {
@@ -33,9 +35,5 @@ export class KeyResultDetailComponent implements OnInit {
         }
       })
     );
-  }
-
-  reloadDiagram() {
-    //TODO
   }
 }

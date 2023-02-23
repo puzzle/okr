@@ -3,10 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import { Overview } from '../../shared/services/overview.service';
+import { RouteService } from '../../shared/services/route.service';
 
 @Component({
   selector: 'app-team-detail',
@@ -18,7 +18,7 @@ export class TeamDetailComponent {
   @Input() overview!: Overview;
   @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
 
-  constructor() {}
+  constructor(public routeService: RouteService) {}
 
   reloadObjectives() {
     this.onObjectivesListUpdate.emit();

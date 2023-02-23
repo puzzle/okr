@@ -16,11 +16,13 @@ import {
   KeyResultService,
 } from '../../shared/services/key-result.service';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
+import { getNumberOrNull } from '../../shared/common';
+import { RouteService } from '../../shared/services/route.service';
 
 @Component({
   selector: 'app-objective-row',
@@ -33,46 +35,55 @@ export class ObjectiveRowComponent implements OnInit {
   @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
   menuEntries!: MenuEntry[];
+  isSelected: boolean = false;
   constructor(
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
     private router: Router,
+    private route: ActivatedRoute,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public routeService: RouteService
   ) {}
 
   public getKeyResults(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
+    if (!this.isSelected) {
+      this.isSelected = true;
+      this.routeService.addToSelectedObjectives(id);
+    }
   }
   ngOnInit(): void {
     this.menuEntries = [
-      {
-        displayName: 'Key Result hinzufügen',
-        showDialog: false,
-        routeLine: 'objective/' + this.objective.id + '/keyresult/new',
-      },
-      {
-        displayName: 'Objective bearbeiten',
-        showDialog: false,
-        routeLine: 'objectives/edit/' + this.objective.id,
-      },
-      {
-        displayName: 'Objective duplizieren',
-        showDialog: false,
-        routeLine: 'objective/duplicate',
-      },
       {
         displayName: 'Objective löschen',
         showDialog: true,
       },
     ];
+    this.route.queryParams.subscribe((params) => {
+      if (params['objectives'] !== undefined) {
+        const selectedObjectives: string[] = params['objectives'].split(',');
+        if (
+          selectedObjectives.some(
+            (x) => getNumberOrNull(x) === this.objective.id
+          )
+        ) {
+          this.isSelected = true;
+        }
+      }
+    });
+  }
+
+  removeObjectiveSelection(objectiveId: number) {
+    this.routeService.removeFromSelectedObjectives(objectiveId);
+    this.isSelected = false;
   }
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {
       this.openDialog();
     } else {
-      this.router.navigate([menuEntry.routeLine]);
+      this.routeService.navigate(menuEntry.routeLine!);
     }
   }
 

@@ -32,7 +32,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
-import { DiagramComponent } from '../../../../keyresult/diagram/diagram.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyResultDetailComponent', () => {
   let component: KeyResultDetailComponent;
@@ -62,7 +62,6 @@ describe('KeyResultDetailComponent', () => {
         KeyResultDetailComponent,
         KeyResultDescriptionComponent,
         MeasureRowComponent,
-        DiagramComponent,
       ],
       providers: [
         DatePipe,
@@ -77,6 +76,9 @@ describe('KeyResultDetailComponent', () => {
         },
       ],
       imports: [
+        TranslateTestingModule.withTranslations({
+          de: require('../../../../../assets/i18n/de.json'),
+        }),
         HttpClientTestingModule,
         BrowserAnimationsModule,
         BrowserDynamicTestingModule,
@@ -96,6 +98,14 @@ describe('KeyResultDetailComponent', () => {
       ],
     }).compileComponents();
 
+    global.window = Object.create(window);
+    const url = 'keyresults/2';
+    Object.defineProperty(window, 'location', {
+      value: {
+        href: url,
+      },
+    });
+
     fixture = TestBed.createComponent(KeyResultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -108,7 +118,7 @@ describe('KeyResultDetailComponent', () => {
     mockGetNumerOrNull.getNumberOrNull.mockReset();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -120,46 +130,39 @@ describe('KeyResultDetailComponent', () => {
     });
   });
 
-  it('should have one key result description tag', () => {
+  test('should have one key result description tag', () => {
     const keyResultDescription = fixture.debugElement.queryAll(
       By.css('app-key-result-description')
     );
     expect(keyResultDescription.length).toEqual(1);
   });
 
-  it('should have one app diagram tag', () => {
-    const keyResultDescription = fixture.debugElement.queryAll(
-      By.css('app-diagram')
-    );
-    expect(keyResultDescription.length).toEqual(1);
-  });
-
-  it('should have two heading labels with right titles', () => {
+  test('should have two heading labels with right titles', () => {
     const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
     expect(headingLabel.nativeElement.textContent).toContain(
-      'Key Result Details'
+      'Key Result Informationen'
     );
   });
 
-  it('should have a title key result beschreibung', () => {
-    const headingLabels = fixture.debugElement.queryAll(
-      By.css('.headline-large')
-    );
-    expect(headingLabels.length).toEqual(1);
-    expect(headingLabels[0].nativeElement.textContent).toContain(
-      'Key Result Beschreibung'
-    );
-  });
-
-  it('should have one mat dividers', () => {
+  test('should have one mat dividers', () => {
     const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
     expect(dividers.length).toEqual(1);
   });
 
-  it('should have one measure row tag', () => {
+  test('should have one measure row tag', () => {
     const keyResultDescription = fixture.debugElement.queryAll(
       By.css('app-measure-row')
     );
     expect(keyResultDescription.length).toEqual(1);
+  });
+
+  test('should have a button to create measure', () => {
+    const createButton = fixture.debugElement.query(
+      By.css('#add-measure-button')
+    );
+
+    expect(createButton.nativeElement.textContent).toContain(
+      ' Messung hinzufügen '
+    );
   });
 });

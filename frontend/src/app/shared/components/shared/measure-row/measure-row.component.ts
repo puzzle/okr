@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import {
   KeyResultService,
@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MeasureService } from '../../../services/measure.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { RouteService } from '../../../services/route.service';
 
 @Component({
   selector: 'app-measure-row',
@@ -19,8 +20,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./measure-row.component.scss'],
 })
 export class MeasureRowComponent implements OnInit {
-  @Output() onMeasureDelete: EventEmitter<any> = new EventEmitter();
   measures$: Subject<Measure[]> = new BehaviorSubject<Measure[]>([]);
+  @Input() open: boolean = false;
+  isMeasureForm!: boolean;
+  keyResultId!: number;
 
   constructor(
     private keyresultService: KeyResultService,
@@ -28,10 +31,23 @@ export class MeasureRowComponent implements OnInit {
     private datePipe: DatePipe,
     private dialog: MatDialog,
     private measureService: MeasureService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public routeService: RouteService
   ) {}
 
   ngOnInit(): void {
+    window.location.href.toString().includes('measure/')
+      ? (this.isMeasureForm = true)
+      : (this.isMeasureForm = false);
+
+    this.route.paramMap.subscribe((params) => {
+      const keyresultId = getNumberOrNull(params.get('keyresultId'));
+      if (keyresultId) {
+        this.keyResultId = keyresultId;
+      } else {
+        new Error('No Key Result id set!');
+      }
+    });
     this.reloadMeasures();
   }
 
@@ -58,7 +74,6 @@ export class MeasureRowComponent implements OnInit {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
             this.reloadMeasures();
-            this.onMeasureDelete.emit();
             this.toastr.success('', 'Messung gelöscht!', {
               timeOut: 5000,
             });

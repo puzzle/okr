@@ -1,4 +1,9 @@
-<mat-expansion-panel>
+<mat-expansion-panel
+  id="expansion-panel"
+  [expanded]="isSelected"
+  (closed)="removeKeyResultSelection(this.keyResult.id!)"
+  (opened)="addKeyResultSelection(this.keyResult.id!)"
+>
   <mat-expansion-panel-header>
     <mat-panel-title class="keyresult-title">{{
       this.keyResult!.title

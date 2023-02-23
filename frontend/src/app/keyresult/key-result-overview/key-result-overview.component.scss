@@ -1,37 +1,11 @@
-.d-flex {
-  display: flex;
+.sameElement {
+  display: inline-block;
 }
 
-.w-100 {
-  width: 100%;
+.matCardContent {
+  margin-top: 20px;
 }
 
-.w-50 {
-  width: 50%;
-}
-
-.w-95 {
-  width: 93%;
-}
-
-mat-card {
-  border: 1px solid gray;
-}
-
-.justify-content-start {
-  justify-content: start;
-}
-
-.outer-cards {
-  border: 1px solid #dddddd;
-  background-color: #f0f0f0;
-}
-
-.inner-cards {
-  border: 1px solid #dddddd;
-  background-color: #f9f9f9;
-}
-
-.edit-button {
-  padding-left: 0;
+.firstElement {
+  margin-right: 10px;
 }

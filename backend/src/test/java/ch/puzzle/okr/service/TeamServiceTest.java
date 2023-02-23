@@ -31,7 +31,6 @@ class TeamServiceTest {
     Team team1;
     Team team2;
 
-    List<Team> teamsPuzzle;
     @InjectMocks
     private TeamService teamService;
 
@@ -49,7 +48,6 @@ class TeamServiceTest {
         this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
         this.team1 = Team.Builder.builder().withName("Team 1").build();
         this.team2 = Team.Builder.builder().withName("Team 2").build();
-        this.teamsPuzzle = List.of(teamPuzzle, team1, team2);
     }
 
     @ParameterizedTest

@@ -15,25 +15,21 @@ import { KeyresultModule } from '../keyresult.module';
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { MatDialog } from '@angular/material/dialog';
+import { RouteService } from '../../shared/services/route.service';
 
-export class MatDialogMock {
-  open() {
-    return {
-      beforeClosed: jest.fn(),
-    };
-  }
-}
+const mockRouteService = {
+  navigate: jest.fn(),
+};
+
+const mockToastrService = {
+  success: jest.fn(),
+  error: jest.fn(),
+};
 
 describe('KeyResultKeyResultRowComponent', () => {
   let component: KeyResultRowComponent;
   let fixture: ComponentFixture<KeyResultRowComponent>;
   let keyResult: KeyResultMeasure = keyresultData.keyresults[0];
-
-  const mockToastrService = {
-    success: jest.fn(),
-    error: jest.fn(),
-  };
 
   describe('KeyResultRow with set measure', () => {
     beforeEach(() => {
@@ -52,7 +48,7 @@ describe('KeyResultKeyResultRowComponent', () => {
         providers: [
           DatePipe,
           { provide: ToastrService, useValue: mockToastrService },
-          { provide: MatDialog, useClass: MatDialogMock },
+          { provide: RouteService, useValue: mockRouteService },
         ],
         declarations: [KeyResultRowComponent],
       })
@@ -71,6 +67,7 @@ describe('KeyResultKeyResultRowComponent', () => {
 
     afterEach(() => {
       //ToastrService Reset
+      mockRouteService.navigate.mockReset();
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
@@ -113,42 +110,10 @@ describe('KeyResultKeyResultRowComponent', () => {
       );
     });
 
-    test('should open dialog when deleting Key Result', () => {
-      let button = fixture.debugElement.nativeElement.querySelector(
-        'button[mat-icon-button]'
-      );
-      button.click();
-      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
-      let children = Array.from(matMenu.children).map(
-        (e) => e.querySelector('span')!
-      );
-      children[3].click();
-    });
-
     test.each([
       [
         [
-          {
-            displayName: 'Key Result bearbeiten',
-            showDialog: false,
-            routeLine: 'objective/objectiveId/keyresult/edit/keyresultId',
-          },
-          {
-            displayName: 'Key Result duplizieren',
-            showDialog: false,
-            routeLine: 'objective/edit',
-          },
-          {
-            displayName: 'Details einsehen',
-            showDialog: false,
-            routeLine: 'result/add',
-          },
           { displayName: 'Key Result löschen', showDialog: true },
-          {
-            displayName: 'Messung hinzufügen',
-            showDialog: false,
-            routeLine: 'result/add',
-          },
         ] as MenuEntry[],
       ],
     ])('should have menu items', (menuEntries: MenuEntry[]) => {
@@ -208,15 +173,19 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     afterEach(() => {
-      //ToastrService Reset
       mockToastrService.success.mockReset();
       mockToastrService.error.mockReset();
     });
 
-    test('should have right last measure when measure is set', () => {
+    test('should have "-" at position date when last measure ist null', () => {
       const measureTag = fixture.debugElement.query(
         By.css('.measure-null-date')
       );
+      expect(measureTag.nativeElement.textContent).toContain('-');
+    });
+
+    test('should have "-" at position progress when last measure ist null', () => {
+      const measureTag = fixture.debugElement.query(By.css('.h6'));
       expect(measureTag.nativeElement.textContent).toContain('-');
     });
   });

@@ -64,6 +64,7 @@
     <form
       (ngSubmit)="save()"
       [formGroup]="keyResultForm"
+      (change)="update()"
       class="d-flex flex-column fit-content"
     >
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -93,7 +94,10 @@
           <mat-label>Einheit</mat-label>
           <mat-select
             (selectionChange)="
-              this.enableTargetAndBasicValue(); this.resetValidatorOfForm()
+              this.enableTargetAndBasicValue();
+              this.resetValidatorOfForm(
+                this.keyResultForm.controls['unit'].value
+              )
             "
             [value]="keyresult.unit"
             formControlName="unit"
@@ -191,11 +195,7 @@
           class="form-field-width form-field-height"
         >
           <mat-label>Besitzer</mat-label>
-          <mat-select
-            [value]="keyresult.ownerId"
-            formControlName="ownerId"
-            class="owner-select"
-          >
+          <mat-select formControlName="ownerId" class="owner-select">
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>

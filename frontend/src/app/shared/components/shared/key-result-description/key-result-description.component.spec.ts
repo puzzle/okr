@@ -22,6 +22,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyResultDescriptionComponent', () => {
   let component: KeyResultDescriptionComponent;
@@ -33,6 +34,9 @@ describe('KeyResultDescriptionComponent', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          TranslateTestingModule.withTranslations({
+            de: require('../../../../../assets/i18n/de.json'),
+          }),
           HttpClientTestingModule,
           BrowserAnimationsModule,
           BrowserDynamicTestingModule,
@@ -63,39 +67,24 @@ describe('KeyResultDescriptionComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should have 4 strong titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('strong'));
-      expect(titles.length).toEqual(4);
+    test('should have 5 fw-normal titles', () => {
+      const titles = fixture.debugElement.queryAll(By.css('.fw-normal'));
+      expect(titles.length).toEqual(6);
     });
 
-    test('should set title key result title', () => {
-      const title = fixture.debugElement.query(By.css('.key-result-title'));
-      expect(title.nativeElement.textContent).toContain(
-        'Key Result Key Result title'
-      );
-    });
+    test('should have 4 texts', () => {
+      const titles = fixture.debugElement.queryAll(By.css('.fw-normal.lead'));
+      var titelsText = titles.map((e) => e.nativeElement.innerHTML);
 
-    test('should set title from Key Result', () => {
-      const description = fixture.debugElement.query(
-        By.css('.key-result-description')
-      );
-      expect(description.nativeElement.textContent).toContain(
-        'Beschreibung Key Result description'
-      );
-    });
-
-    test('should set teamname from objective', () => {
-      const teamname = fixture.debugElement.query(
-        By.css('.key-result-objective')
-      );
-      expect(teamname.nativeElement.textContent).toContain(
-        'Team 1 Objective Objective title'
-      );
-    });
-
-    test('should set quarter from Key Result', () => {
-      const quarter = fixture.debugElement.query(By.css('.key-result-quarter'));
-      expect(quarter.nativeElement.textContent).toContain('Zyklus GJ 22/23-Q1');
+      var expectedTexts = [
+        'Key Result: ',
+        'Beschreibung:',
+        'Team 1 Objective: ',
+        'Zyklus: ',
+        ' Startwert: ',
+        ' Zielwert: ',
+      ];
+      expect(titelsText).toEqual(expectedTexts);
     });
   });
 });

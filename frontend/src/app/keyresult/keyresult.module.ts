@@ -13,26 +13,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DiagramComponent } from './diagram/diagram.component';
 import { ProgressModule } from '../progress/progress.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeyResultOverviewComponent } from './key-result-overview/key-result-overview.component';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    KeyResultRowComponent,
-    DiagramComponent,
-    KeyResultOverviewComponent,
-    DiagramComponent,
-  ],
+  declarations: [KeyResultRowComponent, KeyResultOverviewComponent],
   providers: [KeyResultService, DatePipe],
-  exports: [
-    KeyResultRowComponent,
-    KeyResultOverviewComponent,
-    DiagramComponent,
-    DiagramComponent,
-  ],
+  exports: [KeyResultRowComponent, KeyResultOverviewComponent],
   imports: [
     CommonModule,
     MatExpansionModule,

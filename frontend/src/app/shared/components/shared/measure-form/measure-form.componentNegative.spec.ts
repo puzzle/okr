@@ -37,7 +37,7 @@ import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { Goal, GoalService } from '../../../services/goal.service';
 import * as goalsData from '../../../testing/mock-data/goals.json';
 import { MatDialog } from '@angular/material/dialog';
-import { MeasureValueValidator } from '../../../validators';
+import { UnitValueValidator } from '../../../validators';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('MeasureFormComponent3', () => {
@@ -83,7 +83,7 @@ describe('MeasureFormComponent3', () => {
       TestBed.configureTestingModule({
         declarations: [
           MeasureFormComponent,
-          MeasureValueValidator,
+          UnitValueValidator,
           KeyResultDescriptionComponent,
           MeasureRowComponent,
         ],
@@ -140,7 +140,7 @@ describe('MeasureFormComponent3', () => {
       mockMeasureService.saveMeasure.mockReset();
     });
 
-    it('should create', () => {
+    test('should create', () => {
       expect(component).toBeTruthy();
 
       expect(mockMeasureService.getMeasureById).toHaveBeenCalledTimes(0);

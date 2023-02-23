@@ -40,9 +40,7 @@ class KeyResultServiceTest {
     List<KeyResult> keyResults;
     User user;
     Objective objective;
-    Quarter quarter;
     KeyResult keyResult;
-    KeyResult keyResultBinary;
     Measure measure1;
     Measure measure2;
     Measure measure3;
@@ -56,12 +54,7 @@ class KeyResultServiceTest {
 
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
-        this.quarter = Quarter.Builder.builder().withId(5L).withLabel("GJ 22/23-Q2").build();
-
         this.keyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.PERCENT).withTitle("Keyresult 1")
-                .withObjective(this.objective).withOwner(this.user).build();
-
-        this.keyResultBinary = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY).withTitle("Keyresult 1")
                 .withObjective(this.objective).withOwner(this.user).build();
 
         measure1 = Measure.Builder.builder().withId(1L).withKeyResult(keyResult).withCreatedBy(user).build();
@@ -110,20 +103,18 @@ class KeyResultServiceTest {
     }
 
     @Test
-    void shouldCreateKeyResultBinary() {
-        Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResultBinary);
-        this.keyResultService.createKeyResult(this.keyResultBinary);
-
-        KeyResult changedKeyResult = KeyResult.Builder.builder().withId(5L).withUnit(Unit.BINARY)
-                .withTitle("Keyresult 1").withObjective(this.objective).withBasisValue(0L).withTargetValue(1L)
-                .withOwner(this.user).build();
-        verify(this.keyResultRepository, times(1)).save(changedKeyResult);
+    void shouldBePossibleToCreateKeyResultWithoutDescription() {
+        Mockito.when(this.keyResultRepository.save(any())).thenReturn(this.keyResult);
+        this.keyResult.setDescription("");
+        KeyResult keyResult = this.keyResultService.createKeyResult(this.keyResult);
+        assertEquals("Keyresult 1", keyResult.getTitle());
+        assertEquals("", keyResult.getDescription());
     }
 
     @Test
     void shouldGetAllKeyresultsByObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -134,7 +125,7 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjective(any())).thenReturn(Collections.emptyList());
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(Collections.emptyList());
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -183,10 +174,10 @@ class KeyResultServiceTest {
     void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
-                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L,
-                new MeasureDto(1L, 1L, 10, "", "", 1L, null, null), 0L));
+                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D,
+                new MeasureDto(1L, 1L, 10D, "", "", 1L, null, null), 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
@@ -200,9 +191,9 @@ class KeyResultServiceTest {
     void shouldReturnNullObjectWhenMeasureIsNull() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjective(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20L, 100L, null, 0L));
+                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, null, 0L));
 
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 

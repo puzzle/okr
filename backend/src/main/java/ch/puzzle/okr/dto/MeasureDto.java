@@ -6,14 +6,14 @@ import java.time.LocalDateTime;
 public class MeasureDto {
     private java.lang.Long id;
     private Long keyResultId;
-    private Integer value;
+    private Double value;
     private String changeInfo;
     private String initiatives;
     private Instant measureDate;
     private Long createdById;
     private LocalDateTime createdOn;
 
-    public MeasureDto(Long id, Long keyResultId, Integer value, String changeInfo, String initiatives, Long createdById,
+    public MeasureDto(Long id, Long keyResultId, Double value, String changeInfo, String initiatives, Long createdById,
             LocalDateTime createdOn, Instant measureDate) {
         this.id = id;
         this.keyResultId = keyResultId;
@@ -37,52 +37,20 @@ public class MeasureDto {
         return keyResultId;
     }
 
-    public void setKeyResultId(Long keyResultId) {
-        this.keyResultId = keyResultId;
-    }
-
-    public Integer getValue() {
+    public Double getValue() {
         return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
     }
 
     public String getChangeInfo() {
         return changeInfo;
     }
 
-    public void setChangeInfo(String changeInfo) {
-        this.changeInfo = changeInfo;
-    }
-
     public String getInitiatives() {
         return initiatives;
     }
 
-    public void setInitiatives(String initiatives) {
-        this.initiatives = initiatives;
-    }
-
     public Long getCreatedById() {
         return createdById;
-    }
-
-    public void setCreatedById(Long createdById) {
-        this.createdById = createdById;
-    }
-
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public void setMeasureDate(Instant measureDate) {
-        this.measureDate = measureDate;
     }
 
     public Instant getMeasureDate() {

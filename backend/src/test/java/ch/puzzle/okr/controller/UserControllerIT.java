@@ -48,7 +48,6 @@ class UserControllerIT {
 
     @BeforeEach
     void setUp() {
-        // setup user mapper
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
         BDDMockito.given(userMapper.toDto(userBob)).willReturn(userBobDto);
     }

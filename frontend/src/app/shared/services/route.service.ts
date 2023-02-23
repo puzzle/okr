@@ -19,10 +19,6 @@ export class RouteService {
     this.previousUrl = url;
   }
 
-  getCurrentUrl(): string {
-    return this.currentUrl;
-  }
-
   constructor(
     private location: Location,
     private route: ActivatedRoute,

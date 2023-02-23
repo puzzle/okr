@@ -1,11 +1,10 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Location, PopStateEvent } from '@angular/common';
+import { Location } from '@angular/common';
 import { RouteService } from './route.service';
 import {
   ActivatedRoute,
   convertToParamMap,
   NavigationEnd,
-  Route,
   Router,
 } from '@angular/router';
 import { of } from 'rxjs';
@@ -150,6 +149,7 @@ describe('RouteService', () => {
   });
 
   it('should navigate to previousURL if previousUrl is available', () => {
+    mockActivatedRoute.queryParams = of({});
     const queryParams = {
       objectives: undefined,
       keyresults: undefined,

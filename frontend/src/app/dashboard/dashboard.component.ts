@@ -1,7 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
-import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  first,
+  map,
+  Observable,
+  pluck,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
@@ -35,18 +44,24 @@ export class DashboardComponent implements OnInit {
     this.teams$ = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
     //select filter values from url
-    this.route.queryParams
-      .subscribe((params) => {
+    this.route.queryParams.pipe(
+      switchMap((params) =>
+        this.quarters$!.pipe(
+          map((quarters) => {
+            this.filters.get('quarterFilter')!.setValue(
+              getNumberOrNull(params['quarterFilter']) // set default filter here
+            );
+            return params;
+          })
+        )
+      ),
+      tap((params) => {
         let selectedTeams: number[] = [];
         (params['teamFilter']?.split(',') ?? []).forEach((item: string) =>
           selectedTeams.push(getNumberOrNull(item)!)
         );
-        this.filters.setValue({
-          quarterFilter: getNumberOrNull(params['quarterFilter']),
-          teamsFilter: selectedTeams,
-        });
       })
-      .unsubscribe();
+    );
     this.reloadOverview();
   }
 

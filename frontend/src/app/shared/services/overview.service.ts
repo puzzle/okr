@@ -21,6 +21,11 @@ export class OverviewService {
   ): Observable<Overview[]> {
     let params = new HttpParams();
     if (quarterFilter !== undefined) {
+      // if no filter is set manually the console.log should always show 1 in order to get the correct overview
+      console.log(
+        '(7): the current quarter Filter in get overview ==>',
+        quarterFilter
+      );
       params = params.append('quarter', quarterFilter);
     }
     if (teamFilter.length !== 0) {

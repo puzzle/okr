@@ -19,7 +19,7 @@
         *ngIf="keyresult$ | async as keyresult"
         class="d-flex align-items-center justify-content-end gap-4"
       >
-        <p class="fw-bold">Aktueller Wert</p>
+        <p class="key">Aktueller Wert</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -35,7 +35,7 @@
           />
         </mat-form-field>
 
-        <mat-label class="unit-label"
+        <mat-label class="key"
           ><b>{{ "UNIT." + keyresult.unit | translate }}</b></mat-label
         >
       </div>
@@ -43,7 +43,7 @@
       <div
         class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right"
       >
-        <p class="fw-bold">Datum der Messung</p>
+        <p class="key">Datum der Messung</p>
         <mat-form-field
           *ngIf="startEndDate$ | async as startEndDate"
           appearance="fill"
@@ -73,7 +73,7 @@
       <div
         class="d-flex align-items-center justify-content-end gap-4 margin-right"
       >
-        <p class="fw-bold">Veränderung seit letzter Messung</p>
+        <p class="key">Veränderung seit letzter Messung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
           <textarea
@@ -89,7 +89,7 @@
       <div
         class="d-flex align-items-center justify-content-end gap-4 margin-right"
       >
-        <p class="fw-bold">Massnahmen</p>
+        <p class="key">Massnahmen</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
           <textarea

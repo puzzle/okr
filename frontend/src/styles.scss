@@ -11,6 +11,19 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.key {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.value {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-weight: normal;
+  font-size: 1rem;
+}
+
 .form-field-width {
   width: 15em;
 }

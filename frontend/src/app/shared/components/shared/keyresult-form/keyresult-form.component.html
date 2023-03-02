@@ -11,53 +11,6 @@
 <div
   class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2"
 >
-  <!--  <div-->
-  <!--    *ngIf="objective$ | async as objective"-->
-  <!--    class="d-flex flex-column center"-->
-  <!--  >-->
-  <!--    <div class="d-flex justify-content-center gap-3">-->
-  <!--      <span class="d-flex w-50 justify-content-end">-->
-  <!--        <p class="fw-bold max-content">Titel</p>-->
-  <!--      </span>-->
-
-  <!--      <p class="w-100 objective-title">-->
-  <!--        {{ this.objective.title }}-->
-  <!--      </p>-->
-  <!--    </div>-->
-
-  <!--    <div class="d-flex justify-content-center gap-3">-->
-  <!--      <span class="d-flex w-50 justify-content-end">-->
-  <!--        <p class="fw-bold max-content teamname-title">Team</p>-->
-  <!--      </span>-->
-
-  <!--      <p class="w-100 objective-teamname">-->
-  <!--        {{ this.objective.teamName }}-->
-  <!--      </p>-->
-  <!--    </div>-->
-
-  <!--    <div class="d-flex justify-content-center gap-3">-->
-  <!--      <span class="d-flex w-50 justify-content-end">-->
-  <!--        <p class="fw-bold max-content description-title">Beschreibung</p>-->
-  <!--      </span>-->
-
-  <!--      <p class="w-100 objective-description">-->
-  <!--        {{ this.objective.description }}-->
-  <!--      </p>-->
-  <!--    </div>-->
-
-  <!--    <div class="d-flex justify-content-center gap-3">-->
-  <!--      <span class="d-flex w-50 justify-content-end">-->
-  <!--        <p class="fw-bold max-content quarter-title">Zyklus</p>-->
-  <!--      </span>-->
-
-  <!--      <p class="w-100 objective-quarter">-->
-  <!--        {{ this.objective.quarterLabel }}-->
-  <!--      </p>-->
-  <!--    </div>-->
-  <!--  </div>-->
-
-  <!--  <mat-divider></mat-divider>-->
-
   <div *ngIf="keyresult$ | async as keyresult" class="d-flex">
     <form
       (ngSubmit)="save()"
@@ -66,7 +19,7 @@
       class="d-flex flex-column fit-content"
     >
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Titel</p>
+        <p class="key">Titel</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -83,7 +36,7 @@
         </mat-form-field>
       </div>
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Einheit</p>
+        <p class="key">Einheit</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -113,7 +66,7 @@
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Erwartete Entwicklung</p>
+        <p class="key">Erwartete Entwicklung</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -135,7 +88,7 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Startwert</p>
+        <p class="key">Startwert</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -153,7 +106,7 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Zielwert</p>
+        <p class="key">Zielwert</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -171,7 +124,7 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Beschreibung</p>
+        <p class="key">Beschreibung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Beschreibung</mat-label>
 
@@ -187,7 +140,7 @@
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Besitzer</p>
+        <p class="key">Besitzer</p>
         <mat-form-field
           appearance="outline"
           class="form-field-width form-field-height"
@@ -225,34 +178,32 @@
     </form>
   </div>
 
-  <div class="d-flex">
+  <div class="d-flex detail">
     <div *ngIf="objective$ | async as objective">
       <mat-card class="outer-cards w-100">
-        <p class="h3">Objective Details</p>
+        <p class="fs-2">Objective Details</p>
         <mat-card-content class="d-flex gap-2 flex-wrap">
           <mat-card class="inner-cards flex-grow-1">
             <mat-card-content class="d-flex flex-column justify-content-around">
               <div>
-                <span class="lead fw-normal">Objective: </span>
-                <span class="lead">{{ objective.title }}</span>
+                <span class="key">Team: </span>
+                <span class="value">{{ objective.teamName }} </span>
+              </div>
+              <div>
+                <span class="key">Objective: </span>
+                <span class="value">{{ objective.title }}</span>
               </div>
 
               <div class="d-flex flex-column">
-                <span class="lead fw-normal">Beschreibung:</span>
-                <span class="lead fs-5">
+                <span class="key">Beschreibung:</span>
+                <span class="value">
                   {{ objective.description }}
                 </span>
               </div>
 
               <div>
-                <span class="lead fw-normal"
-                  >{{ objective.teamName }} Objective:
-                </span>
-              </div>
-
-              <div>
-                <span class="lead fw-normal">Zyklus: </span>
-                <span class="lead">
+                <span class="key">Zyklus: </span>
+                <span class="value">
                   {{ objective.quarterLabel }}
                 </span>
               </div>

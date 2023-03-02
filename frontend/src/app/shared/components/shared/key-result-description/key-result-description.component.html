@@ -1,28 +1,28 @@
 <mat-card class="outer-cards w-100">
-  <p class="h3">Key Result Details</p>
+  <p class="fs-2">Key Result Details</p>
   <mat-card-content class="d-flex gap-2 flex-wrap">
     <mat-card class="inner-cards flex-grow-1">
       <mat-card-content class="d-flex flex-column justify-content-around">
         <div>
-          <span class="lead fw-normal">Key Result: </span>
-          <span class="lead">{{ goal.keyresult.title }}</span>
+          <span class="key">Key Result: </span>
+          <span class="value">{{ goal.keyresult.title }}</span>
         </div>
 
         <div class="d-flex flex-column">
-          <span class="lead fw-normal">Beschreibung:</span>
-          <span class="lead fs-5">
+          <span class="key">Beschreibung:</span>
+          <span class="value">
             {{ goal.keyresult.description }}
           </span>
         </div>
 
         <div>
-          <span class="lead fw-normal">{{ goal.teamName }} Objective: </span>
-          <span class="lead">{{ goal.objective.title }}</span>
+          <span class="key">{{ goal.teamName }} Objective: </span>
+          <span class="value">{{ goal.objective.title }}</span>
         </div>
 
         <div>
-          <span class="lead fw-normal">Zyklus: </span>
-          <span class="lead">
+          <span class="key">Zyklus: </span>
+          <span class="value">
             {{ goal.quarterLabel }}
           </span>
         </div>
@@ -32,19 +32,19 @@
     <mat-card class="inner-cards flex-grow-1">
       <mat-card-content class="d-flex flex-column justify-content-around">
         <span>
-          <span class="lead fw-normal">
+          <span class="key">
             {{ "KEY_RESULT_DESCRIPTION.BASIC_VALUE" | translate }}:
           </span>
-          <span class="lead">
+          <span class="value">
             {{ goal.basicValue }}
           </span>
         </span>
 
         <span>
-          <span class="lead fw-normal">
+          <span class="key">
             {{ "KEY_RESULT_DESCRIPTION.TARGET_VALUE" | translate }}:
           </span>
-          <span class="lead">
+          <span class="value">
             {{ goal.targetValue }}
           </span>
         </span>

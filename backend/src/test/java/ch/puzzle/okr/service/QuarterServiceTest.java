@@ -62,11 +62,6 @@ class QuarterServiceTest {
         );
     }
 
-    private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
-        return Stream.of(Arguments.of(2023, 1, "GJ 22/23-Q3"), Arguments.of(2022, 4, "GJ 21/22-Q4"),
-                Arguments.of(2021, 7, "GJ 21/22-Q1"), Arguments.of(2022, 10, "GJ 22/23-Q2"));
-    }
-
     private static Stream<Arguments> shouldShortenYear() {
         return Stream.of(Arguments.of(2000, "00"), Arguments.of(2005, "05"), Arguments.of(2014, "14"),
                 Arguments.of(2020, "20"), Arguments.of(2023, "23"));
@@ -146,6 +141,15 @@ class QuarterServiceTest {
 
         assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
                 quarterService.getOrCreateQuarters());
+    }
+
+    private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
+        return Stream.of(Arguments.of(2023, 1, "GJ 22/23-Q3"), Arguments.of(2023, 2, "GJ 22/23-Q3"),
+                Arguments.of(2023, 3, "GJ 22/23-Q3"), Arguments.of(2023, 4, "GJ 22/23-Q4"),
+                Arguments.of(2023, 5, "GJ 22/23-Q4"), Arguments.of(2023, 6, "GJ 22/23-Q4"),
+                Arguments.of(2023, 7, "GJ 23/24-Q1"), Arguments.of(2023, 8, "GJ 23/24-Q1"),
+                Arguments.of(2023, 9, "GJ 23/24-Q1"), Arguments.of(2023, 10, "GJ 23/24-Q2"),
+                Arguments.of(2023, 11, "GJ 23/24-Q2"), Arguments.of(2023, 12, "GJ 23/24-Q2"));
     }
 
     @ParameterizedTest

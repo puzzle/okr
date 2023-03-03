@@ -116,7 +116,7 @@ describe('DashboardComponent', () => {
     const bugOption = await select.getOptions({ text: 'GJ 22/23-Q1' });
     await bugOption[0].click();
 
-    expect(component.filters.controls.quarterFilter.value).toEqual(1);
+    expect(component.filters.controls.quarterFilter.value).toEqual('1');
     expect(dropDownElements.length).toEqual(5);
     expect(await select.getValueText()).toEqual('GJ 22/23-Q1');
     expect(await select.isDisabled()).toBeFalsy();

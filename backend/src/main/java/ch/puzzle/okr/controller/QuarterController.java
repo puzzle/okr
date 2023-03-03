@@ -25,10 +25,8 @@ public class QuarterController {
         this.quarterService = quarterService;
     }
 
-    /**
-     * This method is synchronized, because a parallel call from frontend dann insert double Quarters in the DB.
-     * TODO: fix this issue without synchronized
-     */
+    // This method is synchronized, because a parallel call from frontend dann insert double Quarters in the DB.
+    // TODO: fix this issue without synchronized
     @Operation(summary = "Get quarters by Team", description = "Get a List of quarters for current date")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of current quarters", content = {

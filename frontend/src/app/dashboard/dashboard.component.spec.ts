@@ -16,10 +16,12 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Location } from '@angular/common';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
+  let location: Location;
 
   let quarters: Observable<Quarter[]> = of(quartersData.quarters);
 
@@ -58,19 +60,12 @@ describe('DashboardComponent', () => {
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
         { provide: OverviewService, useValue: overviewServiceMock },
-        // {
-        //   provide: ActivatedRoute,
-        //   useValue: {
-        //     paramMap: of(
-        //       convertToParamMap({ teamFilter: '', quarterFilter: '' })
-        //     ),
-        //   },
-        // },
       ],
       declarations: [DashboardComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
+    location = TestBed.inject(Location);
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     activatedRoute = TestBed.inject(ActivatedRoute);
@@ -99,6 +94,8 @@ describe('DashboardComponent', () => {
   });
 
   test('should display 3 team detail components when having 3 teams', () => {
+    component.reloadOverview();
+    fixture.detectChanges();
     expect(
       fixture.nativeElement.querySelectorAll('app-team-detail').length
     ).toEqual(3);
@@ -123,7 +120,7 @@ describe('DashboardComponent', () => {
     expect(await select.isOpen()).toBeFalsy();
   });
 
-  xtest('should select team filter in dropdown and change filter and url', async () => {
+  test('should select team filter in dropdown and change filter and url', async () => {
     const select = await loader.getHarness(
       MatSelectHarness.with({
         selector: '#teamDropdown',
@@ -132,28 +129,29 @@ describe('DashboardComponent', () => {
 
     await select.open();
     const dropDownElements = await select.getOptions();
-    const bugOptionFirstTeam = await select.getOptions({ text: 'Team 1' });
-    const bugOptionSecondTeam = await select.getOptions({ text: 'Team 2' });
-    await bugOptionFirstTeam[0].click();
-
-    expect(await select.getValueText()).toEqual('Team 1');
-    expect(component.filters.controls.teamsFilter.value).toEqual([1]);
-    expect(location.search).toEqual('?teamFilter=1');
-    expect(overviewServiceMock.getOverview).toHaveBeenCalledWith(undefined, [
-      1,
-    ]);
-
-    await bugOptionSecondTeam[0].click();
-
-    expect(await select.getValueText()).toEqual('Team 1, Team 2');
-    expect(component.filters.controls.teamsFilter.value).toEqual([1, 2]);
-    expect(location.search).toEqual('?teamFilter=1,2');
-
+    const bugOptionFirstTeam = await select.getOptions({ text: 'Team 2' });
+    const bugOptionSecondTeam = await select.getOptions({ text: 'Team 3' });
     await bugOptionFirstTeam[0].click();
 
     expect(await select.getValueText()).toEqual('Team 2');
     expect(component.filters.controls.teamsFilter.value).toEqual([2]);
-    expect(location.search).toEqual('?teamFilter=2');
+    expect(location.path(true)).toEqual('/?teamFilter=2');
+    expect(overviewServiceMock.getOverview).toHaveBeenCalledWith(
+      undefined,
+      '2'
+    );
+
+    await bugOptionSecondTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 2, Team 3');
+    expect(component.filters.controls.teamsFilter.value).toEqual([2, 3]);
+    expect(location.path(true)).toEqual('/?teamFilter=2,3');
+
+    await bugOptionFirstTeam[0].click();
+
+    expect(await select.getValueText()).toEqual('Team 3');
+    expect(component.filters.controls.teamsFilter.value).toEqual([3]);
+    expect(location.path(true)).toEqual('/?teamFilter=3');
 
     expect(dropDownElements.length).toEqual(3);
     expect(await select.isDisabled()).toBeFalsy();

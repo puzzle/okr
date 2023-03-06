@@ -170,18 +170,13 @@ export class RouteService {
   public changeQuarterFilter(
     value: number | null | undefined
   ): Observable<any> {
-    // to see where exactly the url gets changed and what the params are set
-    console.log(
-      '(1.6) this is the routsercive changing the quarterFilter ==>',
-      value
-    );
     return this.route.queryParams.pipe(
       first(),
       switchMap((queryParams) => {
         const navExtras = {
           queryParams: {
             ...queryParams,
-            quarterFilter: value ?? undefined, // Remove parameter if value is null or undefined
+            quarterFilter: value ?? undefined,
           },
         };
         return this.router.navigate(['/'], navExtras);

@@ -57,7 +57,7 @@ public class QuarterService {
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
 
-    protected Quarter getOrCreateQuarter(String label) {
+    protected synchronized Quarter getOrCreateQuarter(String label) {
         Optional<Quarter> quarter = quarterRepository.findByLabel(label);
         return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
     }

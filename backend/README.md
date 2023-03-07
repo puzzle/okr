@@ -1,8 +1,8 @@
 # OKR-Tool Backend
 
-This is the Spring Boot Backend for the OKR-Tool.
+This is the Spring Boot backend for the OKR-Tool.
 
-## Develop Info
+## DEVELOPING
 
 Install and compile:
 - Install maven dependencies: `mvn clean compile`

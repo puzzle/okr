@@ -1,6 +1,6 @@
 # OKR-Tool
 
-This is an open source OKR-Tool application, developed from the team of apprentices.
+This is an open source application for managing OKRs, developed by the team of apprentices at Puzzle ITC.
 
 This project contains two parts:
 

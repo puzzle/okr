@@ -4,7 +4,7 @@
   (closed)="removeKeyResultSelection(this.keyResult.id!)"
   (opened)="addKeyResultSelection(this.keyResult.id!)"
 >
-  <mat-expansion-panel-header>
+  <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
     <mat-panel-title class="keyresult-title">{{ this.keyResult!.title }}</mat-panel-title>
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex justify-content-around w-50">

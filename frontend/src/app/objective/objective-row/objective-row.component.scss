@@ -27,8 +27,10 @@
 }
 
 .mat-expansion-panel-header {
+  height: 100% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 5px;
-  padding: 16px;
 }
 
 .mat-panel-description {

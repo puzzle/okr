@@ -2,11 +2,11 @@
 
 This is the Angular Frontend for the OKR-Tool.
 
-## Develop Info
+## DEVELOPING
 
 Environment:
 
-- We use one of the 18 Node version for development.
+- We require Node.js ^18
 
 Install:
 
@@ -21,12 +21,12 @@ Formatting:
 
 Test and Run:
 
-- Execute the test: `npm run test`
+- Execute the tests: `npm run test`
 - Start the frontend: `npm run start`
 
 Build:
 
-- Create productive Build: `npm run build`
+- Build for production: `npm run build`
 
 ## Formatting
 

@@ -176,7 +176,7 @@ export class RouteService {
         const navExtras = {
           queryParams: {
             ...queryParams,
-            quarterFilter: value ?? undefined, // Remove parameter if value is null or undefined
+            quarterFilter: value ?? undefined,
           },
         };
         return this.router.navigate(['/'], navExtras);

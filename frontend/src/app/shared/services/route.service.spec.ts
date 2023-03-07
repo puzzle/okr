@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { RouteService } from './route.service';
 import {
@@ -84,6 +84,39 @@ describe('RouteService', () => {
     });
   });
 
+  it('should redirect to root if removing last selected objective', () => {
+    mockActivatedRoute.queryParams = of({ objectives: '4' });
+
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      quarterFilter: undefined,
+      teamFilter: undefined,
+    };
+
+    service.removeFromSelectedObjectives(4);
+
+    expect(router.navigate).toHaveBeenCalledWith(['/'], {
+      queryParams: queryParams,
+    });
+  });
+
+  it('should not remove objective if objective is not in selected objectives', () => {
+    mockActivatedRoute.queryParams = of({ objectives: '1,2,3' });
+
+    service.removeFromSelectedObjectives(4);
+
+    expect(router.navigate).toHaveBeenCalledWith([], {
+      relativeTo: mockActivatedRoute,
+      queryParams: {
+        objectives: '1,2,3',
+        keyresults: undefined,
+        quarterFilter: undefined,
+        teamFilter: undefined,
+      },
+    });
+  });
+
   it('should add keyresult to selected keyresults', () => {
     mockActivatedRoute.queryParams = of({ keyresults: '1,2,3' });
 
@@ -102,6 +135,39 @@ describe('RouteService', () => {
 
   it('should remove keyresult from selected keyresults', () => {
     mockActivatedRoute.queryParams = of({ keyresults: '1,2,3,4' });
+
+    service.removeFromSelectedKeyresult(4);
+
+    expect(router.navigate).toHaveBeenCalledWith([], {
+      relativeTo: mockActivatedRoute,
+      queryParams: {
+        objectives: undefined,
+        keyresults: '1,2,3',
+        quarterFilter: undefined,
+        teamFilter: undefined,
+      },
+    });
+  });
+
+  it('should redirect to root if removing last selected keyresults', () => {
+    mockActivatedRoute.queryParams = of({ keyresults: '4' });
+
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      quarterFilter: undefined,
+      teamFilter: undefined,
+    };
+
+    service.removeFromSelectedKeyresult(4);
+
+    expect(router.navigate).toHaveBeenCalledWith(['/'], {
+      queryParams: queryParams,
+    });
+  });
+
+  it('should not remove keyresult if keyresult is not in selected keyresults', () => {
+    mockActivatedRoute.queryParams = of({ keyresults: '1,2,3' });
 
     service.removeFromSelectedKeyresult(4);
 
@@ -166,18 +232,55 @@ describe('RouteService', () => {
     });
   });
 
-  xit('should change quarterfilter', fakeAsync(() => {
-    mockActivatedRoute.queryParams = of(
-      { objectives: undefined },
-      { keyresult: undefined },
-      { quarterFilter: '2' },
-      { teamFilter: undefined }
-    );
+  it('should change quarterfilter', () => {
+    mockActivatedRoute.queryParams = of({});
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: undefined,
+      quarterFilter: '1',
+    };
 
-    service.changeQuarterFilter(1);
+    const newQuarterFilter$ = service.changeQuarterFilter(1);
 
-    tick();
+    newQuarterFilter$.subscribe((newQuarterFilter) => {
+      expect(newQuarterFilter).toBeInstanceOf(router.navigate);
+      expect(router.navigate).toHaveBeenCalledWith('/', {
+        queryParams: queryParams,
+      });
+    });
 
-    expect(router.navigate).toBe(activatedRoute);
-  }));
+    const wrongFilter$ = service.changeQuarterFilter(undefined);
+
+    wrongFilter$.subscribe((wrongFilter) => {
+      expect(wrongFilter).toBeInstanceOf(router.navigate);
+      expect(router.navigate).toHaveBeenCalledWith('/');
+    });
+  });
+
+  it('should change team filter', () => {
+    mockActivatedRoute.queryParams = of({});
+    const queryParams = {
+      objectives: undefined,
+      keyresults: undefined,
+      teamFilter: '1,2,3',
+      quarterFilter: undefined,
+    };
+
+    const newTeamFilter$ = service.changeTeamFilter([1, 2, 3]);
+
+    newTeamFilter$.subscribe((newTeamFilter) => {
+      expect(newTeamFilter).toBeInstanceOf(router.navigate);
+      expect(router.navigate).toHaveBeenCalledWith('/', {
+        queryParams: queryParams,
+      });
+    });
+
+    const wrongTeamFilter$ = service.changeQuarterFilter(undefined);
+
+    wrongTeamFilter$.subscribe((wrongTeamFilter) => {
+      expect(wrongTeamFilter).toBeInstanceOf(router.navigate);
+      expect(router.navigate).toHaveBeenCalledWith('/');
+    });
+  });
 });

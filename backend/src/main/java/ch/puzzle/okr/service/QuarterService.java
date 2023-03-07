@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.YearMonth;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -56,7 +57,7 @@ public class QuarterService {
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
 
-    protected Quarter getOrCreateQuarter(String label) {
+    protected synchronized Quarter getOrCreateQuarter(String label) {
         Optional<Quarter> quarter = quarterRepository.findByLabel(label);
         return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
     }
@@ -74,9 +75,8 @@ public class QuarterService {
     public String getQuarter(YearMonth yearMonth) {
         int currentYear = yearMonth.getYear();
         int currentMonth = yearMonth.getMonthValue();
-        int yearQuarter = currentMonth / 3 + 1;
-        int firstLabelYear = currentMonth < Calendar.JULY ? currentYear - 1 : currentYear;
-
+        int yearQuarter = (currentMonth - 1) / 3 + 1;
+        int firstLabelYear = currentMonth < Month.JULY.getValue() ? currentYear - 1 : currentYear;
         int businessQuarter = yearToBusinessQuarterMap.get(yearQuarter);
 
         return generateQuarterLabel(firstLabelYear, businessQuarter);

@@ -26,6 +26,7 @@
         <mat-label>Zyklus</mat-label>
         <mat-select
           id="quarterDropdown"
+          [compareWith]="matSelectCompareQuarter"
           (selectionChange)="changeQuarterFilter($event.value)"
           formControlName="quarterFilter"
         >

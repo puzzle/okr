@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Goal, GoalService } from './goal.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as goalsData from '../testing/mock-data/goals.json';
 
 const response = goalsData.goals[0];

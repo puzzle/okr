@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { KeyResultMeasure, KeyResultService } from './key-result.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as keyresultData from '../testing/mock-data/keyresults.json';
 
 const response = keyresultData.keyresults;

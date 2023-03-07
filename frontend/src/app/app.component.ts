@@ -13,11 +13,7 @@ import { RouteService } from './shared/services/route.service';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
 
-  constructor(
-    private router: Router,
-    private translate: TranslateService,
-    private routeService: RouteService
-  ) {
+  constructor(private router: Router, private translate: TranslateService, private routeService: RouteService) {
     translate.setDefaultLang('de');
     translate.use('de');
   }

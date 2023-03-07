@@ -15,10 +15,7 @@ export interface Overview {
 export class OverviewService {
   constructor(private httpClient: HttpClient) {}
 
-  public getOverview(
-    quarterFilter: number | undefined,
-    teamFilter: number[]
-  ): Observable<Overview[]> {
+  public getOverview(quarterFilter: number | undefined, teamFilter: number[]): Observable<Overview[]> {
     let params = new HttpParams();
     if (quarterFilter !== undefined) {
       params = params.append('quarter', quarterFilter);

@@ -8,10 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MeasureRowComponent } from '../measure-row/measure-row.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule,
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -21,11 +18,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
-import {
-  ActivatedRoute,
-  convertToParamMap,
-  RouterLinkWithHref,
-} from '@angular/router';
+import { ActivatedRoute, convertToParamMap, RouterLinkWithHref } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
@@ -58,11 +51,7 @@ describe('KeyResultDetailComponent', () => {
     mockGetNumerOrNull.getNumberOrNull.mockReturnValue(1);
 
     TestBed.configureTestingModule({
-      declarations: [
-        KeyResultDetailComponent,
-        KeyResultDescriptionComponent,
-        MeasureRowComponent,
-      ],
+      declarations: [KeyResultDetailComponent, KeyResultDescriptionComponent, MeasureRowComponent],
       providers: [
         DatePipe,
         { provide: MatDialog, useValue: {} },
@@ -131,17 +120,13 @@ describe('KeyResultDetailComponent', () => {
   });
 
   test('should have one key result description tag', () => {
-    const keyResultDescription = fixture.debugElement.queryAll(
-      By.css('app-key-result-description')
-    );
+    const keyResultDescription = fixture.debugElement.queryAll(By.css('app-key-result-description'));
     expect(keyResultDescription.length).toEqual(1);
   });
 
   test('should have two heading labels with right titles', () => {
     const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
-    expect(headingLabel.nativeElement.textContent).toContain(
-      'Key Result Informationen'
-    );
+    expect(headingLabel.nativeElement.textContent).toContain('Key Result Informationen');
   });
 
   test('should have one mat dividers', () => {
@@ -150,19 +135,13 @@ describe('KeyResultDetailComponent', () => {
   });
 
   test('should have one measure row tag', () => {
-    const keyResultDescription = fixture.debugElement.queryAll(
-      By.css('app-measure-row')
-    );
+    const keyResultDescription = fixture.debugElement.queryAll(By.css('app-measure-row'));
     expect(keyResultDescription.length).toEqual(1);
   });
 
   test('should have a button to create measure', () => {
-    const createButton = fixture.debugElement.query(
-      By.css('#add-measure-button')
-    );
+    const createButton = fixture.debugElement.query(By.css('#add-measure-button'));
 
-    expect(createButton.nativeElement.textContent).toContain(
-      ' Messung hinzufügen '
-    );
+    expect(createButton.nativeElement.textContent).toContain(' Messung hinzufügen ');
   });
 });

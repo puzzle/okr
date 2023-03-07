@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import {
-  KeyResultService,
-  Measure,
-} from '../../../services/key-result.service';
+import { KeyResultService, Measure } from '../../../services/key-result.service';
 import { getNumberOrNull } from '../../../common';
 import { ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -36,9 +33,7 @@ export class MeasureRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    window.location.href.toString().includes('measure/')
-      ? (this.isMeasureForm = true)
-      : (this.isMeasureForm = false);
+    window.location.href.toString().includes('measure/') ? (this.isMeasureForm = true) : (this.isMeasureForm = false);
 
     this.route.paramMap.subscribe((params) => {
       const keyresultId = getNumberOrNull(params.get('keyresultId'));
@@ -81,13 +76,9 @@ export class MeasureRowComponent implements OnInit {
           error: (e: HttpErrorResponse) => {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
-            this.toastr.error(
-              'Messung konnte nicht gelöscht werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.error('Messung konnte nicht gelöscht werden!', 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
           },
         });
       } else {
@@ -100,11 +91,9 @@ export class MeasureRowComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const keyResultId = getNumberOrNull(params.get('keyresultId'));
       if (keyResultId) {
-        this.keyresultService
-          .getMeasuresOfKeyResult(keyResultId)
-          .subscribe((data) => {
-            this.measures$.next(data);
-          });
+        this.keyresultService.getMeasuresOfKeyResult(keyResultId).subscribe((data) => {
+          this.measures$.next(data);
+        });
       } else {
         throw Error('Key Result with Id ' + keyResultId + " doesn't exist");
       }

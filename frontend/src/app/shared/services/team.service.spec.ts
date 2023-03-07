@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Team, TeamService } from './team.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as teamData from '../testing/mock-data/teams.json';
 
 const teamResponse: Team = teamData.teams[0];

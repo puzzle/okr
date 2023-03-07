@@ -42,15 +42,11 @@ describe('TeamListComponent', () => {
   });
 
   test('should display a headline with right text', () => {
-    expect(
-      fixture.nativeElement.querySelector('.headline-large').textContent
-    ).toEqual('Teams');
+    expect(fixture.nativeElement.querySelector('.headline-large').textContent).toEqual('Teams');
   });
 
   test('should have create team button with right text', () => {
-    expect(
-      fixture.nativeElement.querySelector('.create-button').textContent
-    ).toEqual(' Team erstellen ');
+    expect(fixture.nativeElement.querySelector('.create-button').textContent).toEqual(' Team erstellen ');
   });
 
   test('should display three teams', () => {
@@ -60,12 +56,8 @@ describe('TeamListComponent', () => {
 
   test('should have right name on teams', () => {
     const teamRows = fixture.debugElement.queryAll(By.css('.team-row'));
-    expect(teamRows[0].nativeElement.querySelector('p').textContent).toEqual(
-      'Team 1'
-    );
-    expect(teamRows[1].nativeElement.querySelector('p').textContent).toEqual(
-      'Team 2'
-    );
+    expect(teamRows[0].nativeElement.querySelector('p').textContent).toEqual('Team 1');
+    expect(teamRows[1].nativeElement.querySelector('p').textContent).toEqual('Team 2');
   });
 
   test('should have three edit buttons', () => {

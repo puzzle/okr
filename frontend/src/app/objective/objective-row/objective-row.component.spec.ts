@@ -6,10 +6,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../shared/services/key-result.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,9 +28,7 @@ describe('ObjectiveRowComponent', () => {
 
   let objective: Objective = objectivesData.objectives[0];
 
-  let keyResultList: Observable<KeyResultMeasure[]> = of(
-    keyresultData.keyresults
-  );
+  let keyResultList: Observable<KeyResultMeasure[]> = of(keyresultData.keyresults);
 
   const mockKeyResultService = {
     getKeyResultsOfObjective: jest.fn(),
@@ -49,9 +44,7 @@ describe('ObjectiveRowComponent', () => {
   };
 
   beforeEach(() => {
-    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(
-      keyResultList
-    );
+    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(keyResultList);
 
     TestBed.configureTestingModule({
       imports: [
@@ -100,24 +93,16 @@ describe('ObjectiveRowComponent', () => {
   });
 
   test('should have objective title', () => {
-    expect(
-      fixture.nativeElement.querySelector('.objective-title').textContent
-    ).toEqual('Objective 1');
+    expect(fixture.nativeElement.querySelector('.objective-title').textContent).toEqual('Objective 1');
   });
 
   test('should have progress label with progress from objective', () => {
-    expect(
-      fixture.nativeElement.querySelector('#progressSpan').textContent
-    ).toEqual('20%');
+    expect(fixture.nativeElement.querySelector('#progressSpan').textContent).toEqual('20%');
   });
 
   test('should have progress bar with progress from objective', () => {
-    let progressBar = fixture.nativeElement
-      .querySelector('#progressContainer')
-      .querySelector('app-progress-bar');
-    expect(progressBar.getAttribute('ng-reflect-value')).toEqual(
-      objective.progress!.toString()
-    );
+    let progressBar = fixture.nativeElement.querySelector('#progressContainer').querySelector('app-progress-bar');
+    expect(progressBar.getAttribute('ng-reflect-value')).toEqual(objective.progress!.toString());
   });
 
   test('should have add keyresult button', () => {
@@ -125,34 +110,25 @@ describe('ObjectiveRowComponent', () => {
 
     expect(button.nativeElement.textContent).toEqual(' Key Result hinzufügen ');
     button.nativeElement.click();
-    expect(mockRouteService.navigate).toHaveBeenCalledWith(
-      'objective/1/keyresult/new'
-    );
+    expect(mockRouteService.navigate).toHaveBeenCalledWith('objective/1/keyresult/new');
   });
 
-  test.each([
-    [
-      [
-        { displayName: 'Objective löschen', routeLine: 'objective/delete' },
-      ] as MenuEntry[],
-    ],
-  ])('should have menu items', (menuEntries: MenuEntry[]) => {
-    let button = fixture.debugElement.nativeElement.querySelector(
-      'button[mat-icon-button]'
-    );
-    button.click();
-    let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
-    let children = Array.from(matMenu.children)
-      .map((e) => e.querySelector('span')!)
-      .map((e) => e.textContent);
-    let itemTexts = menuEntries.map((e) => e.displayName);
-    expect(children).toEqual(itemTexts);
-  });
+  test.each([[[{ displayName: 'Objective löschen', routeLine: 'objective/delete' }] as MenuEntry[]]])(
+    'should have menu items',
+    (menuEntries: MenuEntry[]) => {
+      let button = fixture.debugElement.nativeElement.querySelector('button[mat-icon-button]');
+      button.click();
+      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+      let children = Array.from(matMenu.children)
+        .map((e) => e.querySelector('span')!)
+        .map((e) => e.textContent);
+      let itemTexts = menuEntries.map((e) => e.displayName);
+      expect(children).toEqual(itemTexts);
+    }
+  );
 
   test('should have 1 objective detail rows', () => {
-    const keyResultRows = fixture.debugElement.queryAll(
-      By.css('app-objective-detail')
-    );
+    const keyResultRows = fixture.debugElement.queryAll(By.css('app-objective-detail'));
     expect(keyResultRows.length).toEqual(1);
   });
 });

@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Measure, MeasureService } from './measure.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { loadMeasure } from '../testing/Loader';
 
 const respons = loadMeasure('measure');

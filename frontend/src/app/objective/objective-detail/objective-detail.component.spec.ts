@@ -16,20 +16,13 @@ describe('ObjectiveDetailComponent', () => {
   let component: ObjectiveDetailComponent;
   let fixture: ComponentFixture<ObjectiveDetailComponent>;
 
-  let keyResultList: Observable<KeyResultMeasure[]> = of(
-    keyresultData.keyresults
-  );
+  let keyResultList: Observable<KeyResultMeasure[]> = of(keyresultData.keyresults);
 
   let objective: Objective = objectivesData.objectives[1];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        ObjectiveModule,
-        NoopAnimationsModule,
-        RouterTestingModule,
-      ],
+      imports: [HttpClientTestingModule, ObjectiveModule, NoopAnimationsModule, RouterTestingModule],
       declarations: [ObjectiveDetailComponent],
     }).compileComponents();
 
@@ -53,9 +46,7 @@ describe('ObjectiveDetailComponent', () => {
 
   test('should have owner with right first- and lastname', () => {
     const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
-    expect(ownerText.nativeElement.textContent).toEqual(
-      'Objective Besitzer Alice Wunderland '
-    );
+    expect(ownerText.nativeElement.textContent).toEqual('Objective Besitzer Alice Wunderland ');
   });
 
   test('should have right table titles', () => {

@@ -31,9 +31,7 @@ describe('ConfirmDialog', () => {
 
   test('should display correct labels', () => {
     const title = fixture.debugElement.query(By.css('#title'));
-    expect(title.nativeElement.textContent).toContain(
-      'Willst du diese Aktion wirklich ausführen?'
-    );
+    expect(title.nativeElement.textContent).toContain('Willst du diese Aktion wirklich ausführen?');
   });
 
   test('should display correct confirm button text', () => {

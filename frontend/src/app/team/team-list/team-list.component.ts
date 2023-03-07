@@ -12,10 +12,7 @@ import { RouteService } from '../../shared/services/route.service';
 export class TeamListComponent implements OnInit {
   teamList$!: Observable<Team[]>;
 
-  constructor(
-    private teamService: TeamService,
-    public routeService: RouteService
-  ) {}
+  constructor(private teamService: TeamService, public routeService: RouteService) {}
 
   ngOnInit(): void {
     this.teamList$ = this.teamService.getTeams();

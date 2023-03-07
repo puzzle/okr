@@ -9,9 +9,7 @@
           class="create-button"
           mat-button
           color="primary"
-          (click)="
-            routeService.navigate('keyresults/' + keyResultId + '/measure/new')
-          "
+          (click)="routeService.navigate('keyresults/' + keyResultId + '/measure/new')"
         >
           Messung hinzufügen
         </button>
@@ -60,14 +58,7 @@
               src="assets/edit-icon.svg"
               alt="edit-icon"
               class="edit-icon"
-              (click)="
-                routeService.navigate(
-                  '/keyresults/' +
-                    measure.keyResultId +
-                    '/measure/edit/' +
-                    measure.id
-                )
-              "
+              (click)="routeService.navigate('/keyresults/' + measure.keyResultId + '/measure/edit/' + measure.id)"
             />
             <img
               src="assets/delete-icon.svg"

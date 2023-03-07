@@ -27,19 +27,10 @@
   <pzsh-nav slot="nav">
     <pzsh-nav-item class="okr-label" active="">OKRs</pzsh-nav-item>
     <pzsh-subnav>
-      <pzsh-nav-item
-        routerLink=""
-        (click)="navigate('/')"
-        class="okr-label"
-        [attr.active]="isOverview()"
+      <pzsh-nav-item routerLink="" (click)="navigate('/')" class="okr-label" [attr.active]="isOverview()"
         >Overview</pzsh-nav-item
       >
-      <pzsh-nav-item
-        (click)="navigate('/teams')"
-        class="okr-label"
-        [attr.active]="isTeam()"
-        >Team</pzsh-nav-item
-      >
+      <pzsh-nav-item (click)="navigate('/teams')" class="okr-label" [attr.active]="isTeam()">Team</pzsh-nav-item>
     </pzsh-subnav>
   </pzsh-nav>
 </pzsh-menu>

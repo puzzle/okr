@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable, of } from 'rxjs';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../../services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -12,10 +9,7 @@ import { Measure, MeasureService } from '../../../services/measure.service';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Goal, GoalService } from '../../../services/goal.service';
-import {
-  QuarterService,
-  StartEndDateDTO,
-} from '../../../services/quarter.service';
+import { QuarterService, StartEndDateDTO } from '../../../services/quarter.service';
 import { RouteService } from '../../../services/route.service';
 
 @Component({
@@ -51,17 +45,11 @@ export class MeasureFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let keyResultId = getNumberOrNull(
-      this.route.snapshot.paramMap.get('keyresultId')
-    );
+    let keyResultId = getNumberOrNull(this.route.snapshot.paramMap.get('keyresultId'));
 
-    let measureId = getNumberOrNull(
-      this.route.snapshot.paramMap.get('measureId')
-    );
+    let measureId = getNumberOrNull(this.route.snapshot.paramMap.get('measureId'));
 
-    this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(
-      keyResultId!
-    );
+    this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(keyResultId!);
 
     this.create = !measureId;
     if (keyResultId) {
@@ -85,10 +73,7 @@ export class MeasureFormComponent implements OnInit {
         this.measureForm.setValue({
           value: measure.value,
           measureDate: this.create
-            ? this.returnQuarterEndDateOrCurrentDate(
-                new Date(startEndDate.endDate),
-                measure.measureDate
-              )
+            ? this.returnQuarterEndDateOrCurrentDate(new Date(startEndDate.endDate), measure.measureDate)
             : measure.measureDate,
           changeInfo: measure.changeInfo,
           initiatives: measure.initiatives,

@@ -1,8 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
+import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, Observable, of, switchMap } from 'rxjs';
@@ -26,28 +23,15 @@ export class ObjectiveFormComponent implements OnInit {
   objectives$!: Observable<Objective>;
 
   objectiveForm = new FormGroup({
-    teamId: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
-    title: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250),
-    ]),
+    teamId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
+    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(4096),
     ]),
-    ownerId: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
-    quarterId: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
+    ownerId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
+    quarterId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
   });
   public users$!: Observable<User[]>;
   public teams$!: Observable<Team[]>;
@@ -84,16 +68,8 @@ export class ObjectiveFormComponent implements OnInit {
       })
     );
     this.objectives$.subscribe((objective) => {
-      const {
-        id,
-        ownerFirstname,
-        ownerLastname,
-        teamName,
-        quarterLabel,
-        progress,
-        created,
-        ...restObjective
-      } = objective;
+      const { id, ownerFirstname, ownerLastname, teamName, quarterLabel, progress, created, ...restObjective } =
+        objective;
       this.objectiveForm.setValue(restObjective);
     });
   }
@@ -117,13 +93,9 @@ export class ObjectiveFormComponent implements OnInit {
             this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {
-            this.toastr.error(
-              'Objective konnte nicht gespeichert werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.error('Objective konnte nicht gespeichert werden!', 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
             return new Error('can not process objective');
           },
         })

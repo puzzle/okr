@@ -1,14 +1,8 @@
-<button
-  mat-stroked-button
-  color="primary"
-  (click)="routeService.navigate('objectives/edit/' + this.objective.id)"
->
+<button mat-stroked-button color="primary" (click)="routeService.navigate('objectives/edit/' + this.objective.id)">
   Objective bearbeiten
 </button>
 <div>
-  <p class="objective-cycle">
-    <strong>Zyklus</strong> {{ this.objective.quarterLabel }}
-  </p>
+  <p class="objective-cycle"><strong>Zyklus</strong> {{ this.objective.quarterLabel }}</p>
   <p class="objective-owner">
     <strong>Objective Besitzer</strong> {{ this.objective.ownerFirstname }}
     {{ this.objective.ownerLastname }}

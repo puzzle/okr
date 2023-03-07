@@ -19,11 +19,7 @@ export class RouteService {
     this.previousUrl = url;
   }
 
-  constructor(
-    private location: Location,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
+  constructor(private location: Location, private route: ActivatedRoute, private router: Router) {
     this.currentUrl = this.router.url;
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -51,11 +47,8 @@ export class RouteService {
 
   public removeFromSelectedObjectives(objectiveId: number) {
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      const selectedObjectives = (
-        params['objectives']?.split(',') ?? []
-      ).filter(
-        (item: string | null | undefined) =>
-          getNumberOrNull(item) !== objectiveId
+      const selectedObjectives = (params['objectives']?.split(',') ?? []).filter(
+        (item: string | null | undefined) => getNumberOrNull(item) !== objectiveId
       );
       const queryParams = {
         objectives: selectedObjectives.join(','),
@@ -83,9 +76,7 @@ export class RouteService {
 
   public addToSelectedKeyresults(keyResultId: number) {
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      const selectedKeyResults = (
-        params['keyresults']?.split(',') ?? []
-      ).concat(keyResultId);
+      const selectedKeyResults = (params['keyresults']?.split(',') ?? []).concat(keyResultId);
       const queryParams = {
         objectives: params['objectives'],
         keyresults: selectedKeyResults.join(','),
@@ -102,12 +93,8 @@ export class RouteService {
 
   public removeFromSelectedKeyresult(keyResultId: number) {
     this.route.queryParams.pipe(first()).subscribe((params) => {
-      let selectedKeyResults: string[] = params['keyresults']
-        ? params['keyresults'].split(',')
-        : [];
-      selectedKeyResults = selectedKeyResults.filter(
-        (item) => getNumberOrNull(item) !== keyResultId
-      );
+      let selectedKeyResults: string[] = params['keyresults'] ? params['keyresults'].split(',') : [];
+      selectedKeyResults = selectedKeyResults.filter((item) => getNumberOrNull(item) !== keyResultId);
       const queryParams = {
         objectives: params['objectives'],
         keyresults: selectedKeyResults.join(','),
@@ -167,9 +154,7 @@ export class RouteService {
     });
   }
 
-  public changeQuarterFilter(
-    value: number | null | undefined
-  ): Observable<any> {
+  public changeQuarterFilter(value: number | null | undefined): Observable<any> {
     return this.route.queryParams.pipe(
       first(),
       switchMap((queryParams) => {

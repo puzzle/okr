@@ -128,37 +128,39 @@ describe('KeyresultFormComponent', () => {
       expect(component.create).toBeFalsy();
     });
 
-    test('should have 3 right titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.title'));
-      expect(titles.length).toEqual(3);
-      expect(titles[0].nativeElement.textContent).toContain('Key Result bearbeiten');
-      expect(titles[1].nativeElement.textContent).toContain('Objective Beschreibung');
-      expect(titles[2].nativeElement.textContent).toContain('Details');
-    });
-
     test('should have objective title', () => {
-      const objectiveTitle = fixture.debugElement.query(By.css('.objective-title'));
-      expect(objectiveTitle.nativeElement.textContent).toContain(' Objective 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Objective: ');
+      const objectiveTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title"]'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective 1');
     });
 
     test('should have objective teamname', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.teamname-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Team');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-teamname'));
-      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Team: ');
+      const objectiveTeamName = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team"]'));
+      expect(objectiveTeamName.nativeElement.textContent).toContain('Team 1');
     });
 
     test('should have objective description', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.description-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-description'));
-      expect(objectiveTeamName.nativeElement.textContent).toContain(' This is the description of Objective 1 ');
+      const teamNameTitle = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-description-key"]')
+      );
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung: ');
+      const objectiveTeamName = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-description"]')
+      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain('This is the description of Objective 1');
     });
 
     test('should have objective quarter', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.quarter-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-quarter'));
+      const teamNameTitle = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-quarter-key"]')
+      );
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus: ');
+      const objectiveTeamName = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-quarter"]')
+      );
       expect(objectiveTeamName.nativeElement.textContent).toContain('GJ 22/23-Q1');
     });
 
@@ -385,45 +387,40 @@ describe('KeyresultFormComponent', () => {
       });
     });
 
-    test('should have 3 right titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.title'));
-      expect(titles.length).toEqual(3);
-      expect(titles[0].nativeElement.textContent).toContain('Key Result hinzufügen');
-      expect(titles[1].nativeElement.textContent).toContain('Objective Beschreibung');
-      expect(titles[2].nativeElement.textContent).toContain('Details');
-    });
-
     test('should have objective title', () => {
-      const objectiveTitle = fixture.debugElement.query(By.css('.objective-title'));
-      expect(objectiveTitle.nativeElement.textContent).toContain(' Objective 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Objective: ');
+      const objectiveTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title"]'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective 1');
     });
 
     test('should have objective teamname', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.teamname-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Team');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-teamname'));
-      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Team: ');
+      const objectiveTeamName = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team"]'));
+      expect(objectiveTeamName.nativeElement.textContent).toContain('Team 1');
     });
 
     test('should have objective description', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.description-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-description'));
+      const teamNameTitle = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-description-key"]')
+      );
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung: ');
+      const objectiveTeamName = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-description"]')
+      );
       expect(objectiveTeamName.nativeElement.textContent).toContain('This is the description of Objective 1');
     });
 
     test('should have objective quarter', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.quarter-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-quarter'));
+      const teamNameTitle = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-quarter-key"]')
+      );
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus: ');
+      const objectiveTeamName = fixture.debugElement.query(
+        By.css('[data-testid="keyresult-modify-objective-quarter"]')
+      );
       expect(objectiveTeamName.nativeElement.textContent).toContain('GJ 22/23-Q1');
-    });
-
-    test('should have objective quarter', () => {
-      const teamNameTitle = fixture.debugElement.query(By.css('.quarter-title'));
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
-      const objectiveTeamName = fixture.debugElement.query(By.css('.objective-quarter'));
-      expect(objectiveTeamName.nativeElement.textContent).toContain('GJ 22/23-Q1 ');
     });
 
     test('should be possible to set Key Result unit in mat select when creating', async () => {

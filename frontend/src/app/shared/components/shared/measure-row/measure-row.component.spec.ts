@@ -105,7 +105,7 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should set right heading title', () => {
-      const headingLabels = fixture.debugElement.queryAll(By.css('.h3'));
+      const headingLabels = fixture.debugElement.queryAll(By.css('[data-testid="measure-row-title"]'));
 
       expect(headingLabels[0].nativeElement.textContent).toContain('Vergangene Messungen');
     });

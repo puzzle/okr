@@ -215,28 +215,17 @@ describe('MeasureFormComponent Edit', () => {
       expect(component.measureForm.get('initiatives')?.value).toEqual('Initiatives 1');
     });
 
-    test('should have 4 titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
-      expect(titles.length).toEqual(4);
-      expect(titles[0].nativeElement.textContent).toContain('Aktueller Wert');
-      expect(titles[1].nativeElement.textContent).toContain('Datum der Messung');
-      expect(titles[2].nativeElement.textContent).toContain('Veränderung seit letzter Messung');
-      expect(titles[3].nativeElement.textContent).toContain('Massnahmen');
-    });
-
     test('should set measure value', () => {
       const value = fixture.debugElement.query(By.css('input[formControlName="value"]'));
       expect(value.nativeElement.value).toEqual('42');
     });
 
     test('should have Key Result unit', () => {
-      const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('Prozent');
+      const unit = fixture.debugElement.query(By.css('[data-testid="measure-form-current-value"]'));
+      expect(unit.nativeElement.textContent).toEqual('Aktueller Wert (Prozent)');
     });
 
     test('should be invalid when not matching pattern of Key Result unit', () => {
-      const unit = fixture.debugElement.query(By.css('.unit-label'));
-      expect(unit.nativeElement.textContent).toEqual('Prozent');
       component.measureForm.get('value')?.setValue(333);
       expect(component.measureForm.get('value')?.valid).toEqual(false);
 

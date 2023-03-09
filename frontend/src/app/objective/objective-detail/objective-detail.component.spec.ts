@@ -40,13 +40,13 @@ describe('ObjectiveDetailComponent', () => {
   });
 
   test('should have cycle with right quarteryear', () => {
-    const cycleText = fixture.debugElement.query(By.css('.objective-cycle'));
-    expect(cycleText.nativeElement.textContent).toEqual('Zyklus GJ 22/23-Q1 ');
+    const cycleText = fixture.debugElement.query(By.css('[data-testid="objective-detail-quarter"]'));
+    expect(cycleText.nativeElement.textContent).toEqual('Zyklus  GJ 22/23-Q1');
   });
 
   test('should have owner with right first- and lastname', () => {
-    const ownerText = fixture.debugElement.query(By.css('.objective-owner'));
-    expect(ownerText.nativeElement.textContent).toEqual('Objective Besitzer Alice Wunderland ');
+    const ownerText = fixture.debugElement.query(By.css('[data-testid="objective-detail-owner"]'));
+    expect(ownerText.nativeElement.textContent).toEqual('Objective Besitzer  Alice Wunderland');
   });
 
   test('should have right table titles', () => {

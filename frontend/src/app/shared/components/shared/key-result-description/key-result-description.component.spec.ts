@@ -65,12 +65,12 @@ describe('KeyResultDescriptionComponent', () => {
     });
 
     test('should have 5 fw-normal titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-normal'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       expect(titles.length).toEqual(6);
     });
 
     test('should have 4 texts', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-normal.lead'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       var titelsText = titles.map((e) => e.nativeElement.innerHTML);
 
       var expectedTexts = [

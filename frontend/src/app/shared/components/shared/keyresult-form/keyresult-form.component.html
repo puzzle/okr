@@ -148,24 +148,24 @@
           <mat-card class="inner-cards flex-grow-1">
             <mat-card-content class="d-flex flex-column justify-content-around">
               <div>
-                <span class="key">Team: </span>
-                <span class="value">{{ objective.teamName }} </span>
+                <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
+                <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
               </div>
               <div>
-                <span class="key">Objective: </span>
-                <span class="value">{{ objective.title }}</span>
+                <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
+                <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
               </div>
 
               <div class="d-flex flex-column">
-                <span class="key">Beschreibung:</span>
-                <span class="value">
+                <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
+                <span class="value" data-testid="keyresult-modify-objective-description">
                   {{ objective.description }}
                 </span>
               </div>
 
               <div>
-                <span class="key">Zyklus: </span>
-                <span class="value">
+                <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
+                <span class="value" data-testid="keyresult-modify-objective-quarter">
                   {{ objective.quarterLabel }}
                 </span>
               </div>

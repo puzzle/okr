@@ -10,7 +10,9 @@
   <div *ngIf="measure$ | async as measure" class="d-flex">
     <form (ngSubmit)="save()" [formGroup]="measureForm" class="d-flex flex-column fit-content">
       <div *ngIf="keyresult$ | async as keyresult" class="d-flex align-items-center justify-content-center gap-4">
-        <p class="key">Aktueller Wert ({{ "UNIT." + keyresult.unit | translate }})</p>
+        <p class="key" data-testid="measure-form-current-value">
+          Aktueller Wert ({{ "UNIT." + keyresult.unit | translate }})
+        </p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Aktueller Wert</mat-label>
           <input
@@ -74,20 +76,23 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex gap-2 justify-content-end">
-        <button (click)="navigateBack()" class="rounded-5" color="primary" mat-stroked-button type="reset">
-          Abbrechen
-        </button>
+      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+        <span></span>
+        <span>
+          <button (click)="navigateBack()" class="rounded-5 me-2" color="primary" mat-stroked-button type="reset">
+            Abbrechen
+          </button>
 
-        <button
-          [disabled]="!measureForm.valid"
-          class="rounded-5 create-button"
-          color="primary"
-          mat-raised-button
-          type="submit"
-        >
-          {{ this.create ? "Erstellen" : "Aktualisieren" }}
-        </button>
+          <button
+            [disabled]="!measureForm.valid"
+            class="rounded-5 create-button"
+            color="primary"
+            mat-raised-button
+            type="submit"
+          >
+            {{ this.create ? "Erstellen" : "Aktualisieren" }}
+          </button>
+        </span>
       </div>
     </form>
   </div>

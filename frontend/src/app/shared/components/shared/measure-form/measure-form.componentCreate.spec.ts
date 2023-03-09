@@ -275,7 +275,7 @@ describe('MeasureFormComponent Create', () => {
 
     test('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('[data-testid="measure-form-current-value"]'));
-      expect(unit.nativeElement.textContent).toEqual('Aktueller Wert (Prozent)');
+      expect(unit.nativeElement.textContent).toEqual(' Aktueller Wert (Prozent) ');
     });
 
     // Problem: Github Action server is not in the same timezone as we are. Because of that, he receives another date, but our implementation is right.

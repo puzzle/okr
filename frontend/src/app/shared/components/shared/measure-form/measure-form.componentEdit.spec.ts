@@ -222,7 +222,7 @@ describe('MeasureFormComponent Edit', () => {
 
     test('should have Key Result unit', () => {
       const unit = fixture.debugElement.query(By.css('[data-testid="measure-form-current-value"]'));
-      expect(unit.nativeElement.textContent).toEqual('Aktueller Wert (Prozent)');
+      expect(unit.nativeElement.textContent).toEqual(' Aktueller Wert (Prozent) ');
     });
 
     test('should be invalid when not matching pattern of Key Result unit', () => {

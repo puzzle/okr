@@ -16,11 +16,7 @@ import { RouteService } from '../../shared/services/route.service';
 export class TeamFormComponent implements OnInit {
   teamObject: Observable<Team> = of(this.teamService.getInitTeam());
   teamForm: FormGroup = new FormGroup({
-    name: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250),
-    ]),
+    name: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
   });
   id?: number;
 
@@ -54,13 +50,9 @@ export class TeamFormComponent implements OnInit {
         this.routeService.navigate('/teams');
       },
       error: (e: HttpErrorResponse) => {
-        this.toastr.error(
-          'Team konnte nicht gespeichert werden!',
-          'Fehlerstatus: ' + e.status,
-          {
-            timeOut: 5000,
-          }
-        );
+        this.toastr.error('Team konnte nicht gespeichert werden!', 'Fehlerstatus: ' + e.status, {
+          timeOut: 5000,
+        });
         return new Error('ups sommething happend');
       },
     });

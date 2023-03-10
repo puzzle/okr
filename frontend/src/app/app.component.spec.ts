@@ -36,9 +36,7 @@ describe('AppComponent', () => {
 
   test('should render OKRs navigation item', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('pzsh-nav-item')?.textContent).toContain(
-      'OKRs'
-    );
+    expect(compiled.querySelector('pzsh-nav-item')?.textContent).toContain('OKRs');
   });
 
   describe('isOverview + isTeam', () => {

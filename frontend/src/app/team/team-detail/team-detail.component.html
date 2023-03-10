@@ -3,20 +3,14 @@
   <div class="objective-row" *ngFor="let objective of overview.objectives">
     <hr />
     <mat-accordion>
-      <app-objective-row
-        (onObjectivesListUpdate)="reloadObjectives()"
-        [objective]="objective"
-      >
-      </app-objective-row>
+      <app-objective-row (onObjectivesListUpdate)="reloadObjectives()" [objective]="objective"> </app-objective-row>
     </mat-accordion>
   </div>
   <button
     mat-stroked-button
     color="primary"
     class="create-button"
-    (click)="
-      routeService.navigate('team/' + overview.team.id + '/objectives/new')
-    "
+    (click)="routeService.navigate('team/' + overview.team.id + '/objectives/new')"
   >
     Objective hinzufügen
   </button>

@@ -1,19 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
@@ -54,13 +42,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
         map(([quarters, queryParams]) => {
           if (queryParams['quarterFilter']) {
-            this.filters.controls.quarterFilter.setValue(
-              queryParams['quarterFilter']
-            );
+            this.filters.controls.quarterFilter.setValue(queryParams['quarterFilter']);
           } else if (quarters.length) {
-            this.filters.controls.quarterFilter.setValue(
-              quarters[0].id.toString()
-            );
+            this.filters.controls.quarterFilter.setValue(quarters[0].id.toString());
             this.changeQuarterFilter(quarters[0].id);
           }
         })
@@ -104,11 +88,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   reloadOverview() {
     this.route.queryParams
       .subscribe((params) => {
-        this.overviewService
-          .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
-          .subscribe((data) => {
-            this.overview$.next(data);
-          });
+        this.overviewService.getOverview(params['quarterFilter'], params['teamFilter'] ?? []).subscribe((data) => {
+          this.overview$.next(data);
+        });
       })
       .unsubscribe();
   }

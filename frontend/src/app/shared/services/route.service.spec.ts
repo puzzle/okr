@@ -1,12 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { RouteService } from './route.service';
-import {
-  ActivatedRoute,
-  convertToParamMap,
-  NavigationEnd,
-  Router,
-} from '@angular/router';
+import { ActivatedRoute, convertToParamMap, NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
 
 describe('RouteService', () => {
@@ -21,9 +16,7 @@ describe('RouteService', () => {
   beforeEach(() => {
     const mockRouter = {
       navigate: jest.fn(),
-      events: of(
-        new NavigationEnd(0, 'http://localhost:4200', 'http://localhost:4200')
-      ),
+      events: of(new NavigationEnd(0, 'http://localhost:4200', 'http://localhost:4200')),
       url: 'http://localhost:4200',
     };
     TestBed.configureTestingModule({
@@ -32,9 +25,7 @@ describe('RouteService', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            paramMap: of(
-              convertToParamMap({ objectives: '1,2', keyresults: '1' })
-            ),
+            paramMap: of(convertToParamMap({ objectives: '1,2', keyresults: '1' })),
           },
         },
         { provide: Location, useValue: location },

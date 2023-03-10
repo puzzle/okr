@@ -24,28 +24,20 @@ export class ObjectiveService {
   constructor(private httpClient: HttpClient) {}
 
   public getObjectivesOfTeam(teamId: number): Observable<Objective[]> {
-    return this.httpClient.get<Objective[]>(
-      'api/v1/teams/' + teamId + '/objectives'
-    );
+    return this.httpClient.get<Objective[]>('api/v1/teams/' + teamId + '/objectives');
   }
 
   public getObjectiveById(objectiveId: number): Observable<Objective> {
     return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
   }
 
-  public saveObjective(
-    objective: Objective,
-    post: boolean
-  ): Observable<Objective> {
+  public saveObjective(objective: Objective, post: boolean): Observable<Objective> {
     objective.progress = null;
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
       objective.quarterId = null;
-      return this.httpClient.put<Objective>(
-        'api/v1/objectives/' + objective.id,
-        objective
-      );
+      return this.httpClient.put<Objective>('api/v1/objectives/' + objective.id, objective);
     }
   }
 
@@ -67,8 +59,6 @@ export class ObjectiveService {
   }
 
   deleteObjectiveById(objectiveId: number): Observable<Objective> {
-    return this.httpClient.delete<Objective>(
-      '/api/v1/objectives/' + objectiveId
-    );
+    return this.httpClient.delete<Objective>('/api/v1/objectives/' + objectiveId);
   }
 }

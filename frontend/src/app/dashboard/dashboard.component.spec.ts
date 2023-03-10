@@ -49,13 +49,7 @@ describe('DashboardComponent', () => {
     teamServiceMock.getTeams.mockReturnValue(teams);
 
     TestBed.configureTestingModule({
-      imports: [
-        AppModule,
-        NoopAnimationsModule,
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        RouterTestingModule,
-      ],
+      imports: [AppModule, NoopAnimationsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: QuarterService, useValue: quarterServiceMock },
@@ -82,23 +76,17 @@ describe('DashboardComponent', () => {
   });
 
   test('should display Objectives und Key Results headline', () => {
-    expect(fixture.nativeElement.querySelector('p').textContent).toEqual(
-      'Objectives und Key Results'
-    );
+    expect(fixture.nativeElement.querySelector('p').textContent).toEqual('Objectives und Key Results');
   });
 
   test('should display 2 dropdowns links', () => {
-    expect(
-      fixture.nativeElement.querySelectorAll('mat-form-field').length
-    ).toEqual(2);
+    expect(fixture.nativeElement.querySelectorAll('mat-form-field').length).toEqual(2);
   });
 
   test('should display 3 team detail components when having 3 teams', () => {
     component.reloadOverview();
     fixture.detectChanges();
-    expect(
-      fixture.nativeElement.querySelectorAll('app-team-detail').length
-    ).toEqual(3);
+    expect(fixture.nativeElement.querySelectorAll('app-team-detail').length).toEqual(3);
   });
 
   test('should select quarter filter in dropdown and change filter', async () => {
@@ -136,10 +124,7 @@ describe('DashboardComponent', () => {
     expect(await select.getValueText()).toEqual('Team 2');
     expect(component.filters.controls.teamsFilter.value).toEqual([2]);
     expect(location.path(true)).toEqual('/?teamFilter=2');
-    expect(overviewServiceMock.getOverview).toHaveBeenCalledWith(
-      undefined,
-      '2'
-    );
+    expect(overviewServiceMock.getOverview).toHaveBeenCalledWith(undefined, '2');
 
     await bugOptionSecondTeam[0].click();
 

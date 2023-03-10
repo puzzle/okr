@@ -6,24 +6,14 @@
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
 
-<div
-  class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2"
->
+<div class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2">
   <div *ngIf="measure$ | async as measure" class="d-flex">
-    <form
-      (ngSubmit)="save()"
-      [formGroup]="measureForm"
-      class="d-flex flex-column fit-content"
-    >
-      <div
-        *ngIf="keyresult$ | async as keyresult"
-        class="d-flex align-items-center justify-content-end gap-4"
-      >
-        <p class="fw-bold">Aktueller Wert</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+    <form (ngSubmit)="save()" [formGroup]="measureForm" class="d-flex flex-column fit-content">
+      <div *ngIf="keyresult$ | async as keyresult" class="d-flex align-items-center justify-content-center gap-4">
+        <p class="key" data-testid="measure-form-current-value">
+          Aktueller Wert ({{ "UNIT." + keyresult.unit | translate }})
+        </p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Aktueller Wert</mat-label>
           <input
             [unitValueValidator]="(keyresult$ | async)?.unit!"
@@ -34,20 +24,11 @@
             type="text"
           />
         </mat-form-field>
-
-        <mat-label class="unit-label"
-          ><b>{{ "UNIT." + keyresult.unit | translate }}</b></mat-label
-        >
       </div>
 
-      <div
-        class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right"
-      >
-        <p class="fw-bold">Datum der Messung</p>
-        <mat-form-field
-          *ngIf="startEndDate$ | async as startEndDate"
-          appearance="fill"
-        >
+      <div class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right">
+        <p class="key">Datum der Messung</p>
+        <mat-form-field *ngIf="startEndDate$ | async as startEndDate" appearance="fill">
           <input
             [matDatepicker]="picker"
             [max]="startEndDate.endDate"
@@ -62,18 +43,13 @@
             {{ startEndDate.endDate | date: "dd.MM.yyyy" }}</mat-hint
           >
           <mat-label>Datum der Messung</mat-label>
-          <mat-datepicker-toggle
-            [for]="picker"
-            matSuffix
-          ></mat-datepicker-toggle>
+          <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
 
-      <div
-        class="d-flex align-items-center justify-content-end gap-4 margin-right"
-      >
-        <p class="fw-bold">Veränderung seit letzter Messung</p>
+      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+        <p class="key">Veränderung seit letzter Messung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
           <textarea
@@ -86,10 +62,8 @@
         </mat-form-field>
       </div>
 
-      <div
-        class="d-flex align-items-center justify-content-end gap-4 margin-right"
-      >
-        <p class="fw-bold">Massnahmen</p>
+      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+        <p class="key">Massnahmen</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
           <textarea
@@ -102,26 +76,23 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex gap-2 justify-content-end">
-        <button
-          (click)="navigateBack()"
-          class="rounded-5"
-          color="primary"
-          mat-stroked-button
-          type="reset"
-        >
-          Abbrechen
-        </button>
+      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+        <span></span>
+        <span>
+          <button (click)="navigateBack()" class="rounded-5 me-2" color="primary" mat-stroked-button type="reset">
+            Abbrechen
+          </button>
 
-        <button
-          [disabled]="!measureForm.valid"
-          class="rounded-5 create-button"
-          color="primary"
-          mat-raised-button
-          type="submit"
-        >
-          {{ this.create ? "Erstellen" : "Aktualisieren" }}
-        </button>
+          <button
+            [disabled]="!measureForm.valid"
+            class="rounded-5 create-button"
+            color="primary"
+            mat-raised-button
+            type="submit"
+          >
+            {{ this.create ? "Erstellen" : "Aktualisieren" }}
+          </button>
+        </span>
       </div>
     </form>
   </div>

@@ -2,18 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { KeyresultFormComponent } from './keyresult-form.component';
 import { User, UserService } from '../../../services/user.service';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../../services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
 import { Observable, of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../../services/objective.service';
+import { Objective, ObjectiveService } from '../../../services/objective.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -40,8 +34,7 @@ describe('KeyresultFormComponent', () => {
 
   let initKeyResult: KeyResultMeasure = keyresultData.initKeyResult;
 
-  let createKeyResultObject: KeyResultMeasure =
-    keyresultData.createKeyResultObject;
+  let createKeyResultObject: KeyResultMeasure = keyresultData.createKeyResultObject;
 
   let createKeyResultForm = new FormGroup({
     title: new FormControl<string>('Key Result 1', [
@@ -53,13 +46,8 @@ describe('KeyresultFormComponent', () => {
     expectedEvolution: new FormControl<string>('INCREASE'),
     basicValue: new FormControl<number>(0, Validators.required),
     targetValue: new FormControl<number>(100, Validators.required),
-    description: new FormControl<string>('This is a description', [
-      Validators.maxLength(4096),
-    ]),
-    ownerId: new FormControl<number | null>(2, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
+    description: new FormControl<string>('This is a description', [Validators.maxLength(4096)]),
+    ownerId: new FormControl<number | null>(2, [Validators.required, Validators.nullValidator]),
   });
 
   const mockUserService = {
@@ -111,9 +99,7 @@ describe('KeyresultFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(
-                convertToParamMap({ objectiveId: '1', keyresultId: '1' })
-              ),
+              paramMap: of(convertToParamMap({ objectiveId: '1', keyresultId: '1' })),
             },
           },
         ],
@@ -142,68 +128,44 @@ describe('KeyresultFormComponent', () => {
       expect(component.create).toBeFalsy();
     });
 
-    test('should have 3 right titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.title'));
-      expect(titles.length).toEqual(3);
-      expect(titles[0].nativeElement.textContent).toContain(
-        'Key Result bearbeiten'
-      );
-      expect(titles[1].nativeElement.textContent).toContain(
-        'Objective Beschreibung'
-      );
-      expect(titles[2].nativeElement.textContent).toContain('Details');
-    });
-
     test('should have objective title', () => {
-      const objectiveTitle = fixture.debugElement.query(
-        By.css('.objective-title')
-      );
-      expect(objectiveTitle.nativeElement.textContent).toContain(
-        ' Objective 1 '
-      );
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Objective: ');
+      const objectiveTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title"]'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective 1');
     });
 
     test('should have objective teamname', () => {
-      const teamNameTitle = fixture.debugElement.query(
-        By.css('.teamname-title')
-      );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Team');
-      const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-teamname')
-      );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Team: ');
+      const objectiveTeamName = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team"]'));
+      expect(objectiveTeamName.nativeElement.textContent).toContain('Team 1');
     });
 
     test('should have objective description', () => {
       const teamNameTitle = fixture.debugElement.query(
-        By.css('.description-title')
+        By.css('[data-testid="keyresult-modify-objective-description-key"]')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung: ');
       const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-description')
+        By.css('[data-testid="keyresult-modify-objective-description"]')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        ' This is the description of Objective 1 '
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain('This is the description of Objective 1');
     });
 
     test('should have objective quarter', () => {
       const teamNameTitle = fixture.debugElement.query(
-        By.css('.quarter-title')
+        By.css('[data-testid="keyresult-modify-objective-quarter-key"]')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus: ');
       const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-quarter')
+        By.css('[data-testid="keyresult-modify-objective-quarter"]')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 22/23-Q1'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain('GJ 22/23-Q1');
     });
 
     test('should set Key Result title in input field and set input invalid when empty value', () => {
-      const titleinputfield = fixture.debugElement.query(
-        By.css('.title-input')
-      );
+      const titleinputfield = fixture.debugElement.query(By.css('.title-input'));
       expect(titleinputfield.nativeElement.value).toContain('Key Result 1');
       expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
@@ -225,16 +187,12 @@ describe('KeyresultFormComponent', () => {
       await bugOption[0].click();
 
       expect(await select.getValueText()).toEqual('Keine');
-      expect(
-        component.keyResultForm.controls['expectedEvolution'].value
-      ).toEqual('NONE');
+      expect(component.keyResultForm.controls['expectedEvolution'].value).toEqual('NONE');
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
     test('should not have Key Result unit drop down', () => {
-      const unitMatSelect = fixture.debugElement.query(
-        By.css('mat-select[formControlName="unit"]')
-      );
+      const unitMatSelect = fixture.debugElement.query(By.css('mat-select[formControlName="unit"]'));
       expect(unitMatSelect).toBeNull();
     });
 
@@ -256,9 +214,7 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set Key Result basicvalue in input field and set input invalid when empty value', () => {
-      const basicValueIputfield = fixture.debugElement.query(
-        By.css('.basicValue-input')
-      );
+      const basicValueIputfield = fixture.debugElement.query(By.css('.basicValue-input'));
       expect(basicValueIputfield.nativeElement.value).toContain('0');
       expect(basicValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
@@ -271,9 +227,7 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set Key Result targetValue in input field and set input invalid when empty value', () => {
-      const targetValueIputfield = fixture.debugElement.query(
-        By.css('.targetValue-input')
-      );
+      const targetValueIputfield = fixture.debugElement.query(By.css('.targetValue-input'));
       expect(targetValueIputfield.nativeElement.value).toContain('100');
       expect(targetValueIputfield.nativeElement.placeholder).toContain('0');
       expect(component.keyResultForm.valid).toBeTruthy();
@@ -286,15 +240,9 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set Key Result description in text area and dont set input invalid when empty value', () => {
-      const descriptionTextArea = fixture.debugElement.query(
-        By.css('.description-textarea')
-      );
-      expect(descriptionTextArea.nativeElement.value).toContain(
-        'This is the description'
-      );
-      expect(descriptionTextArea.nativeElement.placeholder).toContain(
-        'Beschreibung'
-      );
+      const descriptionTextArea = fixture.debugElement.query(By.css('.description-textarea'));
+      expect(descriptionTextArea.nativeElement.value).toContain('This is the description');
+      expect(descriptionTextArea.nativeElement.placeholder).toContain('Beschreibung');
       expect(component.keyResultForm.valid).toBeTruthy();
 
       component.keyResultForm.get('description')?.setValue(null);
@@ -347,10 +295,7 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
 
       keyResult.subscribe((keyresult) => {
-        expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
-          keyresult,
-          false
-        );
+        expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(keyresult, false);
         expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
       });
     });
@@ -388,9 +333,7 @@ describe('KeyresultFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(
-                convertToParamMap({ objectiveId: '1', keyresultId: null })
-              ),
+              paramMap: of(convertToParamMap({ objectiveId: '1', keyresultId: null })),
             },
           },
         ],
@@ -432,9 +375,7 @@ describe('KeyresultFormComponent', () => {
       await select.open();
       const bugOption = await select.getOptions({ text: 'Prozent' });
       await bugOption[0].click();
-      expect(component.keyResultForm.controls['unit'].value).toContain(
-        'PERCENT'
-      );
+      expect(component.keyResultForm.controls['unit'].value).toContain('PERCENT');
     });
 
     test('should set init Key Result', () => {
@@ -446,81 +387,44 @@ describe('KeyresultFormComponent', () => {
       });
     });
 
-    test('should have 3 right titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.title'));
-      expect(titles.length).toEqual(3);
-      expect(titles[0].nativeElement.textContent).toContain(
-        'Key Result hinzufügen'
-      );
-      expect(titles[1].nativeElement.textContent).toContain(
-        'Objective Beschreibung'
-      );
-      expect(titles[2].nativeElement.textContent).toContain('Details');
-    });
-
     test('should have objective title', () => {
-      const objectiveTitle = fixture.debugElement.query(
-        By.css('.objective-title')
-      );
-      expect(objectiveTitle.nativeElement.textContent).toContain(
-        ' Objective 1 '
-      );
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Objective: ');
+      const objectiveTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-title"]'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective 1');
     });
 
     test('should have objective teamname', () => {
-      const teamNameTitle = fixture.debugElement.query(
-        By.css('.teamname-title')
-      );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Team');
-      const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-teamname')
-      );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(' Team 1 ');
+      const teamNameTitle = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team-key"]'));
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Team: ');
+      const objectiveTeamName = fixture.debugElement.query(By.css('[data-testid="keyresult-modify-objective-team"]'));
+      expect(objectiveTeamName.nativeElement.textContent).toContain('Team 1');
     });
 
     test('should have objective description', () => {
       const teamNameTitle = fixture.debugElement.query(
-        By.css('.description-title')
+        By.css('[data-testid="keyresult-modify-objective-description-key"]')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Beschreibung: ');
       const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-description')
+        By.css('[data-testid="keyresult-modify-objective-description"]')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'This is the description of Objective 1'
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain('This is the description of Objective 1');
     });
 
     test('should have objective quarter', () => {
       const teamNameTitle = fixture.debugElement.query(
-        By.css('.quarter-title')
+        By.css('[data-testid="keyresult-modify-objective-quarter-key"]')
       );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
+      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus: ');
       const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-quarter')
+        By.css('[data-testid="keyresult-modify-objective-quarter"]')
       );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 22/23-Q1'
-      );
-    });
-
-    test('should have objective quarter', () => {
-      const teamNameTitle = fixture.debugElement.query(
-        By.css('.quarter-title')
-      );
-      expect(teamNameTitle.nativeElement.textContent).toEqual('Zyklus');
-      const objectiveTeamName = fixture.debugElement.query(
-        By.css('.objective-quarter')
-      );
-      expect(objectiveTeamName.nativeElement.textContent).toContain(
-        'GJ 22/23-Q1 '
-      );
+      expect(objectiveTeamName.nativeElement.textContent).toContain('GJ 22/23-Q1');
     });
 
     test('should be possible to set Key Result unit in mat select when creating', async () => {
-      const unitMatSelect = fixture.debugElement.query(
-        By.css('mat-select[formControlName="unit"]')
-      );
+      const unitMatSelect = fixture.debugElement.query(By.css('mat-select[formControlName="unit"]'));
       expect(unitMatSelect).not.toBeNull();
 
       const select = await loader.getHarness(
@@ -581,18 +485,13 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
 
       expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledTimes(1);
-      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(
-        createKeyResultObject,
-        true
-      );
+      expect(mockKeyResultService.saveKeyresult).toHaveBeenCalledWith(createKeyResultObject, true);
     });
 
     test('should be invalid form if unit is changed and values do not match regex', async () => {
       component.keyResultForm.controls['ownerId'].setValue(1);
       component.keyResultForm.controls['title'].setValue('Title');
-      component.keyResultForm.controls['expectedEvolution'].setValue(
-        'INCREASE'
-      );
+      component.keyResultForm.controls['expectedEvolution'].setValue('INCREASE');
       component.keyResultForm.controls['description'].setValue('Description');
       component.keyResultForm.controls['targetValue'].setValue(1000);
       component.keyResultForm.controls['basicValue'].setValue(50);
@@ -616,9 +515,7 @@ describe('KeyresultFormComponent', () => {
     test('should be valid form if targetValue or basicValue is a double', async () => {
       component.keyResultForm.controls['ownerId'].setValue(3);
       component.keyResultForm.controls['title'].setValue('Title');
-      component.keyResultForm.controls['expectedEvolution'].setValue(
-        'INCREASE'
-      );
+      component.keyResultForm.controls['expectedEvolution'].setValue('INCREASE');
       component.keyResultForm.controls['description'].setValue('Description');
       component.keyResultForm.controls['targetValue'].setValue(10.5);
       component.keyResultForm.controls['basicValue'].setValue(57.8);
@@ -704,9 +601,7 @@ describe('KeyresultFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(
-                convertToParamMap({ objectiveId: null, keyresultId: null })
-              ),
+              paramMap: of(convertToParamMap({ objectiveId: null, keyresultId: null })),
             },
           },
         ],
@@ -752,9 +647,7 @@ describe('KeyresultFormComponent', () => {
           {
             provide: ActivatedRoute,
             useValue: {
-              paramMap: of(
-                convertToParamMap({ objectiveId: '1', keyresultId: '1' })
-              ),
+              paramMap: of(convertToParamMap({ objectiveId: '1', keyresultId: '1' })),
             },
           },
         ],
@@ -782,11 +675,7 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).not.toHaveBeenCalled();
-      expect(mockToastrService.success).toHaveBeenCalledWith(
-        '',
-        'Key Result gespeichert!',
-        { timeOut: 5000 }
-      );
+      expect(mockToastrService.success).toHaveBeenCalledWith('', 'Key Result gespeichert!', { timeOut: 5000 });
     });
 
     test('should display error notification', () => {

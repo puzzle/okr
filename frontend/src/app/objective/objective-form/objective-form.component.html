@@ -8,17 +8,10 @@
 </p>
 <div class="form-container" *ngIf="objectives$ | async as objective">
   <div class="d-flex w-100">
-    <form
-      (ngSubmit)="save()"
-      [formGroup]="objectiveForm"
-      class="d-flex flex-column fit-content"
-    >
+    <form (ngSubmit)="save()" [formGroup]="objectiveForm" class="d-flex flex-column fit-content">
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="fw-bold">Team</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Team</mat-label>
           <mat-select [value]="objective.teamId" formControlName="teamId">
             <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
@@ -30,18 +23,9 @@
 
       <div class="d-flex align-items-center justify-content-end gap-4">
         <p class="fw-bold">Titel</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Titel</mat-label>
-          <input
-            [value]="objective.title"
-            formControlName="title"
-            matInput
-            placeholder="Titel"
-            type="text"
-          />
+          <input [value]="objective.title" formControlName="title" matInput placeholder="Titel" type="text" />
         </mat-form-field>
       </div>
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -62,10 +46,7 @@
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="fw-bold">Besitzer</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Besitzer</mat-label>
           <mat-select [value]="objective.ownerId" formControlName="ownerId">
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
@@ -77,21 +58,10 @@
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="fw-bold quarter">Zyklus</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-          *ngIf="create; else update"
-        >
+        <mat-form-field appearance="outline" class="form-field-width form-field-height" *ngIf="create; else update">
           <mat-label>Zyklus</mat-label>
-          <mat-select
-            [value]="objective.quarterId"
-            formControlName="quarterId"
-            class="owner-select"
-          >
-            <mat-option
-              *ngFor="let quarter of quarters$ | async"
-              [value]="quarter.id"
-            >
+          <mat-select [value]="objective.quarterId" formControlName="quarterId" class="owner-select">
+            <mat-option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
               {{ quarter.label }}
             </mat-option>
           </mat-select>
@@ -104,23 +74,11 @@
       </div>
 
       <div class="d-flex gap-2 justify-content-end">
-        <button
-          (click)="navigateBack()"
-          class="rounded-5"
-          color="primary"
-          mat-stroked-button
-          type="reset"
-        >
+        <button (click)="navigateBack()" class="rounded-5" color="primary" mat-stroked-button type="reset">
           Abbrechen
         </button>
 
-        <button
-          [disabled]="objectiveForm.invalid"
-          class="rounded-5"
-          color="primary"
-          mat-raised-button
-          type="submit"
-        >
+        <button [disabled]="objectiveForm.invalid" class="rounded-5" color="primary" mat-raised-button type="submit">
           {{ this.create ? "Erstellen" : "Aktualisieren" }}
         </button>
       </div>

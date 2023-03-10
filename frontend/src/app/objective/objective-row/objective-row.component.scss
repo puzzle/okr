@@ -18,8 +18,26 @@
 .objective-title {
   font-weight: 400;
   font-size: 22px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .create-button {
   margin-top: 20px;
+}
+
+.mat-expansion-panel-header {
+  height: 100% !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 5px;
+}
+
+.mat-panel-description {
+  display: flex;
+  justify-content: space-between;
+}
+
+#progressContainer {
+  flex-grow: 1;
 }

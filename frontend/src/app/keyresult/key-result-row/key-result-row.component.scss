@@ -1,6 +1,8 @@
 .keyresult-title {
   font-weight: 400;
   font-size: 14px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .pointer {
@@ -17,4 +19,28 @@
 
 .measure-null-date {
   margin-right: 2vh;
+}
+
+.mat-expansion-panel-header {
+  height: 100% !important;
+  overflow: hidden;
+  text-overflow: unset;
+  margin: 5px;
+}
+
+.mat-panel-description {
+  display: flex;
+  white-space: inherit;
+  justify-content: space-between;
+}
+
+p {
+  padding-left: 10%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#progressContainer {
+  padding-left: 10%;
+  flex-grow: 1;
 }

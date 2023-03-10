@@ -2,16 +2,14 @@
   <mat-expansion-panel class="outer-cards" [(expanded)]="open">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <p class="h3">Vergangene Messungen</p>
+        <p class="fs-2" data-testid="measure-row-title">Vergangene Messungen</p>
         <button
           *ngIf="!isMeasureForm"
           id="add-measure-button"
           class="create-button"
           mat-button
           color="primary"
-          (click)="
-            routeService.navigate('keyresults/' + keyResultId + '/measure/new')
-          "
+          (click)="routeService.navigate('keyresults/' + keyResultId + '/measure/new')"
         >
           Messung hinzufügen
         </button>
@@ -19,40 +17,40 @@
     </mat-expansion-panel-header>
 
     <div class="d-flex titles">
-      <div class="d-flex w-10 measure-date-title">
-        <span class="h6">Datum</span>
+      <div class="d-flex w-10">
+        <span class="key">Datum</span>
       </div>
       <div class="d-flex w-15">
-        <span class="h6">Aktueller Wert</span>
+        <span class="key">Aktueller Wert</span>
       </div>
       <div class="d-flex w-55">
-        <span class="h6">Veränderungen</span>
+        <span class="key">Veränderungen</span>
       </div>
       <div class="d-flex w-40">
-        <span class="h6">Massnahmen</span>
+        <span class="key">Massnahmen</span>
       </div>
     </div>
     <div *ngFor="let measure of measures$ | async">
       <mat-card class="measure-card inner-cards">
         <mat-card-content>
           <mat-panel-description class="d-flex space-between">
-            <div class="d-flex w-15">
-              <p class="measureDate">
+            <div class="d-flex w-10">
+              <p class="value measureDate">
                 {{ formatDate(measure.measureDate) }}
               </p>
             </div>
             <div class="d-flex justify-content-around w-10">
-              <p class="measureValue">
+              <p class="value measureValue">
                 {{ measure.value }}
               </p>
             </div>
             <div class="d-flex w-55">
-              <p class="measureChangeinfo">
+              <p class="value measureChangeinfo">
                 {{ measure.changeInfo }}
               </p>
             </div>
             <div class="d-flex w-40">
-              <p class="measureInitiatives">
+              <p class="value measureInitiatives">
                 {{ measure.initiatives }}
               </p>
             </div>
@@ -60,14 +58,7 @@
               src="assets/edit-icon.svg"
               alt="edit-icon"
               class="edit-icon"
-              (click)="
-                routeService.navigate(
-                  '/keyresults/' +
-                    measure.keyResultId +
-                    '/measure/edit/' +
-                    measure.id
-                )
-              "
+              (click)="routeService.navigate('/keyresults/' + measure.keyResultId + '/measure/edit/' + measure.id)"
             />
             <img
               src="assets/delete-icon.svg"

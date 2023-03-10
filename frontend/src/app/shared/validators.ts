@@ -1,10 +1,4 @@
-import {
-  AbstractControl,
-  NG_VALIDATORS,
-  ValidationErrors,
-  Validator,
-  ValidatorFn,
-} from '@angular/forms';
+import { AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, ValidatorFn } from '@angular/forms';
 import { Directive, Input } from '@angular/core';
 import { NUMBER_REGEX, PERCENT_REGEX } from './regexLibrary';
 
@@ -44,9 +38,7 @@ export class UnitValueValidator implements Validator {
   }
 }
 
-export function comparisonValidator(
-  secondControl: AbstractControl
-): ValidatorFn {
+export function comparisonValidator(secondControl: AbstractControl): ValidatorFn {
   return (firstControl: AbstractControl): ValidationErrors | null => {
     return firstControl.value == secondControl.value ? { valid: false } : null;
   };

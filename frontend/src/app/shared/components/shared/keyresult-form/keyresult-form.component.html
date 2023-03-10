@@ -1,78 +1,19 @@
-<span class="d-flex back-btn">
+<div (click)="navigateBack()" class="d-flex btn px-4 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
-  <p (click)="navigateBack()">Zurück</p>
-</span>
+  <p>Zurück</p>
+</div>
 
-<p class="fs-2 title">
+<p class="fs-2 heading-label my-5">
   {{ this.create ? "Key Result hinzufügen" : "Key Result bearbeiten" }}
 </p>
-<p class="fs-4 title">Objective Beschreibung</p>
-<div>
-  <div
-    *ngIf="objective$ | async as objective"
-    class="d-flex flex-column center"
-  >
-    <div class="d-flex justify-content-center gap-3">
-      <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content">Titel</p>
-      </span>
 
-      <p class="w-100 objective-title">
-        {{ this.objective.title }}
-      </p>
-    </div>
-
-    <div class="d-flex justify-content-center gap-3">
-      <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content teamname-title">Team</p>
-      </span>
-
-      <p class="w-100 objective-teamname">
-        {{ this.objective.teamName }}
-      </p>
-    </div>
-
-    <div class="d-flex justify-content-center gap-3">
-      <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content description-title">Beschreibung</p>
-      </span>
-
-      <p class="w-100 objective-description">
-        {{ this.objective.description }}
-      </p>
-    </div>
-
-    <div class="d-flex justify-content-center gap-3">
-      <span class="d-flex w-50 justify-content-end">
-        <p class="fw-bold max-content quarter-title">Zyklus</p>
-      </span>
-
-      <p class="w-100 objective-quarter">
-        {{ this.objective.quarterLabel }}
-      </p>
-    </div>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <p class="fs-4 title detail">Details</p>
-
-  <div
-    *ngIf="keyresult$ | async as keyresult"
-    class="d-flex w-100 justify-content-center"
-  >
-    <form
-      (ngSubmit)="save()"
-      [formGroup]="keyResultForm"
-      (change)="update()"
-      class="d-flex flex-column fit-content"
-    >
+<!--<p class="fs-4 title">Objective Beschreibung</p>-->
+<div class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2">
+  <div *ngIf="keyresult$ | async as keyresult" class="d-flex">
+    <form (ngSubmit)="save()" [formGroup]="keyResultForm" (change)="update()" class="d-flex flex-column fit-content">
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Titel</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <p class="key">Titel</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Titel</mat-label>
           <input
             [value]="keyresult.title"
@@ -85,19 +26,12 @@
         </mat-form-field>
       </div>
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Einheit</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-          *ngIf="create"
-        >
+        <p class="key">Einheit</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height" *ngIf="create">
           <mat-label>Einheit</mat-label>
           <mat-select
             (selectionChange)="
-              this.enableTargetAndBasicValue();
-              this.resetValidatorOfForm(
-                this.keyResultForm.controls['unit'].value
-              )
+              this.enableTargetAndBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
             "
             [value]="keyresult.unit"
             formControlName="unit"
@@ -115,21 +49,15 @@
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Erwartete Entwicklung</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <p class="key">Erwartete Entwicklung</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Erwartete Entwicklung</mat-label>
           <mat-select
             [value]="keyresult.expectedEvolution"
             formControlName="expectedEvolution"
             class="evolution-select"
           >
-            <mat-option
-              *ngFor="let evolution of expectedEvolution$"
-              [value]="evolution"
-            >
+            <mat-option *ngFor="let evolution of expectedEvolution$" [value]="evolution">
               {{ "EXPECTED_EVOLUTION." + evolution | translate }}
             </mat-option>
           </mat-select>
@@ -137,11 +65,8 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Startwert</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <p class="key">Startwert</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Startwert</mat-label>
           <input
             [value]="keyresult.basicValue"
@@ -155,11 +80,8 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Zielwert</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <p class="key">Zielwert</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Zielwert</mat-label>
           <input
             [value]="keyresult.targetValue"
@@ -173,7 +95,7 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Beschreibung</p>
+        <p class="key">Beschreibung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Beschreibung</mat-label>
 
@@ -189,11 +111,8 @@
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Besitzer</p>
-        <mat-form-field
-          appearance="outline"
-          class="form-field-width form-field-height"
-        >
+        <p class="key">Besitzer</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Besitzer</mat-label>
           <mat-select formControlName="ownerId" class="owner-select">
             <mat-option *ngFor="let user of users$ | async" [value]="user.id">
@@ -204,13 +123,7 @@
       </div>
 
       <div class="d-flex gap-2 justify-content-end">
-        <button
-          (click)="navigateBack()"
-          class="rounded-5"
-          color="primary"
-          mat-stroked-button
-          type="reset"
-        >
+        <button (click)="navigateBack()" class="rounded-5" color="primary" mat-stroked-button type="reset">
           Abbrechen
         </button>
 
@@ -226,4 +139,45 @@
       </div>
     </form>
   </div>
+
+  <div class="d-flex detail">
+    <div *ngIf="objective$ | async as objective">
+      <mat-card class="outer-cards w-100">
+        <p class="fs-2">Objective Details</p>
+        <mat-card-content class="d-flex gap-2 flex-wrap">
+          <mat-card class="inner-cards flex-grow-1">
+            <mat-card-content class="d-flex flex-column justify-content-around">
+              <div>
+                <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
+                <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
+              </div>
+              <div>
+                <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
+                <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
+              </div>
+
+              <div class="d-flex flex-column">
+                <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
+                <span class="value" data-testid="keyresult-modify-objective-description">
+                  {{ objective.description }}
+                </span>
+              </div>
+
+              <div>
+                <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
+                <span class="value" data-testid="keyresult-modify-objective-quarter">
+                  {{ objective.quarterLabel }}
+                </span>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>
+
+<!--<div class="px-5">-->
+<!--  <mat-divider class="my-4"></mat-divider>-->
+<!--  <app-measure-row class="my-4"></app-measure-row>-->
+<!--</div>-->

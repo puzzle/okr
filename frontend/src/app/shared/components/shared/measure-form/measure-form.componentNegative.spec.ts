@@ -5,27 +5,17 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../../services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
 import * as keyresultData from '../../../testing/mock-data/keyresults.json';
 import { Observable, of } from 'rxjs';
 import { MeasureService } from '../../../services/measure.service';
-import {
-  ActivatedRoute,
-  convertToParamMap,
-  RouterLinkWithHref,
-} from '@angular/router';
+import { ActivatedRoute, convertToParamMap, RouterLinkWithHref } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DatePipe } from '@angular/common';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule,
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { loadMeasure } from '../../../testing/Loader';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { MatDividerModule } from '@angular/material/divider';
@@ -81,12 +71,7 @@ describe('MeasureFormComponent3', () => {
       mockGetNumerOrNull.getNumberOrNull.mockReturnValue(null);
 
       TestBed.configureTestingModule({
-        declarations: [
-          MeasureFormComponent,
-          UnitValueValidator,
-          KeyResultDescriptionComponent,
-          MeasureRowComponent,
-        ],
+        declarations: [MeasureFormComponent, UnitValueValidator, KeyResultDescriptionComponent, MeasureRowComponent],
         imports: [
           HttpClientTestingModule,
           BrowserAnimationsModule,

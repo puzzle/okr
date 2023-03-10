@@ -60,9 +60,7 @@ describe('TeamFormComponent', () => {
     });
 
     test('should have 1 input field with right placeholder', () => {
-      const inputFiled = fixture.debugElement.query(
-        By.css('input[formControlName="name"]')
-      );
+      const inputFiled = fixture.debugElement.query(By.css('input[formControlName="name"]'));
 
       expect(inputFiled.nativeElement.placeholder).toEqual('z.B. DevTree');
       expect(inputFiled.nativeElement.value).toEqual('');
@@ -77,12 +75,8 @@ describe('TeamFormComponent', () => {
     });
 
     test('should right dis- and enable button', () => {
-      const buttons = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
-      const inputField = fixture.debugElement.query(
-        By.css('input[formControlName="name"]')
-      );
+      const buttons = fixture.debugElement.query(By.css('button[type="submit"]'));
+      const inputField = fixture.debugElement.query(By.css('input[formControlName="name"]'));
 
       component.teamForm.get('name')?.setValue('');
       fixture.detectChanges();
@@ -135,9 +129,7 @@ describe('TeamFormComponent', () => {
     });
 
     test('should have 1 input field with right placeholder', () => {
-      const inputFields = fixture.debugElement.query(
-        By.css('input[formControlName="name"]')
-      );
+      const inputFields = fixture.debugElement.query(By.css('input[formControlName="name"]'));
 
       component.teamObject = of(team);
       fixture.detectChanges();
@@ -151,16 +143,12 @@ describe('TeamFormComponent', () => {
       expect(buttons.length).toEqual(2);
 
       expect(buttons[0].nativeElement.textContent).toEqual(' Abbrechen ');
-      expect(buttons[1].nativeElement.textContent).toContain(
-        'Änderungen speichern'
-      );
+      expect(buttons[1].nativeElement.textContent).toContain('Änderungen speichern');
     });
 
     test('should right dis- and enable button', () => {
       const buttons = fixture.debugElement.query(By.css('.create-button'));
-      const inputField = fixture.debugElement.query(
-        By.css('input[formControlName="name"]')
-      );
+      const inputField = fixture.debugElement.query(By.css('input[formControlName="name"]'));
 
       component.teamForm.get('name')?.setValue(team.name);
       fixture.detectChanges();
@@ -216,11 +204,7 @@ describe('TeamFormComponent', () => {
 
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).not.toHaveBeenCalled();
-      expect(mockToastrService.success).toHaveBeenCalledWith(
-        '',
-        'Team gespeichert!',
-        { timeOut: 5000 }
-      );
+      expect(mockToastrService.success).toHaveBeenCalledWith('', 'Team gespeichert!', { timeOut: 5000 });
     });
 
     test('should display error notification', () => {

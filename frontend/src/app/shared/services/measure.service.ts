@@ -45,10 +45,7 @@ export class MeasureService {
       measure.createdOn = new Date();
       return this.httpClient.post<Measure>(`/api/v1/measures`, measure);
     } else {
-      return this.httpClient.put<Measure>(
-        `/api/v1/measures/` + measure.id,
-        measure
-      );
+      return this.httpClient.put<Measure>(`/api/v1/measures/` + measure.id, measure);
     }
   }
 }

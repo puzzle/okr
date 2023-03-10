@@ -77,9 +77,7 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have objective title as class objectiveTitle', () => {
-      expect(
-        fixture.nativeElement.querySelector('mat-panel-title').textContent
-      ).toEqual('Key Result 1');
+      expect(fixture.nativeElement.querySelector('mat-panel-title').textContent).toEqual('Key Result 1');
     });
 
     test('should have right owner', () => {
@@ -98,42 +96,33 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have progress bar with progress from objective', () => {
-      let progressBar = fixture.nativeElement
-        .querySelector('#progressContainer')
-        .querySelector('app-progress-bar');
+      let progressBar = fixture.nativeElement.querySelector('#progressContainer').querySelector('app-progress-bar');
       expect(progressBar.getAttribute('ng-reflect-value')).toEqual('60');
     });
 
     test('should have menu button with icon', () => {
-      expect(fixture.nativeElement.querySelector('button').textContent).toEqual(
-        'more_vert'
-      );
+      expect(fixture.nativeElement.querySelector('button').textContent).toEqual('more_vert');
     });
 
-    test.each([
-      [
-        [
-          { displayName: 'Key Result löschen', showDialog: true },
-        ] as MenuEntry[],
-      ],
-    ])('should have menu items', (menuEntries: MenuEntry[]) => {
-      fixture = TestBed.createComponent(KeyResultRowComponent);
-      component = fixture.componentInstance;
-      component.keyResult = keyResult;
-      component.menuEntries = menuEntries;
-      fixture.detectChanges();
+    test.each([[[{ displayName: 'Key Result löschen', showDialog: true }] as MenuEntry[]]])(
+      'should have menu items',
+      (menuEntries: MenuEntry[]) => {
+        fixture = TestBed.createComponent(KeyResultRowComponent);
+        component = fixture.componentInstance;
+        component.keyResult = keyResult;
+        component.menuEntries = menuEntries;
+        fixture.detectChanges();
 
-      let button = fixture.debugElement.nativeElement.querySelector(
-        'button[mat-icon-button]'
-      );
-      button.click();
-      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
-      let children = Array.from(matMenu.children)
-        .map((e) => e.querySelector('span')!)
-        .map((e) => e.textContent);
-      let itemTexts = menuEntries.map((e) => e.displayName);
-      expect(children).toEqual(itemTexts);
-    });
+        let button = fixture.debugElement.nativeElement.querySelector('button[mat-icon-button]');
+        button.click();
+        let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+        let children = Array.from(matMenu.children)
+          .map((e) => e.querySelector('span')!)
+          .map((e) => e.textContent);
+        let itemTexts = menuEntries.map((e) => e.displayName);
+        expect(children).toEqual(itemTexts);
+      }
+    );
   });
 
   describe('KeyResultRow with empty measure', () => {
@@ -149,10 +138,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
         ],
-        providers: [
-          DatePipe,
-          { provide: ToastrService, useValue: mockToastrService },
-        ],
+        providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
         declarations: [KeyResultRowComponent],
       })
         .overrideComponent(KeyResultRowComponent, {
@@ -178,9 +164,7 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have "-" at position date when last measure ist null', () => {
-      const measureTag = fixture.debugElement.query(
-        By.css('.measure-null-date')
-      );
+      const measureTag = fixture.debugElement.query(By.css('.measure-null-date'));
       expect(measureTag.nativeElement.textContent).toContain('-');
     });
 

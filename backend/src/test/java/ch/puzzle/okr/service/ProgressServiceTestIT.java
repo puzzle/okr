@@ -44,32 +44,11 @@ class ProgressServiceTestIT {
     @Mock
     private KeyResultRepository keyResultRepository;
 
-    private static Stream<Arguments> shouldReturnCorrectKeyResultProgress() {
-        return Stream.of(Arguments.of(null, 11.5D, null), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
-                Arguments.of(keyResultMeasureValue, 15.789D, 15L), Arguments.of(keyResultMeasureValue, 25D, 25L));
-    }
-
-    private static Stream<Arguments> shouldCalculateObjectiveProgress() {
-        return Stream.of(Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue), 11.5D, 11L),
-                Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue, keyResultMeasureValue), 56.7D, 56L),
-                Arguments.of(List.of(keyResultMeasureValue), 100D, 100L), Arguments.of(List.of(), 0D, null));
-    }
-
-    private static Stream<Arguments> shouldReturnProgressRestrictedFromOneToHundred() {
-        return Stream.of(Arguments.of(120D, 100D), Arguments.of(50D, 50D), Arguments.of(-50D, 0D),
-                Arguments.of(25D, 25D));
-    }
-
-    private static Stream<Arguments> shouldReturnCorrectProgress() {
-        return Stream.of(Arguments.of(120, 100, 120, 100D), Arguments.of(50, 85, 65, 57.142857142857146D),
-                Arguments.of(100, 0, 80, 80D));
-    }
-
     @BeforeEach
     void setUp() {
-        keyResultMeasureValue.setTargetValue(0);
-        keyResultMeasureValue.setBasisValue(0);
-        keyResultMeasureValue.setValue(0);
+        keyResultMeasureValue.setTargetValue(0D);
+        keyResultMeasureValue.setBasisValue(0D);
+        keyResultMeasureValue.setValue(0D);
     }
 
     @Test
@@ -87,6 +66,11 @@ class ProgressServiceTestIT {
         verify(this.objectiveRepository, times(1)).save(objective);
     }
 
+    private static Stream<Arguments> shouldReturnCorrectKeyResultProgress() {
+        return Stream.of(Arguments.of(null, 11.5D, null), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
+                Arguments.of(keyResultMeasureValue, 15.789D, 15L), Arguments.of(keyResultMeasureValue, 25D, 25L));
+    }
+
     @ParameterizedTest
     @MethodSource
     void shouldReturnCorrectKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue, Double checkedProgress,
@@ -99,6 +83,12 @@ class ProgressServiceTestIT {
         assertEquals(expectedProgress, calculatedProgress);
     }
 
+    private static Stream<Arguments> shouldCalculateObjectiveProgress() {
+        return Stream.of(Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue), 11.5D, 11L),
+                Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue, keyResultMeasureValue), 56.7D, 56L),
+                Arguments.of(List.of(keyResultMeasureValue), 100D, 100L), Arguments.of(List.of(), 0D, null));
+    }
+
     @ParameterizedTest
     @MethodSource
     void shouldCalculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues, Double checkedProgress,
@@ -106,6 +96,11 @@ class ProgressServiceTestIT {
         when(this.progressService.returnCheckedProgress(keyResultMeasureValue)).thenReturn(checkedProgress);
         Long calculatedProgress = this.progressService.calculateObjectiveProgress(keyResultMeasureValues);
         assertEquals(expectedProgress, calculatedProgress);
+    }
+
+    private static Stream<Arguments> shouldReturnProgressRestrictedFromOneToHundred() {
+        return Stream.of(Arguments.of(120D, 100D), Arguments.of(50D, 50D), Arguments.of(-50D, 0D),
+                Arguments.of(25D, 25D));
     }
 
     @ParameterizedTest
@@ -116,9 +111,14 @@ class ProgressServiceTestIT {
         assertEquals(optimizedProgress, calculatedProgress);
     }
 
+    private static Stream<Arguments> shouldReturnCorrectProgress() {
+        return Stream.of(Arguments.of(120D, 100D, 120D, 100D), Arguments.of(50D, 85D, 65D, 57.142857142857146D),
+                Arguments.of(100D, 0D, 80D, 80D));
+    }
+
     @ParameterizedTest
     @MethodSource
-    void shouldReturnCorrectProgress(int targetValue, int basisValue, int value, Double expectedProgress) {
+    void shouldReturnCorrectProgress(Double targetValue, Double basisValue, Double value, Double expectedProgress) {
         keyResultMeasureValue.setTargetValue(targetValue);
         keyResultMeasureValue.setBasisValue(basisValue);
         keyResultMeasureValue.setValue(value);

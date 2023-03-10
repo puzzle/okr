@@ -33,7 +33,6 @@ public class KeyResult {
     @NotNull
     private Unit unit;
 
-    @NotNull
     private Double basisValue;
 
     @NotNull
@@ -176,7 +175,7 @@ public class KeyResult {
         private @NotNull User owner;
         private @Size(min = 2, max = 250) ExpectedEvolution expectedEvolution;
         private @NotNull @NotBlank Unit unit;
-        private @NotNull Double basisValue;
+        private Double basisValue;
         private @NotNull Double targetValue;
         private @NotNull User createdBy;
         private @NotNull LocalDateTime createdOn;
@@ -223,7 +222,7 @@ public class KeyResult {
             return this;
         }
 
-        public Builder withBasisValue(@NotNull Double basisValue) {
+        public Builder withBasisValue(Double basisValue) {
             this.basisValue = basisValue;
             return this;
         }

@@ -62,8 +62,11 @@ public class ProgressService {
     }
 
     protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
-        double basisValue = keyResultMeasureValue.getBasisValue();
+        Double basisValue = keyResultMeasureValue.getBasisValue();
         double targetValue = keyResultMeasureValue.getTargetValue();
+        if (basisValue == null) {
+            return 66;
+        }
         double value = keyResultMeasureValue.getValue() == null ? keyResultMeasureValue.getBasisValue()
                 : keyResultMeasureValue.getValue();
         if (basisValue > targetValue) {

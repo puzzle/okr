@@ -1,15 +1,15 @@
 package ch.puzzle.okr.helper;
 
 public interface KeyResultMeasureValue {
-    Integer getTargetValue();
+    Double getTargetValue();
 
-    void setTargetValue(Integer targetValue);
+    void setTargetValue(Double targetValue);
 
-    Integer getBasisValue();
+    Double getBasisValue();
 
-    void setBasisValue(Integer basisValue);
+    void setBasisValue(Double basisValue);
 
-    Integer getValue();
+    Double getValue();
 
-    void setValue(Integer value);
+    void setValue(Double value);
 }

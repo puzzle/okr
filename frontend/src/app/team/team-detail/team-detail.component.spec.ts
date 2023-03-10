@@ -53,20 +53,14 @@ describe('TeamDetailComponent', () => {
   });
 
   test('should have 1 title from team', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('h1').length
-    ).toEqual(1);
+    expect(fixtureTeamDetails.nativeElement.querySelectorAll('h1').length).toEqual(1);
   });
 
   test('should have title Puzzle ITC Objectives', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelector('h1').textContent
-    ).toEqual('Team 1');
+    expect(fixtureTeamDetails.nativeElement.querySelector('h1').textContent).toEqual('Team 1');
   });
 
   test('should create 3 hr when having 1 team with 1 objectives', () => {
-    expect(
-      fixtureTeamDetails.nativeElement.querySelectorAll('hr').length
-    ).toEqual(1);
+    expect(fixtureTeamDetails.nativeElement.querySelectorAll('hr').length).toEqual(1);
   });
 });

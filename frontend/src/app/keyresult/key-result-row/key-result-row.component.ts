@@ -1,16 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuEntry } from '../../shared/types/menu-entry';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,17 +34,11 @@ export class KeyResultRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.menuEntries = [
-      { displayName: 'Key Result löschen', showDialog: true },
-    ];
+    this.menuEntries = [{ displayName: 'Key Result löschen', showDialog: true }];
     this.route.queryParams.subscribe((params) => {
       if (params['keyresults'] !== undefined) {
         const selectedKeyResults: string[] = params['keyresults'].split(',');
-        if (
-          selectedKeyResults.some(
-            (x) => getNumberOrNull(x) === this.keyResult.id
-          )
-        ) {
+        if (selectedKeyResults.some((x) => getNumberOrNull(x) === this.keyResult.id)) {
           this.isSelected = true;
         }
       }
@@ -87,8 +71,7 @@ export class KeyResultRowComponent implements OnInit {
       width: '400px',
       disableClose: true,
       data: {
-        title:
-          'Willst du dieses Key Result und die dazugehörigen Messungen wirklich löschen?',
+        title: 'Willst du dieses Key Result und die dazugehörigen Messungen wirklich löschen?',
         confirmText: 'Bestätigen',
         closeText: 'Abbrechen',
       },
@@ -97,29 +80,23 @@ export class KeyResultRowComponent implements OnInit {
     dialogRef.componentInstance.closeDialog.subscribe((confirm) => {
       if (confirm) {
         dialogRef.componentInstance.displaySpinner = true;
-        this.keyResultService
-          .deleteKeyResultById(this.keyResult.id!)
-          .subscribe({
-            next: () => {
-              dialogRef.componentInstance.displaySpinner = false;
-              dialogRef.close();
-              this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
-              this.toastr.success('', 'Key Result gelöscht!', {
-                timeOut: 5000,
-              });
-            },
-            error: (e: HttpErrorResponse) => {
-              dialogRef.componentInstance.displaySpinner = false;
-              dialogRef.close();
-              this.toastr.error(
-                'Key Result konnte nicht gelöscht werden!',
-                'Fehlerstatus: ' + e.status,
-                {
-                  timeOut: 5000,
-                }
-              );
-            },
-          });
+        this.keyResultService.deleteKeyResultById(this.keyResult.id!).subscribe({
+          next: () => {
+            dialogRef.componentInstance.displaySpinner = false;
+            dialogRef.close();
+            this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
+            this.toastr.success('', 'Key Result gelöscht!', {
+              timeOut: 5000,
+            });
+          },
+          error: (e: HttpErrorResponse) => {
+            dialogRef.componentInstance.displaySpinner = false;
+            dialogRef.close();
+            this.toastr.error('Key Result konnte nicht gelöscht werden!', 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
+          },
+        });
       } else {
         dialogRef.close();
       }

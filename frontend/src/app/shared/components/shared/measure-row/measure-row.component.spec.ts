@@ -6,19 +6,13 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { RouterTestingModule } from '@angular/router/testing';
 import { DatePipe } from '@angular/common';
 import * as measureData from '../../../testing/mock-data/measure.json';
-import {
-  KeyResultService,
-  Measure,
-} from '../../../services/key-result.service';
+import { KeyResultService, Measure } from '../../../services/key-result.service';
 import { Observable, of } from 'rxjs';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { By } from '@angular/platform-browser';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule,
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { RouteService } from '../../../services/route.service';
@@ -89,9 +83,7 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should set measures from keyresultService', () => {
-      expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledWith(
-        1
-      );
+      expect(mockKeyResultService.getMeasuresOfKeyResult).toHaveBeenCalledWith(1);
 
       component.measures$.subscribe((componentMeasures) => {
         measures.subscribe((testMeasures) => {
@@ -109,26 +101,20 @@ describe('MeasureRowComponent', () => {
       button.nativeElement.click();
       fixture.detectChanges();
 
-      expect(mockRouteService.navigate).toHaveBeenCalledWith(
-        'keyresults/1/measure/new'
-      );
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('keyresults/1/measure/new');
     });
 
     test('should set right heading title', () => {
-      const headingLabels = fixture.debugElement.queryAll(By.css('.h3'));
+      const headingLabels = fixture.debugElement.queryAll(By.css('[data-testid="measure-row-title"]'));
 
-      expect(headingLabels[0].nativeElement.textContent).toContain(
-        'Vergangene Messungen'
-      );
+      expect(headingLabels[0].nativeElement.textContent).toContain('Vergangene Messungen');
     });
 
     test('should have right titles for past measures', () => {
       const spans = fixture.debugElement.queryAll(By.css('span'));
 
       expect(spans.length).toEqual(6);
-      expect(spans[0].nativeElement.textContent).toContain(
-        'Vergangene Messung'
-      );
+      expect(spans[0].nativeElement.textContent).toContain('Vergangene Messung');
       expect(spans[2].nativeElement.textContent).toContain('Datum');
       expect(spans[3].nativeElement.textContent).toContain('Aktueller Wert');
       expect(spans[4].nativeElement.textContent).toContain('Veränderungen');
@@ -142,9 +128,7 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should have two measure dates for 2 measures', () => {
-      const measureDates = fixture.debugElement.queryAll(
-        By.css('.measureDate')
-      );
+      const measureDates = fixture.debugElement.queryAll(By.css('.measureDate'));
 
       expect(measureDates.length).toEqual(2);
       expect(measureDates[0].nativeElement.textContent).toContain('05.01.2023');
@@ -152,9 +136,7 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should have two measure values for 2 measures', () => {
-      const measureValues = fixture.debugElement.queryAll(
-        By.css('.measureValue')
-      );
+      const measureValues = fixture.debugElement.queryAll(By.css('.measureValue'));
 
       expect(measureValues.length).toEqual(2);
       expect(measureValues[0].nativeElement.textContent).toContain('42');
@@ -162,31 +144,19 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should have two measure changeInfos for 2 measures', () => {
-      const measureChangeInfos = fixture.debugElement.queryAll(
-        By.css('.measureChangeinfo')
-      );
+      const measureChangeInfos = fixture.debugElement.queryAll(By.css('.measureChangeinfo'));
 
       expect(measureChangeInfos.length).toEqual(2);
-      expect(measureChangeInfos[0].nativeElement.textContent).toContain(
-        'Changeinfo 1'
-      );
-      expect(measureChangeInfos[1].nativeElement.textContent).toContain(
-        'Changeinfo 2'
-      );
+      expect(measureChangeInfos[0].nativeElement.textContent).toContain('Changeinfo 1');
+      expect(measureChangeInfos[1].nativeElement.textContent).toContain('Changeinfo 2');
     });
 
     test('should have two measure initiatives for 2 measures', () => {
-      const measureInitiatives = fixture.debugElement.queryAll(
-        By.css('.measureInitiatives')
-      );
+      const measureInitiatives = fixture.debugElement.queryAll(By.css('.measureInitiatives'));
 
       expect(measureInitiatives.length).toEqual(2);
-      expect(measureInitiatives[0].nativeElement.textContent).toContain(
-        'Initiatives 1'
-      );
-      expect(measureInitiatives[1].nativeElement.textContent).toContain(
-        'Initiatives 2'
-      );
+      expect(measureInitiatives[0].nativeElement.textContent).toContain('Initiatives 1');
+      expect(measureInitiatives[1].nativeElement.textContent).toContain('Initiatives 2');
     });
 
     test('should have two edit icons for 2 measures', () => {
@@ -203,13 +173,9 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should have a button to create measure', () => {
-      const createButton = fixture.debugElement.query(
-        By.css('#add-measure-button')
-      );
+      const createButton = fixture.debugElement.query(By.css('#add-measure-button'));
 
-      expect(createButton.nativeElement.textContent).toContain(
-        ' Messung hinzufügen '
-      );
+      expect(createButton.nativeElement.textContent).toContain(' Messung hinzufügen ');
     });
   });
 
@@ -258,9 +224,7 @@ describe('MeasureRowComponent', () => {
     });
 
     test('should not get measures from Key Result', () => {
-      expect(
-        mockKeyResultService.getMeasuresOfKeyResult
-      ).not.toHaveBeenCalled();
+      expect(mockKeyResultService.getMeasuresOfKeyResult).not.toHaveBeenCalled();
       component.measures$.subscribe((measures) => {
         expect(measures).toBeNull();
       });

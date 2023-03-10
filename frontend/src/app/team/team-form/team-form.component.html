@@ -3,15 +3,8 @@
     {{ !this.id ? "Team erstellen" : "Team Name bearbeiten" }}
   </p>
 
-  <form
-    (ngSubmit)="save()"
-    [formGroup]="teamForm"
-    class="d-flex flex-column fit-content"
-  >
-    <mat-form-field
-      appearance="outline"
-      class="form-field-width form-field-height"
-    >
+  <form (ngSubmit)="save()" [formGroup]="teamForm" class="d-flex flex-column fit-content">
+    <mat-form-field appearance="outline" class="form-field-width form-field-height">
       <mat-label>Teamname</mat-label>
       <input
         [value]="(this.teamObject | async)?.name"
@@ -23,13 +16,7 @@
     </mat-form-field>
 
     <div class="d-flex gap-3">
-      <button
-        class="rounded-5 cancel-button"
-        color="primary"
-        mat-stroked-button
-        type="reset"
-        (click)="navigateBack()"
-      >
+      <button class="rounded-5 cancel-button" color="primary" mat-stroked-button type="reset" (click)="navigateBack()">
         Abbrechen
       </button>
 

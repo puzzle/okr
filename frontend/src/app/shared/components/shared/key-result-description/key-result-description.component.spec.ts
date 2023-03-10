@@ -1,10 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {
-  BrowserAnimationsModule,
-  NoopAnimationsModule,
-} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
 import { Goal } from '../../../services/goal.service';
@@ -68,12 +65,12 @@ describe('KeyResultDescriptionComponent', () => {
     });
 
     test('should have 5 fw-normal titles', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-normal'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       expect(titles.length).toEqual(6);
     });
 
     test('should have 4 texts', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-normal.lead'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       var titelsText = titles.map((e) => e.nativeElement.innerHTML);
 
       var expectedTexts = [

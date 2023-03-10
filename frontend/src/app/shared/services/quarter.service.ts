@@ -21,11 +21,7 @@ export class QuarterService {
     return this.httpClient.get<Quarter[]>('api/v1/quarters');
   }
 
-  public getStartAndEndDateOfKeyresult(
-    keyResultId: number
-  ): Observable<StartEndDateDTO> {
-    return this.httpClient.get<StartEndDateDTO>(
-      'api/v1/quarters/dates/' + keyResultId
-    );
+  public getStartAndEndDateOfKeyresult(keyResultId: number): Observable<StartEndDateDTO> {
+    return this.httpClient.get<StartEndDateDTO>('api/v1/quarters/dates/' + keyResultId);
   }
 }

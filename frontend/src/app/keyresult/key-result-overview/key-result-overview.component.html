@@ -3,9 +3,9 @@
     <mat-card-content>
       <div class="d-flex w-100 justify-content-center gap-3">
         <mat-card class="w-100 inner-cards">
-          <mat-card-title class="fs-6">Beschreibung</mat-card-title>
+          <mat-card-title class="fs-5">Beschreibung</mat-card-title>
 
-          <mat-card-content>
+          <mat-card-content class="value">
             {{ this.keyResult.description }}
           </mat-card-content>
 
@@ -14,14 +14,7 @@
               id="edit-keyresult-button"
               mat-stroked-button
               color="primary"
-              (click)="
-                routeService.navigate(
-                  'objective/' +
-                    keyResult.objectiveId +
-                    '/keyresult/edit/' +
-                    keyResult.id
-                )
-              "
+              (click)="routeService.navigate('objective/' + keyResult.objectiveId + '/keyresult/edit/' + keyResult.id)"
             >
               Key Result bearbeiten
             </button>
@@ -29,43 +22,30 @@
         </mat-card>
 
         <mat-card class="w-100 inner-cards">
-          <mat-card-title class="fs-6">Letzte Messung</mat-card-title>
-          <mat-card-content
-            *ngIf="keyResult.measure !== null; else noMeasures"
-            class="matCardContent"
-          >
+          <mat-card-title class="fs-5">Letzte Messung</mat-card-title>
+          <mat-card-content *ngIf="keyResult.measure !== null; else noMeasures" class="matCardContent">
             <div *ngIf="startEndDate$ | async as startEndDate">
               <div>
-                <strong class="lastMeasureDateTitle sameElement firstElement"
-                  >Datum der Messung:
-                </strong>
-                <p class="sameElement lastMeasureDate">
+                <strong class="lastMeasureDateTitle sameElement firstElement key">Datum der Messung: </strong>
+                <p class="sameElement lastMeasureDate value">
                   {{ formatDate(keyResult.measure?.measureDate!) }}
                 </p>
               </div>
               <div>
-                <strong
-                  class="lastMeasureChangeInfoTitle sameElement firstElement"
-                  >Änderungen:
-                </strong>
-                <p class="sameElement lastMeasureChangeInfo">
+                <strong class="lastMeasureChangeInfoTitle sameElement firstElement key">Änderungen: </strong>
+                <p class="sameElement lastMeasureChangeInfo value">
                   {{ keyResult.measure?.changeInfo }}
                 </p>
               </div>
               <div>
-                <strong
-                  class="lastMeasureStartDateTitle sameElement firstElement"
-                  >Startdatum:
-                </strong>
-                <p class="sameElement lastMeasureStartDate">
+                <strong class="lastMeasureStartDateTitle sameElement firstElement key">Startdatum: </strong>
+                <p class="sameElement lastMeasureStartDate value">
                   {{ formatDate(startEndDate.startDate.toString()) }}
                 </p>
               </div>
               <div>
-                <strong class="lastMeasureEndDateTitle sameElement firstElement"
-                  >Enddatum:
-                </strong>
-                <p class="sameElement lastMeasureEndDate">
+                <strong class="lastMeasureEndDateTitle sameElement firstElement key">Enddatum: </strong>
+                <p class="sameElement lastMeasureEndDate value">
                   {{ formatDate(startEndDate.endDate.toString()) }}
                 </p>
               </div>
@@ -85,11 +65,7 @@
               id="add-measure-button"
               mat-stroked-button
               color="primary"
-              (click)="
-                routeService.navigate(
-                  'keyresults/' + this.keyResult.id + '/measure/new'
-                )
-              "
+              (click)="routeService.navigate('keyresults/' + this.keyResult.id + '/measure/new')"
             >
               Messung hinzufügen
             </button>

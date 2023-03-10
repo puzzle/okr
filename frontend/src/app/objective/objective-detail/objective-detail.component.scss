@@ -1,16 +1,25 @@
 .w-35 {
-  width: 35%;
+  width: max(35%);
 }
 
 .w-65 {
-  width: 65%;
+  width: max(65%);
 }
 
 .objective-cycle {
   margin-top: 15px;
 }
+.owner {
+  margin-right: max(20px);
+}
 
-.objective-results {
+p {
+  margin-top: 15px;
+}
+.table-title {
   margin-top: 15px;
   margin-bottom: 5px;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

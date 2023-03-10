@@ -22,11 +22,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpinnerComponent } from './shared/spinner/spinner/spinner.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 
 export function createTranslateLoader(http: HttpClient) {
@@ -46,12 +42,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    ConfirmDialogComponent,
-    SpinnerComponent,
-  ],
+  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

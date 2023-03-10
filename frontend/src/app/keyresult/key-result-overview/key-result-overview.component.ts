@@ -1,10 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { Observable } from 'rxjs';
-import {
-  QuarterService,
-  StartEndDateDTO,
-} from '../../shared/services/quarter.service';
+import { QuarterService, StartEndDateDTO } from '../../shared/services/quarter.service';
 import { DatePipe } from '@angular/common';
 import { RouteService } from '../../shared/services/route.service';
 
@@ -17,16 +14,10 @@ export class KeyResultOverviewComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;
   startEndDate$!: Observable<StartEndDateDTO>;
 
-  constructor(
-    private quarterService: QuarterService,
-    private datePipe: DatePipe,
-    public routeService: RouteService
-  ) {}
+  constructor(private quarterService: QuarterService, private datePipe: DatePipe, public routeService: RouteService) {}
 
   ngOnInit(): void {
-    this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(
-      this.keyResult.id!
-    );
+    this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(this.keyResult.id!);
   }
 
   formatDate(date: string) {

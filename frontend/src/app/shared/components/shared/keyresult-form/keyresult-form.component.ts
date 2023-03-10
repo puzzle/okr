@@ -3,14 +3,8 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable, switchMap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../../services/objective.service';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../../services/key-result.service';
+import { Objective, ObjectiveService } from '../../../services/objective.service';
+import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
 import { User, UserService } from '../../../services/user.service';
 import { getNumberOrNull } from '../../../common';
 import { ToastrService } from 'ngx-toastr';
@@ -29,34 +23,18 @@ export class KeyresultFormComponent implements OnInit {
   keyresult$!: Observable<KeyResultMeasure>;
 
   keyResultForm = new FormGroup({
-    title: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(250),
-    ]),
+    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     unit: new FormControl<string>('', [Validators.required]),
     expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>({ value: 0, disabled: true }, [
-      Validators.required,
-    ]),
-    targetValue: new FormControl<number>({ value: 0, disabled: true }, [
-      Validators.required,
-    ]),
+    basicValue: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
+    targetValue: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    ownerId: new FormControl<number | null>(null, [
-      Validators.required,
-      Validators.nullValidator,
-    ]),
+    ownerId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
   public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER'];
-  public expectedEvolution$: string[] = [
-    'INCREASE',
-    'DECREASE',
-    'CONSTANT',
-    'NONE',
-  ];
+  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT', 'NONE'];
   public create!: boolean;
 
   constructor(
@@ -91,8 +69,7 @@ export class KeyresultFormComponent implements OnInit {
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
           this.create = true;
-          let keyresult: KeyResultMeasure =
-            this.keyResultService.getInitKeyResult();
+          let keyresult: KeyResultMeasure = this.keyResultService.getInitKeyResult();
           return this.objective$.pipe(
             map((objective) => {
               keyresult.objectiveId = objective.id!;
@@ -103,15 +80,7 @@ export class KeyresultFormComponent implements OnInit {
       })
     );
     this.keyresult$.subscribe((keyresult) => {
-      const {
-        id,
-        objectiveId,
-        ownerFirstname,
-        ownerLastname,
-        measure,
-        progress,
-        ...restKeyresult
-      } = keyresult;
+      const { id, objectiveId, ownerFirstname, ownerLastname, measure, progress, ...restKeyresult } = keyresult;
       this.resetValidatorOfForm(keyresult.unit);
       this.keyResultForm.setValue(restKeyresult);
     });
@@ -136,13 +105,9 @@ export class KeyresultFormComponent implements OnInit {
             this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {
-            this.toastr.error(
-              'Key Result konnte nicht gespeichert werden!',
-              'Fehlerstatus: ' + e.status,
-              {
-                timeOut: 5000,
-              }
-            );
+            this.toastr.error('Key Result konnte nicht gespeichert werden!', 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
             return new Error('ups sommething happend');
           },
         })

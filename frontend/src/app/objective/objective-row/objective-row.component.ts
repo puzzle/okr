@@ -1,20 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
-import {
-  KeyResultMeasure,
-  KeyResultService,
-} from '../../shared/services/key-result.service';
+import { KeyResultMeasure, KeyResultService } from '../../shared/services/key-result.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
@@ -63,11 +50,7 @@ export class ObjectiveRowComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params['objectives'] !== undefined) {
         const selectedObjectives: string[] = params['objectives'].split(',');
-        if (
-          selectedObjectives.some(
-            (x) => getNumberOrNull(x) === this.objective.id
-          )
-        ) {
+        if (selectedObjectives.some((x) => getNumberOrNull(x) === this.objective.id)) {
           this.isSelected = true;
         }
       }
@@ -92,8 +75,7 @@ export class ObjectiveRowComponent implements OnInit {
       width: '400px',
       disableClose: true,
       data: {
-        title:
-          'Willst du dieses Objective und die dazugehörigen KeyResults und Messungen wirklich löschen?',
+        title: 'Willst du dieses Objective und die dazugehörigen KeyResults und Messungen wirklich löschen?',
         confirmText: 'Bestätigen',
         closeText: 'Abbrechen',
       },
@@ -102,29 +84,23 @@ export class ObjectiveRowComponent implements OnInit {
     dialogRef.componentInstance.closeDialog.subscribe((confirm) => {
       if (confirm) {
         dialogRef.componentInstance.displaySpinner = true;
-        this.objectiveService
-          .deleteObjectiveById(this.objective.id!)
-          .subscribe({
-            next: () => {
-              dialogRef.componentInstance.displaySpinner = false;
-              dialogRef.close();
-              this.onObjectivesListUpdate.emit();
-              this.toastr.success('', 'Objective gelöscht!', {
-                timeOut: 5000,
-              });
-            },
-            error: (e: HttpErrorResponse) => {
-              dialogRef.componentInstance.displaySpinner = false;
-              dialogRef.close();
-              this.toastr.error(
-                'Objective konnte nicht gelöscht werden!',
-                'Fehlerstatus: ' + e.status,
-                {
-                  timeOut: 5000,
-                }
-              );
-            },
-          });
+        this.objectiveService.deleteObjectiveById(this.objective.id!).subscribe({
+          next: () => {
+            dialogRef.componentInstance.displaySpinner = false;
+            dialogRef.close();
+            this.onObjectivesListUpdate.emit();
+            this.toastr.success('', 'Objective gelöscht!', {
+              timeOut: 5000,
+            });
+          },
+          error: (e: HttpErrorResponse) => {
+            dialogRef.componentInstance.displaySpinner = false;
+            dialogRef.close();
+            this.toastr.error('Objective konnte nicht gelöscht werden!', 'Fehlerstatus: ' + e.status, {
+              timeOut: 5000,
+            });
+          },
+        });
       } else {
         dialogRef.close();
       }
@@ -133,10 +109,8 @@ export class ObjectiveRowComponent implements OnInit {
 
   removeKeyResultFromListAndReloadObjective(id: number) {
     this.keyResultList = this.keyResultService.getKeyResultsOfObjective(id);
-    this.objectiveService
-      .getObjectiveById(this.objective.id!)
-      .subscribe((objective) => {
-        this.objective = objective;
-      });
+    this.objectiveService.getObjectiveById(this.objective.id!).subscribe((objective) => {
+      this.objective = objective;
+    });
   }
 }

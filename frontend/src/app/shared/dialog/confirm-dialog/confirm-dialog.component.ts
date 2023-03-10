@@ -13,10 +13,7 @@ export class ConfirmDialogComponent {
   confirmText: string;
   closeText: string;
   displaySpinner: boolean = false;
-  constructor(
-    private dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any
-  ) {
+  constructor(private dialogRef: MatDialogRef<ConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) data: any) {
     this.title = data.title;
     this.confirmText = data.confirmText;
     this.closeText = data.closeText;

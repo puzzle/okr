@@ -35,24 +35,16 @@ export interface KeyResultMeasure {
 export class KeyResultService {
   constructor(private httpClient: HttpClient) {}
 
-  public getKeyResultsOfObjective(
-    objectiveId: number
-  ): Observable<KeyResultMeasure[]> {
-    return this.httpClient.get<KeyResultMeasure[]>(
-      '/api/v1/objectives/' + objectiveId + '/keyresults'
-    );
+  public getKeyResultsOfObjective(objectiveId: number): Observable<KeyResultMeasure[]> {
+    return this.httpClient.get<KeyResultMeasure[]>('/api/v1/objectives/' + objectiveId + '/keyresults');
   }
 
   public getMeasuresOfKeyResult(keyresultId: number): Observable<Measure[]> {
-    return this.httpClient.get<Measure[]>(
-      '/api/v1/keyresults/' + keyresultId + '/measures'
-    );
+    return this.httpClient.get<Measure[]>('/api/v1/keyresults/' + keyresultId + '/measures');
   }
 
   getKeyResultById(keyresultId: number) {
-    return this.httpClient.get<KeyResultMeasure>(
-      '/api/v1/keyresults/' + keyresultId
-    );
+    return this.httpClient.get<KeyResultMeasure>('/api/v1/keyresults/' + keyresultId);
   }
 
   getInitKeyResult(): KeyResultMeasure {
@@ -74,21 +66,13 @@ export class KeyResultService {
 
   saveKeyresult(keyresult: KeyResultMeasure, post: boolean) {
     if (post) {
-      return this.httpClient.post<KeyResultMeasure>(
-        `/api/v1/keyresults`,
-        keyresult
-      );
+      return this.httpClient.post<KeyResultMeasure>(`/api/v1/keyresults`, keyresult);
     } else {
-      return this.httpClient.put<KeyResultMeasure>(
-        `/api/v1/keyresults/` + keyresult.id,
-        keyresult
-      );
+      return this.httpClient.put<KeyResultMeasure>(`/api/v1/keyresults/` + keyresult.id, keyresult);
     }
   }
 
   deleteKeyResultById(keyresultId: number): Observable<KeyResultMeasure> {
-    return this.httpClient.delete<KeyResultMeasure>(
-      '/api/v1/keyresults/' + keyresultId
-    );
+    return this.httpClient.delete<KeyResultMeasure>('/api/v1/keyresults/' + keyresultId);
   }
 }

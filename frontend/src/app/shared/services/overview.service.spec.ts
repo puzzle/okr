@@ -1,9 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Overview, OverviewService } from './overview.service';
 import * as overviewData from '../testing/mock-data/overview.json';
 
@@ -53,9 +50,7 @@ describe('OverviewService', () => {
       },
     });
 
-    const request = httpTestingController.expectOne(
-      `api/v1/overview?quarter=1&team=1,2`
-    );
+    const request = httpTestingController.expectOne(`api/v1/overview?quarter=1&team=1,2`);
     expect(request.request.method).toEqual('GET');
     request.flush(response);
     httpTestingController.verify();

@@ -3,16 +3,12 @@
   (closed)="removeObjectiveSelection(this.objective.id!)"
   (opened)="getKeyResults(this.objective.id!)"
 >
-  <mat-expansion-panel-header>
-    <mat-panel-title class="objective-title">{{
-      this.objective!.title
-    }}</mat-panel-title>
+  <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
+    <mat-panel-title class="objective-title">{{ this.objective!.title }}</mat-panel-title>
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex w-50 margin-left">
         <div class="w-100" id="progressContainer">
-          <span class="h6" id="progressSpan">{{
-            objective!.progress != null ? objective!.progress + "%" : "-"
-          }}</span>
+          <span class="key" id="progressSpan">{{ objective!.progress != null ? objective!.progress + "%" : "-" }}</span>
           <app-progress-bar
             [value]="objective!.progress! != null ? objective!.progress! : 0"
             [colorLow]="'#FF1A0C'"
@@ -34,29 +30,16 @@
       </div>
 
       <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
-        <button
-          id="menu-entries"
-          *ngFor="let menuEntry of menuEntries"
-          (click)="redirect(menuEntry)"
-          mat-menu-item
-        >
+        <button id="menu-entries" *ngFor="let menuEntry of menuEntries" (click)="redirect(menuEntry)" mat-menu-item>
           <span>{{ menuEntry.displayName }}</span>
         </button>
       </mat-menu>
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <app-objective-detail
-    [objective]="objective"
-    [keyResultList]="keyResultList"
-  ></app-objective-detail>
-  <mat-accordion
-    class="keyresult-row"
-    *ngFor="let keyResult of keyResultList | async"
-  >
+  <app-objective-detail [objective]="objective" [keyResultList]="keyResultList"></app-objective-detail>
+  <mat-accordion class="keyresult-row" *ngFor="let keyResult of keyResultList | async">
     <app-keyresult-row
-      (onKeyresultListUpdate)="
-        removeKeyResultFromListAndReloadObjective($event)
-      "
+      (onKeyresultListUpdate)="removeKeyResultFromListAndReloadObjective($event)"
       [keyResult]="keyResult"
       [objectiveId]="objective.id!"
     >
@@ -67,9 +50,7 @@
     class="create-button"
     mat-stroked-button
     color="primary"
-    (click)="
-      routeService.navigate('objective/' + this.objective.id + '/keyresult/new')
-    "
+    (click)="routeService.navigate('objective/' + this.objective.id + '/keyresult/new')"
   >
     Key Result hinzufügen
   </button>

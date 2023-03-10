@@ -1,10 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { Quarter, QuarterService, StartEndDateDTO } from './quarter.service';
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as quarterData from '../testing/mock-data/quarters.json';
 
 describe('QuarterService', () => {
@@ -55,9 +52,7 @@ describe('QuarterService', () => {
       },
     });
 
-    const request = httpTestingController.expectOne(
-      `api/v1/quarters/dates/` + id
-    );
+    const request = httpTestingController.expectOne(`api/v1/quarters/dates/` + id);
     expect(request.request.method).toEqual('GET');
     request.flush(response);
     httpTestingController.verify();

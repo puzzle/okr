@@ -1,30 +1,28 @@
-<button
-  mat-stroked-button
-  color="primary"
-  (click)="routeService.navigate('objectives/edit/' + this.objective.id)"
->
+<button mat-stroked-button color="primary" (click)="routeService.navigate('objectives/edit/' + this.objective.id)">
   Objective bearbeiten
 </button>
-<div>
-  <p class="objective-cycle">
-    <strong>Zyklus</strong> {{ this.objective.quarterLabel }}
+<div class="d-flex, justify-content-around">
+  <p calss="objective-cycle" data-testid="objective-detail-quarter">
+    <span class="key">Zyklus </span>
+    <span class="value"> {{ this.objective.quarterLabel }}</span>
   </p>
-  <p class="objective-owner">
-    <strong>Objective Besitzer</strong> {{ this.objective.ownerFirstname }}
-    {{ this.objective.ownerLastname }}
+
+  <p calss="objective-owner" data-testid="objective-detail-owner">
+    <span class="key">Objective Besitzer </span>
+    <span class="value"> {{ this.objective.ownerFirstname }} {{ this.objective.ownerLastname }}</span>
   </p>
 </div>
 <div class="d-flex">
-  <div class="w-35 objective-results">
-    <span class="h6 table-title">Key Result</span>
+  <div class="w-35 d-flex objective-results">
+    <span class="key table-title">Key Result</span>
   </div>
   <div class="d-flex w-65">
     <div class="d-flex w-50 justify-content-around">
-      <span class="h6 table-title">Besitzer</span>
-      <span class="h6 table-title">Letzte Messung</span>
+      <span class="key table-title owner">Besitzer</span>
+      <span class="key table-title last-measure">Letzte Messung</span>
     </div>
     <div class="d-flex w-50">
-      <span class="h6 table-title">Zielerreichung</span>
+      <span class="key table-title">Zielerreichung</span>
     </div>
   </div>
 </div>

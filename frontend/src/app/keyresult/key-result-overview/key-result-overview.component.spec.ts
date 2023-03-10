@@ -7,10 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import {
-  QuarterService,
-  StartEndDateDTO,
-} from '../../shared/services/quarter.service';
+import { QuarterService, StartEndDateDTO } from '../../shared/services/quarter.service';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DatePipe } from '@angular/common';
 import { RouteService } from '../../shared/services/route.service';
@@ -35,15 +32,9 @@ describe('KeyResultOverviewComponent', () => {
 
   describe('KeyResultDetail with measures', () => {
     beforeEach(() => {
-      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
-        of(startAndEndDate)
-      );
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(of(startAndEndDate));
       TestBed.configureTestingModule({
-        imports: [
-          MatCardModule,
-          RouterTestingModule,
-          BrowserDynamicTestingModule,
-        ],
+        imports: [MatCardModule, RouterTestingModule, BrowserDynamicTestingModule],
         declarations: [KeyResultOverviewComponent],
         providers: [
           DatePipe,
@@ -76,85 +67,47 @@ describe('KeyResultOverviewComponent', () => {
     });
 
     test('should have right mat-card-titles', () => {
-      const matcardtitles = fixture.debugElement.queryAll(
-        By.css('mat-card-title')
-      );
+      const matcardtitles = fixture.debugElement.queryAll(By.css('mat-card-title'));
 
       expect(matcardtitles.length).toEqual(2);
 
-      expect(matcardtitles[0].nativeElement.textContent).toEqual(
-        'Beschreibung'
-      );
-      expect(matcardtitles[1].nativeElement.textContent).toEqual(
-        'Letzte Messung'
-      );
+      expect(matcardtitles[0].nativeElement.textContent).toEqual('Beschreibung');
+      expect(matcardtitles[1].nativeElement.textContent).toEqual('Letzte Messung');
     });
 
     test('should have right mat-card-content', () => {
-      const matcardcontens = fixture.debugElement.queryAll(
-        By.css('mat-card-content')
-      );
-      expect(matcardcontens[1].nativeElement.textContent).toEqual(
-        ' This is the description '
-      );
+      const matcardcontens = fixture.debugElement.queryAll(By.css('mat-card-content'));
+      expect(matcardcontens[1].nativeElement.textContent).toEqual(' This is the description ');
     });
 
     test('should have title and last measure date', () => {
-      const lastMeasureDateTitle = fixture.debugElement.query(
-        By.css('.lastMeasureDateTitle')
-      );
-      expect(lastMeasureDateTitle.nativeElement.textContent).toContain(
-        'Datum der Messung:'
-      );
-      const lastMeasureDate = fixture.debugElement.query(
-        By.css('.lastMeasureDate')
-      );
+      const lastMeasureDateTitle = fixture.debugElement.query(By.css('.lastMeasureDateTitle'));
+      expect(lastMeasureDateTitle.nativeElement.textContent).toContain('Datum der Messung:');
+      const lastMeasureDate = fixture.debugElement.query(By.css('.lastMeasureDate'));
       expect(lastMeasureDate.nativeElement.textContent).toContain('23.12.2022');
     });
 
     test('should have title and change info', () => {
-      const lastMeasureChangeInfoTitle = fixture.debugElement.query(
-        By.css('.lastMeasureChangeInfoTitle')
-      );
-      expect(lastMeasureChangeInfoTitle.nativeElement.textContent).toContain(
-        'Änderungen:'
-      );
-      const lastMeasureChangeInfo = fixture.debugElement.query(
-        By.css('.lastMeasureChangeInfo')
-      );
+      const lastMeasureChangeInfoTitle = fixture.debugElement.query(By.css('.lastMeasureChangeInfoTitle'));
+      expect(lastMeasureChangeInfoTitle.nativeElement.textContent).toContain('Änderungen:');
+      const lastMeasureChangeInfo = fixture.debugElement.query(By.css('.lastMeasureChangeInfo'));
       expect(lastMeasureChangeInfo.nativeElement.textContent).toContain(
         ' Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
       );
     });
 
     test('should have title and start date of last measure', () => {
-      const lastMeasureStartDateTitle = fixture.debugElement.query(
-        By.css('.lastMeasureStartDateTitle')
-      );
-      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain(
-        'Startdatum:'
-      );
-      const lastMeasureStartDate = fixture.debugElement.query(
-        By.css('.lastMeasureStartDate')
-      );
-      expect(lastMeasureStartDate.nativeElement.textContent).toContain(
-        '01.10.2022'
-      );
+      const lastMeasureStartDateTitle = fixture.debugElement.query(By.css('.lastMeasureStartDateTitle'));
+      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain('Startdatum:');
+      const lastMeasureStartDate = fixture.debugElement.query(By.css('.lastMeasureStartDate'));
+      expect(lastMeasureStartDate.nativeElement.textContent).toContain('01.10.2022');
     });
 
     test('should have title and end date of last measure', () => {
-      const lastMeasureStartDateTitle = fixture.debugElement.query(
-        By.css('.lastMeasureEndDateTitle')
-      );
-      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain(
-        'Enddatum:'
-      );
-      const lastMeasureStartDate = fixture.debugElement.query(
-        By.css('.lastMeasureEndDate')
-      );
-      expect(lastMeasureStartDate.nativeElement.textContent).toContain(
-        '31.12.2023'
-      );
+      const lastMeasureStartDateTitle = fixture.debugElement.query(By.css('.lastMeasureEndDateTitle'));
+      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain('Enddatum:');
+      const lastMeasureStartDate = fixture.debugElement.query(By.css('.lastMeasureEndDate'));
+      expect(lastMeasureStartDate.nativeElement.textContent).toContain('31.12.2023');
     });
 
     test('should have add measure button', () => {
@@ -162,9 +115,7 @@ describe('KeyResultOverviewComponent', () => {
 
       expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
       button.nativeElement.click();
-      expect(mockRouteService.navigate).toHaveBeenCalledWith(
-        'keyresults/1/measure/new'
-      );
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('keyresults/1/measure/new');
     });
 
     test('should have show detail button', () => {
@@ -176,31 +127,19 @@ describe('KeyResultOverviewComponent', () => {
     });
 
     test('should edit keyresult button', () => {
-      const button = fixture.debugElement.query(
-        By.css('#edit-keyresult-button')
-      );
+      const button = fixture.debugElement.query(By.css('#edit-keyresult-button'));
 
-      expect(button.nativeElement.textContent).toEqual(
-        ' Key Result bearbeiten '
-      );
+      expect(button.nativeElement.textContent).toEqual(' Key Result bearbeiten ');
       button.nativeElement.click();
-      expect(mockRouteService.navigate).toHaveBeenCalledWith(
-        'objective/1/keyresult/edit/1'
-      );
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('objective/1/keyresult/edit/1');
     });
   });
 
   describe('KeyResultDetail with no measures', () => {
     beforeEach(() => {
-      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(
-        of(startAndEndDate)
-      );
+      mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(of(startAndEndDate));
       TestBed.configureTestingModule({
-        imports: [
-          MatCardModule,
-          RouterTestingModule,
-          BrowserDynamicTestingModule,
-        ],
+        imports: [MatCardModule, RouterTestingModule, BrowserDynamicTestingModule],
         declarations: [KeyResultOverviewComponent],
         providers: [
           DatePipe,
@@ -236,9 +175,7 @@ describe('KeyResultOverviewComponent', () => {
 
       expect(button.nativeElement.textContent).toEqual(' Messung hinzufügen ');
       button.nativeElement.click();
-      expect(mockRouteService.navigate).toHaveBeenCalledWith(
-        'keyresults/1/measure/new'
-      );
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('keyresults/1/measure/new');
     });
   });
 });

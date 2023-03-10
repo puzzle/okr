@@ -20,17 +20,9 @@ import { ProgressModule } from '../progress/progress.module';
 import { SharedModule } from '../shared/components/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    ObjectiveDetailComponent,
-    ObjectiveRowComponent,
-    ObjectiveFormComponent,
-  ],
+  declarations: [ObjectiveDetailComponent, ObjectiveRowComponent, ObjectiveFormComponent],
   providers: [ObjectiveService],
-  exports: [
-    ObjectiveRowComponent,
-    ObjectiveDetailComponent,
-    ObjectiveFormComponent,
-  ],
+  exports: [ObjectiveRowComponent, ObjectiveDetailComponent, ObjectiveFormComponent],
   imports: [
     CommonModule,
     MatExpansionModule,

@@ -7,10 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { By } from '@angular/platform-browser';
 import { Observable, of, throwError } from 'rxjs';
-import {
-  Objective,
-  ObjectiveService,
-} from '../../shared/services/objective.service';
+import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -121,18 +118,12 @@ describe('ObjectiveFormComponent', () => {
 
     test('should trigger success notification', () => {
       mockObjectiveService.saveObjective.mockReturnValue(objective);
-      const createbutton = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const createbutton = fixture.debugElement.query(By.css('button[type="submit"]'));
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.success).toHaveBeenCalledTimes(1);
       expect(mockToastrService.error).not.toHaveBeenCalled();
-      expect(mockToastrService.success).toHaveBeenCalledWith(
-        '',
-        'Objective gespeichert!',
-        { timeOut: 5000 }
-      );
+      expect(mockToastrService.success).toHaveBeenCalledWith('', 'Objective gespeichert!', { timeOut: 5000 });
     });
 
     test('should trigger error notification', () => {
@@ -145,9 +136,7 @@ describe('ObjectiveFormComponent', () => {
             })
         )
       );
-      const createbutton = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const createbutton = fixture.debugElement.query(By.css('button[type="submit"]'));
       createbutton.nativeElement.click();
       fixture.detectChanges();
       expect(mockToastrService.error).toHaveBeenCalledTimes(1);
@@ -216,9 +205,7 @@ describe('ObjectiveFormComponent', () => {
     test('should set create boolean to false and dont disable create button', () => {
       expect(component.create).toBeFalsy();
 
-      const createButton = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const createButton = fixture.debugElement.query(By.css('button[type="submit"]'));
       expect(createButton.nativeElement.disabled).toBeFalsy();
       expect(component.objectiveForm.valid).toBeTruthy();
     });
@@ -246,12 +233,8 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have right title objective bearbeiten', () => {
-      const objectiveTitle = fixture.debugElement.query(
-        By.css('.heading-label')
-      );
-      expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Objective bearbeiten'
-      );
+      const objectiveTitle = fixture.debugElement.query(By.css('.heading-label'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective bearbeiten');
     });
 
     test('should have right titles infront of input fields', () => {
@@ -282,9 +265,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should set title in input field and should validate it', () => {
-      const titleInput = fixture.debugElement.query(
-        By.css('input[formControlName="title"]')
-      )!.nativeElement;
+      const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))!.nativeElement;
 
       expect(titleInput.value).toEqual('Objective 1');
       expect(titleInput.placeholder).toEqual('Titel');
@@ -294,9 +275,7 @@ describe('ObjectiveFormComponent', () => {
       fixture.detectChanges();
 
       expect(component.objectiveForm.get('title')?.valid).toBeFalsy();
-      const createButton = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const createButton = fixture.debugElement.query(By.css('button[type="submit"]'));
       expect(createButton.nativeElement.disabled).toBeTruthy();
     });
 
@@ -305,9 +284,7 @@ describe('ObjectiveFormComponent', () => {
         By.css('textarea[formControlName="description"]')
       )!.nativeElement;
 
-      expect(descriptionInput.value).toEqual(
-        'This is the description of Objective 1'
-      );
+      expect(descriptionInput.value).toEqual('This is the description of Objective 1');
       expect(descriptionInput.placeholder).toEqual('Beschreibung');
       expect(component.objectiveForm.get('title')?.valid).toBeTruthy();
 
@@ -315,9 +292,7 @@ describe('ObjectiveFormComponent', () => {
       fixture.detectChanges();
 
       expect(component.objectiveForm.get('description')?.valid).toBeFalsy();
-      const createButton = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const createButton = fixture.debugElement.query(By.css('button[type="submit"]'));
       expect(createButton.nativeElement.disabled).toBeTruthy();
     });
 
@@ -339,16 +314,12 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should not have quarter mat select on edit', async () => {
-      const quarterMatSelect = fixture.debugElement.query(
-        By.css('mat-select[formControlName="quarterId"]')
-      );
+      const quarterMatSelect = fixture.debugElement.query(By.css('mat-select[formControlName="quarterId"]'));
       expect(quarterMatSelect).toBeNull();
     });
 
     test('should disable create button if form is invalid', () => {
-      const submit = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const submit = fixture.debugElement.query(By.css('button[type="submit"]'));
 
       component.objectiveForm.controls['teamId'].setValue(1);
       component.objectiveForm.controls['title'].setValue('Title');
@@ -362,14 +333,9 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should call save method in objectiveService when save button is clicked', async () => {
-      const submit = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const submit = fixture.debugElement.query(By.css('button[type="submit"]'));
       submit.nativeElement.click();
-      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
-        objectivesData.objectives[0],
-        false
-      );
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(objectivesData.objectives[0], false);
     });
   });
 
@@ -448,27 +414,19 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have title objective hinzufügen', () => {
-      const objectiveTitle = fixture.debugElement.query(
-        By.css('.heading-label')
-      );
-      expect(objectiveTitle.nativeElement.textContent).toContain(
-        'Objective hinzufügen'
-      );
+      const objectiveTitle = fixture.debugElement.query(By.css('.heading-label'));
+      expect(objectiveTitle.nativeElement.textContent).toContain('Objective hinzufügen');
     });
 
     test('should disable create button with init objective', () => {
-      const submit = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const submit = fixture.debugElement.query(By.css('button[type="submit"]'));
 
       expect(component.objectiveForm.valid).toBeFalsy();
       expect(submit.nativeElement.disabled).toEqual(true);
     });
 
     test('should enable button if form is valid', () => {
-      const submit = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const submit = fixture.debugElement.query(By.css('button[type="submit"]'));
 
       component.objectiveForm.controls['teamId'].setValue(1);
       component.objectiveForm.controls['title'].setValue('Title');
@@ -509,9 +467,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have input field named Title and should validate it', () => {
-      const titleInput = fixture.debugElement.query(
-        By.css('input[formControlName="title"]')
-      )!.nativeElement;
+      const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))!.nativeElement;
 
       expect(titleInput.value).toEqual('');
       expect(titleInput.placeholder).toEqual('Titel');
@@ -573,22 +529,15 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should call save method in objectiveService when save button is clicked and form is valid', async () => {
-      const submit = fixture.debugElement.query(
-        By.css('button[type="submit"]')
-      );
+      const submit = fixture.debugElement.query(By.css('button[type="submit"]'));
       component.objectiveForm.controls['teamId'].setValue(1);
       component.objectiveForm.controls['title'].setValue('Objective 1');
-      component.objectiveForm.controls['description'].setValue(
-        'Objective 1 description'
-      );
+      component.objectiveForm.controls['description'].setValue('Objective 1 description');
       component.objectiveForm.controls['ownerId'].setValue(1);
       component.objectiveForm.controls['quarterId'].setValue(1);
       fixture.detectChanges();
       submit.nativeElement.click();
-      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(
-        createObjective,
-        true
-      );
+      expect(mockObjectiveService.saveObjective).toHaveBeenCalledWith(createObjective, true);
     });
   });
 });

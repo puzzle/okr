@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
-import { BehaviorSubject, first, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
@@ -14,10 +14,12 @@ import { getNumberOrNull } from '../shared/common';
   styleUrls: ['./dashboard.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   filters = new FormGroup({
     teamsFilter: new FormControl<number[]>([]),
-    quarterFilter: new FormControl<number>(0),
+    quarterFilter: new FormControl<string>(''),
   });
   teams$!: Observable<Team[]>;
   overview$: Subject<Overview[]> = new BehaviorSubject<Overview[]>([]);
@@ -34,20 +36,37 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.teams$ = this.teamService.getTeams();
     this.quarters$ = this.quarterService.getQuarters();
-    //select filter values from url
+
+    combineLatest([this.quarters$, this.route.queryParams])
+      .pipe(
+        takeUntil(this.destroy$),
+        map(([quarters, queryParams]) => {
+          if (queryParams['quarterFilter']) {
+            this.filters.controls.quarterFilter.setValue(queryParams['quarterFilter']);
+          } else if (quarters.length) {
+            this.filters.controls.quarterFilter.setValue(quarters[0].id.toString());
+            this.changeQuarterFilter(quarters[0].id);
+          }
+        })
+      )
+      .subscribe();
     this.route.queryParams
-      .subscribe((params) => {
-        let selectedTeams: number[] = [];
-        (params['teamFilter']?.split(',') ?? []).forEach((item: string) =>
-          selectedTeams.push(getNumberOrNull(item)!)
-        );
-        this.filters.setValue({
-          quarterFilter: getNumberOrNull(params['quarterFilter']),
-          teamsFilter: selectedTeams,
-        });
-      })
-      .unsubscribe();
-    this.reloadOverview();
+      .pipe(
+        map((params) => {
+          let selectedTeams: number[] = [];
+          (params['teamFilter']?.split(',') ?? []).forEach((item: string) =>
+            selectedTeams.push(getNumberOrNull(item)!)
+          );
+          this.filters.controls.teamsFilter.setValue(selectedTeams);
+          this.changeTeamFilter(selectedTeams);
+        })
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   changeTeamFilter(value: number[]) {
@@ -62,14 +81,16 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  matSelectCompareQuarter(quarterId: number, label: string): boolean {
+    return quarterId.toString() === label;
+  }
+
   reloadOverview() {
     this.route.queryParams
       .subscribe((params) => {
-        this.overviewService
-          .getOverview(params['quarterFilter'], params['teamFilter'] ?? [])
-          .subscribe((data) => {
-            this.overview$.next(data);
-          });
+        this.overviewService.getOverview(params['quarterFilter'], params['teamFilter'] ?? []).subscribe((data) => {
+          this.overview$.next(data);
+        });
       })
       .unsubscribe();
   }

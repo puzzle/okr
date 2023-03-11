@@ -1,8 +1,11 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.helper.KeyResultMeasureValue;
+import ch.puzzle.okr.models.ExpectedEvolution;
+import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,63 +18,88 @@ public class ProgressService {
     private final ObjectiveService objectiveService;
     private final ObjectiveRepository objectiveRepository;
     private final KeyResultRepository keyResultRepository;
+    private final MeasureRepository measureRepository;
 
     public ProgressService(ObjectiveService objectiveService, ObjectiveRepository objectiveRepository,
-            KeyResultRepository keyResultRepository) {
+            KeyResultRepository keyResultRepository, MeasureRepository measureRepository) {
         this.objectiveService = objectiveService;
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
+        this.measureRepository = measureRepository;
     }
 
     public void updateObjectiveProgress(Long objectiveId) {
+        List<KeyResult> keyResultList = this.keyResultRepository.findByObjectiveId(objectiveId);
+        double objectiveProgress = keyResultList.stream().mapToDouble(this::calculateKeyResultProgress).average()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                        "Progress calculation failed!"));
+
         Objective objective = this.objectiveService.getObjective(objectiveId);
-        Long progress = this
-                .calculateObjectiveProgress(this.objectiveRepository.getCalculationValuesForProgress(objectiveId));
-        if (progress == null && !this.keyResultRepository.findByObjectiveOrderByTitle(objective).isEmpty()) {
-            progress = 0L;
-        }
-        objective.setProgress(progress);
+        objective.setProgress((long) Math.floor(objectiveProgress));
         this.objectiveRepository.save(objective);
     }
 
-    public Long updateKeyResultProgress(Long keyResultId) {
-        KeyResultMeasureValue keyResultMeasureValue = this.keyResultRepository.getProgressValuesKeyResult(keyResultId);
-        if (keyResultMeasureValue != null) {
-            return (long) Math.floor(returnCheckedProgress(keyResultMeasureValue));
+    public Long calculateKeyResultProgress(KeyResult keyResult) {
+        if (keyResult.getExpectedEvolution().equals(ExpectedEvolution.MIN)
+                || keyResult.getExpectedEvolution().equals(ExpectedEvolution.MAX)) {
+            return (long) Math.floor(calculateKeyResultProgressForMinMax(keyResult));
+
+        } else {
+            return (long) Math.floor(calculateKeyResultProgressForNoMinMax(keyResult));
         }
-        return null;
     }
 
-    public Long calculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues) {
-        if (keyResultMeasureValues.isEmpty()) {
-            return null;
-        }
-        return (long) Math.floor(keyResultMeasureValues.stream().mapToDouble(this::returnCheckedProgress).average()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+    protected double calculateKeyResultProgressForMinMax(KeyResult keyResult) {
+        Double targetValue = keyResult.getTargetValue();
+
+        return Math.floor(this.measureRepository.findMeasuresByKeyResultId(keyResult.getId()).stream()
+                .mapToDouble(measureValue -> {
+                    switch (keyResult.getExpectedEvolution()) {
+                    case MAX -> {
+                        return measureValue != null && measureValue.getValue() <= targetValue ? 100D : 0D;
+                    }
+                    case MIN -> {
+                        return measureValue != null && measureValue.getValue() >= targetValue ? 100D : 0D;
+                    }
+                    default -> throw new IllegalArgumentException(
+                            "This class does only calculate progress for min or max expected evolutions!");
+                    }
+                }).average().orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                         "Progress calculation failed!")));
     }
 
-    public double returnCheckedProgress(KeyResultMeasureValue keyResultMeasureValue) {
-        double percentValue = this.calculateKeyResultProgress(keyResultMeasureValue);
-        if (percentValue > 100) {
-            return 100;
-        } else if (percentValue < 0) {
-            return 0;
-        }
-        return percentValue;
-    }
+    protected double calculateKeyResultProgressForNoMinMax(KeyResult keyResult) {
 
-    protected double calculateKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue) {
-        Double basisValue = keyResultMeasureValue.getBasisValue();
-        double targetValue = keyResultMeasureValue.getTargetValue();
-        if (basisValue == null) {
-            return 66;
+        if (keyResult.getExpectedEvolution().equals(ExpectedEvolution.MIN)
+                || keyResult.getExpectedEvolution().equals(ExpectedEvolution.MAX)) {
+            throw new IllegalArgumentException(
+                    "This class doesn't calculate progress for min or max expected evolutions!");
         }
-        double value = keyResultMeasureValue.getValue() == null ? keyResultMeasureValue.getBasisValue()
-                : keyResultMeasureValue.getValue();
+
+        Measure lastMeasure = this.measureRepository
+                .findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        if (lastMeasure == null) {
+            return 0D;
+        }
+
+        double basisValue = keyResult.getBasisValue();
+        double targetValue = keyResult.getTargetValue();
+        double progress;
+
+        double value = lastMeasure.getValue() == null ? basisValue : lastMeasure.getValue();
+
         if (basisValue > targetValue) {
-            return basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
+            progress = basisValue == value ? 0 : (100 / ((basisValue - targetValue) / (basisValue - value)));
+        } else {
+            progress = Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
         }
-        return Math.ceil(basisValue == value ? 0 : (100 / ((targetValue - basisValue) / (value - basisValue))));
+
+        if (progress > 100) {
+            return 100D;
+        }
+        if (progress < 0) {
+            return 0D;
+        }
+        return progress;
     }
 }

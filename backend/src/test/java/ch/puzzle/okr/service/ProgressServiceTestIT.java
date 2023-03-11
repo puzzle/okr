@@ -1,13 +1,10 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.OkrApplication;
-import ch.puzzle.okr.helper.KeyResultMeasureValue;
+import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.repository.KeyResultRepository;
-import ch.puzzle.okr.repository.ObjectiveRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.repository.MeasureRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,113 +13,92 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.util.List.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @Transactional
 @SpringBootTest(classes = OkrApplication.class)
 class ProgressServiceTestIT {
-    private static ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
-    private static KeyResultMeasureValue keyResultMeasureValue = factory.createProjection(KeyResultMeasureValue.class);
     @InjectMocks
     @Spy
     private ProgressService progressService;
     @Mock
-    private ObjectiveService objectiveService;
-    @Mock
-    private ObjectiveRepository objectiveRepository;
-    @Mock
-    private KeyResultRepository keyResultRepository;
+    private MeasureRepository measureRepository;
 
-    @BeforeEach
-    void setUp() {
-        keyResultMeasureValue.setTargetValue(0D);
-        keyResultMeasureValue.setBasisValue(0D);
-        keyResultMeasureValue.setValue(0D);
-    }
-
-    @Test
-    void shouldMakeCallsToUpdateObjectiveProgress() {
-        Objective objective = new Objective();
-        when(this.objectiveService.getObjective(anyLong())).thenReturn(objective);
-        when(this.objectiveRepository.getCalculationValuesForProgress(anyLong()))
-                .thenReturn(List.of(keyResultMeasureValue, keyResultMeasureValue));
-        when(this.progressService.calculateObjectiveProgress(anyList())).thenReturn(null);
-        when(this.keyResultRepository.findByObjectiveOrderByTitle(objective)).thenReturn(List.of(new KeyResult()));
-
-        this.progressService.updateObjectiveProgress(1L);
-
-        verify(this.objectiveService, times(1)).getObjective(anyLong());
-        verify(this.objectiveRepository, times(1)).save(objective);
-    }
-
-    private static Stream<Arguments> shouldReturnCorrectKeyResultProgress() {
-        return Stream.of(Arguments.of(null, 11.5D, null), Arguments.of(keyResultMeasureValue, 50.25D, 50L),
-                Arguments.of(keyResultMeasureValue, 15.789D, 15L), Arguments.of(keyResultMeasureValue, 25D, 25L));
+    private static Stream<Arguments> shouldCalculateKeyResultProgressNoMinMax() {
+        return Stream.of(Arguments.of(ExpectedEvolution.INCREASE, 100D, 120D, 120D, 100D),
+                Arguments.of(ExpectedEvolution.INCREASE, 85D, 50D, 65D, 57.142857142857146D),
+                Arguments.of(ExpectedEvolution.INCREASE, 0D, 100D, 80D, 80D));
     }
 
     @ParameterizedTest
     @MethodSource
-    void shouldReturnCorrectKeyResultProgress(KeyResultMeasureValue keyResultMeasureValue, Double checkedProgress,
-            Long expectedProgress) {
-        when(this.keyResultRepository.getProgressValuesKeyResult(1L)).thenReturn(keyResultMeasureValue);
-        if (keyResultMeasureValue != null) {
-            when(this.progressService.returnCheckedProgress(keyResultMeasureValue)).thenReturn(checkedProgress);
-        }
-        Long calculatedProgress = this.progressService.updateKeyResultProgress(1L);
-        assertEquals(expectedProgress, calculatedProgress);
-    }
+    void shouldCalculateKeyResultProgressNoMinMax(ExpectedEvolution expectedEvolution, Double basisValue,
+            Double targetValue, Double value, Double expectedProgress) {
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withExpectedEvolution(expectedEvolution)
+                .withBasisValue(basisValue).withTargetValue(targetValue).build();
+        Measure measure = Measure.Builder.builder().withValue(value).build();
 
-    private static Stream<Arguments> shouldCalculateObjectiveProgress() {
-        return Stream.of(Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue), 11.5D, 11L),
-                Arguments.of(List.of(keyResultMeasureValue, keyResultMeasureValue, keyResultMeasureValue), 56.7D, 56L),
-                Arguments.of(List.of(keyResultMeasureValue), 100D, 100L), Arguments.of(List.of(), 0D, null));
-    }
+        when(measureRepository.findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(1L)).thenReturn(measure);
 
-    @ParameterizedTest
-    @MethodSource
-    void shouldCalculateObjectiveProgress(List<KeyResultMeasureValue> keyResultMeasureValues, Double checkedProgress,
-            Long expectedProgress) {
-        when(this.progressService.returnCheckedProgress(keyResultMeasureValue)).thenReturn(checkedProgress);
-        Long calculatedProgress = this.progressService.calculateObjectiveProgress(keyResultMeasureValues);
-        assertEquals(expectedProgress, calculatedProgress);
-    }
-
-    private static Stream<Arguments> shouldReturnProgressRestrictedFromOneToHundred() {
-        return Stream.of(Arguments.of(120D, 100D), Arguments.of(50D, 50D), Arguments.of(-50D, 0D),
-                Arguments.of(25D, 25D));
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void shouldReturnProgressRestrictedFromOneToHundred(Double progress, Double optimizedProgress) {
-        when(progressService.calculateKeyResultProgress(keyResultMeasureValue)).thenReturn(progress);
-        Double calculatedProgress = this.progressService.returnCheckedProgress(keyResultMeasureValue);
-        assertEquals(optimizedProgress, calculatedProgress);
-    }
-
-    private static Stream<Arguments> shouldReturnCorrectProgress() {
-        return Stream.of(Arguments.of(120D, 100D, 120D, 100D), Arguments.of(50D, 85D, 65D, 57.142857142857146D),
-                Arguments.of(100D, 0D, 80D, 80D));
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void shouldReturnCorrectProgress(Double targetValue, Double basisValue, Double value, Double expectedProgress) {
-        keyResultMeasureValue.setTargetValue(targetValue);
-        keyResultMeasureValue.setBasisValue(basisValue);
-        keyResultMeasureValue.setValue(value);
-        Double progress = progressService.calculateKeyResultProgress(keyResultMeasureValue);
+        Double progress = progressService.calculateKeyResultProgressForNoMinMax(keyResult);
         assertEquals(expectedProgress, progress);
+    }
+
+    private static Stream<Arguments> shouldCalculateKeyResultProgressMinMax() {
+        return Stream.of(
+                // one measure for MIN
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(-1D), 0D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(0D), 0D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(1D), 0D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(99.9D), 0D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(100D), 100D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100.0D, of(100.0D), 100D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(101D), 100D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(1_000_00D), 100D),
+                // one measure for MAX
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(-1_000_000D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(-1D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(0D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(1D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(100D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(100.0D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(100.1D), 0D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(101D), 0D),
+                // more that on measure for MIN
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(0D, 99D, 99.9D), 0D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(0D, 101D, 99.9D), 33D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(99.9D, 1200D, 100.1D), 66D),
+                Arguments.of(ExpectedEvolution.MIN, null, 100D, of(100.1D, 100.0D, 100D), 100D),
+                // more that on measure for MAX
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(0D, 0D, 0D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(0D, 50D, 100D), 100D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(0D, 50D, 100.1D), 66D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(101D, 99.9D, 100.1D), 33D),
+                Arguments.of(ExpectedEvolution.MAX, null, 100D, of(0D, 99.9D, 0.9D), 100D));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldCalculateKeyResultProgressMinMax(ExpectedEvolution expectedEvolution, Double basisValue,
+            Double targetValue, List<Double> values, Double expectedProgress) {
+        KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withExpectedEvolution(expectedEvolution)
+                .withBasisValue(basisValue).withTargetValue(targetValue).build();
+
+        List<MeasureRepository.MeasureValue> measureValues = new ArrayList<>();
+        values.forEach(value -> measureValues.add(() -> value));
+        when(measureRepository.findMeasuresByKeyResultId(1L)).thenReturn(measureValues);
+
+        double calculatedProgress = this.progressService.calculateKeyResultProgressForMinMax(keyResult);
+        assertEquals(expectedProgress, calculatedProgress);
     }
 }

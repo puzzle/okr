@@ -51,25 +51,25 @@ public class ProgressService {
 
     protected double calculateKeyResultProgressForMinMax(KeyResult keyResult) {
         Double targetValue = keyResult.getTargetValue();
-        List<MeasureRepository.MeasureValue> measureValueList = this.measureRepository.findMeasuresByKeyResultId(keyResult.getId());
+        List<MeasureRepository.MeasureValue> measureValueList = this.measureRepository
+                .findMeasuresByKeyResultId(keyResult.getId());
 
-        if(measureValueList.isEmpty()){
+        if (measureValueList.isEmpty()) {
             return 0D;
         }
-        return Math.floor(measureValueList.stream()
-                .mapToDouble(measureValue -> {
-                    switch (keyResult.getExpectedEvolution()) {
-                    case MAX -> {
-                        return measureValue != null && measureValue.getValue() <= targetValue ? 100D : 0D;
-                    }
-                    case MIN -> {
-                        return measureValue != null && measureValue.getValue() >= targetValue ? 100D : 0D;
-                    }
-                    default -> throw new IllegalArgumentException(
-                            "This class does only calculate progress for min or max expected evolutions!");
-                    }
-                }).average().orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Progress calculation failed!")));
+        return Math.floor(measureValueList.stream().mapToDouble(measureValue -> {
+            switch (keyResult.getExpectedEvolution()) {
+            case MAX -> {
+                return measureValue != null && measureValue.getValue() <= targetValue ? 100D : 0D;
+            }
+            case MIN -> {
+                return measureValue != null && measureValue.getValue() >= targetValue ? 100D : 0D;
+            }
+            default -> throw new IllegalArgumentException(
+                    "This class does only calculate progress for min or max expected evolutions!");
+            }
+        }).average().orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Progress calculation failed!")));
     }
 
     protected double calculateKeyResultProgressForNoMinMax(KeyResult keyResult) {

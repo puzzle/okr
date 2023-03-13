@@ -51,8 +51,12 @@ public class ProgressService {
 
     protected double calculateKeyResultProgressForMinMax(KeyResult keyResult) {
         Double targetValue = keyResult.getTargetValue();
+        List<MeasureRepository.MeasureValue> measureValueList = this.measureRepository.findMeasuresByKeyResultId(keyResult.getId());
 
-        return Math.floor(this.measureRepository.findMeasuresByKeyResultId(keyResult.getId()).stream()
+        if(measureValueList.isEmpty()){
+            return 0D;
+        }
+        return Math.floor(measureValueList.stream()
                 .mapToDouble(measureValue -> {
                     switch (keyResult.getExpectedEvolution()) {
                     case MAX -> {

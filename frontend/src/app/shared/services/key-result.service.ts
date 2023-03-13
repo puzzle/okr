@@ -23,7 +23,7 @@ export interface KeyResultMeasure {
   ownerLastname: string;
   expectedEvolution: string | null;
   unit: string;
-  basicValue: number;
+  basicValue: number | null;
   targetValue: number;
   measure?: Measure;
   progress: number;
@@ -65,6 +65,9 @@ export class KeyResultService {
   }
 
   saveKeyresult(keyresult: KeyResultMeasure, post: boolean) {
+    if (keyresult.expectedEvolution === 'MIN' || keyresult.expectedEvolution === 'MAX') {
+      keyresult.basicValue = null;
+    }
     if (post) {
       return this.httpClient.post<KeyResultMeasure>(`/api/v1/keyresults`, keyresult);
     } else {

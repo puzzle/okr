@@ -26,7 +26,7 @@ export class KeyresultFormComponent implements OnInit {
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     unit: new FormControl<string>('', [Validators.required]),
     expectedEvolution: new FormControl<string>('', [Validators.required]),
-    basicValue: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
+    basicValue: new FormControl<number>({ value: 0, disabled: true }),
     targetValue: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
@@ -34,7 +34,7 @@ export class KeyresultFormComponent implements OnInit {
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
   public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER'];
-  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'CONSTANT', 'NONE'];
+  public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'MIN', 'MAX'];
   public create!: boolean;
 
   constructor(
@@ -49,6 +49,13 @@ export class KeyresultFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.keyResultForm.get('expectedEvolution')!.valueChanges.subscribe((value) => {
+      if (value === 'INCREASE' || value === 'DECREASE') {
+        this.keyResultForm.get('basicValue')!.setValidators(Validators.required);
+      } else {
+        this.keyResultForm.get('basicValue')!.disable();
+      }
+    });
     this.users$ = this.userService.getUsers();
     this.objective$ = this.route.paramMap.pipe(
       switchMap((params) => {
@@ -65,7 +72,8 @@ export class KeyresultFormComponent implements OnInit {
         const keyresultId = getNumberOrNull(params.get('keyresultId'));
         if (keyresultId) {
           this.create = false;
-          this.enableTargetAndBasicValue();
+          this.enableTargetValue();
+          this.enableBasicValue();
           return this.keyResultService.getKeyResultById(keyresultId);
         } else {
           this.create = true;
@@ -114,9 +122,19 @@ export class KeyresultFormComponent implements OnInit {
       );
   }
 
-  enableTargetAndBasicValue(): void {
-    this.keyResultForm.controls['basicValue'].enable();
+  enableTargetValue(): void {
     this.keyResultForm.controls['targetValue'].enable();
+  }
+
+  enableBasicValue(): void {
+    if (
+      this.keyResultForm.get('expectedEvolution')!.value === 'INCREASE' ||
+      this.keyResultForm.get('expectedEvolution')!.value === 'DECREASE'
+    ) {
+      this.keyResultForm.controls['basicValue'].enable();
+    } else {
+      this.keyResultForm.controls['basicValue'].disable();
+    }
   }
 
   resetValidatorOfForm(unit: string | null): void {

@@ -3,7 +3,9 @@
     "INCREASE": "Erhöht",
     "DECREASE": "Vermindert",
     "CONSTANT": "Konstant",
-    "NONE": "Keine"
+    "NONE": "Keine",
+    "MIN": "Minimum",
+    "MAX": "Maximum"
   },
   "UNIT": {
     "PERCENT": "Prozent",

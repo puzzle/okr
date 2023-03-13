@@ -176,18 +176,18 @@ describe('KeyresultFormComponent', () => {
       expect(component.keyResultForm.valid).toBeFalsy();
     });
 
-    test('should set ExpectedEvolution to NONE', async () => {
+    test('should set ExpectedEvolution to MIN', async () => {
       const select = await loader.getHarness(
         MatSelectHarness.with({
           selector: 'mat-select[formControlName="expectedEvolution"]',
         })
       );
       await select.open();
-      const bugOption = await select.getOptions({ text: 'Keine' });
+      const bugOption = await select.getOptions({ text: 'Minimum' });
       await bugOption[0].click();
 
-      expect(await select.getValueText()).toEqual('Keine');
-      expect(component.keyResultForm.controls['expectedEvolution'].value).toEqual('NONE');
+      expect(await select.getValueText()).toEqual('Minimum');
+      expect(component.keyResultForm.controls['expectedEvolution'].value).toEqual('MIN');
       expect(component.keyResultForm.valid).toBeTruthy();
     });
 
@@ -224,6 +224,47 @@ describe('KeyresultFormComponent', () => {
       fixture.detectChanges();
 
       expect(component.keyResultForm.valid).toBeFalsy();
+    });
+
+    test('should disable and enable basicValue field based on expected Evolution', async () => {
+      const select = await loader.getHarness(
+        MatSelectHarness.with({
+          selector: 'mat-select[formControlName="expectedEvolution"]',
+        })
+      );
+      expect(await select.getValueText()).toEqual('Erhöht');
+
+      await select.open();
+      let bugOption = await select.getOptions({ text: 'Minimum' });
+      await bugOption[0].click();
+
+      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.valid).toBeFalsy();
+      expect(component.keyResultForm.controls.basicValue.disabled).toBeTruthy();
+
+      await select.open();
+      bugOption = await select.getOptions({ text: 'Erhöht' });
+      await bugOption[0].click();
+
+      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.disabled).toBeFalsy();
+
+      await select.open();
+      bugOption = await select.getOptions({ text: 'Maximum' });
+      await bugOption[0].click();
+
+      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.valid).toBeFalsy();
+      expect(component.keyResultForm.controls.basicValue.disabled).toBeTruthy();
+
+      await select.open();
+      bugOption = await select.getOptions({ text: 'Vermindert' });
+      await bugOption[0].click();
+
+      expect(component.keyResultForm.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.valid).toBeTruthy();
+      expect(component.keyResultForm.controls.basicValue.disabled).toBeFalsy();
     });
 
     test('should set Key Result targetValue in input field and set input invalid when empty value', () => {

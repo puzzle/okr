@@ -30,7 +30,7 @@ public class KeyResultMapper {
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
                 keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
                 keyResult.getBasisValue(), keyResult.getTargetValue(),
-                progressService.updateKeyResultProgress(keyResult.getId()));
+                progressService.calculateKeyResultProgress(keyResult));
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {

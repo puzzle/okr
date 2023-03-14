@@ -1,30 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-} from '@angular/common/http';
-import {
-  catchError,
-  filter,
-  map,
-  merge,
-  mergeMap,
-  Observable,
-  of,
-  take,
-  timeout,
-} from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable()
 export class OauthInterceptor implements HttpInterceptor {
   constructor(private oauthService: OAuthService) {}
-  intercept(
-    req: HttpRequest<unknown>,
-    next: HttpHandler
-  ): Observable<HttpEvent<unknown>> {
+  intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!req.url.match(/^(\/)?api/)) {
       return next.handle(req);
     }

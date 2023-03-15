@@ -56,7 +56,7 @@ class GoalControllerIT {
         BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
 
         mvc.perform(get("/api/v1/goals/1").contentType(MediaType.APPLICATION_JSON))
-//                .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
+                // .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.objective.id", Is.is(1)))
                 .andExpect(jsonPath("$.keyresult.id", Is.is(1))).andExpect(jsonPath("$.teamId", Is.is(1)))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")));

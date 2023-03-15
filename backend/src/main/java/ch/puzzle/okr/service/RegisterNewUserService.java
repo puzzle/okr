@@ -30,11 +30,9 @@ public class RegisterNewUserService {
     private synchronized User getOrCreateUser(Map<String, Object> claims) {
         Optional<User> user = userRepository.findByUsername(claims.get("preferred_username").toString());
         return user.orElseGet(() -> {
-            User newUser = User.Builder.builder()
-                    .withUsername(claims.get("preferred_username").toString())
+            User newUser = User.Builder.builder().withUsername(claims.get("preferred_username").toString())
                     .withFirstname(claims.get("given_name").toString())
-                    .withLastname(claims.get("family_name").toString())
-                    .withEmail(claims.get("email").toString())
+                    .withLastname(claims.get("family_name").toString()).withEmail(claims.get("email").toString())
                     .build();
             return userRepository.save(newUser);
         });

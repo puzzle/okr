@@ -110,11 +110,9 @@ class MeasureControllerIT {
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(
-                post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30D)))
                 .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
@@ -125,11 +123,9 @@ class MeasureControllerIT {
         BDDMockito.given(measureService.saveMeasure(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
 
-        mvc.perform(
-                post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -141,9 +137,7 @@ class MeasureControllerIT {
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(
-                put("/api/v1/measures/1")
-                .contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
@@ -157,9 +151,7 @@ class MeasureControllerIT {
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-        mvc.perform(
-                put("/api/v1/measures/3")
-                .contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
@@ -170,8 +162,7 @@ class MeasureControllerIT {
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        mvc.perform(
-                put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
@@ -181,10 +172,8 @@ class MeasureControllerIT {
     @Test
     void shouldDeleteMeasure() throws Exception {
         when(measureService.getMeasureById(anyLong())).thenReturn(measure);
-        mvc.perform(
-                delete("/api/v1/measures/10")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(delete("/api/v1/measures/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -192,9 +181,7 @@ class MeasureControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
                 .when(measureService).getMeasureById(anyLong());
 
-        mvc.perform(
-                delete("/api/v1/measures/1000")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(delete("/api/v1/measures/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

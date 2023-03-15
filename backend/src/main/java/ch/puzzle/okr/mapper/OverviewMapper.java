@@ -4,7 +4,6 @@ import ch.puzzle.okr.dto.OverviewDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.ObjectiveService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

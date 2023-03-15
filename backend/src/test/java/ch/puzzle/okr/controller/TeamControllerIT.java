@@ -126,12 +126,8 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
-        mvc.perform(
-                post("/api/v1/teams")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"name\":\" TestTeam \"}")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
         verify(teamService, times(1)).saveTeam(any());
@@ -142,12 +138,8 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
-        mvc.perform(
-                post("/api/v1/teams")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"id\": 22, \"name\": null}")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 22, \"name\": null}").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -155,13 +147,10 @@ class TeamControllerIT {
     void shouldReturnChangedEntity() throws Exception {
         BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
 
-        mvc.perform(
-                put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": 5, \"name\": \"Puzzle\"}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(5))).andExpect(jsonPath("$.name", Is.is("Puzzle")));
+        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 5, \"name\": \"Puzzle\"}").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }
 
     @Test
@@ -169,11 +158,9 @@ class TeamControllerIT {
         BDDMockito.given(teamService.updateTeam(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
 
-        mvc.perform(
-            put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON).with(SecurityMockMvcRequestPostProcessors.csrf()
-            )
-            .content("{\"id\":42,\"title\":\"FullObjective\"}"))
-            .andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"id\":42,\"title\":\"FullObjective\"}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

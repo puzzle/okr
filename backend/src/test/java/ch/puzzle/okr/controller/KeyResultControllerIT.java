@@ -169,12 +169,9 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
-        mvc.perform(
-                put("/api/v1/keyresults/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content("{\"title\":  \"Updated Keyresult 1\"}")
-                ).andExpect(MockMvcResultMatchers.status().isOk())
+        mvc.perform(put("/api/v1/keyresults/1").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Updated Keyresult 1\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.title", Is.is("Program Faster")))
                 .andExpect(jsonPath("$.ownerFirstname", Is.is("Rudi")))
                 .andExpect(jsonPath("$.unit", Is.is(Unit.PERCENT.toString()))).andReturn();
@@ -184,12 +181,9 @@ class KeyResultControllerIT {
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(keyResultService.updateKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, any()));
-        mvc.perform(
-                put("/api/v1/keyresults/10")
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content("{\"title\":  \"Updated Keyresult 1\"}")
-                ).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(put("/api/v1/keyresults/10").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Updated Keyresult 1\"}"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -203,12 +197,9 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
-        mvc.perform(
-                post("/api/v1/keyresults")
-                    .content(createBody)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                ).andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+        mvc.perform(post("/api/v1/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")))
                 .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")));
     }
@@ -224,12 +215,8 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
-        mvc.perform(
-                post("/api/v1/keyresults")
-                    .content(createBodyWithEnumKeys)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(post("/api/v1/keyresults").content(createBodyWithEnumKeys).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")))
                 .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")));
@@ -240,12 +227,8 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
-        mvc.perform(
-                post("/api/v1/keyresults")
-                        .content(createBody)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(post("/api/v1/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -288,14 +271,9 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultMapper.toDto(any())).willReturn(keyResultDto);
         BDDMockito.given(keyResultService.updateKeyResult(any())).willReturn(keyResult);
 
-        mvc.perform(
-                put("/api/v1/keyresults/10")
-                    .content(putBody)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.title", Is.is("Keyresult")))
+        mvc.perform(put("/api/v1/keyresults/10").content(putBody).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(5))).andExpect(jsonPath("$.title", Is.is("Keyresult")))
                 .andExpect(jsonPath("$.expectedEvolution", Is.is("INCREASE")))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")));
     }
@@ -305,12 +283,8 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultService.updateKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"));
 
-        mvc.perform(
-                put("/api/v1/keyresults/1000")
-                    .content(putBody)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                )
+        mvc.perform(put("/api/v1/keyresults/1000").content(putBody).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -319,18 +293,14 @@ class KeyResultControllerIT {
         BDDMockito.given(keyResultService.updateKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
 
-        mvc.perform(
-                put("/api/v1/keyresults/10")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mvc.perform(put("/api/v1/keyresults/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldDeleteKeyResult() throws Exception {
-        mvc.perform(
-                delete("/api/v1/keyresults/10")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-        ).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(delete("/api/v1/keyresults/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -338,9 +308,7 @@ class KeyResultControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultService)
                 .deleteKeyResultAndUpdateProgress(any());
 
-        mvc.perform(
-                delete("/api/v1/keyresults/1000")
-                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-        ).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(delete("/api/v1/keyresults/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

@@ -27,10 +27,7 @@ public class QuarterController {
     private final QuarterService quarterService;
     private final RegisterNewUserService registerNewUserService;
 
-    public QuarterController(
-            QuarterService quarterService,
-            RegisterNewUserService registerNewUserService
-    ) {
+    public QuarterController(QuarterService quarterService, RegisterNewUserService registerNewUserService) {
         this.quarterService = quarterService;
         this.registerNewUserService = registerNewUserService;
     }

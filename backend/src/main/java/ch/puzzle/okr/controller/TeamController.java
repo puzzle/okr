@@ -32,8 +32,7 @@ public class TeamController {
     private final ObjectiveMapper objectiveMapper;
 
     public TeamController(TeamService teamService, TeamMapper teamMapper, ObjectiveService objectiveService,
-                          RegisterNewUserService registerNewUserService,
-            ObjectiveMapper objectiveMapper) {
+            RegisterNewUserService registerNewUserService, ObjectiveMapper objectiveMapper) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
         this.objectiveService = objectiveService;

@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.MeasureService;
+import ch.puzzle.okr.service.ProgressService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +34,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -65,12 +65,15 @@ class MeasureControllerIT {
     @MockBean
     private MeasureService measureService;
     @MockBean
+    private ProgressService progressService;
+    @MockBean
     private MeasureMapper measureMapper;
 
     @BeforeEach
     void setUp() {
         BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
+        doNothing().when(progressService).updateObjectiveProgress(anyLong());
     }
 
     @Test

@@ -7,13 +7,16 @@ import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.TeamService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -64,6 +67,8 @@ class TeamControllerIT {
     private TeamMapper teamMapper;
     @MockBean
     private ObjectiveService objectiveService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
 
     @MockBean
     private ObjectiveMapper objectiveMapper;
@@ -74,6 +79,7 @@ class TeamControllerIT {
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
     }
 
     @Test

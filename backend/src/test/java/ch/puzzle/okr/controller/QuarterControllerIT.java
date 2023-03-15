@@ -3,11 +3,15 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.QuarterService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,6 +44,13 @@ class QuarterControllerIT {
     private MockMvc mvc;
     @MockBean
     private QuarterService quarterService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
+    }
 
     @Test
     void shouldGetAllQuarters() throws Exception {

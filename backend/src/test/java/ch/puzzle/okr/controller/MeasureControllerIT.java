@@ -7,7 +7,6 @@ import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.MeasureService;
-import ch.puzzle.okr.service.ProgressService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +19,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(MeasureController.class)
 class MeasureControllerIT {
@@ -64,8 +66,6 @@ class MeasureControllerIT {
     private MeasureService measureService;
     @MockBean
     private MeasureMapper measureMapper;
-    @MockBean
-    private ProgressService progressService;
 
     @BeforeEach
     void setUp() {
@@ -107,8 +107,11 @@ class MeasureControllerIT {
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}"))
+        mvc.perform(
+                post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}")
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30D)))
                 .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
@@ -119,8 +122,11 @@ class MeasureControllerIT {
         BDDMockito.given(measureService.saveMeasure(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
 
-        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"createdById \": null, \"measureDate \": null}"))
+        mvc.perform(
+                post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -132,7 +138,10 @@ class MeasureControllerIT {
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(
+                put("/api/v1/measures/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30D)))
@@ -145,7 +154,10 @@ class MeasureControllerIT {
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
-        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(
+                put("/api/v1/measures/3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -155,7 +167,9 @@ class MeasureControllerIT {
     void shouldReturnBadRequest() throws Exception {
         BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(
+                put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -164,7 +178,10 @@ class MeasureControllerIT {
     @Test
     void shouldDeleteMeasure() throws Exception {
         when(measureService.getMeasureById(anyLong())).thenReturn(measure);
-        mvc.perform(delete("/api/v1/measures/10")).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(
+                delete("/api/v1/measures/10")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -172,6 +189,9 @@ class MeasureControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
                 .when(measureService).getMeasureById(anyLong());
 
-        mvc.perform(delete("/api/v1/measures/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(
+                delete("/api/v1/measures/1000")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+        ).andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

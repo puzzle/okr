@@ -20,6 +20,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,6 +38,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(TeamController.class)
 class TeamControllerIT {
@@ -117,7 +120,12 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
-        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}"))
+        mvc.perform(
+                post("/api/v1/teams")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"name\":\" TestTeam \"}")
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
         verify(teamService, times(1)).saveTeam(any());
@@ -129,7 +137,11 @@ class TeamControllerIT {
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
         mvc.perform(
-                post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"id\": 22, \"name\": null}"))
+                post("/api/v1/teams")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"id\": 22, \"name\": null}")
+                    .with(SecurityMockMvcRequestPostProcessors.csrf())
+                )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -137,8 +149,12 @@ class TeamControllerIT {
     void shouldReturnChangedEntity() throws Exception {
         BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
 
-        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": 5, \"name\": \"Puzzle\"}")).andExpect(MockMvcResultMatchers.status().isOk())
+        mvc.perform(
+                put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 5, \"name\": \"Puzzle\"}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(5))).andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }
 
@@ -147,9 +163,11 @@ class TeamControllerIT {
         BDDMockito.given(teamService.updateTeam(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
 
-        mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":42,\"title\":\"FullObjective\"}"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(
+            put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON).with(SecurityMockMvcRequestPostProcessors.csrf()
+            )
+            .content("{\"id\":42,\"title\":\"FullObjective\"}"))
+            .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test

@@ -21,6 +21,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
@@ -163,8 +166,9 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
 
-        mvc.perform(post("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
+        mvc.perform(post("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
+                        "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
                         "{\"id\":null,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterLabel\":\"GJ 22/23-Q2\",\"description\":\"Just be faster\",\"progress\":0}"));
@@ -177,7 +181,8 @@ class ObjectiveControllerIT {
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"title\": null, \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}"))
+                "{\"title\": null, \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -195,9 +200,9 @@ class ObjectiveControllerIT {
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
                         + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
                         + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
-                        + "\"description\": \"This is our description\", \"progress\": 33.3}"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(1)))
-                .andExpect(jsonPath("$.description", Is.is("Everything Fine")))
+                        + "\"description\": \"This is our description\", \"progress\": 33.3}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id", Is.is(1))).andExpect(jsonPath("$.description", Is.is("Everything Fine")))
                 .andExpect(jsonPath("$.title", Is.is("Hunting")));
     }
 
@@ -210,7 +215,8 @@ class ObjectiveControllerIT {
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
                         + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
                         + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
-                        + "\"description\": \"This is our description\", \"progress\": 33.3}"))
+                        + "\"description\": \"This is our description\", \"progress\": 33.3}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -219,12 +225,14 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
-        mvc.perform(put("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isBadRequest());
+        mvc.perform(put("/api/v1/objectives/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldDeleteObjective() throws Exception {
-        mvc.perform(delete("/api/v1/objectives/10")).andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(delete("/api/v1/objectives/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -232,6 +240,7 @@ class ObjectiveControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveService)
                 .deleteObjectiveById(anyLong());
 
-        mvc.perform(delete("/api/v1/objectives/1000")).andExpect(MockMvcResultMatchers.status().isNotFound());
+        mvc.perform(delete("/api/v1/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

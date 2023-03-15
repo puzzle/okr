@@ -17,17 +17,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(GoalController.class)
 class GoalControllerIT {
@@ -57,7 +56,7 @@ class GoalControllerIT {
         BDDMockito.given(keyResultService.getKeyResultById(1)).willReturn(keyResult1);
 
         mvc.perform(get("/api/v1/goals/1").contentType(MediaType.APPLICATION_JSON))
-                .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
+//                .andDo((goal) -> System.out.println(goal.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.objective.id", Is.is(1)))
                 .andExpect(jsonPath("$.keyresult.id", Is.is(1))).andExpect(jsonPath("$.teamId", Is.is(1)))
                 .andExpect(jsonPath("$.unit", Is.is("PERCENT")));

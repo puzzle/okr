@@ -13,7 +13,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.antMatcher("/api/**")
+        http.antMatcher("/**")
                 .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

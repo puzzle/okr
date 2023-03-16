@@ -7,19 +7,24 @@ import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.TeamService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -36,6 +41,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(TeamController.class)
 class TeamControllerIT {
@@ -61,6 +67,8 @@ class TeamControllerIT {
     private TeamMapper teamMapper;
     @MockBean
     private ObjectiveService objectiveService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
 
     @MockBean
     private ObjectiveMapper objectiveMapper;
@@ -71,6 +79,7 @@ class TeamControllerIT {
         BDDMockito.given(teamMapper.toDto(teamOKR)).willReturn(teamOkrDto);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
     }
 
     @Test
@@ -117,7 +126,8 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
-        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}"))
+        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
         verify(teamService, times(1)).saveTeam(any());
@@ -128,8 +138,8 @@ class TeamControllerIT {
         BDDMockito.given(teamService.saveTeam(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
-        mvc.perform(
-                post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"id\": 22, \"name\": null}"))
+        mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"id\": 22, \"name\": null}").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -138,8 +148,9 @@ class TeamControllerIT {
         BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
 
         mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": 5, \"name\": \"Puzzle\"}")).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(5))).andExpect(jsonPath("$.name", Is.is("Puzzle")));
+                .content("{\"id\": 5, \"name\": \"Puzzle\"}").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }
 
     @Test
@@ -148,7 +159,7 @@ class TeamControllerIT {
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
 
         mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":42,\"title\":\"FullObjective\"}"))
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"id\":42,\"title\":\"FullObjective\"}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 

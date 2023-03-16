@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.QuarterService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +12,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -20,9 +25,11 @@ import java.util.List;
 public class QuarterController {
 
     private final QuarterService quarterService;
+    private final RegisterNewUserService registerNewUserService;
 
-    public QuarterController(QuarterService quarterService) {
+    public QuarterController(QuarterService quarterService, RegisterNewUserService registerNewUserService) {
         this.quarterService = quarterService;
+        this.registerNewUserService = registerNewUserService;
     }
 
     @Operation(summary = "Get quarters by Team", description = "Get a List of quarters for current date")
@@ -32,6 +39,7 @@ public class QuarterController {
             @ApiResponse(responseCode = "400", description = "Can't create quarters", content = @Content) })
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getOrCreateQuarters());
     }
 

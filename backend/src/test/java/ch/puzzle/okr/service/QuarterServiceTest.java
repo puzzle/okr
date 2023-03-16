@@ -1,21 +1,29 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.dto.StartEndDateDTO;
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
-import org.mockito.*;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -90,9 +98,7 @@ class QuarterServiceTest {
     @Test
     void shouldThrowExceptionBecauseOfNotFound() {
         when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> {
-            this.quarterService.getQuarterById(5L);
-        });
+        assertThrows(ResponseStatusException.class, () -> this.quarterService.getQuarterById(5L));
     }
 
     @Test

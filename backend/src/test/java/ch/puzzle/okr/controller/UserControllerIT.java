@@ -3,18 +3,22 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.UserService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -25,6 +29,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerIT {
@@ -34,6 +39,8 @@ class UserControllerIT {
 
     @MockBean
     private UserService userService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
     @MockBean
     private UserMapper userMapper;
 
@@ -50,6 +57,7 @@ class UserControllerIT {
     void setUp() {
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
         BDDMockito.given(userMapper.toDto(userBob)).willReturn(userBobDto);
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
     }
 
     @Test

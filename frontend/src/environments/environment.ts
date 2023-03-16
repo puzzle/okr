@@ -2,8 +2,19 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { AuthConfig } from 'angular-oauth2-oidc';
+
 export const environment = {
   production: false,
+  oauth: {
+    issuer: 'https://sso.puzzle.ch/auth/realms/pitc',
+    strictDiscoveryDocumentValidation: false,
+    redirectUri: 'http://localhost:4200/auth/keycloakopenid/callback',
+    scope: 'profile offline_access openid',
+    clientId: 'pitc_okr_prod',
+    responseType: 'code',
+    showDebugInformation: true,
+  } as AuthConfig,
 };
 
 /*

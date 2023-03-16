@@ -6,6 +6,7 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,13 +28,15 @@ public class TeamController {
     private final TeamService teamService;
     private final TeamMapper teamMapper;
     private final ObjectiveService objectiveService;
+    private final RegisterNewUserService registerNewUserService;
     private final ObjectiveMapper objectiveMapper;
 
     public TeamController(TeamService teamService, TeamMapper teamMapper, ObjectiveService objectiveService,
-            ObjectiveMapper objectiveMapper) {
+            RegisterNewUserService registerNewUserService, ObjectiveMapper objectiveMapper) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
         this.objectiveService = objectiveService;
+        this.registerNewUserService = registerNewUserService;
         this.objectiveMapper = objectiveMapper;
     }
 
@@ -41,6 +45,7 @@ public class TeamController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
     @GetMapping
     public List<TeamDto> getAllTeams() {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return teamService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
@@ -53,6 +58,7 @@ public class TeamController {
     @GetMapping("/{id}/objectives")
     public ResponseEntity<List<ObjectiveDto>> getObjectivesByTeamId(
             @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = true) @PathVariable long id) {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(this.objectiveService.getObjectivesByTeam(id).stream().map(objectiveMapper::toDto).toList());
     }
@@ -65,6 +71,7 @@ public class TeamController {
     @GetMapping("/{id}")
     public ResponseEntity<TeamDto> getTeamById(
             @Parameter(description = "The ID for getting a Team.", required = true) @PathVariable long id) {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
     }
 
@@ -75,6 +82,7 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Can't create new Team, not allowed to give an ID or missing attributes.", content = @Content) })
     @PostMapping
     public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto) {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
         TeamDto createdTeam = this.teamMapper.toDto(this.teamService.saveTeam(team));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
@@ -90,6 +98,7 @@ public class TeamController {
     public ResponseEntity<TeamDto> updateTeam(
             @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
             @RequestBody TeamDto teamDto) {
+        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         teamDto.setId(id);
         Team team = teamMapper.toTeam(teamDto);
         TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));

@@ -3,17 +3,22 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.QuarterService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +31,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+@WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(QuarterController.class)
 class QuarterControllerIT {
@@ -38,6 +44,13 @@ class QuarterControllerIT {
     private MockMvc mvc;
     @MockBean
     private QuarterService quarterService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
+
+    @BeforeEach
+    void setUp() {
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
+    }
 
     @Test
     void shouldGetAllQuarters() throws Exception {

@@ -5,7 +5,7 @@ export const environment = {
   oauth: {
     issuer: 'https://sso.puzzle.ch/auth/realms/pitc',
     strictDiscoveryDocumentValidation: false,
-    redirectUri: 'https://okr.ocp-internal.cloudscale.puzzle.ch/auth/keycloakopenid/callback',
+    redirectUri: 'https://okr.ocp.cloudscale.puzzle.ch/auth/keycloakopenid/callback',
     scope: 'profile offline_access openid',
     clientId: 'pitc_okr_prod',
     responseType: 'code',

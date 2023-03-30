@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { isFakeMousedownFromScreenReader } from '@angular/cdk/a11y';
 
 export interface Measure {
   id: number | null;
@@ -8,7 +9,7 @@ export interface Measure {
   value: number | boolean;
   changeInfo: string;
   initiatives: string;
-  createdById: number;
+  createdById: number | null;
   createdOn: Date;
   measureDate: Date;
 }
@@ -30,7 +31,7 @@ export class MeasureService {
       value: 0,
       changeInfo: '',
       initiatives: '',
-      createdById: 0,
+      createdById: null,
       createdOn: new Date(),
       measureDate: new Date(),
     };

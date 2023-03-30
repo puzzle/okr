@@ -21,8 +21,5 @@
         <naming-strategy-map />
       </configuration>
     </facet>
-    <facet type="Spring" name="Spring">
-      <configuration />
-    </facet>
   </component>
 </module>

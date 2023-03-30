@@ -33,7 +33,14 @@ public class MeasureMapper {
         return Measure.Builder.builder().withId(measureDto.getId())
                 .withKeyResult(this.measureService.mapKeyResult(measureDto)).withValue(measureDto.getValue())
                 .withChangeInfo(measureDto.getChangeInfo()).withInitiatives(measureDto.getInitiatives())
-                .withCreatedBy(this.userRepository.findById(1L).get()).withCreatedOn(LocalDateTime.now())
-                .withMeasureDate(measureDto.getMeasureDate()).build();
+                .withCreatedBy(this.userRepository
+                        .findById(this.measureService.mapKeyResult(measureDto).getOwner().getId()).get()) // replace
+                                                                                                          // current
+                                                                                                          // Keyresultowner
+                                                                                                          // with
+                                                                                                          // current
+                                                                                                          // logged in
+                                                                                                          // USER!!
+                .withCreatedOn(LocalDateTime.now()).withMeasureDate(measureDto.getMeasureDate()).build();
     }
 }

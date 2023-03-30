@@ -40,6 +40,6 @@ public class KeyResultMapper {
                 .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
                 .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
                 .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now())
-                .withCreatedBy(userRepository.findById(1L).get()).build();
+                .withCreatedBy(userRepository.findById(keyResultDto.getOwnerId()).get()).build();
     }
 }

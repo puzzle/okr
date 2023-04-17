@@ -237,9 +237,9 @@ describe('MeasureFormComponent Edit', () => {
       expect(component.measureForm.get('value')?.valid).toEqual(true);
     });
 
-    test('should be invalid when value has more than one number behind comma', () => {
+    test('should be valid when value has more than one number behind decimal point', () => {
       component.measureForm.get('value')?.setValue(33.456);
-      expect(component.measureForm.get('value')?.valid).toEqual(false);
+      expect(component.measureForm.get('value')?.valid).toEqual(true);
     });
 
     test('should be invalid when value is greater than 100 and has numbers behind comma', () => {

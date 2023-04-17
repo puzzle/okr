@@ -1,11 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
-import { BehaviorSubject, combineLatest, map, Observable, Subject, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  fromEvent,
+  map,
+  Observable,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd } from '@angular/router';
 import { getNumberOrNull } from '../shared/common';
 
 @Component({
@@ -24,6 +35,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   teams$!: Observable<Team[]>;
   overview$: Subject<Overview[]> = new BehaviorSubject<Overview[]>([]);
   quarters$!: Observable<Quarter[]> | undefined;
+
+  private scrollPosition = 0;
+  private readonly storageKey = 'dashboardScrollPosition';
 
   constructor(
     private teamService: TeamService,
@@ -67,6 +81,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  ngAfterViewChecked() {
+    const storedPosition = localStorage.getItem(this.storageKey);
+    if (storedPosition) {
+      this.scrollPosition = parseInt(storedPosition);
+      setTimeout(() => {
+        window.scrollTo(0, this.scrollPosition);
+      }, 0);
+    }
+
+    // Listen to the scroll event using RxJS
+    const scroll$ = fromEvent(window, 'scroll');
+    // Debounce the scroll event and subscribe to it
+    scroll$.pipe(debounceTime(500), distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(() => {
+      this.saveScrollPosition();
+    });
+  }
+
+  saveScrollPosition() {
+    console.log('Saving scroll position:', window.scrollY);
+    localStorage.setItem(this.storageKey, window.scrollY.toString());
   }
 
   changeTeamFilter(value: number[]) {

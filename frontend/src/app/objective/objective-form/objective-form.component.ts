@@ -25,11 +25,7 @@ export class ObjectiveFormComponent implements OnInit {
   objectiveForm = new FormGroup({
     teamId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
-    description: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(4096),
-    ]),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
     ownerId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
     quarterId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
   });

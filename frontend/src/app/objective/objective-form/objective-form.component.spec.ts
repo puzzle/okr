@@ -291,9 +291,9 @@ describe('ObjectiveFormComponent', () => {
       component.objectiveForm.get('description')?.setValue('');
       fixture.detectChanges();
 
-      expect(component.objectiveForm.get('description')?.valid).toBeFalsy();
+      expect(component.objectiveForm.get('description')?.valid).toBeTruthy();
       const createButton = fixture.debugElement.query(By.css('button[type="submit"]'));
-      expect(createButton.nativeElement.disabled).toBeTruthy();
+      expect(createButton.nativeElement.disabled).toBeFalsy();
     });
 
     test('should set owner in mat select and set it new on item change', async () => {

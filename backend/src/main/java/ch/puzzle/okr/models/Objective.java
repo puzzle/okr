@@ -32,9 +32,7 @@ public class Objective {
     @ManyToOne
     private Quarter quarter;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 4096)
+    @Size(max = 4096)
     private String description;
 
     private Long progress;

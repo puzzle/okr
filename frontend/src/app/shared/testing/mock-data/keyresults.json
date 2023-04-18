@@ -79,7 +79,14 @@
     "description": "This is a description",
     "expectedEvolution": "INCREASE",
     "unit": "PERCENT",
-    "ownerId": 2,
+    "owner": {
+      "email": "email@email.com",
+      "firstname": "firstname",
+      "id": 1,
+      "lastname": "lastname",
+      "username": "Username"
+    },
+    "ownerId": 1,
     "ownerLastname": "",
     "ownerFirstname": "",
     "targetValue": 100,

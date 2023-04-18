@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable, switchMap } from 'rxjs';
+import { combineLatestWith, filter, map, Observable, of, share, startWith, switchMap } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Objective, ObjectiveService } from '../../../services/objective.service';
 import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
@@ -30,13 +30,14 @@ export class KeyresultFormComponent implements OnInit {
     basicValue: new FormControl<number>({ value: 0, disabled: true }),
     targetValue: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    ownerId: new FormControl<number | null>(null, [Validators.required, Validators.nullValidator]),
+    owner: new FormControl<User | null>(null, [Validators.required, Validators.nullValidator]),
   });
   public users$!: Observable<User[]>;
   public objective$!: Observable<Objective>;
   public unit$: string[] = ['PERCENT', 'CHF', 'NUMBER'];
   public expectedEvolution$: string[] = ['INCREASE', 'DECREASE', 'MIN', 'MAX'];
   public create!: boolean;
+  public filteredUsers$: Observable<User[]> | undefined = of([]);
 
   constructor(
     private userService: UserService,
@@ -50,6 +51,12 @@ export class KeyresultFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    //filters the input of the autocomplete field for objectiveowner in order to improve search.
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(
+      startWith(''),
+      filter((value) => typeof value === 'string'),
+      switchMap((value) => this.filter(value as string))
+    );
     this.keyResultForm.get('expectedEvolution')!.valueChanges.subscribe((value) => {
       if (value === 'INCREASE' || value === 'DECREASE') {
         this.keyResultForm.get('basicValue')!.setValidators(Validators.required);
@@ -57,7 +64,7 @@ export class KeyresultFormComponent implements OnInit {
         this.keyResultForm.get('basicValue')!.disable();
       }
     });
-    this.users$ = this.userService.getUsers();
+    this.users$ = this.userService.getUsers().pipe(share());
     this.objective$ = this.route.paramMap.pipe(
       switchMap((params) => {
         const objectiveId = getNumberOrNull(params.get('objectiveId'));
@@ -88,20 +95,45 @@ export class KeyresultFormComponent implements OnInit {
         }
       })
     );
-    this.keyresult$.subscribe((keyresult) => {
-      const { id, objectiveId, ownerFirstname, ownerLastname, measure, progress, ...restKeyresult } = keyresult;
+    this.keyresult$.pipe(combineLatestWith(this.users$)).subscribe(([keyresult, users]) => {
+      const { id, objectiveId, ownerFirstname, ownerLastname, measure, progress, ownerId, ...restKeyresult } =
+        keyresult;
       this.resetValidatorOfForm(keyresult.unit);
-      this.keyResultForm.setValue(restKeyresult);
+      this.keyResultForm.setValue({ ...restKeyresult, owner: users.find((user) => user.id === ownerId) ?? null });
     });
+  }
+
+  //implements the logic how the users are searched
+  filter(value: string): Observable<User[]> {
+    const filterValue = value.toLowerCase();
+    return this.users$.pipe(
+      map((users) =>
+        users.filter(
+          (user) =>
+            user.firstname.toLowerCase().includes(filterValue) ||
+            user.lastname.toLowerCase().includes(filterValue) ||
+            user.username.toLowerCase().includes(filterValue)
+        )
+      )
+    );
+  }
+
+  getUserNameById(user: User): string {
+    if (user === null || user === undefined) {
+      return '';
+    }
+    return user.firstname + ' ' + user.lastname;
   }
 
   save() {
     this.keyresult$
       .pipe(
         map((keyresult) => {
+          const { owner, ...rest } = this.keyResultForm.value;
           return {
             ...keyresult,
             ...this.keyResultForm.value,
+            ownerId: owner!.id,
           } as KeyResultMeasure;
         })
       )

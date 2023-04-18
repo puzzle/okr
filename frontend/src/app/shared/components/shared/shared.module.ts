@@ -20,6 +20,7 @@ import { KeyresultFormComponent } from './keyresult-form/keyresult-form.componen
 import { MatSelectModule } from '@angular/material/select';
 import { UnitValueValidator } from '../../validators';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     MatSelectModule,
     TranslateModule,
+    MatTooltipModule,
   ],
   exports: [UnitValueValidator],
 })

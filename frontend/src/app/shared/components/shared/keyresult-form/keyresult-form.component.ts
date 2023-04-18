@@ -12,6 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 import { comparisonValidator } from '../../../validators';
 import { RouteService } from '../../../services/route.service';
+import helpTexts from '../../../../../assets/help-texts.json';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -184,4 +185,6 @@ export class KeyresultFormComponent implements OnInit {
     this.keyResultForm.controls['targetValue'].updateValueAndValidity();
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();
   }
+
+  protected readonly helpTexts = helpTexts;
 }

@@ -50,7 +50,15 @@
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="key">Erwartete Entwicklung</p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
-          <mat-label>Erwartete Entwicklung</mat-label>
+          <mat-label>
+            Erwartete Entwicklung
+            <mat-icon
+              class="tooltip-icon pe-auto"
+              matTooltip="{{ helpTexts.expectedEvolution }}"
+              matTooltipClass="tooltips"
+              >help</mat-icon
+            >
+          </mat-label>
           <mat-select
             (selectionChange)="
               this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)

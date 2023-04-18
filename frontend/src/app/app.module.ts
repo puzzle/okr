@@ -26,7 +26,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
-import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -63,6 +64,7 @@ export const MY_FORMATS = {
     MatInputModule,
     TeamModule,
     MatTooltipModule,
+    MatAutocompleteModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     TranslateModule.forRoot({

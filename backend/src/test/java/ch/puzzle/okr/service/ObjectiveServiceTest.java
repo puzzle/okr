@@ -148,13 +148,16 @@ class ObjectiveServiceTest {
     }
 
     @Test
-    void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
+    void shouldNotThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
         this.fullObjective1.setDescription(null);
+        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title").withProgress(null)
+                .withCreatedOn(LocalDateTime.now()).build();
+        Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective1);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveService.saveObjective(this.fullObjective1));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(("Missing attribute description when creating objective"), exception.getReason());
+        Objective savedObjective = objectiveService.saveObjective(objective1);
+        assertEquals("FullObjective1", savedObjective.getTitle());
+        assertNull(savedObjective.getDescription());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
     }
 
     @Test

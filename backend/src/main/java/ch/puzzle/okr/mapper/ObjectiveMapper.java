@@ -30,12 +30,11 @@ public class ObjectiveMapper {
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
-        return Objective.Builder.builder().withId(objectiveDto.getId())
-                .withTitle(objectiveDto.getTitle()).withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
+        return Objective.Builder.builder().withId(objectiveDto.getId()).withTitle(objectiveDto.getTitle())
+                .withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
                 .withTeam(teamService.getTeamById(objectiveDto.getTeamId()))
                 .withDescription(objectiveDto.getDescription()).withProgress(objectiveDto.getProgress())
                 .withCreatedOn(LocalDateTime.now())
-                .withQuarter(quarterService.getQuarterById(objectiveDto.getQuarterId()))
-                .build();
+                .withQuarter(quarterService.getQuarterById(objectiveDto.getQuarterId())).build();
     }
 }

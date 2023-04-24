@@ -61,7 +61,7 @@ public class ObjectiveService {
 
     public Objective updateObjective(Objective objective) {
         Objective existingObjective = this.getObjective(objective.getId());
-//        objective.setQuarter(existingObjective.getQuarter());
+        // objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);
         return this.objectiveRepository.save(objective);

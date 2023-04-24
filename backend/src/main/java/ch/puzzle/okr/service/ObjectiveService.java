@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
@@ -60,7 +61,7 @@ public class ObjectiveService {
 
     public Objective updateObjective(Objective objective) {
         Objective existingObjective = this.getObjective(objective.getId());
-        objective.setQuarter(existingObjective.getQuarter());
+//        objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
         this.checkObjective(objective);
         return this.objectiveRepository.save(objective);

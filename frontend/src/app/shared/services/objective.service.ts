@@ -11,7 +11,7 @@ export interface Objective {
   teamId: number | null;
   teamName: string;
   quarterId: number | null;
-  quarterLabel: string;
+  quarterLabel: string | null;
   description: string;
   progress: number | null;
   created: string;
@@ -36,7 +36,7 @@ export class ObjectiveService {
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
-      objective.quarterId = null;
+      objective.quarterLabel = null;
       return this.httpClient.put<Objective>('api/v1/objectives/' + objective.id, objective);
     }
   }

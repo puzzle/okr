@@ -59,7 +59,7 @@
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="fw-bold quarter">Zyklus</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height" *ngIf="create; else update">
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Zyklus</mat-label>
           <mat-select [value]="objective.quarterId" formControlName="quarterId" class="owner-select">
             <mat-option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
@@ -67,11 +67,6 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <ng-template #update>
-          <p class="w-100">
-            {{ objective.quarterLabel }}
-          </p>
-        </ng-template>
       </div>
 
       <div class="d-flex gap-2 justify-content-end">

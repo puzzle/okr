@@ -313,9 +313,9 @@ describe('ObjectiveFormComponent', () => {
       expect(await ownerSelect.isOpen()).toBeFalsy();
     });
 
-    test('should not have quarter mat select on edit', async () => {
+    test('should have quarter mat select on edit', async () => {
       const quarterMatSelect = fixture.debugElement.query(By.css('mat-select[formControlName="quarterId"]'));
-      expect(quarterMatSelect).toBeNull();
+      expect(quarterMatSelect).toBeTruthy();
     });
 
     test('should disable create button if form is invalid', () => {

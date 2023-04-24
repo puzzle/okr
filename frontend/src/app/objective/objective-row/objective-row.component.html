@@ -8,7 +8,9 @@
     <mat-panel-description class="d-flex space-between">
       <div class="d-flex w-50 margin-left">
         <div class="w-100" id="progressContainer">
-          <span class="key" id="progressSpan">{{ objective!.progress != null ? objective!.progress + "%" : "-" }}</span>
+          <span id="progressSpan" [ngClass]="objective!.progress === 0 ? 'key red-progress' : 'key'">{{
+            objective!.progress != null ? objective!.progress + "%" : "-"
+          }}</span>
           <app-progress-bar
             [value]="objective!.progress! != null ? objective!.progress! : 0"
             [colorLow]="'#FF1A0C'"

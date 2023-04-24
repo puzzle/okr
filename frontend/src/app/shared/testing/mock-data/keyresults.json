@@ -71,6 +71,30 @@
         "measureDate": "2023-03-06"
       },
       "progress": 0
+    },
+    {
+      "id": 4,
+      "objectiveId": 1,
+      "title": "Key Result 3",
+      "description": "This is the description of Key Result 3",
+      "ownerId": 1,
+      "ownerFirstname": "Alice",
+      "ownerLastname": "Wunderland",
+      "expectedEvolution": "DECREASE",
+      "unit": "CHF",
+      "basicValue": 10,
+      "targetValue": 50,
+      "measure": {
+        "id": 6,
+        "keyResultId": 3,
+        "value": 0,
+        "changeInfo": "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
+        "initiatives": "",
+        "createdById": 1,
+        "createdOn": "2023-02-14",
+        "measureDate": "2023-03-06"
+      },
+      "progress": 0
     }
   ],
   "createKeyResultObject": {

@@ -6,7 +6,7 @@
           <mat-card-title class="fs-5">{{ keyResult.title }}</mat-card-title>
 
           <mat-card-content class="matCardContent" data-testId="mat-card-content-keyresult">
-            <div>
+            <div *ngIf="keyResult.description !== ''">
               <strong class="sameElement firstElement key">Beschreibung: </strong>
               <p class="sameElement lastMeasureDate value">
                 {{ this.keyResult.description }}
@@ -94,7 +94,7 @@
                     {{ keyResult.measure?.changeInfo }}
                   </p>
                 </div>
-                <div>
+                <div *ngIf="keyResult.measure?.initiatives !== ''">
                   <strong class="sameElement firstElement key">Massnahmen: </strong>
                   <p class="sameElement lastMeasureStartDate value">
                     {{ keyResult.measure?.initiatives }}

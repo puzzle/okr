@@ -5,8 +5,6 @@ import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.repository.MeasureRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class GoalService {
 
@@ -17,7 +15,8 @@ public class GoalService {
     }
 
     public Double getCurrentValue(KeyResult keyResult) {
-        return this.measureRepository.findLastMeasuresOfKeyresults(keyResult.getId()).stream().map(Measure::getValue)
-                .findAny().orElse(null);
+        Measure measure = this.measureRepository
+                .findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        return measure.getValue() != null ? measure.getValue() : null;
     }
 }

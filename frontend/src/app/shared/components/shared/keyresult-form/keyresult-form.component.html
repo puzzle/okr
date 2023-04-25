@@ -1,27 +1,67 @@
-<div (click)="navigateBack()" class="d-flex btn px-5 pt-4 fit-content backButton">
+<span class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
-  <p>Zurück</p>
+  <p (click)="navigateBack()">Zurück</p>
+</span>
+
+<div class="px-5 my-4">
+  <div *ngIf="objective$ | async as objective">
+    <mat-card class="outer-cards w-100">
+      <p class="fs-2">Objective Details</p>
+      <mat-card-content class="d-flex gap-2 flex-wrap">
+        <mat-card class="inner-cards flex-grow-1">
+          <mat-card-content class="d-flex flex-column justify-content-around">
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
+              <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
+              <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
+              <span class="value" data-testid="keyresult-modify-objective-description">
+                {{ objective.description }}
+              </span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
+              <span class="value" data-testid="keyresult-modify-objective-quarter">
+                {{ objective.quarterLabel }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <mat-divider class="my-4"></mat-divider>
 </div>
 
 <p class="fs-2 heading-label px-5">
   {{ this.create ? "Key Result hinzufügen" : "Key Result bearbeiten" }}
 </p>
 
-<div class="d-flex align-items-center justify-content-around flex-wrap px-5">
-  <div *ngIf="keyresult$ | async as keyresult" class="d-flex">
+<div *ngIf="keyresult$ | async as keyresult" class="form-container">
+  <div class="d-flex justify-content-center w-75">
     <form (ngSubmit)="save()" [formGroup]="keyResultForm" (change)="update()" class="d-flex flex-column fit-content">
       <div class="d-flex align-items-center justify-content-end gap-4">
         <p class="key">Titel</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height">
+        <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Titel</mat-label>
-          <input
+          <textarea
             [value]="keyresult.title"
             formControlName="title"
             matInput
+            data-testId="keyresult-form-title"
             placeholder="Titel"
+            cdkTextareaAutosize
             type="text"
-            class="title-input"
-          />
+            class="description-textarea"
+          ></textarea>
         </mat-form-field>
       </div>
       <div class="d-flex align-items-center gap-4 justify-content-end">
@@ -56,8 +96,8 @@
               class="tooltip-icon pe-auto"
               matTooltip="{{ helpTexts.expectedEvolution }}"
               matTooltipClass="tooltips"
-              >help</mat-icon
-            >
+              >help
+            </mat-icon>
           </mat-label>
           <mat-select
             (selectionChange)="
@@ -113,7 +153,9 @@
             [value]="keyresult.description"
             formControlName="description"
             matInput
+            data-testId="keyresult-form-description"
             placeholder="Beschreibung"
+            cdkTextareaAutosize
             type="text"
             class="description-textarea"
           ></textarea>
@@ -149,41 +191,5 @@
         </button>
       </div>
     </form>
-  </div>
-
-  <div class="d-flex detail">
-    <div *ngIf="objective$ | async as objective">
-      <mat-card class="outer-cards w-100">
-        <p class="fs-2">Objective Details</p>
-        <mat-card-content class="d-flex gap-2 flex-wrap">
-          <mat-card class="inner-cards flex-grow-1">
-            <mat-card-content class="d-flex flex-column justify-content-around">
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
-                <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
-              </div>
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
-                <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
-              </div>
-
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
-                <span class="value" data-testid="keyresult-modify-objective-description">
-                  {{ objective.description }}
-                </span>
-              </div>
-
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
-                <span class="value" data-testid="keyresult-modify-objective-quarter">
-                  {{ objective.quarterLabel }}
-                </span>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </mat-card-content>
-      </mat-card>
-    </div>
   </div>
 </div>

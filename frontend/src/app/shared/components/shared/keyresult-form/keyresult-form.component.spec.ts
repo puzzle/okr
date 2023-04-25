@@ -174,7 +174,7 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set Key Result title in input field and set input invalid when empty value', () => {
-      const titleinputfield = fixture.debugElement.query(By.css('.title-input'));
+      const titleinputfield = fixture.debugElement.query(By.css('[data-testid="keyresult-form-title"]'));
       expect(titleinputfield.nativeElement.value).toContain('Key Result 1');
       expect(component.keyResultForm.get('title')?.valid).toBeTruthy();
 
@@ -290,7 +290,7 @@ describe('KeyresultFormComponent', () => {
     });
 
     test('should set Key Result description in text area and dont set input invalid when empty value', () => {
-      const descriptionTextArea = fixture.debugElement.query(By.css('.description-textarea'));
+      const descriptionTextArea = fixture.debugElement.query(By.css('[data-testId="keyresult-form-description"]'));
       expect(descriptionTextArea.nativeElement.value).toContain('This is the description');
       expect(descriptionTextArea.nativeElement.placeholder).toContain('Beschreibung');
       expect(component.keyResultForm.valid).toBeTruthy();
@@ -321,7 +321,7 @@ describe('KeyresultFormComponent', () => {
 
     test('should disable button when form is invalid', () => {
       const createbutton = fixture.debugElement.query(By.css('.create-button'));
-      const inputField = fixture.debugElement.query(By.css('.title-input'));
+      const inputField = fixture.debugElement.query(By.css('[data-testid="keyresult-form-title"]'));
 
       expect(component.keyResultForm.valid).toBeTruthy();
       expect(createbutton.nativeElement.disabled).toEqual(false);

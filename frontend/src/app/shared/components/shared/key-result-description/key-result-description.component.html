@@ -1,20 +1,27 @@
 <mat-card class="outer-cards w-100">
-  <p class="fs-4">{{ goal.keyresult.title }}</p>
+  <p class="fs-2">Keyresult Details</p>
   <mat-card-content class="d-flex gap-2 flex-wrap">
     <mat-card class="inner-cards flex-grow-1">
       <mat-card-content class="d-flex flex-column justify-content-around">
+        <div>
+          <span class="key">Keyresult: </span>
+          <span class="value">
+            {{ goal.keyresult.title }}
+          </span>
+        </div>
+        <mat-divider class="my-1"></mat-divider>
         <div>
           <span class="key">Beschreibung: </span>
           <span class="value">
             {{ goal.keyresult.description }}
           </span>
         </div>
-
+        <mat-divider class="my-1"></mat-divider>
         <div>
           <span class="key">{{ goal.teamName }} Objective: </span>
           <span class="value">{{ goal.objective.title }}</span>
         </div>
-
+        <mat-divider class="my-1"></mat-divider>
         <div>
           <span class="key">Zyklus: </span>
           <span class="value">

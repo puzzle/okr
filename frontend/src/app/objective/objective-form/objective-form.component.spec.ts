@@ -238,7 +238,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have right titles infront of input fields', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       expect(titles.length).toEqual(5);
       expect(titles[0].nativeElement.textContent).toContain('Team');
       expect(titles[1].nativeElement.textContent).toContain('Titel');
@@ -265,7 +265,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should set title in input field and should validate it', () => {
-      const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))!.nativeElement;
+      const titleInput = fixture.debugElement.query(By.css('[data-testId="objective-form-title"]'))!.nativeElement;
 
       expect(titleInput.value).toEqual('Objective 1');
       expect(titleInput.placeholder).toEqual('Titel');
@@ -446,7 +446,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have right titles infront of input fields', () => {
-      const titles = fixture.debugElement.queryAll(By.css('.fw-bold'));
+      const titles = fixture.debugElement.queryAll(By.css('.key'));
       expect(titles.length).toEqual(5);
       expect(titles[0].nativeElement.textContent).toContain('Team');
       expect(titles[1].nativeElement.textContent).toContain('Titel');
@@ -473,7 +473,7 @@ describe('ObjectiveFormComponent', () => {
     });
 
     test('should have input field named Title and should validate it', () => {
-      const titleInput = fixture.debugElement.query(By.css('input[formControlName="title"]'))!.nativeElement;
+      const titleInput = fixture.debugElement.query(By.css('[data-testId="objective-form-title"]'))!.nativeElement;
 
       expect(titleInput.value).toEqual('');
       expect(titleInput.placeholder).toEqual('Titel');

@@ -25,12 +25,32 @@ body {
   font-size: 1rem;
 }
 
+.form-container {
+  margin-left: 10%;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
 .form-field-width {
-  width: 15em;
+  width: 40em;
 }
 
 .form-field-height {
   height: 5em;
+}
+
+.heading-label {
+  font-size: 28px;
+  font-weight: 400;
+  padding-left: 70px;
+  margin-bottom: 40px !important;
+  margin-top: 0px !important;
+}
+
+.buttons {
+  margin-bottom: min(10px);
 }
 
 .outer-cards {

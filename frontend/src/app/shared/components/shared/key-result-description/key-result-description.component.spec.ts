@@ -74,6 +74,7 @@ describe('KeyResultDescriptionComponent', () => {
       var titelsText = titles.map((e) => e.nativeElement.innerHTML);
 
       var expectedTexts = [
+        'Keyresult: ',
         'Beschreibung: ',
         'Team 1 Objective: ',
         'Zyklus: ',

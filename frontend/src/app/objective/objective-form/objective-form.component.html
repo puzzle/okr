@@ -1,9 +1,9 @@
-<span class="d-flex btn px-4 pt-4 fit-content">
+<span class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
-<p class="fs-2 heading-label">
+<p class="fs-2 px-5 heading-label">
   {{ this.create ? "Objective hinzufügen" : "Objective bearbeiten" }}
 </p>
 <div class="form-container" *ngIf="objectives$ | async as objective">

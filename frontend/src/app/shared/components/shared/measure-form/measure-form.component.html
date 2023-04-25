@@ -1,15 +1,25 @@
-<div (click)="navigateBack()" class="d-flex btn px-4 pt-4 fit-content">
+<div (click)="navigateBack()" class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
   <p>Zurück</p>
 </div>
-<p class="fs-2 heading-label my-5">
+<p class="fs-2 heading-label px-5">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
+
+<div class="px-5">
+  <div class="my-4" *ngIf="goal$ | async as goal">
+    <app-key-result-description [goal]="goal"></app-key-result-description>
+  </div>
+  <mat-divider class="my-4"></mat-divider>
+</div>
 
 <div class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2">
   <div *ngIf="measure$ | async as measure" class="d-flex">
     <form (ngSubmit)="save()" [formGroup]="measureForm" class="d-flex flex-column fit-content">
-      <div *ngIf="keyresult$ | async as keyresult" class="d-flex align-items-center justify-content-center gap-4">
+      <div
+        *ngIf="keyresult$ | async as keyresult"
+        class="d-flex align-items-center justify-content-end gap-4 margin-right"
+      >
         <p class="key" data-testid="measure-form-current-value">
           Aktueller Wert ({{ "UNIT." + keyresult.unit | translate }})
         </p>
@@ -95,12 +105,6 @@
         </span>
       </div>
     </form>
-  </div>
-
-  <div class="d-flex">
-    <div *ngIf="goal$ | async as goal">
-      <app-key-result-description [goal]="goal"></app-key-result-description>
-    </div>
   </div>
 </div>
 

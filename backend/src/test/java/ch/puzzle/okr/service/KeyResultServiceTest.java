@@ -36,7 +36,7 @@ class KeyResultServiceTest {
     @MockBean
     KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
     @MockBean
-    ProgressService progressService = Mockito.mock(ProgressService.class);
+    ch.puzzle.okr.service.ProgressService progressService = Mockito.mock(ch.puzzle.okr.service.ProgressService.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;

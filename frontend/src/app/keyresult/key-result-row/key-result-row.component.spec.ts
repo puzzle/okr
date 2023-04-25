@@ -16,6 +16,7 @@ import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { RouteService } from '../../shared/services/route.service';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 const mockRouteService = {
   navigate: jest.fn(),
@@ -44,6 +45,9 @@ describe('KeyResultKeyResultRowComponent', () => {
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,
@@ -141,6 +145,9 @@ describe('KeyResultKeyResultRowComponent', () => {
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
         declarations: [KeyResultRowComponent],
@@ -189,6 +196,9 @@ describe('KeyResultKeyResultRowComponent', () => {
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
         declarations: [KeyResultRowComponent],

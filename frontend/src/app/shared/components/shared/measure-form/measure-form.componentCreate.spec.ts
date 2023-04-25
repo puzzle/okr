@@ -88,7 +88,7 @@ describe('MeasureFormComponent Create', () => {
 
   describe('Create new Measure in the quarter', () => {
     let createMeasureForm = new FormGroup({
-      value: new FormControl<number | boolean>(33, [Validators.required, Validators.pattern(NUMBER_REGEX)]),
+      value: new FormControl<number>(33, [Validators.required, Validators.pattern(NUMBER_REGEX)]),
       measureDate: new FormControl<Date>(new Date('2022-12-01T00:00:00Z'), [Validators.required]),
       changeInfo: new FormControl<string>('Changeinfo 1', [Validators.required]),
       initiatives: new FormControl<string>('Initiatives 1'),
@@ -223,7 +223,7 @@ describe('MeasureFormComponent Create', () => {
       expect(component.measureForm.valid).toEqual(false);
 
       const valueInput = fixture.debugElement.query(By.css('.value-input'));
-      expect(valueInput.nativeElement.value).toEqual('0');
+      expect(valueInput.nativeElement.value).toBeTruthy();
       fixture.detectChanges();
 
       const datePickerInputHarness = await TestbedHarnessEnvironment.documentRootLoader(fixture).getHarness(

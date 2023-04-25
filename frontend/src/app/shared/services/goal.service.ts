@@ -33,7 +33,6 @@ export class GoalService {
   constructor(private httpClient: HttpClient) {}
 
   public getGoalByKeyResultId(keyResultId: number): Observable<Goal> {
-    debugger;
     return this.httpClient.get<Goal>('/api/v1/goals/' + keyResultId);
   }
 }

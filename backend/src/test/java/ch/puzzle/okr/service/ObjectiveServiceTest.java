@@ -228,14 +228,14 @@ class ObjectiveServiceTest {
     void shouldReturnObjectives(Long teamId, Long quarterId, int invocationsByTeam, int invocationsByTeamAndQuarter) {
         objectiveService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
         verify(objectiveRepository, times(invocationsByTeam)).findByTeamIdOrderByTitleAsc(teamId);
-        verify(objectiveRepository, times(invocationsByTeamAndQuarter)).findByQuarterIdAndTeamIdOrderByTitleAsc(teamId,
-                quarterId);
+        verify(objectiveRepository, times(invocationsByTeamAndQuarter))
+                .findByQuarterIdAndTeamIdOrderByCreatedOnDesc(teamId, quarterId);
     }
 
     @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(this.objectiveRepository.findById(anyLong())).thenReturn(Optional.of(objective));
-        when(this.keyResultRepository.findByObjectiveOrderByTitle(objective)).thenReturn(keyResults);
+        when(this.keyResultRepository.findByObjectiveOrderByCreatedOnDesc(objective)).thenReturn(keyResults);
 
         this.objectiveService.deleteObjectiveById(1L);
 

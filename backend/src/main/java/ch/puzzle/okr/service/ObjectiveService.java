@@ -79,12 +79,13 @@ public class ObjectiveService {
 
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
         return quarterId == null ? objectiveRepository.findByTeamIdOrderByTitleAsc(teamId)
-                : objectiveRepository.findByQuarterIdAndTeamIdOrderByTitleAsc(quarterId, teamId);
+                : objectiveRepository.findByQuarterIdAndTeamIdOrderByCreatedOnDesc(quarterId, teamId);
     }
 
     @Transactional
     public void deleteObjectiveById(Long id) {
-        List<KeyResult> keyResults = this.keyResultRepository.findByObjectiveOrderByTitle(this.getObjective(id));
+        List<KeyResult> keyResults = this.keyResultRepository
+                .findByObjectiveOrderByCreatedOnDesc(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
             this.keyResultService.deleteKeyResultById(keyResult.getId());
         }

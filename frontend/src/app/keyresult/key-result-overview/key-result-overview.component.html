@@ -53,36 +53,35 @@
         </mat-card>
 
         <mat-card class="w-100 inner-cards">
-          <div class="h-25">
-            <mat-card-content class="mat-card-content" data-testId="mat-card-content-progress">
+          <mat-card-content class="matCardContent" data-testId="mat-card-content-progress">
+            <div class="h-25">
               <mat-card-title class="fs-5">Zielerreichung</mat-card-title>
               <div *ngIf="keyResult.basicValue !== null">
                 <strong class="sameElement firstElement key">Startwert: </strong>
-                <p class="sameElement lastMeasureDate value">
+                <p class="sameElement value">
                   {{ keyResult.basicValue + " " + ("UNIT." + this.keyResult.unit | translate) }}
                 </p>
               </div>
               <div *ngIf="keyResult.measure !== null">
                 <strong class="sameElement firstElement key">Aktueller Wert: </strong>
-                <p class="sameElement lastMeasureDate value">
+                <p class="sameElement value">
                   {{ keyResult.measure?.value + " " + ("UNIT." + this.keyResult.unit | translate) }}
                 </p>
               </div>
               <div>
                 <strong class="sameElement firstElement key">Zielwert: </strong>
-                <p class="sameElement lastMeasureDate value">
+                <p class="sameElement value">
                   {{ keyResult.targetValue + " " + ("UNIT." + this.keyResult.unit | translate) }}
                 </p>
               </div>
-            </mat-card-content>
-          </div>
+            </div>
 
-          <div class="h-75">
-            <mat-divider class="my-4"></mat-divider>
-            <mat-card-title class="fs-5">Letzte Messung</mat-card-title>
-            <mat-card-content class="matCardContent" data-testId="mat-card-content-measure">
+            <mat-divider class="my-2"></mat-divider>
+
+            <div class="w-100" data-testId="mat-card-content-measure">
+              <mat-card-title class="fs-5">Letzte Messung</mat-card-title>
               <div *ngIf="keyResult.measure !== null; else noMeasures">
-                <div *ngIf="keyResult.measure !== null">
+                <div>
                   <strong class="sameElement firstElement key">Datum der Messung: </strong>
                   <p class="sameElement lastMeasureDate value">
                     {{ formatDate(keyResult.measure?.measureDate!) }}
@@ -101,27 +100,27 @@
                   </p>
                 </div>
               </div>
-            </mat-card-content>
-            <mat-card-actions align="start">
-              <button
-                *ngIf="keyResult.measure !== null"
-                id="show-details-button"
-                mat-stroked-button
-                color="primary"
-                (click)="routeService.navigate('keyresults/' + this.keyResult.id)"
-              >
-                Details anzeigen
-              </button>
-              <button
-                id="add-measure-button"
-                mat-stroked-button
-                color="primary"
-                (click)="routeService.navigate('keyresults/' + this.keyResult.id + '/measure/new')"
-              >
-                Messung hinzufügen
-              </button>
-            </mat-card-actions>
-          </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions align="start">
+            <button
+              *ngIf="keyResult.measure !== null"
+              id="show-details-button"
+              mat-stroked-button
+              color="primary"
+              (click)="routeService.navigate('keyresults/' + this.keyResult.id)"
+            >
+              Details anzeigen
+            </button>
+            <button
+              id="add-measure-button"
+              mat-stroked-button
+              color="primary"
+              (click)="routeService.navigate('keyresults/' + this.keyResult.id + '/measure/new')"
+            >
+              Messung hinzufügen
+            </button>
+          </mat-card-actions>
 
           <ng-template class="sameElement firstElement value" #noMeasures>
             <mat-card-content data-test-marker="emptyLastMeasure">

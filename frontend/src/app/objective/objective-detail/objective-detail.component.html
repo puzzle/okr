@@ -12,17 +12,19 @@
     <span class="value"> {{ this.objective.ownerFirstname }} {{ this.objective.ownerLastname }}</span>
   </p>
 </div>
-<div class="d-flex">
+<div class="d-flex flex-row">
   <div class="w-35 d-flex objective-results">
-    <span class="key table-title">Key Result</span>
+    <span class="key table-title keyresult-tabletitel">Key Result</span>
   </div>
-  <div class="d-flex w-65">
-    <div class="d-flex w-50 justify-content-around">
-      <span class="key table-title owner">Besitzer</span>
-      <span class="key table-title last-measure">Letzte Messung</span>
+  <div class="w-65 d-flex flex-row">
+    <div class="w-25">
+      <span class="owner key d-flex table-title flex-column">Besitzer</span>
     </div>
-    <div class="d-flex w-50">
-      <span class="key table-title">Zielerreichung</span>
+    <div class="w-25">
+      <span class="key d-flex table-title flex-column">Letzte Messung</span>
+    </div>
+    <div class="w-50 progress-box">
+      <span class="key d-flex table-title flex-column">Zielerreichung</span>
     </div>
   </div>
 </div>

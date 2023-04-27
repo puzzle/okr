@@ -6,16 +6,20 @@
 >
   <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
     <mat-panel-title class="keyresult-title">{{ this.keyResult!.title }}</mat-panel-title>
-    <mat-panel-description class="d-flex space-between">
-      <div class="d-flex justify-content-around w-50">
-        <p class="keyResultOwner">{{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}</p>
-        <p [ngClass]="formatDate() == '-' ? 'measure-null-date' : 'measure-date'">
-          {{ formatDate() }}
-        </p>
+    <mat-panel-description class="d-flex flex-row">
+      <div class="d-flex w-50">
+        <div class="d-flex w-50 flex-column">
+          <p class="keyResultOwner">{{ keyResult!.ownerFirstname }} {{ keyResult!.ownerLastname }}</p>
+        </div>
+        <div class="d-flex w-50">
+          <p [ngClass]="formatDate() == '-' ? 'measure-null-date' : 'measure-date'">
+            {{ formatDate() }}
+          </p>
+        </div>
       </div>
 
       <div class="d-flex w-50">
-        <div class="w-100" id="progressContainer">
+        <div class="w-100 flex-column" id="progressContainer">
           <span
             *ngIf="keyResult.measure; else noMeasure"
             [ngClass]="keyResult.progress === 0 ? 'h6 red-progress' : 'h6'"

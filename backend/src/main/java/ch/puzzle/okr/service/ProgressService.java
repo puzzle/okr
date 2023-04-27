@@ -30,13 +30,19 @@ public class ProgressService {
 
     public void updateObjectiveProgress(Long objectiveId) {
         List<KeyResult> keyResultList = this.keyResultRepository.findByObjectiveId(objectiveId);
-        double objectiveProgress = keyResultList.stream().mapToDouble(this::calculateKeyResultProgress).average()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                        "Progress calculation failed!"));
+        if (keyResultList.size() == 0) {
+            Objective objective = objectiveService.getObjective(objectiveId);
+            objective.setProgress(null);
+            this.objectiveRepository.save(objective);
+        } else {
+            double objectiveProgress = keyResultList.stream().mapToDouble(this::calculateKeyResultProgress).average()
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                            "Progress calculation failed!"));
 
-        Objective objective = this.objectiveService.getObjective(objectiveId);
-        objective.setProgress((long) Math.floor(objectiveProgress));
-        this.objectiveRepository.save(objective);
+            Objective objective = this.objectiveService.getObjective(objectiveId);
+            objective.setProgress((long) Math.floor(objectiveProgress));
+            this.objectiveRepository.save(objective);
+        }
     }
 
     public Long calculateKeyResultProgress(KeyResult keyResult) {

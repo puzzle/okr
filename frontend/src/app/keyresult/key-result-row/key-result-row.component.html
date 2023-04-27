@@ -35,20 +35,20 @@
           </app-progress-bar>
         </div>
         <button
-          (click)="$event.stopPropagation()"
-          [matMenuTriggerFor]="objectiveMenu"
+          (click)="redirect(menuEntry); $event.stopPropagation()"
           aria-label="Button to edit objectives"
           mat-icon-button
         >
-          <mat-icon class="pointer">more_vert</mat-icon>
+          <img src="assets/delete-icon.svg" alt="delete-icon" class="delete-icon" />
         </button>
       </div>
 
-      <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">
-        <button *ngFor="let menuEntry of menuEntries" (click)="redirect(menuEntry)" mat-menu-item>
-          <span>{{ menuEntry.displayName }}</span>
-        </button>
-      </mat-menu>
+      <!--      kept in because this will be needed later on when keyresult-menu gets more functionality -->
+      <!--      <mat-menu #objectiveMenu="matMenu" class="matMenu" yPosition="above">-->
+      <!--        <button *ngFor="let menuEntry of menuEntries" (click)="redirect(menuEntry)" mat-menu-item>-->
+      <!--          <span>{{ menuEntry.displayName }}</span>-->
+      <!--        </button>-->
+      <!--      </mat-menu>-->
     </mat-panel-description>
   </mat-expansion-panel-header>
 

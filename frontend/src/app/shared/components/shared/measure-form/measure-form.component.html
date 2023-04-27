@@ -3,16 +3,16 @@
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
-<p class="fs-2 heading-label px-5">
-  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
-</p>
-
 <div class="px-5">
   <div class="my-4" *ngIf="goal$ | async as goal">
     <app-key-result-description [goal]="goal"></app-key-result-description>
   </div>
   <mat-divider class="my-4"></mat-divider>
 </div>
+
+<p class="fs-2 heading-label px-5">
+  {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
+</p>
 
 <div *ngIf="measure$ | async as measure" class="form-container">
   <div class="d-flex justify-content-center w-75">

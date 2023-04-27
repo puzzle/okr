@@ -25,7 +25,7 @@ export class MeasureFormComponent implements OnInit {
   measureForm = new FormGroup({
     value: new FormControl<number>(0, [Validators.required]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
-    changeInfo: new FormControl<string>('', [Validators.required]),
+    changeInfo: new FormControl<string>('', [Validators.required, Validators.maxLength(250)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
   public keyresult$!: Observable<KeyResultMeasure>;

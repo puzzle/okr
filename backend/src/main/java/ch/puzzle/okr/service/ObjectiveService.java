@@ -13,7 +13,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ObjectiveService {
@@ -64,11 +66,10 @@ public class ObjectiveService {
     }
 
     public boolean quarterIsImmutable(Objective objective) {
-        boolean quarterHasChanged = !this.getObjective(objective.getId()).getQuarter().getId()
-                .equals(objective.getQuarter().getId());
+        boolean quarterHasChanged = !Objects.equals(this.getObjective(objective.getId()).getQuarter().getId(),
+                objective.getQuarter().getId());
 
-        boolean hasMeasures = keyResultRepository.findByObjectiveId(objective.getId()).stream()
-                .anyMatch(keyResult -> measureRepository.findLastMeasuresOfKeyresults(keyResult.getId()) != null);
+        boolean hasMeasures = !keyResultService.getLastMeasures(objective.getId()).equals(Collections.emptyList());
 
         return quarterHasChanged && hasMeasures;
     }

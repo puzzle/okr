@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,13 +13,18 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,23 +45,30 @@ class ObjectiveServiceTest {
     KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
+    @MockBean
+    MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
 
     Objective objective;
     Objective fullObjective1;
     Objective fullObjective2;
+    Objective fullObjective3;
     KeyResult keyResult;
+    @Mock
+    User user;
     List<Objective> objectiveList;
     List<KeyResult> keyResults;
     List<Objective> fullObjectiveInTeam1List;
     Team team1;
     @InjectMocks
+    @Spy
     private ObjectiveService objectiveService;
 
     @BeforeEach
     void setUp() {
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
         this.objectiveList = List.of(objective, objective, objective);
-        this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
+        this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(objective)
+                .build();
         this.keyResults = List.of(keyResult, keyResult, keyResult);
 
         User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
@@ -68,7 +81,11 @@ class ObjectiveServiceTest {
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
                 .withModifiedOn(LocalDateTime.MAX).build();
+        this.fullObjective3 = Objective.Builder.builder().withId(5L).withTitle("FullObjective1").withOwner(user)
+                .withTeam(team1).withQuarter(quarter).withDescription("This is our description").withProgress(null)
+                .withModifiedOn(LocalDateTime.MAX).build();
         this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);
+
     }
 
     @Test
@@ -187,7 +204,7 @@ class ObjectiveServiceTest {
         Objective newObjective = Objective.Builder.builder().withTitle("Hello World").withId(1L)
                 .withDescription("This is a cool objective")
                 .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
-                .withModifiedOn(LocalDateTime.now())
+                .withModifiedOn(LocalDateTime.now()).withQuarter(this.fullObjective1.getQuarter())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
@@ -197,6 +214,35 @@ class ObjectiveServiceTest {
         assertEquals("Best Team", returnedObjective.getTeam().getName());
         assertEquals("rudi", returnedObjective.getOwner().getUsername());
         assertEquals("This is a cool objective", returnedObjective.getDescription());
+    }
+
+    @Test
+    void shouldSetQuarterIsImmutable() {
+        Objective objective = this.fullObjective3;
+        this.keyResult.setObjective(objective);
+        keyResultService.updateKeyResult(this.keyResult);
+        when(objectiveRepository.findById(objective.getId())).thenReturn(Optional.of(objective));
+        assertFalse(objectiveService.quarterIsImmutable(objective));
+
+        Measure measure = Measure.Builder.builder().withId(5L).withKeyResult(keyResult).withValue(0.0)
+                .withMeasureDate(Instant.MAX).withInitiatives("Initiatives").withCreatedBy(user)
+                .withChangeInfo("changeInfo").withCreatedOn(LocalDateTime.MAX).build();
+        List<Measure> measures = new ArrayList<>();
+        measures.add(measure);
+        when(keyResultService.getLastMeasures(objective.getId())).thenReturn(measures);
+
+        // quarter needs to be different only checking the measures is not sufficient
+        // because we only want to restrict a possible change of the quarter and not for every change on the objective
+        assertFalse(objectiveService.quarterIsImmutable(objective));
+
+        Objective newObjective = Objective.Builder.builder().withId(objective.getId())
+                .withQuarter(Quarter.Builder.builder().withId(8L).withLabel("GJ 22/23-Q4").build())
+                .withTitle(objective.getTitle()).withOwner(objective.getOwner()).withProgress(objective.getProgress())
+                .withTeam(objective.getTeam()).withModifiedOn(objective.getModifiedOn()).build();
+        when(objectiveRepository.findById(newObjective.getId())).thenReturn(Optional.of(objective));
+
+        assertTrue(objectiveService.quarterIsImmutable(newObjective));
+
     }
 
     @Test

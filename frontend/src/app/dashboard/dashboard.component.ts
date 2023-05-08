@@ -87,11 +87,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const storedPosition = localStorage.getItem(this.storageKey);
     if (storedPosition) {
       this.scrollPosition = parseInt(storedPosition);
-      setTimeout(() => {
-        window.scrollTo(0, this.scrollPosition);
-      }, 0);
+      window.scrollTo(0, this.scrollPosition);
     }
-
     // Listen to the scroll event using RxJS
     const scroll$ = fromEvent(window, 'scroll');
     // Debounce the scroll event and subscribe to it
@@ -101,7 +98,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   saveScrollPosition() {
-    console.log('Saving scroll position:', window.scrollY);
     localStorage.setItem(this.storageKey, window.scrollY.toString());
   }
 

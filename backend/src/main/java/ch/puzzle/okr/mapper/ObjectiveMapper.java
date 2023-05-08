@@ -34,7 +34,7 @@ public class ObjectiveMapper {
                 .withOwner(userService.getOwnerById(objectiveDto.getOwnerId()))
                 .withTeam(teamService.getTeamById(objectiveDto.getTeamId()))
                 .withDescription(objectiveDto.getDescription()).withProgress(objectiveDto.getProgress())
-                .withCreatedOn(LocalDateTime.now())
+                .withModifiedOn(LocalDateTime.now())
                 .withQuarter(quarterService.getQuarterById(objectiveDto.getQuarterId())).build();
     }
 }

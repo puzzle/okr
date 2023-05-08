@@ -10,5 +10,5 @@ import java.util.List;
 public interface KeyResultRepository extends CrudRepository<KeyResult, Long> {
     List<KeyResult> findByObjectiveId(@Param("objective_id") Long objectiveId);
 
-    List<KeyResult> findByObjectiveOrderByCreatedOnDesc(@Param("objective") Objective objective);
+    List<KeyResult> findByObjectiveOrderByModifiedOnDesc(@Param("objective") Objective objective);
 }

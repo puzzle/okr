@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map, Observable, tap } from 'rxjs';
+import * as http from 'http';
 
 export interface Objective {
   id: number | null;
@@ -31,13 +32,20 @@ export class ObjectiveService {
     return this.httpClient.get<Objective>('api/v1/objectives/' + objectiveId);
   }
 
-  public saveObjective(objective: Objective, post: boolean): Observable<Objective> {
+  public saveObjective(objective: Objective, post: boolean): Observable<any> {
     objective.progress = null;
     if (post) {
       return this.httpClient.post<Objective>('api/v1/objectives', objective);
     } else {
       objective.quarterLabel = null;
-      return this.httpClient.put<Objective>('api/v1/objectives/' + objective.id, objective);
+      return this.httpClient
+        .put<Objective>('api/v1/objectives/' + objective.id, objective, { observe: 'response' })
+        .pipe(
+          map((response) => ({
+            status: response.status,
+            body: response.body,
+          }))
+        );
     }
   }
 

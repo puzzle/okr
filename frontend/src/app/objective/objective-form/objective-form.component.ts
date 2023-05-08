@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { combineLatestWith, filter, find, map, Observable, of, share, startWith, switchMap } from 'rxjs';
+import { combineLatestWith, filter, find, map, Observable, of, share, startWith, subscribeOn, switchMap } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { User, UserService } from '../../shared/services/user.service';
@@ -10,8 +10,11 @@ import { getNumberOrNull } from '../../shared/common';
 import { Team, TeamService } from '../../shared/services/team.service';
 import { Quarter, QuarterService } from '../../shared/services/quarter.service';
 import { ToastrService } from 'ngx-toastr';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { RouteService } from '../../shared/services/route.service';
+import { getXHRResponse } from 'rxjs/internal/ajax/getXHRResponse';
+import * as http from 'http';
+import { error } from '@angular/compiler-cli/src/transformers/util';
 
 @Component({
   selector: 'app-objective-form',
@@ -124,10 +127,20 @@ export class ObjectiveFormComponent implements OnInit {
       )
       .subscribe((objective) =>
         this.objectiveService.saveObjective(objective, this.create).subscribe({
-          next: () => {
-            this.toastr.success('', 'Objective gespeichert!', {
-              timeOut: 5000,
-            });
+          next: (response) => {
+            if (response.status === 226) {
+              this.toastr.warning(
+                ' Zyklus kann nicht angepasst werden, da bereits eine Messung erfasst wurde!',
+                'Objective gespeichert!',
+                {
+                  timeOut: 10000,
+                }
+              );
+            } else {
+              this.toastr.success('', 'Objective gespeichert!', {
+                timeOut: 5000,
+              });
+            }
             this.routeService.navigate('/dashboard');
           },
           error: (e: HttpErrorResponse) => {

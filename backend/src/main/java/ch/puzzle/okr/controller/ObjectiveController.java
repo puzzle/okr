@@ -16,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("api/v1/objectives")
@@ -68,6 +70,8 @@ public class ObjectiveController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Objective in db.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
+            @ApiResponse(responseCode = "226", description = "Updated Objective in db but quarter was not changed.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, attributes are not set or tried to set quarter.", content = @Content),
             @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found.", content = @Content) })
     @PutMapping("/{id}")
@@ -76,8 +80,11 @@ public class ObjectiveController {
             @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
+        boolean isImUsed = objectiveService.quarterIsImmutable(objective);
         ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
-        return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
+        return isImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedObjective)
+                : ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
+
     }
 
     @Operation(summary = "Get KeyResults from Objective", description = "Get all KeyResults from Objective by objectiveID.")

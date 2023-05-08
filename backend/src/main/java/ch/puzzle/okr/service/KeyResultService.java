@@ -82,7 +82,7 @@ public class KeyResultService {
         Objective objective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Objective with id %d not found", objectiveId)));
-        return keyResultRepository.findByObjectiveOrderByCreatedOnDesc(objective);
+        return keyResultRepository.findByObjectiveOrderByModifiedOnDesc(objective);
     }
 
     public List<KeyResultMeasureDto> getAllKeyResultsByObjectiveWithMeasure(Long id) {

@@ -2,8 +2,8 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.springframework.context.annotation.Lazy;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,13 +21,16 @@ public class ObjectiveService {
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
     private final KeyResultService keyResultService;
+    private final MeasureRepository measureRepository;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService,
+            MeasureRepository measureRepository) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
         this.keyResultService = keyResultService;
+        this.measureRepository = measureRepository;
     }
 
     public List<Objective> getAllObjectives() {
@@ -59,10 +63,27 @@ public class ObjectiveService {
         return objectiveRepository.save(objective);
     }
 
+    public boolean quarterIsImmutable(Objective objective) {
+        boolean quarterHasChanged = !this.getObjective(objective.getId()).getQuarter().getId()
+                .equals(objective.getQuarter().getId());
+
+        boolean hasMeasures = keyResultRepository.findByObjectiveId(objective.getId()).stream()
+                .anyMatch(keyResult -> measureRepository.findLastMeasuresOfKeyresults(keyResult.getId()) != null);
+
+        return quarterHasChanged && hasMeasures;
+    }
+
     public Objective updateObjective(Objective objective) {
         Objective existingObjective = this.getObjective(objective.getId());
-        // objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
+        if (quarterIsImmutable(objective)) {
+            objective.setQuarter(existingObjective.getQuarter());
+            LocalDateTime modifiedOn = objective.getModifiedOn();
+            objective.setModifiedOn(existingObjective.getModifiedOn());
+            if (!existingObjective.equals(objective)) {
+                objective.setModifiedOn(modifiedOn);
+            }
+        }
         this.checkObjective(objective);
         return this.objectiveRepository.save(objective);
     }
@@ -71,7 +92,7 @@ public class ObjectiveService {
         if (objective.getTitle() == null || objective.getTitle().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Missing attribute title when creating objective");
-        } else if (objective.getCreatedOn() == null) {
+        } else if (objective.getModifiedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Failed to generate attribute createdOn when creating objective");
         }
@@ -79,13 +100,13 @@ public class ObjectiveService {
 
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
         return quarterId == null ? objectiveRepository.findByTeamIdOrderByTitleAsc(teamId)
-                : objectiveRepository.findByQuarterIdAndTeamIdOrderByCreatedOnDesc(quarterId, teamId);
+                : objectiveRepository.findByQuarterIdAndTeamIdOrderByModifiedOnDesc(quarterId, teamId);
     }
 
     @Transactional
     public void deleteObjectiveById(Long id) {
         List<KeyResult> keyResults = this.keyResultRepository
-                .findByObjectiveOrderByCreatedOnDesc(this.getObjective(id));
+                .findByObjectiveOrderByModifiedOnDesc(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
             this.keyResultService.deleteKeyResultById(keyResult.getId());
         }

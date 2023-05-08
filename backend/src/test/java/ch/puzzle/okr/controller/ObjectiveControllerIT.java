@@ -53,7 +53,7 @@ class ObjectiveControllerIT {
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user)
             .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33L)
-            .withCreatedOn(LocalDateTime.MAX).build();
+            .withModifiedOn(LocalDateTime.MAX).build();
     static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
             "GJ 22/23-Q2", "This is a description", 20L);

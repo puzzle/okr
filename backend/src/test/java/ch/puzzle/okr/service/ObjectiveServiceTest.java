@@ -64,10 +64,10 @@ class ObjectiveServiceTest {
         Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(null)
-                .withCreatedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).build();
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
-                .withCreatedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).build();
         this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);
     }
 
@@ -120,7 +120,7 @@ class ObjectiveServiceTest {
         assertEquals("Team1", savedObjective.getTeam().getName());
         assertEquals("Bob", savedObjective.getOwner().getFirstname());
         assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
-        assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
+        assertEquals(LocalDateTime.MAX, savedObjective.getModifiedOn());
     }
 
     @Test
@@ -137,7 +137,7 @@ class ObjectiveServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withProgress(null).withCreatedOn(LocalDateTime.now()).build();
+                .withDescription("Description").withProgress(null).withModifiedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective1);
 
         Objective savedObjective = objectiveService.saveObjective(objective1);
@@ -151,7 +151,7 @@ class ObjectiveServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
         this.fullObjective1.setDescription(null);
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title").withProgress(null)
-                .withCreatedOn(LocalDateTime.now()).build();
+                .withModifiedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveRepository.save(any())).thenReturn(this.fullObjective1);
 
         Objective savedObjective = objectiveService.saveObjective(objective1);
@@ -162,7 +162,7 @@ class ObjectiveServiceTest {
 
     @Test
     void shouldThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyCreatedOn() {
-        this.fullObjective1.setCreatedOn(null);
+        this.fullObjective1.setModifiedOn(null);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveService.saveObjective(this.fullObjective1));
@@ -187,7 +187,7 @@ class ObjectiveServiceTest {
         Objective newObjective = Objective.Builder.builder().withTitle("Hello World").withId(1L)
                 .withDescription("This is a cool objective")
                 .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
-                .withCreatedOn(LocalDateTime.now())
+                .withModifiedOn(LocalDateTime.now())
                 .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
         Mockito.when(objectiveRepository.findById(anyLong())).thenReturn(Optional.of(newObjective));
         Mockito.when(objectiveRepository.save(any())).thenReturn(newObjective);
@@ -229,13 +229,13 @@ class ObjectiveServiceTest {
         objectiveService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
         verify(objectiveRepository, times(invocationsByTeam)).findByTeamIdOrderByTitleAsc(teamId);
         verify(objectiveRepository, times(invocationsByTeamAndQuarter))
-                .findByQuarterIdAndTeamIdOrderByCreatedOnDesc(teamId, quarterId);
+                .findByQuarterIdAndTeamIdOrderByModifiedOnDesc(teamId, quarterId);
     }
 
     @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(this.objectiveRepository.findById(anyLong())).thenReturn(Optional.of(objective));
-        when(this.keyResultRepository.findByObjectiveOrderByCreatedOnDesc(objective)).thenReturn(keyResults);
+        when(this.keyResultRepository.findByObjectiveOrderByModifiedOnDesc(objective)).thenReturn(keyResults);
 
         this.objectiveService.deleteObjectiveById(1L);
 

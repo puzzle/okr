@@ -63,6 +63,7 @@
             class="description-textarea"
           ></textarea>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="key">Einheit</p>
@@ -85,33 +86,36 @@
         <p *ngIf="!create" class="form-field-width keyresult-unit">
           {{ "UNIT." + keyresult.unit | translate }}
         </p>
+        <mat-icon class="tooltip-icon pe-auto" matTooltip="{{ helpTexts.unit }}" matTooltipClass="tooltips"
+          >help
+        </mat-icon>
       </div>
 
-      <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="key">Erwartete Entwicklung</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height">
-          <mat-label>
-            Erwartete Entwicklung
-            <mat-icon
-              class="tooltip-icon pe-auto"
-              matTooltip="{{ helpTexts.expectedEvolution }}"
-              matTooltipClass="tooltips"
-              >help
-            </mat-icon>
-          </mat-label>
-          <mat-select
-            (selectionChange)="
-              this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
-            "
-            [value]="keyresult.expectedEvolution"
-            formControlName="expectedEvolution"
-            class="evolution-select"
-          >
-            <mat-option *ngFor="let evolution of expectedEvolution$" [value]="evolution">
-              {{ "EXPECTED_EVOLUTION." + evolution | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div>
+        <div class="d-flex align-items-center gap-4 justify-content-end">
+          <p class="key">Erwartete Entwicklung</p>
+          <mat-form-field appearance="outline" class="form-field-width form-field-height">
+            <mat-label> Erwartete Entwicklung </mat-label>
+            <mat-select
+              (selectionChange)="
+                this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
+              "
+              [value]="keyresult.expectedEvolution"
+              formControlName="expectedEvolution"
+              class="align-items-start"
+            >
+              <mat-option *ngFor="let evolution of expectedEvolution$" [value]="evolution">
+                {{ "EXPECTED_EVOLUTION." + evolution | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-icon
+            class="tooltip-icon pe-auto"
+            matTooltip="{{ helpTexts.expectedEvolution }}"
+            matTooltipClass="tooltips"
+            >help
+          </mat-icon>
+        </div>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4" *ngIf="keyResultForm.get('basicValue')?.enabled">
@@ -127,6 +131,9 @@
             class="basicValue-input"
           />
         </mat-form-field>
+        <mat-icon class="tooltip-icon pe-auto" matTooltip="{{ helpTexts.basicValue }}" matTooltipClass="tooltips"
+          >help
+        </mat-icon>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -142,6 +149,9 @@
             class="targetValue-input"
           />
         </mat-form-field>
+        <mat-icon class="tooltip-icon pe-auto" matTooltip="{{ helpTexts.targetValue }}" matTooltipClass="tooltips"
+          >help
+        </mat-icon>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -160,6 +170,7 @@
             class="description-textarea"
           ></textarea>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
@@ -173,6 +184,7 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
 
       <div class="d-flex gap-2 justify-content-end buttons">
@@ -189,6 +201,7 @@
         >
           {{ this.create ? "Erstellen" : "Aktualisieren" }}
         </button>
+        <mat-icon></mat-icon>
       </div>
     </form>
   </div>

@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <div class="team-row" *ngFor="let team of teamList$ | async">
+  <div class="team-row" *ngFor="let team of teamList$ | async; let index = index">
     <div class="team-flex">
       <p class="team-name">{{ team.name }}</p>
       <img
@@ -15,7 +15,14 @@
         class="edit-icon"
         (click)="routeService.navigate('/team/edit/' + team.id)"
       />
-      <img src="assets/delete-icon.svg" alt="delete-icon" class="delete-icon" />
+      <img
+        src="assets/delete-icon.svg"
+        *ngIf="team.id !== undefined"
+        (click)="openDeleteDialog(team.id)"
+        alt="delete-icon"
+        class="delete-icon"
+        [attr.data-testId]="'delete-Icon-' + index"
+      />
     </div>
     <mat-divider class="divider"></mat-divider>
   </div>

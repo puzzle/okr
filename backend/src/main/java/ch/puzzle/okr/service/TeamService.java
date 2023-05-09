@@ -2,11 +2,13 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +19,15 @@ public class TeamService {
 
     private final TeamRepository teamRepository;
 
-    public TeamService(TeamRepository teamRepository) {
+    private final ObjectiveRepository objectiveRepository;
+
+    private final ObjectiveService objectiveService;
+
+    public TeamService(TeamRepository teamRepository, ObjectiveRepository objectiveRepository,
+            ObjectiveService objectiveService) {
         this.teamRepository = teamRepository;
+        this.objectiveRepository = objectiveRepository;
+        this.objectiveService = objectiveService;
     }
 
     public List<Team> getAllTeams() {
@@ -71,5 +80,14 @@ public class TeamService {
 
         return teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 (String.format("Team with id %d not found", teamId))));
+    }
+
+    @Transactional
+    public void deleteTeamById(Long teamId) {
+        this.objectiveRepository.findByTeamIdOrderByTitleAsc(teamId).forEach(objective -> {
+            this.objectiveService.deleteObjectiveById(objective.getId());
+        });
+
+        teamRepository.deleteById(teamId);
     }
 }

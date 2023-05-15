@@ -47,6 +47,10 @@
   justify-content: space-between;
 }
 
+.mat-expansion-panel-header-title {
+  flex-grow: 4;
+}
+
 #progressContainer {
   flex-grow: 1;
 }

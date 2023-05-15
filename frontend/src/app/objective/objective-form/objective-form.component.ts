@@ -2,7 +2,19 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { combineLatestWith, filter, find, map, Observable, of, share, startWith, subscribeOn, switchMap } from 'rxjs';
+import {
+  combineLatestWith,
+  filter,
+  find,
+  first,
+  map,
+  Observable,
+  of,
+  share,
+  startWith,
+  subscribeOn,
+  switchMap,
+} from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { User, UserService } from '../../shared/services/user.service';
@@ -141,7 +153,12 @@ export class ObjectiveFormComponent implements OnInit {
                 timeOut: 5000,
               });
             }
-            this.routeService.navigate('/dashboard');
+            this.router.navigate(['/dashboard'], {
+              queryParams: {
+                teamFilter: this.route.snapshot.queryParamMap.get('teamFilter'),
+                quarterFilter: objective.quarterId,
+              },
+            });
           },
           error: (e: HttpErrorResponse) => {
             this.toastr.error('Objective konnte nicht gespeichert werden!', 'Fehlerstatus: ' + e.status, {

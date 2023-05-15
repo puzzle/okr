@@ -76,8 +76,10 @@ export class MeasureFormComponent implements OnInit {
             value = measure.value;
           } else if (goal.value !== null) {
             value = goal.value;
+          } else if (goal.basicValue !== null) {
+            value = goal.basicValue;
           } else {
-            value = 0;
+            value = null;
           }
           return {
             value: value,

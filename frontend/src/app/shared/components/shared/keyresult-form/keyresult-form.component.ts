@@ -13,6 +13,9 @@ import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 import { comparisonValidator } from '../../../validators';
 import { RouteService } from '../../../services/route.service';
 import helpTexts from '../../../../../assets/help-texts.json';
+import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { HelpDialogComponent } from '../../../dialog/help-dialog/help-dialog.component';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -44,6 +47,7 @@ export class KeyresultFormComponent implements OnInit {
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
     private router: Router,
     private location: Location,
     private toastr: ToastrService,
@@ -216,6 +220,17 @@ export class KeyresultFormComponent implements OnInit {
   update() {
     this.keyResultForm.controls['targetValue'].updateValueAndValidity();
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();
+  }
+
+  openHelpDialog() {
+    const dialogRef = this.dialog.open(HelpDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Willst du diese Messung wirklich löschen?',
+        confirmText: 'Bestätigen',
+        closeText: 'Abbrechen',
+      },
+    });
   }
 
   protected readonly helpTexts = helpTexts;

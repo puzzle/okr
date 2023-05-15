@@ -28,6 +28,7 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HelpDialogComponent } from './shared/dialog/help-dialog/help-dialog.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -46,7 +47,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent],
+  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent, HelpDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

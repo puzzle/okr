@@ -5,8 +5,8 @@
 >
   <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
     <mat-panel-title class="objective-title">{{ this.objective!.title }}</mat-panel-title>
-    <mat-panel-description class="d-flex space-between">
-      <div class="d-flex w-50 margin-left">
+    <mat-panel-description class="d-flex">
+      <div class="d-flex w-100">
         <div class="w-100" id="progressContainer">
           <span id="progressSpan" [ngClass]="objective!.progress === 0 ? 'key red-progress' : 'key'">{{
             objective!.progress != null ? objective!.progress + "%" : "-"

@@ -1,0 +1,7 @@
+<app-spinner [visibility]="displaySpinner"></app-spinner>
+
+<div *ngIf="!displaySpinner">
+  <mat-dialog-content>
+    <p id="title">{{ title }}</p>
+  </mat-dialog-content>
+</div>

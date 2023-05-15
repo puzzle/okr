@@ -67,9 +67,72 @@ html {
 }
 
 .tooltips {
-  background-color: darkblue;
-  font-size: 14px;
+  background-color: #1e5a96;
+  font-size: 16px;
   white-space: pre-line;
+  max-width: 50rem !important;
+}
+
+.info-icon {
+  display: inline-block;
+  position: relative;
+}
+
+.info-icon:hover .info-box {
+  display: block;
+  opacity: 1;
+}
+
+.info-box {
+  display: none;
+  position: absolute;
+  top: -10.7rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(20rem, 50vw, 50rem);
+  background-color: #1e5a96;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.info-box::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1rem solid transparent;
+  border-top-color: #1e5a96;
+}
+
+.info-box.small {
+  max-width: none;
+  width: auto;
+}
+
+.info-box.small:after {
+  display: none;
+}
+
+.info-box p {
+  margin: 0;
+}
+
+.info-box ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.info-box li {
+  margin: 0.5rem 0;
+}
+
+.info-box p:first-of-type {
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .red-progress {

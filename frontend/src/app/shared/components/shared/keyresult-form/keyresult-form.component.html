@@ -86,13 +86,14 @@
         <p *ngIf="!create" class="form-field-width keyresult-unit">
           {{ "UNIT." + keyresult.unit | translate }}
         </p>
+        <i (click)="openHelpDialog(helpTexts.unit)" class="material-icons help-icon">info_outline</i>
       </div>
 
       <div>
         <div class="d-flex align-items-center gap-4 justify-content-end">
           <p class="key">Erwartete Entwicklung</p>
           <mat-form-field appearance="outline" class="form-field-width form-field-height">
-            <mat-label> Erwartete Entwicklung </mat-label>
+            <mat-label> Erwartete Entwicklung</mat-label>
             <mat-select
               (selectionChange)="
                 this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
@@ -106,9 +107,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="info-icon">
-            <i (click)="openHelpDialog()" class="material-icons">help_outline</i>
-          </div>
+          <i (click)="openHelpDialog(helpTexts.expectedEvolution)" class="material-icons help-icon">help_outline</i>
         </div>
       </div>
 
@@ -125,19 +124,7 @@
             class="basicValue-input"
           />
         </mat-form-field>
-        <div class="info-icon">
-          <i class="material-icons">help_outline</i>
-          <div class="info-box">
-            <p>
-              <strong>{{ helpTexts.basicValue.description }}</strong>
-            </p>
-            <p>
-              <u
-                ><strong>{{ helpTexts.basicValue.exampleTitle }}</strong></u
-              >
-            </p>
-          </div>
-        </div>
+        <i (click)="openHelpDialog(helpTexts.basicValue)" class="material-icons help-icon">info</i>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -153,6 +140,7 @@
             class="targetValue-input"
           />
         </mat-form-field>
+        <i (click)="openHelpDialog(helpTexts.targetValue)" class="material-icons help-icon">help</i>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -202,7 +190,7 @@
         >
           {{ this.create ? "Erstellen" : "Aktualisieren" }}
         </button>
-        <mat-icon></mat-icon>
+        <i class="mat-icon help-icon"></i>
       </div>
     </form>
   </div>

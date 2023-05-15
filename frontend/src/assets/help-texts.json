@@ -1,38 +1,49 @@
 {
   "expectedEvolution": {
-    "description": "Ist es das Ziel in diesem Quartal, eine Kennzahl bzw. einen Wert zu erhöhen, zu vermindern, nicht unter einen Minimalwert oder über einen Maximalwert zu fallen?",
+    "description": "Die Erwartete Entwicklung definiert die Art, in welche sich das Keyresult entwickeln soll. Dabei kann festgelegt werden, ob eine Kennzahl erhöht oder gesenkt werden soll, oder ob ein Extremalwert nicht unter- beziehungsweise überschritten werden darf.",
     "exampleTitle": "Beispiele:",
-    "example1": "Erhöht: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
-    "example2": "Erhöht: Die neue Strategie wird vom Team abgenommen.",
-    "example3": "Vermindert:Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
-    "example4": "Vermindert: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert.",
-    "example5": "Minimum: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
-    "example6": "Maximum: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%."
+    "examples": [
+     "Erhöht: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
+     "Erhöht: Die neue Strategie wird vom Team abgenommen.",
+     "Vermindert:Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
+     "Vermindert: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert.",
+     "Minimum: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
+     "Maximum: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%."
+      ]
   },
   "unit": {
-    "description": "Handelt es sich bei der Kennzahl des Key Results um einen Prozentwert, um CHF oder um eine Zahl?",
+    "description": "Die Einheit beschreibt, wie die Kennzahl und somit der Erfolg des Keyresults bestimmt werden kann. Dies geschieht via Prozent, Zahl oder CHF Angaben.",
     "exampleTitle": "Beispiele:",
-    "example1": "Prozent: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
-    "example2": "Prozent: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%.",
-    "example3": "CHF: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
-    "example4": "CHF: Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
-    "example5": "Zahl: Die neue Strategie wird vom Team abgenommen.",
-    "example6": "Zahl: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert."
+    "examples":[
+    "Prozent: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
+    "Prozent: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%.",
+    "CHF: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
+    "CHF: Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
+    "Zahl: Die neue Strategie wird vom Team abgenommen.",
+    "Zahl: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert."
+    ]
   },
   "targetValue": {
-    "description": "Wenn die erwartete Entwicklung eine Erhöhung ist, von welchem (aktuellen) Startwert aus soll welcher Zielwert erreicht werden? Analog bei einer Verminderung: von welchem Startwert als Basis soll welcher Zielwert erreicht werden? Bei einem Minimum: welcher Zielwert darf nicht unterschritten werden? Bei einem Maximum: welcher Zielwert darf nicht überschritten werden?",
+    "description": "Der Zielwert beschreibt den erstrebten Endzustand des Keyresults. Dabei beschreibt der Zielwert, falls die Erwartete Entwicklung ein Extremalwert ist, den Grenzwert, welcher nicht über- oder unterschritten werden soll. Falls die Erwartete Entwicklung eine Erhöhung oder eine Verminderung ist so beschreibt der Zielwert den Angestrebten Zustand des Keyresults.",
     "exampleTitle": "Beispiele:",
-    "example1": "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
-    "example2": "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
-    "example3": "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
-    "example4": "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    "examples": [
+    "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
+    "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
+    "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
+    "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    ]
   },
   "basicValue": {
-    "description": "Wenn die erwartete Entwicklung eine Erhöhung ist, von welchem (aktuellen) Startwert aus soll welcher Zielwert erreicht werden? Analog bei einer Verminderung: von welchem Startwert als Basis soll welcher Zielwert erreicht werden? Bei einem Minimum: welcher Zielwert darf nicht unterschritten werden? Bei einem Maximum: welcher Zielwert darf nicht überschritten werden?",
+    "description": "Der Startwert ist nur relevant, falls die Erwartete Entwicklung eine Erhöhung oder eine Verminderung beschreibt. Dabei definiert der Startwert den Basiswert, von welchem die Veränderung verfolgt wird.",
     "exampleTitle": "Beispiele:",
-    "example1": "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
-    "example2": "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
-    "example3": "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
-    "example4": "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    "examples": [
+      "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
+      "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
+      "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
+      "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    ]
+  },
+  "testText": {
+    "description" : "some description"
   }
 }

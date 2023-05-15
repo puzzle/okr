@@ -15,7 +15,7 @@ import { RouteService } from '../../../services/route.service';
 import helpTexts from '../../../../../assets/help-texts.json';
 import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HelpDialogComponent } from '../../../dialog/help-dialog/help-dialog.component';
+import { HelpDialogComponent, HelpText } from '../../../dialog/help-dialog/help-dialog.component';
 
 @Component({
   selector: 'app-keyresult-form',
@@ -222,14 +222,11 @@ export class KeyresultFormComponent implements OnInit {
     this.keyResultForm.controls['basicValue'].updateValueAndValidity();
   }
 
-  openHelpDialog() {
+  openHelpDialog(data: HelpText) {
     const dialogRef = this.dialog.open(HelpDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'Willst du diese Messung wirklich löschen?',
-        confirmText: 'Bestätigen',
-        closeText: 'Abbrechen',
-      },
+      width: '50rem',
+      data: data,
+      panelClass: 'help-dialog-custom-panel-class',
     });
   }
 

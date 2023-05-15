@@ -1,7 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+
+export interface HelpText {
+  description: string;
+  exampleTitle?: string;
+  examples?: string[];
+}
 
 @Component({
   selector: 'app-help-dialog',
@@ -11,10 +16,12 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 export class HelpDialogComponent {
   closeDialog: Subject<boolean> = new Subject<boolean>();
   title: string;
-  examples: string[];
+  exampleTitle?: string;
+  examples?: string[];
   displaySpinner: boolean = false;
-  constructor(private dialogRef: MatDialogRef<HelpDialogComponent>, @Inject(MAT_DIALOG_DATA) data: any) {
-    this.title = data.title;
+  constructor(private dialogRef: MatDialogRef<HelpDialogComponent>, @Inject(MAT_DIALOG_DATA) data: HelpText) {
+    this.title = data.description;
+    this.exampleTitle = data.exampleTitle;
     this.examples = data.examples;
   }
 

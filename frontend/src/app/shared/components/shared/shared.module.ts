@@ -22,6 +22,7 @@ import { UnitValueValidator } from '../../validators';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     TranslateModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    A11yModule,
   ],
   exports: [UnitValueValidator],
 })

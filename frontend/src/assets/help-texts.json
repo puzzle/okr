@@ -1,6 +1,7 @@
 {
   "expectedEvolution": {
-    "description": "Die Erwartete Entwicklung definiert die Art, in welche sich das Keyresult entwickeln soll. Dabei kann festgelegt werden, ob eine Kennzahl erhöht oder gesenkt werden soll, oder ob ein Extremalwert nicht unter- beziehungsweise überschritten werden darf.",
+    "title": "Erwartete Entwicklung",
+    "description": "Die erwartete Entwicklung definiert die Art, in welche sich das Keyresult entwickeln soll. Dabei kann festgelegt werden, ob eine Kennzahl erhöht oder gesenkt werden soll, oder ob ein Extremalwert nicht unter- beziehungsweise überschritten werden darf.",
     "exampleTitle": "Beispiele:",
     "examples": [
      "Erhöht: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
@@ -12,6 +13,7 @@
       ]
   },
   "unit": {
+    "title": "Einheit",
     "description": "Die Einheit beschreibt, wie die Kennzahl und somit der Erfolg des Keyresults bestimmt werden kann. Dies geschieht via Prozent, Zahl oder CHF Angaben.",
     "exampleTitle": "Beispiele:",
     "examples":[
@@ -24,7 +26,8 @@
     ]
   },
   "targetValue": {
-    "description": "Der Zielwert beschreibt den erstrebten Endzustand des Keyresults. Dabei beschreibt der Zielwert, falls die Erwartete Entwicklung ein Extremalwert ist, den Grenzwert, welcher nicht über- oder unterschritten werden soll. Falls die Erwartete Entwicklung eine Erhöhung oder eine Verminderung ist so beschreibt der Zielwert den Angestrebten Zustand des Keyresults.",
+    "title": "Zielwert",
+    "description": "Der Zielwert beschreibt den angestrebten Endzustand des Keyresults. Falls die erwartete Entwicklung ein Extremalwert ist, definiert der Zielwert, den Grenzwert der nicht über- oder unterschritten werden soll. Falls die erwartete Entwicklung eine Erhöhung oder eine Verminderung ist, so definiert der Zielwert den angestrebten Endzustand des Keyresults.",
     "exampleTitle": "Beispiele:",
     "examples": [
     "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
@@ -34,7 +37,8 @@
     ]
   },
   "basicValue": {
-    "description": "Der Startwert ist nur relevant, falls die Erwartete Entwicklung eine Erhöhung oder eine Verminderung beschreibt. Dabei definiert der Startwert den Basiswert, von welchem die Veränderung verfolgt wird.",
+    "title": "Startwert",
+    "description": "Der Startwert ist nur relevant, falls die erwartete Entwicklung eine Erhöhung oder eine Verminderung beschreibt. Dabei definiert der Startwert den Basiswert, von welchem die Veränderung verfolgt wird.",
     "exampleTitle": "Beispiele:",
     "examples": [
       "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
@@ -42,8 +46,5 @@
       "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
       "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
     ]
-  },
-  "testText": {
-    "description" : "some description"
   }
 }

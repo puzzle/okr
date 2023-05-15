@@ -67,7 +67,11 @@ html {
 }
 
 .help-dialog-custom-panel-class > mat-dialog-container {
-  background-color: #1e5a96 !important;
+  background-color: #1e5a96;
+}
+
+.close-button-help-dialog .mat-button-focus-overlay {
+  background-color: transparent !important;
 }
 
 .help-icon {

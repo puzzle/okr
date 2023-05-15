@@ -20,6 +20,7 @@ describe('HelpDialog', () => {
     fixture = TestBed.createComponent(HelpDialogComponent);
     component = fixture.componentInstance;
     component.title = 'Title';
+    component.description = 'description';
     component.exampleTitle = 'Beispiele:';
     component.examples = ['example 1', 'example 2', 'example 3'];
     fixture.detectChanges();
@@ -31,9 +32,11 @@ describe('HelpDialog', () => {
 
   test('should display correct labels', () => {
     const title = fixture.debugElement.query(By.css('#title'));
+    const description = fixture.debugElement.query(By.css('#description'));
     const exampleTitel = fixture.debugElement.query(By.css('#exampleTitle'));
     const examples = fixture.debugElement.query(By.css('#examples'));
     expect(title.nativeElement.textContent).toContain(component.title);
+    expect(description.nativeElement.textContent).toContain(component.description);
     expect(exampleTitel.nativeElement.textContent).toContain(component.exampleTitle);
     expect(examples.nativeElement.textContent).toContain(component.examples![0]);
   });
@@ -55,14 +58,16 @@ describe('HelpDialog', () => {
     fixture = TestBed.createComponent(HelpDialogComponent);
     component = fixture.componentInstance;
     component.title = 'Title';
+    component.description = 'description';
     fixture.detectChanges();
   });
 
   test('should not throw error', () => {
     const title = fixture.debugElement.query(By.css('#title'));
+    const description = fixture.debugElement.query(By.css('#description'));
     const exampleTitel = fixture.debugElement.query(By.css('#exampleTitle'));
-    const examples = fixture.debugElement.query(By.css('#examples'));
     expect(title.nativeElement.textContent).toContain(component.title);
+    expect(description.nativeElement.textContent).toContain(component.description);
     expect(exampleTitel.nativeElement.textContent).toBe('');
   });
 });

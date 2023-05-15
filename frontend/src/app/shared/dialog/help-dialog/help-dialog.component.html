@@ -1,9 +1,12 @@
 <app-spinner [visibility]="displaySpinner" xmlns="http://www.w3.org/1999/html"></app-spinner>
-
-<div *ngIf="!displaySpinner">
-  <mat-dialog-content>
-    <p id="title" class="key">{{ title }}</p>
-    <p id="exampleTitle" class="key">
+<div *ngIf="!displaySpinner" class="dialog-wrapper">
+  <mat-dialog-content cdkTrapFocus="true">
+    <h3 id="title">{{ title }}</h3>
+    <button mat-button [mat-dialog-close]="true" class="close-button-help-dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+    <p id="description" class="key">{{ description }}</p>
+    <p id="exampleTitle" class="value">
       <u>{{ exampleTitle }}</u>
     </p>
     <ul id="examples" *ngFor="let example of examples">

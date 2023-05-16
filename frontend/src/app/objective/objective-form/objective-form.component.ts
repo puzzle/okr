@@ -156,7 +156,8 @@ export class ObjectiveFormComponent implements OnInit {
             this.router.navigate(['/dashboard'], {
               queryParams: {
                 teamFilter: this.route.snapshot.queryParamMap.get('teamFilter'),
-                quarterFilter: response.body.quarterId,
+                quarterFilter: response.quarterId,
+                objectives: response.id,
               },
             });
           },

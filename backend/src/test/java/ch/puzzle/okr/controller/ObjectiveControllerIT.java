@@ -218,7 +218,7 @@ class ObjectiveControllerIT {
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objective1);
-        when(objectiveService.quarterIsImmutable(objective1)).thenReturn(true);
+        when(objectiveService.isQuarterImmutable(objective1)).thenReturn(true);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
         BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective1);
 

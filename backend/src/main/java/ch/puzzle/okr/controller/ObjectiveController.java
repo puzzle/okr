@@ -16,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLOutput;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/v1/objectives")
@@ -80,7 +78,7 @@ public class ObjectiveController {
             @RequestBody ObjectiveDto objectiveDTO) {
         objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        boolean isImUsed = objectiveService.quarterIsImmutable(objective);
+        boolean isImUsed = objectiveService.isQuarterImmutable(objective);
         ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
         return isImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedObjective)
                 : ResponseEntity.status(HttpStatus.OK).body(updatedObjective);

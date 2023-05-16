@@ -172,13 +172,13 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldDeleteObjective() throws Exception {
+    void shouldDeleteTeam() throws Exception {
         mvc.perform(delete("/api/v1/teams/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
+    void throwExceptionWhenTeamWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamService)
                 .deleteTeamById(anyLong());
 

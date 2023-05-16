@@ -20,7 +20,6 @@ import { KeyresultFormComponent } from './keyresult-form/keyresult-form.componen
 import { MatSelectModule } from '@angular/material/select';
 import { UnitValueValidator } from '../../validators';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { A11yModule } from '@angular/cdk/a11y';
 
@@ -50,7 +49,6 @@ import { A11yModule } from '@angular/cdk/a11y';
     RouterModule,
     MatSelectModule,
     TranslateModule,
-    MatTooltipModule,
     MatAutocompleteModule,
     A11yModule,
   ],

@@ -22,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -222,7 +221,7 @@ class ObjectiveServiceTest {
         this.keyResult.setObjective(objective);
         keyResultService.updateKeyResult(this.keyResult);
         when(objectiveRepository.findById(objective.getId())).thenReturn(Optional.of(objective));
-        assertFalse(objectiveService.quarterIsImmutable(objective));
+        assertFalse(objectiveService.isQuarterImmutable(objective));
 
         Measure measure = Measure.Builder.builder().withId(5L).withKeyResult(keyResult).withValue(0.0)
                 .withMeasureDate(Instant.MAX).withInitiatives("Initiatives").withCreatedBy(user)
@@ -233,7 +232,7 @@ class ObjectiveServiceTest {
 
         // quarter needs to be different only checking the measures is not sufficient
         // because we only want to restrict a possible change of the quarter and not for every change on the objective
-        assertFalse(objectiveService.quarterIsImmutable(objective));
+        assertFalse(objectiveService.isQuarterImmutable(objective));
 
         Objective newObjective = Objective.Builder.builder().withId(objective.getId())
                 .withQuarter(Quarter.Builder.builder().withId(8L).withLabel("GJ 22/23-Q4").build())
@@ -241,7 +240,7 @@ class ObjectiveServiceTest {
                 .withTeam(objective.getTeam()).withModifiedOn(objective.getModifiedOn()).build();
         when(objectiveRepository.findById(newObjective.getId())).thenReturn(Optional.of(objective));
 
-        assertTrue(objectiveService.quarterIsImmutable(newObjective));
+        assertTrue(objectiveService.isQuarterImmutable(newObjective));
 
     }
 

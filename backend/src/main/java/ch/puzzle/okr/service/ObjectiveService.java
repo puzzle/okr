@@ -65,7 +65,7 @@ public class ObjectiveService {
         return objectiveRepository.save(objective);
     }
 
-    public boolean quarterIsImmutable(Objective objective) {
+    public boolean isQuarterImmutable(Objective objective) {
         boolean quarterHasChanged = !Objects.equals(this.getObjective(objective.getId()).getQuarter().getId(),
                 objective.getQuarter().getId());
 
@@ -77,10 +77,13 @@ public class ObjectiveService {
     public Objective updateObjective(Objective objective) {
         Objective existingObjective = this.getObjective(objective.getId());
         objective.setProgress(existingObjective.getProgress());
-        if (quarterIsImmutable(objective)) {
+        if (isQuarterImmutable(objective)) {
             objective.setQuarter(existingObjective.getQuarter());
             LocalDateTime modifiedOn = objective.getModifiedOn();
             objective.setModifiedOn(existingObjective.getModifiedOn());
+            if (!objective.equals(existingObjective)) {
+                objective.setModifiedOn(modifiedOn);
+            }
             if (!existingObjective.equals(objective)) {
                 objective.setModifiedOn(modifiedOn);
             }
@@ -95,7 +98,7 @@ public class ObjectiveService {
                     "Missing attribute title when creating objective");
         } else if (objective.getModifiedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Failed to generate attribute createdOn when creating objective");
+                    "Failed to generate attribute modifiedOn when creating objective");
         }
     }
 

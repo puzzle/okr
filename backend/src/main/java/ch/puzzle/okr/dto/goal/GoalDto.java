@@ -16,9 +16,11 @@ public class GoalDto {
     private Double basicValue;
     private Double targetValue;
 
+    private Double value;
+
     public GoalDto(GoalObjectiveDto objective, GoalKeyResultDto keyresult, Team team, Long progress,
-            String quarterLabel, ExpectedEvolution expectedEvolution, Unit unit, Double basicValue,
-            Double targetValue) {
+            String quarterLabel, ExpectedEvolution expectedEvolution, Unit unit, Double basicValue, Double targetValue,
+            Double value) {
         this.objective = objective;
         this.keyresult = keyresult;
         this.teamId = team.getId();
@@ -29,6 +31,7 @@ public class GoalDto {
         this.unit = unit;
         this.basicValue = basicValue;
         this.targetValue = targetValue;
+        this.value = value;
     }
 
     public GoalObjectiveDto getObjective() {
@@ -70,4 +73,9 @@ public class GoalDto {
     public Double getTargetValue() {
         return targetValue;
     }
+
+    public Double getValue() {
+        return value;
+    }
+
 }

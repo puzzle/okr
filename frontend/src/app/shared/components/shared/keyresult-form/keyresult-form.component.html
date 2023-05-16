@@ -1,28 +1,69 @@
-<div (click)="navigateBack()" class="d-flex btn px-4 pt-4 fit-content backButton">
+<span class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
-  <p>Zurück</p>
+  <p (click)="navigateBack()">Zurück</p>
+</span>
+
+<div class="px-5 my-4">
+  <div *ngIf="objective$ | async as objective">
+    <mat-card class="outer-cards w-100">
+      <p class="fs-2">Objective Details</p>
+      <mat-card-content class="d-flex gap-2 flex-wrap">
+        <mat-card class="inner-cards flex-grow-1">
+          <mat-card-content class="d-flex flex-column justify-content-around">
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
+              <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
+              <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
+              <span class="value" data-testid="keyresult-modify-objective-description">
+                {{ objective.description }}
+              </span>
+            </div>
+            <mat-divider class="my-1"></mat-divider>
+            <div>
+              <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
+              <span class="value" data-testid="keyresult-modify-objective-quarter">
+                {{ objective.quarterLabel }}
+              </span>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <mat-divider class="my-4"></mat-divider>
 </div>
 
-<p class="fs-2 heading-label my-5">
+<p class="fs-2 heading-label px-5">
   {{ this.create ? "Key Result hinzufügen" : "Key Result bearbeiten" }}
 </p>
 
-<div class="d-flex align-items-center justify-content-around flex-wrap px-5">
-  <div *ngIf="keyresult$ | async as keyresult" class="d-flex">
+<div *ngIf="keyresult$ | async as keyresult" class="form-container">
+  <div class="d-flex justify-content-center w-75">
     <form (ngSubmit)="save()" [formGroup]="keyResultForm" (change)="update()" class="d-flex flex-column fit-content">
       <div class="d-flex align-items-center justify-content-end gap-4">
         <p class="key">Titel</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height">
+        <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Titel</mat-label>
-          <input
+          <textarea
             [value]="keyresult.title"
             formControlName="title"
             matInput
+            data-testId="keyresult-form-title"
             placeholder="Titel"
+            cdkTextareaAutosize
             type="text"
-            class="title-input"
-          />
+            class="description-textarea"
+          ></textarea>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="key">Einheit</p>
@@ -45,28 +86,32 @@
         <p *ngIf="!create" class="form-field-width keyresult-unit">
           {{ "UNIT." + keyresult.unit | translate }}
         </p>
+        <i (click)="openHelpDialog(helpTexts.unit)" class="material-icons help-icon">info_outline</i>
       </div>
 
-      <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="key">Erwartete Entwicklung</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height">
-          <mat-label>Erwartete Entwicklung</mat-label>
-          <mat-select
-            (selectionChange)="
-              this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
-            "
-            [value]="keyresult.expectedEvolution"
-            formControlName="expectedEvolution"
-            class="evolution-select"
-          >
-            <mat-option *ngFor="let evolution of expectedEvolution$" [value]="evolution">
-              {{ "EXPECTED_EVOLUTION." + evolution | translate }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div>
+        <div class="d-flex align-items-center gap-4 justify-content-end">
+          <p class="key">Erwartete Entwicklung</p>
+          <mat-form-field appearance="outline" class="form-field-width form-field-height">
+            <mat-label> Erwartete Entwicklung</mat-label>
+            <mat-select
+              (selectionChange)="
+                this.enableBasicValue(); this.resetValidatorOfForm(this.keyResultForm.controls['unit'].value)
+              "
+              [value]="keyresult.expectedEvolution"
+              formControlName="expectedEvolution"
+              class="align-items-start"
+            >
+              <mat-option *ngFor="let evolution of expectedEvolution$" [value]="evolution">
+                {{ "EXPECTED_EVOLUTION." + evolution | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <i (click)="openHelpDialog(helpTexts.expectedEvolution)" class="material-icons help-icon">info_outline</i>
+        </div>
       </div>
 
-      <div class="d-flex align-items-center justify-content-end gap-4">
+      <div class="d-flex align-items-center justify-content-end gap-4" *ngIf="keyResultForm.get('basicValue')?.enabled">
         <p class="key">Startwert</p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Startwert</mat-label>
@@ -79,6 +124,7 @@
             class="basicValue-input"
           />
         </mat-form-field>
+        <i (click)="openHelpDialog(helpTexts.basicValue)" class="material-icons help-icon">info_outline</i>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -94,6 +140,7 @@
             class="targetValue-input"
           />
         </mat-form-field>
+        <i (click)="openHelpDialog(helpTexts.targetValue)" class="material-icons help-icon">info_outline</i>
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
@@ -105,23 +152,28 @@
             [value]="keyresult.description"
             formControlName="description"
             matInput
+            data-testId="keyresult-form-description"
             placeholder="Beschreibung"
+            cdkTextareaAutosize
             type="text"
             class="description-textarea"
           ></textarea>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
 
       <div class="d-flex align-items-center gap-4 justify-content-end">
         <p class="key">Besitzer</p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Besitzer</mat-label>
-          <mat-select formControlName="ownerId" class="owner-select">
-            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+          <input type="text" matInput formControlName="owner" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
+            <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
+        <mat-icon></mat-icon>
       </div>
 
       <div class="d-flex gap-2 justify-content-end buttons">
@@ -138,43 +190,8 @@
         >
           {{ this.create ? "Erstellen" : "Aktualisieren" }}
         </button>
+        <i class="mat-icon help-icon"></i>
       </div>
     </form>
-  </div>
-
-  <div class="d-flex detail">
-    <div *ngIf="objective$ | async as objective">
-      <mat-card class="outer-cards w-100">
-        <p class="fs-2">Objective Details</p>
-        <mat-card-content class="d-flex gap-2 flex-wrap">
-          <mat-card class="inner-cards flex-grow-1">
-            <mat-card-content class="d-flex flex-column justify-content-around">
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-team-key">Team: </span>
-                <span class="value" data-testid="keyresult-modify-objective-team">{{ objective.teamName }} </span>
-              </div>
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-title-key">Objective: </span>
-                <span class="value" data-testid="keyresult-modify-objective-title">{{ objective.title }}</span>
-              </div>
-
-              <div class="d-flex flex-column">
-                <span class="key" data-testid="keyresult-modify-objective-description-key">Beschreibung: </span>
-                <span class="value" data-testid="keyresult-modify-objective-description">
-                  {{ objective.description }}
-                </span>
-              </div>
-
-              <div>
-                <span class="key" data-testid="keyresult-modify-objective-quarter-key">Zyklus: </span>
-                <span class="value" data-testid="keyresult-modify-objective-quarter">
-                  {{ objective.quarterLabel }}
-                </span>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </mat-card-content>
-      </mat-card>
-    </div>
   </div>
 </div>

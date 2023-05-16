@@ -1,0 +1,15 @@
+<div *ngIf="!displaySpinner" class="dialog-wrapper">
+  <mat-dialog-content cdkTrapFocus="true">
+    <h3 id="title">{{ title }}</h3>
+    <button mat-button [mat-dialog-close]="true" class="close-button-help-dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+    <p id="description" class="key">{{ description }}</p>
+    <p id="exampleTitle" class="value">
+      <u>{{ exampleTitle }}</u>
+    </p>
+    <ul id="examples" *ngFor="let example of examples">
+      <li class="value">{{ example }}</li>
+    </ul>
+  </mat-dialog-content>
+</div>

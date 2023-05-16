@@ -38,13 +38,16 @@ class GoalControllerIT {
     @MockBean
     private GoalMapper goalMapper;
 
+    static User user1 = User.Builder.builder().withId(1L).withEmail("test@puzzle.ch").withFirstname("firstname")
+            .withLastname("Lastname").withUsername("fname").build();
+
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1")
             .withObjective(Objective.Builder.builder().withId(1L).build()).build();
 
     static GoalDto goalDto1 = new GoalDto(new GoalObjectiveDto(1L, "Objective 1", "This is Objective description"),
-            new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description"),
+            new GoalKeyResultDto(1L, "Keyresult 1", "This is Keyresult description", user1),
             Team.Builder.builder().withId(1L).withName("Puzzle").build(), 20L, "GJ 22/23-Q2",
-            ExpectedEvolution.CONSTANT, Unit.PERCENT, 0D, 100D);
+            ExpectedEvolution.CONSTANT, Unit.PERCENT, 0D, 100D, 20D);
 
     @BeforeEach
     void setUp() {

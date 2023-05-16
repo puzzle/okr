@@ -1,15 +1,23 @@
-<div (click)="navigateBack()" class="d-flex btn px-4 pt-4 fit-content">
+<span class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
-  <p>Zurück</p>
+  <p (click)="navigateBack()">Zurück</p>
+</span>
+
+<div class="px-5">
+  <div class="my-4" *ngIf="goal$ | async as goal">
+    <app-key-result-description [goal]="goal"></app-key-result-description>
+  </div>
+  <mat-divider class="my-4"></mat-divider>
 </div>
-<p class="fs-2 heading-label my-5">
+
+<p class="fs-2 heading-label px-5">
   {{ this.create ? "Messung hinzufügen" : "Messung bearbeiten" }}
 </p>
 
-<div class="d-flex align-items-center justify-content-around flex-wrap px-5 gap-2">
-  <div *ngIf="measure$ | async as measure" class="d-flex">
+<div *ngIf="measure$ | async as measure" class="form-container">
+  <div class="d-flex justify-content-center w-75">
     <form (ngSubmit)="save()" [formGroup]="measureForm" class="d-flex flex-column fit-content">
-      <div *ngIf="keyresult$ | async as keyresult" class="d-flex align-items-center justify-content-center gap-4">
+      <div *ngIf="keyresult$ | async as keyresult" class="d-flex align-items-center justify-content-end gap-4">
         <p class="key" data-testid="measure-form-current-value">
           Aktueller Wert ({{ "UNIT." + keyresult.unit | translate }})
         </p>
@@ -26,9 +34,13 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center justify-content-end gap-4 datepicker-div margin-right">
+      <div class="d-flex align-items-center justify-content-end gap-4 datepicker-div">
         <p class="key">Datum der Messung</p>
-        <mat-form-field *ngIf="startEndDate$ | async as startEndDate" appearance="fill">
+        <mat-form-field
+          *ngIf="startEndDate$ | async as startEndDate"
+          appearance="fill"
+          class="form-field-width form-field-height"
+        >
           <input
             [matDatepicker]="picker"
             [max]="startEndDate.endDate"
@@ -48,7 +60,7 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+      <div class="d-flex align-items-center justify-content-end gap-4">
         <p class="key">Veränderung seit letzter Messung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
@@ -56,13 +68,14 @@
             class="description-textarea"
             formControlName="changeInfo"
             matInput
+            cdkTextareaAutosize
             placeholder="Text hinzufügen"
             type="text"
           ></textarea>
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+      <div class="d-flex align-items-center justify-content-end gap-4">
         <p class="key">Massnahmen</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Text hinzufügen</mat-label>
@@ -70,13 +83,14 @@
             class="description-textarea"
             formControlName="initiatives"
             matInput
+            cdkTextareaAutosize
             placeholder="Text hinzufügen"
             type="text"
           ></textarea>
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center justify-content-end gap-4 margin-right">
+      <div class="d-flex gap-2 justify-content-end buttons">
         <span></span>
         <span>
           <button (click)="navigateBack()" class="rounded-5 me-2" color="primary" mat-stroked-button type="reset">
@@ -96,15 +110,9 @@
       </div>
     </form>
   </div>
-
-  <div class="d-flex">
-    <div *ngIf="goal$ | async as goal">
-      <app-key-result-description [goal]="goal"></app-key-result-description>
-    </div>
-  </div>
 </div>
 
 <div class="px-5">
   <mat-divider class="my-4"></mat-divider>
-  <app-measure-row class="my-4"></app-measure-row>
+  <app-measure-row [open]="true" class="my-4"></app-measure-row>
 </div>

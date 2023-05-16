@@ -36,7 +36,7 @@ class KeyResultServiceTest {
     @MockBean
     KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
     @MockBean
-    ProgressService progressService = Mockito.mock(ProgressService.class);
+    ch.puzzle.okr.service.ProgressService progressService = Mockito.mock(ch.puzzle.okr.service.ProgressService.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -114,7 +114,7 @@ class KeyResultServiceTest {
     @Test
     void shouldGetAllKeyresultsByObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByModifiedOnDesc(any())).thenReturn(keyResults);
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -125,7 +125,7 @@ class KeyResultServiceTest {
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
         when(objectiveRepository.findById(1L)).thenReturn(Optional.of(objective));
-        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(Collections.emptyList());
+        when(keyResultRepository.findByObjectiveOrderByModifiedOnDesc(any())).thenReturn(Collections.emptyList());
 
         List<KeyResult> keyResultList = keyResultService.getAllKeyResultsByObjective(1);
 
@@ -174,7 +174,7 @@ class KeyResultServiceTest {
     void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByModifiedOnDesc(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
                 "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D,
                 new MeasureDto(1L, 1L, 10D, "", "", 1L, null, null), 0L));
@@ -191,7 +191,7 @@ class KeyResultServiceTest {
     void shouldReturnNullObjectWhenMeasureIsNull() {
         when(objectiveRepository.findById(any())).thenReturn(Optional.of(objective));
         when(measureRepository.findLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultRepository.findByObjectiveOrderByTitle(any())).thenReturn(keyResults);
+        when(keyResultRepository.findByObjectiveOrderByModifiedOnDesc(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
                 "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, null, 0L));
 

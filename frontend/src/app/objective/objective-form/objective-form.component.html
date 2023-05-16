@@ -1,16 +1,16 @@
-<span class="d-flex btn px-4 pt-4 fit-content">
+<span class="d-flex btn px-5 pt-4 fit-content">
   <mat-icon>chevron_left</mat-icon>
   <p (click)="navigateBack()">Zurück</p>
 </span>
 
-<p class="fs-2 heading-label">
+<p class="fs-2 px-5 heading-label">
   {{ this.create ? "Objective hinzufügen" : "Objective bearbeiten" }}
 </p>
-<div class="form-container" *ngIf="objectives$ | async as objective">
-  <div class="d-flex w-100">
+<div *ngIf="objectives$ | async as objective" class="form-container">
+  <div class="d-flex justify-content-center w-75">
     <form (ngSubmit)="save()" [formGroup]="objectiveForm" class="d-flex flex-column fit-content">
-      <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Team</p>
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="key">Team</p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Team</mat-label>
           <mat-select [value]="objective.teamId" formControlName="teamId">
@@ -22,14 +22,23 @@
       </div>
 
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Titel</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height">
+        <p class="key">Titel</p>
+        <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Titel</mat-label>
-          <input [value]="objective.title" formControlName="title" matInput placeholder="Titel" type="text" />
+          <textarea
+            [value]="objective.title"
+            formControlName="title"
+            matInput
+            data-testId="objective-form-title"
+            placeholder="Titel"
+            cdkTextareaAutosize
+            type="text"
+            class="description-textarea"
+          ></textarea>
         </mat-form-field>
       </div>
       <div class="d-flex align-items-center justify-content-end gap-4">
-        <p class="fw-bold">Beschreibung</p>
+        <p class="key">Beschreibung</p>
         <mat-form-field appearance="outline" class="form-field-width">
           <mat-label>Beschreibung</mat-label>
 
@@ -38,42 +47,39 @@
             formControlName="description"
             matInput
             placeholder="Beschreibung"
+            cdkTextareaAutosize
+            data-testId="objective-form-description"
             type="text"
             class="description-textarea"
           ></textarea>
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold">Besitzer</p>
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="key">Besitzer</p>
         <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Besitzer</mat-label>
-          <mat-select [value]="objective.ownerId" formControlName="ownerId">
-            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+          <input type="text" matInput formControlName="owner" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
+            <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
               {{ user.firstname + " " + user.lastname }}
             </mat-option>
-          </mat-select>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
 
-      <div class="d-flex align-items-center gap-4 justify-content-end">
-        <p class="fw-bold quarter">Zyklus</p>
-        <mat-form-field appearance="outline" class="form-field-width form-field-height" *ngIf="create; else update">
+      <div class="d-flex align-items-center justify-content-end gap-4">
+        <p class="key">Zyklus</p>
+        <mat-form-field appearance="outline" class="form-field-width form-field-height">
           <mat-label>Zyklus</mat-label>
-          <mat-select [value]="objective.quarterId" formControlName="quarterId" class="owner-select">
+          <mat-select [value]="objective.quarterId" formControlName="quarterId">
             <mat-option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
               {{ quarter.label }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <ng-template #update>
-          <p class="w-100">
-            {{ objective.quarterLabel }}
-          </p>
-        </ng-template>
       </div>
-
-      <div class="d-flex gap-2 justify-content-end">
+      <div class="d-flex gap-2 justify-content-end buttons">
         <button (click)="navigateBack()" class="rounded-5" color="primary" mat-stroked-button type="reset">
           Abbrechen
         </button>

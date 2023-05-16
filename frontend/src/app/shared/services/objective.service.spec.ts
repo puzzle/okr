@@ -26,7 +26,7 @@ describe('ObjectiveService', () => {
   test('should get Objectives', (done) => {
     service.getObjectivesOfTeam(42).subscribe({
       next(response: Objective[]) {
-        expect(response.length).toBe(3);
+        expect(response.length).toBe(objectivesData.objectives.length);
         done();
       },
       error(error) {

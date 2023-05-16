@@ -6,7 +6,7 @@ import { isFakeMousedownFromScreenReader } from '@angular/cdk/a11y';
 export interface Measure {
   id: number | null;
   keyResultId: number;
-  value: number | boolean;
+  value: number;
   changeInfo: string;
   initiatives: string;
   createdById: number | null;

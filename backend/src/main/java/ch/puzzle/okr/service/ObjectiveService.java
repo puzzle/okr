@@ -3,6 +3,7 @@ package ch.puzzle.okr.service;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.springframework.context.annotation.Lazy;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ObjectiveService {
@@ -19,13 +23,16 @@ public class ObjectiveService {
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
     private final KeyResultService keyResultService;
+    private final MeasureRepository measureRepository;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService,
+            MeasureRepository measureRepository) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
         this.keyResultService = keyResultService;
+        this.measureRepository = measureRepository;
     }
 
     public List<Objective> getAllObjectives() {
@@ -58,10 +65,29 @@ public class ObjectiveService {
         return objectiveRepository.save(objective);
     }
 
+    public boolean isQuarterImmutable(Objective objective) {
+        boolean quarterHasChanged = !Objects.equals(this.getObjective(objective.getId()).getQuarter().getId(),
+                objective.getQuarter().getId());
+
+        boolean hasMeasures = !keyResultService.getLastMeasures(objective.getId()).equals(Collections.emptyList());
+
+        return quarterHasChanged && hasMeasures;
+    }
+
     public Objective updateObjective(Objective objective) {
         Objective existingObjective = this.getObjective(objective.getId());
-        objective.setQuarter(existingObjective.getQuarter());
         objective.setProgress(existingObjective.getProgress());
+        if (isQuarterImmutable(objective)) {
+            objective.setQuarter(existingObjective.getQuarter());
+            LocalDateTime modifiedOn = objective.getModifiedOn();
+            objective.setModifiedOn(existingObjective.getModifiedOn());
+            if (!objective.equals(existingObjective)) {
+                objective.setModifiedOn(modifiedOn);
+            }
+            if (!existingObjective.equals(objective)) {
+                objective.setModifiedOn(modifiedOn);
+            }
+        }
         this.checkObjective(objective);
         return this.objectiveRepository.save(objective);
     }
@@ -70,23 +96,21 @@ public class ObjectiveService {
         if (objective.getTitle() == null || objective.getTitle().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Missing attribute title when creating objective");
-        } else if (objective.getDescription() == null || objective.getDescription().isBlank()) {
+        } else if (objective.getModifiedOn() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Missing attribute description when creating objective");
-        } else if (objective.getCreatedOn() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Failed to generate attribute createdOn when creating objective");
+                    "Failed to generate attribute modifiedOn when creating objective");
         }
     }
 
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
         return quarterId == null ? objectiveRepository.findByTeamIdOrderByTitleAsc(teamId)
-                : objectiveRepository.findByQuarterIdAndTeamIdOrderByTitleAsc(quarterId, teamId);
+                : objectiveRepository.findByQuarterIdAndTeamIdOrderByModifiedOnDesc(quarterId, teamId);
     }
 
     @Transactional
     public void deleteObjectiveById(Long id) {
-        List<KeyResult> keyResults = this.keyResultRepository.findByObjectiveOrderByTitle(this.getObjective(id));
+        List<KeyResult> keyResults = this.keyResultRepository
+                .findByObjectiveOrderByModifiedOnDesc(this.getObjective(id));
         for (KeyResult keyResult : keyResults) {
             this.keyResultService.deleteKeyResultById(keyResult.getId());
         }

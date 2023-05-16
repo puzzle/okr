@@ -32,8 +32,9 @@ export class AppComponent implements OnInit {
       if (!oauthService.hasValidAccessToken()) {
         this.oauthService.initCodeFlow();
       }
+      oauthService.setupAutomaticSilentRefresh();
+      location.hash = '';
     });
-    oauthService.setupAutomaticSilentRefresh();
   }
 
   ngOnInit(): void {

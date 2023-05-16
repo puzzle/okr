@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
+import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.KeyResultService;
@@ -53,7 +54,7 @@ class ObjectiveControllerIT {
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user)
             .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33L)
-            .withCreatedOn(LocalDateTime.MAX).build();
+            .withModifiedOn(LocalDateTime.MAX).build();
     static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
             "GJ 22/23-Q2", "This is a description", 20L);
@@ -85,6 +86,8 @@ class ObjectiveControllerIT {
     private ObjectiveMapper objectiveMapper;
     @MockBean
     private KeyResultMapper keyResultMapper;
+    @MockBean
+    private MeasureMapper measureMapper;
 
     @BeforeEach
     void setUp() {
@@ -204,6 +207,28 @@ class ObjectiveControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(1))).andExpect(jsonPath("$.description", Is.is("Everything Fine")))
                 .andExpect(jsonPath("$.title", Is.is("Hunting")));
+    }
+
+    @Test
+    void shouldReturnImUsed() throws Exception {
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
+                "GJ 22/23-Q2", "Everything Fine", 5L);
+        Objective objective1 = Objective.Builder.builder().withId(1L).withDescription("Everything Fine")
+                .withProgress(5L).withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build())
+                .withTitle("Hunting").build();
+
+        BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objective1);
+        when(objectiveService.isQuarterImmutable(objective1)).thenReturn(true);
+        BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
+        BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective1);
+
+        mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
+                        + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
+                        + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
+                        + "\"description\": \"This is our description\", \"progress\": 33.3}")
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isImUsed());
     }
 
     @Test

@@ -104,4 +104,12 @@ public class TeamController {
         TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
+
+    @Operation(summary = "Delete Team by Id", description = "Delete Team by Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted team by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the team with requested id") })
+    @DeleteMapping("/{id}")
+    public void deleteTeamById(@PathVariable long id) {
+        this.teamService.deleteTeamById(id);
+    }
 }

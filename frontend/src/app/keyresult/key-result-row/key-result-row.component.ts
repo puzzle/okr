@@ -20,9 +20,12 @@ export class KeyResultRowComponent implements OnInit {
   @Input() keyResult!: KeyResultMeasure;
   @Input() objectiveId!: number;
   @Output() onKeyresultListUpdate: EventEmitter<any> = new EventEmitter();
-  menuEntries!: MenuEntry[];
-  isSelected: boolean = false;
 
+  // kept in because this will be needed later on when keyresult-menu gets more functionality
+  // menuEntries!: MenuEntry[];
+
+  menuEntry!: MenuEntry;
+  isSelected: boolean = false;
   constructor(
     private datePipe: DatePipe,
     private router: Router,
@@ -34,7 +37,10 @@ export class KeyResultRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.menuEntries = [{ displayName: 'Key Result löschen', showDialog: true }];
+    // kept in will be needed later on when keyresult-menu gets more functionality
+    // this.menuEntries = [{ displayName: 'Key Result löschen', showDialog: true }];
+
+    this.menuEntry = { displayName: 'Keyresult löschen', showDialog: true };
     this.route.queryParams.subscribe((params) => {
       if (params['keyresults'] !== undefined) {
         const selectedKeyResults: string[] = params['keyresults'].split(',');

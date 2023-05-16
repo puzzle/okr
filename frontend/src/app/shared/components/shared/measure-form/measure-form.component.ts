@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable, of } from 'rxjs';
+import { combineLatest, filter, map, Observable, of } from 'rxjs';
 import { KeyResultMeasure, KeyResultService } from '../../../services/key-result.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,9 +23,9 @@ export class MeasureFormComponent implements OnInit {
   startEndDate$!: Observable<StartEndDateDTO>;
 
   measureForm = new FormGroup({
-    value: new FormControl<number | boolean>(0, [Validators.required]),
+    value: new FormControl<number>(0, [Validators.required]),
     measureDate: new FormControl<Date>(new Date(), [Validators.required]),
-    changeInfo: new FormControl<string>('', [Validators.required]),
+    changeInfo: new FormControl<string>('', [Validators.required, Validators.maxLength(250)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
   public keyresult$!: Observable<KeyResultMeasure>;
@@ -50,7 +50,6 @@ export class MeasureFormComponent implements OnInit {
     let measureId = getNumberOrNull(this.route.snapshot.paramMap.get('measureId'));
 
     this.startEndDate$ = this.quarterService.getStartAndEndDateOfKeyresult(keyResultId!);
-
     this.create = !measureId;
     if (keyResultId) {
       this.keyresult$ = this.keyResultService.getKeyResultById(keyResultId);
@@ -68,18 +67,33 @@ export class MeasureFormComponent implements OnInit {
       this.measure$ = of(measure);
     }
 
-    this.measure$.subscribe((measure) => {
-      this.startEndDate$.subscribe((startEndDate) => {
-        this.measureForm.setValue({
-          value: measure.value,
-          measureDate: this.create
-            ? this.returnQuarterEndDateOrCurrentDate(new Date(startEndDate.endDate), measure.measureDate)
-            : measure.measureDate,
-          changeInfo: measure.changeInfo,
-          initiatives: measure.initiatives,
-        });
+    combineLatest([this.measure$, this.goal$, this.startEndDate$])
+      .pipe(
+        filter(([measure, goal]) => measure !== null || goal !== null),
+        map(([measure, goal, startEndDate]) => {
+          let value;
+          if (measure.id) {
+            value = measure.value;
+          } else if (goal.value !== null) {
+            value = goal.value;
+          } else if (goal.basicValue !== null) {
+            value = goal.basicValue;
+          } else {
+            value = null;
+          }
+          return {
+            value: value,
+            measureDate: this.create
+              ? this.returnQuarterEndDateOrCurrentDate(new Date(startEndDate.endDate), measure?.measureDate)
+              : measure?.measureDate,
+            changeInfo: measure?.changeInfo,
+            initiatives: measure?.initiatives,
+          };
+        })
+      )
+      .subscribe((formValue) => {
+        this.measureForm.setValue(formValue);
       });
-    });
   }
 
   returnQuarterEndDateOrCurrentDate(endDate: Date, measureDate: Date) {

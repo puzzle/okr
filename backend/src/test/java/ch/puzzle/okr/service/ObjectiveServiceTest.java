@@ -183,7 +183,7 @@ class ObjectiveServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveService.saveObjective(this.fullObjective1));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(("Failed to generate attribute createdOn when creating objective"), exception.getReason());
+        assertEquals(("Failed to generate attribute modifiedOn when creating objective"), exception.getReason());
     }
 
     @ParameterizedTest

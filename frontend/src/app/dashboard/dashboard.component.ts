@@ -16,7 +16,7 @@ import {
 import { Quarter, QuarterService } from '../shared/services/quarter.service';
 import { Overview, OverviewService } from '../shared/services/overview.service';
 import { RouteService } from '../shared/services/route.service';
-import { ActivatedRoute, NavigationEnd } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { getNumberOrNull } from '../shared/common';
 
 @Component({

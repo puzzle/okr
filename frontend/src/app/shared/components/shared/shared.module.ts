@@ -20,6 +20,8 @@ import { KeyresultFormComponent } from './keyresult-form/keyresult-form.componen
 import { MatSelectModule } from '@angular/material/select';
 import { UnitValueValidator } from '../../validators';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { TranslateModule } from '@ngx-translate/core';
     RouterModule,
     MatSelectModule,
     TranslateModule,
+    MatAutocompleteModule,
+    A11yModule,
   ],
   exports: [UnitValueValidator],
 })

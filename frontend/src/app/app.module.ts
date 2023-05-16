@@ -26,6 +26,10 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HelpDialogComponent } from './shared/dialog/help-dialog/help-dialog.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,7 +48,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent],
+  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent, HelpDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -61,6 +65,8 @@ export const MY_FORMATS = {
     MatExpansionModule,
     MatInputModule,
     TeamModule,
+    MatTooltipModule,
+    MatAutocompleteModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     TranslateModule.forRoot({
@@ -72,6 +78,7 @@ export const MY_FORMATS = {
       },
     }),
     OAuthModule.forRoot(),
+    A11yModule,
   ],
   providers: [
     {

@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,15 +34,13 @@ public class Objective {
     @ManyToOne
     private Quarter quarter;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 4096)
+    @Size(max = 4096)
     private String description;
 
     private Long progress;
 
     @NotNull
-    private LocalDateTime createdOn;
+    private LocalDateTime modifiedOn;
 
     public Objective() {
     }
@@ -53,7 +53,7 @@ public class Objective {
         setQuarter(builder.quarter);
         setDescription(builder.description);
         setProgress(builder.progress);
-        setCreatedOn(builder.createdOn);
+        setModifiedOn(builder.modifiedOn);
     }
 
     public Long getId() {
@@ -108,19 +108,19 @@ public class Objective {
         this.progress = progress;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", owner=" + owner + ", team=" + team
                 + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
-                + ", createdOn=" + createdOn + '}';
+                + ", modifiedOn=" + modifiedOn + '}';
     }
 
     @Override
@@ -133,12 +133,12 @@ public class Objective {
         return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
                 && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team)
                 && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
-                && Objects.equals(progress, objective.progress) && Objects.equals(createdOn, objective.createdOn);
+                && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, owner, team, quarter, description, progress, createdOn);
+        return Objects.hash(id, title, owner, team, quarter, description, progress, modifiedOn);
     }
 
     public static final class Builder {
@@ -149,7 +149,7 @@ public class Objective {
         private Quarter quarter;
         private String description;
         private Long progress;
-        private LocalDateTime createdOn;
+        private LocalDateTime modifiedOn;
 
         public Builder() {
         }
@@ -193,8 +193,8 @@ public class Objective {
             return this;
         }
 
-        public Builder withCreatedOn(LocalDateTime createdOn) {
-            this.createdOn = createdOn;
+        public Builder withModifiedOn(LocalDateTime modifiedOn) {
+            this.modifiedOn = modifiedOn;
             return this;
         }
 

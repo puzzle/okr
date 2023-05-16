@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { User } from './user.service';
 
 export interface Goal {
   objective: {
@@ -12,6 +13,7 @@ export interface Goal {
     id: number;
     title: string;
     description: string;
+    owner: User;
   };
   teamId: number;
   teamName: string;
@@ -21,6 +23,7 @@ export interface Goal {
   unit: string;
   basicValue: number;
   targetValue: number;
+  value: number;
 }
 
 @Injectable({

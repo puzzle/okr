@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Team, TeamService } from './team.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as teamData from '../testing/mock-data/teams.json';
+import * as url from 'url';
 
 const teamResponse: Team = teamData.teams[0];
 
@@ -100,6 +101,29 @@ describe('TeamService', () => {
     expect(req.request.method).toEqual('PUT');
     req.flush(teamListResponse);
     expect(req.request.body).toEqual({ id: 22, name: 'Team 22' });
+    httpTestingController.verify();
+  });
+
+  test('should delete Team', (done) => {
+    let team: Team = {
+      id: 1,
+      name: 'Team 1',
+    };
+
+    service.deleteTeamById(1).subscribe({
+      next(response: Team) {
+        expect(response).toBe(teamListResponse);
+        done();
+      },
+      error(error) {
+        done(error);
+      },
+    });
+
+    const req = httpTestingController.expectOne(`${URL}/` + team.id);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush(teamListResponse);
+    expect(req.request.body).toEqual(null);
     httpTestingController.verify();
   });
 });

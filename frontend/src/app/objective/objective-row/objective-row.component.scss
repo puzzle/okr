@@ -11,6 +11,15 @@
   cursor: pointer;
 }
 
+.delete-icon {
+  margin-top: 15px;
+  height: 20px;
+  width: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
 .margin-left {
   margin-left: 50%;
 }
@@ -36,6 +45,10 @@
 .mat-panel-description {
   display: flex;
   justify-content: space-between;
+}
+
+.mat-expansion-panel-header-title {
+  flex-grow: 4;
 }
 
 #progressContainer {

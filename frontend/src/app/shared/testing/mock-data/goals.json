@@ -9,7 +9,14 @@
       "keyresult": {
         "id": 1,
         "title": "Key Result title",
-        "description": "Key Result description"
+        "description": "Key Result description",
+        "owner": {
+          "id": 1,
+          "username": "username",
+          "firstname": "firstname",
+          "lastname": "lastname",
+          "email": "email@puzzle.ch"
+        }
       },
       "teamId": 1,
       "teamName": "Team 1",
@@ -18,7 +25,8 @@
       "expectedEvolution": "INCREASE",
       "unit": "PERCENT",
       "basicValue": 1,
-      "targetValue": 100
+      "targetValue": 100,
+      "value": 20
     }
   ]
 }

@@ -19,7 +19,8 @@ public class ForwardFilter implements Filter {
                 || request.getRequestURI().startsWith("/scripts.") || request.getRequestURI().startsWith("/styles.")
                 || request.getRequestURI().startsWith("/favicon.ico")
                 || request.getRequestURI().startsWith("/3rdpartylicenses.txt")
-                || request.getRequestURI().startsWith("/assets/")) {
+                || request.getRequestURI().startsWith("/assets/") || request.getRequestURI().startsWith("/v3/api-docs")
+                || request.getRequestURI().startsWith("/swagger-ui")) {
             // TODO: replace with a Logger
             System.out.println(String.format("====> pass through the filter '%s'", request.getRequestURI()));
             filterChain.doFilter(servletRequest, servletResponse);

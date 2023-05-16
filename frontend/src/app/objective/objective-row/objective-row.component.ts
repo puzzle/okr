@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { getNumberOrNull } from '../../shared/common';
 import { RouteService } from '../../shared/services/route.service';
+import * as querystring from 'querystring';
 
 @Component({
   selector: 'app-objective-row',
@@ -21,8 +22,11 @@ export class ObjectiveRowComponent implements OnInit {
   @Input() objective!: Objective;
   @Output() onObjectivesListUpdate: EventEmitter<any> = new EventEmitter();
   keyResultList: Observable<KeyResultMeasure[]> = new BehaviorSubject([]);
-  menuEntries!: MenuEntry[];
+  menuEntry!: MenuEntry;
   isSelected: boolean = false;
+
+  // kept in because this will be needed later on when objective-menu gets more functionality
+  // menuEntries!: MenuEntry[];
   constructor(
     private keyResultService: KeyResultService,
     private objectiveService: ObjectiveService,
@@ -40,13 +44,19 @@ export class ObjectiveRowComponent implements OnInit {
       this.routeService.addToSelectedObjectives(id);
     }
   }
+
   ngOnInit(): void {
-    this.menuEntries = [
-      {
-        displayName: 'Objective löschen',
-        showDialog: true,
-      },
-    ];
+    // Will be used later on when Objective menu gets more functionality
+    // this.menuEntries = [
+    //   {
+    //     displayName: 'Objective löschen',
+    //     showDialog: true,
+    //   },
+    // ];
+    this.menuEntry = {
+      displayName: 'Objective löschen',
+      showDialog: true,
+    };
     this.route.queryParams.subscribe((params) => {
       if (params['objectives'] !== undefined) {
         const selectedObjectives: string[] = params['objectives'].split(',');

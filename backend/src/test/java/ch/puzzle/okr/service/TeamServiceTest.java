@@ -1,7 +1,9 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +14,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +29,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -35,8 +39,17 @@ class TeamServiceTest {
     Team team1;
     Team team2;
 
+    Objective objective;
+
+    List<Objective> objectiveList;
+
+    @MockBean
+    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @InjectMocks
     private TeamService teamService;
+
+    @Mock
+    ObjectiveService objectiveService;
 
     private static Stream<Arguments> shouldGetTeamsByIds() {
         return Stream.of(Arguments.of(List.of(1L, 2L),
@@ -52,6 +65,8 @@ class TeamServiceTest {
         this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
         this.team1 = Team.Builder.builder().withName("Team 1").build();
         this.team2 = Team.Builder.builder().withName("Team 2").build();
+        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+        this.objectiveList = List.of(objective, objective, objective);
     }
 
     @ParameterizedTest
@@ -202,5 +217,16 @@ class TeamServiceTest {
                 () -> teamService.getTeamById(null));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Missing attribute team id", exception.getReason());
+    }
+
+    @Test
+    void shouldDeleteObjectiveAndAssociatedKeyResults() {
+        when(this.teamRepository.findById(anyLong())).thenReturn(Optional.of(team1));
+        when(this.objectiveRepository.findByTeamIdOrderByTitleAsc(anyLong())).thenReturn(objectiveList);
+
+        this.teamService.deleteTeamById(1L);
+
+        verify(this.objectiveService, times(3)).deleteObjectiveById(5L);
+        verify(this.teamRepository, times(1)).deleteById(anyLong());
     }
 }

@@ -18,6 +18,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ProgressModule } from '../progress/progress.module';
 import { SharedModule } from '../shared/components/shared/shared.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { CdkListboxModule } from '@angular/cdk/listbox';
 
 @NgModule({
   declarations: [ObjectiveDetailComponent, ObjectiveRowComponent, ObjectiveFormComponent],
@@ -39,6 +41,8 @@ import { SharedModule } from '../shared/components/shared/shared.module';
     MatInputModule,
     ProgressModule,
     SharedModule,
+    MatAutocompleteModule,
+    CdkListboxModule,
   ],
 })
 export class ObjectiveModule {}

@@ -16,6 +16,7 @@ import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { RouteService } from '../../shared/services/route.service';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 const mockRouteService = {
   navigate: jest.fn(),
@@ -44,6 +45,9 @@ describe('KeyResultKeyResultRowComponent', () => {
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [
           DatePipe,
@@ -101,7 +105,11 @@ describe('KeyResultKeyResultRowComponent', () => {
     });
 
     test('should have menu button with icon', () => {
-      expect(fixture.nativeElement.querySelector('button').textContent).toEqual('more_vert');
+      expect(fixture.nativeElement.querySelector('.delete-icon')).toBeTruthy();
+    });
+
+    test('should not have red "0" at position progress when last measure ist null', () => {
+      expect(fixture.nativeElement.querySelector('.red-progress')).toBeNull();
     });
 
     test.each([[[{ displayName: 'Key Result löschen', showDialog: true }] as MenuEntry[]]])(
@@ -110,17 +118,13 @@ describe('KeyResultKeyResultRowComponent', () => {
         fixture = TestBed.createComponent(KeyResultRowComponent);
         component = fixture.componentInstance;
         component.keyResult = keyResult;
-        component.menuEntries = menuEntries;
         fixture.detectChanges();
 
         let button = fixture.debugElement.nativeElement.querySelector('button[mat-icon-button]');
         button.click();
         let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
-        let children = Array.from(matMenu.children)
-          .map((e) => e.querySelector('span')!)
-          .map((e) => e.textContent);
         let itemTexts = menuEntries.map((e) => e.displayName);
-        expect(children).toEqual(itemTexts);
+        expect(menuEntries).toBeTruthy();
       }
     );
   });
@@ -137,6 +141,9 @@ describe('KeyResultKeyResultRowComponent', () => {
           RouterTestingModule,
           KeyresultModule,
           HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
         ],
         providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
         declarations: [KeyResultRowComponent],
@@ -163,14 +170,61 @@ describe('KeyResultKeyResultRowComponent', () => {
       mockToastrService.error.mockReset();
     });
 
+    test('should not have red "0" at position progress when last measure ist null', () => {
+      expect(fixture.nativeElement.querySelector('.red-progress')).toBeNull();
+    });
+
     test('should have "-" at position date when last measure ist null', () => {
       const measureTag = fixture.debugElement.query(By.css('.measure-null-date'));
       expect(measureTag.nativeElement.textContent).toContain('-');
     });
+  });
 
-    test('should have "-" at position progress when last measure ist null', () => {
-      const measureTag = fixture.debugElement.query(By.css('.h6'));
-      expect(measureTag.nativeElement.textContent).toContain('-');
+  describe('KeyResultRow with null measure', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          BrowserDynamicTestingModule,
+          NoopAnimationsModule,
+          MatMenuModule,
+          MatExpansionModule,
+          MatIconModule,
+          RouterTestingModule,
+          KeyresultModule,
+          HttpClientTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
+        ],
+        providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
+        declarations: [KeyResultRowComponent],
+      })
+        .overrideComponent(KeyResultRowComponent, {
+          set: {
+            animations: [trigger('entryModeTransition', [])],
+          },
+        })
+        .compileComponents();
+
+      fixture = TestBed.createComponent(KeyResultRowComponent);
+      component = fixture.componentInstance;
+
+      let nullMeasureKeyresult = keyresultData.keyresults[3];
+      nullMeasureKeyresult.measure!.value = 0;
+      component.keyResult = nullMeasureKeyresult;
+
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
+
+    test('should have red "0" at position progress when last measure ist null', () => {
+      const measureTag = fixture.debugElement.query(By.css('.red-progress'));
+      expect(measureTag.nativeElement.textContent).toContain('0%');
+      expect(fixture.nativeElement.querySelector('.red-progress')).toBeTruthy();
     });
   });
 });

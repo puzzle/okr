@@ -1,0 +1,50 @@
+{
+  "expectedEvolution": {
+    "title": "Erwartete Entwicklung",
+    "description": "Die erwartete Entwicklung definiert die Art, in welche sich das Keyresult entwickeln soll. Dabei kann festgelegt werden, ob eine Kennzahl erhöht oder gesenkt werden soll, oder ob ein Extremalwert nicht unter- beziehungsweise überschritten werden darf.",
+    "exampleTitle": "Beispiele:",
+    "examples": [
+     "Erhöht: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
+     "Erhöht: Die neue Strategie wird vom Team abgenommen.",
+     "Vermindert:Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
+     "Vermindert: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert.",
+     "Minimum: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
+     "Maximum: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%."
+      ]
+  },
+  "unit": {
+    "title": "Einheit",
+    "description": "Die Einheit beschreibt, wie die Kennzahl und somit der Erfolg des Keyresults bestimmt werden kann. Dies geschieht via Prozent, Zahl oder CHF Angaben.",
+    "exampleTitle": "Beispiele:",
+    "examples":[
+    "Prozent: Die absolute Verrechenbarkeit wird von 50% auf 53% gesteigert.",
+    "Prozent: Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%.",
+    "CHF: Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF.",
+    "CHF: Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt.",
+    "Zahl: Die neue Strategie wird vom Team abgenommen.",
+    "Zahl: Die nicht verrechenbaren Stunden pro FTE werden von 5.4 Stunden auf 5.1 Stunden vermindert."
+    ]
+  },
+  "targetValue": {
+    "title": "Zielwert",
+    "description": "Der Zielwert beschreibt den angestrebten Endzustand des Keyresults. Falls die erwartete Entwicklung ein Extremalwert ist, definiert der Zielwert, den Grenzwert der nicht über- oder unterschritten werden soll. Falls die erwartete Entwicklung eine Erhöhung oder eine Verminderung ist, so definiert der Zielwert den angestrebten Endzustand des Keyresults.",
+    "exampleTitle": "Beispiele:",
+    "examples": [
+    "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
+    "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
+    "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
+    "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    ]
+  },
+  "basicValue": {
+    "title": "Startwert",
+    "description": "Der Startwert ist nur relevant, falls die erwartete Entwicklung eine Erhöhung oder eine Verminderung beschreibt. Dabei definiert der Startwert den Basiswert, von welchem die Veränderung verfolgt wird.",
+    "exampleTitle": "Beispiele:",
+    "examples": [
+      "Die neue Strategie wird vom Team abgenommen. (Startwert = 0, keine Strategie; Zielwert = 1, abgenommene Strategie)",
+      "Die Infrastrukturkosten werden von 10’000CHF auf 8’000CHF gesenkt. (Startwert = 10000; Zielwert = 8000)",
+      "Der Umsatz pro Monat liegt zu jedem Messzeitpunkt über 150’000CHF (Zielwert 150000; kein Startwert da, erwartete Entwicklung = Minimum)",
+      "Der Anteil nicht verrechenbarer Pensen an den Gesamtpensen liegt zu jedem Messzeitpunkt unter 15%. (Zielwert = 15; kein Startwert, da erwartete Entwicklung = Maximum)"
+    ]
+  }
+}

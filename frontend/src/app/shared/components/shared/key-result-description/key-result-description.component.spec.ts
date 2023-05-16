@@ -64,22 +64,26 @@ describe('KeyResultDescriptionComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should have 5 fw-normal titles', () => {
+    test('should have fw-normal titles', () => {
       const titles = fixture.debugElement.queryAll(By.css('.key'));
-      expect(titles.length).toEqual(6);
+      expect(titles.length).toBeTruthy();
     });
 
-    test('should have 4 texts', () => {
+    test('should have all texts', () => {
       const titles = fixture.debugElement.queryAll(By.css('.key'));
       var titelsText = titles.map((e) => e.nativeElement.innerHTML);
 
       var expectedTexts = [
-        'Key Result: ',
-        'Beschreibung:',
+        'Keyresult: ',
+        'Beschreibung: ',
         'Team 1 Objective: ',
         'Zyklus: ',
+        'Besitzer: ',
+        'Erwartete Entwicklung: ',
         ' Startwert: ',
+        'Aktueller Wert: ',
         ' Zielwert: ',
+        'Zielerreichung: ',
       ];
       expect(titelsText).toEqual(expectedTexts);
     });

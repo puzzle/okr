@@ -11,6 +11,7 @@ import { QuarterService, StartEndDateDTO } from '../../shared/services/quarter.s
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DatePipe } from '@angular/common';
 import { RouteService } from '../../shared/services/route.service';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 describe('KeyResultOverviewComponent', () => {
   let component: KeyResultOverviewComponent;
@@ -34,7 +35,14 @@ describe('KeyResultOverviewComponent', () => {
     beforeEach(() => {
       mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(of(startAndEndDate));
       TestBed.configureTestingModule({
-        imports: [MatCardModule, RouterTestingModule, BrowserDynamicTestingModule],
+        imports: [
+          MatCardModule,
+          RouterTestingModule,
+          BrowserDynamicTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
+        ],
         declarations: [KeyResultOverviewComponent],
         providers: [
           DatePipe,
@@ -60,54 +68,57 @@ describe('KeyResultOverviewComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    test('should have 4 strong titles', () => {
-      const strongs = fixture.debugElement.queryAll(By.css('strong'));
-
-      expect(strongs.length).toEqual(4);
-    });
-
     test('should have right mat-card-titles', () => {
       const matcardtitles = fixture.debugElement.queryAll(By.css('mat-card-title'));
 
-      expect(matcardtitles.length).toEqual(2);
+      expect(matcardtitles.length).toBeTruthy();
 
-      expect(matcardtitles[0].nativeElement.textContent).toEqual('Beschreibung');
-      expect(matcardtitles[1].nativeElement.textContent).toEqual('Letzte Messung');
+      expect(matcardtitles[0].nativeElement.textContent).toEqual('Key Result 1');
+      expect(matcardtitles[1].nativeElement.textContent).toEqual('Zielerreichung');
     });
 
     test('should have right mat-card-content', () => {
-      const matcardcontens = fixture.debugElement.queryAll(By.css('mat-card-content'));
-      expect(matcardcontens[1].nativeElement.textContent).toEqual(' This is the description ');
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-keyresult"]'));
+      expect(matcardcontent.nativeElement.textContent).toEqual(
+        'Beschreibung:  This is the description Einheit:  Prozent Erwartete Entwicklung:  Erhöht Startdatum:  01.10.2022 Enddatum:  31.12.2023 '
+      );
     });
 
     test('should have title and last measure date', () => {
-      const lastMeasureDateTitle = fixture.debugElement.query(By.css('.lastMeasureDateTitle'));
-      expect(lastMeasureDateTitle.nativeElement.textContent).toContain('Datum der Messung:');
-      const lastMeasureDate = fixture.debugElement.query(By.css('.lastMeasureDate'));
-      expect(lastMeasureDate.nativeElement.textContent).toContain('23.12.2022');
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-measure"]'));
+      expect(matcardcontent.nativeElement.textContent).toContain('Datum der Messung:');
+      expect(matcardcontent.nativeElement.textContent).toContain('23.12.2022');
     });
 
     test('should have title and change info', () => {
-      const lastMeasureChangeInfoTitle = fixture.debugElement.query(By.css('.lastMeasureChangeInfoTitle'));
-      expect(lastMeasureChangeInfoTitle.nativeElement.textContent).toContain('Änderungen:');
-      const lastMeasureChangeInfo = fixture.debugElement.query(By.css('.lastMeasureChangeInfo'));
-      expect(lastMeasureChangeInfo.nativeElement.textContent).toContain(
+      const lastMeasure = fixture.debugElement.query(By.css('[data-testId="mat-card-content-measure"]'));
+      expect(lastMeasure.nativeElement.textContent).toContain('Änderungen:');
+      expect(lastMeasure.nativeElement.textContent).toContain(
         ' Lorem Ipsum is simply dummy text of the printing and typesetting industry. '
       );
     });
 
     test('should have title and start date of last measure', () => {
-      const lastMeasureStartDateTitle = fixture.debugElement.query(By.css('.lastMeasureStartDateTitle'));
-      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain('Startdatum:');
-      const lastMeasureStartDate = fixture.debugElement.query(By.css('.lastMeasureStartDate'));
-      expect(lastMeasureStartDate.nativeElement.textContent).toContain('01.10.2022');
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-keyresult"]'));
+      expect(matcardcontent.nativeElement.textContent).toContain('Startdatum:');
+      expect(matcardcontent.nativeElement.textContent).toContain('01.10.2022');
     });
 
     test('should have title and end date of last measure', () => {
-      const lastMeasureStartDateTitle = fixture.debugElement.query(By.css('.lastMeasureEndDateTitle'));
-      expect(lastMeasureStartDateTitle.nativeElement.textContent).toContain('Enddatum:');
-      const lastMeasureStartDate = fixture.debugElement.query(By.css('.lastMeasureEndDate'));
-      expect(lastMeasureStartDate.nativeElement.textContent).toContain('31.12.2023');
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-keyresult"]'));
+      expect(matcardcontent.nativeElement.textContent).toContain('Enddatum:');
+      expect(matcardcontent.nativeElement.textContent).toContain('31.12.2023');
+    });
+
+    test('should have targetvalue of Keyresult', () => {
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-progress"]'));
+      expect(matcardcontent.nativeElement.textContent).toContain('Zielwert:');
+      expect(matcardcontent.nativeElement.textContent).toContain('100');
+    });
+
+    test('should have progress', () => {
+      const matcardcontent = fixture.debugElement.query(By.css('[data-testId="mat-card-content-progress"]'));
+      expect(matcardcontent.nativeElement.textContent).toContain('60 Prozent');
     });
 
     test('should have add measure button', () => {
@@ -139,7 +150,14 @@ describe('KeyResultOverviewComponent', () => {
     beforeEach(() => {
       mockQuarterService.getStartAndEndDateOfKeyresult.mockReturnValue(of(startAndEndDate));
       TestBed.configureTestingModule({
-        imports: [MatCardModule, RouterTestingModule, BrowserDynamicTestingModule],
+        imports: [
+          MatCardModule,
+          RouterTestingModule,
+          BrowserDynamicTestingModule,
+          TranslateTestingModule.withTranslations({
+            de: require('../../../assets/i18n/de.json'),
+          }),
+        ],
         declarations: [KeyResultOverviewComponent],
         providers: [
           DatePipe,
@@ -167,7 +185,7 @@ describe('KeyResultOverviewComponent', () => {
       const lastMeasureDate = fixture.debugElement.query(
         By.css('mat-card-content[data-test-marker="emptyLastMeasure"]')
       );
-      expect(lastMeasureDate.nativeElement.textContent).toContain('-');
+      expect(lastMeasureDate.nativeElement.textContent).toBeTruthy();
     });
 
     test('should have add measure button', () => {

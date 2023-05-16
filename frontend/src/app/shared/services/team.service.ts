@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Objective } from './objective.service';
 
 export interface Team {
   id: number | undefined;
@@ -26,6 +27,10 @@ export class TeamService {
     } else {
       return this.httpClient.put<Team>('api/v1/teams/' + team.id, team);
     }
+  }
+
+  public deleteTeamById(teamId: number): Observable<Team> {
+    return this.httpClient.delete<Team>('api/v1/teams/' + teamId);
   }
 
   getInitTeam() {

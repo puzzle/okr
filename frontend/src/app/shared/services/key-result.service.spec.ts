@@ -40,7 +40,7 @@ describe('KeyResultService', () => {
   test('should get Key Results of Objective', (done) => {
     service.getKeyResultsOfObjective(42).subscribe({
       next(response: KeyResultMeasure[]) {
-        expect(response.length).toBe(3);
+        expect(response.length).toBe(keyresultData.keyresults.length);
         done();
       },
       error(error) {

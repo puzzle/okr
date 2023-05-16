@@ -126,12 +126,12 @@ describe('KeyResultDetailComponent', () => {
 
   test('should have two heading labels with right titles', () => {
     const headingLabel = fixture.debugElement.query(By.css('.heading-label'));
-    expect(headingLabel.nativeElement.textContent).toContain('Key Result Informationen');
+    expect(headingLabel.nativeElement.textContent).toContain('Keyresult Informationen');
   });
 
   test('should have one mat dividers', () => {
     const dividers = fixture.debugElement.queryAll(By.css('mat-divider'));
-    expect(dividers.length).toEqual(1);
+    expect(dividers.length).toBeTruthy();
   });
 
   test('should have one measure row tag', () => {

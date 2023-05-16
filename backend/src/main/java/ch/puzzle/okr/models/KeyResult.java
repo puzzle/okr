@@ -45,7 +45,7 @@ public class KeyResult {
     private User createdBy;
 
     @NotNull
-    private LocalDateTime createdOn;
+    private LocalDateTime modifiedOn;
 
     public KeyResult() {
     }
@@ -61,7 +61,7 @@ public class KeyResult {
         setBasisValue(builder.basisValue);
         setTargetValue(builder.targetValue);
         setCreatedBy(builder.createdBy);
-        setCreatedOn(builder.createdOn);
+        setModifiedOn(builder.modifiedOn);
     }
 
     public Long getId() {
@@ -136,8 +136,8 @@ public class KeyResult {
         this.createdBy = createdBy;
     }
 
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
+    public void setModifiedOn(LocalDateTime modifiedOn) {
+        this.modifiedOn = modifiedOn;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class KeyResult {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
                 + description + '\'' + ", owner=" + owner + ", expectedEvolution=" + expectedEvolution + ", unit='"
                 + unit + '\'' + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", createdBy="
-                + createdBy + ", createdOn=" + createdOn + '}';
+                + createdBy + ", createdOn=" + modifiedOn + '}';
     }
 
     @Override
@@ -160,13 +160,13 @@ public class KeyResult {
                 && Objects.equals(owner, keyResult.owner) && expectedEvolution == keyResult.expectedEvolution
                 && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue)
                 && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy)
-                && Objects.equals(createdOn, keyResult.createdOn);
+                && Objects.equals(modifiedOn, keyResult.modifiedOn);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, objective, title, description, owner, expectedEvolution, unit, basisValue, targetValue,
-                createdBy, createdOn);
+                createdBy, modifiedOn);
     }
 
     public static final class Builder {
@@ -180,7 +180,7 @@ public class KeyResult {
         private Double basisValue;
         private @NotNull Double targetValue;
         private @NotNull User createdBy;
-        private @NotNull LocalDateTime createdOn;
+        private @NotNull LocalDateTime modifiedOn;
 
         private Builder() {
         }
@@ -239,8 +239,8 @@ public class KeyResult {
             return this;
         }
 
-        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
-            this.createdOn = createdOn;
+        public Builder withModifiedOn(@NotNull LocalDateTime createdOn) {
+            this.modifiedOn = createdOn;
             return this;
         }
 

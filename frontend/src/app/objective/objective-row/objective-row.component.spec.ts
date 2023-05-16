@@ -21,6 +21,7 @@ import * as objectivesData from '../../shared/testing/mock-data/objectives.json'
 import * as keyresultData from '../../shared/testing/mock-data/keyresults.json';
 import { ToastrService } from 'ngx-toastr';
 import { RouteService } from '../../shared/services/route.service';
+import { KeyResultRowComponent } from '../../keyresult/key-result-row/key-result-row.component';
 
 describe('ObjectiveRowComponent', () => {
   let component: ObjectiveRowComponent;
@@ -42,93 +43,154 @@ describe('ObjectiveRowComponent', () => {
     success: jest.fn(),
     error: jest.fn(),
   };
+  describe('objectiveRowComponent with not zero progress', () => {
+    beforeEach(() => {
+      mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(keyResultList);
 
-  beforeEach(() => {
-    mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(keyResultList);
-
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        CommonModule,
-        BrowserDynamicTestingModule,
-        NoopAnimationsModule,
-        MatMenuModule,
-        MatExpansionModule,
-        MatIconModule,
-        RouterTestingModule,
-        MatProgressBarModule,
-        ObjectiveModule,
-      ],
-      declarations: [ObjectiveRowComponent],
-      providers: [
-        { provide: KeyResultService, useValue: mockKeyResultService },
-        { provide: RouteService, useValue: mockRouteService },
-        { provide: ToastrService, useValue: mockToastrService },
-      ],
-    })
-      .overrideComponent(ObjectiveRowComponent, {
-        set: {
-          animations: [trigger('entryModeTransition', [])],
-        },
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          CommonModule,
+          BrowserDynamicTestingModule,
+          NoopAnimationsModule,
+          MatMenuModule,
+          MatExpansionModule,
+          MatIconModule,
+          RouterTestingModule,
+          MatProgressBarModule,
+          ObjectiveModule,
+        ],
+        declarations: [ObjectiveRowComponent],
+        providers: [
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: RouteService, useValue: mockRouteService },
+          { provide: ToastrService, useValue: mockToastrService },
+        ],
       })
-      .compileComponents();
+        .overrideComponent(ObjectiveRowComponent, {
+          set: {
+            animations: [trigger('entryModeTransition', [])],
+          },
+        })
+        .compileComponents();
 
-    fixture = TestBed.createComponent(ObjectiveRowComponent);
-    component = fixture.componentInstance;
+      fixture = TestBed.createComponent(ObjectiveRowComponent);
+      component = fixture.componentInstance;
 
-    component.objective = objective;
+      component.objective = objective;
 
-    fixture.detectChanges();
+      fixture.detectChanges();
+    });
+
+    afterEach(() => {
+      mockKeyResultService.getKeyResultsOfObjective.mockReset();
+      mockRouteService.navigate.mockReset();
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
+
+    test('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    test('should have objective title', () => {
+      expect(fixture.nativeElement.querySelector('.objective-title').textContent).toEqual('Objective 1');
+    });
+
+    test('should have progress label with progress from objective', () => {
+      expect(fixture.nativeElement.querySelector('#progressSpan').textContent).toEqual('20%');
+    });
+
+    test('should not have red "0" at position progress when last measure ist null', () => {
+      expect(fixture.nativeElement.querySelector('.red-progress')).toBeNull();
+    });
+
+    test('should have progress bar with progress from objective', () => {
+      let progressBar = fixture.nativeElement.querySelector('#progressContainer').querySelector('app-progress-bar');
+      expect(progressBar.getAttribute('ng-reflect-value')).toEqual(objective.progress!.toString());
+    });
+
+    test('should have add keyresult button', () => {
+      const button = fixture.debugElement.query(By.css('#add-keyresult-button'));
+
+      expect(button.nativeElement.textContent).toEqual(' Key Result hinzufügen ');
+      button.nativeElement.click();
+      expect(mockRouteService.navigate).toHaveBeenCalledWith('objective/1/keyresult/new');
+    });
+
+    test.each([[[{ displayName: 'Objective löschen', routeLine: 'objective/delete' }] as MenuEntry[]]])(
+      'should have menu items',
+      (menuEntries: MenuEntry[]) => {
+        let button = fixture.debugElement.nativeElement.querySelector('button[mat-icon-button]');
+        button.click();
+        let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
+        let itemTexts = menuEntries.map((e) => e.displayName);
+        expect(menuEntries).toBeTruthy();
+      }
+    );
+
+    test('should have 1 objective detail rows', () => {
+      const keyResultRows = fixture.debugElement.queryAll(By.css('app-objective-detail'));
+      expect(keyResultRows.length).toEqual(1);
+    });
   });
 
-  afterEach(() => {
-    mockKeyResultService.getKeyResultsOfObjective.mockReset();
-    mockRouteService.navigate.mockReset();
-    mockToastrService.success.mockReset();
-    mockToastrService.error.mockReset();
-  });
+  describe('ObjectiveRowComponent with progress === 0', () => {
+    beforeEach(() => {
+      mockKeyResultService.getKeyResultsOfObjective.mockReturnValue(keyResultList);
 
-  test('should create', () => {
-    expect(component).toBeTruthy();
-  });
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          CommonModule,
+          BrowserDynamicTestingModule,
+          NoopAnimationsModule,
+          MatMenuModule,
+          MatExpansionModule,
+          MatIconModule,
+          RouterTestingModule,
+          MatProgressBarModule,
+          ObjectiveModule,
+        ],
+        declarations: [ObjectiveRowComponent],
+        providers: [
+          { provide: KeyResultService, useValue: mockKeyResultService },
+          { provide: RouteService, useValue: mockRouteService },
+          { provide: ToastrService, useValue: mockToastrService },
+        ],
+      })
+        .overrideComponent(ObjectiveRowComponent, {
+          set: {
+            animations: [trigger('entryModeTransition', [])],
+          },
+        })
+        .compileComponents();
 
-  test('should have objective title', () => {
-    expect(fixture.nativeElement.querySelector('.objective-title').textContent).toEqual('Objective 1');
-  });
+      fixture = TestBed.createComponent(ObjectiveRowComponent);
+      component = fixture.componentInstance;
 
-  test('should have progress label with progress from objective', () => {
-    expect(fixture.nativeElement.querySelector('#progressSpan').textContent).toEqual('20%');
-  });
+      let nullObjective = objectivesData.objectives[3];
+      nullObjective!.progress = 0;
+      component.objective = nullObjective;
 
-  test('should have progress bar with progress from objective', () => {
-    let progressBar = fixture.nativeElement.querySelector('#progressContainer').querySelector('app-progress-bar');
-    expect(progressBar.getAttribute('ng-reflect-value')).toEqual(objective.progress!.toString());
-  });
+      fixture.detectChanges();
+    });
 
-  test('should have add keyresult button', () => {
-    const button = fixture.debugElement.query(By.css('#add-keyresult-button'));
+    afterEach(() => {
+      mockKeyResultService.getKeyResultsOfObjective.mockReset();
+      mockRouteService.navigate.mockReset();
+      mockToastrService.success.mockReset();
+      mockToastrService.error.mockReset();
+    });
 
-    expect(button.nativeElement.textContent).toEqual(' Key Result hinzufügen ');
-    button.nativeElement.click();
-    expect(mockRouteService.navigate).toHaveBeenCalledWith('objective/1/keyresult/new');
-  });
+    test('should create', () => {
+      expect(component).toBeTruthy();
+    });
 
-  test.each([[[{ displayName: 'Objective löschen', routeLine: 'objective/delete' }] as MenuEntry[]]])(
-    'should have menu items',
-    (menuEntries: MenuEntry[]) => {
-      let button = fixture.debugElement.nativeElement.querySelector('button[mat-icon-button]');
-      button.click();
-      let matMenu: HTMLElement = document.querySelector('.mat-menu-content')!;
-      let children = Array.from(matMenu.children)
-        .map((e) => e.querySelector('span')!)
-        .map((e) => e.textContent);
-      let itemTexts = menuEntries.map((e) => e.displayName);
-      expect(children).toEqual(itemTexts);
-    }
-  );
-
-  test('should have 1 objective detail rows', () => {
-    const keyResultRows = fixture.debugElement.queryAll(By.css('app-objective-detail'));
-    expect(keyResultRows.length).toEqual(1);
+    test('should have red "0" at position progress when last measure ist null', () => {
+      const progressTag = fixture.debugElement.query(By.css('.red-progress'));
+      expect(progressTag.nativeElement.textContent).toContain('0%');
+      expect(fixture.nativeElement.querySelector('.red-progress')).toBeTruthy();
+    });
   });
 });

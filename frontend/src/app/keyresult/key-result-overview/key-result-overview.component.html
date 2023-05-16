@@ -3,10 +3,41 @@
     <mat-card-content>
       <div class="d-flex w-100 justify-content-center gap-3">
         <mat-card class="w-100 inner-cards">
-          <mat-card-title class="fs-5">Beschreibung</mat-card-title>
+          <mat-card-title class="fs-5">{{ keyResult.title }}</mat-card-title>
 
-          <mat-card-content class="value">
-            {{ this.keyResult.description }}
+          <mat-card-content class="matCardContent" data-testId="mat-card-content-keyresult">
+            <div *ngIf="keyResult.description !== ''">
+              <strong class="sameElement firstElement key">Beschreibung: </strong>
+              <p class="sameElement lastMeasureDate value">
+                {{ this.keyResult.description }}
+              </p>
+            </div>
+            <div>
+              <strong class="sameElement firstElement key">Einheit: </strong>
+              <p class="sameElement lastMeasureDate value">
+                {{ "UNIT." + this.keyResult.unit | translate }}
+              </p>
+            </div>
+            <div>
+              <strong class="sameElement firstElement key">Erwartete Entwicklung: </strong>
+              <p class="sameElement lastMeasureDate value">
+                {{ "EXPECTED_EVOLUTION." + this.keyResult.expectedEvolution | translate }}
+              </p>
+            </div>
+            <div *ngIf="startEndDate$ | async as startEndDate">
+              <div>
+                <strong class="sameElement firstElement key">Startdatum: </strong>
+                <p class="sameElement lastMeasureStartDate value">
+                  {{ formatDate(startEndDate.startDate.toString()) }}
+                </p>
+              </div>
+              <div>
+                <strong class="sameElement firstElement key">Enddatum: </strong>
+                <p class="sameElement lastMeasureEndDate value">
+                  {{ formatDate(startEndDate.endDate.toString()) }}
+                </p>
+              </div>
+            </div>
           </mat-card-content>
 
           <mat-card-actions align="start">
@@ -22,32 +53,52 @@
         </mat-card>
 
         <mat-card class="w-100 inner-cards">
-          <mat-card-title class="fs-5">Letzte Messung</mat-card-title>
-          <mat-card-content *ngIf="keyResult.measure !== null; else noMeasures" class="matCardContent">
-            <div *ngIf="startEndDate$ | async as startEndDate">
-              <div>
-                <strong class="lastMeasureDateTitle sameElement firstElement key">Datum der Messung: </strong>
-                <p class="sameElement lastMeasureDate value">
-                  {{ formatDate(keyResult.measure?.measureDate!) }}
+          <mat-card-content class="matCardContent" data-testId="mat-card-content-progress">
+            <div class="h-25">
+              <mat-card-title class="fs-5">Zielerreichung</mat-card-title>
+              <div *ngIf="keyResult.basicValue !== null">
+                <strong class="sameElement firstElement key">Startwert: </strong>
+                <p class="sameElement value">
+                  {{ keyResult.basicValue + " " + ("UNIT." + this.keyResult.unit | translate) }}
+                </p>
+              </div>
+              <div *ngIf="keyResult.measure !== null">
+                <strong class="sameElement firstElement key">Aktueller Wert: </strong>
+                <p class="sameElement value">
+                  {{ keyResult.measure?.value + " " + ("UNIT." + this.keyResult.unit | translate) }}
                 </p>
               </div>
               <div>
-                <strong class="lastMeasureChangeInfoTitle sameElement firstElement key">Änderungen: </strong>
-                <p class="sameElement lastMeasureChangeInfo value">
-                  {{ keyResult.measure?.changeInfo }}
+                <strong class="sameElement firstElement key">Zielwert: </strong>
+                <p class="sameElement value">
+                  {{ keyResult.targetValue + " " + ("UNIT." + this.keyResult.unit | translate) }}
                 </p>
               </div>
-              <div>
-                <strong class="lastMeasureStartDateTitle sameElement firstElement key">Startdatum: </strong>
-                <p class="sameElement lastMeasureStartDate value">
-                  {{ formatDate(startEndDate.startDate.toString()) }}
-                </p>
-              </div>
-              <div>
-                <strong class="lastMeasureEndDateTitle sameElement firstElement key">Enddatum: </strong>
-                <p class="sameElement lastMeasureEndDate value">
-                  {{ formatDate(startEndDate.endDate.toString()) }}
-                </p>
+            </div>
+
+            <mat-divider class="my-2"></mat-divider>
+
+            <div class="w-100" data-testId="mat-card-content-measure">
+              <mat-card-title class="fs-5">Letzte Messung</mat-card-title>
+              <div *ngIf="keyResult.measure !== null; else noMeasures">
+                <div>
+                  <strong class="sameElement firstElement key">Datum der Messung: </strong>
+                  <p class="sameElement lastMeasureDate value">
+                    {{ formatDate(keyResult.measure?.measureDate!) }}
+                  </p>
+                </div>
+                <div>
+                  <strong class="sameElement firstElement key">Änderungen: </strong>
+                  <p class="sameElement lastMeasureChangeInfo value">
+                    {{ keyResult.measure?.changeInfo }}
+                  </p>
+                </div>
+                <div *ngIf="keyResult.measure?.initiatives !== ''">
+                  <strong class="sameElement firstElement key">Massnahmen: </strong>
+                  <p class="sameElement lastMeasureStartDate value">
+                    {{ keyResult.measure?.initiatives }}
+                  </p>
+                </div>
               </div>
             </div>
           </mat-card-content>
@@ -71,9 +122,9 @@
             </button>
           </mat-card-actions>
 
-          <ng-template #noMeasures>
+          <ng-template class="sameElement firstElement value" #noMeasures>
             <mat-card-content data-test-marker="emptyLastMeasure">
-              <p>-</p>
+              <p>Es wurde noch keine Messung aufgenommen!</p>
             </mat-card-content>
           </ng-template>
         </mat-card>

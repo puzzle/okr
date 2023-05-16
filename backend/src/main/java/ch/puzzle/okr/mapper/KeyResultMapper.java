@@ -39,7 +39,7 @@ public class KeyResultMapper {
                 .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
                 .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
                 .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit()).withCreatedOn(LocalDateTime.now())
+                .withUnit(keyResultDto.getUnit()).withModifiedOn(LocalDateTime.now())
                 .withCreatedBy(userRepository.findById(keyResultDto.getOwnerId()).get()).build();
     }
 }

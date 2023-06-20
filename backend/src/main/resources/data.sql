@@ -1,73 +1,112 @@
-ALTER SEQUENCE sequence_team RESTART WITH 100;
-ALTER SEQUENCE sequence_person RESTART WITH 100;
-ALTER SEQUENCE sequence_quarter RESTART WITH 100;
-ALTER SEQUENCE sequence_objective RESTART WITH 100;
-ALTER SEQUENCE sequence_key_result RESTART WITH 100;
-ALTER SEQUENCE sequence_measure RESTART WITH 100;
+ALTER SEQUENCE sequence_team RESTART WITH 200;
+ALTER SEQUENCE sequence_person RESTART WITH 200;
+ALTER SEQUENCE sequence_quarter RESTART WITH 200;
+ALTER SEQUENCE sequence_objective RESTART WITH 200;
+ALTER SEQUENCE sequence_key_result RESTART WITH 200;
+ALTER SEQUENCE sequence_measure RESTART WITH 200;
 
--- insert into team(id, name) values
---         (1, 'Puzzle ITC'),
---         (2, 'Team 2'),
---         (3, 'Team 3');
---
--- insert into person(id, username, firstname, lastname, email) values
---         (1, 'alice', 'Alice', 'Wunderland', 'wunderland@puzzle.ch'),
---         (2, 'bob', 'Bob', 'Baumeister', 'baumeister@puzzle.ch'),
---         (3, 'findus', 'Findus', 'Peterson', 'peterson@puzzle.ch'),
---         (4, 'paco', 'Paco', 'Egiman', 'egiman@puzzle.ch'),
---         (5, 'robin', 'Robin', 'Papierer', 'papierer@puzzle.ch');
---
--- insert into quarter(id, label) values
---         (1, 'GJ 22/23-Q3'),
---         (2, 'GJ 22/23-Q2'),
---         (3, 'GJ 22/23-Q1');
---
--- --  quartal GJ 22/23-Q1 (1.7.2022 - 30.9.2022)
--- insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
---         (1, 'Motivierte und glückliche Members', 1, 1, 3, '43', '2022-07-01', 'Puzzle ITC will motivierte und glückliche Members.'),
---         (2, 'Objective 2', 2, 2, 3, '5', '2019-01-01', 'This is the description of Objective 2'),
---         (3, 'Objective 3', 4, 3, 3, '0', '2020-01-01', 'This is the description of Objective 3');
---
--- insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
---         (1, 1, 5, 1, 2, 0, 4, 1, '2022-08-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
---         (2, 1, 1, 2, 2, 0, 2, 1, '2022-08-01', 'Regelmässige Apéros', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.'),
---         (3, 1, 3, 2, 0, 0, 100, 1, '2022-08-01', 'Spannende Arbeit', 'Die Members sollen spannende und interessante Arbeit erhalten.'),
---         (5, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 5', 'This is the description of Keyresult 5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s'),
---         (6, 2, 1, 2, 2, 0, 100, 2, '2022-01-01', 'Keyresult 6', 'This is the description of Keyresult 6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s');
---
--- insert into measure(id, key_result_id, measure_date, value, created_by_id, created_on, change_info, initiatives) values
---         (1, 1,'2022-09-01', 2, 1, '2022-08-01', 'Bei dieser Messung standen 2 Schokolandenarten auf allen Stockwerken bereit.', 'Mehr vom einfachen Milch- und Nuss-Schokolade einkaufen.'),
---         (2, 2,'2022-09-03', 0, 1, '2022-08-01', 'Leider fand in diesem Monat kein Apéro statt.', 'Sofort die Termine für den nächsten Monat bestimmen.'),
---         (3, 3,'2022-09-05', 80, 4, '2022-08-01', 'Ein grossteil der Members haben uns ihre Einschätzung gemeldet.', 'Vielleicht sollten wir  die Umfrage per E-Mail versenden.');
---
--- --  quartal GJ 22/23-Q2 (1.10.2022 - 31.12.2022)
--- insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
---         (4, 'Motivierte und glückliche Members', 1, 1, 2, '73', '2022-10-01', 'Puzzle ITC will motivierte und glückliche Members.');
---
--- insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
---         (7, 4, 5, 1, 2, 0, 4, 1, '2022-10-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
---         (8, 4, 1, 2, 2, 0, 2, 1, '2022-10-01', 'Regelmässige Apéros', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.'),
---         (9, 4, 3, 2, 0, 0, 100, 1, '2022-10-01', 'Spannende Arbeit', 'Die Members sollen spannende und interessante Arbeit erhalten.');
---
--- insert into measure(id, key_result_id, measure_date, value, created_by_id, created_on, change_info, initiatives) values
---         (5, 7,'2022-10-02', 1, 1, '2022-10-01', 'Uns sind drei Schokoladenarten ausgegangen.', 'Wir müssen regelmässig einkaufen gehen.'),
---         (6, 8,'2022-10-03', 1, 1, '2022-10-01', 'Wir hatten zumindest ein Apéro durchgeführt. Das zweite Apéro musste wegen Terminkonflikte abgesagt werden.', 'Termine mit den Bereichen koordinieren.'),
---         (7, 9,'2022-10-03', 70, 4, '2022-10-01', 'Fast alle Members haben uns ihre Einschätzung gemeldet.', 'Brauchen nichts zu ändern.'),
---         (9, 7,'2022-11-02', 3, 1, '2022-10-01', 'Uns ist schon wieder eine Schokoladenart ausgegangen.', 'Wir müssen wirklich regelmässig einkaufen gehen!'),
---         (10, 7,'2022-12-02', 4, 1, '2022-10-01', 'Ja zum Jahresende haben wir es geschafft.', 'Aktuell keine Massnahmen nötig.');
---
--- --  quartal GJ 22/23-Q3 (1.1.2023 - 31.3.2023)
--- insert into objective(id, title, owner_id, team_id, quarter_id, progress, created_on, description) values
---         (5, 'Motivierte und glückliche Members', 1, 1, 1, '65', '2023-01-01', 'Puzzle ITC will motivierte und glückliche Members.');
---
--- insert into key_result(id, objective_id, owner_id, expected_evolution, unit, basis_value, target_value, created_by_id, created_on, title, description) values
---         (11, 5, 5, 1, 2, 0, 4, 1, '2023-01-01', 'Reichlich Schokolade', 'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.'),
---         (12, 5, 1, 2, 2, 0, 2, 1, '2023-01-01', 'Regelmässige Apéros', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.'),
---         (13, 5, 3, 2, 0, 0, 100, 1, '2023-01-01', 'Spannende Arbeit', 'Die Members sollen spannende und interessante Arbeit erhalten.');
---
--- insert into measure(id, key_result_id, measure_date, value, created_by_id, created_on, change_info, initiatives) values
---         (11, 11,'2023-01-02', 0, 1, '2023-01-01', 'Das neue Jahr fängt ja gut an: keine Schokolade!', 'Wir sollten das Jahr 2023 auslasen.'),
---         (12, 12,'2023-01-03', 3, 1, '2022-08-01', 'Wir haben sogar 3 Apéros gemacht.', 'Weiter so.'),
---         (13, 13,'2023-01-03', 95, 4, '2022-08-01', 'Fast alle Members haben uns ihre Feedback gemeldet.', 'Keine Massnahmen'),
---         (15, 6,'2023-02-04', 10, 5, '2022-08-01', '', 'Initiatives einer Messung'),
---         (16, 6,'2023-01-04', 1, 5, '2022-08-01', '', 'Initiatives einer Messung');
+insert into team (id, name)
+values (1, 'Puzzle ITC'),
+       (2, 'Team 2'),
+       (3, 'Team 3');
+
+
+insert into person (id, email, firstname, lastname, username)
+values (1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice'),
+       (2, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
+       (3, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
+       (4, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
+       (5, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin'),
+       (100, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann');
+
+
+insert into quarter (id, label)
+values (1, 'GJ 22/23-Q3'),
+       (2, 'GJ 22/23-Q2'),
+       (3, 'GJ 22/23-Q1'),
+       (100, 'GJ 22/23-Q4'),
+       (101, 'GJ 23/24-Q1'),
+       (102, 'GJ 21/22-Q4');
+
+
+insert into objective (id, modified_on, description, progress, title, owner_id, quarter_id, team_id)
+values (1, '2022-07-01 00:00:00.000000', 'Puzzle ITC will motivierte und glückliche Members.', 43,
+        'Motivierte und glückliche Members', 1, 3, 1),
+       (2, '2019-01-01 00:00:00.000000', 'This is the description of Objective 2', 5, 'Objective 2', 2, 3, 2),
+       (3, '2020-01-01 00:00:00.000000', 'This is the description of Objective 3', 0, 'Objective 3', 4, 3, 3),
+       (4, '2022-10-01 00:00:00.000000', 'Puzzle ITC will motivierte und glückliche Members.', 73,
+        'Motivierte und glückliche Members', 1, 2, 1),
+       (5, '2023-01-01 00:00:00.000000', 'Puzzle ITC will motivierte und glückliche Members.', 65,
+        'Motivierte und glückliche Members', 1, 1, 1),
+       (100, '2023-04-24 11:22:05.862100', '', null, 'Testq', 100, 100, 1),
+       (102, '2023-04-24 11:23:49.081449', 'test', null, 'Mit diesem Objectiv können wir den scroll and back testen.',
+        100, 100, 2),
+       (103, '2023-04-24 11:24:02.300549', 'adsf', null,
+        'Dies ist der Titel des Objectives, dieser Titel ist absichtlich mühsam lange zum lesen in einem kleinen Feld.',
+        100, 100, 2),
+       (101, '2023-04-24 11:23:23.577257', 'Eine kleine Beschreibung', 0,
+        'Ein weiteres Objective zum messen ob ein Nullemblem auch rot eingefärbt wird', 100, 100, 1);
+
+
+
+insert into key_result (id, basis_value, modified_on, description, expected_evolution, target_value, title, unit,
+                        created_by_id, objective_id, owner_id)
+values (1, 0, '2022-08-01 00:00:00.000000',
+        'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.', 1, 4,
+        'Reichlich Schokolade', 2, 1, 1, 5),
+       (2, 0, '2022-08-01 00:00:00.000000', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.', 2,
+        2, 'Regelmässige Apéros', 2, 1, 1, 1),
+       (3, 0, '2022-08-01 00:00:00.000000', 'Die Members sollen spannende und interessante Arbeit erhalten.', 2, 100,
+        'Spannende Arbeit', 0, 1, 1, 3),
+       (5, 0, '2022-01-01 00:00:00.000000',
+        'This is the description of Keyresult 5: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s',
+        2, 100, 'Keyresult 5', 2, 2, 2, 1),
+       (6, 0, '2022-01-01 00:00:00.000000',
+        'This is the description of Keyresult 6: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s',
+        2, 100, 'Keyresult 6', 2, 2, 2, 1),
+       (7, 0, '2022-10-01 00:00:00.000000',
+        'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.', 1, 4,
+        'Reichlich Schokolade', 2, 1, 4, 5),
+       (8, 0, '2022-10-01 00:00:00.000000', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.', 2,
+        2, 'Regelmässige Apéros', 2, 1, 4, 1),
+       (9, 0, '2022-10-01 00:00:00.000000', 'Die Members sollen spannende und interessante Arbeit erhalten.', 2, 100,
+        'Spannende Arbeit', 0, 1, 4, 3),
+       (11, 0, '2023-01-01 00:00:00.000000',
+        'Auf allen drei Stockwerke sollten 4 verschiedene Schokoladenarten angeboten werden.', 1, 4,
+        'Reichlich Schokolade', 2, 1, 5, 5),
+       (12, 0, '2023-01-01 00:00:00.000000', 'In jedem Monat sollten 2 Apéros für alle Members durchgeführt werden.', 2,
+        2, 'Regelmässige Apéros', 2, 1, 5, 1),
+       (13, 0, '2023-01-01 00:00:00.000000', 'Die Members sollen spannende und interessante Arbeit erhalten.', 2, 100,
+        'Spannende Arbeit', 0, 1, 5, 3),
+       (100, null, '2023-04-24 11:26:04.757432', 'asdf', 4, 10, 'Keyresult Titel zum testen des einfärbens', 0, 100,
+        101, 100),
+       (101, 0, '2023-04-24 11:26:27.098339', '', 0, 100, 'Ein weiteres Keyresult ', 0, 100, 101, 100);
+
+
+insert into measure (id, change_info, created_on, initiatives, measure_date, value, created_by_id, key_result_id)
+values (1, 'Bei dieser Messung standen 2 Schokolandenarten auf allen Stockwerken bereit.', '2022-08-01 00:00:00.000000',
+        'Mehr vom einfachen Milch- und Nuss-Schokolade einkaufen.', '2022-09-01 00:00:00.000000', 2, 1, 1),
+       (2, 'Leider fand in diesem Monat kein Apéro statt.', '2022-08-01 00:00:00.000000',
+        'Sofort die Termine für den nächsten Monat bestimmen.', '2022-09-03 00:00:00.000000', 0, 1, 2),
+       (3, 'Ein grossteil der Members haben uns ihre Einschätzung gemeldet.', '2022-08-01 00:00:00.000000',
+        'Vielleicht sollten wir  die Umfrage per E-Mail versenden.', '2022-09-05 00:00:00.000000', 80, 4, 3),
+       (5, 'Uns sind drei Schokoladenarten ausgegangen.', '2022-10-01 00:00:00.000000',
+        'Wir müssen regelmässig einkaufen gehen.', '2022-10-02 00:00:00.000000', 1, 1, 7),
+       (6,
+        'Wir hatten zumindest ein Apéro durchgeführt. Das zweite Apéro musste wegen Terminkonflikte abgesagt werden.',
+        '2022-10-01 00:00:00.000000', 'Termine mit den Bereichen koordinieren.', '2022-10-03 00:00:00.000000', 1, 1, 8),
+       (7, 'Fast alle Members haben uns ihre Einschätzung gemeldet.', '2022-10-01 00:00:00.000000',
+        'Brauchen nichts zu ändern.', '2022-10-03 00:00:00.000000', 70, 4, 9),
+       (9, 'Uns ist schon wieder eine Schokoladenart ausgegangen.', '2022-10-01 00:00:00.000000',
+        'Wir müssen wirklich regelmässig einkaufen gehen!', '2022-11-02 00:00:00.000000', 3, 1, 7),
+       (10, 'Ja zum Jahresende haben wir es geschafft.', '2022-10-01 00:00:00.000000',
+        'Aktuell keine Massnahmen nötig.', '2022-12-02 00:00:00.000000', 4, 1, 7),
+       (11, 'Das neue Jahr fängt ja gut an: keine Schokolade!', '2023-01-01 00:00:00.000000',
+        'Wir sollten das Jahr 2023 auslasen.', '2023-01-02 00:00:00.000000', 0, 1, 11),
+       (12, 'Wir haben sogar 3 Apéros gemacht.', '2022-08-01 00:00:00.000000', 'Weiter so.',
+        '2023-01-03 00:00:00.000000', 3, 1, 12),
+       (13, 'Fast alle Members haben uns ihre Feedback gemeldet.', '2022-08-01 00:00:00.000000', 'Keine Massnahmen',
+        '2023-01-03 00:00:00.000000', 95, 4, 13),
+       (15, '', '2022-08-01 00:00:00.000000', 'Initiatives einer Messung', '2023-02-04 00:00:00.000000', 10, 5, 6),
+       (16, '', '2022-08-01 00:00:00.000000', 'Initiatives einer Messung', '2023-01-04 00:00:00.000000', 1, 5, 6),
+       (100, 'Nullmessung', '2023-04-24 11:26:51.731592', '', '2023-04-24 00:00:00.000000', 9.999, 100, 100);

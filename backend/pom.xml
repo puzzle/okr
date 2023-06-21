@@ -213,6 +213,22 @@
             <id>build-for-docker</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
+                <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <spring.profiles.active>dev</spring.profiles.active>
             </properties>
             <build>
                 <plugins>

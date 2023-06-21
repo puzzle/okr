@@ -80,11 +80,11 @@ jobs:
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
-          git add ${{ inputs.filepath }} || {
+          git add ${{ vars.FILEPATH }} || {
             echo "No files were changed, so we did not commit anything"
             exit 1
           } && \
-          git commit -m "$COMMITPREFIX Automated changes to ${{ inputs.filepath }}" && \
+          git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
           git push origin ${{ inputs.ref }}
       - run: rm -rf ccy-repo
         shell: bash

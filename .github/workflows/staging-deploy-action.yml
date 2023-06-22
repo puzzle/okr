@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{secrets.VERSION_TOKEN}}
-            
+
       - name: Set up node 16
         uses: actions/setup-node@v3
         with:
@@ -40,11 +40,13 @@ jobs:
         run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false
 
       - name: Extract Maven project version
-        run: echo "{version}={$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)}" >> $GITHUB_OUTPUT
+        env:
+          VERSION: mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
         id: store_version
 
+
       - name: Set New Snapshot Version
-        run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store_version.outputs.version }}-SNAPSHOT -DgenerateBackupPoms=false
+        run: mvn build-helper:parse-version versions:set -DnewVersion=$VERSION-SNAPSHOT -DgenerateBackupPoms=false
 
       - name: Commit and Push Changes
         shell: bash
@@ -80,7 +82,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ secrets.TAG }}:${{ steps.store_version.outputs.version }}-STAGING
+          tags: ${{ secrets.TAG }}:$VERSION-STAGING
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3
@@ -95,7 +97,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ steps.store_version.outputs.version }}-STAGING
+          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:$VERSION-STAGING
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

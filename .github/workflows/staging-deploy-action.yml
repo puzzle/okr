@@ -40,7 +40,8 @@ jobs:
       - name: Store Version in Variable
         id: store_version
         run: |
-          echo "::set-output name=version::${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}
+          version=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='parent']/*[local-name()='version']/text()" pom.xml)
+          echo "::set-output name=version::$version"
 
       - name: Set New Snapshot Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store_version.outputs.version }}-SNAPSHOT -DgenerateBackupPoms=false
@@ -94,7 +95,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{steps.version.outputs.version_docker_ci}}
+          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ steps.store_version.outputs.version }}-STAGING
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

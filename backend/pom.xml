@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>backend</artifactId>
-    <version>-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <name>backend</name>
     <description>Puzzle OKR Tool</description>
 

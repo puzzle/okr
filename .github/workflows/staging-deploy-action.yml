@@ -1,90 +1,119 @@
 name: 'Staging-Deploy'
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
+    types:
+      - closed
 
 jobs:
-  staging-okr-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v2
+  if_merged:
+    staging-okr-deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout project
+          uses: actions/checkout@v2
 
-      - name: Set up node 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+        - name: Set up node 16
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
 
-      - name: Install Dependencies
-        run: cd ./frontend && npm ci
+        - name: Install Dependencies
+          run: cd ./frontend && npm ci
 
-      - name: Build frontend with Angular
-        run: cd ./frontend && npm run build
+        - name: Build frontend with Angular
+          run: cd ./frontend && npm run build
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          server-id: github
-          settings-path: ${{github.workspace}}
+        - name: Set up JDK 17
+          uses: actions/setup-java@v2
+          with:
+            java-version: '17'
+            distribution: 'adopt'
+            server-id: github
+            settings-path: ${{github.workspace}}
 
-      - name: Build backend with Maven
-        run: mvn -B clean package --file pom.xml -P staging
 
-      - name: Build Version Tag
-        id: version
-        uses: lpenz/ghaction-version-gen@v0.10.1
+        - name: Generate and Set New Version
+          run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false
 
-      - name: Log in to Quay registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ secrets.QUAY_REGISTRY }}
-          username: ${{ secrets.QUAY_USERNAME }}
-          password: ${{ secrets.QUAY_TOKEN }}
+        - name: Store Version in Variable
+          id: store_version
+          run: |
+            echo "::set-output name=version::${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}
 
-      - name: Build and push the docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: docker/Dockerfile
-          push: true
-          tags: ${{ secrets.TAG }}:${{ steps.version.outputs.version_docker_ci }}
+        - name: Set New Snapshot Version
+          run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store_version.outputs.version }}-SNAPSHOT -DgenerateBackupPoms=false
 
-      - name: Trigger Deployment Workflow with latest Version
-        uses: actions/checkout@v3
-        with:
-          repository: ${{ vars.TARGET_REPOSITORY }}
-          ref: ${{ vars.TARGET_REFERENCE }}
-          path: ccy-repo
-          token: ${{secrets.VERSION_TOKEN}}
+        - name: Commit and Push Changes
+          shell: bash
+          env:
+            COMMITPREFIX: '[VU]'
+          run: |
+            git config --global user.email "actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add . || {
+              echo "No files were changed, so we did not commit anything"
+              exit 1
+            }
+            git commit -m "$COMMITPREFIX Automated version update" || {
+              echo "No changes to commit, skipping push"
+              exit 0
+            }
+            git push origin main
+  
 
-      - name: Change Yaml
-        shell: bash
-        env:
-          FILEPATH: ${{ vars.FILEPATH }}
-          YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{steps.version.outputs.version_docker_ci}}
-          VERSION: v4.25.2
-          BINARY: yq_linux_amd64
-        run: |
-          wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
-          tar xz && mv ${BINARY} /usr/local/bin/yq
-          yq -i "${YAMLPATH} = \"${NEWVALUE}\"" ccy-repo/${FILEPATH}
-      - name: Commit and Push Changes
-        working-directory: ccy-repo
-        shell: bash
-        env:
-          COMMITPREFIX: '[CTS]'
-        run: |
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add ${{ vars.FILEPATH }} || {
-            echo "No files were changed, so we did not commit anything"
-            exit 1
-          } && \
-          git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
-          git push origin ${{ vars.TARGET_REFERENCE }}git
-      - run: rm -rf ccy-repo
-        shell: bash
+        - name: Build backend with Maven
+          run: mvn -B clean package --file pom.xml -P staging
+
+        - name: Log in to Quay registry
+          uses: docker/login-action@v2
+          with:
+            registry: ${{ secrets.QUAY_REGISTRY }}
+            username: ${{ secrets.QUAY_USERNAME }}
+            password: ${{ secrets.QUAY_TOKEN }}
+
+        - name: Build and push the docker image
+          uses: docker/build-push-action@v3
+          with:
+            context: .
+            file: docker/Dockerfile
+            push: true
+            tags: ${{ secrets.TAG }}:${{ steps.store_version.outputs.version }}-STAGING
+
+        - name: Trigger Deployment Workflow with latest Version
+          uses: actions/checkout@v3
+          with:
+            repository: ${{ vars.TARGET_REPOSITORY }}
+            ref: ${{ vars.TARGET_REFERENCE }}
+            path: ccy-repo
+            token: ${{secrets.VERSION_TOKEN}}
+
+        - name: Change Yaml
+          shell: bash
+          env:
+            FILEPATH: ${{ vars.FILEPATH }}
+            YAMLPATH: ${{ vars.YAML_PATH }}
+            NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{steps.version.outputs.version_docker_ci}}
+            VERSION: v4.25.2
+            BINARY: yq_linux_amd64
+          run: |
+            wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
+            tar xz && mv ${BINARY} /usr/local/bin/yq
+            yq -i "${YAMLPATH} = \"${NEWVALUE}\"" ccy-repo/${FILEPATH}
+        - name: Commit and Push Changes
+          working-directory: ccy-repo
+          shell: bash
+          env:
+            COMMITPREFIX: '[CTS]'
+          run: |
+            git config --global user.email "actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add ${{ vars.FILEPATH }} || {
+              echo "No files were changed, so we did not commit anything"
+              exit 1
+            } && \
+            git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
+            git push origin ${{ vars.TARGET_REFERENCE }}git
+        - run: rm -rf ccy-repo
+          shell: bash

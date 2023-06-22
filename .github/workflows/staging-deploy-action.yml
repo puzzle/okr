@@ -85,6 +85,6 @@ jobs:
             exit 1
           } && \
           git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
-          git push origin ${{ inputs.ref }}
+          git push origin ${{ vars.TARGET_REFERENCE }}git 
       - run: rm -rf ccy-repo
         shell: bash

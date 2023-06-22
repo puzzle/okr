@@ -11,4 +11,4 @@ WORKDIR app-root/backend
 
 COPY --chown=1001 backend/target .
 
-ENTRYPOINT  ["java", "-jar", "backend-0.1.0-SNAPSHOT.jar"]
+ENTRYPOINT ["/bin/sh", "-c", "export BACKEND_VERSION=$(find . -type f -name 'backend-*.jar' -print -quit | sed -n 's/.*backend-\\(.*\\)\\.jar/\\1/p'); java -jar backend-${BACKEND_VERSION}.jar"]

@@ -37,11 +37,9 @@ jobs:
       - name: Generate and Set New Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false
 
-      - name: Store Version in Variable
-        id: store_version
-        run: |
-          version=$(xmllint --xpath "//*[local-name()='project']/*[local-name()='parent']/*[local-name()='version']/text()" pom.xml)
-          echo "::set-output name=version::$version"
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
 
       - name: Set New Snapshot Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store_version.outputs.version }}-SNAPSHOT -DgenerateBackupPoms=false

@@ -56,7 +56,6 @@ class ForwardFilterTest {
         verify(request, never()).getRequestDispatcher(anyString());
     }
 
-
     @Test
     void shouldFilterAuthPath() throws ServletException, IOException {
         // given

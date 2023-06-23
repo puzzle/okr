@@ -92,3 +92,17 @@ html {
   bottom: 1rem;
   position: relative;
 }
+
+.staging-banner {
+  color: black;
+  display: flex;
+  margin-top: 1rem;
+  font-size: 5rem;
+  font-weight: bold;
+  background-color: cadetblue;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  height: 10rem;
+  justify-content: center;
+  align-items: center;
+}

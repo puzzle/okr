@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:staging": "ng build --configuration staging",
     "watch": "ng build --watch --configuration development",
     "test": "jest",
     "format": "prettier --write \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",

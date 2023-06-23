@@ -15,6 +15,7 @@ import { version } from './version';
 })
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
+  isEnvStaging: boolean = false;
 
   constructor(
     private router: Router,
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isEnvStaging = environment.staging;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

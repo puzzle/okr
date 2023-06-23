@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
+import { version } from './version';
 
 @Component({
   selector: 'app-root',
@@ -72,4 +73,6 @@ export class AppComponent implements OnInit {
   }
 
   login() {}
+
+  protected readonly version = version;
 }

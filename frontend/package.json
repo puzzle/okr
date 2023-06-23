@@ -10,7 +10,8 @@
     "format": "prettier --write \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
     "check": "prettier --check \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",
     "format:upgrade": "npm install --save-exact prettier@latest && npm run format",
-    "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'"
+    "prestart": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'hook copied'",
+    "prebuild": "version=$(grep -oP '<version>\\K.*(?=-SNAPSHOT</version>)' ../pom.xml); echo \"export const version = 'v$version';\" > src/app/version.ts\n"
   },
   "private": true,
   "dependencies": {

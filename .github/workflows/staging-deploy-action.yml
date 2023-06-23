@@ -61,8 +61,8 @@ jobs:
         run: cd ./frontend && npm ci
 
       - name: Build frontend with Angular
-        run: cd ./frontend && npm run build
-        
+        run: cd ./frontend && npm run build:staging
+
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P staging
 

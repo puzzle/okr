@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class SecurityConfig {
 
     @Bean
-    @Order(1) //Must be First order! Otherwise unauthorized Requests are sent to Controllers
+    @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("*** apiSecurityFilterChain reached");
         return http.antMatcher("/api/**")

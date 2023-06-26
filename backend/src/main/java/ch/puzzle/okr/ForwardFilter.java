@@ -19,12 +19,10 @@ public class ForwardFilter implements Filter {
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
             return;
         }
-        ;
         if (request.getParameter("error") != null) {
             System.out.println("error from keycloak " + request.getParameter("error"));
             return;
         }
-        ;
         //
         // if (request.getRequestURI().equals("/") || request.getRequestURI().startsWith("/api/")
         // || request.getRequestURI().startsWith("/index.html") || request.getRequestURI().startsWith("/runtime.")

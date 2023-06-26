@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewChecked() {
-    const storedPosition = localStorage.getItem(this.storageKey);
+    const storedPosition = sessionStorage.getItem(this.storageKey);
     if (storedPosition) {
       this.scrollPosition = parseInt(storedPosition);
       window.scrollTo(0, this.scrollPosition);
@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   saveScrollPosition() {
-    localStorage.setItem(this.storageKey, window.scrollY.toString());
+    sessionStorage.setItem(this.storageKey, window.scrollY.toString());
   }
 
   changeTeamFilter(value: number[]) {

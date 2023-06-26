@@ -12,6 +12,18 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v2
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Extract Maven project version
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: store-version
+
       - name: Set up node 16
         uses: actions/setup-node@v3
         with:
@@ -22,14 +34,6 @@ jobs:
 
       - name: Build frontend with Angular
         run: cd ./frontend && npm run build
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'adopt'
-          server-id: github
-          settings-path: ${{ github.workspace }}
 
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
@@ -47,4 +51,41 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ secrets.TAG }}:latest
+          tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-PROD
+
+      - name: Trigger Deployment Workflow with latest Version
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ vars.TARGET_REPOSITORY }}
+          ref: ${{ vars.TARGET_REFERENCE }}
+          path: ccy-repo
+          token: ${{secrets.VERSION_TOKEN}}
+
+      - name: Change Yaml
+        shell: bash
+        env:
+          FILEPATH: ${{ vars.FILEPATH }}
+          YAMLPATH: ${{ vars.YAML_PATH }}
+          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-PROD
+          VERSION: v4.25.2
+          BINARY: yq_linux_amd64
+        run: |
+          wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
+          tar xz && mv ${BINARY} /usr/local/bin/yq
+          yq -i "${YAMLPATH} = \"${NEWVALUE}\"" ccy-repo/${FILEPATH}
+      - name: Commit and Push Changes
+        working-directory: ccy-repo
+        shell: bash
+        env:
+          COMMITPREFIX: '[CTS]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add ${{ vars.FILEPATH }} || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          } && \
+          git commit -m "$COMMITPREFIX Automated changes to ${{ vars.FILEPATH }}" && \
+          git push origin ${{ vars.TARGET_REFERENCE }}
+      - run: rm -rf ccy-repo
+        shell: bash

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
+import { version } from './version';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
+  isEnvStaging: boolean = false;
 
   constructor(
     private router: Router,
@@ -38,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isEnvStaging = environment.staging;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -72,4 +75,6 @@ export class AppComponent implements OnInit {
   }
 
   login() {}
+
+  protected readonly version = version;
 }

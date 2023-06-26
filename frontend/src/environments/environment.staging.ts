@@ -2,7 +2,7 @@ import { AuthConfig } from 'angular-oauth2-oidc';
 
 export const environment = {
   production: true,
-  staging: false,
+  staging: true,
   oauth: {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,

@@ -12,22 +12,33 @@ public class ForwardFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-
-        if (request.getRequestURI().equals("/") || request.getRequestURI().startsWith("/api/")
-                || request.getRequestURI().startsWith("/index.html") || request.getRequestURI().startsWith("/runtime.")
-                || request.getRequestURI().startsWith("/polyfills.") || request.getRequestURI().startsWith("/main.")
-                || request.getRequestURI().startsWith("/scripts.") || request.getRequestURI().startsWith("/styles.")
-                || request.getRequestURI().startsWith("/favicon.ico")
-                || request.getRequestURI().startsWith("/3rdpartylicenses.txt")
-                || request.getRequestURI().startsWith("/assets/") || request.getRequestURI().startsWith("/v3/api-docs")
-                || request.getRequestURI().startsWith("/swagger-ui")) {
-            // TODO: replace with a Logger
-            System.out.println(String.format("====> pass through the filter '%s'", request.getRequestURI()));
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else {
-            // TODO: replace with a Logger
-            System.out.println(String.format("====> make a forward from '%s' to '%s'", request.getRequestURI(), "/"));
+        if (request.getParameter("state") != null) {
+            // // TODO: replace with a Logger
+            System.out.println(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
+                    request.getRequestURI(), "/"));
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
+            return;
         }
+        if (request.getParameter("error") != null) {
+            System.out.println("error from keycloak " + request.getParameter("error"));
+            return;
+        }
+        // // TODO: replace with a Logger
+        System.out.println(String.format("====> pass through the filter '%s'", request.getRequestURI()));
+        filterChain.doFilter(servletRequest, servletResponse);
+
+        // could be simpyfied by using state-parameter in url for passing through filters....
+        // if (request.getRequestURI().equals("/") || request.getRequestURI().startsWith("/api/")
+        // || request.getRequestURI().startsWith("/index.html") || request.getRequestURI().startsWith("/runtime.")
+        // || request.getRequestURI().startsWith("/polyfills.") || request.getRequestURI().startsWith("/main.")
+        // || request.getRequestURI().startsWith("/scripts.") || request.getRequestURI().startsWith("/styles.")
+        // || request.getRequestURI().startsWith("/favicon.ico")
+        // || request.getRequestURI().startsWith("/3rdpartylicenses.txt")
+        // || request.getRequestURI().startsWith("/assets/") || request.getRequestURI().startsWith("/v3/api-docs")
+        // || request.getRequestURI().startsWith("/swagger-ui")) {
+        // } else {
+        // System.out.println(String.format("====> make a forward from '%s' to '%s'", request.getRequestURI(), "/"));
+        // servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
+        // }
     }
 }

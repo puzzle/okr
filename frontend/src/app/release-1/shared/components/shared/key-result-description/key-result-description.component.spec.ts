@@ -32,7 +32,7 @@ describe('KeyResultDescriptionComponent', () => {
       TestBed.configureTestingModule({
         imports: [
           TranslateTestingModule.withTranslations({
-            de: require('../../../../../assets/i18n/de.json'),
+            de: require('../../../../../../assets/i18n/de.json'),
           }),
           HttpClientTestingModule,
           BrowserAnimationsModule,

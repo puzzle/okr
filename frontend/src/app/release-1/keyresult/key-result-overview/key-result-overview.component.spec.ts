@@ -40,7 +40,7 @@ describe('KeyResultOverviewComponent', () => {
           RouterTestingModule,
           BrowserDynamicTestingModule,
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../assets/i18n/de.json'),
           }),
         ],
         declarations: [KeyResultOverviewComponent],
@@ -155,7 +155,7 @@ describe('KeyResultOverviewComponent', () => {
           RouterTestingModule,
           BrowserDynamicTestingModule,
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../assets/i18n/de.json'),
           }),
         ],
         declarations: [KeyResultOverviewComponent],

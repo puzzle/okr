@@ -2,7 +2,7 @@
   <div class="title-create-button">
     <p class="headline-large">Teams</p>
     <button class="create-button" mat-stroked-button (click)="routeService.navigate('/team/edit')">
-      <img class="add-icon" src="assets/add-icon.svg" /> Team erstellen
+      <img class="add-icon" src="../../../../assets/add-icon.svg" /> Team erstellen
     </button>
   </div>
 
@@ -10,13 +10,13 @@
     <div class="team-flex">
       <p class="team-name">{{ team.name }}</p>
       <img
-        src="assets/edit-icon.svg"
+        src="../../../../assets/edit-icon.svg"
         alt="edit-icon"
         class="edit-icon"
         (click)="routeService.navigate('/team/edit/' + team.id)"
       />
       <img
-        src="assets/delete-icon.svg"
+        src="../../../../assets/delete-icon.svg"
         *ngIf="team.id !== undefined"
         (click)="openDeleteDialog(team.id)"
         alt="delete-icon"

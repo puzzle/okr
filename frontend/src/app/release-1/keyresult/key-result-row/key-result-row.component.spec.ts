@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { trigger } from '@angular/animations';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { KeyResultRowComponent } from './key-result-row.component';
-import { MenuEntry } from 'src/app/shared/types/menu-entry';
+import { MenuEntry } from 'src/app/release-1/shared/types/menu-entry';
 import { KeyResultMeasure } from '../../shared/services/key-result.service';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
@@ -46,7 +46,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../assets/i18n/de.json'),
           }),
         ],
         providers: [
@@ -142,7 +142,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../assets/i18n/de.json'),
           }),
         ],
         providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],
@@ -193,7 +193,7 @@ describe('KeyResultKeyResultRowComponent', () => {
           KeyresultModule,
           HttpClientTestingModule,
           TranslateTestingModule.withTranslations({
-            de: require('../../../assets/i18n/de.json'),
+            de: require('../../../../assets/i18n/de.json'),
           }),
         ],
         providers: [DatePipe, { provide: ToastrService, useValue: mockToastrService }],

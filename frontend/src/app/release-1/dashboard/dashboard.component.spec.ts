@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { Team, TeamService } from '../shared/services/team.service';
 import { Observable, of } from 'rxjs';
-import { AppModule } from '../app.module';
+import { AppModule } from '../../app.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Quarter, QuarterService } from '../shared/services/quarter.service';

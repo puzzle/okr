@@ -110,7 +110,7 @@ describe('MeasureFormComponent Edit', () => {
           RouterLinkWithHref,
           ToastrModule.forRoot(),
           TranslateTestingModule.withTranslations({
-            de: require('../../../../../assets/i18n/de.json'),
+            de: require('../../../../../../assets/i18n/de.json'),
           }),
         ],
         providers: [

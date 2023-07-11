@@ -9,10 +9,4 @@ public class UserMapper {
     public UserDto toDto(User user) {
         return new UserDto(user.getId(), user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
     }
-
-    public User toUser(UserDto userDto) {
-        return User.Builder.builder().withId(userDto.getId()).withUsername(userDto.getUsername())
-                .withFirstname(userDto.getFirstname()).withLastname(userDto.getLastname()).withEmail(userDto.getEmail())
-                .build();
-    }
 }

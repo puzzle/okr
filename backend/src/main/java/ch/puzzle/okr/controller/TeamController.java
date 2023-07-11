@@ -99,7 +99,6 @@ public class TeamController {
             @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
             @RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        teamDto.setId(id);
         Team team = teamMapper.toTeam(teamDto);
         TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);

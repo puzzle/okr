@@ -21,6 +21,6 @@ public class KeyResultMeasureMapper {
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
                 keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
                 keyResult.getBasisValue(), keyResult.getTargetValue(), measureMapper.toDto(measure),
-                this.progressService.calculateKeyResultProgress(keyResult));
+                progressService.calculateKeyResultProgress(keyResult));
     }
 }

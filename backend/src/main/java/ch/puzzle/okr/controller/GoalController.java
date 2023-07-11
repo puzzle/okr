@@ -36,7 +36,6 @@ public class GoalController {
     @GetMapping("/{id}")
     public ResponseEntity<GoalDto> getGoalById(
             @Parameter(description = "The ID for getting a Goal.", required = true) @PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.goalMapper.toDto(this.keyResultService.getKeyResultById(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(goalMapper.toDto(keyResultService.getKeyResultById(id)));
     }
 }

@@ -4,6 +4,7 @@ import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -59,17 +60,17 @@ public class TeamService {
         if (team.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
-        if (team.getName() == null || team.getName().isBlank()) {
+        if (StringUtils.isBlank(team.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }
         return teamRepository.save(team);
     }
 
     public Team updateTeam(Long id, Team team) {
-        if (team.getName() == null || team.getName().isBlank()) {
+        if (StringUtils.isBlank(team.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
         }
-        this.getTeamById(id);
+        getTeamById(id);
         return teamRepository.save(team);
     }
 
@@ -84,8 +85,8 @@ public class TeamService {
 
     @Transactional
     public void deleteTeamById(Long teamId) {
-        this.objectiveRepository.findByTeamIdOrderByTitleAsc(teamId).forEach(objective -> {
-            this.objectiveService.deleteObjectiveById(objective.getId());
+        objectiveRepository.findByTeamIdOrderByTitleAsc(teamId).forEach(objective -> {
+            objectiveService.deleteObjectiveById(objective.getId());
         });
 
         teamRepository.deleteById(teamId);

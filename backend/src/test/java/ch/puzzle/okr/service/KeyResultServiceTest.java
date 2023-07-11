@@ -182,9 +182,9 @@ class KeyResultServiceTest {
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
         assertEquals(3, keyResultList.size());
-        assertEquals("Keyresult 1", keyResultList.get(0).getTitle());
-        assertEquals(1, keyResultList.get(0).getMeasure().getId());
-        assertEquals(1, keyResultList.get(0).getObjectiveId());
+        assertEquals("Keyresult 1", keyResultList.get(0).title());
+        assertEquals(1, keyResultList.get(0).measure().id());
+        assertEquals(1, keyResultList.get(0).objectiveId());
     }
 
     @Test
@@ -198,7 +198,7 @@ class KeyResultServiceTest {
         List<KeyResultMeasureDto> keyResultList = keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L);
 
         assertEquals(3, keyResultList.size());
-        assertNull(keyResultList.get(0).getMeasure());
+        assertNull(keyResultList.get(0).measure());
     }
 
     @Test

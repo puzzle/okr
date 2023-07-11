@@ -2,8 +2,8 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.MeasureService;
+import ch.puzzle.okr.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Component
 public class MeasureMapper {
     private final MeasureService measureService;
-    // TODO: Remove UserRepository when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserRepository userRepository;
+    // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
+    private final UserService userService;
 
-    public MeasureMapper(MeasureService measureService, UserRepository userRepository) {
+    public MeasureMapper(MeasureService measureService, UserService userService) {
         this.measureService = measureService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public MeasureDto toDto(Measure measure) {
@@ -30,17 +30,16 @@ public class MeasureMapper {
     }
 
     public Measure toMeasure(MeasureDto measureDto) {
-        return Measure.Builder.builder().withId(measureDto.getId())
-                .withKeyResult(this.measureService.mapKeyResult(measureDto)).withValue(measureDto.getValue())
-                .withChangeInfo(measureDto.getChangeInfo()).withInitiatives(measureDto.getInitiatives())
-                .withCreatedBy(this.userRepository
-                        .findById(this.measureService.mapKeyResult(measureDto).getOwner().getId()).get()) // replace
-                                                                                                          // current
-                                                                                                          // Keyresultowner
-                                                                                                          // with
-                                                                                                          // current
-                                                                                                          // logged in
-                                                                                                          // USER!!
-                .withCreatedOn(LocalDateTime.now()).withMeasureDate(measureDto.getMeasureDate()).build();
+        return Measure.Builder.builder().withId(measureDto.id()).withKeyResult(measureService.mapKeyResult(measureDto))
+                .withValue(measureDto.value()).withChangeInfo(measureDto.changeInfo())
+                .withInitiatives(measureDto.initiatives())
+                .withCreatedBy(userService.getOwnerById(measureService.mapKeyResult(measureDto).getOwner().getId())) // replace
+                // current
+                // Keyresultowner
+                // with
+                // current
+                // logged in
+                // USER!!
+                .withCreatedOn(LocalDateTime.now()).withMeasureDate(measureDto.measureDate()).build();
     }
 }

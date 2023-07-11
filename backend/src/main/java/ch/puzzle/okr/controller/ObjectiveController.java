@@ -76,7 +76,6 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @RequestBody ObjectiveDto objectiveDTO) {
-        objectiveDTO.setId(id);
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         boolean isImUsed = objectiveService.isQuarterImmutable(objective);
         ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));

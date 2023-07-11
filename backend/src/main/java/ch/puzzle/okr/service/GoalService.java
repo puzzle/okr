@@ -15,8 +15,7 @@ public class GoalService {
     }
 
     public Double getCurrentValue(KeyResult keyResult) {
-        Measure measure = this.measureRepository
-                .findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        Measure measure = measureRepository.findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
         return measure != null ? measure.getValue() : null;
     }
 }

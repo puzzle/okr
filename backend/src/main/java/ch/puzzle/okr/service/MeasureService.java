@@ -28,18 +28,18 @@ public class MeasureService {
         if (measure.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Measure has already an Id");
         }
-        this.checkMeasure(measure);
-        Measure createdMeasure = this.measureRepository.save(measure);
-        this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
+        checkMeasure(measure);
+        Measure createdMeasure = measureRepository.save(measure);
+        progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
     }
 
     public Measure updateMeasure(Long id, Measure measure) {
-        this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Measure with id %d not found", id)));
-        this.checkMeasure(measure);
-        Measure createdMeasure = this.measureRepository.save(measure);
-        this.progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
+        checkMeasure(measure);
+        Measure createdMeasure = measureRepository.save(measure);
+        progressService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
     }
 
@@ -74,7 +74,7 @@ public class MeasureService {
     }
 
     public KeyResult mapKeyResult(MeasureDto measureDto) {
-        Long keyResultId = measureDto.getKeyResultId();
+        Long keyResultId = measureDto.keyResultId();
         return keyResultRepository.findById(keyResultId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("Keyresult with id %d not found", keyResultId)));
@@ -85,7 +85,7 @@ public class MeasureService {
     }
 
     public Measure getMeasureById(long id) {
-        return this.measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        return measureRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Measure with id %d not found", id)));
     }
 

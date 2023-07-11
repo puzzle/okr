@@ -6,6 +6,7 @@ import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -61,12 +62,12 @@ public class ObjectiveService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
         }
         objective.setProgress(null);
-        this.checkObjective(objective);
+        checkObjective(objective);
         return objectiveRepository.save(objective);
     }
 
     public boolean isQuarterImmutable(Objective objective) {
-        boolean quarterHasChanged = !Objects.equals(this.getObjective(objective.getId()).getQuarter().getId(),
+        boolean quarterHasChanged = !Objects.equals(getObjective(objective.getId()).getQuarter().getId(),
                 objective.getQuarter().getId());
 
         boolean hasMeasures = !keyResultService.getLastMeasures(objective.getId()).equals(Collections.emptyList());
@@ -75,7 +76,7 @@ public class ObjectiveService {
     }
 
     public Objective updateObjective(Objective objective) {
-        Objective existingObjective = this.getObjective(objective.getId());
+        Objective existingObjective = getObjective(objective.getId());
         objective.setProgress(existingObjective.getProgress());
         if (isQuarterImmutable(objective)) {
             objective.setQuarter(existingObjective.getQuarter());
@@ -88,12 +89,12 @@ public class ObjectiveService {
                 objective.setModifiedOn(modifiedOn);
             }
         }
-        this.checkObjective(objective);
-        return this.objectiveRepository.save(objective);
+        checkObjective(objective);
+        return objectiveRepository.save(objective);
     }
 
     private void checkObjective(Objective objective) {
-        if (objective.getTitle() == null || objective.getTitle().isBlank()) {
+        if (StringUtils.isBlank(objective.getTitle())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "Missing attribute title when creating objective");
         } else if (objective.getModifiedOn() == null) {
@@ -109,11 +110,10 @@ public class ObjectiveService {
 
     @Transactional
     public void deleteObjectiveById(Long id) {
-        List<KeyResult> keyResults = this.keyResultRepository
-                .findByObjectiveOrderByModifiedOnDesc(this.getObjective(id));
+        List<KeyResult> keyResults = keyResultRepository.findByObjectiveOrderByModifiedOnDesc(getObjective(id));
         for (KeyResult keyResult : keyResults) {
-            this.keyResultService.deleteKeyResultById(keyResult.getId());
+            keyResultService.deleteKeyResultById(keyResult.getId());
         }
-        this.objectiveRepository.deleteById(id);
+        objectiveRepository.deleteById(id);
     }
 }

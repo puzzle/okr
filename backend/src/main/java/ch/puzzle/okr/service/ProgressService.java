@@ -29,19 +29,19 @@ public class ProgressService {
     }
 
     public void updateObjectiveProgress(Long objectiveId) {
-        List<KeyResult> keyResultList = this.keyResultRepository.findByObjectiveId(objectiveId);
+        List<KeyResult> keyResultList = keyResultRepository.findByObjectiveId(objectiveId);
         if (keyResultList.size() == 0) {
             Objective objective = objectiveService.getObjective(objectiveId);
             objective.setProgress(null);
-            this.objectiveRepository.save(objective);
+            objectiveRepository.save(objective);
         } else {
             double objectiveProgress = keyResultList.stream().mapToDouble(this::calculateKeyResultProgress).average()
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                             "Progress calculation failed!"));
 
-            Objective objective = this.objectiveService.getObjective(objectiveId);
+            Objective objective = objectiveService.getObjective(objectiveId);
             objective.setProgress((long) Math.floor(objectiveProgress));
-            this.objectiveRepository.save(objective);
+            objectiveRepository.save(objective);
         }
     }
 
@@ -57,7 +57,7 @@ public class ProgressService {
 
     protected double calculateKeyResultProgressForMinMax(KeyResult keyResult) {
         Double targetValue = keyResult.getTargetValue();
-        List<MeasureRepository.MeasureValue> measureValueList = this.measureRepository
+        List<MeasureRepository.MeasureValue> measureValueList = measureRepository
                 .findMeasuresByKeyResultId(keyResult.getId());
 
         if (measureValueList.isEmpty()) {
@@ -86,8 +86,7 @@ public class ProgressService {
                     "This class doesn't calculate progress for min or max expected evolutions!");
         }
 
-        Measure lastMeasure = this.measureRepository
-                .findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        Measure lastMeasure = measureRepository.findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
         if (lastMeasure == null) {
             return 0D;
         }

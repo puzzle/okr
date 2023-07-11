@@ -19,7 +19,6 @@ import java.util.stream.IntStream;
 @Service
 public class QuarterService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
-    private final Pattern getValuesFromLabel = Pattern.compile("^GJ (\\d{2})/\\d{2}-Q([1-4])$");
 
     static {
         yearToBusinessQuarterMap.put(1, 3);
@@ -28,6 +27,7 @@ public class QuarterService {
         yearToBusinessQuarterMap.put(4, 2);
     }
 
+    private final Pattern getValuesFromLabel = Pattern.compile("^GJ (\\d{2})/\\d{2}-Q([1-4])$");
     private final KeyResultService keyResultService;
     private final QuarterRepository quarterRepository;
     public YearMonth now;
@@ -45,7 +45,7 @@ public class QuarterService {
 
     public List<Quarter> getOrCreateQuarters() {
 
-        String currentQuarterLabel = this.getQuarter(now);
+        String currentQuarterLabel = getQuarter(now);
         List<String> futureQuarter = getFutureQuarters(now, 1);
         List<String> pastQuarter = getPastQuarters(now, 4);
 
@@ -97,7 +97,7 @@ public class QuarterService {
     }
 
     public StartEndDateDTO getStartAndEndDateOfKeyresult(long keyResultId) {
-        KeyResult keyResult = this.keyResultService.getKeyResultById(keyResultId);
+        KeyResult keyResult = keyResultService.getKeyResultById(keyResultId);
         String quarterLabel = keyResult.getObjective().getQuarter().getLabel();
 
         YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);

@@ -40,17 +40,17 @@ public class KeyResultService {
     }
 
     public KeyResult createKeyResult(KeyResult keyResult) {
-        return this.keyResultRepository.save(keyResult);
+        return keyResultRepository.save(keyResult);
     }
 
     public KeyResult getKeyResultById(long id) {
-        return this.keyResultRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        return keyResultRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Keyresult with id %d not found", id)));
     }
 
     public KeyResult updateKeyResult(KeyResult keyResult) {
         if (keyResultRepository.findById(keyResult.getId()).isPresent()) {
-            return this.keyResultRepository.save(keyResult);
+            return keyResultRepository.save(keyResult);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     String.format("Could not find keyresult with id %d", keyResult.getId()));
@@ -58,12 +58,12 @@ public class KeyResultService {
     }
 
     public User getOwnerById(long id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Owner with id %d not found", id)));
     }
 
     public Objective getObjectivebyId(long id) {
-        return this.objectiveRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+        return objectiveRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Objective with id %d not found", id)));
     }
 

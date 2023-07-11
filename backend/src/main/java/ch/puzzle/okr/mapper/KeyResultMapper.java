@@ -2,9 +2,9 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ProgressService;
+import ch.puzzle.okr.service.UserService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 public class KeyResultMapper {
 
     private final KeyResultService keyResultService;
-    // TODO: Remove UserRepository when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserRepository userRepository;
+    // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
+    private final UserService userService;
 
     private final ProgressService progressService;
 
-    public KeyResultMapper(KeyResultService keyResultService, UserRepository userRepository,
+    public KeyResultMapper(KeyResultService keyResultService, UserService userService,
             ProgressService progressService) {
         this.keyResultService = keyResultService;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.progressService = progressService;
     }
 
@@ -34,12 +34,12 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        return KeyResult.Builder.builder().withId(keyResultDto.getId()).withTitle(keyResultDto.getTitle())
-                .withOwner(this.keyResultService.getOwnerById(keyResultDto.getOwnerId()))
-                .withObjective(this.keyResultService.getObjectivebyId(keyResultDto.getObjectiveId()))
-                .withDescription(keyResultDto.getDescription()).withTargetValue(keyResultDto.getTargetValue())
-                .withBasisValue(keyResultDto.getBasicValue()).withExpectedEvolution(keyResultDto.getExpectedEvolution())
-                .withUnit(keyResultDto.getUnit()).withModifiedOn(LocalDateTime.now())
-                .withCreatedBy(userRepository.findById(keyResultDto.getOwnerId()).get()).build();
+        return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
+                .withOwner(keyResultService.getOwnerById(keyResultDto.ownerId()))
+                .withObjective(keyResultService.getObjectivebyId(keyResultDto.objectiveId()))
+                .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
+                .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
+                .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())
+                .withCreatedBy(userService.getOwnerById(keyResultDto.ownerId())).build();
     }
 }

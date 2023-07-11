@@ -43,7 +43,7 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id", content = @Content) })
     @GetMapping("/{id}")
     public KeyResultDto getKeyResultbyId(@PathVariable long id) {
-        return this.keyResultMapper.toDto(this.keyResultService.getKeyResultById(id));
+        return keyResultMapper.toDto(keyResultService.getKeyResultById(id));
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
@@ -53,9 +53,9 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the key result tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        KeyResult keyResult = this.keyResultMapper.toKeyResult(keyResultDto);
-        KeyResultDto createdKeyResult = this.keyResultMapper.toDto(this.keyResultService.createKeyResult(keyResult));
-        this.progressService.updateObjectiveProgress(keyResult.getObjective().getId());
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultService.createKeyResult(keyResult));
+        progressService.updateObjectiveProgress(keyResult.getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
@@ -68,10 +68,9 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-        keyResultDto.setId(id);
-        KeyResultDto updatedKeyResult = this.keyResultMapper
-                .toDto(this.keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
-        this.progressService.updateObjectiveProgress(updatedKeyResult.getObjectiveId());
+        KeyResultDto updatedKeyResult = keyResultMapper
+                .toDto(keyResultService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+        progressService.updateObjectiveProgress(updatedKeyResult.objectiveId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

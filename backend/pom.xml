@@ -56,6 +56,11 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.6.11</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.16.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -229,7 +234,7 @@
             <id>staging</id>
             <properties>
                 <maven.test.skip>true</maven.test.skip>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <spring.profiles.active>staging</spring.profiles.active>
             </properties>
             <build>
                 <plugins>

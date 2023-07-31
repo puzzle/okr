@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -45,11 +46,12 @@ class TeamServiceTest {
 
     @MockBean
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
-    @InjectMocks
-    private TeamService teamService;
-
     @Mock
     ObjectiveService objectiveService;
+    @Spy
+    private ValidationService validationService;
+    @InjectMocks
+    private TeamService teamService;
 
     private static Stream<Arguments> shouldGetTeamsByIds() {
         return Stream.of(Arguments.of(List.of(1L, 2L),
@@ -124,6 +126,7 @@ class TeamServiceTest {
         Team savedTeam = teamService.saveTeam(team);
         assertNull(savedTeam.getId());
         assertEquals("TestTeam", savedTeam.getName());
+        verify(validationService, times(1)).validateOnSave(team);
     }
 
     @Test
@@ -134,6 +137,7 @@ class TeamServiceTest {
                 () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
+        verify(validationService, times(1)).validateOnSave(team);
     }
 
     @Test
@@ -144,6 +148,7 @@ class TeamServiceTest {
         Team savedTeam = teamService.saveTeam(team);
         assertNull(savedTeam.getId());
         assertEquals("TestTeam", savedTeam.getName());
+        verify(validationService, times(1)).validateOnSave(team);
     }
 
     @Test
@@ -153,7 +158,9 @@ class TeamServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(("Missing attribute name when creating team"), exception.getReason());
+        assertTrue(exception.getReason().contains("Missing attribute name when saving team."));
+        assertTrue(exception.getReason().contains("Attribute name can not be null when saving team."));
+        verify(validationService, times(1)).validateOnSave(team);
     }
 
     @ParameterizedTest
@@ -165,7 +172,8 @@ class TeamServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(("Missing attribute name when creating team"), exception.getReason());
+        assertTrue(exception.getReason().contains("Missing attribute name when saving team."));
+        verify(validationService, times(1)).validateOnSave(team);
     }
 
     @Test
@@ -177,6 +185,7 @@ class TeamServiceTest {
         Team returnedTeam = teamService.updateTeam(1L, team);
         assertEquals("New Team", returnedTeam.getName());
         assertEquals(1L, returnedTeam.getId());
+        verify(validationService, times(1)).validateOnUpdate(team);
     }
 
     @Test
@@ -190,6 +199,7 @@ class TeamServiceTest {
     void shouldNotUpdateTeamWithEmptyName() {
         Team team = Team.Builder.builder().withId(1L).withName("").build();
         assertThrows(ResponseStatusException.class, () -> teamService.updateTeam(1L, team));
+        verify(validationService, times(1)).validateOnUpdate(team);
     }
 
     @Test

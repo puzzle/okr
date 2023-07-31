@@ -1,6 +1,9 @@
 package ch.puzzle.okr.models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -10,13 +13,11 @@ import java.util.Objects;
 public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
-    @NotNull
     private Long id;
 
-    @NotBlank
-    @NotNull
-    @Column(nullable = false)
-    @Size(min = 2, max = 250)
+    @NotBlank(message = "Missing attribute name when saving team")
+    @NotNull(message = "Attribute name can not be null when saving team")
+    @Size(min = 2, max = 250, message = "Attribute name must have size between 2 and 250 characters when saving team")
     private String name;
 
     public Team() {

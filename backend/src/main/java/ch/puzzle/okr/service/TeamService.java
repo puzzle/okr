@@ -4,7 +4,6 @@ import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,11 +23,14 @@ public class TeamService {
 
     private final ObjectiveService objectiveService;
 
+    private final ValidationService validationService;
+
     public TeamService(TeamRepository teamRepository, ObjectiveRepository objectiveRepository,
-            ObjectiveService objectiveService) {
+            ObjectiveService objectiveService, ValidationService validationService) {
         this.teamRepository = teamRepository;
         this.objectiveRepository = objectiveRepository;
         this.objectiveService = objectiveService;
+        this.validationService = validationService;
     }
 
     public List<Team> getAllTeams() {
@@ -57,19 +59,12 @@ public class TeamService {
     }
 
     public Team saveTeam(Team team) {
-        if (team.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
-        }
-        if (StringUtils.isBlank(team.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
-        }
+        validationService.validateOnSave(team);
         return teamRepository.save(team);
     }
 
     public Team updateTeam(Long id, Team team) {
-        if (StringUtils.isBlank(team.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team");
-        }
+        validationService.validateOnUpdate(team);
         getTeamById(id);
         return teamRepository.save(team);
     }

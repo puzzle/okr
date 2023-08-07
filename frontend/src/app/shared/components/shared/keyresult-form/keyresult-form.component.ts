@@ -64,6 +64,7 @@ export class KeyresultFormComponent implements OnInit {
     this.keyResultForm.get('expectedEvolution')!.valueChanges.subscribe((value) => {
       if (value === 'INCREASE' || value === 'DECREASE') {
         this.keyResultForm.get('basicValue')!.setValidators(Validators.required);
+        this.keyResultForm.controls['basicValue'].enable();
       } else {
         this.keyResultForm.get('basicValue')!.disable();
       }

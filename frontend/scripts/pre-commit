@@ -6,7 +6,7 @@ npm run format
 echo "*****Finish running prettier******"
 
 echo "*****Running maven formatter******"
-cd ../$PWD/backend
+cd ../backend
 mvn formatter:format
 echo "*****Finish running maven formatter******"
 

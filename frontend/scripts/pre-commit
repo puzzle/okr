@@ -6,11 +6,9 @@ npm run format
 echo "*****Finish running prettier******"
 
 echo "*****Running maven formatter******"
-cd $PWD/backend
+cd ../$PWD/backend
 mvn formatter:format
 echo "*****Finish running maven formatter******"
-
-if [ $? -ne 0 ]; then echo "Run following command in /frontend: npm run format"; exit 1 ; fi
 
 status=$?
 exit $status

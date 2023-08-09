@@ -49,7 +49,7 @@ public class TeamController {
         return teamService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     @Operation(summary = "Get Objectives by Team", description = "Get a List of Objectives by Team Id", deprecated = true)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of Objectives associated to a Team with a specified ID", content = {
@@ -63,6 +63,7 @@ public class TeamController {
                 .body(this.objectiveService.getObjectivesByTeam(id).stream().map(objectiveMapper::toDto).toList());
     }
 
+    @Deprecated(forRemoval = true)
     @Operation(summary = "Get Team", description = "Get a Team by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a Team with a specified ID.", content = {
@@ -75,6 +76,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
     }
 
+    @Deprecated(forRemoval = true)
     @Operation(summary = "Create Team", description = "Create a new Team.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new Team.", content = {
@@ -88,6 +90,7 @@ public class TeamController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 
+    @Deprecated(forRemoval = true)
     @Operation(summary = "Update Team", description = "Update Team by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Team in db.", content = {
@@ -103,7 +106,7 @@ public class TeamController {
         TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
-
+    @Deprecated(forRemoval = true)
     @Operation(summary = "Delete Team by Id", description = "Delete Team by Id")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted team by Id"),
             @ApiResponse(responseCode = "404", description = "Did not find the team with requested id") })

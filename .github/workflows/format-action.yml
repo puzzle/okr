@@ -1,0 +1,49 @@
+name: 'Format'
+
+on: [push]
+jobs:
+
+  Frontend_format:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.12.1'
+      - name: Npm install
+        run: npm ci
+      - name: Format frontend
+        run: npm run format
+
+  Backend_format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check backend format
+        run: mvn formatter:format -f backend/pom.xml
+
+  Push_formating:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit and Push automated changes
+        shell: bash
+        env:
+          COMMITPREFIX: '[VU]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add . || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          }
+          git commit -m "$COMMITPREFIX Automated formating" || {
+            echo "No changes to commit, skipping push"
+            exit 0
+          }
+          git push -f

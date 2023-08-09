@@ -4,6 +4,7 @@ import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,14 +24,14 @@ public class TeamService {
 
     private final ObjectiveService objectiveService;
 
-    private final ValidationService validationService;
+    private final TeamValidationService teamValidationService;
 
     public TeamService(TeamRepository teamRepository, ObjectiveRepository objectiveRepository,
-            ObjectiveService objectiveService, ValidationService validationService) {
+            ObjectiveService objectiveService, TeamValidationService teamValidationService) {
         this.teamRepository = teamRepository;
         this.objectiveRepository = objectiveRepository;
         this.objectiveService = objectiveService;
-        this.validationService = validationService;
+        this.teamValidationService = teamValidationService;
     }
 
     public List<Team> getAllTeams() {
@@ -59,12 +60,12 @@ public class TeamService {
     }
 
     public Team saveTeam(Team team) {
-        validationService.validateOnSave(team);
+        teamValidationService.validateOnSave(team);
         return teamRepository.save(team);
     }
 
     public Team updateTeam(Long id, Team team) {
-        validationService.validateOnUpdate(team);
+        teamValidationService.validateOnUpdate(team);
         getTeamById(id);
         return teamRepository.save(team);
     }

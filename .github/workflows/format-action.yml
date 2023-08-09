@@ -11,30 +11,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.12.1'
+
       - name: Npm install
         run: npm ci
+
       - name: Format frontend
         run: npm run format
 
-  Backend_format:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Check backend format
-        run: mvn formatter:format -f backend/pom.xml
-
-  Push_formating:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Commit and Push automated changes
+      - name: Commit and Push formated frontend
         shell: bash
         env:
-          COMMITPREFIX: '[VU]'
+          COMMITPREFIX: '[FM]'
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -42,7 +34,41 @@ jobs:
             echo "No files were changed, so we did not commit anything"
             exit 1
           }
-          git commit -m "$COMMITPREFIX Automated formating" || {
+          git commit -m "$COMMITPREFIX Automated formating frontend" || {
+            echo "No changes to commit, skipping push"
+            exit 0
+          }
+          git push -f
+
+  Backend_format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Format backend
+        run: mvn formatter:format -f backend/pom.xml
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{github.workspace}}
+
+      - name: Commit and Push formated backend
+        shell: bash
+        env:
+          COMMITPREFIX: '[FM]'
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add . || {
+            echo "No files were changed, so we did not commit anything"
+            exit 1
+          }
+          git commit -m "$COMMITPREFIX Automated formating backend" || {
             echo "No changes to commit, skipping push"
             exit 0
           }

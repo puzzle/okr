@@ -1,11 +1,22 @@
 #!/bin/sh
 
+projectPath=$PWD
+addedFiles=$(git diff --cached --name-only --diff-filter=a)
+
 echo "*****Running prettier******"
+cd $projectPath/frontend
+npm run format
+echo "*****Finish running prettier******"
 
-cd $PWD/frontend
-npm run check
+echo "*****Running maven formatter******"
+cd $projectPath/backend
+mvn formatter:format
+echo "*****Finish running maven formatter******"
 
-if [ $? -ne 0 ]; then echo "Run following command in /frontend: npm run format"; exit 1 ; fi
+echo "*****Adding changes to git******"
+cd $projectPath
+git add $addedFiles
+echo "*****Formatted files added again******"
 
 status=$?
 exit $status

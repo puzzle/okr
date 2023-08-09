@@ -16,7 +16,7 @@ echo "*****Finish running maven formatter******"
 echo "*****Adding changes to git******"
 cd $projectPath
 git add $addedFiles
-echo "*****Formatted added again******"
+echo "*****Formatted files added again******"
 
 status=$?
 exit $status

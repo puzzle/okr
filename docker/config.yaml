@@ -1,0 +1,13 @@
+issuer_url: https://sso.puzzle.ch/auth/realms/pitc
+
+clients:
+  - id: pitc_okr_prod
+    redirect_uris:
+      - http://localhost:4200/auth/keycloakopenid/callback
+
+people:
+  japplessed:
+    name: Johnny Appleseed
+    groups:
+      - admin
+      - editor

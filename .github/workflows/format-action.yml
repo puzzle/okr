@@ -3,7 +3,7 @@ name: 'Format'
 on: [push]
 jobs:
 
-  Frontend_format:
+  Frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -40,7 +40,7 @@ jobs:
           }
           git push -f
 
-  Backend_format:
+  Backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

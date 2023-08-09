@@ -3,7 +3,7 @@ name: 'Frontend tests'
 on: [push]
 jobs:
 
-  Frontend_tests:
+  Tests:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -11,11 +11,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.12.1'
+
       - name: Npm install
         run: npm ci
+
       - name: Run unit tests
         run: npm test

@@ -123,7 +123,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
-        TeamDto testTeam = new TeamDto(1L, "TestTeam",0);
+        TeamDto testTeam = new TeamDto(1L, "TestTeam", 0);
 
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);

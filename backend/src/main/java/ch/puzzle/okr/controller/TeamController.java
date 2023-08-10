@@ -71,7 +71,7 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID.", content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<TeamDto> getTeamById(
-            @Parameter(description = "The ID for getting a Team.", required = true) @PathVariable long id) {
+            @Parameter(description = "The ID for getting a Team.", required = true) @PathVariable Long id) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
     }
@@ -103,9 +103,10 @@ public class TeamController {
             @RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
-        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
+        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
+
     @Deprecated(forRemoval = true)
     @Operation(summary = "Delete Team by Id", description = "Delete Team by Id")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted team by Id"),

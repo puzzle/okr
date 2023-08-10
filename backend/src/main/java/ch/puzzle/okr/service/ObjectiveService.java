@@ -2,6 +2,8 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
@@ -115,5 +117,9 @@ public class ObjectiveService {
             keyResultService.deleteKeyResultById(keyResult.getId());
         }
         objectiveRepository.deleteById(id);
+    }
+
+    public Integer activeObjectivesAmountOfTeam(Team team, Quarter quarter) {
+        return objectiveRepository.countByTeamAndQuarter(team, quarter);
     }
 }

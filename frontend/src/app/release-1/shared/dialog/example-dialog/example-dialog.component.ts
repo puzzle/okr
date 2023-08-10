@@ -21,4 +21,8 @@ export class ExampleDialogComponent {
   save() {
     return this.dialog.close(this.dialogForm.value);
   }
+
+  isTouchedOrDirty(name: string) {
+    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
+  }
 }

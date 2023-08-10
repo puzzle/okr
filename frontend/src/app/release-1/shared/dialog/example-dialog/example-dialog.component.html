@@ -4,33 +4,17 @@
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" placeholder="Ex. Tom" value="" />
-      <small
-        class="text-danger fw-bold"
-        *ngIf="
-          dialogForm.get('name')?.hasError('required') &&
-          (dialogForm.get('name')?.touched || dialogForm.get('name')?.dirty)
-        "
-      >
-        This field 'name' is required.
-      </small>
-      <small
-        class="text-danger fw-bold"
-        *ngIf="
-          dialogForm.get('name')?.hasError('minlength') &&
-          (dialogForm.get('name')?.touched || dialogForm.get('name')?.dirty)
-        "
-      >
-        This field is to short.
-      </small>
-      <small
-        class="text-danger fw-bold"
-        *ngIf="
-          dialogForm.get('name')?.hasError('maxlength') &&
-          (dialogForm.get('name')?.touched || dialogForm.get('name')?.dirty)
-        "
-      >
-        This field is to long.
-      </small>
+      <div class="errors" *ngIf="isTouchedOrDirty('name')">
+        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('required')">
+          This field 'name' is required.
+        </small>
+        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('minlength')">
+          This field is to short.
+        </small>
+        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('maxlength')">
+          This field is to long.
+        </small>
+      </div>
     </mat-form-field>
 
     <mat-radio-group formControlName="gender">
@@ -40,7 +24,7 @@
     </mat-radio-group>
     <small
       class="text-danger fw-bold"
-      *ngIf="dialogForm.get('gender')?.hasError('required') && dialogForm.get('gender')?.dirty"
+      *ngIf="dialogForm.get('gender')?.hasError('required') && isTouchedOrDirty('gender')"
     >
       The field 'gender' is required.
     </small>
@@ -53,10 +37,7 @@
     </mat-form-field>
     <small
       class="text-danger fw-bold"
-      *ngIf="
-        dialogForm.get('hobby')?.hasError('required') &&
-        (dialogForm.get('hobby')?.touched || dialogForm.get('hobby')?.dirty)
-      "
+      *ngIf="dialogForm.get('hobby')?.hasError('required') && isTouchedOrDirty('hobby')"
     >
       The field 'hobby' is required.
     </small>

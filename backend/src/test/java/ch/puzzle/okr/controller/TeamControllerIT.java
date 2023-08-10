@@ -18,6 +18,8 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -44,6 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(TeamController.class)
 class TeamControllerIT {
+    private static final Logger logger = LoggerFactory.getLogger(TeamControllerIT.class);
 
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
@@ -86,7 +89,7 @@ class TeamControllerIT {
         BDDMockito.given(teamService.getTeamById(5)).willReturn(teamPuzzle);
 
         mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
-                .andDo((teams) -> System.out.println(teams.getResponse().getContentAsString()))
+                .andDo((teams) -> logger.info(teams.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.name", Is.is("Puzzle")));
     }

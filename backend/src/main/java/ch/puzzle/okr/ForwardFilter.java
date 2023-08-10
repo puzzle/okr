@@ -1,5 +1,7 @@
 package ch.puzzle.okr;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -8,23 +10,24 @@ import java.io.IOException;
 
 @Component
 public class ForwardFilter implements Filter {
+
+    private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         if (request.getParameter("state") != null) {
-            // // TODO: replace with a Logger
-            System.out.println(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
+            logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
                     request.getRequestURI(), "/"));
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
             return;
         }
         if (request.getParameter("error") != null) {
-            System.out.println("error from keycloak " + request.getParameter("error"));
+            logger.error("error from keycloak " + request.getParameter("error"));
             return;
         }
-        // // TODO: replace with a Logger
-        System.out.println(String.format("====> pass through the filter '%s'", request.getRequestURI()));
+        logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);
 
         // could be simpyfied by using state-parameter in url for passing through filters....
@@ -37,7 +40,7 @@ public class ForwardFilter implements Filter {
         // || request.getRequestURI().startsWith("/assets/") || request.getRequestURI().startsWith("/v3/api-docs")
         // || request.getRequestURI().startsWith("/swagger-ui")) {
         // } else {
-        // System.out.println(String.format("====> make a forward from '%s' to '%s'", request.getRequestURI(), "/"));
+        // logger.info(String.format("====> make a forward from '%s' to '%s'", request.getRequestURI(), "/"));
         // servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
         // }
     }

@@ -28,10 +28,11 @@ public class TeamValidationService extends ValidationBase<Long, Team> {
     }
 
     @Override
-    public void validateOnUpdate(Team model) {
+    public void validateOnUpdate(Long id, Team model) {
         isModelNull(model, modelName());
         isIdNull(model.getId());
 
+        doesEntityExist(id, modelName());
         validate(model);
     }
 
@@ -42,15 +43,13 @@ public class TeamValidationService extends ValidationBase<Long, Team> {
     }
 
     @Override
-    protected String modelName() {
+    public String modelName() {
         return "Team";
     }
 
     @Override
     public void doesEntityExist(Long id, String modelName) {
-        teamRepository.findById(id).ifPresent(team -> {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("%s with id %d not found", modelName(), team.getId()));
-        });
+        teamRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("%s with id %d not found", modelName(), id)));
     }
 }

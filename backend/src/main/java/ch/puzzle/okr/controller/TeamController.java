@@ -99,11 +99,11 @@ public class TeamController {
             @ApiResponse(responseCode = "400", description = "Team name was empty.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<TeamDto> updateTeam(
-            @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
+            @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable Long id,
             @RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
-        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(team));
+        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
 

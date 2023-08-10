@@ -40,8 +40,8 @@ public class TeamService {
     }
 
     @Transactional
-    public Team updateTeam(Team team) {
-        validator.validateOnUpdate(team);
+    public Team updateTeam(Long id, Team team) {
+        validator.validateOnUpdate(id, team);
         return teamRepository.save(team);
     }
 

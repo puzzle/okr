@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class ExampleDialogComponent {
     hobby: new FormControl<string>('', [Validators.required]),
   });
 
-  constructor(public dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
+  constructor(public dialog: MatDialogRef<ExampleDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {}
 
   save() {
     return this.dialog.close(this.dialogForm.value);

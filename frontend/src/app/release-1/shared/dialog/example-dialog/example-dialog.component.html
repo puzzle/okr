@@ -6,13 +6,13 @@
       <input matInput formControlName="name" placeholder="Ex. Tom" value="" />
       <div class="errors" *ngIf="isTouchedOrDirty('name')">
         <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('required')">
-          This field 'name' is required.
+          {{ errorMessages.REQUIRED }}
         </mat-error>
         <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('minlength')">
-          This field is to short.
+          {{ errorMessages.LENGTH.MIN }}
         </mat-error>
         <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('maxlength')">
-          This field is to long.
+          {{ errorMessages.LENGTH.MAX }}
         </mat-error>
       </div>
     </mat-form-field>
@@ -23,7 +23,7 @@
       <mat-radio-button value="other">Other</mat-radio-button>
     </mat-radio-group>
     <mat-error class="fw-bold" *ngIf="dialogForm.get('gender')?.hasError('required') && isTouchedOrDirty('gender')">
-      The field 'gender' is required.
+      {{ errorMessages.REQUIRED }}
     </mat-error>
 
     <mat-form-field>
@@ -33,7 +33,7 @@
       </mat-select>
     </mat-form-field>
     <mat-error class="fw-bold" *ngIf="dialogForm.get('hobby')?.hasError('required') && isTouchedOrDirty('hobby')">
-      The field 'hobby' is required.
+      {{ errorMessages.REQUIRED }}
     </mat-error>
 
     <mat-dialog-actions>

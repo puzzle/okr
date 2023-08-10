@@ -19,6 +19,6 @@ export class ExampleDialogComponent {
   constructor(public dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
   save() {
-    return this.dialog.close();
+    return this.dialog.close(this.dialogForm.value);
   }
 }

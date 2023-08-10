@@ -5,15 +5,15 @@
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" placeholder="Ex. Tom" value="" />
       <div class="errors" *ngIf="isTouchedOrDirty('name')">
-        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('required')">
+        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('required')">
           This field 'name' is required.
-        </small>
-        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('minlength')">
+        </mat-error>
+        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('minlength')">
           This field is to short.
-        </small>
-        <small class="text-danger fw-bold" *ngIf="dialogForm.get('name')?.hasError('maxlength')">
+        </mat-error>
+        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('maxlength')">
           This field is to long.
-        </small>
+        </mat-error>
       </div>
     </mat-form-field>
 
@@ -22,12 +22,9 @@
       <mat-radio-button value="female">Female</mat-radio-button>
       <mat-radio-button value="other">Other</mat-radio-button>
     </mat-radio-group>
-    <small
-      class="text-danger fw-bold"
-      *ngIf="dialogForm.get('gender')?.hasError('required') && isTouchedOrDirty('gender')"
-    >
+    <mat-error class="fw-bold" *ngIf="dialogForm.get('gender')?.hasError('required') && isTouchedOrDirty('gender')">
       The field 'gender' is required.
-    </small>
+    </mat-error>
 
     <mat-form-field>
       <mat-label>Please select a hobby</mat-label>
@@ -35,12 +32,9 @@
         <mat-option [value]="hobby" *ngFor="let hobby of hobbies">{{ hobby }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <small
-      class="text-danger fw-bold"
-      *ngIf="dialogForm.get('hobby')?.hasError('required') && isTouchedOrDirty('hobby')"
-    >
+    <mat-error class="fw-bold" *ngIf="dialogForm.get('hobby')?.hasError('required') && isTouchedOrDirty('hobby')">
       The field 'hobby' is required.
-    </small>
+    </mat-error>
 
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>

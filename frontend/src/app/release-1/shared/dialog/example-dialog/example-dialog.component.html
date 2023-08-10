@@ -3,7 +3,7 @@
   <mat-form-field>
     <mat-label>Cars</mat-label>
     <mat-select [(value)]="selected" name="cars">
-      <mat-option [value]="car" *ngFor="let car of cars">{{car}}</mat-option>
+      <mat-option [value]="car" *ngFor="let car of cars">{{ car }}</mat-option>
     </mat-select>
   </mat-form-field>
 
@@ -14,7 +14,7 @@
 
   <mat-form-field>
     <mat-label>Favorite food</mat-label>
-    <input matInput placeholder="Ex. Pizza" value="Sushi">
+    <input matInput placeholder="Ex. Pizza" value="Sushi" />
   </mat-form-field>
 
   <mat-dialog-actions>

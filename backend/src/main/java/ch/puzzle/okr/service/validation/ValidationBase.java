@@ -10,7 +10,7 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ValidationBase<Model> {
+public abstract class ValidationBase<Id, Model> {
     private final Validator validator;
 
     ValidationBase() {
@@ -19,24 +19,33 @@ public abstract class ValidationBase<Model> {
         }
     }
 
+    public abstract void validateOnGet(Id id);
+
     public abstract void validateOnUpdate(Model model);
 
-    public abstract void validateOnSave(Model model);
+    public abstract void validateOnCreate(Model model);
 
-    public void isModelNull(Model model) {
+    public abstract void validateOnDelete(Id id);
+
+    protected abstract String modelName();
+
+    public abstract void doesEntityExist(Id id, String modelName);
+
+    public void isModelNull(Model model, String modelName) {
         if (model == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not save undefined team");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Can not save undefined %s", modelName));
         }
     }
 
     public void isIdNull(Long id) {
-        if (id != null) {
+        if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
         }
     }
 
-    protected void validate(Model team) {
-        Set<ConstraintViolation<Model>> violations = validator.validate(team);
+    protected void validate(Model model) {
+        Set<ConstraintViolation<Model>> violations = validator.validate(model);
         processViolations(violations);
     }
 

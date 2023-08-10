@@ -22,15 +22,15 @@ public class TeamTeamValidationServiceTest {
     @Test
     void validateOnSave_ShouldBeSuccessfulWhenValidTeam() {
         Team team = Team.Builder.builder().withId(null).withName("testTeam").build();
-        teamValidationService.validateOnSave(team);
-        verify(teamValidationService, times(1)).validateOnSave(team);
+        teamValidationService.validateOnCreate(team);
+        verify(teamValidationService, times(1)).validateOnCreate(team);
     }
 
     @Test
     void validateOnSave_ShouldThrowExceptionWhenIdIsNotNull() {
         Team team = Team.Builder.builder().withId(5L).withName("testTeam").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamValidationService.validateOnSave(team));
+                () -> teamValidationService.validateOnCreate(team));
         assertTrue(exception.getReason().contains("Not allowed to give an id"));
     }
 
@@ -38,7 +38,7 @@ public class TeamTeamValidationServiceTest {
     void validateOnSave_ShouldThrowExceptionWhenNameIsNull() {
         Team team = Team.Builder.builder().withId(null).withName(null).build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamValidationService.validateOnSave(team));
+                () -> teamValidationService.validateOnCreate(team));
         assertTrue(exception.getReason().contains("Missing attribute name when saving team."));
         assertTrue(exception.getReason().contains("Attribute name can not be null when saving team."));
     }
@@ -47,7 +47,7 @@ public class TeamTeamValidationServiceTest {
     void validateOnSave_ShouldThrowExceptionWhenNameIsToShort() {
         Team team = Team.Builder.builder().withId(null).withName("1").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamValidationService.validateOnSave(team));
+                () -> teamValidationService.validateOnCreate(team));
         assertTrue(exception.getReason()
                 .contains("Attribute name must have size between 2 and 250 characters when saving team."));
     }
@@ -56,7 +56,7 @@ public class TeamTeamValidationServiceTest {
     void validateOnSave_ShouldThrowExceptionWhenNameIsToLong() {
         Team team = Team.Builder.builder().withId(null).withName(StringUtils.repeat('1', 251)).build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamValidationService.validateOnSave(team));
+                () -> teamValidationService.validateOnCreate(team));
         assertTrue(exception.getReason()
                 .contains("Attribute name must have size between 2 and 250 characters when saving team."));
     }
@@ -65,7 +65,7 @@ public class TeamTeamValidationServiceTest {
     void validateOnSave_ShouldThrowExceptionWhenNameIsBlank() {
         Team team = Team.Builder.builder().withId(null).withName("    ").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamValidationService.validateOnSave(team));
+                () -> teamValidationService.validateOnCreate(team));
         assertTrue(exception.getReason().contains("Missing attribute name when saving team"));
     }
 

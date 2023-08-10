@@ -61,16 +61,16 @@ class OverviewServiceTest {
         this.objective3 = Objective.Builder.builder().withId(3L).withTitle("Objective 3")
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withTeam(team2).build();
 
-        this.overviewTeam1Objective1And2 = new OverviewDto(new TeamDto(team1.getId(), team1.getName(),0),
+        this.overviewTeam1Objective1And2 = new OverviewDto(new TeamDto(team1.getId(), team1.getName(), 0),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective1.getQuarter().getId(), null, null, null),
                         new ObjectiveDto(objective2.getId(), objective2.getTitle(), null, null, null, null, null,
                                 objective2.getQuarter().getId(), null, null, null)));
 
-        this.overviewTeam2Objective3 = new OverviewDto(new TeamDto(team2.getId(), team2.getName(),0),
+        this.overviewTeam2Objective3 = new OverviewDto(new TeamDto(team2.getId(), team2.getName(), 0),
                 List.of(new ObjectiveDto(objective3.getId(), objective3.getTitle(), null, null, null, null, null,
                         objective3.getQuarter().getId(), null, null, null)));
-        this.overviewTeam3 = new OverviewDto(new TeamDto(team3.getId(), team3.getName(),0), Collections.emptyList());
+        this.overviewTeam3 = new OverviewDto(new TeamDto(team3.getId(), team3.getName(), 0), Collections.emptyList());
         this.teamList = List.of(team1, team2, team3);
     }
 
@@ -129,10 +129,10 @@ class OverviewServiceTest {
 
     @Test
     void shouldGetOverViewOfQuarterFilterAndTeamFilter() {
-        OverviewDto overviewTeam1Objective1 = new OverviewDto(new TeamDto(team1.getId(), team1.getName(),0),
+        OverviewDto overviewTeam1Objective1 = new OverviewDto(new TeamDto(team1.getId(), team1.getName(), 0),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective1.getQuarter().getId(), null, null, null)));
-        OverviewDto overviewTeam3Objective3 = new OverviewDto(new TeamDto(team3.getId(), team3.getName(),0),
+        OverviewDto overviewTeam3Objective3 = new OverviewDto(new TeamDto(team3.getId(), team3.getName(), 0),
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective3.getQuarter().getId(), null, null, null)));
 

@@ -41,7 +41,7 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfTeamIdIsNull(){
+    void validateOnGet_ShouldThrowExceptionIfTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
         verify(validator, times(1)).isIdNull(null);
@@ -58,7 +58,6 @@ class TeamValidationServiceTest {
         assertEquals("Team with id 1 not found", exception.getReason());
     }
 
-
     @Test
     void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
         Team team = Team.Builder.builder().withId(1L).withName("Team 1").build();
@@ -67,59 +66,59 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).validate(team);
     }
 
-//    @Test
-//    void validateOnSave_ShouldThrowExceptionWhenNameIsToShort() {
-//        Team team = Team.Builder.builder().withId(null).withName("1").build();
-//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-//                () -> validator.validateOnCreate(team));
-//        assertTrue(exception.getReason()
-//                .contains("Attribute name must have size between 2 and 250 characters when saving team."));
-//    }
-//
-//    @Test
-//    void validateOnSave_ShouldThrowExceptionWhenNameIsToLong() {
-//        Team team = Team.Builder.builder().withId(null).withName(StringUtils.repeat('1', 251)).build();
-//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-//                () -> validator.validateOnCreate(team));
-//        assertTrue(exception.getReason()
-//                .contains("Attribute name must have size between 2 and 250 characters when saving team."));
-//    }
-//
-//    @Test
-//    void validateOnSave_ShouldThrowExceptionWhenNameIsBlank() {
-//        Team team = Team.Builder.builder().withId(null).withName("    ").build();
-//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-//                () -> validator.validateOnCreate(team));
-//        assertTrue(exception.getReason().contains("Missing attribute name when saving team"));
-//    }
-//
-//    @Test
-//    void validateOnSave_ShouldBeSuccessfulWhenValidTeam() {
-//        Team team = Team.Builder.builder().withId(null).withName("testTeam").build();
-//        validator.validateOnCreate(team);
-//        verify(validator, times(1)).validateOnCreate(team);
-//    }
-//
-//    @Test
-//    void validateOnSave_ShouldThrowExceptionWhenIdIsNotNull() {
-//        Team team = Team.Builder.builder().withId(5L).withName("testTeam").build();
-//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-//                () -> validator.validateOnCreate(team));
-//        assertTrue(exception.getReason().contains("Not allowed to give an id"));
-//    }
-//
-//    @Test
-//    void validateOnUpdate_ShouldBeSuccessfulWhenValidTeam() {
-//        Team team = Team.Builder.builder().withId(5L).withName("testTeam").build();
-//        validator.validateOnUpdate(team);
-//        verify(validator, times(1)).validateOnUpdate(team);
-//    }
-//
-//    @Test
-//    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
-//        Team team = Team.Builder.builder().withId(null).withName("testTeam").build();
-//        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-//                () -> validator.validateOnUpdate(team));
-//        assertTrue(exception.getReason().contains("Missing attribute team id"));
-//    }
+    // @Test
+    // void validateOnSave_ShouldThrowExceptionWhenNameIsToShort() {
+    // Team team = Team.Builder.builder().withId(null).withName("1").build();
+    // ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+    // () -> validator.validateOnCreate(team));
+    // assertTrue(exception.getReason()
+    // .contains("Attribute name must have size between 2 and 250 characters when saving team."));
+    // }
+    //
+    // @Test
+    // void validateOnSave_ShouldThrowExceptionWhenNameIsToLong() {
+    // Team team = Team.Builder.builder().withId(null).withName(StringUtils.repeat('1', 251)).build();
+    // ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+    // () -> validator.validateOnCreate(team));
+    // assertTrue(exception.getReason()
+    // .contains("Attribute name must have size between 2 and 250 characters when saving team."));
+    // }
+    //
+    // @Test
+    // void validateOnSave_ShouldThrowExceptionWhenNameIsBlank() {
+    // Team team = Team.Builder.builder().withId(null).withName(" ").build();
+    // ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+    // () -> validator.validateOnCreate(team));
+    // assertTrue(exception.getReason().contains("Missing attribute name when saving team"));
+    // }
+    //
+    // @Test
+    // void validateOnSave_ShouldBeSuccessfulWhenValidTeam() {
+    // Team team = Team.Builder.builder().withId(null).withName("testTeam").build();
+    // validator.validateOnCreate(team);
+    // verify(validator, times(1)).validateOnCreate(team);
+    // }
+    //
+    // @Test
+    // void validateOnSave_ShouldThrowExceptionWhenIdIsNotNull() {
+    // Team team = Team.Builder.builder().withId(5L).withName("testTeam").build();
+    // ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+    // () -> validator.validateOnCreate(team));
+    // assertTrue(exception.getReason().contains("Not allowed to give an id"));
+    // }
+    //
+    // @Test
+    // void validateOnUpdate_ShouldBeSuccessfulWhenValidTeam() {
+    // Team team = Team.Builder.builder().withId(5L).withName("testTeam").build();
+    // validator.validateOnUpdate(team);
+    // verify(validator, times(1)).validateOnUpdate(team);
+    // }
+    //
+    // @Test
+    // void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
+    // Team team = Team.Builder.builder().withId(null).withName("testTeam").build();
+    // ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+    // () -> validator.validateOnUpdate(team));
+    // assertTrue(exception.getReason().contains("Missing attribute team id"));
+    // }
 }

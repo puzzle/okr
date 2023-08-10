@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-example-dialog',
   templateUrl: './example-dialog.component.html',
   styleUrls: ['./example-dialog.component.scss'],
 })
-export class ExampleDialogComponent implements OnInit {
-  cars = ['Volvo', 'Saab', 'Mercedes', 'Audi'];
+export class ExampleDialogComponent {
+  hobbies = ['Fishing', 'Football', 'Videogames', 'Tennis', 'Other'];
   selected = '';
+  dialogForm = new FormGroup({
+    name: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+    gender: new FormControl<string>('', [Validators.required]),
+    hobby: new FormControl<string>('', [Validators.required]),
+  });
 
-  constructor() {}
+  constructor(public dialog: MatDialogRef<any>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
-  ngOnInit(): void {}
+  save() {
+    return this.dialog.close();
+  }
 }

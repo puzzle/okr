@@ -59,7 +59,7 @@ public abstract class ValidationBase<Model, Id> {
         }
     }
 
-    protected void validate(Model model) {
+    public void validate(Model model) {
         Set<ConstraintViolation<Model>> violations = validator.validate(model);
         processViolations(violations);
     }

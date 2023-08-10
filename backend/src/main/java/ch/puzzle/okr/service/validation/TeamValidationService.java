@@ -24,6 +24,7 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
         isModelNull(model);
         throwExceptionWhenIdIsNull(model.getId());
 
+        doesEntityExist(id, modelName());
         validate(model);
     }
 }

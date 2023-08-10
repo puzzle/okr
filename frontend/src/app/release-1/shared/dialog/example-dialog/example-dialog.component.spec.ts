@@ -47,4 +47,12 @@ describe('ExampleDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should be able to save form', () => {});
+
+  it('should display error message of too short input', () => {});
+
+  it('should display error message of required dropdown', () => {});
+
+  it('should save form after checking radio button', () => {});
 });

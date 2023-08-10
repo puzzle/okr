@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.models.Team;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -21,9 +22,9 @@ public abstract class ValidationBase<Id, Model> {
 
     public abstract void validateOnGet(Id id);
 
-    public abstract void validateOnUpdate(Model model);
-
     public abstract void validateOnCreate(Model model);
+
+    public abstract void validateOnUpdate(Long id, Team model);
 
     public abstract void validateOnDelete(Id id);
 
@@ -40,11 +41,11 @@ public abstract class ValidationBase<Id, Model> {
 
     public void isIdNull(Long id) {
         if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
         }
     }
 
-    protected void validate(Model model) {
+    public void validate(Model model) {
         Set<ConstraintViolation<Model>> violations = validator.validate(model);
         processViolations(violations);
     }

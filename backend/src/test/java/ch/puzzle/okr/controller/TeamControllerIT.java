@@ -59,8 +59,8 @@ class TeamControllerIT {
             "GJ 22/23-Q2", "This is a description", 20L);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
             "GJ 22/23-Q2", "This is a description", 20L);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle");
-    static TeamDto teamOkrDto = new TeamDto(7L, "OKR");
+    static TeamDto teamPuzzleDto = new TeamDto(5L, "Puzzle", 0);
+    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", 0);
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -86,7 +86,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(5)).willReturn(teamPuzzle);
+        BDDMockito.given(teamService.getTeamById(5L)).willReturn(teamPuzzle);
 
         mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
                 .andDo((teams) -> logger.info(teams.getResponse().getContentAsString()))
@@ -96,7 +96,7 @@ class TeamControllerIT {
 
     @Test
     void shouldNotFoundTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(55))
+        BDDMockito.given(teamService.getTeamById(55L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 55 not found"));
 
         mvc.perform(get("/api/v1/teams/55").contentType(MediaType.APPLICATION_JSON))
@@ -123,7 +123,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
-        TeamDto testTeam = new TeamDto(1L, "TestTeam");
+        TeamDto testTeam = new TeamDto(1L, "TestTeam",0);
 
         BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);

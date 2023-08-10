@@ -1,0 +1,13 @@
+{
+  "LENGTH": {
+    "MAX": "This field is too long",
+    "MIN": "This field is too short"
+  },
+  "REQUIRED": "This field is required",
+  "SIZE": {
+    "MAX": "This value is too big",
+    "MIN": "This value is too small"
+  },
+  "EMAIL": "This field has to match the email format",
+  "PATTERN": "This field has to match the defined pattern"
+}

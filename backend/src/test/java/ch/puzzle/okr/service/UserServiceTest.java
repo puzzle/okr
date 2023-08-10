@@ -20,16 +20,17 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @MockBean
-    UserRepository userRepository = Mockito.mock(UserRepository.class);
-
+    UserRepository userRepository = mock(UserRepository.class);
+    @MockBean
+    ValidationService validationService = mock(ValidationService.class);
+    List<User> userList;
     @InjectMocks
     private UserService userService;
-
-    List<User> userList;
 
     @BeforeEach
     void setUp() {
@@ -99,4 +100,34 @@ class UserServiceTest {
         assertEquals("Missing attribute owner id", exception.getReason());
     }
 
+    @Test
+    void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.when(userRepository.findByUsername(newUser.getUsername())).thenReturn(Optional.of(newUser));
+
+        User returnedUser = userService.getOrCreateUser(newUser);
+
+        assertEquals(1L, returnedUser.getId());
+        assertEquals("Bob", returnedUser.getFirstname());
+        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("bkaufmann", returnedUser.getUsername());
+        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
+    void getOrCreateUser_ShouldReturnSavedUserWhenUserNotFound() {
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.when(userRepository.findByUsername(newUser.getUsername())).thenReturn(Optional.empty());
+        Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
+
+        User returnedUser = userService.getOrCreateUser(newUser);
+
+        assertEquals(1L, returnedUser.getId());
+        assertEquals("Bob", returnedUser.getFirstname());
+        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("bkaufmann", returnedUser.getUsername());
+        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
 }

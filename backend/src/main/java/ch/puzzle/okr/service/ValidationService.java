@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +33,16 @@ public class ValidationService {
         validate(team);
     }
 
+    public void validateOnSave(User user) {
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not save undefined user");
+        }
+        if (user.getId() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id");
+        }
+        validate(user);
+    }
+
     public void validateOnUpdate(Team team) {
         if (team == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not update undefined team");
@@ -42,12 +53,12 @@ public class ValidationService {
         validate(team);
     }
 
-    private void validate(Team team) {
-        Set<ConstraintViolation<Team>> violations = validator.validate(team);
+    private void validate(Object object) {
+        Set<ConstraintViolation<Object>> violations = validator.validate(object);
         processViolations(violations);
     }
 
-    private void processViolations(Set<ConstraintViolation<Team>> violations) {
+    private void processViolations(Set<ConstraintViolation<Object>> violations) {
         if (!violations.isEmpty()) {
             List<String> reasons = violations.stream().map(ConstraintViolation::getMessage).toList();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(". ", reasons) + ".");

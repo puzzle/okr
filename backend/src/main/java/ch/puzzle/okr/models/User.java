@@ -13,28 +13,27 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
-    @NotNull
     private Long id;
 
     @Column(unique = true)
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 20)
+    @NotBlank(message = "Missing attribute username when saving user")
+    @NotNull(message = "Attribute username can not be null when saving user")
+    @Size(min = 2, max = 20, message = "Attribute username must have size between 2 and 20 characters when saving user")
     private String username;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 50)
+    @NotBlank(message = "Missing attribute firstname when saving user")
+    @NotNull(message = "Attribute firstname can not be null when saving user")
+    @Size(min = 2, max = 50, message = "Attribute firstname must have size between 2 and 50 characters when saving user")
     private String firstname;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 50)
+    @NotBlank(message = "Missing attribute lastname when saving user")
+    @NotNull(message = "Attribute lastname can not be null when saving user")
+    @Size(min = 2, max = 50, message = "Attribute lastname must have size between 2 and 50 characters when saving user")
     private String lastname;
 
-    @Email
-    @NotNull
-    @Size(min = 2, max = 250)
+    @Email(message = "Attribute email should be valid when saving user")
+    @NotNull(message = "Attribute email can not be null when saving user")
+    @Size(min = 2, max = 250, message = "Attribute email must have size between 2 and 250 characters when saving user")
     private String email;
 
     public User() {
@@ -108,11 +107,11 @@ public class User {
     }
 
     public static final class Builder {
-        private @NotNull Long id;
-        private @NotBlank @Size(min = 2, max = 20) String username;
-        private @NotBlank @Size(min = 2, max = 50) String firstname;
-        private @NotBlank @Size(min = 2, max = 50) String lastname;
-        private @Email @Size(min = 2, max = 250) String email;
+        private Long id;
+        private String username;
+        private String firstname;
+        private String lastname;
+        private String email;
 
         private Builder() {
         }
@@ -121,27 +120,27 @@ public class User {
             return new Builder();
         }
 
-        public Builder withId(@NotNull Long id) {
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder withUsername(@NotBlank @Size(min = 2, max = 20) String username) {
+        public Builder withUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder withFirstname(@NotBlank @Size(min = 2, max = 50) String firstname) {
+        public Builder withFirstname(String firstname) {
             this.firstname = firstname;
             return this;
         }
 
-        public Builder withLastname(@NotBlank @Size(min = 2, max = 50) String lastname) {
+        public Builder withLastname(String lastname) {
             this.lastname = lastname;
             return this;
         }
 
-        public Builder withEmail(@Email @Size(min = 2, max = 250) String email) {
+        public Builder withEmail(String email) {
             this.email = email;
             return this;
         }

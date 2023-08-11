@@ -26,6 +26,4 @@ export class ConfirmDialogComponent {
   confirm() {
     this.closeDialog.next(true);
   }
-
-  reload() {}
 }

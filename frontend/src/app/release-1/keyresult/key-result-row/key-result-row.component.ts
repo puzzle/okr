@@ -55,7 +55,7 @@ export class KeyResultRowComponent implements OnInit {
     if (this.keyResult.measure?.measureDate == undefined) {
       return '-';
     }
-    var convertedDate: Date = new Date(this.keyResult.measure?.measureDate!);
+    const convertedDate: Date = new Date(this.keyResult.measure?.measureDate);
     const formattedDate = this.datePipe.transform(convertedDate, 'dd.MM.yyyy');
     if (formattedDate === null) {
       return '-';
@@ -90,7 +90,7 @@ export class KeyResultRowComponent implements OnInit {
           next: () => {
             dialogRef.componentInstance.displaySpinner = false;
             dialogRef.close();
-            this.onKeyresultListUpdate.emit(this.keyResult.objectiveId!);
+            this.onKeyresultListUpdate.emit(this.keyResult.objectiveId);
             this.toastr.success('', 'Key Result gelöscht!', {
               timeOut: 5000,
             });

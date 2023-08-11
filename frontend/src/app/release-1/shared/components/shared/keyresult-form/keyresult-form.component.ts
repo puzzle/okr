@@ -13,7 +13,6 @@ import { NUMBER_REGEX, PERCENT_REGEX } from '../../../regexLibrary';
 import { comparisonValidator } from '../../../validators';
 import { RouteService } from '../../../services/route.service';
 import helpTexts from '../../../../../../assets/help-texts.json';
-import { ConfirmDialogComponent } from '../../../dialog/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HelpDialogComponent, HelpText } from '../../../dialog/help-dialog/help-dialog.component';
 

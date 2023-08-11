@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Team, TeamService } from '../shared/services/team.service';
 import {
@@ -6,7 +6,6 @@ import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
-  filter,
   fromEvent,
   map,
   Observable,

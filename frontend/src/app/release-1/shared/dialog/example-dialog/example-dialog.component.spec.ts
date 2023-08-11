@@ -14,11 +14,14 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatDialogHarness } from '@angular/material/dialog/testing';
+import { By } from '@angular/platform-browser';
+import errorMessages from '../../../../../assets/errors/error-messages.json';
 
 describe('ExampleDialogComponent', () => {
   let component: ExampleDialogComponent;
   let fixture: ComponentFixture<ExampleDialogComponent>;
   let loader: HarnessLoader;
+  let errors = errorMessages;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -56,7 +59,7 @@ describe('ExampleDialogComponent', () => {
   it('should be able to save form', async () => {
     //Insert values into name input
     const nameInput = await loader.getHarness(MatInputHarness);
-    await nameInput.setValue('Tom');
+    await nameInput.setValue('Name');
 
     //Check radio button
     const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
@@ -69,19 +72,63 @@ describe('ExampleDialogComponent', () => {
     await selectOption[0].click();
 
     //Check if save button is disabled
-    const saveButton = await loader.getHarness(MatButtonHarness);
-    expect(await saveButton.isDisabled()).toBe(false);
+    const submitButton = await loader.getHarness(MatButtonHarness.with({ selector: '#submit' }));
+    expect(await submitButton.isDisabled()).toBe(false);
 
     //Validate if object was created correctly
     const formObject = fixture.componentInstance.dialogForm.value;
-    expect(formObject.name).toBe('Tom');
+    expect(formObject.name).toBe('Name');
     expect(formObject.gender).toBe('male');
     expect(formObject.hobby).toBe('football');
   });
 
-  it('should display error message of too short input', () => {});
+  it('should display error message of too short input', async () => {
+    //Insert values into name input which don't match length validator
+    const nameInput = await loader.getHarness(MatInputHarness);
+    await nameInput.setValue('Na');
 
-  it('should display error message of required dropdown', () => {});
+    //Verify error message
+    const errorMessage = fixture.debugElement.query(By.css('mat-error'));
+    const stringValueOfErrorMessage = errorMessage.nativeElement.innerHTML;
+    expect(stringValueOfErrorMessage).toBe(' ' + errors.LENGTH.MIN + ' ');
+  });
 
-  it('should save form after checking radio button', () => {});
+  it('should display error message of required dropdown', async () => {
+    //Get mat-select element and close it again without clicking any options
+    const matSelect = await loader.getHarness(MatSelectHarness);
+    await matSelect.open();
+    await matSelect.close();
+
+    //Verify error message
+    const errorMessage = fixture.debugElement.query(By.css('mat-error'));
+    const stringValueOfErrorMessage = errorMessage.nativeElement.innerHTML;
+    expect(stringValueOfErrorMessage).toBe(' ' + errors.REQUIRED + ' ');
+  });
+
+  it('should not save form unless radio button is checked', async () => {
+    //Insert value into input
+    const nameInput = await loader.getHarness(MatInputHarness);
+    await nameInput.setValue('Name');
+
+    //Select value from dropdown
+    const matSelect = await loader.getHarness(MatSelectHarness);
+    await matSelect.open();
+    const selectOption = await matSelect.getOptions({ text: 'other' });
+    await selectOption[0].click();
+
+    //Verify that the submit button is disabled because the radio button is not checked yet
+    const submitButton = await loader.getHarness(MatButtonHarness.with({ selector: '#submit' }));
+    expect(await submitButton.isDisabled()).toBe(true);
+
+    //Check radio button
+    const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
+    await buttons[1].check();
+
+    //Check submit button and form output
+    expect(await submitButton.isDisabled()).toBe(false);
+    const formObject = fixture.componentInstance.dialogForm.value;
+    expect(formObject.name).toBe('Name');
+    expect(formObject.gender).toBe('female');
+    expect(formObject.hobby).toBe('other');
+  });
 });

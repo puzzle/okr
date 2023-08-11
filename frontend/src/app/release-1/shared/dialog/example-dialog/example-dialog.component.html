@@ -22,9 +22,6 @@
       <mat-radio-button value="female">Female</mat-radio-button>
       <mat-radio-button value="other">Other</mat-radio-button>
     </mat-radio-group>
-    <mat-error class="fw-bold" *ngIf="dialogForm.get('gender')?.hasError('required') && isTouchedOrDirty('gender')">
-      {{ errorMessages.REQUIRED }}
-    </mat-error>
 
     <mat-form-field>
       <mat-label>Please select a hobby</mat-label>
@@ -38,7 +35,9 @@
 
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button type="submit" [mat-dialog-close]="true" [disabled]="!dialogForm.valid">Save</button>
+      <button id="submit" mat-button type="submit" [mat-dialog-close]="true" [disabled]="!dialogForm.valid">
+        Save
+      </button>
     </mat-dialog-actions>
   </form>
 </mat-dialog-content>

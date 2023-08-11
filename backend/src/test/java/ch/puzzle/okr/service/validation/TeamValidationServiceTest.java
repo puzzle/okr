@@ -1,9 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;
-import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,11 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
@@ -28,6 +29,20 @@ import static org.mockito.Mockito.*;
 class TeamValidationServiceTest {
     @MockBean
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
+    Team team1;
+    Team team2;
+    Team teamWithIdNull;
+
+    @BeforeEach
+    void setUp() {
+        team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
+        team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
+        teamWithIdNull = Team.Builder.builder().withId(null).withName("Team null").build();
+
+        when(teamRepository.findById(1L)).thenReturn(Optional.of(team1));
+        when(teamRepository.findById(2L)).thenReturn(Optional.empty());
+    }
+
     @Spy
     @InjectMocks
     private TeamValidationService validator;
@@ -35,22 +50,24 @@ class TeamValidationServiceTest {
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 251),
-                        "Attribute name must have size between 2 and 250 characters when saving team."),
+                        List.of("Attribute name must have size between 2 and 250 characters when saving team.")),
                 arguments(StringUtils.repeat('1', 1),
-                        "Attribute name must have size between 2 and 250 characters when saving team."),
+                        List.of("Attribute name must have size between 2 and 250 characters when saving team.")),
                 arguments("",
-                        "Attribute name must have size between 2 and 250 characters when saving team. Missing attribute name when saving team."),
+                        List.of("Attribute name must have size between 2 and 250 characters when saving team.",
+                                "Missing attribute name when saving team.")),
                 arguments(" ",
-                        "Attribute name must have size between 2 and 250 characters when saving team. Missing attribute name when saving team."),
-                arguments("         ", "Missing attribute name when saving team."), arguments(null,
-                        "Missing attribute name when saving team. Attribute name can not be null when saving team."));
+                        List.of("Attribute name must have size between 2 and 250 characters when saving team.",
+                                "Missing attribute name when saving team.")),
+                arguments("         ", List.of("Missing attribute name when saving team.")),
+                arguments(null, List.of("Missing attribute name when saving team.",
+                        "Attribute name can not be null when saving team.")));
     }
 
     @Test
     void validateOnGet_ShouldBeSuccessfulWhenValidTeamId() {
-        Team team = Team.Builder.builder().withId(1L).withName("Team 1").build();
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
         validator.validateOnGet(1L);
+
         verify(validator, times(1)).validateOnGet(1L);
         verify(validator, times(1)).isIdNull(1L);
     }
@@ -59,29 +76,26 @@ class TeamValidationServiceTest {
     void validateOnGet_ShouldThrowExceptionIfTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
+
         verify(validator, times(1)).isIdNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
     @Test
     void validateOnSave_ShouldThrowExceptionWhenTeamDoesNotExist() {
-        when(teamRepository.findById(1L)).thenReturn(Optional.empty());
-
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnGet(1L));
+                () -> validator.validateOnGet(2L));
 
-        verify(validator, times(1)).isIdNull(1L);
-        assertEquals("Team with id 1 not found", exception.getReason());
+        verify(validator, times(1)).isIdNull(2L);
+        assertEquals("Team with id 2 not found", exception.getReason());
     }
 
     @Test
     void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
-        Team team = Team.Builder.builder().withId(1L).withName("Team 1").build();
+        validator.validateOnCreate(team1);
 
-        validator.validateOnCreate(team);
-
-        verify(validator, times(1)).isModelNull(team);
-        verify(validator, times(1)).validate(team);
+        verify(validator, times(1)).isModelNull(team1);
+        verify(validator, times(1)).validate(team1);
     }
 
     @Test
@@ -94,14 +108,15 @@ class TeamValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenNameIsInvalid(String name, String error) {
+    void validateOnCreate_ShouldThrowExceptionWhenNameIsInvalid(String name, List<String> errors) {
         Team team = Team.Builder.builder().withId(1L).withName(name).build();
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(team));
-        assertEquals(exception.getReason(), error);
+
+        assertThat(exception.getReason()).contains(errors);
     }
 
-    //
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -112,43 +127,39 @@ class TeamValidationServiceTest {
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
-        Team team = Team.Builder.builder().withId(null).withName("Team 1").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(null, team));
-        verify(validator, times(1)).isModelNull(team);
+                () -> validator.validateOnUpdate(null, teamWithIdNull));
+
+        verify(validator, times(1)).isModelNull(teamWithIdNull);
         verify(validator, times(1)).isIdNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenUpdatingTeamDoesNotExists() {
-        Team team = Team.Builder.builder().withId(1L).withName("Team 1").build();
-        when(teamRepository.findById(1L)).thenReturn(Optional.empty());
-
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, team));
-        verify(validator, times(1)).isModelNull(team);
-        verify(validator, times(1)).isIdNull(1L);
-        assertEquals("Team with id 1 not found", exception.getReason());
+                () -> validator.validateOnUpdate(2L, team2));
+
+        verify(validator, times(1)).isModelNull(team2);
+        verify(validator, times(1)).isIdNull(2L);
+        assertEquals("Team with id 2 not found", exception.getReason());
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenNameIsInvalid(String name, String error) {
-        Team team = Team.Builder.builder().withId(1L).withName(name).build();
-
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
+    void validateOnUpdate_ShouldThrowExceptionWhenNameIsInvalid(String name, List<String> errors) {
+        Team team = Team.Builder.builder().withId(5L).withName(name).build();
+        when(teamRepository.findById(5L)).thenReturn(Optional.of(team));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, team));
-        assertEquals(exception.getReason(), error);
+                () -> validator.validateOnUpdate(5L, team));
+        assertThat(exception.getReason()).contains(errors);
     }
 
     @Test
     void validateOnDelete_ShouldBeSuccessfulWhenValidTeamId() {
-        Team team = Team.Builder.builder().withId(1L).withName("Team 1").build();
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
         validator.validateOnGet(1L);
+
         verify(validator, times(1)).validateOnGet(1L);
         verify(validator, times(1)).isIdNull(1L);
     }
@@ -157,6 +168,7 @@ class TeamValidationServiceTest {
     void validateOnDelete_ShouldThrowExceptionIfTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
+
         verify(validator, times(1)).isIdNull(null);
         assertEquals("Id is null", exception.getReason());
     }

@@ -63,14 +63,14 @@ class TeamServiceTest {
         ), Arguments.of(List.of(5L), Collections.emptyList(), 1));
     }
 
-    // @BeforeEach
-    // void setUp() {
-    // this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
-    // this.team1 = Team.Builder.builder().withName("Team 1").build();
-    // this.team2 = Team.Builder.builder().withName("Team 2").build();
-    // this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-    // this.objectiveList = List.of(objective, objective, objective);
-    // }
+    @BeforeEach
+    void setUp() {
+        this.teamPuzzle = Team.Builder.builder().withId(5L).withName(Constants.TEAM_PUZZLE).build();
+        this.team1 = Team.Builder.builder().withName("Team 1").build();
+        this.team2 = Team.Builder.builder().withName("Team 2").build();
+        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+        this.objectiveList = List.of(objective, objective, objective);
+    }
     //
     // // @ParameterizedTest
     // // @MethodSource

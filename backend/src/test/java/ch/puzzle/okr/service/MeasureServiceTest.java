@@ -69,11 +69,11 @@ class MeasureServiceTest {
     void shouldReturnMeasure() {
         Mockito.when(measureRepository.save(any())).thenReturn(measure);
         Measure returnMeasure = this.measureService.saveMeasure(measure);
-        assertEquals(returnMeasure.getValue(), 30);
-        assertEquals(returnMeasure.getChangeInfo(), "ChangeInfo");
-        assertEquals(returnMeasure.getInitiatives(), "Initiatives");
-        assertEquals(returnMeasure.getKeyResult().getId(), 8);
-        assertEquals(returnMeasure.getCreatedBy().getFirstname(), "Frank");
+        assertEquals(30, returnMeasure.getValue());
+        assertEquals("ChangeInfo", returnMeasure.getChangeInfo());
+        assertEquals("Initiatives", returnMeasure.getInitiatives());
+        assertEquals(8, returnMeasure.getKeyResult().getId());
+        assertEquals("Frank", returnMeasure.getCreatedBy().getFirstname());
     }
 
     @Test

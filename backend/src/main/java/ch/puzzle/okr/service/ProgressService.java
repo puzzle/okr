@@ -30,7 +30,7 @@ public class ProgressService {
 
     public void updateObjectiveProgress(Long objectiveId) {
         List<KeyResult> keyResultList = keyResultRepository.findByObjectiveId(objectiveId);
-        if (keyResultList.size() == 0) {
+        if (keyResultList.isEmpty()) {
             Objective objective = objectiveService.getObjective(objectiveId);
             objective.setProgress(null);
             objectiveRepository.save(objective);

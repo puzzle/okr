@@ -3,7 +3,6 @@ package ch.puzzle.okr.service;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -24,16 +23,13 @@ public class ObjectiveService {
     private final KeyResultRepository keyResultRepository;
     private final TeamRepository teamRepository;
     private final KeyResultService keyResultService;
-    private final MeasureRepository measureRepository;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository, @Lazy KeyResultService keyResultService,
-            MeasureRepository measureRepository) {
+            TeamRepository teamRepository, @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.teamRepository = teamRepository;
         this.keyResultService = keyResultService;
-        this.measureRepository = measureRepository;
     }
 
     public List<Objective> getAllObjectives() {

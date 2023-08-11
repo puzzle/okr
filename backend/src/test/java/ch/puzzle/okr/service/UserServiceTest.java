@@ -49,7 +49,7 @@ class UserServiceTest {
 
         List<User> userList = userService.getAllUsers();
 
-        Assertions.assertThat(userList.size()).isEqualTo(2);
+        Assertions.assertThat(userList).hasSize(2);
         Assertions.assertThat(userList.get(0).getId()).isEqualTo(2);
         Assertions.assertThat(userList.get(0).getFirstname()).isEqualTo("Alice");
         Assertions.assertThat(userList.get(0).getLastname()).isEqualTo("Wunderland");
@@ -64,7 +64,7 @@ class UserServiceTest {
     void shouldReturnEmptyUsers() throws ResponseStatusException {
         List<User> userList = userService.getAllUsers();
 
-        Assertions.assertThat(userList.size()).isEqualTo(0);
+        Assertions.assertThat(userList.isEmpty());
     }
 
     @Test

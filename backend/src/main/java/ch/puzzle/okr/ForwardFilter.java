@@ -18,16 +18,17 @@ public class ForwardFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         if (request.getParameter("state") != null) {
-            logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
-                    request.getRequestURI(), "/"));
+            logger.info("Keycloak state parameter detected ====> make a forward from {} to {}", request.getRequestURI(),
+                    "/");
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
             return;
         }
-        if (request.getParameter("error") != null) {
-            logger.error("error from keycloak " + request.getParameter("error"));
+        String getParameterError = request.getParameter("error");
+        if (getParameterError != null) {
+            logger.error("error from keycloak {}", getParameterError);
             return;
         }
-        logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
+        logger.debug("====> pass through the filter {}", request.getRequestURI());
         filterChain.doFilter(servletRequest, servletResponse);
 
         // could be simpyfied by using state-parameter in url for passing through filters....

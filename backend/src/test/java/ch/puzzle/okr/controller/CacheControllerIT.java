@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CacheController.class)
-public class CacheControllerIT {
+class CacheControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean

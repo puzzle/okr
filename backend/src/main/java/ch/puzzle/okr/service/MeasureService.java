@@ -65,11 +65,9 @@ public class MeasureService {
 
         List<Measure> measureList = measureRepository
                 .findMeasuresByKeyResultIdAndMeasureDate(measure.getKeyResult().getId(), measure.getMeasureDate());
-        if (!measureList.isEmpty()) {
-            if (measureList.get(0).getId() != measure.getId()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "Only one Messung is allowed per day and Key Result!");
-            }
+        if (!measureList.isEmpty() && (measureList.get(0).getId() != measure.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Only one Messung is allowed per day and Key Result!");
         }
     }
 

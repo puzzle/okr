@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(OverviewController.class)
-public class OverviewControllerIT {
+class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean

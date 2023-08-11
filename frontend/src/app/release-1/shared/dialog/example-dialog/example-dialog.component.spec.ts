@@ -93,7 +93,7 @@ describe('ExampleDialogComponent', () => {
   });
 
   it('should display error message of required dropdown', async () => {
-    //Get open and close mat-select element to trigger validation
+    //Open and close mat-select element to trigger validation
     const matSelect = await loader.getHarness(MatSelectHarness);
     await matSelect.open();
     await matSelect.close();

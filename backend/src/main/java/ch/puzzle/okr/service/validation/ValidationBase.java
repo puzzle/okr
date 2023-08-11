@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Team;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,10 +12,12 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ValidationBase<Id, Model> {
+public abstract class ValidationBase<Model, Id> {
     private final Validator validator;
+    protected final CrudRepository<Model, Id> repository;
 
-    ValidationBase() {
+    ValidationBase(CrudRepository<Model, Id> repository) {
+        this.repository = repository;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
         }
@@ -30,22 +33,25 @@ public abstract class ValidationBase<Id, Model> {
 
     protected abstract String modelName();
 
-    public abstract void doesEntityExist(Id id, String modelName);
+    protected void doesEntityExist(Id id) {
+        repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("%s with id %s not found", modelName(), id)));
+    }
 
-    public void isModelNull(Model model, String modelName) {
+    protected void isModelNull(Model model) {
         if (model == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Can not save undefined %s", modelName));
+                    String.format("Given model %s is null", modelName()));
         }
     }
 
-    public void isIdNull(Long id) {
+    protected void isIdNull(Long id) {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
         }
     }
 
-    public void validate(Model model) {
+    protected void validate(Model model) {
         Set<ConstraintViolation<Model>> violations = validator.validate(model);
         processViolations(violations);
     }

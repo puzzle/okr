@@ -9,7 +9,7 @@ import errorMessages from '../../../../../assets/errors/error-messages.json';
   styleUrls: ['./example-dialog.component.scss'],
 })
 export class ExampleDialogComponent {
-  hobbies = ['Fishing', 'Football', 'Videogames', 'Tennis', 'Other'];
+  hobbies = ['fishing', 'football', 'videogames', 'tennis', 'other'];
   selected = '';
 
   dialogForm = new FormGroup({
@@ -21,7 +21,7 @@ export class ExampleDialogComponent {
   constructor(public dialog: MatDialogRef<ExampleDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {}
 
   save() {
-    return this.dialog.close(this.dialogForm.value);
+    this.dialog.close({ data: this.dialogForm.value });
   }
 
   isTouchedOrDirty(name: string) {

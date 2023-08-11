@@ -74,7 +74,5 @@ export class AppComponent implements OnInit {
     return false;
   }
 
-  login() {}
-
   protected readonly version = version;
 }

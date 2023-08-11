@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { isFakeMousedownFromScreenReader } from '@angular/cdk/a11y';
 
 export interface Measure {
   id: number | null;

@@ -2,19 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Objective, ObjectiveService } from '../../shared/services/objective.service';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  combineLatestWith,
-  filter,
-  find,
-  first,
-  map,
-  Observable,
-  of,
-  share,
-  startWith,
-  subscribeOn,
-  switchMap,
-} from 'rxjs';
+import { combineLatestWith, filter, map, Observable, of, share, startWith, switchMap } from 'rxjs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { User, UserService } from '../../shared/services/user.service';

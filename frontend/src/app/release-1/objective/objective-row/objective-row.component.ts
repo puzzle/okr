@@ -10,7 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { getNumberOrNull } from '../../shared/common';
 import { RouteService } from '../../shared/services/route.service';
-import * as querystring from 'querystring';
 
 @Component({
   selector: 'app-objective-row',

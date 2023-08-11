@@ -33,14 +33,17 @@ export class MeasureRowComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    window.location.href.toString().includes('measure/') ? (this.isMeasureForm = true) : (this.isMeasureForm = false);
+    if (window.location.href.toString().includes('measure/')) this.isMeasureForm = true;
+    else {
+      this.isMeasureForm = false;
+    }
 
     this.route.paramMap.subscribe((params) => {
       const keyresultId = getNumberOrNull(params.get('keyresultId'));
       if (keyresultId) {
         this.keyResultId = keyresultId;
       } else {
-        new Error('No Key Result id set!');
+        throw new Error('No Key Result id set!');
       }
     });
     this.reloadMeasures();

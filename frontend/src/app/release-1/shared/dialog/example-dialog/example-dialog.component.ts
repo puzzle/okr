@@ -28,5 +28,11 @@ export class ExampleDialogComponent {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
   }
 
-  protected readonly errorMessages = errorMessages;
+  //Check if any errors are present if not return empty array if yes return error keys
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.dialogForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  protected readonly errorMessages: any = errorMessages;
 }

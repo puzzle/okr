@@ -4,15 +4,9 @@
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" placeholder="Ex. Tom" value="" />
-      <div class="errors" *ngIf="isTouchedOrDirty('name')">
-        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('required')">
-          {{ errorMessages.REQUIRED }}
-        </mat-error>
-        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('minlength')">
-          {{ errorMessages.LENGTH.MIN }}
-        </mat-error>
-        <mat-error class="fw-bold" *ngIf="dialogForm.get('name')?.hasError('maxlength')">
-          {{ errorMessages.LENGTH.MAX }}
+      <div *ngIf="isTouchedOrDirty('name')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
         </mat-error>
       </div>
     </mat-form-field>
@@ -22,6 +16,11 @@
       <mat-radio-button value="female">Female</mat-radio-button>
       <mat-radio-button value="other">Other</mat-radio-button>
     </mat-radio-group>
+    <div *ngIf="isTouchedOrDirty('gender')">
+      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('gender')">
+        {{ errorMessages[errorKey.toUpperCase()] }}
+      </mat-error>
+    </div>
 
     <mat-form-field>
       <mat-label>Please select a hobby</mat-label>
@@ -29,9 +28,11 @@
         <mat-option [value]="hobby" *ngFor="let hobby of hobbies">{{ hobby }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-error class="fw-bold" *ngIf="dialogForm.get('hobby')?.hasError('required') && isTouchedOrDirty('hobby')">
-      {{ errorMessages.REQUIRED }}
-    </mat-error>
+    <div *ngIf="isTouchedOrDirty('hobby')">
+      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('hobby')">
+        {{ errorMessages[errorKey.toUpperCase()] }}
+      </mat-error>
+    </div>
 
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>

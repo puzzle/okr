@@ -90,7 +90,7 @@ describe('ExampleDialogComponent', () => {
     //Verify error message
     const errorMessage = fixture.debugElement.query(By.css('mat-error'));
     const stringValueOfErrorMessage = errorMessage.nativeElement.innerHTML;
-    expect(stringValueOfErrorMessage).toBe(' ' + errors.LENGTH.MIN + ' ');
+    expect(stringValueOfErrorMessage).toBe(' ' + errors.MINLENGTH + ' ');
   });
 
   it('should display error message of required dropdown', async () => {

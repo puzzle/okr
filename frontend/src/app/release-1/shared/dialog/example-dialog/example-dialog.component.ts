@@ -10,7 +10,6 @@ import errorMessages from '../../../../../assets/errors/error-messages.json';
 })
 export class ExampleDialogComponent {
   hobbies = ['fishing', 'football', 'videogames', 'tennis', 'other'];
-  selected = '';
 
   dialogForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),

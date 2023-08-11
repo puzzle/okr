@@ -24,7 +24,7 @@
 
     <mat-form-field>
       <mat-label>Please select a hobby</mat-label>
-      <mat-select [(value)]="selected" name="hobbies" formControlName="hobby">
+      <mat-select name="hobbies" formControlName="hobby">
         <mat-option [value]="hobby" *ngFor="let hobby of hobbies">{{ hobby }}</mat-option>
       </mat-select>
     </mat-form-field>

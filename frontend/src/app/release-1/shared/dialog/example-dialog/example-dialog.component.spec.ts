@@ -89,20 +89,18 @@ describe('ExampleDialogComponent', () => {
 
     //Verify error message
     const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-    const stringValueOfErrorMessage = errorMessage.nativeElement.innerHTML;
-    expect(stringValueOfErrorMessage).toBe(' ' + errors.MINLENGTH + ' ');
+    expect(errorMessage.nativeElement.textContent).toContain(errors.MINLENGTH);
   });
 
   it('should display error message of required dropdown', async () => {
-    //Get mat-select element and close it again without clicking any options
+    //Get open and close mat-select element to trigger validation
     const matSelect = await loader.getHarness(MatSelectHarness);
     await matSelect.open();
     await matSelect.close();
 
     //Verify error message
     const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-    const stringValueOfErrorMessage = errorMessage.nativeElement.innerHTML;
-    expect(stringValueOfErrorMessage).toBe(' ' + errors.REQUIRED + ' ');
+    expect(errorMessage.nativeElement.textContent).toContain(errors.REQUIRED);
   });
 
   it('should not save form unless radio button is checked', async () => {

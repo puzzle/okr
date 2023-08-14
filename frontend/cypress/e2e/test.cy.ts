@@ -1,11 +1,13 @@
 describe('template spec', () => {
-  it('passes', () => {
-    cy.visit('http://localhost:4200');
+  beforeEach(() => {
+    cy.loginWithCredentials('johnny', '123'); // Call the custom login command before each test
+  });
 
-    cy.origin('https://sso.puzzle.ch', () => {
-      cy.contains('Sign in to your account');
-      cy.get('#social-idp-members').click();
-      cy.contains('Username or email');
-    });
+  it('Logs in with user johnny and has right overview', () => {
+    cy.contains('Objectives und Key Results');
+    cy.contains('Overview');
+    cy.contains('Team');
+    cy.contains('Puzzle ITC');
+    cy.contains('/BBT');
   });
 });

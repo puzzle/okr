@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
@@ -171,16 +173,9 @@ public class OKRArchitectureTest {
     void packagesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().haveSimpleNameEndingWith(capitalizeFirstLetter(passedName)).should()
+        ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).should()
                 .resideInAPackage("ch.puzzle.okr." + passedName + "..");
 
         rule.check(importedClasses);
-    }
-
-    public static String capitalizeFirstLetter(String input) {
-        if (input == null || input.isEmpty()) {
-            return input; // Return unchanged if input is null or empty
-        }
-        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 }

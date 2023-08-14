@@ -4,7 +4,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.repository.TeamRepository;
+import ch.puzzle.okr.service.persistance.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
     @MockBean
-    TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
+    TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     Team team1;
     Team team2;
     Team teamWithIdNull;
@@ -71,7 +71,7 @@ class TeamServiceTest {
     //
     @Test
     void getAllTeams_ShouldBeSuccessful() {
-        Mockito.when(teamRepository.findAll()).thenReturn(List.of(team1, team2));
+        Mockito.when(teamPersistenceService.findAll()).thenReturn(List.of(team1, team2));
 
         List<Team> allTeams = teamService.getAllTeams();
 
@@ -80,22 +80,22 @@ class TeamServiceTest {
 
     @Test
     void updateTeam_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.when(teamRepository.save(team1)).thenReturn(team1);
+        Mockito.when(teamPersistenceService.save(team1)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnUpdate(1L, teamWithIdNull);
 
         teamService.updateTeam(1L, team1);
         Mockito.verify(validator, Mockito.times(1)).validateOnUpdate(1L, team1);
-        Mockito.verify(teamRepository, Mockito.times(1)).save(team1);
+        Mockito.verify(teamPersistenceService, Mockito.times(1)).save(team1);
     }
 
     @Test
     void createTeam_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.when(teamRepository.save(teamWithIdNull)).thenReturn(team1);
+        Mockito.when(teamPersistenceService.save(teamWithIdNull)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnCreate(teamWithIdNull);
 
         Team team = teamService.createTeam(teamWithIdNull);
         Mockito.verify(validator, Mockito.times(1)).validateOnCreate(teamWithIdNull);
-        Mockito.verify(teamRepository, Mockito.times(1)).save(teamWithIdNull);
+        Mockito.verify(teamPersistenceService, Mockito.times(1)).save(teamWithIdNull);
         Assertions.assertEquals(1L, team.getId());
     }
 
@@ -112,10 +112,10 @@ class TeamServiceTest {
 
     @Test
     void deleteTeamWithId_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.doNothing().when(teamRepository).deleteById(1L);
+        Mockito.doNothing().when(teamPersistenceService).deleteById(1L);
         teamService.deleteTeamById(1L);
         Mockito.verify(validator, Mockito.times(1)).validateOnDelete(1L);
-        Mockito.verify(teamRepository, Mockito.times(1)).deleteById(1L);
+        Mockito.verify(teamPersistenceService, Mockito.times(1)).deleteById(1L);
     }
 
     @Test

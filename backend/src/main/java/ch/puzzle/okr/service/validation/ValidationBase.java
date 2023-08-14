@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Team;
-import org.springframework.data.repository.CrudRepository;
+import ch.puzzle.okr.service.persistance.PersistenceBase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,10 +14,10 @@ import java.util.Set;
 
 public abstract class ValidationBase<Model, Id> {
     private final Validator validator;
-    protected final CrudRepository<Model, Id> repository;
+    protected final PersistenceBase<Model, Id> persistenceService;
 
-    ValidationBase(CrudRepository<Model, Id> repository) {
-        this.repository = repository;
+    ValidationBase(PersistenceBase<Model, Id> persistenceService) {
+        this.persistenceService = persistenceService;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
         }
@@ -31,17 +31,14 @@ public abstract class ValidationBase<Model, Id> {
 
     public abstract void validateOnDelete(Id id);
 
-    protected abstract String modelName();
-
     protected void doesEntityExist(Id id) {
-        repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("%s with id %s not found", modelName(), id)));
+        persistenceService.findById(id);
     }
 
     protected void isModelNull(Model model) {
         if (model == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Given model %s is null", modelName()));
+                    String.format("Given model %s is null", persistenceService.getModelName()));
         }
     }
 

@@ -5,9 +5,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.repository.TeamRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -24,18 +22,13 @@ import java.util.Objects;
 public class ObjectiveService {
     private final ObjectiveRepository objectiveRepository;
     private final KeyResultRepository keyResultRepository;
-    private final TeamRepository teamRepository;
     private final KeyResultService keyResultService;
-    private final MeasureRepository measureRepository;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            TeamRepository teamRepository, @Lazy KeyResultService keyResultService,
-            MeasureRepository measureRepository) {
+            @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
-        this.teamRepository = teamRepository;
         this.keyResultService = keyResultService;
-        this.measureRepository = measureRepository;
     }
 
     public List<Objective> getAllObjectives() {
@@ -48,12 +41,7 @@ public class ObjectiveService {
     }
 
     public List<Objective> getObjectivesByTeam(Long id) {
-        if (teamRepository.findById(id).isPresent()) {
-            return objectiveRepository.findByTeamIdOrderByTitleAsc(id);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    String.format("Could not find team with id %d", id));
-        }
+        return objectiveRepository.findByTeamIdOrderByTitleAsc(id);
     }
 
     public Objective saveObjective(Objective objective) {

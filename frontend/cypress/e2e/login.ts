@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('OKR Login', () => {
   beforeEach(() => {
     cy.loginWithCredentials('johnny', '123'); // Call the custom login command before each test
   });

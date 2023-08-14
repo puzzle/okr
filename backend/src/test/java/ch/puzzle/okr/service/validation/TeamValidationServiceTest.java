@@ -106,6 +106,14 @@ class TeamValidationServiceTest {
         assertEquals("Given model Team is null", exception.getReason());
     }
 
+    @Test
+    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(team1));
+
+        assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
+    }
+
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnCreate_ShouldThrowExceptionWhenNameIsInvalid(String name, List<String> errors) {

@@ -64,19 +64,6 @@ public class TeamController {
     }
 
     @Deprecated(forRemoval = true)
-    @Operation(summary = "Get Team", description = "Get a Team by ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a Team with a specified ID.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID.", content = @Content) })
-    @GetMapping("/{id}")
-    public ResponseEntity<TeamDto> getTeamById(
-            @Parameter(description = "The ID for getting a Team.", required = true) @PathVariable Long id) {
-        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
-    }
-
-    @Deprecated(forRemoval = true)
     @Operation(summary = "Create Team", description = "Create a new Team.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new Team.", content = {
@@ -86,7 +73,7 @@ public class TeamController {
     public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
-        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.saveTeam(team));
+        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.createTeam(team));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 

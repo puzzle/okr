@@ -12,26 +12,18 @@ services:
     ports:
       - 5432:5432
 
-  proxy:
-    image: code.vt.edu:5005/devcom/devcom-localhost-proxy:traefik-1.7
-    ports:
-      - 80:80
-      - 443:44
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      default:
-        aliases:
-          - oidc.localhost.devcom.vt.edu
   oidc:
-    image: code.vt.edu:5005/devcom/mock-oidc-provider:latest
-    ports:
-      - 5005:5005
+    image: registry.puzzle.ch/puzzle/oidc-provider-mock:ff157478
+    command: sh -c "yarn install && yarn dev"
     volumes:
       - ./config.yaml:/config.yaml
+    ports:
+      - 8000:8080
     environment:
       CONFIG_FILE_PATH: /config.yaml
     labels:
       traefik.backend: oidc
       traefik.frontend.rule: Host:oidc.localhost.devcom.vt.edu
       traefik.port: 8080
+
+

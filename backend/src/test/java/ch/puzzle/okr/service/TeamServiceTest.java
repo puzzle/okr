@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
@@ -10,13 +11,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.MethodNotAllowedException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
@@ -42,6 +43,8 @@ class TeamServiceTest {
     ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @Mock
     ObjectiveService objectiveService;
+    @Mock
+    QuarterService quarterService;
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);;
     @InjectMocks
@@ -117,6 +120,10 @@ class TeamServiceTest {
 
     @Test
     void activeObjectivesAmountOfTeam_ShouldBeSuccessful() throws ResponseStatusException {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not implemented");
+        Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
+        Mockito.when(quarterService.getQuarter(ArgumentMatchers.any())).thenReturn("GJ 23/24-Q1");
+        Mockito.when(quarterService.getOrCreateQuarter("GJ 23/24-Q1")).thenReturn(quarter);
+        Mockito.when(objectiveService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);
+        assertEquals(69, teamService.activeObjectivesAmountOfTeam(team1));
     }
 }

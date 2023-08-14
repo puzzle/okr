@@ -46,7 +46,7 @@ public class TeamService {
     }
 
     @Transactional
-    public Team saveTeam(Team team) {
+    public Team createTeam(Team team) {
         validator.validateOnCreate(team);
         return teamRepository.save(team);
     }

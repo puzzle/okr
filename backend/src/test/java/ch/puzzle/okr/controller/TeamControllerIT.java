@@ -125,19 +125,19 @@ class TeamControllerIT {
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
         TeamDto testTeam = new TeamDto(1L, "TestTeam", 0);
 
-        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+        BDDMockito.given(teamService.createTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
         mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}")
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
-        verify(teamService, times(1)).saveTeam(any());
+        verify(teamService, times(1)).createTeam(any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingTeamNullName() throws Exception {
-        BDDMockito.given(teamService.saveTeam(any())).willThrow(
+        BDDMockito.given(teamService.createTeam(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
         mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON)

@@ -1,13 +1,18 @@
-issuer_url: https://sso.puzzle.ch/auth/realms/pitc
+issuer_url: http://localhost:8000
 
 clients:
   - id: pitc_okr_prod
+    scope: "profile openid preferred_username given_name family_name email"
     redirect_uris:
       - http://localhost:4200/auth/keycloakopenid/callback
 
 people:
-  japplessed:
+  johnny:
     name: Johnny Appleseed
+    given_name: Johnny
+    family_name: Appleseed
+    preferred_username: johnny
+    email: test@test.ch
     groups:
       - admin
       - editor

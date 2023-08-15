@@ -68,7 +68,6 @@ class TeamServiceTest {
         this.objectiveList = List.of(objective, objective, objective);
     }
 
-    //
     @Test
     void getAllTeams_ShouldBeSuccessful() {
         Mockito.when(teamPersistenceService.findAll()).thenReturn(List.of(team1, team2));

@@ -71,7 +71,7 @@ describe('ExampleDialogComponent', () => {
 
     //Check if save button is disabled
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(await submitButton.nativeElement.disabled).toBe(false);
+    expect(await submitButton.nativeElement.disabled).toBeFalsy();
 
     //Validate if object was created correctly
     const formObject = fixture.componentInstance.dialogForm.value;
@@ -91,7 +91,7 @@ describe('ExampleDialogComponent', () => {
 
     //Check if submit button is disabled
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(submitButton.nativeElement.disabled).toBe(true);
+    expect(submitButton.nativeElement.disabled).toBeTruthy();
   });
 
   it('should display error message of required dropdown', async () => {
@@ -106,7 +106,7 @@ describe('ExampleDialogComponent', () => {
 
     //Check if submit button is disabled
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(submitButton.nativeElement.disabled).toBe(true);
+    expect(submitButton.nativeElement.disabled).toBeTruthy();
   });
 
   it('should not save form unless radio button is checked', async () => {
@@ -122,14 +122,14 @@ describe('ExampleDialogComponent', () => {
 
     //Verify that the submit button is disabled because the radio button is not checked yet
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(await submitButton.nativeElement.disabled).toBe(true);
+    expect(await submitButton.nativeElement.disabled).toBeTruthy();
 
     //Check radio button
     const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
     await buttons[1].check();
 
     //Check submit button and form output
-    expect(await submitButton.nativeElement.disabled).toBe(false);
+    expect(await submitButton.nativeElement.disabled).toBeFalsy();
     const formObject = fixture.componentInstance.dialogForm.value;
     expect(formObject.name).toBe('Name');
     expect(formObject.gender).toBe(await buttons[1].getValue());

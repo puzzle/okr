@@ -73,7 +73,7 @@ class TeamValidationServiceTest {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).isIdNull(1L);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
     @Test
@@ -81,7 +81,7 @@ class TeamValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
-        verify(validator, times(1)).isIdNull(null);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
@@ -134,7 +134,7 @@ class TeamValidationServiceTest {
                 () -> validator.validateOnUpdate(null, teamWithIdNull));
 
         verify(validator, times(1)).isModelNull(teamWithIdNull);
-        verify(validator, times(1)).isIdNull(null);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
@@ -154,7 +154,7 @@ class TeamValidationServiceTest {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
-        verify(validator, times(1)).isIdNull(1L);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
     @Test
@@ -162,7 +162,7 @@ class TeamValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
-        verify(validator, times(1)).isIdNull(null);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 }

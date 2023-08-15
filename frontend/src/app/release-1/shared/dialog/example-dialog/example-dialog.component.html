@@ -36,7 +36,13 @@
 
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>Cancel</button>
-      <button id="submit" mat-button type="submit" [mat-dialog-close]="true" [disabled]="!dialogForm.valid">
+      <button
+        [attr.data-testId]="'submit'"
+        mat-button
+        type="submit"
+        [mat-dialog-close]="true"
+        [disabled]="!dialogForm.valid"
+      >
         Save
       </button>
     </mat-dialog-actions>

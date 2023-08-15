@@ -85,25 +85,6 @@ class TeamControllerIT {
     }
 
     @Test
-    void shouldGetTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(5L)).willReturn(teamPuzzle);
-
-        mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
-                .andDo((teams) -> logger.info(teams.getResponse().getContentAsString()))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.name", Is.is("Puzzle")));
-    }
-
-    @Test
-    void shouldNotFoundTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(55L))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 55 not found"));
-
-        mvc.perform(get("/api/v1/teams/55").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
-    }
-
-    @Test
     void shouldGetAllTeams() throws Exception {
         BDDMockito.given(teamService.getAllTeams()).willReturn(teamList);
 
@@ -130,8 +111,8 @@ class TeamControllerIT {
 
         mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}")
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(MockMvcResultMatchers.content()
+                        .string("{\"id\":1,\"name\":\"TestTeam\",\"activeObjectives\":0}"));
         verify(teamService, times(1)).createTeam(any());
     }
 

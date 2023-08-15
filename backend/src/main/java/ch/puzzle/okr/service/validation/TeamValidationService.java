@@ -15,6 +15,7 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
     public void validateOnCreate(Team model) {
         isModelNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
+
         validate(model);
     }
 

@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.validation.UserValidationService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final ValidationService validationService;
+    private final UserValidationService validator;
 
-    public UserService(UserRepository userRepository, ValidationService validationService) {
+    public UserService(UserRepository userRepository, UserValidationService validator) {
         this.userRepository = userRepository;
-        this.validationService = validationService;
+        this.validator = validator;
     }
 
     public List<User> getAllUsers() {
@@ -39,7 +40,7 @@ public class UserService {
     public synchronized User getOrCreateUser(User newUser) {
         Optional<User> user = userRepository.findByUsername(newUser.getUsername());
         return user.orElseGet(() -> {
-            validationService.validateOnSave(newUser);
+            validator.validateOnCreate(newUser);
             return userRepository.save(newUser);
         });
     }

@@ -5,6 +5,7 @@ import ch.puzzle.okr.repository.KeyResultRepository;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.repository.TeamRepository;
+import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +48,8 @@ class ObjectiveServiceTest {
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
 
+    @MockBean
+    TeamValidationService teamValidationService = Mockito.mock(TeamValidationService.class);
     Objective objective;
     Objective fullObjective1;
     Objective fullObjective2;
@@ -241,6 +244,17 @@ class ObjectiveServiceTest {
         when(objectiveRepository.findById(newObjective.getId())).thenReturn(Optional.of(objective));
 
         assertTrue(objectiveService.isQuarterImmutable(newObjective));
+    }
+
+    @Test
+    void shouldThrowNotFoundException() {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find team with id 13"))
+                .when(teamValidationService).doesEntityExist(13L);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> this.objectiveService.getObjectivesByTeam(13L));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(("Could not find team with id 13"), exception.getReason());
     }
 
     @Test

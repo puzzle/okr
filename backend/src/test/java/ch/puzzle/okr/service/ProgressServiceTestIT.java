@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.OkrApplication;
+import ch.puzzle.okr.controller.TeamController;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

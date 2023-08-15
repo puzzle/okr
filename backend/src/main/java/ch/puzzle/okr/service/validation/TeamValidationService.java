@@ -17,7 +17,6 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
     @Override
     public void validateOnGet(Long id) {
         isIdNull(id);
-        doesEntityExist(id);
     }
 
     @Override
@@ -36,7 +35,6 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
         isModelNull(model);
         isIdNull(model.getId());
 
-        doesEntityExist(id);
         validate(model);
     }
 

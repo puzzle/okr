@@ -54,7 +54,8 @@ public abstract class ValidationBase<Model, Id> {
 
     protected void throwExceptionWhenIdIsNotNull(Id id) {
         if (id != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
+                    "Model %s cannot have id while create. Found id %s", persistenceService.getModelName(), id));
         }
     }
 

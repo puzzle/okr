@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistance.PersistenceBase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,13 +22,18 @@ public abstract class ValidationBase<Model, Id> {
         }
     }
 
-    public abstract void validateOnGet(Id id);
+    public void validateOnGet(Id id) {
+        throwExceptionWhenIdIsNull(id);
+    }
 
     public abstract void validateOnCreate(Model model);
 
-    public abstract void validateOnUpdate(Long id, Team model);
+    public abstract void validateOnUpdate(Id id, Model model);
 
-    public abstract void validateOnDelete(Id id);
+    public void validateOnDelete(Id id) {
+        throwExceptionWhenIdIsNull(id);
+        doesEntityExist(id);
+    }
 
     public void doesEntityExist(Id id) {
         persistenceService.findById(id);
@@ -42,8 +46,14 @@ public abstract class ValidationBase<Model, Id> {
         }
     }
 
-    protected void isIdNull(Long id) {
+    protected void throwExceptionWhenIdIsNull(Id id) {
         if (id == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
+        }
+    }
+
+    protected void throwExceptionWhenIdIsNotNull(Id id) {
+        if (id != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
         }
     }

@@ -31,7 +31,7 @@ public abstract class ValidationBase<Model, Id> {
 
     public abstract void validateOnDelete(Id id);
 
-    protected void doesEntityExist(Id id) {
+    public void doesEntityExist(Id id) {
         persistenceService.findById(id);
     }
 

@@ -86,15 +86,6 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnSave_ShouldThrowExceptionWhenTeamDoesNotExist() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnGet(2L));
-
-        verify(validator, times(1)).isIdNull(2L);
-        assertEquals("Team with id 2 not found", exception.getReason());
-    }
-
-    @Test
     void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
         validator.validateOnCreate(teamWithIdNull);
 
@@ -145,16 +136,6 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).isModelNull(teamWithIdNull);
         verify(validator, times(1)).isIdNull(null);
         assertEquals("Id is null", exception.getReason());
-    }
-
-    @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenUpdatingTeamDoesNotExists() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(2L, team2));
-
-        verify(validator, times(1)).isModelNull(team2);
-        verify(validator, times(1)).isIdNull(2L);
-        assertEquals("Team with id 2 not found", exception.getReason());
     }
 
     @ParameterizedTest

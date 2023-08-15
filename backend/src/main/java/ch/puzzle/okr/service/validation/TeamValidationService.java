@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistance.TeamPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

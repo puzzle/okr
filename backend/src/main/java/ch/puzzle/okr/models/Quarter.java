@@ -62,7 +62,12 @@ public class Quarter {
 
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", year=" + label + ", startdate=" + startDate + ", enddate=" + endDate + '}';
+        return "Quarter{" +
+                "id=" + id +
+                ", label='" + label + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
     }
 
     @Override

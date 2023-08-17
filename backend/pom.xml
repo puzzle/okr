@@ -73,6 +73,11 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <properties>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco-output/merged.exec</sonar.jacoco.reportPath>
+    </properties>
     <build>
         <plugins>
             <plugin>

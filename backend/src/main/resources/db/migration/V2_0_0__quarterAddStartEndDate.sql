@@ -1,6 +1,6 @@
 alter table quarter
-    add column if not exists start_date timestamp,
-    add column if not exists end_date timestamp;
+    add column if not exists start_date date,
+    add column if not exists end_date date;
 
 DO $$
 DECLARE
@@ -12,8 +12,8 @@ DECLARE
     quarter_label text;
     formatted_start_date text;
     formatted_end_date text;
-    new_start_date timestamp;
-    new_end_date timestamp;
+    new_start_date date;
+    new_end_date date;
 BEGIN
     FOR r IN SELECT * FROM quarter
              WHERE quarter.start_date IS NULL
@@ -27,10 +27,10 @@ BEGIN
 
             SELECT
                 CASE
-                    WHEN quarter_label = 'Q1' THEN CONCAT(first_year, '-07-01 00:00:00')
-                    WHEN quarter_label = 'Q2' THEN CONCAT(first_year, '-10-01 00:00:00')
-                    WHEN quarter_label = 'Q3' THEN CONCAT(last_year, '-01-01 00:00:00')
-                    WHEN quarter_label = 'Q4' THEN CONCAT(last_year, '-04-01 00:00:00')
+                    WHEN quarter_label = 'Q1' THEN CONCAT(first_year, '-07-01')
+                    WHEN quarter_label = 'Q2' THEN CONCAT(first_year, '-10-01')
+                    WHEN quarter_label = 'Q3' THEN CONCAT(last_year, '-01-01')
+                    WHEN quarter_label = 'Q4' THEN CONCAT(last_year, '-04-01')
                     END
             INTO formatted_start_date
             FROM quarter;
@@ -39,16 +39,16 @@ BEGIN
 
             SELECT
                 CASE
-                    WHEN quarter_label = 'Q1' THEN CONCAT(first_year, '-09-30 23:59:59')
-                    WHEN quarter_label = 'Q2' THEN CONCAT(first_year, '-12-31 23:59:59')
-                    WHEN quarter_label = 'Q3' THEN CONCAT(last_year, '-03-31 23:59:59')
-                    WHEN quarter_label = 'Q4' THEN CONCAT(last_year, '-06-30 23:59:59')
+                    WHEN quarter_label = 'Q1' THEN CONCAT(first_year, '-09-30')
+                    WHEN quarter_label = 'Q2' THEN CONCAT(first_year, '-12-31')
+                    WHEN quarter_label = 'Q3' THEN CONCAT(last_year, '-03-31 ')
+                    WHEN quarter_label = 'Q4' THEN CONCAT(last_year, '-06-30 ')
                     END
             INTO formatted_end_date
             FROM quarter;
 
-            new_start_date :=  TO_TIMESTAMP(formatted_start_date, 'YY-MM-DD HH24:MI:SS');
-            new_end_date :=  TO_TIMESTAMP(formatted_end_date, 'YY-MM-DD HH24:MI:SS');
+            new_start_date :=  TO_DATE(formatted_start_date, 'YY-MM-DD');
+            new_end_date :=  TO_DATE(formatted_end_date, 'YY-MM-DD');
 
             UPDATE quarter q
             SET start_date = new_start_date,

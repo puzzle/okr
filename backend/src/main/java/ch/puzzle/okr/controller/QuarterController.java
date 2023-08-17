@@ -3,8 +3,8 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.service.QuarterService;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.business.QuarterBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,12 +24,11 @@ import java.util.List;
 @RequestMapping("api/v1/quarters")
 public class QuarterController {
 
-    private final QuarterBusinessService quarterBusinessService;
+    private final QuarterService quarterService;
     private final RegisterNewUserService registerNewUserService;
 
-    public QuarterController(QuarterBusinessService quarterBusinessService,
-            RegisterNewUserService registerNewUserService) {
-        this.quarterBusinessService = quarterBusinessService;
+    public QuarterController(QuarterService quarterService, RegisterNewUserService registerNewUserService) {
+        this.quarterService = quarterService;
         this.registerNewUserService = registerNewUserService;
     }
 
@@ -41,7 +40,7 @@ public class QuarterController {
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getOrCreateQuarters());
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getOrCreateQuarters());
     }
 
     @Operation(summary = "Get start and end date of quarter by keyResultId", description = "Get start and end date of quarter by keyResultId")
@@ -51,7 +50,7 @@ public class QuarterController {
             @ApiResponse(responseCode = "404", description = "Could not find given keyresult", content = @Content),
             @ApiResponse(responseCode = "422", description = "Label is invalid", content = @Content) })
     @GetMapping("/dates/{keyResultId}")
-    public StartEndDateDTO getStartAndEndDateofKeyresult(@PathVariable long keyResultId) {
-        return this.quarterBusinessService.getStartAndEndDateOfKeyresult(keyResultId);
+    public StartEndDateDTO getStartAndEndDateOfKeyResult(@PathVariable long keyResultId) {
+        return this.quarterService.getStartAndEndDateOfKeyResult(keyResultId);
     }
 }

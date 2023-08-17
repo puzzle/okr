@@ -2,7 +2,7 @@ package ch.puzzle.okr.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -17,10 +17,10 @@ public class Quarter {
     private String label;
 
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     public Quarter() {
     }
@@ -44,19 +44,19 @@ public class Quarter {
         this.label = label;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -85,8 +85,8 @@ public class Quarter {
     public static final class Builder {
         private @NotNull Long id;
         private @NotNull String label;
-        private @NotNull LocalDateTime startDate;
-        private @NotNull LocalDateTime endDate;
+        private @NotNull LocalDate startDate;
+        private @NotNull LocalDate endDate;
 
         private Builder() {
         }
@@ -105,12 +105,12 @@ public class Quarter {
             return this;
         }
 
-        public Builder withStartDate(@NotNull LocalDateTime startDate) {
+        public Builder withStartDate(@NotNull LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder withEndDate(@NotNull LocalDateTime endDate) {
+        public Builder withEndDate(@NotNull LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }

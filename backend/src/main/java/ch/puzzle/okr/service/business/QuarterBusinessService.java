@@ -1,9 +1,8 @@
-package ch.puzzle.okr.service.business;
+package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,19 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Service
-public class QuarterBusinessService {
+public class QuarterService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
     private static final Logger logger = LoggerFactory.getLogger(QuarterService.class);
 
@@ -34,20 +29,19 @@ public class QuarterBusinessService {
         yearToBusinessQuarterMap.put(4, 2);
     }
 
-    private final Pattern getValuesFromLabel = Pattern.compile("^GJ (\\d{2})/\\d{2}-Q([1-4])$");
-    private final KeyResultBusinessService keyResultBusinessService;
-    private final QuarterPersistenceService quarterPersistenceService;
+    private final KeyResultService keyResultService;
+    private final QuarterRepository quarterRepository;
     public YearMonth now;
 
-    public QuarterBusinessService(KeyResultBusinessService keyResultBusinessService,
-            QuarterPersistenceService quarterPersistenceService, YearMonth now) {
-        this.keyResultBusinessService = keyResultBusinessService;
-        this.quarterPersistenceService = quarterPersistenceService;
+    public QuarterService(KeyResultService keyResultService, QuarterRepository quarterRepository, YearMonth now) {
+        this.keyResultService = keyResultService;
+        this.quarterRepository = quarterRepository;
         this.now = now;
     }
 
     public Quarter getQuarterById(Long quarterId) {
-        return quarterPersistenceService.getQuarterById(quarterId);
+        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                (String.format("Quarter with id %d not found", quarterId))));
     }
 
     public List<Quarter> getOrCreateQuarters() {
@@ -64,8 +58,9 @@ public class QuarterBusinessService {
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
 
-    protected Quarter getOrCreateQuarter(String label) {
-        return quarterPersistenceService.getOrCreateQuarter(label);
+    protected synchronized Quarter getOrCreateQuarter(String label) {
+        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
+        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
     }
 
     public Quarter getActiveQuarter() {
@@ -106,39 +101,16 @@ public class QuarterBusinessService {
         return String.format(format, number);
     }
 
-    public StartEndDateDTO getStartAndEndDateOfKeyresult(long keyResultId) {
-        KeyResult keyResult = keyResultBusinessService.getKeyResultById(keyResultId);
-        String quarterLabel = keyResult.getObjective().getQuarter().getLabel();
+    public StartEndDateDTO getStartAndEndDateOfKeyResult(long keyResultId) {
+        KeyResult keyResult = keyResultService.getKeyResultById(keyResultId);
 
-        YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);
-        YearMonth endYearMonth = startYearMonth.plusMonths(2);
-
-        LocalDate startDate = LocalDate.of(startYearMonth.getYear(), startYearMonth.getMonthValue(), 1);
-        LocalDate endDate = LocalDate.of(endYearMonth.getYear(), endYearMonth.getMonthValue(),
-                endYearMonth.lengthOfMonth());
+        LocalDate startDate = keyResult.getObjective().getQuarter().getStartDate();
+        LocalDate endDate = keyResult.getObjective().getQuarter().getEndDate();
 
         return StartEndDateDTO.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
     }
 
-    protected YearMonth getYearMonthFromLabel(String quarterLabel) {
-        Matcher matcher = getValuesFromLabel.matcher(quarterLabel);
-        if (!matcher.find()) {
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Label isn't valid");
-        }
-
-        int businessYear = Integer.parseInt(matcher.group(1));
-        int businessQuarter = Integer.parseInt(matcher.group(2));
-
-        int calendarQuarter = yearToBusinessQuarterMap.get(businessQuarter);
-        int calendarYear = businessQuarter > 2 ? businessYear + 1 : businessYear;
-        // Add 2000 since year in quarter is in two digit format
-        calendarYear += 2000;
-
-        int month = calendarQuarter * 3 - 2;
-        return YearMonth.of(calendarYear, month);
-    }
-
-    @Scheduled(cron = "0 0 0 1 * ?") // Cron expression for 00:00:00 on the 1st day of every month
+    @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
         getOrCreateQuarters();
         logger.info("Generated quarters on first day of month");

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.controller.v1.CacheController;
 import ch.puzzle.okr.service.CacheService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

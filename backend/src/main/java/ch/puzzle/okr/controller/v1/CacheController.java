@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
 import ch.puzzle.okr.service.CacheService;
 import io.swagger.v3.oas.annotations.Operation;

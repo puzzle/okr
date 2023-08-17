@@ -39,26 +39,30 @@ public class TeamService {
     }
 
     @Transactional
+    @Deprecated
     public Team updateTeam(Long id, Team team) {
         validator.validateOnUpdate(id, team);
         return teamPersistenceService.save(team);
     }
 
     @Transactional
+    @Deprecated
     public Team createTeam(Team team) {
         validator.validateOnCreate(team);
         return teamPersistenceService.save(team);
     }
 
     @Transactional
+    @Deprecated
     public void deleteTeamById(Long teamId) {
         validator.validateOnDelete(teamId);
+        objectiveService.getObjectivesByTeam(teamId).forEach(objective -> objectiveService.deleteObjectiveById(teamId));
         teamPersistenceService.deleteById(teamId);
     }
 
-    public Integer activeObjectivesAmountOfTeam(Team team) {
-        String currentQuarter = quarterService.getQuarter(quarterService.now);
-        Quarter quarter = quarterService.getOrCreateQuarter(currentQuarter);
-        return objectiveService.activeObjectivesAmountOfTeam(team, quarter);
+    public Integer activeObjectivesAmountOfTeam(Team team, Long quarterId) {
+        validator.validateOnGetActiveObjectives(team);
+        Quarter activeQuarter = quarterService.getQuarterById(quarterId);
+        return objectiveService.activeObjectivesAmountOfTeam(team, activeQuarter);
     }
 }

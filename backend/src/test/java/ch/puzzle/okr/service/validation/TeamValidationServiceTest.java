@@ -89,7 +89,7 @@ class TeamValidationServiceTest {
     void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
         validator.validateOnCreate(teamWithIdNull);
 
-        verify(validator, times(1)).isModelNull(teamWithIdNull);
+        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
         verify(validator, times(1)).validate(teamWithIdNull);
     }
 
@@ -133,7 +133,7 @@ class TeamValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, teamWithIdNull));
 
-        verify(validator, times(1)).isModelNull(teamWithIdNull);
+        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
@@ -162,6 +162,27 @@ class TeamValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
+        assertEquals("Id is null", exception.getReason());
+    }
+
+    @Test
+    void validateOnGetActiveObjectives_ShouldBeSuccessfulWhenValidTeamId() {
+        validator.validateOnGetActiveObjectives(team1);
+
+        verify(validator, times(1)).validateOnGetActiveObjectives(team1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
+        verify(validator, times(1)).throwExceptionIfModelIsNull(team1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(team1.getId());
+        verify(validator, times(1)).doesEntityExist(team1.getId());
+    }
+
+    @Test
+    void validateOnGetActiveObjectives_ShouldThrowExceptionWhenIdIsNull() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }

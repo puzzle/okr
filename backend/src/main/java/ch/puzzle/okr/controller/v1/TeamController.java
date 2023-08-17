@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.TeamDto;
@@ -23,8 +23,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/teams")
+@Deprecated
 public class TeamController {
-
     private final TeamService teamService;
     private final TeamMapper teamMapper;
     private final ObjectiveService objectiveService;

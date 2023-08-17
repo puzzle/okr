@@ -1,5 +1,6 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
+import ch.puzzle.okr.controller.v1.OverviewController;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.OverviewDto;
 import ch.puzzle.okr.dto.TeamDto;

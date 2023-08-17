@@ -25,14 +25,11 @@ public class ObjectiveService {
     private final KeyResultRepository keyResultRepository;
     private final KeyResultService keyResultService;
 
-    private final TeamValidationService teamValidator;
-
     public ObjectiveService(ObjectiveRepository objectiveRepository, KeyResultRepository keyResultRepository,
-            @Lazy KeyResultService keyResultService, TeamValidationService teamValidator) {
+            @Lazy KeyResultService keyResultService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultRepository = keyResultRepository;
         this.keyResultService = keyResultService;
-        this.teamValidator = teamValidator;
     }
 
     public List<Objective> getAllObjectives() {
@@ -45,8 +42,6 @@ public class ObjectiveService {
     }
 
     public List<Objective> getObjectivesByTeam(Long id) {
-        // Consider replacement with the objective service
-        teamValidator.doesEntityExist(id);
         return objectiveRepository.findByTeamIdOrderByTitleAsc(id);
     }
 
@@ -114,6 +109,7 @@ public class ObjectiveService {
     }
 
     public Integer activeObjectivesAmountOfTeam(Team team, Quarter quarter) {
+        // validate quarter in objective validator by using the quarter validator
         return objectiveRepository.countByTeamAndQuarter(team, quarter);
     }
 }

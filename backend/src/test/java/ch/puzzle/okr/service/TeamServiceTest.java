@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistance.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
+import com.sun.xml.bind.v2.TODO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class TeamServiceTest {
@@ -79,6 +81,7 @@ class TeamServiceTest {
     }
 
     @Test
+    @Deprecated
     void updateTeam_ShouldBeSuccessful() throws ResponseStatusException {
         Mockito.when(teamPersistenceService.save(team1)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnUpdate(1L, teamWithIdNull);
@@ -89,6 +92,7 @@ class TeamServiceTest {
     }
 
     @Test
+    @Deprecated
     void createTeam_ShouldBeSuccessful() throws ResponseStatusException {
         Mockito.when(teamPersistenceService.save(teamWithIdNull)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnCreate(teamWithIdNull);
@@ -100,6 +104,7 @@ class TeamServiceTest {
     }
 
     @Test
+    @Deprecated
     void createTeam_ShouldThrowExceptionIfTeamHasId() throws ResponseStatusException {
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "Model Team cannot have id while create. Found id 1")).when(validator).validateOnCreate(team1);
@@ -111,6 +116,7 @@ class TeamServiceTest {
     }
 
     @Test
+    @Deprecated
     void deleteTeamWithId_ShouldBeSuccessful() throws ResponseStatusException {
         Mockito.doNothing().when(teamPersistenceService).deleteById(1L);
         teamService.deleteTeamById(1L);
@@ -121,9 +127,8 @@ class TeamServiceTest {
     @Test
     void activeObjectivesAmountOfTeam_ShouldBeSuccessful() throws ResponseStatusException {
         Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
-        Mockito.when(quarterService.getQuarter(ArgumentMatchers.any())).thenReturn("GJ 23/24-Q1");
-        Mockito.when(quarterService.getOrCreateQuarter("GJ 23/24-Q1")).thenReturn(quarter);
+        Mockito.when(quarterService.getQuarterById(any())).thenReturn(quarter);
         Mockito.when(objectiveService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);
-        assertEquals(69, teamService.activeObjectivesAmountOfTeam(team1));
+        assertEquals(69, teamService.activeObjectivesAmountOfTeam(team1, 1L));
     }
 }

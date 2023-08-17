@@ -12,19 +12,27 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
     }
 
     @Override
+    @Deprecated
     public void validateOnCreate(Team model) {
-        isModelNull(model);
+        throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
 
         validate(model);
     }
 
     @Override
+    @Deprecated
     public void validateOnUpdate(Long id, Team model) {
-        isModelNull(model);
+        throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
 
         doesEntityExist(id);
         validate(model);
+    }
+
+    public void validateOnGetActiveObjectives(Team team) {
+        throwExceptionIfModelIsNull(team);
+        throwExceptionWhenIdIsNull(team.getId());
+        doesEntityExist(team.getId());
     }
 }

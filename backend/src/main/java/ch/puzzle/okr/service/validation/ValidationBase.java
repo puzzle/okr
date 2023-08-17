@@ -39,7 +39,7 @@ public abstract class ValidationBase<Model, Id> {
         persistenceService.findById(id);
     }
 
-    public void isModelNull(Model model) {
+    public void throwExceptionIfModelIsNull(Model model) {
         if (model == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Given model %s is null", persistenceService.getModelName()));

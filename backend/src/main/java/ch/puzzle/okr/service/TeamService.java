@@ -1,89 +1,68 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.repository.TeamRepository;
-import org.springframework.http.HttpStatus;
+import ch.puzzle.okr.service.persistance.TeamPersistenceService;
+import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TeamService {
 
-    private final TeamRepository teamRepository;
-
-    private final ObjectiveRepository objectiveRepository;
+    private final TeamPersistenceService teamPersistenceService;
 
     private final ObjectiveService objectiveService;
 
-    private final ValidationService validationService;
+    private final TeamValidationService validator;
 
-    public TeamService(TeamRepository teamRepository, ObjectiveRepository objectiveRepository,
-            ObjectiveService objectiveService, ValidationService validationService) {
-        this.teamRepository = teamRepository;
-        this.objectiveRepository = objectiveRepository;
+    private final QuarterService quarterService;
+
+    public TeamService(TeamPersistenceService teamPersistenceService, ObjectiveService objectiveService,
+            TeamValidationService validator, QuarterService quarterService) {
+        this.teamPersistenceService = teamPersistenceService;
         this.objectiveService = objectiveService;
-        this.validationService = validationService;
+        this.validator = validator;
+        this.quarterService = quarterService;
     }
 
     public List<Team> getAllTeams() {
-        return getAllTeams(Collections.emptyList());
-    }
-
-    public List<Team> getAllTeams(List<Long> teamIds) {
-        List<Team> teamList = new ArrayList<>();
-        Optional<Team> puzzleItcOptional = teamRepository.findByName(Constants.TEAM_PUZZLE);
-
-        if (teamIds.isEmpty()) {
-            puzzleItcOptional.ifPresent(teamList::add);
-            teamList.addAll(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE));
-        } else {
-            if (puzzleItcOptional.isPresent() && teamIds.contains(puzzleItcOptional.get().getId())) {
-                puzzleItcOptional.ifPresent(teamList::add);
-            }
-            teamList.addAll(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE));
-        }
-        return teamList;
-    }
-
-    public Team getTeamById(long id) {
-        return teamRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("Team with id %d not found", id)));
-    }
-
-    public Team saveTeam(Team team) {
-        validationService.validateOnSave(team);
-        return teamRepository.save(team);
-    }
-
-    public Team updateTeam(Long id, Team team) {
-        validationService.validateOnUpdate(team);
-        getTeamById(id);
-        return teamRepository.save(team);
-    }
-
-    public Team getTeamById(Long teamId) {
-        if (teamId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute team id");
-        }
-
-        return teamRepository.findById(teamId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                (String.format("Team with id %d not found", teamId))));
+        return teamPersistenceService.findAll();
     }
 
     @Transactional
-    public void deleteTeamById(Long teamId) {
-        objectiveRepository.findByTeamIdOrderByTitleAsc(teamId).forEach(objective -> {
-            objectiveService.deleteObjectiveById(objective.getId());
-        });
+    public Team getTeamById(Long id) {
+        validator.validateOnGet(id);
+        return teamPersistenceService.findById(id);
+    }
 
-        teamRepository.deleteById(teamId);
+    @Transactional
+    @Deprecated
+    public Team updateTeam(Long id, Team team) {
+        validator.validateOnUpdate(id, team);
+        return teamPersistenceService.save(team);
+    }
+
+    @Transactional
+    @Deprecated
+    public Team createTeam(Team team) {
+        validator.validateOnCreate(team);
+        return teamPersistenceService.save(team);
+    }
+
+    @Transactional
+    @Deprecated
+    public void deleteTeamById(Long teamId) {
+        validator.validateOnDelete(teamId);
+        objectiveService.getObjectivesByTeam(teamId).forEach(objective -> objectiveService.deleteObjectiveById(teamId));
+        teamPersistenceService.deleteById(teamId);
+    }
+
+    public Integer activeObjectivesAmountOfTeam(Team team, Long quarterId) {
+        validator.validateOnGetActiveObjectives(team);
+        Quarter activeQuarter = quarterService.getQuarterById(quarterId);
+        return objectiveService.activeObjectivesAmountOfTeam(team, activeQuarter);
     }
 }

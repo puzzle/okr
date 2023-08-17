@@ -25,3 +25,4 @@ hs_err_pid*
 /backend/target/
 /.idea/
 parent.iml
+./backend/backend.iml

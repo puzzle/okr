@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class UserServiceTest {
     @MockBean
     UserRepository userRepository = mock(UserRepository.class);
     @MockBean
-    ValidationService validationService = mock(ValidationService.class);
+    UserValidationService validationService = mock(UserValidationService.class);
     List<User> userList;
     @InjectMocks
     private UserService userService;

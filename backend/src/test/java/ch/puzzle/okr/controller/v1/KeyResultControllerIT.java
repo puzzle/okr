@@ -1,5 +1,6 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
+import ch.puzzle.okr.controller.v1.KeyResultController;
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;

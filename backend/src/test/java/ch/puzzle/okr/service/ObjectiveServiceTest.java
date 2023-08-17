@@ -46,7 +46,6 @@ class ObjectiveServiceTest {
     TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
     @MockBean
     MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
-
     Objective objective;
     Objective fullObjective1;
     Objective fullObjective2;
@@ -241,15 +240,6 @@ class ObjectiveServiceTest {
         when(objectiveRepository.findById(newObjective.getId())).thenReturn(Optional.of(objective));
 
         assertTrue(objectiveService.isQuarterImmutable(newObjective));
-
-    }
-
-    @Test
-    void shouldThrowNotFoundException() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.objectiveService.getObjectivesByTeam(13L));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(("Could not find team with id 13"), exception.getReason());
     }
 
     @Test

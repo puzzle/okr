@@ -4,10 +4,13 @@ import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import ch.puzzle.okr.repository.QuarterRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
@@ -22,6 +25,7 @@ import java.util.stream.IntStream;
 @Service
 public class QuarterBusinessService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
+    private static final Logger logger = LoggerFactory.getLogger(QuarterService.class);
 
     static {
         yearToBusinessQuarterMap.put(1, 3);
@@ -132,5 +136,11 @@ public class QuarterBusinessService {
 
         int month = calendarQuarter * 3 - 2;
         return YearMonth.of(calendarYear, month);
+    }
+
+    @Scheduled(cron = "0 0 0 1 * ?") // Cron expression for 00:00:00 on the 1st day of every month
+    public void scheduledGenerationQuarters() {
+        getOrCreateQuarters();
+        logger.info("Generated quarters on first day of month");
     }
 }

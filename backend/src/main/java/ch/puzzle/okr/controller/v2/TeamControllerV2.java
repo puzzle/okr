@@ -36,10 +36,10 @@ public class TeamControllerV2 {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Teams with active objective in quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
-    @GetMapping("/{id}")
+    @GetMapping("/{quarterId}")
     public List<TeamDto> getAllTeams(
-            @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = false) @PathVariable long id) {
+            @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = false) @PathVariable Long quarterId) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return teamService.getAllTeams().stream().map(team -> teamMapper.toDto(team, id)).toList();
+        return teamService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
     }
 }

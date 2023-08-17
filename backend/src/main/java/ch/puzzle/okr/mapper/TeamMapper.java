@@ -24,6 +24,7 @@ public class TeamMapper {
         return new TeamDto(team.getId(), team.getName(), activeObjectives);
     }
 
+    @Deprecated
     public TeamDto toDto(Team team) {
         return new TeamDto(team.getId(), team.getName());
     }

@@ -7,6 +7,7 @@ import { ObjectiveFormComponent } from './release-1/objective/objective-form/obj
 import { TeamFormComponent } from './release-1/team/team-form/team-form.component';
 import { MeasureFormComponent } from './release-1/shared/components/shared/measure-form/measure-form.component';
 import { KeyResultDetailComponent } from './release-1/shared/components/shared/key-result-detail/key-result-detail.component';
+import { ObjectiveColumnComponent } from './release-2/objective/objective-column/objective-column.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent, pathMatch: 'full' },
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'objective/:objectiveId/keyresult/new',
     component: KeyresultFormComponent,
+  },
+  {
+    path: 'objectivestest',
+    component: ObjectiveColumnComponent,
   },
   { path: 'teams', component: TeamListComponent },
   { path: 'keyresults/:keyresultId', component: KeyResultDetailComponent },

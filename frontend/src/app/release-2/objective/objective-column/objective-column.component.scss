@@ -1,4 +1,4 @@
-objective-container {
+.objective {
   display: flex;
   width: 321px;
   flex-direction: column;
@@ -28,4 +28,13 @@ objective-container {
   display: flex;
   cursor: pointer;
   text-decoration: none;
+}
+
+.objective-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.objective-header {
+  display: flex;
 }

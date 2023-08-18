@@ -1,0 +1,31 @@
+objective-container {
+  display: flex;
+  width: 321px;
+  flex-direction: column;
+  border-radius: 8px;
+  align-items: flex-start;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.06), 1px 1px 2px 0 rgba(0, 0, 0, 0.06), 3px 3px 4px 0 rgba(0, 0, 0, 0.05),
+    8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
+}
+
+.objective-title {
+  flex: 1 0 0;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.add-key-result-text {
+  color: #1e5a96;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.add-key-result-anchor {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+}

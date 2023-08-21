@@ -11,6 +11,12 @@
       </div>
     </header>
     <mat-card-content>
+      <mat-card class="key-result-card" *ngFor="let keyResult of keyResults">
+        <header>
+          <mat-card-title>Some Text</mat-card-title>
+        </header>
+        <mat-card-content> Some more text... </mat-card-content>
+      </mat-card>
       <a class="add-key-result-anchor">
         <img src="/assets/add-icon-blue.svg" alt="Add key-result button" />
         <p class="add-key-result-text">Key Result Hinzufügen</p>

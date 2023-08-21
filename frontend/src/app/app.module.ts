@@ -4,7 +4,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './release-1/dashboard/dashboard.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,24 +13,20 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
-import { TeamModule } from './release-1/team/team.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ToastrModule } from 'ngx-toastr';
-import { ConfirmDialogComponent } from './release-1/shared/dialog/confirm-dialog/confirm-dialog.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SpinnerComponent } from './release-1/shared/spinner/spinner/spinner.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
-import { OauthInterceptor } from './release-1/shared/interceptors/oauth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { HelpDialogComponent } from './release-1/shared/dialog/help-dialog/help-dialog.component';
 import { A11yModule } from '@angular/cdk/a11y';
-import { ExampleDialogComponent } from './release-1/shared/dialog/example-dialog/example-dialog.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
+import { ObjectiveModule } from './objective/objective.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -54,20 +49,14 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    ConfirmDialogComponent,
-    SpinnerComponent,
-    HelpDialogComponent,
-    ExampleDialogComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
+    ObjectiveModule,
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
@@ -77,7 +66,6 @@ export const MY_FORMATS = {
     BrowserAnimationsModule,
     MatExpansionModule,
     MatInputModule,
-    TeamModule,
     MatTooltipModule,
     MatAutocompleteModule,
     ToastrModule.forRoot(),

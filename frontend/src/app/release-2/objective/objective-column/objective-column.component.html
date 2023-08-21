@@ -7,7 +7,12 @@
         <mat-card-title class="objective-title">{{ objectiveTitle }}</mat-card-title>
       </div>
       <div>
-        <img class="three-dot-menu" src="/assets/three-dot-menu.svg" alt="Blue status indicator" />
+        <img
+          [matMenuTriggerFor]="objectiveMenu"
+          class="three-dot-menu"
+          src="/assets/three-dot-menu.svg"
+          alt="Blue status indicator"
+        />
       </div>
     </header>
     <mat-card-content>
@@ -24,3 +29,10 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<mat-menu #objectiveMenu="matMenu" class="objective-menu" xPosition="before" yPosition="below">
+  <button mat-menu-item class="objective-menu-option">Objective bearbeiten</button>
+  <button mat-menu-item class="objective-menu-option">Objective duplizieren</button>
+  <button mat-menu-item class="objective-menu-option">Objective abschliessen</button>
+  <button mat-menu-item class="objective-menu-option">Objective freigeben</button>
+</mat-menu>

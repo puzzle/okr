@@ -90,4 +90,34 @@
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1), 2px 1px 5px 0px rgba(0, 0, 0, 0.1),
     8px 5px 9px 0px rgba(0, 0, 0, 0.09), 18px 11px 13px 0px rgba(0, 0, 0, 0.05), 32px 19px 15px 0px rgba(0, 0, 0, 0.01),
     51px 29px 16px 0px rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+
+::ng-deep .objective-menu {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.25);
+  height: 140px;
+}
+
+.objective-menu-option {
+  display: flex;
+  height: 35px;
+  padding: 8px 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.objective-menu-option:hover {
+  border-left: 4px solid darkblue;
+  background: #eff7ff;
 }

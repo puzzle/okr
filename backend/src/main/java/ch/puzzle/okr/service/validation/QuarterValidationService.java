@@ -10,6 +10,7 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
     public QuarterValidationService(QuarterPersistenceService quarterPersistenceService) {
         super(quarterPersistenceService);
     }
+
     @Override
     public void validateOnCreate(Quarter model) {
         throwExceptionIfModelIsNull(model);

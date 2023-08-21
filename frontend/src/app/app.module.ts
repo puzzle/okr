@@ -27,6 +27,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { MatRadioModule } from '@angular/material/radio';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 import { ObjectiveModule } from './objective/objective.module';
+import { ExampleDialogComponent } from './shared/dialog/example-dialog/example-dialog.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,7 +50,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ExampleDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

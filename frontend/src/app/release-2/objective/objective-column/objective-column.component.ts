@@ -7,12 +7,14 @@ import { KeyResultMeasure } from '../../../release-1/shared/services/key-result.
   styleUrls: ['./objective-column.component.scss'],
 })
 export class ObjectiveColumnComponent implements OnInit {
-  private objectiveTitle: string = '';
-  private keyResults: String[] = []; //ToDo in KeyResult ticket
+  objectiveTitle: string = '';
+  keyResults: String[] = []; //ToDo in KeyResult ticket
 
   constructor(private overviewService: OverviewService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setObjectiveAndKeyResultProperties();
+  }
 
   setObjectiveAndKeyResultProperties() {
     const objectiveWithKeyresults = this.overviewService.getObjectiveWithKeyresults();

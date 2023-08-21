@@ -4,7 +4,7 @@
   flex-direction: column;
   border-radius: 8px;
   align-items: flex-start;
-  padding: 20px;
+  padding: 20px 20px 20px 0px;
 }
 
 .objective:hover {
@@ -44,7 +44,7 @@
 .objective-header {
   display: flex;
   justify-content: space-between;
-  width: min-content;
+  width: 100%;
 }
 
 .title-status {
@@ -55,4 +55,9 @@
   width: 20px;
   height: 20px;
   margin-right: 8px;
+}
+
+.three-dot-menu {
+  width: 20px;
+  height: 20px;
 }

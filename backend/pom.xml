@@ -73,11 +73,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <properties>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-        <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco-output/merged.exec</sonar.jacoco.reportPath>
-    </properties>
     <build>
         <plugins>
             <plugin>
@@ -177,7 +172,7 @@
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.75</minimum>
+                                            <minimum>0.8</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

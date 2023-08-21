@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
-    @NotNull
     private Long id;
 
     @NotNull
@@ -83,10 +82,10 @@ public class Quarter {
     }
 
     public static final class Builder {
-        private @NotNull Long id;
-        private @NotNull String label;
-        private @NotNull LocalDate startDate;
-        private @NotNull LocalDate endDate;
+        private Long id;
+        private String label;
+        private LocalDate startDate;
+        private LocalDate endDate;
 
         private Builder() {
         }

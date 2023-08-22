@@ -11,7 +11,7 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
     private TeamValidationService teamValidationService;
 
     public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService,
-                                      TeamValidationService teamValidationService) {
+            TeamValidationService teamValidationService) {
         super(objectivePersistenceService);
         this.teamValidationService = teamValidationService;
     }
@@ -20,8 +20,8 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
     public void validateOnCreate(Objective model) {
         throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
-        //Progress can't be set when creating new objective
-        if(model.getProgress() != null) {
+        // Progress can't be set when creating new objective
+        if (model.getProgress() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give a progress");
         }
         validate(model);
@@ -46,6 +46,6 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
         throwExceptionWhenIdIsNull(teamId);
 
         teamValidationService.doesEntityExist(teamId);
-        //Check if Entity exists on QuarterValidationService
+        // Check if Entity exists on QuarterValidationService
     }
 }

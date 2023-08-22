@@ -80,6 +80,10 @@
                 <configuration>
                     <excludes>
                         <exclude>ch/puzzle/okr/service/ProgressService*</exclude>
+                        <exclude>ch/puzzle/okr/service/business/ObjectiveBusinessService*</exclude>
+                        <exclude>ch/puzzle/okr/service/business/MeasureBusinessService*</exclude>
+                        <exclude>ch/puzzle/okr/service/business/KeyResultBusinessService*</exclude>
+                        <exclude>ch/puzzle/okr/service/business/ProgressBusinessService*</exclude>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>
                         <exclude>ch/puzzle/okr/mapper/**</exclude>

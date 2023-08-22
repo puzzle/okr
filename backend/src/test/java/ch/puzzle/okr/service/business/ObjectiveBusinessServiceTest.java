@@ -182,7 +182,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "", " ", "  " })
+    @ValueSource(strings = {"", " ", "  "})
     void shouldNotCreateObjectiveWithEmptyTitle(String passedName) {
         Objective objective1 = Objective.Builder.builder().withTitle(passedName).build();
         Mockito.when(objectivePersistenceService.saveObjective(any())).thenReturn(objective1);
@@ -249,13 +249,14 @@ class ObjectiveBusinessServiceTest {
         assertEquals("FullObjective2", realObjectiveList.get(1).getTitle());
     }
 
+    @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(this.objectivePersistenceService.getObjectiveById(anyLong())).thenReturn(objective);
         when(this.keyResultPersistenceService.getKeyResultsByObjective(objective)).thenReturn(keyResults);
 
         this.objectiveBusinessService.deleteObjectiveById(1L);
 
-        verify(this.keyResultPersistenceService, times(3)).deleteKeyResultById(5L);
+        verify(this.keyResultBusinessService, times(3)).deleteKeyResultById(5L);
         verify(this.objectiveBusinessService, times(1)).deleteObjectiveById(anyLong());
     }
 }

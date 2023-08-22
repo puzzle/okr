@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,7 +34,7 @@ class QuarterServiceTest {
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
     @MockBean
     KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
-    @MockBean
+    @Mock
     QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
 
     @InjectMocks
@@ -82,7 +83,7 @@ class QuarterServiceTest {
     @Test
     void shouldReturnProperQuarter() {
         Quarter quarter = Quarter.Builder.builder().withId(3L).withLabel("GJ 22/23-Q2").build();
-        when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.of(quarter));
+        when(this.quarterPersistenceService.findById(anyLong())).thenReturn(quarter);
         Quarter objectQuarter = this.quarterService.getQuarterById(3L);
         assertEquals("GJ 22/23-Q2", objectQuarter.getLabel());
         assertEquals(3, objectQuarter.getId());

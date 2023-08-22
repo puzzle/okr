@@ -25,4 +25,10 @@ export class ObjectiveColumnComponent implements OnInit {
       this.keyResults.push(JSON.stringify(keyResult));
     }
   }
+
+  buttonDemo() {
+    console.log('Button of objective-column works!');
+  }
+
+  protected readonly console = console;
 }

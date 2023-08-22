@@ -17,7 +17,7 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
         return "Quarter";
     }
 
-    public Optional<Quarter> getLabel(String label) {
+    public Optional<Quarter> getByLabel(String label) {
         return ((QuarterRepository)repository).findByLabel(label);
     }
 }

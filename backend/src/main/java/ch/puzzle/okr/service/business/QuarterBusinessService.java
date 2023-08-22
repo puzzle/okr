@@ -1,14 +1,11 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Month;
 import java.time.YearMonth;

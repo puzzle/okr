@@ -1,7 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.dto.StartEndDateDTO;
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.slf4j.Logger;
@@ -11,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.*;

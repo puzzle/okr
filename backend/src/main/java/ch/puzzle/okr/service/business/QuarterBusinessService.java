@@ -101,15 +101,6 @@ public class QuarterService {
         return String.format(format, number);
     }
 
-    public StartEndDateDTO getStartAndEndDateOfKeyResult(long keyResultId) {
-        KeyResult keyResult = keyResultService.getKeyResultById(keyResultId);
-
-        LocalDate startDate = keyResult.getObjective().getQuarter().getStartDate();
-        LocalDate endDate = keyResult.getObjective().getQuarter().getEndDate();
-
-        return StartEndDateDTO.Builder.builder().withStartDate(startDate).withEndDate(endDate).build();
-    }
-
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
         getOrCreateQuarters();

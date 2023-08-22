@@ -28,7 +28,8 @@ public class QuarterService {
     private final QuarterPersistenceService quarterPersistenceService;
     public YearMonth now;
 
-    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService, YearMonth now) {
+    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService,
+            YearMonth now) {
         this.keyResultService = keyResultService;
         this.quarterPersistenceService = quarterPersistenceService;
         this.now = now;
@@ -54,7 +55,8 @@ public class QuarterService {
 
     protected synchronized Quarter getOrCreateQuarter(String label) {
         Optional<Quarter> quarter = quarterPersistenceService.getByLabel(label);
-        return quarter.orElseGet(() -> quarterPersistenceService.save(Quarter.Builder.builder().withLabel(label).build()));
+        return quarter
+                .orElseGet(() -> quarterPersistenceService.save(Quarter.Builder.builder().withLabel(label).build()));
     }
 
     public Quarter getActiveQuarter() {

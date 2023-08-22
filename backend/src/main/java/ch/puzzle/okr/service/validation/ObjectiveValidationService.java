@@ -8,12 +8,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ObjectiveValidationService extends ValidationBase<Objective, Long> {
-    private TeamValidationService teamValidationService;
 
-    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService,
-            TeamValidationService teamValidationService) {
+    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService) {
         super(objectivePersistenceService);
-        this.teamValidationService = teamValidationService;
     }
 
     @Override

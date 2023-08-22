@@ -35,17 +35,4 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
 
         validate(model);
     }
-
-    public void validateOnGetObjectivesByTeam(Long teamId) {
-        throwExceptionWhenIdIsNull(teamId);
-        teamValidationService.doesEntityExist(teamId);
-    }
-
-    public void validateOnGetObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
-        throwExceptionWhenIdIsNull(quarterId);
-        throwExceptionWhenIdIsNull(teamId);
-
-        teamValidationService.doesEntityExist(teamId);
-        // Check if Entity exists on QuarterValidationService
-    }
 }

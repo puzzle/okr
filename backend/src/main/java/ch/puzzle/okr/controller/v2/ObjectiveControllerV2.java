@@ -27,14 +27,15 @@ public class ObjectiveControllerV2 {
         this.objectiveMapper = objectiveMapper;
     }
 
-    @Operation(summary = "Get Objectives", description = "Get all Objectives from db")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Objectives", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }), })
+    @Operation(summary = "Get Objective", description = "Get an Objective by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned an Objective with a specified ID", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID", content = @Content) })
     @GetMapping("/{id}")
-    public List<ObjectiveDto> getAllObjectives(
-            @Parameter(description = "The ID of an Objective.", required = true) @PathVariable Long id) {
-        // Modify Method
-        return objectiveService.getAllObjectives().stream().map(objectiveMapper::toDto).toList();
+    public ResponseEntity<ObjectiveDto> getObjective(
+            @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjective(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")

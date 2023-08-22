@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
+import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,18 +28,17 @@ public class QuarterService {
     }
 
     private final KeyResultService keyResultService;
-    private final QuarterRepository quarterRepository;
+    private final QuarterPersistenceService quarterPersistenceService;
     public YearMonth now;
 
-    public QuarterService(KeyResultService keyResultService, QuarterRepository quarterRepository, YearMonth now) {
+    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService, YearMonth now) {
         this.keyResultService = keyResultService;
-        this.quarterRepository = quarterRepository;
+        this.quarterPersistenceService = quarterPersistenceService;
         this.now = now;
     }
 
     public Quarter getQuarterById(Long quarterId) {
-        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                (String.format("Quarter with id %d not found", quarterId))));
+        return quarterPersistenceService.findById(quarterId);
     }
 
     public List<Quarter> getOrCreateQuarters() {
@@ -56,7 +56,7 @@ public class QuarterService {
     }
 
     protected synchronized Quarter getOrCreateQuarter(String label) {
-        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
+        Optional<Quarter> quarter = quarterPersistenceService.findByLabel(label);
         return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
     }
 

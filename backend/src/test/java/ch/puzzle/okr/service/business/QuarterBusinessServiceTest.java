@@ -179,44 +179,6 @@ class QuarterServiceTest {
         assertEquals(month, monthFromQuarter(quarter));
     }
 
-    private static Stream<Arguments> shouldGetYearMonthFromLabel() {
-        return Stream.of(Arguments.of("GJ 21/22-Q1", YearMonth.of(2021, 7)),
-                Arguments.of("GJ 21/22-Q2", YearMonth.of(2021, 10)), Arguments.of("GJ 21/22-Q3", YearMonth.of(2022, 1)),
-                Arguments.of("GJ 21/22-Q4", YearMonth.of(2022, 4)));
-    }
-
-    // TODO: Fix this test after removing getYearMonthFromLabel() in QuarterService
-    @Disabled
-    @ParameterizedTest
-    @MethodSource
-    void shouldStartEndDateFromKeyResult(int keyResultId, String label, StartEndDateDTO startEndDateExpected) {
-        Quarter quarter = Quarter.Builder.builder().withLabel(label).withStartDate(LocalDate.of(2020, 7, 1))
-                .withEndDate(LocalDate.of(2020, 9, 31)).build();
-        Objective objective = Objective.Builder.builder().withQuarter(quarter).build();
-        KeyResult keyResult = KeyResult.Builder.builder().withObjective(objective).build();
-
-        doReturn(keyResult).when(this.keyResultService).getKeyResultById(keyResultId);
-
-        StartEndDateDTO startEndDate = this.quarterService.getStartAndEndDateOfKeyResult(keyResultId);
-
-        assertEquals(startEndDateExpected, startEndDate);
-    }
-
-    private static Stream<Arguments> shouldStartEndDateFromKeyResult() {
-        return Stream.of(
-                Arguments.of(1, "GJ 21/22-Q1", YearMonth.of(2021, 7),
-                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2021, 7, 1))
-                                .withEndDate(LocalDate.of(2021, 9, 30)).build()),
-                Arguments.of(2, "GJ 21/22-Q2", YearMonth.of(2021, 10),
-                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2021, 10, 1))
-                                .withEndDate(LocalDate.of(2021, 12, 31)).build()),
-                Arguments.of(3, "GJ 21/22-Q3", YearMonth.of(2022, 1),
-                        StartEndDateDTO.Builder.builder().withStartDate(LocalDate.of(2022, 1, 1))
-                                .withEndDate(LocalDate.of(2022, 3, 31)).build()),
-                Arguments.of(4, "GJ 21/22-Q4", YearMonth.of(2022, 4), StartEndDateDTO.Builder.builder()
-                        .withStartDate(LocalDate.of(2022, 4, 1)).withEndDate(LocalDate.of(2022, 6, 30)).build()));
-    }
-
     private int monthFromQuarter(int quarter) {
         return quarter * 3 - 2;
     }

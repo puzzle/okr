@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
+import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +33,8 @@ class QuarterServiceTest {
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
     @MockBean
     KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
+    @MockBean
+    QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
 
     @InjectMocks
     @Spy

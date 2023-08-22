@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/objectives")
+@Deprecated
 public class ObjectiveController {
 
     private final ObjectiveBusinessService objectiveBusinessService;

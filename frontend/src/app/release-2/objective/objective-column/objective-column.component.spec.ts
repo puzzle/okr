@@ -6,8 +6,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { trigger } from '@angular/animations';
+import { style, trigger } from '@angular/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
+import { getStylesConfig } from '@angular-devkit/build-angular/src/webpack/configs';
 
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveColumnComponent;
@@ -33,5 +35,13 @@ describe('ObjectiveColumnComponent', () => {
     expect(await menu.isOpen()).toBe(false);
     await menu.open();
     expect(await menu.isOpen()).toBe(true);
+  });
+
+  //Test not functional
+  test('Apply hover style when objective is hovered', async () => {
+    const objective = fixture.debugElement.query(By.css('.objective'));
+    objective.triggerEventHandler('mouseover');
+    fixture.detectChanges();
+    console.log(getComputedStyle(objective.nativeElement));
   });
 });

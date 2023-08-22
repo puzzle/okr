@@ -57,7 +57,7 @@ public class QuarterService {
 
     protected synchronized Quarter getOrCreateQuarter(String label) {
         Optional<Quarter> quarter = quarterPersistenceService.getByLabel(label);
-        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
+        return quarter.orElseGet(() -> quarterPersistenceService.save(Quarter.Builder.builder().withLabel(label).build()));
     }
 
     public Quarter getActiveQuarter() {

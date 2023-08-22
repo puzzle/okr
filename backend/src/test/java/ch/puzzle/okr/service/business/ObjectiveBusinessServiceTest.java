@@ -182,7 +182,7 @@ class ObjectiveBusinessServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "  "})
+    @ValueSource(strings = { "", " ", "  " })
     void shouldNotCreateObjectiveWithEmptyTitle(String passedName) {
         Objective objective1 = Objective.Builder.builder().withTitle(passedName).build();
         Mockito.when(objectivePersistenceService.saveObjective(any())).thenReturn(objective1);

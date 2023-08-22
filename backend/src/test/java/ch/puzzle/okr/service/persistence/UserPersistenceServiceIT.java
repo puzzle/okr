@@ -22,21 +22,21 @@ class UserPersistenceServiceIT {
     @AfterEach
     void tearDown() {
         if (createdUser != null) {
-            userPersistenceService.deleteUserById(createdUser.getId());
+            userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
     }
 
     @Test
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
-        List<User> userList = userPersistenceService.getAllUsers();
+        List<User> userList = userPersistenceService.findAll();
 
         Assertions.assertThat(userList.size()).isEqualTo(6);
     }
 
     @Test
     void shouldReturnSingleUserWhenFindingOwnerByValidId() {
-        User returnedUser = userPersistenceService.getOwnerById(1L);
+        User returnedUser = userPersistenceService.findById(1L);
 
         assertEquals(1L, returnedUser.getId());
         assertEquals("Paco", returnedUser.getFirstname());
@@ -48,19 +48,19 @@ class UserPersistenceServiceIT {
     @Test
     void shouldThrowExceptionWhenFindingOwnerNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userPersistenceService.getOwnerById(321L));
+                () -> userPersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Owner with id 321 not found", exception.getReason());
+        assertEquals("User with id 321 not found", exception.getReason());
     }
 
     @Test
     void shouldThrowExceptionWhenFindingOwnerWithNullId() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userPersistenceService.getOwnerById(null));
+                () -> userPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute owner id", exception.getReason());
+        assertEquals("Missing identifier for User", exception.getReason());
     }
 
     @Test

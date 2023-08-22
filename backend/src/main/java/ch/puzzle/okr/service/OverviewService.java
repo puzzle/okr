@@ -23,7 +23,7 @@ public class OverviewService {
     }
 
     public List<OverviewDto> getOverview(List<Long> teamIds, Long quarterId) {
-        List<Team> teams = teamBusinessService.getAllTeams(teamIds);
+        List<Team> teams = teamBusinessService.getAllTeams();
         return teams.stream().map(team -> overviewMapper.toDto(team,
                 objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(team.getId(), quarterId))).toList();
     }

@@ -36,11 +36,11 @@ public class KeyResultMapper {
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
         return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
-                .withOwner(userPersistenceService.getOwnerById(keyResultDto.ownerId()))
+                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
                 .withObjective(objectivePersistenceService.getObjectiveById(keyResultDto.objectiveId()))
                 .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
                 .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
                 .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())
-                .withCreatedBy(userPersistenceService.getOwnerById(keyResultDto.ownerId())).build();
+                .withCreatedBy(userPersistenceService.findById(keyResultDto.ownerId())).build();
     }
 }

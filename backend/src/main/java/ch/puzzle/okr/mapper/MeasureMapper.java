@@ -35,7 +35,7 @@ public class MeasureMapper {
         KeyResult keyResult = mapKeyResult(measureDto);
         return Measure.Builder.builder().withId(measureDto.id()).withKeyResult(keyResult).withValue(measureDto.value())
                 .withChangeInfo(measureDto.changeInfo()).withInitiatives(measureDto.initiatives())
-                .withCreatedBy(userPersistenceService.getOwnerById(keyResult.getOwner().getId())) // replace
+                .withCreatedBy(userPersistenceService.findById(keyResult.getOwner().getId())) // replace
                 // current
                 // Keyresultowner
                 // with

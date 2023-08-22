@@ -1,8 +1,8 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.ValidationService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
+import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class UserBusinessServiceTest {
     @MockBean
     UserPersistenceService userPersistenceService = mock(UserPersistenceService.class);
     @MockBean
-    ValidationService validationService = mock(ValidationService.class);
+    UserValidationService validationService = mock(UserValidationService.class);
     List<User> userList;
     @InjectMocks
     private UserBusinessService userBusinessService;
@@ -45,7 +45,7 @@ class UserBusinessServiceTest {
 
     @Test
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
-        Mockito.when(userPersistenceService.getAllUsers()).thenReturn(userList);
+        Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
 
         List<User> userList = userBusinessService.getAllUsers();
 
@@ -71,7 +71,7 @@ class UserBusinessServiceTest {
     void shouldReturnSingleUserWhenFindingOwnerByValidId() {
         User owner = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-        Mockito.when(userPersistenceService.getOwnerById(any())).thenReturn(owner);
+        Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
         User returnedUser = userBusinessService.getOwnerById(1L);
 
@@ -98,11 +98,26 @@ class UserBusinessServiceTest {
     }
 
     @Test
+    void getOrCreateUser_ShouldReturnSavedUserWhenUserNotFound() {
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
+
+        User returnedUser = userBusinessService.getOrCreateUser(newUser);
+
+        assertEquals(1L, returnedUser.getId());
+        assertEquals("Bob", returnedUser.getFirstname());
+        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("bkaufmann", returnedUser.getUsername());
+        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
     void getOrCreateUser_ShouldThrowResponseStatusExceptionWhenInvalidUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
-                .when(validationService).validateOnSave(newUser);
+                .when(validationService).validateOnCreate(newUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             userBusinessService.getOrCreateUser(newUser);

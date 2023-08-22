@@ -9,6 +9,7 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+frontend/node_modules
 
 # Package Files #
 *.jar
@@ -24,3 +25,4 @@ hs_err_pid*
 /backend/target/
 /.idea/
 parent.iml
+./backend/backend.iml

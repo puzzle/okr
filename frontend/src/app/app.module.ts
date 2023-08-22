@@ -30,6 +30,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HelpDialogComponent } from './release-1/shared/dialog/help-dialog/help-dialog.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { ExampleDialogComponent } from './release-1/shared/dialog/example-dialog/example-dialog.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,7 +54,14 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, ConfirmDialogComponent, SpinnerComponent, HelpDialogComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    ConfirmDialogComponent,
+    SpinnerComponent,
+    HelpDialogComponent,
+    ExampleDialogComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -83,6 +92,7 @@ export const MY_FORMATS = {
     }),
     OAuthModule.forRoot(),
     A11yModule,
+    MatRadioModule,
   ],
   providers: [
     {

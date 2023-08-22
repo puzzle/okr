@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.dto.TeamDto;

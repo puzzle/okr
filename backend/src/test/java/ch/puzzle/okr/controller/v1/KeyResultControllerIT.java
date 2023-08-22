@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
@@ -195,7 +195,7 @@ class KeyResultControllerIT {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
                 ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
 
-        BDDMockito.given(this.userPersistenceService.getOwnerById(5L)).willReturn(user);
+        BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
         BDDMockito.given(this.objectivePersistenceService.getObjectiveById(5L)).willReturn(objective);
         BDDMockito.given(this.keyResultBusinessService.saveKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
@@ -213,7 +213,7 @@ class KeyResultControllerIT {
         KeyResultDto testKeyResult = new KeyResultDto(5L, 1L, "Program Faster", "Just be faster", 1L, "Rudi", "Grochde",
                 ExpectedEvolution.INCREASE, Unit.PERCENT, 4D, 12D, 0L);
 
-        BDDMockito.given(this.userPersistenceService.getOwnerById(5L)).willReturn(user);
+        BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
         BDDMockito.given(this.objectivePersistenceService.getObjectiveById(5L)).willReturn(objective);
         BDDMockito.given(this.keyResultBusinessService.saveKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);

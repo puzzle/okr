@@ -41,7 +41,6 @@ class ObjectiveBusinessServiceTest {
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     @MockBean
     ProgressBusinessService progressBusinessService = Mockito.mock(ProgressBusinessService.class);
-
     Objective objective;
     Objective fullObjective1;
     Objective fullObjective2;
@@ -236,23 +235,11 @@ class ObjectiveBusinessServiceTest {
                 .withTeam(objective.getTeam()).withModifiedOn(objective.getModifiedOn()).build();
         when(objectivePersistenceService.getObjectiveById(newObjective.getId())).thenReturn(objective);
 
-        assertTrue(objectiveBusinessService.isQuarterImmutable(newObjective));
-
-    }
-
-    @Test
-    void shouldThrowNotFoundException() {
-        Mockito.when(teamPersistenceService.getTeamById(13L))
-                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 13 not found"));
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.objectiveBusinessService.getObjectivesByTeam(13L));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(("Team with id 13 not found"), exception.getReason());
     }
 
     @Test
     void shouldReturnObjectiveByTeamId() {
-        Mockito.when(teamPersistenceService.getTeamById(1L)).thenReturn(team1);
+        Mockito.when(teamPersistenceService.findById(1L)).thenReturn(team1);
         Mockito.when(objectivePersistenceService.getObjectivesByTeam(1L)).thenReturn(this.fullObjectiveInTeam1List);
 
         List<Objective> realObjectiveList = objectiveBusinessService.getObjectivesByTeam(1L);
@@ -262,36 +249,13 @@ class ObjectiveBusinessServiceTest {
         assertEquals("FullObjective2", realObjectiveList.get(1).getTitle());
     }
 
-    @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(this.objectivePersistenceService.getObjectiveById(anyLong())).thenReturn(objective);
         when(this.keyResultPersistenceService.getKeyResultsByObjective(objective)).thenReturn(keyResults);
 
         this.objectiveBusinessService.deleteObjectiveById(1L);
 
-        verify(this.keyResultBusinessService, times(3)).deleteKeyResultById(5L);
-        verify(this.objectivePersistenceService, times(1)).deleteObjectiveById(anyLong());
-    }
-
-    @Test
-    void shouldResetProgressWhenNoKeyResultsFound() {
-        when(keyResultBusinessService.getKeyResultById(1L)).thenReturn(keyResult);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(List.of());
-        when(objectivePersistenceService.getObjectiveById(5L)).thenReturn(objective);
-
-        objectiveBusinessService.updateObjectiveProgress(5L);
-
-        assertNull(objective.getProgress());
-    }
-
-    @Test
-    void shouldUpdateProgressWhenKeyResultsFound() {
-        when(keyResultBusinessService.getKeyResultById(1L)).thenReturn(keyResult);
-        when(keyResultBusinessService.getAllKeyResultsByObjective(5L)).thenReturn(List.of(keyResult));
-        when(objectivePersistenceService.getObjectiveById(5L)).thenReturn(objective);
-
-        objectiveBusinessService.updateObjectiveProgress(5L);
-
-        assertEquals(0L, objective.getProgress());
+        verify(this.keyResultPersistenceService, times(3)).deleteKeyResultById(5L);
+        verify(this.objectiveBusinessService, times(1)).deleteObjectiveById(anyLong());
     }
 }

@@ -2,6 +2,8 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
@@ -42,7 +44,7 @@ public class ObjectiveBusinessService {
     }
 
     public List<Objective> getObjectivesByTeam(Long id) {
-        teamPersistenceService.getTeamById(id);
+        teamPersistenceService.findById(id);
         return objectivePersistenceService.getObjectivesByTeam(id);
     }
 
@@ -128,5 +130,10 @@ public class ObjectiveBusinessService {
             keyResultBusinessService.deleteKeyResultById(keyResult.getId());
         }
         objectivePersistenceService.deleteObjectiveById(id);
+    }
+
+    public Integer activeObjectivesAmountOfTeam(Team team, Quarter quarter) {
+        // validate quarter in objective validator by using the quarter validator
+        return objectivePersistenceService.countByTeamAndQuarter(team, quarter);
     }
 }

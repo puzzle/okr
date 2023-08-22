@@ -10,10 +10,10 @@ export const environment = {
   oauth: {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,
-    issuer: 'https://sso.puzzle.ch/auth/realms/pitc',
+    issuer: 'http://localhost:8000',
     strictDiscoveryDocumentValidation: false,
     redirectUri: 'http://localhost:4200/auth/keycloakopenid/callback',
-    scope: 'profile openid',
+    scope: 'profile openid preferred_username given_name family_name email',
     clientId: 'pitc_okr_prod',
     responseType: 'code',
     showDebugInformation: true,

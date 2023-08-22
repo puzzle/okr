@@ -1,5 +1,6 @@
-package ch.puzzle.okr.controller;
+package ch.puzzle.okr.controller.v1;
 
+import ch.puzzle.okr.controller.v1.UserController;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;

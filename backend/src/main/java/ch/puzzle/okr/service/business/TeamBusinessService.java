@@ -1,16 +1,13 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.ValidationService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TeamBusinessService {
@@ -19,55 +16,56 @@ public class TeamBusinessService {
 
     private final ObjectiveBusinessService objectiveBusinessService;
 
-    private final ValidationService validationService;
+    private final QuarterBusinessService quarterBusinessService;
+
+    private final TeamValidationService validator;;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, ValidationService validationService) {
+            ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService,
+            TeamValidationService validator) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
-        this.validationService = validationService;
+        this.quarterBusinessService = quarterBusinessService;
+        this.validator = validator;
     }
 
     public List<Team> getAllTeams() {
-        return getAllTeams(Collections.emptyList());
-    }
-
-    public List<Team> getAllTeams(List<Long> teamIds) {
-        List<Team> teamList = new ArrayList<>();
-        Optional<Team> puzzleItcOptional = teamPersistenceService.getTeamByName(Constants.TEAM_PUZZLE);
-
-        if (teamIds.isEmpty()) {
-            puzzleItcOptional.ifPresent(teamList::add);
-            teamList.addAll(teamPersistenceService.getTeamsByExcludedName(Constants.TEAM_PUZZLE));
-        } else {
-            if (puzzleItcOptional.isPresent() && teamIds.contains(puzzleItcOptional.get().getId())) {
-                puzzleItcOptional.ifPresent(teamList::add);
-            }
-            teamList.addAll(teamPersistenceService.getTeamsByIdsAndExcludedName(teamIds, Constants.TEAM_PUZZLE));
-        }
-        return teamList;
-    }
-
-    public Team saveTeam(Team team) {
-        validationService.validateOnSave(team);
-        return teamPersistenceService.saveTeam(team);
-    }
-
-    public Team updateTeam(Long id, Team team) {
-        validationService.validateOnUpdate(team);
-        getTeamById(id);
-        return teamPersistenceService.updateTeam(id, team);
-    }
-
-    public Team getTeamById(Long teamId) {
-        return teamPersistenceService.getTeamById(teamId);
+        return teamPersistenceService.findAll();
     }
 
     @Transactional
+    @Deprecated
+    public Team createTeam(Team team) {
+        validator.validateOnCreate(team);
+        return teamPersistenceService.save(team);
+    }
+
+    @Transactional
+    @Deprecated
+    public Team updateTeam(Long id, Team team) {
+        validator.validateOnUpdate(id, team);
+        getTeamById(id);
+        return teamPersistenceService.save(team);
+    }
+
+    public Team getTeamById(Long id) {
+        validator.validateOnGet(id);
+        return teamPersistenceService.findById(id);
+    }
+
+    @Transactional
+    @Deprecated
     public void deleteTeamById(Long teamId) {
+        validator.validateOnDelete(teamId);
         objectiveBusinessService.getObjectivesByTeamIdOrderByTitleAsc(teamId)
                 .forEach(objective -> objectiveBusinessService.deleteObjectiveById(objective.getId()));
 
-        teamPersistenceService.deleteTeamById(teamId);
+        teamPersistenceService.deleteById(teamId);
+    }
+
+    public Integer activeObjectivesAmountOfTeam(Team team, Long quarterId) {
+        validator.validateOnGetActiveObjectives(team);
+        Quarter activeQuarter = quarterBusinessService.getQuarterById(quarterId);
+        return objectiveBusinessService.activeObjectivesAmountOfTeam(team, activeQuarter);
     }
 }

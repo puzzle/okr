@@ -1,6 +1,8 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,9 @@ public class ObjectivePersistenceService {
 
     public void deleteObjectiveById(Long id) {
         objectiveRepository.deleteById(id);
+    }
+
+    public Integer countByTeamAndQuarter(Team team, Quarter quarter) {
+        return objectiveRepository.countByTeamAndQuarter(team, quarter);
     }
 }

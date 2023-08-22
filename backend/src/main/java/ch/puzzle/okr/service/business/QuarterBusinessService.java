@@ -64,6 +64,10 @@ public class QuarterBusinessService {
         return quarterPersistenceService.getOrCreateQuarter(label);
     }
 
+    public Quarter getActiveQuarter() {
+        return getOrCreateQuarter(getQuarter(this.now));
+    }
+
     public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
         return IntStream.range(1, amount + 1).map(quarter -> quarter * 3)
                 .mapToObj(quarter -> getQuarter(yearMonth.minusMonths(quarter))).toList();

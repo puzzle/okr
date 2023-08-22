@@ -32,8 +32,8 @@ public class ObjectiveMapper {
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
         return Objective.Builder.builder().withId(objectiveDto.id()).withTitle(objectiveDto.title())
-                .withOwner(userPersistenceService.getOwnerById(objectiveDto.ownerId()))
-                .withTeam(teamPersistenceService.getTeamById(objectiveDto.teamId()))
+                .withOwner(userPersistenceService.findById(objectiveDto.ownerId()))
+                .withTeam(teamPersistenceService.findById(objectiveDto.teamId()))
                 .withDescription(objectiveDto.description()).withProgress(objectiveDto.progress())
                 .withModifiedOn(LocalDateTime.now())
                 .withQuarter(quarterPersistenceService.getQuarterById(objectiveDto.quarterId())).build();

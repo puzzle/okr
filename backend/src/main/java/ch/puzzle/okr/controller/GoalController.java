@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.goal.GoalDto;
 import ch.puzzle.okr.mapper.GoalMapper;
-import ch.puzzle.okr.service.KeyResultService;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class GoalController {
 
     private final GoalMapper goalMapper;
-    private final KeyResultService keyResultService;
+    private final KeyResultBusinessService keyResultBusinessService;
 
-    public GoalController(GoalMapper goalMapper, KeyResultService keyResultService) {
+    public GoalController(GoalMapper goalMapper, KeyResultBusinessService keyResultBusinessService) {
         this.goalMapper = goalMapper;
-        this.keyResultService = keyResultService;
+        this.keyResultBusinessService = keyResultBusinessService;
     }
 
     @Operation(summary = "Get Goal", description = "Get a Goal by ID.")
@@ -36,6 +36,7 @@ public class GoalController {
     @GetMapping("/{id}")
     public ResponseEntity<GoalDto> getGoalById(
             @Parameter(description = "The ID for getting a Goal.", required = true) @PathVariable long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(goalMapper.toDto(keyResultService.getKeyResultById(id)));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(goalMapper.toDto(keyResultBusinessService.getKeyResultById(id)));
     }
 }

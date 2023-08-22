@@ -5,20 +5,20 @@ import ch.puzzle.okr.dto.goal.GoalKeyResultDto;
 import ch.puzzle.okr.dto.goal.GoalObjectiveDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.GoalService;
-import ch.puzzle.okr.service.ProgressService;
+import ch.puzzle.okr.service.business.MeasureBusinessService;
+import ch.puzzle.okr.service.business.ProgressBusinessService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GoalMapper {
 
-    private final ProgressService progressService;
+    private final ProgressBusinessService progressBusinessService;
 
-    private final GoalService goalService;
+    private final MeasureBusinessService measureBusinessService;
 
-    public GoalMapper(ProgressService progressService, GoalService goalService) {
-        this.progressService = progressService;
-        this.goalService = goalService;
+    public GoalMapper(ProgressBusinessService progressBusinessService, MeasureBusinessService measureBusinessService) {
+        this.progressBusinessService = progressBusinessService;
+        this.measureBusinessService = measureBusinessService;
 
     }
 
@@ -27,8 +27,9 @@ public class GoalMapper {
         return new GoalDto(new GoalObjectiveDto(objective.getId(), objective.getTitle(), objective.getDescription()),
                 new GoalKeyResultDto(keyResult.getId(), keyResult.getTitle(), keyResult.getDescription(),
                         keyResult.getOwner()),
-                objective.getTeam(), progressService.calculateKeyResultProgress(keyResult),
+                objective.getTeam(), progressBusinessService.calculateKeyResultProgress(keyResult),
                 keyResult.getObjective().getQuarter().getLabel(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
-                keyResult.getBasisValue(), keyResult.getTargetValue(), goalService.getCurrentValue(keyResult));
+                keyResult.getBasisValue(), keyResult.getTargetValue(),
+                measureBusinessService.getCurrentValue(keyResult));
     }
 }

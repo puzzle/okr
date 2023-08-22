@@ -5,9 +5,9 @@ import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.ObjectiveService;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.TeamService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,17 +25,18 @@ import java.util.List;
 @RequestMapping("api/v1/teams")
 public class TeamController {
 
-    private final TeamService teamService;
+    private final TeamBusinessService teamBusinessService;
     private final TeamMapper teamMapper;
-    private final ObjectiveService objectiveService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final RegisterNewUserService registerNewUserService;
     private final ObjectiveMapper objectiveMapper;
 
-    public TeamController(TeamService teamService, TeamMapper teamMapper, ObjectiveService objectiveService,
-            RegisterNewUserService registerNewUserService, ObjectiveMapper objectiveMapper) {
-        this.teamService = teamService;
+    public TeamController(TeamBusinessService teamBusinessService, TeamMapper teamMapper,
+            ObjectiveBusinessService objectiveBusinessService, RegisterNewUserService registerNewUserService,
+            ObjectiveMapper objectiveMapper) {
+        this.teamBusinessService = teamBusinessService;
         this.teamMapper = teamMapper;
-        this.objectiveService = objectiveService;
+        this.objectiveBusinessService = objectiveBusinessService;
         this.registerNewUserService = registerNewUserService;
         this.objectiveMapper = objectiveMapper;
     }
@@ -46,7 +47,7 @@ public class TeamController {
     @GetMapping
     public List<TeamDto> getAllTeams() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return teamService.getAllTeams().stream().map(teamMapper::toDto).toList();
+        return teamBusinessService.getAllTeams().stream().map(teamMapper::toDto).toList();
     }
 
     @Deprecated
@@ -58,9 +59,9 @@ public class TeamController {
     @GetMapping("/{id}/objectives")
     public ResponseEntity<List<ObjectiveDto>> getObjectivesByTeamId(
             @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = true) @PathVariable long id) {
-        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(this.objectiveService.getObjectivesByTeam(id).stream().map(objectiveMapper::toDto).toList());
+        registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                this.objectiveBusinessService.getObjectivesByTeam(id).stream().map(objectiveMapper::toDto).toList());
     }
 
     @Operation(summary = "Get Team", description = "Get a Team by ID.")
@@ -71,8 +72,8 @@ public class TeamController {
     @GetMapping("/{id}")
     public ResponseEntity<TeamDto> getTeamById(
             @Parameter(description = "The ID for getting a Team.", required = true) @PathVariable long id) {
-        this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK).body(this.teamMapper.toDto(this.teamService.getTeamById(id)));
+        registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
+        return ResponseEntity.status(HttpStatus.OK).body(teamMapper.toDto(teamBusinessService.getTeamById(id)));
     }
 
     @Operation(summary = "Create Team", description = "Create a new Team.")
@@ -84,7 +85,7 @@ public class TeamController {
     public ResponseEntity<TeamDto> createTeam(@RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
-        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.saveTeam(team));
+        TeamDto createdTeam = this.teamMapper.toDto(teamBusinessService.saveTeam(team));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 
@@ -100,7 +101,7 @@ public class TeamController {
             @RequestBody TeamDto teamDto) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         Team team = teamMapper.toTeam(teamDto);
-        TeamDto createdTeam = this.teamMapper.toDto(this.teamService.updateTeam(id, team));
+        TeamDto createdTeam = this.teamMapper.toDto(teamBusinessService.updateTeam(id, team));
         return ResponseEntity.status(HttpStatus.OK).body(createdTeam);
     }
 
@@ -109,6 +110,6 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find the team with requested id") })
     @DeleteMapping("/{id}")
     public void deleteTeamById(@PathVariable long id) {
-        this.teamService.deleteTeamById(id);
+        teamBusinessService.deleteTeamById(id);
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ObjectiveRepository extends CrudRepository<Objective, Long> {
-    List<Objective> findByTeamIdOrderByTitleAsc(long id);
+    List<Objective> findByTeamIdOrderByTitleAsc(Long id);
 
     List<Objective> findByQuarterIdAndTeamIdOrderByModifiedOnDesc(Long quarterId, Long teamId);
 }

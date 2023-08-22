@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -11,10 +12,10 @@ import java.util.Map;
 @Service
 public class RegisterNewUserService {
 
-    private final UserService userService;
+    private final UserBusinessService userBusinessService;
 
-    public RegisterNewUserService(UserService userRepository) {
-        this.userService = userRepository;
+    public RegisterNewUserService(UserBusinessService userBusinessService) {
+        this.userBusinessService = userBusinessService;
     }
 
     public void registerNewUser(SecurityContext securityContext) {
@@ -24,6 +25,6 @@ public class RegisterNewUserService {
         User newUser = User.Builder.builder().withUsername(claims.get("preferred_username").toString())
                 .withFirstname(claims.get("given_name").toString()).withLastname(claims.get("family_name").toString())
                 .withEmail(claims.get("email").toString()).build();
-        userService.getOrCreateUser(newUser);
+        userBusinessService.getOrCreateUser(newUser);
     }
 }

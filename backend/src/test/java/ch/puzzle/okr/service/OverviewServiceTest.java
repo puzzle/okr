@@ -8,6 +8,8 @@ import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,8 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,9 +30,9 @@ class OverviewServiceTest {
     @MockBean
     OverviewMapper overviewMapper = Mockito.mock(OverviewMapper.class);
     @MockBean
-    ObjectiveService objectiveService = Mockito.mock(ObjectiveService.class);
+    ObjectiveBusinessService objectiveBusinessService = Mockito.mock(ObjectiveBusinessService.class);
     @MockBean
-    TeamService teamService = Mockito.mock(TeamService.class);
+    TeamBusinessService teamBusinessService = Mockito.mock(TeamBusinessService.class);
 
     OverviewDto overviewTeam1Objective1And2;
     OverviewDto overviewTeam2Objective3;
@@ -76,10 +77,11 @@ class OverviewServiceTest {
 
     @Test
     void shouldGetOverviewWithNoFilters() {
-        when(teamService.getAllTeams(Collections.emptyList())).thenReturn(teamList);
-        when(objectiveService.getObjectiveByTeamIdAndQuarterId(1L, null)).thenReturn(List.of(objective1, objective2));
-        when(objectiveService.getObjectiveByTeamIdAndQuarterId(2L, null)).thenReturn(List.of(objective3));
-        when(objectiveService.getObjectiveByTeamIdAndQuarterId(3L, null)).thenReturn(Collections.emptyList());
+        when(teamBusinessService.getAllTeams(any())).thenReturn(teamList);
+        when(objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(1L, null))
+                .thenReturn(List.of(objective1, objective2));
+        when(objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(2L, null)).thenReturn(List.of(objective3));
+        when(objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(3L, null)).thenReturn(Collections.emptyList());
 
         when(overviewMapper.toDto(team1, List.of(objective1, objective2))).thenReturn(overviewTeam1Objective1And2);
         when(overviewMapper.toDto(team2, List.of(objective3))).thenReturn(overviewTeam2Objective3);
@@ -96,9 +98,10 @@ class OverviewServiceTest {
 
     @Test
     void shouldGetOverviewWithTeamsFilter() {
-        when(teamService.getAllTeams(List.of(1L, 3L))).thenReturn(List.of(team1, team3));
-        when(objectiveService.getObjectiveByTeamIdAndQuarterId(1L, null)).thenReturn(List.of(objective1, objective2));
-        when(objectiveService.getObjectiveByTeamIdAndQuarterId(3L, null)).thenReturn(Collections.emptyList());
+        when(teamBusinessService.getAllTeams(List.of(1L, 3L))).thenReturn(List.of(team1, team3));
+        when(objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(1L, null))
+                .thenReturn(List.of(objective1, objective2));
+        when(objectiveBusinessService.getObjectiveByTeamIdAndQuarterId(3L, null)).thenReturn(Collections.emptyList());
         when(overviewMapper.toDto(team1, List.of(objective1, objective2))).thenReturn(overviewTeam1Objective1And2);
         when(overviewMapper.toDto(team3, Collections.emptyList())).thenReturn(overviewTeam3);
 
@@ -112,7 +115,7 @@ class OverviewServiceTest {
 
     @Test
     void shouldGetOverviewWithQuarterFilter() {
-        when(teamService.getAllTeams(Collections.emptyList())).thenReturn(teamList);
+        when(teamBusinessService.getAllTeams(any())).thenReturn(teamList);
         when(overviewMapper.toDto(eq(team1), anyList())).thenReturn(overviewTeam1Objective1And2);
         when(overviewMapper.toDto(eq(team2), anyList())).thenReturn(overviewTeam2Objective3);
         when(overviewMapper.toDto(team3, Collections.emptyList())).thenReturn(overviewTeam3);
@@ -136,8 +139,7 @@ class OverviewServiceTest {
                 List.of(new ObjectiveDto(objective1.getId(), objective1.getTitle(), null, null, null, null, null,
                         objective3.getQuarter().getId(), null, null, null)));
 
-        when(teamService.getAllTeams(List.of(1L, 3L))).thenReturn(List.of(team1, team3));
-
+        when(teamBusinessService.getAllTeams(List.of(1L, 3L))).thenReturn(List.of(team1, team3));
         when(overviewMapper.toDto(eq(team1), anyList())).thenReturn(overviewTeam1Objective1);
         when(overviewMapper.toDto(eq(team3), anyList())).thenReturn(overviewTeam3Objective3);
 

@@ -1,8 +1,7 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,15 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserPersistenceService {
 
     private final UserRepository userRepository;
 
-    private final ValidationService validationService;
-
-    public UserService(UserRepository userRepository, ValidationService validationService) {
+    public UserPersistenceService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.validationService = validationService;
     }
 
     public List<User> getAllUsers() {
@@ -30,17 +26,16 @@ public class UserService {
         if (ownerId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute owner id");
         }
-
         return userRepository.findById(ownerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 (String.format("Owner with id %d not found", ownerId))));
     }
 
-    @Cacheable(value = "users", key = "#newUser.username")
     public synchronized User getOrCreateUser(User newUser) {
         Optional<User> user = userRepository.findByUsername(newUser.getUsername());
-        return user.orElseGet(() -> {
-            validationService.validateOnSave(newUser);
-            return userRepository.save(newUser);
-        });
+        return user.orElseGet(() -> userRepository.save(newUser));
+    }
+
+    void deleteUserById(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

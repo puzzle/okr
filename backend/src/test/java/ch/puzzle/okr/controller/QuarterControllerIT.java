@@ -2,8 +2,8 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.QuarterService;
 import ch.puzzle.okr.service.RegisterNewUserService;
+import ch.puzzle.okr.service.business.QuarterBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +43,7 @@ class QuarterControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private QuarterService quarterService;
+    private QuarterBusinessService quarterBusinessService;
     @MockBean
     private RegisterNewUserService registerNewUserService;
 
@@ -54,7 +54,7 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetAllQuarters() throws Exception {
-        BDDMockito.given(quarterService.getOrCreateQuarters()).willReturn(quaterList);
+        BDDMockito.given(quarterBusinessService.getOrCreateQuarters()).willReturn(quaterList);
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -64,7 +64,7 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
-        BDDMockito.given(quarterService.getOrCreateQuarters()).willReturn(Collections.emptyList());
+        BDDMockito.given(quarterBusinessService.getOrCreateQuarters()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -72,8 +72,8 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetStartAndEndDateOfKeyResult() throws Exception {
-        BDDMockito.given(quarterService.getStartAndEndDateOfKeyresult(1)).willReturn(StartEndDateDTO.Builder.builder()
-                .withStartDate(LocalDate.of(2021, 7, 1)).withEndDate(LocalDate.of(2021, 9, 30)).build());
+        BDDMockito.given(quarterBusinessService.getStartAndEndDateOfKeyresult(1)).willReturn(StartEndDateDTO.Builder
+                .builder().withStartDate(LocalDate.of(2021, 7, 1)).withEndDate(LocalDate.of(2021, 9, 30)).build());
 
         mvc.perform(get("/api/v1/quarters/dates/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -83,7 +83,7 @@ class QuarterControllerIT {
 
     @Test
     void shouldThrowNotFoundException() throws Exception {
-        BDDMockito.given(quarterService.getStartAndEndDateOfKeyresult(1))
+        BDDMockito.given(quarterBusinessService.getStartAndEndDateOfKeyresult(1))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
 
         mvc.perform(get("/api/v1/quarters/dates/keyresult/1").contentType(MediaType.APPLICATION_JSON))

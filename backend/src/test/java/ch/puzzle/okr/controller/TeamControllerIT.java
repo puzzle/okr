@@ -6,9 +6,9 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.ObjectiveService;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.TeamService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,11 +64,11 @@ class TeamControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private TeamService teamService;
+    private TeamBusinessService teamBusinessService;
     @MockBean
     private TeamMapper teamMapper;
     @MockBean
-    private ObjectiveService objectiveService;
+    private ObjectiveBusinessService objectiveBusinessService;
     @MockBean
     private RegisterNewUserService registerNewUserService;
 
@@ -86,7 +86,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(5)).willReturn(teamPuzzle);
+        BDDMockito.given(teamBusinessService.getTeamById(5L)).willReturn(teamPuzzle);
 
         mvc.perform(get("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON))
                 .andDo((teams) -> logger.info(teams.getResponse().getContentAsString()))
@@ -96,7 +96,7 @@ class TeamControllerIT {
 
     @Test
     void shouldNotFoundTheTeamWithId() throws Exception {
-        BDDMockito.given(teamService.getTeamById(55))
+        BDDMockito.given(teamBusinessService.getTeamById(55L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 55 not found"));
 
         mvc.perform(get("/api/v1/teams/55").contentType(MediaType.APPLICATION_JSON))
@@ -105,7 +105,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamService.getAllTeams()).willReturn(teamList);
+        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
 
         mvc.perform(get("/api/v1/teams").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -115,7 +115,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
-        BDDMockito.given(teamService.getAllTeams()).willReturn(Collections.emptyList());
+        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/teams").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -125,19 +125,19 @@ class TeamControllerIT {
     void shouldReturnTeamWhenCreatingNewTeam() throws Exception {
         TeamDto testTeam = new TeamDto(1L, "TestTeam");
 
-        BDDMockito.given(teamService.saveTeam(any())).willReturn(teamTestCreating);
+        BDDMockito.given(teamBusinessService.saveTeam(any())).willReturn(teamTestCreating);
         BDDMockito.given(teamMapper.toDto(any())).willReturn(testTeam);
 
         mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\" TestTeam \"}")
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"name\":\"TestTeam\"}"));
-        verify(teamService, times(1)).saveTeam(any());
+        verify(teamBusinessService, times(1)).saveTeam(any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingTeamNullName() throws Exception {
-        BDDMockito.given(teamService.saveTeam(any())).willThrow(
+        BDDMockito.given(teamBusinessService.saveTeam(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute name when creating team"));
 
         mvc.perform(post("/api/v1/teams").contentType(MediaType.APPLICATION_JSON)
@@ -147,7 +147,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnChangedEntity() throws Exception {
-        BDDMockito.given(teamService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
+        BDDMockito.given(teamBusinessService.updateTeam(anyLong(), any())).willReturn(teamPuzzle);
 
         mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"id\": 5, \"name\": \"Puzzle\"}").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -157,7 +157,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(teamService.updateTeam(anyLong(), any()))
+        BDDMockito.given(teamBusinessService.updateTeam(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 5 not found"));
 
         mvc.perform(put("/api/v1/teams/5").contentType(MediaType.APPLICATION_JSON)
@@ -167,7 +167,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnListOfObjectives() throws Exception {
-        BDDMockito.given(objectiveService.getObjectivesByTeam(anyLong())).willReturn(objectiveList);
+        BDDMockito.given(objectiveBusinessService.getObjectivesByTeam(anyLong())).willReturn(objectiveList);
 
         mvc.perform(get("/api/v1/teams/1/objectives").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -182,7 +182,7 @@ class TeamControllerIT {
 
     @Test
     void throwExceptionWhenTeamWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamService)
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found")).when(teamBusinessService)
                 .deleteTeamById(anyLong());
 
         mvc.perform(delete("/api/v1/teams/10000000").with(SecurityMockMvcRequestPostProcessors.csrf()))

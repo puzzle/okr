@@ -6,8 +6,8 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.MeasureService;
 import ch.puzzle.okr.service.ProgressService;
+import ch.puzzle.okr.service.business.MeasureBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,16 +54,15 @@ class MeasureControllerIT {
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0D).withTargetValue(100D).build())
             .withValue(35D).withChangeInfo("ChangeInfo").build();
+    static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
     static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
             Instant.parse("2022-08-12T01:01:00.00Z"));
     static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35D, "changeInfo", "Initiatives", 2L,
             LocalDateTime.MAX, Instant.parse("2022-08-12T01:01:00.00Z"));
-    static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
-
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private MeasureService measureService;
+    private MeasureBusinessService measureBusinessService;
     @MockBean
     private ProgressService progressService;
     @MockBean
@@ -78,7 +77,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldGetAllMeasures() throws Exception {
-        BDDMockito.given(measureService.getAllMeasures()).willReturn(measureList);
+        BDDMockito.given(measureBusinessService.getAllMeasures()).willReturn(measureList);
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -95,7 +94,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldGetAllMeasureIfNoMeasureExists() throws Exception {
-        BDDMockito.given(measureService.getAllMeasures()).willReturn(Collections.emptyList());
+        BDDMockito.given(measureBusinessService.getAllMeasures()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -106,7 +105,7 @@ class MeasureControllerIT {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
 
-        BDDMockito.given(measureService.saveMeasure(any())).willReturn(measure);
+        BDDMockito.given(measureBusinessService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
@@ -120,7 +119,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingMeasureNullName() throws Exception {
-        BDDMockito.given(measureService.saveMeasure(any()))
+        BDDMockito.given(measureBusinessService.saveMeasure(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
 
         mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
@@ -133,7 +132,7 @@ class MeasureControllerIT {
     void shouldReturnCorrectMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
-        BDDMockito.given(measureService.updateMeasure(anyLong(), any())).willReturn(measure);
+        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
@@ -149,7 +148,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
+        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -160,7 +159,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(measureService.updateMeasure(anyLong(), any()))
+        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
         mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -171,7 +170,7 @@ class MeasureControllerIT {
 
     @Test
     void shouldDeleteMeasure() throws Exception {
-        when(measureService.getMeasureById(anyLong())).thenReturn(measure);
+        when(measureBusinessService.getMeasureById(anyLong())).thenReturn(measure);
         mvc.perform(delete("/api/v1/measures/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
@@ -179,7 +178,7 @@ class MeasureControllerIT {
     @Test
     void throwExceptionWhenMeasureWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
-                .when(measureService).getMeasureById(anyLong());
+                .when(measureBusinessService).getMeasureById(anyLong());
 
         mvc.perform(delete("/api/v1/measures/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

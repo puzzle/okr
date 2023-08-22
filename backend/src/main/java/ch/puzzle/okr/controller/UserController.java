@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.UserService;
+import ch.puzzle.okr.service.business.UserBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,13 +20,13 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserBusinessService userBusinessService;
     private final RegisterNewUserService registerNewUserService;
     private final UserMapper userMapper;
 
-    public UserController(UserService userService, RegisterNewUserService registerNewUserService,
+    public UserController(UserBusinessService userBusinessService, RegisterNewUserService registerNewUserService,
             UserMapper userMapper) {
-        this.userService = userService;
+        this.userBusinessService = userBusinessService;
         this.registerNewUserService = registerNewUserService;
         this.userMapper = userMapper;
     }
@@ -37,7 +37,7 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUsers() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return userService.getAllUsers().stream().map(userMapper::toDto).toList();
+        return userBusinessService.getAllUsers().stream().map(userMapper::toDto).toList();
     }
 
 }

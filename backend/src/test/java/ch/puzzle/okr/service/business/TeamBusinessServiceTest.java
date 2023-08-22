@@ -1,10 +1,10 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.repository.TeamRepository;
+import ch.puzzle.okr.service.ValidationService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +33,9 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class TeamServiceTest {
+class TeamBusinessServiceTest {
     @MockBean
-    TeamRepository teamRepository = Mockito.mock(TeamRepository.class);
+    TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     Team teamPuzzle;
     Team team1;
     Team team2;
@@ -44,14 +44,12 @@ class TeamServiceTest {
 
     List<Objective> objectiveList;
 
-    @MockBean
-    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @Mock
-    ObjectiveService objectiveService;
+    ObjectiveBusinessService objectiveBusinessService;
     @Spy
     private ValidationService validationService;
     @InjectMocks
-    private TeamService teamService;
+    private TeamBusinessService teamBusinessService;
 
     private static Stream<Arguments> shouldGetTeamsByIds() {
         return Stream.of(Arguments.of(List.of(1L, 2L),
@@ -74,19 +72,19 @@ class TeamServiceTest {
     @ParameterizedTest
     @MethodSource
     void shouldGetTeamsByIds(List<Long> teamIds, List<Team> teamList, int expectedTeamsAmount) {
-        Mockito.when(teamRepository.findByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
-        Mockito.when(teamRepository.findAllByIdInAndNameNotOrderByNameAsc(teamIds, Constants.TEAM_PUZZLE))
+        Mockito.when(teamPersistenceService.getTeamByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
+        Mockito.when(teamPersistenceService.getTeamsByIdsAndExcludedName(teamIds, Constants.TEAM_PUZZLE))
                 .thenReturn(teamList);
-        assertEquals(expectedTeamsAmount, teamService.getAllTeams(teamIds).size());
+        assertEquals(expectedTeamsAmount, teamBusinessService.getAllTeams(teamIds).size());
     }
 
     @Test
     void shouldGetAllTeams() throws ResponseStatusException {
-        Mockito.when(teamRepository.findAllByNameNotOrderByNameAsc(Constants.TEAM_PUZZLE))
+        Mockito.when(teamPersistenceService.getTeamsByExcludedName(Constants.TEAM_PUZZLE))
                 .thenReturn(List.of(team1, team2));
-        Mockito.when(teamRepository.findByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
+        Mockito.when(teamPersistenceService.getTeamByName(Constants.TEAM_PUZZLE)).thenReturn(Optional.of(teamPuzzle));
 
-        List<Team> teams = teamService.getAllTeams();
+        List<Team> teams = teamBusinessService.getAllTeams();
 
         assertEquals(3, teams.size());
         assertEquals(Constants.TEAM_PUZZLE, teams.get(0).getName());
@@ -94,26 +92,28 @@ class TeamServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoTeam() {
-        Mockito.when(teamRepository.findAll()).thenReturn(Collections.emptyList());
+        Mockito.when(teamPersistenceService.getTeamByName(any())).thenReturn(Optional.empty());
+        Mockito.when(teamPersistenceService.getTeamsByExcludedName(any())).thenReturn(Collections.emptyList());
 
-        List<Team> teams = teamService.getAllTeams();
+        List<Team> teams = teamBusinessService.getAllTeams();
 
         assertEquals(0, teams.size());
     }
 
     @Test
     void shouldGetTheTeam() throws ResponseStatusException {
-        Mockito.when(teamRepository.findById(5L)).thenReturn(Optional.of(teamPuzzle));
-        Team team = teamService.getTeamById(5);
+        Mockito.when(teamPersistenceService.getTeamById(5L)).thenReturn(teamPuzzle);
+        Team team = teamBusinessService.getTeamById(5L);
         Assertions.assertThat(team.getName()).isEqualTo(Constants.TEAM_PUZZLE);
     }
 
     @Test
     void shouldNotFindTheTeam() {
-        Mockito.when(teamRepository.findById(6L)).thenReturn(Optional.empty());
+        Mockito.when(teamPersistenceService.getTeamById(6L))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 6 not found"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.getTeamById(6));
+                () -> teamBusinessService.getTeamById(6L));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Team with id 6 not found", exception.getReason());
     }
@@ -121,9 +121,9 @@ class TeamServiceTest {
     @Test
     void shouldSaveANewTeam() {
         Team team = Team.Builder.builder().withName("TestTeam").build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
+        Mockito.when(teamPersistenceService.saveTeam(any())).thenReturn(team);
 
-        Team savedTeam = teamService.saveTeam(team);
+        Team savedTeam = teamBusinessService.saveTeam(team);
         assertNull(savedTeam.getId());
         assertEquals("TestTeam", savedTeam.getName());
         verify(validationService, times(1)).validateOnSave(team);
@@ -134,7 +134,7 @@ class TeamServiceTest {
         Team team = Team.Builder.builder().withId(2L).withName("TestTeam").build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.saveTeam(team));
+                () -> teamBusinessService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
         verify(validationService, times(1)).validateOnSave(team);
@@ -143,9 +143,9 @@ class TeamServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Team team = Team.Builder.builder().withId(null).withName("TestTeam").build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
+        Mockito.when(teamPersistenceService.saveTeam(any())).thenReturn(team);
 
-        Team savedTeam = teamService.saveTeam(team);
+        Team savedTeam = teamBusinessService.saveTeam(team);
         assertNull(savedTeam.getId());
         assertEquals("TestTeam", savedTeam.getName());
         verify(validationService, times(1)).validateOnSave(team);
@@ -156,7 +156,7 @@ class TeamServiceTest {
         Team team = Team.Builder.builder().build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.saveTeam(team));
+                () -> teamBusinessService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertTrue(exception.getReason().contains("Missing attribute name when saving team."));
         assertTrue(exception.getReason().contains("Attribute name can not be null when saving team."));
@@ -167,10 +167,10 @@ class TeamServiceTest {
     @ValueSource(strings = { "", " ", "  " })
     void shouldNotCreateTeamWithEmptyName(String passedName) {
         Team team = Team.Builder.builder().withName(passedName).build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
+        Mockito.when(teamPersistenceService.saveTeam(any())).thenReturn(team);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.saveTeam(team));
+                () -> teamBusinessService.saveTeam(team));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertTrue(exception.getReason().contains("Missing attribute name when saving team."));
         verify(validationService, times(1)).validateOnSave(team);
@@ -179,10 +179,10 @@ class TeamServiceTest {
     @Test
     void shouldUpdateTeamProperly() {
         Team team = Team.Builder.builder().withId(1L).withName("New Team").build();
-        Mockito.when(teamRepository.save(any())).thenReturn(team);
-        Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
+        Mockito.when(teamPersistenceService.updateTeam(any(), any())).thenReturn(team);
+        Mockito.when(teamPersistenceService.getTeamById(anyLong())).thenReturn(team);
 
-        Team returnedTeam = teamService.updateTeam(1L, team);
+        Team returnedTeam = teamBusinessService.updateTeam(1L, team);
         assertEquals("New Team", returnedTeam.getName());
         assertEquals(1L, returnedTeam.getId());
         verify(validationService, times(1)).validateOnUpdate(team);
@@ -190,53 +190,48 @@ class TeamServiceTest {
 
     @Test
     void shouldThrowNotFoundException() {
-        Mockito.when(teamRepository.findById(anyLong())).thenReturn(Optional.empty());
+        Mockito.when(teamPersistenceService.getTeamById(anyLong()))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 6 not found"));
         Team team = Team.Builder.builder().withId(1L).withName("New Team").build();
-        assertThrows(ResponseStatusException.class, () -> teamService.updateTeam(1L, team));
+        assertThrows(ResponseStatusException.class, () -> teamBusinessService.updateTeam(1L, team));
     }
 
     @Test
     void shouldNotUpdateTeamWithEmptyName() {
         Team team = Team.Builder.builder().withId(1L).withName("").build();
-        assertThrows(ResponseStatusException.class, () -> teamService.updateTeam(1L, team));
+        assertThrows(ResponseStatusException.class, () -> teamBusinessService.updateTeam(1L, team));
         verify(validationService, times(1)).validateOnUpdate(team);
     }
 
     @Test
     void shouldReturnSingleTeamWhenFindingByValidId() {
-        Optional<Team> team = Optional.of(Team.Builder.builder().withId(1L).withName("Team1").build());
-        Mockito.when(teamRepository.findById(any())).thenReturn(team);
+        Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
+        Mockito.when(teamPersistenceService.getTeamById(team.getId())).thenReturn(team);
 
-        Team returnedTeam = teamService.getTeamById(1L);
+        Team returnedTeam = teamBusinessService.getTeamById(team.getId());
 
         assertEquals(1L, returnedTeam.getId());
         assertEquals("Team1", returnedTeam.getName());
     }
 
     @Test
-    void shouldThrowReponseStatusExceptionWhenFindingTeamNotFound() {
+    void shouldThrowResponseStatusExceptionWhenFindingTeamNotFound() {
+        Mockito.when(teamPersistenceService.getTeamById(422L))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Team with id 422 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.getTeamById(422L));
+                () -> teamBusinessService.getTeamById(422L));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("Team with id 422 not found", exception.getReason());
     }
 
     @Test
-    void shouldThrowResponseStatusExceptionWhenGetTeamWithNullId() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.getTeamById(null));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute team id", exception.getReason());
-    }
-
-    @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
-        when(this.teamRepository.findById(anyLong())).thenReturn(Optional.of(team1));
-        when(this.objectiveRepository.findByTeamIdOrderByTitleAsc(anyLong())).thenReturn(objectiveList);
+        when(this.teamPersistenceService.getTeamById(anyLong())).thenReturn(team1);
+        when(this.objectiveBusinessService.getObjectivesByTeamIdOrderByTitleAsc(anyLong())).thenReturn(objectiveList);
 
-        this.teamService.deleteTeamById(1L);
+        this.teamBusinessService.deleteTeamById(1L);
 
-        verify(this.objectiveService, times(3)).deleteObjectiveById(5L);
-        verify(this.teamRepository, times(1)).deleteById(anyLong());
+        verify(this.objectiveBusinessService, times(3)).deleteObjectiveById(5L);
+        verify(this.teamPersistenceService, times(1)).deleteTeamById(anyLong());
     }
 }

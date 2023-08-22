@@ -3,8 +3,8 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.MeasureService;
 import ch.puzzle.okr.service.ProgressService;
+import ch.puzzle.okr.service.business.MeasureBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,13 +23,13 @@ import java.util.List;
 public class MeasureController {
 
     private final MeasureMapper measureMapper;
-    private final MeasureService measureService;
+    private final MeasureBusinessService measureBusinessService;
     private final ProgressService progressService;
 
-    public MeasureController(MeasureMapper measureMapper, MeasureService measureService,
+    public MeasureController(MeasureMapper measureMapper, MeasureBusinessService measureBusinessService,
             ProgressService progressService) {
         this.measureMapper = measureMapper;
-        this.measureService = measureService;
+        this.measureBusinessService = measureBusinessService;
         this.progressService = progressService;
     }
 
@@ -38,7 +38,7 @@ public class MeasureController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }), })
     @GetMapping
     public List<MeasureDto> getAllMeasures() {
-        return measureService.getAllMeasures().stream().map(measureMapper::toDto).toList();
+        return measureBusinessService.getAllMeasures().stream().map(measureMapper::toDto).toList();
     }
 
     @Operation(summary = "Get Measure by Id", description = "Get Measure by Id")
@@ -48,7 +48,7 @@ public class MeasureController {
             @ApiResponse(responseCode = "404", description = "Did not find the Measure with requested id", content = @Content) })
     @GetMapping("/{id}")
     public MeasureDto getMeasureById(@PathVariable long id) {
-        return measureMapper.toDto(this.measureService.getMeasureById(id));
+        return measureMapper.toDto(this.measureBusinessService.getMeasureById(id));
     }
 
     @Operation(summary = "Create Measure", description = "Create a new Measure.")
@@ -59,7 +59,7 @@ public class MeasureController {
     @PostMapping
     public ResponseEntity<MeasureDto> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
         Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto createdMeasure = measureMapper.toDto(measureService.saveMeasure(measure));
+        MeasureDto createdMeasure = measureMapper.toDto(measureBusinessService.saveMeasure(measure));
         this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
@@ -75,7 +75,7 @@ public class MeasureController {
             @Parameter(description = "The ID for updating a Measure.", required = true) @PathVariable Long id,
             @Valid @RequestBody MeasureDto measureDto) {
         Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureService.updateMeasure(id, measure));
+        MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureBusinessService.updateMeasure(id, measure));
         this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
@@ -85,8 +85,8 @@ public class MeasureController {
             @ApiResponse(responseCode = "404", description = "Did not find the Measure with requested id") })
     @DeleteMapping("/{id}")
     public void deleteMeasureById(@PathVariable long id) {
-        Measure measure = this.measureService.getMeasureById(id);
-        measureService.deleteMeasureById(id);
+        Measure measure = this.measureBusinessService.getMeasureById(id);
+        measureBusinessService.deleteMeasureById(id);
         this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
     }
 }

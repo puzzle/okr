@@ -3,17 +3,17 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.ProgressService;
+import ch.puzzle.okr.service.business.ProgressBusinessService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class KeyResultMeasureMapper {
     private final MeasureMapper measureMapper;
-    private final ProgressService progressService;
+    private final ProgressBusinessService progressBusinessService;
 
-    public KeyResultMeasureMapper(MeasureMapper measureMapper, ProgressService progressService) {
+    public KeyResultMeasureMapper(MeasureMapper measureMapper, ProgressBusinessService progressBusinessService) {
         this.measureMapper = measureMapper;
-        this.progressService = progressService;
+        this.progressBusinessService = progressBusinessService;
     }
 
     public KeyResultMeasureDto toDto(KeyResult keyResult, Measure measure) {
@@ -21,6 +21,6 @@ public class KeyResultMeasureMapper {
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
                 keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
                 keyResult.getBasisValue(), keyResult.getTargetValue(), measureMapper.toDto(measure),
-                progressService.calculateKeyResultProgress(keyResult));
+                progressBusinessService.calculateKeyResultProgress(keyResult));
     }
 }

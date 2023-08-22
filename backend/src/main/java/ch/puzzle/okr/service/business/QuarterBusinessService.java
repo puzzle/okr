@@ -1,9 +1,9 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.repository.QuarterRepository;
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,13 +11,16 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 @Service
-public class QuarterService {
+public class QuarterBusinessService {
     protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
 
     static {
@@ -28,19 +31,19 @@ public class QuarterService {
     }
 
     private final Pattern getValuesFromLabel = Pattern.compile("^GJ (\\d{2})/\\d{2}-Q([1-4])$");
-    private final KeyResultService keyResultService;
-    private final QuarterRepository quarterRepository;
+    private final KeyResultBusinessService keyResultBusinessService;
+    private final QuarterPersistenceService quarterPersistenceService;
     public YearMonth now;
 
-    public QuarterService(KeyResultService keyResultService, QuarterRepository quarterRepository, YearMonth now) {
-        this.keyResultService = keyResultService;
-        this.quarterRepository = quarterRepository;
+    public QuarterBusinessService(KeyResultBusinessService keyResultBusinessService,
+            QuarterPersistenceService quarterPersistenceService, YearMonth now) {
+        this.keyResultBusinessService = keyResultBusinessService;
+        this.quarterPersistenceService = quarterPersistenceService;
         this.now = now;
     }
 
     public Quarter getQuarterById(Long quarterId) {
-        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                (String.format("Quarter with id %d not found", quarterId))));
+        return quarterPersistenceService.getQuarterById(quarterId);
     }
 
     public List<Quarter> getOrCreateQuarters() {
@@ -57,9 +60,8 @@ public class QuarterService {
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
 
-    protected synchronized Quarter getOrCreateQuarter(String label) {
-        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
-        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
+    protected Quarter getOrCreateQuarter(String label) {
+        return quarterPersistenceService.getOrCreateQuarter(label);
     }
 
     public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
@@ -97,7 +99,7 @@ public class QuarterService {
     }
 
     public StartEndDateDTO getStartAndEndDateOfKeyresult(long keyResultId) {
-        KeyResult keyResult = keyResultService.getKeyResultById(keyResultId);
+        KeyResult keyResult = keyResultBusinessService.getKeyResultById(keyResultId);
         String quarterLabel = keyResult.getObjective().getQuarter().getLabel();
 
         YearMonth startYearMonth = getYearMonthFromLabel(quarterLabel);

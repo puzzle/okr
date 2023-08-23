@@ -3,7 +3,6 @@ package ch.puzzle.okr.service;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistance.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
@@ -14,14 +13,12 @@ import java.util.List;
 
 @Service
 public class ObjectiveService {
-    private final ObjectiveRepository objectiveRepository;
-    private final KeyResultService keyResultService;
-    private final ObjectiveValidationService validator;
     private final ObjectivePersistenceService objectivePersistenceService;
+    private final ObjectiveValidationService validator;
+    private final KeyResultService keyResultService;
 
-    public ObjectiveService(ObjectiveRepository objectiveRepository, @Lazy KeyResultService keyResultService,
-            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
-        this.objectiveRepository = objectiveRepository;
+    public ObjectiveService(@Lazy KeyResultService keyResultService, ObjectiveValidationService validator,
+            ObjectivePersistenceService objectivePersistenceService) {
         this.keyResultService = keyResultService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
@@ -40,11 +37,13 @@ public class ObjectiveService {
         return objectivePersistenceService.getObjectivesByTeamId(teamId);
     }
 
+    @Transactional
     public Objective updateObjective(Long id, Objective objective) {
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }
 
+    @Transactional
     public Objective createObjective(Objective objective) {
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);

@@ -58,14 +58,6 @@ public class QuarterService {
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
 
-    public void createQuarter() {
-        Quarter quarter = Quarter.Builder.builder()
-                .withLabel("GJ 23/24-Q3")
-                .withStartDate(LocalDate.of(2024, 1, 1))
-                .withEndDate(LocalDate.of(2024, 3, 31)).build();
-        quarterPersistenceService.save(quarter);
-    }
-
     protected synchronized Quarter getOrCreateQuarter(String label) {
         Optional<Quarter> quarter = quarterPersistenceService.getByLabel(label);
         return quarter
@@ -116,7 +108,7 @@ public class QuarterService {
         Quarter quarter = Quarter.Builder.builder()
                 .withLabel(createQuarterLabelParameters(yearMonth))
                 .withStartDate(currentDate)
-                .withEndDate(LocalDate.of())
+                .withEndDate()
                 .build();
         quarterPersistenceService.save(quarter);
     }

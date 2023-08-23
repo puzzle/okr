@@ -14,8 +14,4 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
     @Override
     public void validateOnCreate(Quarter model) {
     }
-
-    @Override
-    public void validateOnUpdate(Long id, Quarter model) {
-    }
 }

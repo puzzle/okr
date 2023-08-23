@@ -44,6 +44,6 @@ public class SecurityConfig {
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
                 .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
-                .preload(true).maxAgeInSeconds(31536000)).build();
+                .maxAgeInSeconds(31536000)).build();
     }
 }

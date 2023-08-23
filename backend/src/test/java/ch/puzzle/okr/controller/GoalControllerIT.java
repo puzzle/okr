@@ -1,6 +1,6 @@
-package ch.puzzle.okr.controller.v1;
+package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.controller.v1.GoalController;
+import ch.puzzle.okr.controller.GoalController;
 import ch.puzzle.okr.dto.goal.GoalDto;
 import ch.puzzle.okr.dto.goal.GoalKeyResultDto;
 import ch.puzzle.okr.dto.goal.GoalObjectiveDto;

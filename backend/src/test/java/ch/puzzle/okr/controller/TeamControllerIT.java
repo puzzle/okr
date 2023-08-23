@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller.v2;
+package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
@@ -33,9 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(TeamControllerV2.class)
-class TeamControllerV2IT {
-    private static final Logger logger = LoggerFactory.getLogger(TeamControllerV2IT.class);
+@WebMvcTest(TeamController.class)
+class TeamControllerIT {
+    private static final Logger logger = LoggerFactory.getLogger(TeamControllerIT.class);
 
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName("Puzzle").build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();

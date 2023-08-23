@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller.v1;
+package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.OverviewDto;
 import ch.puzzle.okr.service.OverviewService;
@@ -23,18 +23,6 @@ public class OverviewController {
 
     public OverviewController(OverviewService overviewService) {
         this.overviewService = overviewService;
-    }
-
-    @Operation(summary = "Get all teams and their objectives", description = "Get a List of teams with their objectives")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a List of teams and their objectives", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = OverviewDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't return list of teams with their objectives", content = @Content) })
-    @GetMapping("")
-    public ResponseEntity<List<OverviewDto>> getOverview(
-            @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
-            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter) {
-        return ResponseEntity.status(HttpStatus.OK).body(overviewService.getOverview(teamFilter, quarterFilter));
     }
 
 }

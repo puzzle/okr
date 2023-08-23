@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller.v2;
+package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
@@ -14,15 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("api/v2/objectives")
-public class ObjectiveControllerV2 {
+public class ObjectiveController {
     private final ObjectiveService objectiveService;
     private final ObjectiveMapper objectiveMapper;
 
-    public ObjectiveControllerV2(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
+    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
         this.objectiveService = objectiveService;
         this.objectiveMapper = objectiveMapper;
     }
@@ -35,7 +33,7 @@ public class ObjectiveControllerV2 {
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjective(id)));
+        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjectiveById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -56,7 +54,7 @@ public class ObjectiveControllerV2 {
     public ResponseEntity<ObjectiveDto> createObjective(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto createdObjective = this.objectiveMapper.toDto(this.objectiveService.saveObjective(objective));
+        ObjectiveDto createdObjective = this.objectiveMapper.toDto(this.objectiveService.createObjective(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -73,10 +71,8 @@ public class ObjectiveControllerV2 {
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        boolean isImUsed = objectiveService.isQuarterImmutable(objective);
-        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
-        return isImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedObjective)
-                : ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
+        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(id, objective));
+        return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
 
     }
 }

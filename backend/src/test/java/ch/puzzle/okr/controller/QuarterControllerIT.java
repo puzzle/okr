@@ -1,6 +1,6 @@
-package ch.puzzle.okr.controller.v1;
+package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.controller.v1.QuarterController;
+import ch.puzzle.okr.controller.QuarterController;
 import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.RegisterNewUserService;

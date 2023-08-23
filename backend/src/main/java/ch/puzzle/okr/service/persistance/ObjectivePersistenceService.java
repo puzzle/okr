@@ -6,8 +6,6 @@ import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class ObjectivePersistenceService extends PersistenceBase<Objective, Long> {
     protected ObjectivePersistenceService(ObjectiveRepository repository) {

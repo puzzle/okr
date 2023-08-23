@@ -1,0 +1,140 @@
+package ch.puzzle.okr.service;
+
+import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.service.persistance.ObjectivePersistenceService;
+import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+
+@ExtendWith(MockitoExtension.class)
+class ObjectiveServiceTest {
+    @MockBean
+    ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
+
+    @MockBean
+    @Spy
+    ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
+
+    @MockBean
+    KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
+    Objective objective;
+    Objective fullObjective1;
+    Objective fullObjective2;
+    Objective fullObjective3;
+    KeyResult keyResult;
+    @Mock
+    User user;
+    List<Objective> objectiveList;
+    List<KeyResult> keyResults;
+    List<Objective> fullObjectiveInTeam1List;
+    Team team1;
+    @InjectMocks
+    @Spy
+    private ObjectiveService objectiveService;
+
+    @BeforeEach
+    void setUp() {
+        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+        this.objectiveList = List.of(objective, objective, objective);
+        this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(objective)
+                .build();
+        this.keyResults = List.of(keyResult, keyResult, keyResult);
+
+        User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+        this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(null)
+                .withModifiedOn(LocalDateTime.MAX).build();
+        this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
+                .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
+                .withModifiedOn(LocalDateTime.MAX).build();
+        this.fullObjective3 = Objective.Builder.builder().withId(5L).withTitle("FullObjective1").withOwner(user)
+                .withTeam(team1).withQuarter(quarter).withDescription("This is our description").withProgress(null)
+                .withModifiedOn(LocalDateTime.MAX).build();
+        this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);
+
+    }
+
+    @Test
+    void getOneObjective() {
+        Mockito.when(objectivePersistenceService.findById(5L)).thenReturn(this.objective);
+        Objective realObjective = objectiveService.getObjectiveById(5L);
+
+        assertEquals("Objective 1", realObjective.getTitle());
+    }
+
+    @Test
+    void shouldSaveANewObjective() {
+        Mockito.when(objectivePersistenceService.save(any())).thenReturn(fullObjective1);
+
+        Objective savedObjective = objectiveService.createObjective(fullObjective1);
+        assertNull(savedObjective.getId());
+        assertEquals("FullObjective1", savedObjective.getTitle());
+        assertEquals("This is our description", savedObjective.getDescription());
+        assertNull(savedObjective.getProgress());
+        assertEquals("Team1", savedObjective.getTeam().getName());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+        assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
+        assertEquals(LocalDateTime.MAX, savedObjective.getModifiedOn());
+    }
+
+    @Test
+    void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
+        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
+                .withDescription("Description").withProgress(null).withModifiedOn(LocalDateTime.now()).build();
+        Mockito.when(objectivePersistenceService.save(any())).thenReturn(this.fullObjective1);
+
+        Objective savedObjective = objectiveService.createObjective(objective1);
+        assertNull(savedObjective.getId());
+        assertEquals("FullObjective1", savedObjective.getTitle());
+        assertNull(savedObjective.getProgress());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+    }
+
+    @Test
+    void shouldNotThrowResponseStatusExceptionWhenCreatingObjectiveWithEmptyDescription() {
+        this.fullObjective1.setDescription(null);
+        Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title").withProgress(null)
+                .withModifiedOn(LocalDateTime.now()).build();
+        Mockito.when(objectivePersistenceService.save(any())).thenReturn(this.fullObjective1);
+
+        Objective savedObjective = objectiveService.createObjective(objective1);
+        assertEquals("FullObjective1", savedObjective.getTitle());
+        assertNull(savedObjective.getDescription());
+        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+    }
+
+    @Test
+    void shouldReturnObjectiveProperly() {
+        Objective newObjective = Objective.Builder.builder().withTitle("Hello World").withId(1L)
+                .withDescription("This is a cool objective")
+                .withOwner(User.Builder.builder().withUsername("rudi").build()).withProgress(5L).withQuarter(null)
+                .withModifiedOn(LocalDateTime.now()).withQuarter(this.fullObjective1.getQuarter())
+                .withTeam(Team.Builder.builder().withId(1L).withName("Best Team").build()).build();
+        Mockito.when(objectivePersistenceService.findById(anyLong())).thenReturn(newObjective);
+        Mockito.when(objectivePersistenceService.save(any())).thenReturn(newObjective);
+
+        Objective returnedObjective = objectiveService.updateObjective(newObjective.getId(), newObjective);
+        assertEquals("Hello World", returnedObjective.getTitle());
+        assertEquals("Best Team", returnedObjective.getTeam().getName());
+        assertEquals("rudi", returnedObjective.getOwner().getUsername());
+        assertEquals("This is a cool objective", returnedObjective.getDescription());
+    }
+}

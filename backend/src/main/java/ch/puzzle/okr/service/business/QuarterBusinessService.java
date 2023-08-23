@@ -2,11 +2,13 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
+import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.*;
@@ -26,16 +28,19 @@ public class QuarterService {
 
     private final KeyResultService keyResultService;
     private final QuarterPersistenceService quarterPersistenceService;
+    private final QuarterValidationService validator;
     public YearMonth now;
 
-    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService,
-            YearMonth now) {
+    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService, QuarterValidationService validator,
+                          YearMonth now) {
         this.keyResultService = keyResultService;
         this.quarterPersistenceService = quarterPersistenceService;
+        this.validator = validator;
         this.now = now;
     }
 
     public Quarter getQuarterById(Long quarterId) {
+        validator.validateOnGet(quarterId);
         return quarterPersistenceService.findById(quarterId);
     }
 
@@ -51,6 +56,14 @@ public class QuarterService {
         quarterLabelList.addAll(pastQuarter);
 
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
+    }
+
+    public void createQuarter() {
+        Quarter quarter = Quarter.Builder.builder()
+                .withLabel("GJ 23/24-Q3")
+                .withStartDate(LocalDate.of(2024, 1, 1))
+                .withEndDate(LocalDate.of(2024, 3, 31)).build();
+        quarterPersistenceService.save(quarter);
     }
 
     protected synchronized Quarter getOrCreateQuarter(String label) {
@@ -97,9 +110,21 @@ public class QuarterService {
         return String.format(format, number);
     }
 
+    private void generateQuarter(LocalDate currentDate) {
+        // Logic to generate quarter
+        Quarter quarter = Quarter.Builder.builder()
+                .withLabel(generateQuarterLabel())
+                .withStartDate(LocalDate.of(2024, 1, 1))
+                .withEndDate(LocalDate.of(2024, 3, 31))
+                .build();
+        quarterPersistenceService.save(quarter);
+    }
+
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
-        getOrCreateQuarters();
-        logger.info("Generated quarters on first day of month");
+        if ((int) (LocalDate.now().getMonth()) % 3 == 0) {
+            generateQuarter(LocalDate.now());
+            logger.info("Generated quarters on first day of month");
+        }
     }
 }

@@ -107,8 +107,8 @@ public class QuarterService {
         // Logic to generate quarter
         Quarter quarter = Quarter.Builder.builder()
                 .withLabel(createQuarterLabelParameters(yearMonth))
-                .withStartDate(currentDate)
-                .withEndDate()
+                .withStartDate(currentDate.plusDays(1).plusMonths(3))
+                .withEndDate(currentDate.plusMonths(6))
                 .build();
         quarterPersistenceService.save(quarter);
     }

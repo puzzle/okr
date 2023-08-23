@@ -10,7 +10,6 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.KeyResultService;
 import ch.puzzle.okr.service.ObjectiveService;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +30,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -95,24 +93,6 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
         BDDMockito.given(keyResultMapper.toDto(keyResult1)).willReturn(keyresult1Dto);
         BDDMockito.given(keyResultMapper.toDto(keyResult2)).willReturn(keyresult2Dto);
-    }
-
-    @Test
-    void shouldGetAllObjectives() throws Exception {
-        BDDMockito.given(objectiveService.getAllObjectives()).willReturn(objectiveList);
-
-        mvc.perform(get("/api/v2/objectives").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].title", Is.is("Objective 1")))
-                .andExpect(jsonPath("$[1].id", Is.is(7))).andExpect(jsonPath("$[1].title", Is.is("Objective 2")));
-    }
-
-    @Test
-    void shouldGetAllObjectivesIfNoObjectiveExists() throws Exception {
-        BDDMockito.given(objectiveService.getAllObjectives()).willReturn(Collections.emptyList());
-
-        mvc.perform(get("/api/v2/objectives").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test

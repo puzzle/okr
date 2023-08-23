@@ -162,7 +162,7 @@ class QuarterServiceTest {
     void shouldGenerateCurrentQuarterLabel(int year, int month, String quarterLabel) {
         YearMonth yearMonth = YearMonth.of(year, month);
         quarterService.now = yearMonth;
-        assertEquals(quarterLabel, quarterService.getQuarter(yearMonth));
+        assertEquals(quarterLabel, quarterService.createQuarterLabelParameters(yearMonth));
     }
 
     @ParameterizedTest

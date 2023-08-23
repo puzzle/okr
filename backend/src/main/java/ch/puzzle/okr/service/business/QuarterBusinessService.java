@@ -83,6 +83,7 @@ public class QuarterService {
                 .withStartDate(yearMonth.plusMonths(4).atDay(1))
                 .withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
+        validator.validateOnSave(quarter.getId(), quarter);
         quarterPersistenceService.save(quarter);
     }
 

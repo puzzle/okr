@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class ObjectiveService {
@@ -24,17 +23,9 @@ public class ObjectiveService {
         this.objectivePersistenceService = objectivePersistenceService;
     }
 
-    public List<Objective> getAllObjectives() {
-        return objectivePersistenceService.findAll();
-    }
-
     public Objective getObjectiveById(Long id) {
         validator.validateOnGet(id);
         return objectivePersistenceService.findById(id);
-    }
-
-    public List<Objective> getObjectivesByTeam(Long teamId) {
-        return objectivePersistenceService.getObjectivesByTeamId(teamId);
     }
 
     @Transactional

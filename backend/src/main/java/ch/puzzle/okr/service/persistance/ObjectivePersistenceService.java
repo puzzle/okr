@@ -19,10 +19,6 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         return "Objective";
     }
 
-    public List<Objective> getObjectivesByTeamId(Long teamId) {
-        return ((ObjectiveRepository) this.repository).findByTeamIdOrderByTitleAsc(teamId);
-    }
-
     public Integer countByTeamAndQuarter(Team team, Quarter quarter) {
         return ((ObjectiveRepository) this.repository).countByTeamAndQuarter(team, quarter);
     }

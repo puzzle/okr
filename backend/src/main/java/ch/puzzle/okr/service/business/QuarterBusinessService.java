@@ -45,14 +45,7 @@ public class QuarterService {
     }
 
     public List<Quarter> getOrCreateQuarters() {
-
-        List<String> futureQuarter = getFutureQuarters(now, 1);
-        List<String> pastQuarter = getPastQuarters(now, 4);
-
         List<String> quarterLabelList = new ArrayList<>();
-//        quarterLabelList.add(currentQuarterLabel);
-        quarterLabelList.addAll(futureQuarter);
-        quarterLabelList.addAll(pastQuarter);
 
         return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
     }
@@ -65,16 +58,6 @@ public class QuarterService {
 
     public Quarter getActiveQuarter() {
         return getOrCreateQuarter(createQuarterLabel(this.now));
-    }
-
-    public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
-        return IntStream.range(1, amount + 1).map(quarter -> quarter * 3)
-                .mapToObj(quarter -> createQuarterLabel(yearMonth.minusMonths(quarter))).toList();
-    }
-
-    public List<String> getFutureQuarters(YearMonth yearMonth, int amount) {
-        return IntStream.range(1, amount + 1).map(quarter -> quarter * 3)
-                .mapToObj(quarter -> createQuarterLabel(yearMonth.plusMonths(quarter))).toList();
     }
 
     private String shortenYear(int fullYear) {

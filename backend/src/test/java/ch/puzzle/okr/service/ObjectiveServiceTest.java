@@ -90,7 +90,7 @@ class ObjectiveServiceTest {
         assertEquals("This is our description", savedObjective.getDescription());
         assertNull(savedObjective.getProgress());
         assertEquals("Team1", savedObjective.getTeam().getName());
-        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
         assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
         assertEquals(LocalDateTime.MAX, savedObjective.getModifiedOn());
     }
@@ -105,7 +105,7 @@ class ObjectiveServiceTest {
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertNull(savedObjective.getProgress());
-        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
     @Test
@@ -118,7 +118,7 @@ class ObjectiveServiceTest {
         Objective savedObjective = objectiveService.createObjective(objective1);
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertNull(savedObjective.getDescription());
-        assertEquals("Bob", savedObjective.getOwner().getFirstname());
+        assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
     @Test
@@ -134,7 +134,7 @@ class ObjectiveServiceTest {
         Objective returnedObjective = objectiveService.updateObjective(newObjective.getId(), newObjective);
         assertEquals("Hello World", returnedObjective.getTitle());
         assertEquals("Best Team", returnedObjective.getTeam().getName());
-        assertEquals("rudi", returnedObjective.getOwner().getUsername());
+        assertEquals("rudi", returnedObjective.getCreatedBy().getUsername());
         assertEquals("This is a cool objective", returnedObjective.getDescription());
     }
 }

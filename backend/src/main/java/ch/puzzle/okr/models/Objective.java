@@ -24,7 +24,7 @@ public class Objective {
 
     @NotNull
     @ManyToOne
-    private User owner;
+    private User createdBy;
 
     @NotNull
     @ManyToOne
@@ -42,18 +42,27 @@ public class Objective {
     @NotNull
     private LocalDateTime modifiedOn;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private State state;
+
+    @NotNull
+    private LocalDateTime createdOn;
+
     public Objective() {
     }
 
     private Objective(Builder builder) {
         id = builder.id;
         setTitle(builder.title);
-        setOwner(builder.owner);
+        setCreatedBy(builder.createdBy);
         setTeam(builder.team);
         setQuarter(builder.quarter);
         setDescription(builder.description);
         setProgress(builder.progress);
         setModifiedOn(builder.modifiedOn);
+        setState(builder.state);
+        setCreatedOn(builder.createdOn);
     }
 
     public Long getId() {
@@ -68,12 +77,12 @@ public class Objective {
         this.title = title;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Team getTeam() {
@@ -116,11 +125,27 @@ public class Objective {
         this.modifiedOn = modifiedOn;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", owner=" + owner + ", team=" + team
+        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
                 + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
-                + ", modifiedOn=" + modifiedOn + '}';
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + '}';
     }
 
     @Override
@@ -131,25 +156,28 @@ public class Objective {
             return false;
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
-                && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team)
+                && Objects.equals(createdBy, objective.createdBy) && Objects.equals(team, objective.team)
                 && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
-                && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn);
+                && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn)
+                && state == objective.state && Objects.equals(createdOn, objective.createdOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, owner, team, quarter, description, progress, modifiedOn);
+        return Objects.hash(id, title, createdBy, team, quarter, description, progress, modifiedOn, state, createdOn);
     }
 
     public static final class Builder {
         private Long id;
         private String title;
-        private User owner;
+        private User createdBy;
         private Team team;
         private Quarter quarter;
         private String description;
         private Long progress;
         private LocalDateTime modifiedOn;
+        private State state;
+        private LocalDateTime createdOn;
 
         public Builder() {
         }
@@ -168,8 +196,8 @@ public class Objective {
             return this;
         }
 
-        public Builder withOwner(User owner) {
-            this.owner = owner;
+        public Builder withOwner(User createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 
@@ -195,6 +223,16 @@ public class Objective {
 
         public Builder withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
+            return this;
+        }
+
+        public Builder withState(State state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder withCreatedOn(LocalDateTime createdOn) {
+            this.createdOn = createdOn;
             return this;
         }
 

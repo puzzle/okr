@@ -19,10 +19,8 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
     public void validateOnUpdate(Long id, Quarter model) {
     }
 
-    public void validateOnSave(Long id, Quarter model) {
+    public void validateOnSave(Quarter model) {
         throwExceptionIfModelIsNull(model);
-        throwExceptionWhenIdIsNull(model.getId());
-        doesEntityExist(id);
         validate(model);
     }
 }

@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.time.temporal.IsoFields;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -46,12 +46,11 @@ public class QuarterService {
 
     public List<Quarter> getOrCreateQuarters() {
 
-        String currentQuarterLabel = createQuarterLabelParameters(now);
         List<String> futureQuarter = getFutureQuarters(now, 1);
         List<String> pastQuarter = getPastQuarters(now, 4);
 
         List<String> quarterLabelList = new ArrayList<>();
-        quarterLabelList.add(currentQuarterLabel);
+//        quarterLabelList.add(currentQuarterLabel);
         quarterLabelList.addAll(futureQuarter);
         quarterLabelList.addAll(pastQuarter);
 
@@ -65,50 +64,41 @@ public class QuarterService {
     }
 
     public Quarter getActiveQuarter() {
-        return getOrCreateQuarter(createQuarterLabelParameters(this.now));
+        return getOrCreateQuarter(createQuarterLabel(this.now));
     }
 
     public List<String> getPastQuarters(YearMonth yearMonth, int amount) {
         return IntStream.range(1, amount + 1).map(quarter -> quarter * 3)
-                .mapToObj(quarter -> createQuarterLabelParameters(yearMonth.minusMonths(quarter))).toList();
+                .mapToObj(quarter -> createQuarterLabel(yearMonth.minusMonths(quarter))).toList();
     }
 
     public List<String> getFutureQuarters(YearMonth yearMonth, int amount) {
         return IntStream.range(1, amount + 1).map(quarter -> quarter * 3)
-                .mapToObj(quarter -> createQuarterLabelParameters(yearMonth.plusMonths(quarter))).toList();
+                .mapToObj(quarter -> createQuarterLabel(yearMonth.plusMonths(quarter))).toList();
     }
 
-    public String shortenYear(int fullYear) {
+    private String shortenYear(int fullYear) {
         return padWithZeros(2, fullYear % 100);
     }
 
 
-    public String padWithZeros(int amount, int number) {
+    private String padWithZeros(int amount, int number) {
         String format = "%0" + amount + "d";
         return String.format(format, number);
     }
 
-    public String createQuarterLabelParameters(YearMonth yearMonth) {
-        int currentYear = yearMonth.getYear();
-        int currentMonth = yearMonth.getMonthValue();
-        int yearQuarter = (currentMonth - 1) / 3 + 1;
-        int firstLabelYear = currentMonth < Month.JULY.getValue() ? currentYear - 1 : currentYear;
-        int businessQuarter = yearToBusinessQuarterMap.get(yearQuarter);
-
-        return generateQuarterLabel(firstLabelYear, businessQuarter);
+    private String createQuarterLabel(YearMonth yearMonth) {
+        int businessQuarter = yearToBusinessQuarterMap.get(yearMonth.get(IsoFields.QUARTER_OF_YEAR));
+        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(),Month.JULY)) ? yearMonth.getYear() - 1 : yearMonth.getYear();
+        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear+1), businessQuarter);
     }
 
-    public String generateQuarterLabel(int currentYear, int currentQuarter) {
-        int nextYear = currentYear + 1;
-        return String.format("GJ %s/%s-Q%x", shortenYear(currentYear), shortenYear(nextYear), currentQuarter);
-    }
-
-    private void generateQuarter(LocalDate currentDate, YearMonth yearMonth) {
+    private void generateQuarter(YearMonth yearMonth) {
         // Logic to generate quarter
         Quarter quarter = Quarter.Builder.builder()
-                .withLabel(createQuarterLabelParameters(yearMonth))
-                .withStartDate(currentDate.plusDays(1).plusMonths(3))
-                .withEndDate(currentDate.plusMonths(6))
+                .withLabel(createQuarterLabel(yearMonth))
+                .withStartDate(yearMonth.plusMonths(4).atDay(1))
+                .withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
         quarterPersistenceService.save(quarter);
     }
@@ -116,7 +106,7 @@ public class QuarterService {
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
         if (YearMonth.now().getMonthValue() % 3 == 0) {
-            generateQuarter(LocalDate.now(), YearMonth.now());
+            generateQuarter(YearMonth.now());
             logger.info("Generated quarters on first day of month");
         }
     }

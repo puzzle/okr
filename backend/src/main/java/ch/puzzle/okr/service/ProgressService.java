@@ -2,7 +2,6 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import ch.puzzle.okr.service.business.ProgressBusinessService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,13 +10,11 @@ import javax.transaction.Transactional;
 public class ProgressService {
     private final ObjectiveBusinessService objectiveBusinessService;
     private final KeyResultBusinessService keyResultBusinessService;
-    private final ProgressBusinessService progressBusinessService;
 
     public ProgressService(ObjectiveBusinessService objectiveBusinessService,
-            KeyResultBusinessService keyResultBusinessService, ProgressBusinessService progressBusinessService) {
+            KeyResultBusinessService keyResultBusinessService) {
         this.objectiveBusinessService = objectiveBusinessService;
         this.keyResultBusinessService = keyResultBusinessService;
-        this.progressBusinessService = progressBusinessService;
     }
 
     public void updateObjectiveProgress(Long objectiveId) {

@@ -102,7 +102,7 @@ public class ObjectiveBusinessService {
     }
 
     public List<Objective> getObjectiveByTeamIdAndQuarterId(Long teamId, Long quarterId) {
-        return objectivePersistenceService.getObjectiveByTeamIdAndQuarterId(quarterId, teamId);
+        return objectivePersistenceService.getObjectiveByTeamIdAndQuarterId(teamId, quarterId);
     }
 
     public void updateObjectiveProgress(Long objectiveId) {

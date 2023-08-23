@@ -1,10 +1,10 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.repository.MeasureRepository;
+import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,7 +19,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -29,15 +28,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class MeasureServiceTest {
+class MeasureBusinessServiceTest {
     @MockBean
-    MeasureRepository measureRepository = Mockito.mock(MeasureRepository.class);
-
+    MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
     @MockBean
-    ProgressService progressService = Mockito.mock(ProgressService.class);
+    ProgressBusinessService progressBusinessService = Mockito.mock(ProgressBusinessService.class);
+    @MockBean
+    ObjectiveBusinessService objectiveBusinessService = Mockito.mock(ObjectiveBusinessService.class);
 
     @InjectMocks
-    private MeasureService measureService;
+    private MeasureBusinessService measureBusinessService;
 
     private Measure measure;
     private Measure measureWithId;
@@ -67,8 +67,8 @@ class MeasureServiceTest {
 
     @Test
     void shouldReturnMeasure() {
-        Mockito.when(measureRepository.save(any())).thenReturn(measure);
-        Measure returnMeasure = this.measureService.saveMeasure(measure);
+        Mockito.when(measurePersistenceService.saveMeasure(any())).thenReturn(measure);
+        Measure returnMeasure = this.measureBusinessService.saveMeasure(measure);
         assertEquals(returnMeasure.getValue(), 30);
         assertEquals(returnMeasure.getChangeInfo(), "ChangeInfo");
         assertEquals(returnMeasure.getInitiatives(), "Initiatives");
@@ -78,9 +78,10 @@ class MeasureServiceTest {
 
     @Test
     void shouldThrowErrorWhenInDbIsSameMeasureDateWithSameKeyResultId() {
-        Mockito.when(measureRepository.findMeasuresByKeyResultIdAndMeasureDate(any(), any())).thenReturn(measures);
+        Mockito.when(measurePersistenceService.getMeasuresByKeyResultIdAndMeasureDate(any(), any()))
+                .thenReturn(measures);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.measureService.saveMeasure(measure));
+                () -> this.measureBusinessService.saveMeasure(measure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Only one Messung is allowed per day and Key Result!", exception.getReason());
     }
@@ -88,16 +89,17 @@ class MeasureServiceTest {
     @Test
     void shouldNotReturnException() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> measureService.saveMeasure(falseMeasure));
+                () -> measureBusinessService.saveMeasure(falseMeasure));
         assertEquals(400, exception.getRawStatusCode());
         assertEquals("Measure has already an Id", exception.getReason());
     }
 
     @Test
     void shouldReturnCorrectEntity() {
-        Mockito.when(measureRepository.save(any())).thenReturn(measure);
-        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
-        Measure returnedMeasure = this.measureService.updateMeasure(1L, measure);
+        Mockito.when(measurePersistenceService.updateMeasure(anyLong(), any())).thenReturn(measure);
+
+        Measure returnedMeasure = this.measureBusinessService.updateMeasure(1L, measure);
+
         assertEquals(measure.getId(), returnedMeasure.getId());
         assertEquals(measure.getValue(), returnedMeasure.getValue());
         assertEquals(measure.getChangeInfo(), returnedMeasure.getChangeInfo());
@@ -105,42 +107,19 @@ class MeasureServiceTest {
     }
 
     @Test
-    void shouldThrowResponseStatusExceptionNotFound() {
-        Mockito.when(measureRepository.save(any())).thenReturn(measure);
-        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.measureService.updateMeasure(1L, measure));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-    }
-
-    @Test
     void shouldThrowResponseStatusExceptionBadRequest() {
-        Mockito.when(measureRepository.save(any())).thenReturn(measure);
-        Mockito.when(measureService.saveMeasure(measure))
+        Mockito.when(measurePersistenceService.updateMeasure(anyLong(), any()))
                 .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        Mockito.when(measureRepository.findById(anyLong())).thenReturn(Optional.ofNullable(measure));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.measureService.updateMeasure(1L, measure));
+                () -> this.measureBusinessService.updateMeasure(1L, measure));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 
     @Test
     void shouldDeleteMeasure() {
-        Mockito.when(measureRepository.findById(1L)).thenReturn(Optional.of(measure));
+        measureBusinessService.deleteMeasureById(1L);
 
-        measureService.deleteMeasureById(1L);
-
-        verify(measureRepository, times(1)).deleteById(1L);
-        verify(measureRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    void shouldThrowErrorWhenMeasureNotExistsAndNotCallMeasureRepository() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.measureService.deleteMeasureById(33L));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        verify(measureRepository, times(0)).deleteById(1L);
+        verify(measurePersistenceService, times(1)).deleteMeasureById(1L);
     }
 }

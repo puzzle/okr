@@ -1,8 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.persistance.TeamPersistenceService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 

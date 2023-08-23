@@ -1,8 +1,10 @@
-package ch.puzzle.okr.service.persistance;
+package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserPersistenceService extends PersistenceBase<User, Long> {
@@ -13,5 +15,10 @@ public class UserPersistenceService extends PersistenceBase<User, Long> {
     @Override
     public String getModelName() {
         return "User";
+    }
+
+    public synchronized User getOrCreateUser(User newUser) {
+        Optional<User> user = ((UserRepository) repository).findByUsername(newUser.getUsername());
+        return user.orElseGet(() -> repository.save(newUser));
     }
 }

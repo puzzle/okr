@@ -1,26 +1,26 @@
 create sequence if not exists sequence_key_result;
 
-alter sequence sequence_key_result owner to "user";
+-- alter sequence sequence_key_result owner to "$spring.datasource.username";
 
 create sequence if not exists sequence_measure;
 
-alter sequence sequence_measure owner to "user";
+-- alter sequence sequence_measure owner to "user";
 
 create sequence if not exists sequence_objective;
 
-alter sequence sequence_objective owner to "user";
+-- alter sequence sequence_objective owner to "user";
 
 create sequence if not exists sequence_person;
 
-alter sequence sequence_person owner to "user";
+-- alter sequence sequence_person owner to "user";
 
 create sequence if not exists sequence_quarter;
 
-alter sequence sequence_quarter owner to "user";
+-- alter sequence sequence_quarter owner to "user";
 
 create sequence if not exists sequence_team;
 
-alter sequence sequence_team owner to "user";
+-- alter sequence sequence_team owner to "user";
 
 create table if not exists person
 (
@@ -34,8 +34,7 @@ create table if not exists person
             unique
 );
 
-alter table person
-    owner to "user";
+-- alter table person owner to "user";
 
 create table if not exists quarter
 (
@@ -46,8 +45,7 @@ create table if not exists quarter
             unique
 );
 
-alter table quarter
-    owner to "user";
+-- alter table quarter owner to "user";
 
 create table if not exists team
 (
@@ -56,8 +54,7 @@ create table if not exists team
     name varchar(250) not null
 );
 
-alter table team
-    owner to "user";
+-- alter table team owner to "user";
 
 create table if not exists objective
 (
@@ -78,8 +75,21 @@ create table if not exists objective
             references team
 );
 
-alter table objective
-    owner to "user";
+-- alter table objective owner to "user";
+
+create table if not exists measure
+(
+    id            bigint           not null primary key,
+    change_info   varchar(255)     not null,
+    created_on    timestamp        not null,
+    initiatives   varchar(4096),
+    measure_date  timestamp        not null,
+    "value"       double precision not null,
+    created_by_id bigint           not null,
+    key_result_id bigint           not null
+);
+
+-- alter table measure owner to "user";
 
 create table if not exists key_result
 (
@@ -103,8 +113,7 @@ create table if not exists key_result
             references person
 );
 
-alter table key_result
-    owner to "user";
+-- alter table key_result owner to "user";
 
 create table if not exists measure
 (
@@ -114,7 +123,7 @@ create table if not exists measure
     created_on    timestamp        not null,
     initiatives   varchar(4096),
     measure_date  timestamp        not null,
-    value         double precision not null,
+    "value"       double precision not null,
     created_by_id bigint           not null
         constraint fk1ceh0ql85vexss212h0jlrctd
             references person,
@@ -123,8 +132,7 @@ create table if not exists measure
             references key_result
 );
 
-alter table measure
-    owner to "user";
+-- alter table measure owner to "user";
 
 create index if not exists idx_objective_title
     on objective (title);

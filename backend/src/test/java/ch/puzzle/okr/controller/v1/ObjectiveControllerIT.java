@@ -9,8 +9,8 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.service.KeyResultService;
-import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,9 +80,9 @@ class ObjectiveControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private ObjectiveService objectiveService;
+    private ObjectiveBusinessService objectiveBusinessService;
     @MockBean
-    private KeyResultService keyResultService;
+    private KeyResultBusinessService keyResultBusinessService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean
@@ -100,7 +100,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllObjectives() throws Exception {
-        BDDMockito.given(objectiveService.getAllObjectives()).willReturn(objectiveList);
+        BDDMockito.given(objectiveBusinessService.getAllObjectives()).willReturn(objectiveList);
 
         mvc.perform(get("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -110,7 +110,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllObjectivesIfNoObjectiveExists() throws Exception {
-        BDDMockito.given(objectiveService.getAllObjectives()).willReturn(Collections.emptyList());
+        BDDMockito.given(objectiveBusinessService.getAllObjectives()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -118,7 +118,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllKeyResultsByObjective() throws Exception {
-        BDDMockito.given(keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L)).willReturn(keyResultsMeasureList);
+        BDDMockito.given(keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(1L))
+                .willReturn(keyResultsMeasureList);
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -130,7 +131,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldGetAllKeyResultsIfNoKeyResultExistsInObjective() throws Exception {
-        BDDMockito.given(keyResultService.getAllKeyResultsByObjective(1)).willReturn(Collections.emptyList());
+        BDDMockito.given(keyResultBusinessService.getAllKeyResultsByObjective(1L)).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -138,7 +139,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnErrorWhenObjectiveDoesntExistWhenGettingKeyResults() throws Exception {
-        BDDMockito.given(keyResultService.getAllKeyResultsByObjectiveWithMeasure(1L))
+        BDDMockito.given(keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(1L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
 
         mvc.perform(get("/api/v1/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
@@ -147,7 +148,7 @@ class ObjectiveControllerIT {
 
     @Test
     void getObjective() throws Exception {
-        BDDMockito.given(objectiveService.getObjective(5L)).willReturn(objective1);
+        BDDMockito.given(objectiveBusinessService.getObjectiveById(5L)).willReturn(objective1);
 
         mvc.perform(get("/api/v1/objectives/5").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
@@ -156,7 +157,7 @@ class ObjectiveControllerIT {
 
     @Test
     void getObjectiveFail() throws Exception {
-        BDDMockito.given(objectiveService.getObjective(10L))
+        BDDMockito.given(objectiveBusinessService.getObjectiveById(10L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         mvc.perform(get("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -168,7 +169,7 @@ class ObjectiveControllerIT {
                 1L, "GJ 22/23-Q2", "Just be faster", 0L);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.saveObjective(any())).willReturn(fullObjective);
+        BDDMockito.given(objectiveBusinessService.saveObjective(any())).willReturn(fullObjective);
 
         mvc.perform(post("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
@@ -176,12 +177,12 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
                         "{\"id\":null,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterLabel\":\"GJ 22/23-Q2\",\"description\":\"Just be faster\",\"progress\":0}"));
-        verify(objectiveService, times(1)).saveObjective(any());
+        verify(objectiveBusinessService, times(1)).saveObjective(any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
-        BDDMockito.given(objectiveService.saveObjective(any())).willThrow(
+        BDDMockito.given(objectiveBusinessService.saveObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post("/api/v1/objectives").contentType(MediaType.APPLICATION_JSON).content(
@@ -198,7 +199,7 @@ class ObjectiveControllerIT {
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective);
+        BDDMockito.given(objectiveBusinessService.updateObjective(any())).willReturn(objective);
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -219,9 +220,9 @@ class ObjectiveControllerIT {
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objective1);
-        when(objectiveService.isQuarterImmutable(objective1)).thenReturn(true);
+        when(objectiveBusinessService.isQuarterImmutable(objective1)).thenReturn(true);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
-        BDDMockito.given(objectiveService.updateObjective(any())).willReturn(objective1);
+        BDDMockito.given(objectiveBusinessService.updateObjective(any())).willReturn(objective1);
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -234,7 +235,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
+        BDDMockito.given(objectiveBusinessService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10").contentType(MediaType.APPLICATION_JSON)
@@ -248,7 +249,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(any())).willThrow(
+        BDDMockito.given(objectiveBusinessService.updateObjective(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v1/objectives/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -263,7 +264,7 @@ class ObjectiveControllerIT {
 
     @Test
     void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveService)
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveBusinessService)
                 .deleteObjectiveById(anyLong());
 
         mvc.perform(delete("/api/v1/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))

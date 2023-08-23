@@ -2,9 +2,9 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.service.KeyResultService;
-import ch.puzzle.okr.service.ProgressService;
-import ch.puzzle.okr.service.UserService;
+import ch.puzzle.okr.service.business.ProgressBusinessService;
+import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,17 +12,18 @@ import java.time.LocalDateTime;
 @Component
 public class KeyResultMapper {
 
-    private final KeyResultService keyResultService;
     // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserService userService;
+    private final UserPersistenceService userPersistenceService;
 
-    private final ProgressService progressService;
+    private final ObjectivePersistenceService objectivePersistenceService;
 
-    public KeyResultMapper(KeyResultService keyResultService, UserService userService,
-            ProgressService progressService) {
-        this.keyResultService = keyResultService;
-        this.userService = userService;
-        this.progressService = progressService;
+    private final ProgressBusinessService progressBusinessService;
+
+    public KeyResultMapper(UserPersistenceService userPersistenceService,
+            ObjectivePersistenceService objectivePersistenceService, ProgressBusinessService progressBusinessService) {
+        this.userPersistenceService = userPersistenceService;
+        this.objectivePersistenceService = objectivePersistenceService;
+        this.progressBusinessService = progressBusinessService;
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
@@ -30,16 +31,16 @@ public class KeyResultMapper {
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
                 keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
                 keyResult.getBasisValue(), keyResult.getTargetValue(),
-                progressService.calculateKeyResultProgress(keyResult));
+                progressBusinessService.calculateKeyResultProgress(keyResult));
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
         return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
-                .withOwner(keyResultService.getOwnerById(keyResultDto.ownerId()))
-                .withObjective(keyResultService.getObjectivebyId(keyResultDto.objectiveId()))
+                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
+                .withObjective(objectivePersistenceService.getObjectiveById(keyResultDto.objectiveId()))
                 .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
                 .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
                 .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())
-                .withCreatedBy(userService.getOwnerById(keyResultDto.ownerId())).build();
+                .withCreatedBy(userPersistenceService.findById(keyResultDto.ownerId())).build();
     }
 }

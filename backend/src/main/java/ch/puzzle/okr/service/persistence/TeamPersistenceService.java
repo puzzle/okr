@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.persistance;
+package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.TeamRepository;

@@ -2,9 +2,9 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.QuarterService;
-import ch.puzzle.okr.service.TeamService;
-import ch.puzzle.okr.service.UserService;
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,14 +12,15 @@ import java.time.LocalDateTime;
 @Component
 public class ObjectiveMapper {
 
-    private final TeamService teamService;
-    private final QuarterService quarterService;
-    private final UserService userService;
+    private final TeamPersistenceService teamPersistenceService;
+    private final QuarterPersistenceService quarterPersistenceService;
+    private final UserPersistenceService userPersistenceService;
 
-    public ObjectiveMapper(TeamService teamService, QuarterService quarterService, UserService userService) {
-        this.teamService = teamService;
-        this.quarterService = quarterService;
-        this.userService = userService;
+    public ObjectiveMapper(TeamPersistenceService teamPersistenceService,
+            QuarterPersistenceService quarterPersistenceService, UserPersistenceService userPersistenceService) {
+        this.teamPersistenceService = teamPersistenceService;
+        this.quarterPersistenceService = quarterPersistenceService;
+        this.userPersistenceService = userPersistenceService;
     }
 
     public ObjectiveDto toDto(Objective objective) {
@@ -31,9 +32,10 @@ public class ObjectiveMapper {
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
         return Objective.Builder.builder().withId(objectiveDto.id()).withTitle(objectiveDto.title())
-                .withOwner(userService.getOwnerById(objectiveDto.ownerId()))
-                .withTeam(teamService.getTeamById(objectiveDto.teamId())).withDescription(objectiveDto.description())
-                .withProgress(objectiveDto.progress()).withModifiedOn(LocalDateTime.now())
-                .withQuarter(quarterService.getQuarterById(objectiveDto.quarterId())).build();
+                .withOwner(userPersistenceService.findById(objectiveDto.ownerId()))
+                .withTeam(teamPersistenceService.findById(objectiveDto.teamId()))
+                .withDescription(objectiveDto.description()).withProgress(objectiveDto.progress())
+                .withModifiedOn(LocalDateTime.now())
+                .withQuarter(quarterPersistenceService.getQuarterById(objectiveDto.quarterId())).build();
     }
 }

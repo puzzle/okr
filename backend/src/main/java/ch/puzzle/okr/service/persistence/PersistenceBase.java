@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.persistance;
+package ch.puzzle.okr.service.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
@@ -17,6 +17,10 @@ public abstract class PersistenceBase<Model, Id> {
     }
 
     public Model findById(Id id) throws ResponseStatusException {
+        if (id == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Missing identifier for %s", getModelName()));
+        }
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", getModelName(), id)));
     }

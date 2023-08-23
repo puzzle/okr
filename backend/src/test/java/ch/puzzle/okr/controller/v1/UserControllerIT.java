@@ -5,7 +5,7 @@ import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.UserService;
+import ch.puzzle.okr.service.business.UserBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,24 +35,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerIT {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private UserService userService;
-    @MockBean
-    private RegisterNewUserService registerNewUserService;
-    @MockBean
-    private UserMapper userMapper;
-
     static User userAlice = User.Builder.builder().withId(2L).withUsername("awunderland").withFirstname("Alice")
             .withLastname("Wunderland").withEmail("wunderland@puzzle.ch").build();
     static User userBob = User.Builder.builder().withId(9L).withUsername("bbaumeister").withFirstname("Bob")
             .withLastname("Baumeister").withEmail("baumeister@puzzle.ch").build();
     static List<User> userList = Arrays.asList(userAlice, userBob);
-
     static UserDto userAliceDto = new UserDto(2L, "awunderland", "Alice", "Wunderland", "wunderland@puzzle.ch");
     static UserDto userBobDto = new UserDto(9L, "bbaumeister", "Bob", "Baumeister", "baumeister@puzzle.ch");
+    @Autowired
+    private MockMvc mvc;
+    @MockBean
+    private UserBusinessService userBusinessService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
+    @MockBean
+    private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
@@ -63,7 +60,7 @@ class UserControllerIT {
 
     @Test
     void shouldGetAllUsers() throws Exception {
-        BDDMockito.given(userService.getAllUsers()).willReturn(userList);
+        BDDMockito.given(userBusinessService.getAllUsers()).willReturn(userList);
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -79,7 +76,7 @@ class UserControllerIT {
 
     @Test
     void shouldGetAllUsersIfNoUserExists() throws Exception {
-        BDDMockito.given(userService.getAllUsers()).willReturn(Collections.emptyList());
+        BDDMockito.given(userBusinessService.getAllUsers()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));

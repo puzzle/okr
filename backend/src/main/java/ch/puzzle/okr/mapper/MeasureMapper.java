@@ -1,22 +1,24 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.MeasureService;
-import ch.puzzle.okr.service.UserService;
+import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
 public class MeasureMapper {
-    private final MeasureService measureService;
+    private final KeyResultPersistenceService keyResultPersistenceService;
     // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserService userService;
+    private final UserPersistenceService userPersistenceService;
 
-    public MeasureMapper(MeasureService measureService, UserService userService) {
-        this.measureService = measureService;
-        this.userService = userService;
+    public MeasureMapper(KeyResultPersistenceService keyResultPersistenceService,
+            UserPersistenceService userPersistenceService) {
+        this.keyResultPersistenceService = keyResultPersistenceService;
+        this.userPersistenceService = userPersistenceService;
     }
 
     public MeasureDto toDto(Measure measure) {
@@ -30,10 +32,10 @@ public class MeasureMapper {
     }
 
     public Measure toMeasure(MeasureDto measureDto) {
-        return Measure.Builder.builder().withId(measureDto.id()).withKeyResult(measureService.mapKeyResult(measureDto))
-                .withValue(measureDto.value()).withChangeInfo(measureDto.changeInfo())
-                .withInitiatives(measureDto.initiatives())
-                .withCreatedBy(userService.getOwnerById(measureService.mapKeyResult(measureDto).getOwner().getId())) // replace
+        KeyResult keyResult = mapKeyResult(measureDto);
+        return Measure.Builder.builder().withId(measureDto.id()).withKeyResult(keyResult).withValue(measureDto.value())
+                .withChangeInfo(measureDto.changeInfo()).withInitiatives(measureDto.initiatives())
+                .withCreatedBy(userPersistenceService.findById(keyResult.getOwner().getId())) // replace
                 // current
                 // Keyresultowner
                 // with
@@ -41,5 +43,9 @@ public class MeasureMapper {
                 // logged in
                 // USER!!
                 .withCreatedOn(LocalDateTime.now()).withMeasureDate(measureDto.measureDate()).build();
+    }
+
+    private KeyResult mapKeyResult(MeasureDto measureDto) {
+        return keyResultPersistenceService.getKeyResultById(measureDto.keyResultId());
     }
 }

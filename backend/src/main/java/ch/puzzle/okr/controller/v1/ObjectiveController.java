@@ -4,8 +4,8 @@ import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.KeyResultService;
-import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,15 +22,15 @@ import java.util.List;
 @RequestMapping("api/v1/objectives")
 public class ObjectiveController {
 
-    private final ObjectiveService objectiveService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final ObjectiveMapper objectiveMapper;
-    private final KeyResultService keyResultService;
+    private final KeyResultBusinessService keyResultBusinessService;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper,
-            KeyResultService keyResultService) {
-        this.objectiveService = objectiveService;
+    public ObjectiveController(ObjectiveBusinessService objectiveBusinessService, ObjectiveMapper objectiveMapper,
+            KeyResultBusinessService keyResultBusinessService) {
+        this.objectiveBusinessService = objectiveBusinessService;
         this.objectiveMapper = objectiveMapper;
-        this.keyResultService = keyResultService;
+        this.keyResultBusinessService = keyResultBusinessService;
     }
 
     @Operation(summary = "Get Objectives", description = "Get all Objectives from db.")
@@ -38,7 +38,7 @@ public class ObjectiveController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }), })
     @GetMapping
     public List<ObjectiveDto> getAllObjectives() {
-        return objectiveService.getAllObjectives().stream().map(objectiveMapper::toDto).toList();
+        return objectiveBusinessService.getAllObjectives().stream().map(objectiveMapper::toDto).toList();
     }
 
     @Operation(summary = "Get Objective", description = "Get an Objective by ID.")
@@ -49,7 +49,8 @@ public class ObjectiveController {
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjective(id)));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.objectiveMapper.toDto(objectiveBusinessService.getObjectiveById(id)));
     }
 
     @Operation(summary = "Create Objective", description = "Create a new Objective.")
@@ -60,7 +61,8 @@ public class ObjectiveController {
     @PostMapping
     public ResponseEntity<ObjectiveDto> createObjective(@RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto createdObjective = this.objectiveMapper.toDto(this.objectiveService.saveObjective(objective));
+        ObjectiveDto createdObjective = this.objectiveMapper
+                .toDto(this.objectiveBusinessService.saveObjective(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -77,8 +79,9 @@ public class ObjectiveController {
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        boolean isImUsed = objectiveService.isQuarterImmutable(objective);
-        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(objective));
+        boolean isImUsed = objectiveBusinessService.isQuarterImmutable(objective);
+        ObjectiveDto updatedObjective = this.objectiveMapper
+                .toDto(this.objectiveBusinessService.updateObjective(objective));
         return isImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedObjective)
                 : ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
 
@@ -92,7 +95,7 @@ public class ObjectiveController {
     @GetMapping("{id}/keyresults")
     public List<KeyResultMeasureDto> getAllKeyResultsByObjective(
             @Parameter(description = "The ID for getting all KeyResults from an Objective.", required = true) @PathVariable Long id) {
-        return keyResultService.getAllKeyResultsByObjectiveWithMeasure(id);
+        return keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(id);
     }
 
     @Operation(summary = "Delete Objective by Id", description = "Delete Objective by Id")
@@ -100,6 +103,6 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find the objective with requested id") })
     @DeleteMapping("/{id}")
     public void deleteObjectiveById(@PathVariable long id) {
-        this.objectiveService.deleteObjectiveById(id);
+        this.objectiveBusinessService.deleteObjectiveById(id);
     }
 }

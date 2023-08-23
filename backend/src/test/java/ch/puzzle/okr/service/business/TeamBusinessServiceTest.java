@@ -1,19 +1,14 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.repository.ObjectiveRepository;
-import ch.puzzle.okr.service.persistance.TeamPersistenceService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
-import com.sun.xml.bind.v2.TODO;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -26,12 +21,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-class TeamServiceTest {
+class TeamBusinessServiceTest {
     @MockBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     Team team1;
@@ -42,16 +36,14 @@ class TeamServiceTest {
 
     List<Objective> objectiveList;
 
-    @MockBean
-    ObjectiveRepository objectiveRepository = Mockito.mock(ObjectiveRepository.class);
     @Mock
-    ObjectiveService objectiveService;
+    ObjectiveBusinessService objectiveBusinessService;
     @Mock
-    QuarterService quarterService;
+    QuarterBusinessService quarterService;
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);;
     @InjectMocks
-    private TeamService teamService;
+    private TeamBusinessService teamBusinessService;
 
     private static Stream<Arguments> shouldGetTeamsByIds() {
         return Stream.of(Arguments.of(List.of(1L, 2L),
@@ -75,9 +67,9 @@ class TeamServiceTest {
     void getAllTeams_ShouldBeSuccessful() {
         Mockito.when(teamPersistenceService.findAll()).thenReturn(List.of(team1, team2));
 
-        List<Team> allTeams = teamService.getAllTeams();
+        List<Team> teams = teamBusinessService.getAllTeams();
 
-        Assertions.assertIterableEquals(List.of(team1, team2), allTeams);
+        assertIterableEquals(List.of(team1, team2), teams);
     }
 
     @Test
@@ -86,7 +78,7 @@ class TeamServiceTest {
         Mockito.when(teamPersistenceService.save(team1)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnUpdate(1L, teamWithIdNull);
 
-        teamService.updateTeam(1L, team1);
+        teamBusinessService.updateTeam(1L, team1);
         Mockito.verify(validator, Mockito.times(1)).validateOnUpdate(1L, team1);
         Mockito.verify(teamPersistenceService, Mockito.times(1)).save(team1);
     }
@@ -97,10 +89,10 @@ class TeamServiceTest {
         Mockito.when(teamPersistenceService.save(teamWithIdNull)).thenReturn(team1);
         Mockito.doNothing().when(validator).validateOnCreate(teamWithIdNull);
 
-        Team team = teamService.createTeam(teamWithIdNull);
+        Team team = teamBusinessService.createTeam(teamWithIdNull);
         Mockito.verify(validator, Mockito.times(1)).validateOnCreate(teamWithIdNull);
         Mockito.verify(teamPersistenceService, Mockito.times(1)).save(teamWithIdNull);
-        Assertions.assertEquals(1L, team.getId());
+        assertEquals(1L, team.getId());
     }
 
     @Test
@@ -110,7 +102,7 @@ class TeamServiceTest {
                 "Model Team cannot have id while create. Found id 1")).when(validator).validateOnCreate(team1);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamService.createTeam(team1));
+                () -> teamBusinessService.createTeam(team1));
 
         assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
     }
@@ -119,7 +111,7 @@ class TeamServiceTest {
     @Deprecated
     void deleteTeamWithId_ShouldBeSuccessful() throws ResponseStatusException {
         Mockito.doNothing().when(teamPersistenceService).deleteById(1L);
-        teamService.deleteTeamById(1L);
+        teamBusinessService.deleteTeamById(1L);
         Mockito.verify(validator, Mockito.times(1)).validateOnDelete(1L);
         Mockito.verify(teamPersistenceService, Mockito.times(1)).deleteById(1L);
     }
@@ -128,7 +120,7 @@ class TeamServiceTest {
     void activeObjectivesAmountOfTeam_ShouldBeSuccessful() throws ResponseStatusException {
         Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
         Mockito.when(quarterService.getQuarterById(any())).thenReturn(quarter);
-        Mockito.when(objectiveService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);
-        assertEquals(69, teamService.activeObjectivesAmountOfTeam(team1, 1L));
+        Mockito.when(objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);
+        assertEquals(69, teamBusinessService.activeObjectivesAmountOfTeam(team1, 1L));
     }
 }

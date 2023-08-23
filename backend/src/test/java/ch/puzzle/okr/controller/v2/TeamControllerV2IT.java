@@ -1,20 +1,15 @@
 package ch.puzzle.okr.controller.v2;
 
-import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.dto.TeamDto;
-import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.mapper.TeamMapper;
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
-
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.TeamService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,10 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -35,8 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
@@ -53,7 +45,7 @@ class TeamControllerV2IT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private TeamService teamService;
+    private TeamBusinessService teamBusinessService;
     @MockBean
     private TeamMapper teamMapper;
     @MockBean
@@ -68,7 +60,7 @@ class TeamControllerV2IT {
 
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamService.getAllTeams()).willReturn(teamList);
+        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
 
         mvc.perform(get("/api/v2/teams/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -79,7 +71,7 @@ class TeamControllerV2IT {
 
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
-        BDDMockito.given(teamService.getAllTeams()).willReturn(Collections.emptyList());
+        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/teams/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));

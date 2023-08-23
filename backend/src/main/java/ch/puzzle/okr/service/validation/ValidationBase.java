@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.service.persistance.PersistenceBase;
+import ch.puzzle.okr.service.persistence.PersistenceBase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 

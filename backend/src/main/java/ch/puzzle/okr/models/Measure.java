@@ -20,6 +20,7 @@ public class Measure {
     private KeyResult keyResult;
 
     @NotNull
+    @Column(name = "`value`")
     private Double value;
 
     @NotNull

@@ -1,7 +1,7 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.repository.UserRepository;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,14 +23,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserBusinessServiceTest {
     @MockBean
-    UserRepository userRepository = mock(UserRepository.class);
+    UserPersistenceService userPersistenceService = mock(UserPersistenceService.class);
     @MockBean
     UserValidationService validationService = mock(UserValidationService.class);
     List<User> userList;
     @InjectMocks
-    private UserService userService;
+    private UserBusinessService userBusinessService;
 
     @BeforeEach
     void setUp() {
@@ -46,9 +45,9 @@ class UserServiceTest {
 
     @Test
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
-        Mockito.when(userRepository.findAll()).thenReturn(userList);
+        Mockito.when(userPersistenceService.findAll()).thenReturn(userList);
 
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(2);
         Assertions.assertThat(userList.get(0).getId()).isEqualTo(2);
@@ -63,18 +62,18 @@ class UserServiceTest {
 
     @Test
     void shouldReturnEmptyUsers() throws ResponseStatusException {
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userBusinessService.getAllUsers();
 
         Assertions.assertThat(userList.size()).isEqualTo(0);
     }
 
     @Test
     void shouldReturnSingleUserWhenFindingOwnerByValidId() {
-        Optional<User> owner = Optional.of(User.Builder.builder().withId(1L).withFirstname("Bob")
-                .withLastname("Kaufmann").withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build());
-        Mockito.when(userRepository.findById(any())).thenReturn(owner);
+        User owner = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
-        User returnedUser = userService.getOwnerById(1L);
+        User returnedUser = userBusinessService.getOwnerById(1L);
 
         assertEquals(1L, returnedUser.getId());
         assertEquals("Bob", returnedUser.getFirstname());
@@ -84,30 +83,12 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowReponseStatusExceptionWhenFindingOwnerNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userService.getOwnerById(321L);
-        });
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Owner with id 321 not found", exception.getReason());
-    }
-
-    @Test
-    void shouldThrowResponseStatusExceptionWhenGetOwnerWithNullId() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            userService.getOwnerById(null);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute owner id", exception.getReason());
-    }
-
-    @Test
     void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-        Mockito.when(userRepository.findByUsername(newUser.getUsername())).thenReturn(Optional.of(newUser));
+        Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
 
-        User returnedUser = userService.getOrCreateUser(newUser);
+        User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
         assertEquals(1L, returnedUser.getId());
         assertEquals("Bob", returnedUser.getFirstname());
@@ -120,15 +101,29 @@ class UserServiceTest {
     void getOrCreateUser_ShouldReturnSavedUserWhenUserNotFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-        Mockito.when(userRepository.findByUsername(newUser.getUsername())).thenReturn(Optional.empty());
-        Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
+        Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
 
-        User returnedUser = userService.getOrCreateUser(newUser);
+        User returnedUser = userBusinessService.getOrCreateUser(newUser);
 
         assertEquals(1L, returnedUser.getId());
         assertEquals("Bob", returnedUser.getFirstname());
         assertEquals("Kaufmann", returnedUser.getLastname());
         assertEquals("bkaufmann", returnedUser.getUsername());
         assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
+    void getOrCreateUser_ShouldThrowResponseStatusExceptionWhenInvalidUser() {
+        User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
+                .when(validationService).validateOnCreate(newUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userBusinessService.getOrCreateUser(newUser);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Not allowed to give an id", exception.getReason());
     }
 }

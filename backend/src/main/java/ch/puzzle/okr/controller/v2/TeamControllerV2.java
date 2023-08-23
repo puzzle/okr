@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller.v2;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.TeamService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,13 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/teams")
 public class TeamControllerV2 {
-    private final TeamService teamService;
+    private final TeamBusinessService teamBusinessService;
     private final TeamMapper teamMapper;
     private final RegisterNewUserService registerNewUserService;
 
-    public TeamControllerV2(TeamService teamService, TeamMapper teamMapper,
+    public TeamControllerV2(TeamBusinessService teamBusinessService, TeamMapper teamMapper,
             RegisterNewUserService registerNewUserService) {
-        this.teamService = teamService;
+        this.teamBusinessService = teamBusinessService;
         this.teamMapper = teamMapper;
         this.registerNewUserService = registerNewUserService;
     }
@@ -40,6 +40,6 @@ public class TeamControllerV2 {
     public List<TeamDto> getAllTeams(
             @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = false) @PathVariable Long quarterId) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return teamService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
+        return teamBusinessService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
     }
 }

@@ -20,7 +20,7 @@ public class ObjectiveService {
     private final ObjectivePersistenceService objectivePersistenceService;
 
     public ObjectiveService(ObjectiveRepository objectiveRepository, @Lazy KeyResultService keyResultService,
-                            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
+            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
         this.objectiveRepository = objectiveRepository;
         this.keyResultService = keyResultService;
         this.validator = validator;
@@ -53,7 +53,8 @@ public class ObjectiveService {
     @Transactional
     public void deleteObjectiveById(Long id) {
         validator.validateOnDelete(id);
-        keyResultService.getAllKeyResultsByObjective(id).forEach(keyResult -> keyResultService.deleteKeyResultById(keyResult.getId()));
+        keyResultService.getAllKeyResultsByObjective(id)
+                .forEach(keyResult -> keyResultService.deleteKeyResultById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }
 

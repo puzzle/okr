@@ -206,8 +206,7 @@ class ObjectiveControllerIT {
                         + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
                         + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
                         + "\"description\": \"This is our description\", \"progress\": 33.3}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

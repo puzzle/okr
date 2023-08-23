@@ -33,7 +33,8 @@ public class ObjectiveController {
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.objectiveMapper.toDto(objectiveService.getObjectiveById(id)));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(this.objectiveMapper.toDto(objectiveService.getObjectiveById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -71,7 +72,8 @@ public class ObjectiveController {
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(this.objectiveService.updateObjective(id, objective));
+        ObjectiveDto updatedObjective = this.objectiveMapper
+                .toDto(this.objectiveService.updateObjective(id, objective));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
 
     }

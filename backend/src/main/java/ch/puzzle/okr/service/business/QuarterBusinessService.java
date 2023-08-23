@@ -12,7 +12,6 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.IsoFields;
 import java.util.*;
-import java.util.stream.IntStream;
 
 @Service
 public class QuarterService {
@@ -64,7 +63,6 @@ public class QuarterService {
         return padWithZeros(2, fullYear % 100);
     }
 
-
     private String padWithZeros(int amount, int number) {
         String format = "%0" + amount + "d";
         return String.format(format, number);
@@ -72,8 +70,8 @@ public class QuarterService {
 
     private String createQuarterLabel(YearMonth yearMonth) {
         int businessQuarter = yearToBusinessQuarterMap.get(yearMonth.get(IsoFields.QUARTER_OF_YEAR));
-        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(),Month.JULY)) ? yearMonth.getYear() - 1 : yearMonth.getYear();
-        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear+1), businessQuarter);
+        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(), Month.JULY)) ? yearMonth.getYear() - 1 : yearMonth.getYear();
+        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear + 1), businessQuarter);
     }
 
     private void generateQuarter(YearMonth yearMonth) {

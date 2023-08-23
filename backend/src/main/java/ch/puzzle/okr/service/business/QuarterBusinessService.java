@@ -90,6 +90,12 @@ public class QuarterService {
         return padWithZeros(2, fullYear % 100);
     }
 
+
+    public String padWithZeros(int amount, int number) {
+        String format = "%0" + amount + "d";
+        return String.format(format, number);
+    }
+
     public String createQuarterLabelParameters(YearMonth yearMonth) {
         int currentYear = yearMonth.getYear();
         int currentMonth = yearMonth.getMonthValue();
@@ -105,24 +111,18 @@ public class QuarterService {
         return String.format("GJ %s/%s-Q%x", shortenYear(currentYear), shortenYear(nextYear), currentQuarter);
     }
 
-    public String padWithZeros(int amount, int number) {
-        String format = "%0" + amount + "d";
-        return String.format(format, number);
-    }
-
     private void generateQuarter(LocalDate currentDate, YearMonth yearMonth) {
         // Logic to generate quarter
         Quarter quarter = Quarter.Builder.builder()
                 .withLabel(createQuarterLabelParameters(yearMonth))
-                .withStartDate(LocalDate.of(2024, 1, 1))
-                .withEndDate(LocalDate.of(2024, 3, 31))
+                .withStartDate(currentDate)
+                .withEndDate(LocalDate.of())
                 .build();
         quarterPersistenceService.save(quarter);
     }
 
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public void scheduledGenerationQuarters() {
-
         if (YearMonth.now().getMonthValue() % 3 == 0) {
             generateQuarter(LocalDate.now(), YearMonth.now());
             logger.info("Generated quarters on first day of month");

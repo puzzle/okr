@@ -3,7 +3,9 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,10 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class ObjectiveController {
     private final ObjectiveService objectiveService;
     private final ObjectiveMapper objectiveMapper;
+    private final RegisterNewUserService registerNewUserService;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
+    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper,
+            RegisterNewUserService registerNewUserService) {
         this.objectiveService = objectiveService;
         this.objectiveMapper = objectiveMapper;
+        this.registerNewUserService = registerNewUserService;
     }
 
     @Operation(summary = "Get Objective", description = "Get an Objective by ID")
@@ -55,6 +61,8 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> createObjective(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
+        User user = registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
+        objective.setCreatedBy(user);
         ObjectiveDto createdObjective = this.objectiveMapper.toDto(this.objectiveService.createObjective(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }

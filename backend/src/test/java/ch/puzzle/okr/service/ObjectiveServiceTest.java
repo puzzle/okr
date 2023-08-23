@@ -61,13 +61,14 @@ class ObjectiveServiceTest {
         Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(null)
-                .withModifiedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).withState(State.SUCCESSFUL).withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withOwner(user).withTeam(team1)
                 .withQuarter(quarter).withDescription("This is our description").withProgress(33L)
-                .withModifiedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).withState(State.NOTSUCCESSFUL).withCreatedOn(LocalDateTime.MAX)
+                .build();
         this.fullObjective3 = Objective.Builder.builder().withId(5L).withTitle("FullObjective1").withOwner(user)
                 .withTeam(team1).withQuarter(quarter).withDescription("This is our description").withProgress(null)
-                .withModifiedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).withState(State.ONGOING).withCreatedOn(LocalDateTime.MAX).build();
         this.fullObjectiveInTeam1List = List.of(fullObjective1, fullObjective2);
 
     }
@@ -93,6 +94,8 @@ class ObjectiveServiceTest {
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
         assertEquals("GJ 22/23-Q2", savedObjective.getQuarter().getLabel());
         assertEquals(LocalDateTime.MAX, savedObjective.getModifiedOn());
+        assertEquals(State.SUCCESSFUL, savedObjective.getState());
+        assertEquals(LocalDateTime.MAX, savedObjective.getCreatedOn());
     }
 
     @Test

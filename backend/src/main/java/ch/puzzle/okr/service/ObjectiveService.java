@@ -15,12 +15,14 @@ public class ObjectiveService {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultService keyResultService;
+    private final UserService userService;
 
     public ObjectiveService(@Lazy KeyResultService keyResultService, ObjectiveValidationService validator,
-            ObjectivePersistenceService objectivePersistenceService) {
+            ObjectivePersistenceService objectivePersistenceService, UserService userService) {
         this.keyResultService = keyResultService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
+        this.userService = userService;
     }
 
     public Objective getObjectiveById(Long id) {
@@ -29,14 +31,16 @@ public class ObjectiveService {
     }
 
     @Transactional
-    public Objective updateObjective(Long id, Objective objective) {
+    public Objective updateObjective(Long id, Objective objective, String username) {
         validator.validateOnUpdate(id, objective);
+        objective.setCreatedBy(userService.getUserByUsername(username));
         return objectivePersistenceService.save(objective);
     }
 
     @Transactional
-    public Objective createObjective(Objective objective) {
+    public Objective createObjective(Objective objective, String username) {
         validator.validateOnCreate(objective);
+        objective.setCreatedBy(userService.getUserByUsername(username));
         return objectivePersistenceService.save(objective);
     }
 

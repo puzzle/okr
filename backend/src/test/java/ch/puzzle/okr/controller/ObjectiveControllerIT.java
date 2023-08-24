@@ -53,11 +53,10 @@ class ObjectiveControllerIT {
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective").withOwner(user)
             .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(33L)
             .withModifiedOn(LocalDateTime.MAX).build();
-    static List<Objective> objectiveList = Arrays.asList(objective1, objective2);
-    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 2L,
-            "GJ 22/23-Q2", "This is a description", 20L);
-    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L,
-            "GJ 22/23-Q2", "This is a description", 20L);
+    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, "Puzzle", 2L, "GJ 22/23-Q2",
+            "This is a description", 20L);
+    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, "Puzzle", 1L, "GJ 22/23-Q2",
+            "This is a description", 20L);
     static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
     static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
@@ -123,11 +122,11 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, "Rudi", "Grochde", 3L, "PuzzleITC",
-                1L, "GJ 22/23-Q2", "Just be faster", 0L);
+        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, "PuzzleITC", 1L, "GJ 22/23-Q2",
+                "Just be faster", 0L);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.createObjective(any())).willReturn(fullObjective);
+        BDDMockito.given(objectiveService.createObjective(any(), any())).willReturn(fullObjective);
 
         mvc.perform(post("/api/v2/objectives").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
@@ -135,12 +134,12 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
                         "{\"id\":null,\"title\":\"Program Faster\",\"ownerId\":1,\"ownerFirstname\":\"Rudi\",\"ownerLastname\":\"Grochde\",\"teamId\":3,\"teamName\":\"PuzzleITC\",\"quarterId\":1,\"quarterLabel\":\"GJ 22/23-Q2\",\"description\":\"Just be faster\",\"progress\":0}"));
-        verify(objectiveService, times(1)).createObjective(any());
+        verify(objectiveService, times(1)).createObjective(any(), any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
-        BDDMockito.given(objectiveService.createObjective(any())).willThrow(
+        BDDMockito.given(objectiveService.createObjective(any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post("/api/v2/objectives").contentType(MediaType.APPLICATION_JSON).content(
@@ -151,13 +150,13 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
-                "GJ 22/23-Q2", "Everything Fine", 5L);
+        ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, "PuzzleITC", 1L, "GJ 22/23-Q2",
+                "Everything Fine", 5L);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine").withProgress(5L)
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective);
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any(), any())).willReturn(objective);
 
         mvc.perform(put("/api/v2/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -171,15 +170,15 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, "Hunting", 1L, "Rudi", "Grochde", 3L, "PuzzleITC", 1L,
-                "GJ 22/23-Q2", "Everything Fine", 5L);
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, "Hunting", 1L, "PuzzleITC", 1L, "GJ 22/23-Q2",
+                "Everything Fine", 5L);
         Objective objective1 = Objective.Builder.builder().withId(1L).withDescription("Everything Fine")
                 .withProgress(5L).withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build())
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objective1);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willReturn(objective1);
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any(), any())).willReturn(objective1);
 
         mvc.perform(put("/api/v2/objectives/10").contentType(MediaType.APPLICATION_JSON)
                 .content("{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
@@ -191,7 +190,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v2/objectives/10").contentType(MediaType.APPLICATION_JSON)
@@ -205,7 +204,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveService.updateObjective(anyLong(), any())).willThrow(
+        BDDMockito.given(objectiveService.updateObjective(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put("/api/v2/objectives/10").with(SecurityMockMvcRequestPostProcessors.csrf()))

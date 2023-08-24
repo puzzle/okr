@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.controller.MeasureController;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;

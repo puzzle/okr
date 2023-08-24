@@ -36,7 +36,7 @@ public class UserBusinessService {
     }
 
     public User getUserByAuthorisationToken(Jwt token) {
-        // TODO create method in validation service for token not null
+        validationService.validateAuthorisationToken(token);
         return userPersistenceService.findUserByUsername(token.getClaimAsString("preferred_username"));
     }
 }

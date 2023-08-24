@@ -2,6 +2,7 @@ package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistance.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 
 @Service
 public class ObjectiveService {
@@ -31,16 +33,18 @@ public class ObjectiveService {
     }
 
     @Transactional
-    public Objective updateObjective(Long id, Objective objective, String username) {
+    public Objective updateObjective(Long id, Objective objective, String token) {
+        objective.setCreatedBy(userService.getUserByAuthorisationToken(token));
         validator.validateOnUpdate(id, objective);
-        objective.setCreatedBy(userService.getUserByUsername(username));
         return objectivePersistenceService.save(objective);
     }
 
     @Transactional
-    public Objective createObjective(Objective objective, String username) {
+    public Objective createObjective(Objective objective, String token) {
+        objective.setCreatedBy(userService.getUserByAuthorisationToken(token));
+        objective.setState(State.DRAFT);
+        objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
-        objective.setCreatedBy(userService.getUserByUsername(username));
         return objectivePersistenceService.save(objective);
     }
 

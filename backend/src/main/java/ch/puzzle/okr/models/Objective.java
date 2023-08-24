@@ -12,7 +12,6 @@ import java.util.Objects;
 public class Objective {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
-    @NotNull(message = "Id must not be null")
     private Long id;
 
     @NotBlank

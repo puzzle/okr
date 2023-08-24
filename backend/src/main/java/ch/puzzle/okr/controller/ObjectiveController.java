@@ -12,12 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v2/objectives")
@@ -58,13 +53,11 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, not allowed to give an ID", content = @Content) })
     @PostMapping
     public ResponseEntity<ObjectiveDto> createObjective(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
+            @RequestHeader("Authorization") String token) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwt = (Jwt) authentication.getPrincipal();
-        Map<String, Object> claims = jwt.getClaims();
         ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveService.createObjective(objective, claims.get("preferred_username").toString()));
+                .toDto(this.objectiveService.createObjective(objective, token));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -79,13 +72,11 @@ public class ObjectiveController {
     @PutMapping("/{id}")
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
+            @RequestHeader("Authorization") String token) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Jwt jwt = (Jwt) authentication.getPrincipal();
-        Map<String, Object> claims = jwt.getClaims();
-        ObjectiveDto updatedObjective = this.objectiveMapper.toDto(
-                this.objectiveService.updateObjective(id, objective, claims.get("preferred_username").toString()));
+        ObjectiveDto updatedObjective = this.objectiveMapper
+                .toDto(this.objectiveService.updateObjective(id, objective, token));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

@@ -12,23 +12,23 @@ import java.util.Objects;
 public class Objective {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
-    @NotNull
+    @NotNull(message = "Id must not be null")
     private Long id;
 
     @NotBlank
-    @NotNull
+    @NotNull(message = "Title must not be null")
     @Size(min = 2, max = 250)
     private String title;
 
-    @NotNull
+    @NotNull(message = "CreatedBy must not be null")
     @ManyToOne
     private User createdBy;
 
-    @NotNull
+    @NotNull(message = "Team must not be null")
     @ManyToOne
     private Team team;
 
-    @NotNull
+    @NotNull(message = "Quarter must not be null")
     @ManyToOne
     private Quarter quarter;
 
@@ -37,14 +37,13 @@ public class Objective {
 
     private Long progress;
 
-    @NotNull
     private LocalDateTime modifiedOn;
 
-    @NotNull
+    @NotNull(message = "State must not be null")
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @NotNull
+    @NotNull(message = "CreatedOn must not be null")
     private LocalDateTime createdOn;
 
     public Objective() {

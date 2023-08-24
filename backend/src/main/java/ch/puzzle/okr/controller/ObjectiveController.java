@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,10 +56,10 @@ public class ObjectiveController {
     @PostMapping
     public ResponseEntity<ObjectiveDto> createObjective(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
-            @RequestHeader("Authorization") String token) {
+            @AuthenticationPrincipal Jwt jwt) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveService.createObjective(objective, token));
+                .toDto(this.objectiveService.createObjective(objective, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -73,10 +75,10 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
-            @RequestHeader("Authorization") String token) {
+            @AuthenticationPrincipal Jwt jwt) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveService.updateObjective(id, objective, token));
+                .toDto(this.objectiveService.updateObjective(id, objective, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

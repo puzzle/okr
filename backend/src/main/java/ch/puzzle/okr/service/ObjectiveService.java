@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistance.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -33,14 +34,14 @@ public class ObjectiveService {
     }
 
     @Transactional
-    public Objective updateObjective(Long id, Objective objective, String token) {
+    public Objective updateObjective(Long id, Objective objective, Jwt token) {
         objective.setCreatedBy(userService.getUserByAuthorisationToken(token));
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }
 
     @Transactional
-    public Objective createObjective(Objective objective, String token) {
+    public Objective createObjective(Objective objective, Jwt token) {
         objective.setCreatedBy(userService.getUserByAuthorisationToken(token));
         objective.setState(State.DRAFT);
         objective.setCreatedOn(LocalDateTime.now());

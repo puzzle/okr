@@ -24,15 +24,13 @@ public class ObjectiveMapper {
     }
 
     public ObjectiveDto toDto(Objective objective) {
-        return new ObjectiveDto(objective.getId(), objective.getTitle(), objective.getCreatedBy().getId(),
-                objective.getCreatedBy().getFirstname(), objective.getCreatedBy().getLastname(),
-                objective.getTeam().getId(), objective.getTeam().getName(), objective.getQuarter().getId(),
-                objective.getQuarter().getLabel(), objective.getDescription(), objective.getProgress());
+        return new ObjectiveDto(objective.getId(), objective.getTitle(), objective.getTeam().getId(),
+                objective.getTeam().getName(), objective.getQuarter().getId(), objective.getQuarter().getLabel(),
+                objective.getDescription(), objective.getProgress());
     }
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
         return Objective.Builder.builder().withId(objectiveDto.id()).withTitle(objectiveDto.title())
-                .withOwner(userPersistenceService.findById(objectiveDto.ownerId()))
                 .withTeam(teamPersistenceService.findById(objectiveDto.teamId()))
                 .withDescription(objectiveDto.description()).withProgress(objectiveDto.progress())
                 .withModifiedOn(LocalDateTime.now())

@@ -45,6 +45,9 @@ public class Objective {
     @NotNull(message = "CreatedOn must not be null")
     private LocalDateTime createdOn;
 
+    @ManyToOne
+    private User modifiedBy;
+
     public Objective() {
     }
 
@@ -59,6 +62,7 @@ public class Objective {
         setModifiedOn(builder.modifiedOn);
         setState(builder.state);
         setCreatedOn(builder.createdOn);
+        setModifiedBy(builder.modifiedBy);
     }
 
     public Long getId() {
@@ -137,11 +141,20 @@ public class Objective {
         this.createdOn = createdOn;
     }
 
+    public User getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(User modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
                 + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
-                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + '}';
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+                + modifiedBy + '}';
     }
 
     @Override
@@ -155,12 +168,14 @@ public class Objective {
                 && Objects.equals(createdBy, objective.createdBy) && Objects.equals(team, objective.team)
                 && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
                 && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn)
-                && state == objective.state && Objects.equals(createdOn, objective.createdOn);
+                && state == objective.state && Objects.equals(createdOn, objective.createdOn)
+                && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, createdBy, team, quarter, description, progress, modifiedOn, state, createdOn);
+        return Objects.hash(id, title, createdBy, team, quarter, description, progress, modifiedOn, state, createdOn,
+                modifiedBy);
     }
 
     public static final class Builder {
@@ -174,6 +189,7 @@ public class Objective {
         private LocalDateTime modifiedOn;
         private State state;
         private LocalDateTime createdOn;
+        private User modifiedBy;
 
         public Builder() {
         }
@@ -192,7 +208,7 @@ public class Objective {
             return this;
         }
 
-        public Builder withOwner(User createdBy) {
+        public Builder withCreatedBy(User createdBy) {
             this.createdBy = createdBy;
             return this;
         }
@@ -229,6 +245,11 @@ public class Objective {
 
         public Builder withCreatedOn(LocalDateTime createdOn) {
             this.createdOn = createdOn;
+            return this;
+        }
+
+        public Builder withModifiedBy(User modifiedBy) {
+            this.modifiedBy = modifiedBy;
             return this;
         }
 

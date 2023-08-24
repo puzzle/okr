@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.persistance.ObjectivePersistenceService;
+import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service

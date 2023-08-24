@@ -60,7 +60,6 @@ public class MeasureController {
     public ResponseEntity<MeasureDto> createMeasure(@Valid @RequestBody MeasureDto measureDto) {
         Measure measure = measureMapper.toMeasure(measureDto);
         MeasureDto createdMeasure = measureMapper.toDto(measureBusinessService.saveMeasure(measure));
-        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
@@ -76,7 +75,6 @@ public class MeasureController {
             @Valid @RequestBody MeasureDto measureDto) {
         Measure measure = measureMapper.toMeasure(measureDto);
         MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureBusinessService.updateMeasure(id, measure));
-        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 
@@ -87,6 +85,5 @@ public class MeasureController {
     public void deleteMeasureById(@PathVariable long id) {
         Measure measure = this.measureBusinessService.getMeasureById(id);
         measureBusinessService.deleteMeasureById(id);
-        this.progressService.updateObjectiveProgress(measure.getKeyResult().getObjective().getId());
     }
 }

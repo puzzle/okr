@@ -27,14 +27,12 @@ public class MeasureBusinessService {
         }
         checkMeasure(measure);
         Measure createdMeasure = measurePersistenceService.saveMeasure(measure);
-        objectiveBusinessService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
     }
 
     public Measure updateMeasure(Long id, Measure measure) {
         checkMeasure(measure);
         Measure createdMeasure = measurePersistenceService.updateMeasure(id, measure);
-        objectiveBusinessService.updateObjectiveProgress(createdMeasure.getKeyResult().getObjective().getId());
         return createdMeasure;
     }
 

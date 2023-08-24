@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.ObjectiveService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v2/objectives")
 public class ObjectiveController {
-    private final ObjectiveService objectiveService;
+    private final ObjectiveBusinessService objectiveBusinessService;
     private final ObjectiveMapper objectiveMapper;
 
-    public ObjectiveController(ObjectiveService objectiveService, ObjectiveMapper objectiveMapper) {
-        this.objectiveService = objectiveService;
+    public ObjectiveController(ObjectiveBusinessService objectiveBusinessService, ObjectiveMapper objectiveMapper) {
+        this.objectiveBusinessService = objectiveBusinessService;
         this.objectiveMapper = objectiveMapper;
     }
 
@@ -36,7 +36,7 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.objectiveMapper.toDto(objectiveService.getObjectiveById(id)));
+                .body(this.objectiveMapper.toDto(objectiveBusinessService.getObjectiveById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -45,7 +45,7 @@ public class ObjectiveController {
     @DeleteMapping("/{id}")
     public void deleteObjectiveById(
             @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id) {
-        this.objectiveService.deleteObjectiveById(id);
+        this.objectiveBusinessService.deleteObjectiveById(id);
     }
 
     @Operation(summary = "Create Objective", description = "Create a new Objective")
@@ -59,7 +59,7 @@ public class ObjectiveController {
             @AuthenticationPrincipal Jwt jwt) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveService.createObjective(objective, jwt));
+                .toDto(this.objectiveBusinessService.createObjective(objective, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -78,7 +78,7 @@ public class ObjectiveController {
             @AuthenticationPrincipal Jwt jwt) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveService.updateObjective(id, objective, jwt));
+                .toDto(this.objectiveBusinessService.updateObjective(id, objective, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

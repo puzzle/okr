@@ -55,7 +55,6 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.saveKeyResult(keyResult));
-        progressService.updateObjectiveProgress(keyResult.getObjective().getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
@@ -70,7 +69,6 @@ public class KeyResultController {
             @RequestBody KeyResultDto keyResultDto) {
         KeyResultDto updatedKeyResult = keyResultMapper
                 .toDto(keyResultBusinessService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
-        progressService.updateObjectiveProgress(updatedKeyResult.objectiveId());
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

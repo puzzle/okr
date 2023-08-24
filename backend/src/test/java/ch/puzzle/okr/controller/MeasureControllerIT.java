@@ -72,7 +72,6 @@ class MeasureControllerIT {
     void setUp() {
         BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
-        doNothing().when(progressService).updateObjectiveProgress(anyLong());
     }
 
     @Test

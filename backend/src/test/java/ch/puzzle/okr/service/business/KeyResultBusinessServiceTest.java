@@ -99,7 +99,7 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldGetAllKeyresultsByObjective() {
-        when(objectivePersistenceService.getObjectiveById(1L)).thenReturn(objective);
+        when(objectivePersistenceService.findById(1L)).thenReturn(objective);
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
 
         List<KeyResult> keyResultList = keyResultBusinessService.getAllKeyResultsByObjective(1L);
@@ -110,7 +110,7 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldReturnEmptyListWhenNoKeyResultInObjective() {
-        when(objectivePersistenceService.getObjectiveById(1L)).thenReturn(objective);
+        when(objectivePersistenceService.findById(1L)).thenReturn(objective);
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(Collections.emptyList());
 
         List<KeyResult> keyResultList = keyResultBusinessService.getAllKeyResultsByObjective(1L);
@@ -120,7 +120,7 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldThrowExceptionWhenObjectiveDoesntExist() {
-        when(objectivePersistenceService.getObjectiveById(1L))
+        when(objectivePersistenceService.findById(1L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
         assertThrows(ResponseStatusException.class, () -> keyResultBusinessService.getAllKeyResultsByObjective(1L));
     }
@@ -162,7 +162,7 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
-        when(objectivePersistenceService.getObjectiveById(any())).thenReturn(objective);
+        when(objectivePersistenceService.findById(any())).thenReturn(objective);
         when(measurePersistenceService.getLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
@@ -179,7 +179,7 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldReturnNullObjectWhenMeasureIsNull() {
-        when(objectivePersistenceService.getObjectiveById(any())).thenReturn(objective);
+        when(objectivePersistenceService.findById(any())).thenReturn(objective);
         when(measurePersistenceService.getLastMeasuresOfKeyresults(any())).thenReturn(measures);
         when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
         when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",

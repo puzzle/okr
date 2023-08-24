@@ -73,50 +73,6 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    @Deprecated
-    void updateTeam_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.when(teamPersistenceService.save(team1)).thenReturn(team1);
-        Mockito.doNothing().when(validator).validateOnUpdate(1L, teamWithIdNull);
-
-        teamBusinessService.updateTeam(1L, team1);
-        Mockito.verify(validator, Mockito.times(1)).validateOnUpdate(1L, team1);
-        Mockito.verify(teamPersistenceService, Mockito.times(1)).save(team1);
-    }
-
-    @Test
-    @Deprecated
-    void createTeam_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.when(teamPersistenceService.save(teamWithIdNull)).thenReturn(team1);
-        Mockito.doNothing().when(validator).validateOnCreate(teamWithIdNull);
-
-        Team team = teamBusinessService.createTeam(teamWithIdNull);
-        Mockito.verify(validator, Mockito.times(1)).validateOnCreate(teamWithIdNull);
-        Mockito.verify(teamPersistenceService, Mockito.times(1)).save(teamWithIdNull);
-        assertEquals(1L, team.getId());
-    }
-
-    @Test
-    @Deprecated
-    void createTeam_ShouldThrowExceptionIfTeamHasId() throws ResponseStatusException {
-        Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "Model Team cannot have id while create. Found id 1")).when(validator).validateOnCreate(team1);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamBusinessService.createTeam(team1));
-
-        assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
-    }
-
-    @Test
-    @Deprecated
-    void deleteTeamWithId_ShouldBeSuccessful() throws ResponseStatusException {
-        Mockito.doNothing().when(teamPersistenceService).deleteById(1L);
-        teamBusinessService.deleteTeamById(1L);
-        Mockito.verify(validator, Mockito.times(1)).validateOnDelete(1L);
-        Mockito.verify(teamPersistenceService, Mockito.times(1)).deleteById(1L);
-    }
-
-    @Test
     void activeObjectivesAmountOfTeam_ShouldBeSuccessful() throws ResponseStatusException {
         Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
         Mockito.when(quarterService.getQuarterById(any())).thenReturn(quarter);

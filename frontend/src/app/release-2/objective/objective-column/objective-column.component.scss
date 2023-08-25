@@ -13,25 +13,6 @@
     8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
 }
 
-.objective-title {
-  flex: 1 0 0;
-  color: #000;
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  font-weight: 600;
-  width: 217px;
-  word-wrap: break-word;
-  margin-bottom: 13px;
-}
-
-.add-key-result-text {
-  color: #1e5a96;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  margin: 0;
-}
-
 .add-key-result-anchor {
   display: flex;
   cursor: pointer;
@@ -55,12 +36,6 @@
   width: 20px;
   height: 20px;
   margin-right: 8px;
-}
-
-.three-dot-menu {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
 }
 
 .key-result-card {
@@ -90,13 +65,9 @@
   height: 35px;
   width: 196px;
   padding: 8px 16px;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
   line-height: normal;
 }
 
 .objective-menu-option:hover {
-  border-left: 4px solid darkblue;
-  background: #eff7ff;
   padding-left: 12px;
 }

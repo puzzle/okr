@@ -127,3 +127,38 @@ html {
 .mat-menu-content {
   padding: 0 !important;
 }
+
+.objective-title {
+  flex: 1 0 0;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  width: 217px;
+  word-wrap: break-word;
+  margin-bottom: 13px;
+}
+
+.three-dot-menu {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.add-key-result-and-add-objective-text {
+  color: #1e5a96;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.objective-menu-option:hover {
+  border-left: 4px solid darkblue;
+  background: #eff7ff;
+}
+
+.objective-menu-option {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+}

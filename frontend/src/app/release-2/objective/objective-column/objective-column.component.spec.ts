@@ -35,4 +35,6 @@ describe('ObjectiveColumnComponent', () => {
     await menu.close();
     expect(await menu.isOpen()).toBe(false);
   });
+
+  test('Status indicator should change based on the state given by the service', () => {});
 });

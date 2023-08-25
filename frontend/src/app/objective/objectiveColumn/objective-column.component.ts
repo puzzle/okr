@@ -1,7 +1,5 @@
-
 import { Component, OnInit } from '@angular/core';
 import { OverviewService } from '../../shared/services/overview.service';
-import { KeyResultMeasure } from '../../../release-1/shared/services/key-result.service';
 @Component({
   selector: 'app-objective-column',
   templateUrl: './objective-column.component.html',
@@ -33,13 +31,13 @@ export class ObjectiveColumnComponent implements OnInit {
   getCorrectStateSrc() {
     switch (this.state) {
       case 'ONGOING':
-        return '/assets/ongoing-status-indicator.svg';
+        return '/assets/icons/ongoing-icon.svg';
       case 'DISSATISFIED':
-        return '/assets/dissatisfied-status-indicator.svg';
+        return '/assets/icons/not-successful-icon.svg';
       case 'SATISFIED':
-        return '/assets/very-satisfied-status-indicator.svg';
+        return '/assets/icons/successful-icon.svg';
       default:
-        return '/assets/draft-status-indicator.svg';
+        return '/assets/icons/draft-icon.svg';
     }
   }
 

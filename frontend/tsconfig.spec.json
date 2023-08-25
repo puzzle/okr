@@ -4,7 +4,13 @@
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
     "module": "CommonJs",
-    "types": ["jest"]
+    "types": ["jest"],
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts, src/assets/*"]
 }

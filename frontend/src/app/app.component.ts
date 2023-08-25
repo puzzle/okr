@@ -1,14 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { config, filter, first, firstValueFrom, map, Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { RouteService } from './release-1/shared/services/route.service';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { environment } from '../environments/environment';
-import { version } from './version';
-import { ConfigService } from './config.service';
-import { resolveConfig } from 'prettier';
-import { resolve } from '@angular/compiler-cli';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter, map, Observable} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {version} from './version';
+import {ConfigService} from './config.service';
+import {RouteService} from "./shared/services/route.service";
 
 @Component({
   selector: 'app-root',

@@ -10,6 +10,7 @@ html,
 body {
   font-size: 100%;
   height: 100%;
+  background-color: lightgray;
 }
 body {
   margin: 0;
@@ -87,15 +88,6 @@ html {
   color: #ff1a0c !important;
 }
 
-.version {
-  color: #7f7f7f;
-  display: block;
-  margin-left: 3rem;
-  width: 100%;
-  bottom: 1rem;
-  position: relative;
-}
-
 .staging-banner {
   display: flex;
   margin-top: 1rem;
@@ -115,4 +107,48 @@ html {
   white-space: nowrap;
   font-weight: bold;
   font-size: 5rem;
+}
+
+//Applied since all menus have the same styling
+.mat-menu-panel {
+  border-radius: 8px !important;
+}
+
+.mat-menu-content {
+  padding: 0 !important;
+}
+
+.objective-title {
+  flex: 1 0 0;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  width: 217px;
+  word-wrap: break-word;
+  margin-bottom: 13px;
+}
+
+.three-dot-menu {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.add-key-result-and-add-objective-text {
+  color: #1e5a96;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.objective-menu-option:hover {
+  border-left: 4px solid darkblue;
+  background: #eff7ff;
+}
+
+.objective-menu-option {
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
 }

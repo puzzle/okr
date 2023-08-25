@@ -40,18 +40,19 @@ class ObjectiveValidationServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann")
-                .withEmail("kaufmann@puzzle.ch").build();
+        this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
 
         this.objective1 = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
                 .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(null)
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user).withCreatedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
+                .withCreatedOn(LocalDateTime.MAX).build();
 
         this.objectiveMinimal = Objective.Builder.builder().withId(null).withTitle("Objective 2").withCreatedBy(user)
-                .withTeam(team).withQuarter(quarter).withProgress(null)
-                .withState(State.DRAFT).withModifiedBy(user).withCreatedOn(LocalDateTime.MAX).build();
+                .withTeam(team).withQuarter(quarter).withProgress(null).withState(State.DRAFT).withModifiedBy(user)
+                .withCreatedOn(LocalDateTime.MAX).build();
 
         when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
@@ -66,16 +67,17 @@ class ObjectiveValidationServiceTest {
 
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
-                arguments(StringUtils.repeat('1', 251),
-                        List.of("Attribute title must have a max length between 2 and 250 characters when saving objective.")),
-                arguments(StringUtils.repeat('1', 1),
-                        List.of("Attribute title must have a max length between 2 and 250 characters when saving objective.")),
-                arguments("",
-                        List.of("Missing attribute title when saving objective. Attribute title must have a max length between 2 and 250 characters when saving objective.")),
-                arguments(" ",
-                        List.of("Attribute title must have a max length between 2 and 250 characters when saving objective. Missing attribute title when saving objective.")),
+                arguments(StringUtils.repeat('1', 251), List.of(
+                        "Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                arguments(StringUtils.repeat('1', 1), List.of(
+                        "Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                arguments("", List.of(
+                        "Missing attribute title when saving objective. Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                arguments(" ", List.of(
+                        "Attribute title must have a max length between 2 and 250 characters when saving objective. Missing attribute title when saving objective.")),
                 arguments("         ", List.of("Missing attribute title when saving objective.")),
-                arguments(null, List.of("Missing attribute title when saving objective. Attribute title can not be null when saving objective.")));
+                arguments(null, List.of(
+                        "Missing attribute title when saving objective. Attribute title can not be null when saving objective.")));
     }
 
     @Test
@@ -123,8 +125,9 @@ class ObjectiveValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
-                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2").withProgress(null)
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user).withCreatedOn(LocalDateTime.MAX).build();
+                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
+                .withProgress(null).withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
+                .withCreatedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
@@ -165,8 +168,10 @@ class ObjectiveValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
-                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2").withProgress(null)
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user).withCreatedOn(LocalDateTime.MAX).build();        when(objectivePersistenceService.findById(5L)).thenReturn(this.objective1);
+                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
+                .withProgress(null).withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
+                .withCreatedOn(LocalDateTime.MAX).build();
+        when(objectivePersistenceService.findById(5L)).thenReturn(this.objective1);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));

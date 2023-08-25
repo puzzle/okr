@@ -1,9 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +24,8 @@ public class ObjectivePersistenceServiceIT {
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
-                .withProgress(null).withModifiedOn(LocalDateTime.MAX).build();
+                .withProgress(null).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
     @AfterEach
@@ -94,12 +92,12 @@ public class ObjectivePersistenceServiceIT {
     void updateObjective_shouldUpdateObjective() {
         Objective objective = createObjective(null);
         createdObjective = objectivePersistenceService.save(objective);
-        createdObjective.setProgress(5L);
+        createdObjective.setState(State.ONGOING);
 
         Objective updatedObjective = objectivePersistenceService.save(createdObjective);
 
         assertEquals(createdObjective.getId(), updatedObjective.getId());
-        assertEquals(5L, updatedObjective.getProgress());
+        assertEquals(State.ONGOING, updatedObjective.getState());
     }
 
     @Test

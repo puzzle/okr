@@ -7,6 +7,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuHarness } from '@angular/material/menu/testing';
+import { By } from '@angular/platform-browser';
 
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveColumnComponent;
@@ -36,5 +37,13 @@ describe('ObjectiveColumnComponent', () => {
     expect(await menu.isOpen()).toBe(false);
   });
 
-  test('Status indicator should change based on the state given by the service', () => {});
+  test('Status-indicator should change based on the state given by the service', () => {
+    const statusIndicator = fixture.debugElement.query(By.css('[data-testId="status-light"]'));
+    const indicatorSrc = statusIndicator.attributes['src'];
+    expect(indicatorSrc).toBe(component.getCorrectStateSrc());
+    component.state = 'ONGOING';
+    expect(indicatorSrc)!.toBe(component.getCorrectStateSrc());
+    statusIndicator.attributes['src'] = component.getCorrectStateSrc();
+    expect(indicatorSrc).toBe(component.getCorrectStateSrc());
+  });
 });

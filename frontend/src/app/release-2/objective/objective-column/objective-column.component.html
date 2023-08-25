@@ -3,6 +3,7 @@
   <header class="objective-header">
     <div class="title-status">
       <img
+        [attr.data-testId]="'status-light'"
         class="status-indicator"
         src="{{ getCorrectStateSrc() }}"
         alt="A status indicator that indicates the progress and state of this objective"

@@ -35,6 +35,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
+import { ObjectiveComponentComponent } from './objective/objectiveColumn/objective-column.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -71,6 +72,7 @@ export const MY_FORMATS = {
     SpinnerComponent,
     HelpDialogComponent,
     ExampleDialogComponent,
+    ObjectiveComponentComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,30 +9,7 @@ import { MeasureFormComponent } from './release-1/shared/components/shared/measu
 import { KeyResultDetailComponent } from './release-1/shared/components/shared/key-result-detail/key-result-detail.component';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent, pathMatch: 'full' },
-  {
-    path: 'objective/:objectiveId/keyresult/edit/:keyresultId',
-    component: KeyresultFormComponent,
-  },
-  {
-    path: 'objective/:objectiveId/keyresult/new',
-    component: KeyresultFormComponent,
-  },
-  { path: 'teams', component: TeamListComponent },
-  { path: 'keyresults/:keyresultId', component: KeyResultDetailComponent },
-  {
-    path: 'keyresults/:keyresultId/measure/new',
-    component: MeasureFormComponent,
-  },
-  {
-    path: 'keyresults/:keyresultId/measure/edit/:measureId',
-    component: MeasureFormComponent,
-  },
-
-  { path: 'team/:teamId/objectives/new', component: ObjectiveFormComponent },
-  { path: 'objectives/edit/:objectiveId', component: ObjectiveFormComponent },
-  { path: 'team/edit/:id', component: TeamFormComponent },
-  { path: 'team/edit', component: TeamFormComponent },
+  { path: 'objectivestest', component: ObjectiveColumnComponent, pathMatch: 'full' },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

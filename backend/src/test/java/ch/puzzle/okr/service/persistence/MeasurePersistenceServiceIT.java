@@ -123,6 +123,7 @@ public class MeasurePersistenceServiceIT {
 
     @Test
     void getMeasuresByKeyResultIdAndMeasureDate_ShouldReturnMeasuresProperly() {
+        // TODO: Fix time of pipeline. This test Fails because local time is 2 hours behind server time. Passes pipeline
         List<Measure> measures = measurePersistenceService.getMeasuresByKeyResultIdAndMeasureDate(8L,
                 Instant.parse("2023-07-24T22:00:00.00Z"));
         assertEquals(1, measures.size());

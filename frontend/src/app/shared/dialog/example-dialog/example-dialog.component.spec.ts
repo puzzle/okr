@@ -13,7 +13,7 @@ import { MatRadioButtonHarness } from '@angular/material/radio/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { By } from '@angular/platform-browser';
-import {errorMessage} from '../../../../assets/errors/error-messages.json'
+import errorMessage from '../../../../assets/errors/error-messages.json';
 
 describe('ExampleDialogComponent', () => {
   let component: ExampleDialogComponent;

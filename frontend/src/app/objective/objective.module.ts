@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import {ObjectiveColumnComponent} from "./objectiveColumn/objective-column.component";
+import { ObjectiveColumnComponent } from './objectiveColumn/objective-column.component';
 
 @NgModule({
   declarations: [ObjectiveColumnComponent],

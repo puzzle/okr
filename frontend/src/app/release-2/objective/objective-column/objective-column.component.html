@@ -2,7 +2,11 @@
   <img src="assets/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
   <header class="objective-header">
     <div class="title-status">
-      <img class="status-indicator" src="/assets/blue-status-indicator.svg" alt="Blue status indicator" />
+      <img
+        class="status-indicator"
+        src="{{ getCorrectStateSrc() }}"
+        alt="A status indicator that indicates the progress and state of this objective"
+      />
       <mat-card-title class="objective-title">{{ objectiveTitle }}</mat-card-title>
     </div>
     <div>

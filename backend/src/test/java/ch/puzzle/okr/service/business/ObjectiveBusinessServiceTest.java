@@ -63,7 +63,7 @@ class ObjectiveBusinessServiceTest {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
         quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
-                .withTeam(team1).withQuarter(quarter).withDescription("This is our description").withProgress(null)
+                .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
                 .withModifiedOn(LocalDateTime.MAX).build();
 
         this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
@@ -90,9 +90,9 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldSaveANewObjective() {
-        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
-                .withQuarter(quarter).withDescription("The description").withProgress(null).withModifiedOn(null)
-                .withModifiedBy(null).build());
+        Objective objective = spy(
+                Objective.Builder.builder().withTitle("Received Objective").withTeam(team1).withQuarter(quarter)
+                        .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
 
         doNothing().when(objective).setCreatedOn(any());
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
@@ -108,22 +108,21 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
-                .withDescription("Description").withProgress(null).withModifiedOn(LocalDateTime.now()).build();
+                .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
         Mockito.when(objectiveBusinessService.createObjective(objective1, jwtToken)).thenReturn(this.fullObjective1);
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
 
         Objective savedObjective = objectiveBusinessService.createObjective(objective1, jwtToken);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
-        assertNull(savedObjective.getProgress());
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
     @Test
     void shouldUpdateObjective() {
-        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
-                .withQuarter(quarter).withDescription("The description").withProgress(null).withModifiedOn(null)
-                .withModifiedBy(null).build());
+        Objective objective = spy(
+                Objective.Builder.builder().withTitle("Received Objective").withTeam(team1).withQuarter(quarter)
+                        .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
 
         doNothing().when(objective).setModifiedOn(any());
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);

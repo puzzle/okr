@@ -46,12 +46,12 @@ class ObjectiveValidationServiceTest {
         this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
 
         this.objective1 = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
-                .withTeam(team).withQuarter(quarter).withDescription("This is our description").withProgress(null)
+                .withTeam(team).withQuarter(quarter).withDescription("This is our description")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).build();
 
         this.objectiveMinimal = Objective.Builder.builder().withId(null).withTitle("Objective 2").withCreatedBy(user)
-                .withTeam(team).withQuarter(quarter).withProgress(null).withState(State.DRAFT).withModifiedBy(user)
+                .withTeam(team).withQuarter(quarter).withState(State.DRAFT).withModifiedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).build();
 
         when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
@@ -126,7 +126,7 @@ class ObjectiveValidationServiceTest {
     void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
-                .withProgress(null).withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
+                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
                 .withCreatedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -187,7 +187,7 @@ class ObjectiveValidationServiceTest {
     void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
-                .withProgress(null).withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
+                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
                 .withCreatedOn(LocalDateTime.MAX).build();
         when(objectivePersistenceService.findById(5L)).thenReturn(this.objective1);
 

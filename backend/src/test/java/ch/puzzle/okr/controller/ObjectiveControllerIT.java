@@ -51,7 +51,7 @@ class ObjectiveControllerIT {
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
-            .withProgress(33L).withModifiedOn(LocalDateTime.MAX).build();
+            .withModifiedOn(LocalDateTime.MAX).build();
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, "Objective 1", 1L, 1L, "This is a description",
             State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, 1L, "This is a description",
@@ -151,7 +151,7 @@ class ObjectiveControllerIT {
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, "Hunting", 1L, 1L, "Everything Fine", State.NOTSUCCESSFUL,
                 LocalDateTime.MIN, LocalDateTime.MAX);
-        Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine").withProgress(5L)
+        Objective objective = Objective.Builder.builder().withId(1L).withDescription("Everything Fine")
                 .withTitle("Hunting").build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
@@ -172,8 +172,8 @@ class ObjectiveControllerIT {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, "Hunting", 1L, 1L, "Everything Fine", State.SUCCESSFUL,
                 LocalDateTime.MAX, LocalDateTime.MAX);
         Objective objective1 = Objective.Builder.builder().withId(1L).withDescription("Everything Fine")
-                .withProgress(5L).withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build())
-                .withTitle("Hunting").build();
+                .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle("Hunting")
+                .build();
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objective1);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);

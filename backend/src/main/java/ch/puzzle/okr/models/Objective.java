@@ -19,9 +19,12 @@ public class Objective {
     @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
     private String title;
 
-    @NotNull(message = "CreatedBy must not be null")
-    @ManyToOne
-    private User createdBy;
+    @NotNull(message = "State must not be null")
+    @Enumerated(EnumType.STRING)
+    private State state;
+
+    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters when saving objective")
+    private String description;
 
     @NotNull(message = "Team must not be null")
     @ManyToOne
@@ -31,19 +34,14 @@ public class Objective {
     @ManyToOne
     private Quarter quarter;
 
-    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters when saving objective")
-    private String description;
-
-    private Long progress;
-
-    private LocalDateTime modifiedOn;
-
-    @NotNull(message = "State must not be null")
-    @Enumerated(EnumType.STRING)
-    private State state;
+    @NotNull(message = "CreatedBy must not be null")
+    @ManyToOne
+    private User createdBy;
 
     @NotNull(message = "CreatedOn must not be null")
     private LocalDateTime createdOn;
+
+    private LocalDateTime modifiedOn;
 
     @ManyToOne
     private User modifiedBy;
@@ -58,7 +56,6 @@ public class Objective {
         setTeam(builder.team);
         setQuarter(builder.quarter);
         setDescription(builder.description);
-        setProgress(builder.progress);
         setModifiedOn(builder.modifiedOn);
         setState(builder.state);
         setCreatedOn(builder.createdOn);
@@ -109,14 +106,6 @@ public class Objective {
         this.description = description;
     }
 
-    public Long getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Long progress) {
-        this.progress = progress;
-    }
-
     public LocalDateTime getModifiedOn() {
         return modifiedOn;
     }
@@ -152,9 +141,8 @@ public class Objective {
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
-                + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
-                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + '}';
+                + ", quarter=" + quarter + ", description='" + description + '\'' + ", modifiedOn=" + modifiedOn
+                + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + '}';
     }
 
     @Override
@@ -167,15 +155,13 @@ public class Objective {
         return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
                 && Objects.equals(createdBy, objective.createdBy) && Objects.equals(team, objective.team)
                 && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
-                && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn)
-                && state == objective.state && Objects.equals(createdOn, objective.createdOn)
-                && Objects.equals(modifiedBy, objective.modifiedBy);
+                && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
+                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, createdBy, team, quarter, description, progress, modifiedOn, state, createdOn,
-                modifiedBy);
+        return Objects.hash(id, title, createdBy, team, quarter, description, modifiedOn, state, createdOn, modifiedBy);
     }
 
     public static final class Builder {
@@ -185,7 +171,6 @@ public class Objective {
         private Team team;
         private Quarter quarter;
         private String description;
-        private Long progress;
         private LocalDateTime modifiedOn;
         private State state;
         private LocalDateTime createdOn;
@@ -225,11 +210,6 @@ public class Objective {
 
         public Builder withDescription(String description) {
             this.description = description;
-            return this;
-        }
-
-        public Builder withProgress(Long progress) {
-            this.progress = progress;
             return this;
         }
 

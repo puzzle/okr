@@ -1,4 +1,5 @@
 alter table objective
+    drop column if exists progress,
     add column if not exists state text,
     add column if not exists modified_by_id bigint,
     add column if not exists created_on timestamp;

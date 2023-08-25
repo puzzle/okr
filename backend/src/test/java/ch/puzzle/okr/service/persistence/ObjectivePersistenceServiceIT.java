@@ -24,8 +24,8 @@ public class ObjectivePersistenceServiceIT {
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
-                .withProgress(null).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).withModifiedBy(User.Builder.builder().withId(1L).build()).build();
+                .withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
     @AfterEach
@@ -83,7 +83,6 @@ public class ObjectivePersistenceServiceIT {
 
         assertNotNull(createdObjective.getId());
         assertEquals(objective.getDescription(), createdObjective.getDescription());
-        assertEquals(objective.getProgress(), createdObjective.getProgress());
         assertEquals(objective.getDescription(), createdObjective.getDescription());
         assertEquals(objective.getModifiedOn(), createdObjective.getModifiedOn());
     }

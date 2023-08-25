@@ -38,12 +38,23 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test('Status-indicator should change based on the state given by the service', () => {
-    const statusIndicator = fixture.debugElement.query(By.css('[data-testId="status-light"]'));
+    const statusIndicator = fixture.debugElement.query(By.css('[data-testId="status-indicator"]'));
     const indicatorSrc = statusIndicator.attributes['src'];
     expect(indicatorSrc).toBe(component.getCorrectStateSrc());
     component.state = 'ONGOING';
     expect(indicatorSrc)!.toBe(component.getCorrectStateSrc());
     statusIndicator.attributes['src'] = component.getCorrectStateSrc();
     expect(indicatorSrc).toBe(component.getCorrectStateSrc());
+  });
+
+  test('Method to get status-indicator-img-src should return correct image src based on the state string', () => {
+    component.state = 'DRAFT';
+    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    component.state = 'ONGOING';
+    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    component.state = 'DISSATISFIED';
+    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    component.state = 'SATISFIED';
+    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
   });
 });

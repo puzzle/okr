@@ -45,6 +45,4 @@ export class ObjectiveColumnComponent implements OnInit {
   buttonDemo() {
     console.log('Button of objective-column works!');
   }
-
-  protected readonly console = console;
 }

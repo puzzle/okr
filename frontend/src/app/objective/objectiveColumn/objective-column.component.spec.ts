@@ -49,12 +49,12 @@ describe('ObjectiveColumnComponent', () => {
 
   test('Method to get status-indicator-img-src should return correct image src based on the state string', () => {
     component.state = 'DRAFT';
-    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    expect(component.getCorrectStateSrc()).toBe('/assets/icons/draft-icon.svg');
     component.state = 'ONGOING';
-    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    expect(component.getCorrectStateSrc()).toBe('/assets/icons/ongoing-icon.svg');
     component.state = 'DISSATISFIED';
-    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    expect(component.getCorrectStateSrc()).toBe('/assets/icons/not-successful-icon.svg');
     component.state = 'SATISFIED';
-    expect(component.getCorrectStateSrc()).toBe('/assets/draft-status-indicator.svg');
+    expect(component.getCorrectStateSrc()).toBe('/assets/icons/successful-icon.svg');
   });
 });

@@ -6,5 +6,5 @@
     "module": "CommonJs",
     "types": ["jest"]
   },
-  "include": ["src/**/*.spec.ts", "src/**/*.d.ts, src/assets/*"]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }

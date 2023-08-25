@@ -16,7 +16,7 @@ public class Objective {
 
     @NotBlank(message = "Missing attribute title when saving objective")
     @NotNull(message = "Attribute title can not be null when saving objective")
-    @Size(min = 2, max = 250, message = "Attribute title must have a max length between 2 and 250 characters when saving objective")
+    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
     private String title;
 
     @NotNull(message = "CreatedBy must not be null")
@@ -31,7 +31,7 @@ public class Objective {
     @ManyToOne
     private Quarter quarter;
 
-    @Size(max = 4096, message = "Attribute description have a max length of 4096 characters when saving objective")
+    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters when saving objective")
     private String description;
 
     private Long progress;

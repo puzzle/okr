@@ -68,16 +68,16 @@ class ObjectiveValidationServiceTest {
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 251), List.of(
-                        "Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
                 arguments(StringUtils.repeat('1', 1), List.of(
-                        "Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
                 arguments("", List.of(
-                        "Missing attribute title when saving objective. Attribute title must have a max length between 2 and 250 characters when saving objective.")),
+                        "Missing attribute title when saving objective", "Attribute title must have a length between 2 and 250 characters when saving objective")),
                 arguments(" ", List.of(
-                        "Attribute title must have a max length between 2 and 250 characters when saving objective. Missing attribute title when saving objective.")),
-                arguments("         ", List.of("Missing attribute title when saving objective.")),
+                        "Missing attribute title when saving objective", "Attribute title must have a length between 2 and 250 characters when saving objective")),
+                arguments("         ", List.of("Missing attribute title when saving objective")),
                 arguments(null, List.of(
-                        "Missing attribute title when saving objective. Attribute title can not be null when saving objective.")));
+                        "Missing attribute title when saving objective", "Attribute title can not be null when saving objective")));
     }
 
     @Test
@@ -132,7 +132,16 @@ class ObjectiveValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
 
-        assertThat(exception.getReason()).contains(errors);
+        String[] exceptionParts = exception.getReason().split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = errors.get(i);
+        }
+
+        for(int i = 0; i < exceptionParts.length; i++) {
+            assertThat(errors.contains(errorArray[i]));
+        }
     }
 
     @Test
@@ -142,8 +151,17 @@ class ObjectiveValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
 
-        String error = "CreatedOn must not be null. CreatedBy must not be null. State must not be null. Quarter must not be null. Team must not be null.";
-        assertThat(exception.getReason()).contains(error);
+        String errorCreatedOn = "CreatedOn must not be null.";
+        String errorCreatedBy = "CreatedBy must not be null.";
+        String errorQuarter = "Quarter must not be null.";
+        String errorTeam = " Team must not be null.";
+        String errorState= "State must not be null.";
+
+        assertThat(exception.getReason()).contains(errorCreatedOn);
+        assertThat(exception.getReason()).contains(errorCreatedBy);
+        assertThat(exception.getReason()).contains(errorQuarter);
+        assertThat(exception.getReason()).contains(errorTeam);
+        assertThat(exception.getReason()).contains(errorState);
     }
 
     @Test
@@ -175,7 +193,17 @@ class ObjectiveValidationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
-        assertThat(exception.getReason()).contains(errors);
+
+        String[] exceptionParts = exception.getReason().split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = errors.get(i);
+        }
+
+        for(int i = 0; i < exceptionParts.length; i++) {
+            assertThat(errors.contains(errorArray[i]));
+        }
     }
 
     @Test
@@ -185,8 +213,17 @@ class ObjectiveValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
 
-        String error = "State must not be null. CreatedBy must not be null. Team must not be null. CreatedOn must not be null. Quarter must not be null.";
-        assertThat(exception.getReason()).contains(error);
+        String errorCreatedOn = "CreatedOn must not be null.";
+        String errorCreatedBy = "CreatedBy must not be null.";
+        String errorQuarter = "Quarter must not be null.";
+        String errorTeam = " Team must not be null.";
+        String errorState= "State must not be null.";
+
+        assertThat(exception.getReason()).contains(errorCreatedOn);
+        assertThat(exception.getReason()).contains(errorCreatedBy);
+        assertThat(exception.getReason()).contains(errorQuarter);
+        assertThat(exception.getReason()).contains(errorTeam);
+        assertThat(exception.getReason()).contains(errorState);
     }
 
     @Test

@@ -121,7 +121,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT, null, null);
+        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT,
+                null, null);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveBusinessService.createObjective(any(), any())).willReturn(fullObjective);

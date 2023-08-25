@@ -7,7 +7,6 @@ import { OverviewService } from '../../shared/services/overview.service';
 })
 export class ObjectiveColumnComponent implements OnInit {
   objectiveTitle: string = '';
-  keyResults: String[] = []; //ToDo in KeyResult ticket
   state: String = 'DRAFT';
 
   constructor(private overviewService: OverviewService) {}
@@ -19,12 +18,6 @@ export class ObjectiveColumnComponent implements OnInit {
   setObjectiveAndKeyResultProperties() {
     const objectiveWithKeyresults = this.overviewService.getObjectiveWithKeyresults();
     this.objectiveTitle = objectiveWithKeyresults.title;
-
-    //Add JSON string since there is no keyResult model yet
-    for (let keyResult of objectiveWithKeyresults.keyresults) {
-      this.keyResults.push(JSON.stringify(keyResult));
-    }
-
     this.state = objectiveWithKeyresults.state;
   }
 

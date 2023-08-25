@@ -74,7 +74,7 @@ public class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute objective id", exception.getReason());
+        assertEquals("Missing identifier for Objective", exception.getReason());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.MeasureValue;
 import ch.puzzle.okr.repository.MeasureRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class MeasurePersistenceService {
                 String.format("Measure with id %d not found", id)));
     }
 
-    public List<MeasureRepository.MeasureValue> getMeasuresByKeyResultId(Long keyResultId) {
+    public List<MeasureValue> getMeasuresByKeyResultId(Long keyResultId) {
         return measureRepository.findMeasuresByKeyResultId(keyResultId);
     }
 

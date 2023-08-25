@@ -4,7 +4,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
-import org.junit.jupiter.api.Disabled;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -12,19 +12,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.apache.commons.lang3.StringUtils;
-
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 public class OKRArchitectureTest {
 
     @Test
-    public void repositoryAccessedOnlyByService() {
+    public void repositoryAccessedOnlyByPersistenceService() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
-
         ArchRule rule = classes().that().resideInAPackage("..repository..").should().onlyBeAccessed()
-                .byAnyPackage("..service..").andShould().beInterfaces();
+                .byAnyPackage("..service.persistence..").andShould().beInterfaces();
 
         rule.check(importedClasses);
     }
@@ -46,7 +43,7 @@ public class OKRArchitectureTest {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
-        ArchRule rule = noClasses().that().resideInAPackage("ch.puzzle.okr.controller").should().dependOnClassesThat()
+        ArchRule rule = noClasses().that().resideInAPackage("ch.puzzle.okr.controller..").should().dependOnClassesThat()
                 .resideInAPackage("..repository..").andShould().notBeInterfaces();
 
         rule.check(importedClasses);
@@ -79,7 +76,7 @@ public class OKRArchitectureTest {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.controller")
+        ArchRule rule = classes().that().areNotAnonymousClasses().and().resideInAPackage("ch.puzzle.okr.controller..")
                 .should().beAnnotatedWith(RestController.class).andShould().notBeInterfaces();
 
         rule.check(importedClasses);
@@ -96,74 +93,68 @@ public class OKRArchitectureTest {
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void keyResultRepositoryOnlyCalledFromKeyResultService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("KeyResultRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("KeyResultService");
+                .haveSimpleName("KeyResultPersistenceService");
 
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void objectiveRepositoryOnlyCalledFromObjectiveService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("ObjectiveRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("ObjectiveService");
+                .haveSimpleName("ObjectivePersistenceService");
 
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void measureRepositoryOnlyCalledFromMeasureService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("MeasureRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("MeasureService");
+                .haveSimpleName("MeasurePersistenceService");
 
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void quarterRepositoryOnlyCalledFromQuarterService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("QuarterRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("QuarterService");
+                .haveSimpleName("QuarterPersistenceService");
 
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void teamRepositoryOnlyCalledFromTeamService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("TeamRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("TeamService");
+                .haveSimpleName("TeamPersistenceService");
 
         rule.check(importedClasses);
     }
 
-    @Disabled
     @Test
     public void userRepositoryOnlyCalledFromUserService() {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName("UserRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("UserService");
+                .haveSimpleName("UserPersistenceService");
 
         rule.check(importedClasses);
     }

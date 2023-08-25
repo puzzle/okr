@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.MeasureValue;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.springframework.http.HttpStatus;
@@ -31,8 +32,7 @@ public class ProgressBusinessService {
 
     protected double calculateKeyResultProgressForMinMax(KeyResult keyResult) {
         Double targetValue = keyResult.getTargetValue();
-        List<MeasureRepository.MeasureValue> measureValueList = measurePersistenceService
-                .getMeasuresByKeyResultId(keyResult.getId());
+        List<MeasureValue> measureValueList = measurePersistenceService.getMeasuresByKeyResultId(keyResult.getId());
 
         if (measureValueList.isEmpty()) {
             return 0D;

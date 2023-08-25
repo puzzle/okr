@@ -77,7 +77,7 @@ class ProgressBusinessServiceTest {
         when(measurePersistenceService.getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId()))
                 .thenReturn(measure);
 
-        List<MeasureRepository.MeasureValue> measureValues = new ArrayList<>();
+        List<MeasureValue> measureValues = new ArrayList<>();
         measureValues.add(() -> 10D);
         when(measurePersistenceService.getMeasuresByKeyResultId(any())).thenReturn(measureValues);
 
@@ -97,7 +97,7 @@ class ProgressBusinessServiceTest {
     void shouldThrowExceptionIfNoMinOrMaxCallUpdateKeyResultProgress(ExpectedEvolution expectedEvolution) {
         keyResult.setExpectedEvolution(expectedEvolution);
 
-        List<MeasureRepository.MeasureValue> measureValues = new ArrayList<>();
+        List<MeasureValue> measureValues = new ArrayList<>();
         measureValues.add(() -> 10D);
         when(measurePersistenceService.getMeasuresByKeyResultId(any())).thenReturn(measureValues);
 

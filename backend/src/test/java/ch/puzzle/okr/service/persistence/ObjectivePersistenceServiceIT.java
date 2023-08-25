@@ -18,6 +18,10 @@ public class ObjectivePersistenceServiceIT {
     Objective createdObjective;
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
+    @Autowired
+    TeamPersistenceService teamPersistenceService;
+    @Autowired
+    QuarterPersistenceService quarterPersistenceService;
 
     private static Objective createObjective(Long id) {
         return Objective.Builder.builder().withId(id).withTitle("title")
@@ -109,5 +113,28 @@ public class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.findById(createdObjective.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
+    }
+
+    @Test
+    void countByTeamAndQuarter_shouldReturnActiveObjectivesOfTeamByQuarter() {
+        Integer count = objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
+                quarterPersistenceService.getQuarterById(2L));
+        assertEquals(2, count);
+    }
+
+    @Test
+    void countByTeamAndQuarter_shouldThrowErrorIfQuarterDoesNotExist() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
+                        quarterPersistenceService.getQuarterById(12L)));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
+
+        ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
+                        quarterPersistenceService.getQuarterById(2L)));
+        assertEquals(HttpStatus.NOT_FOUND, exceptionTeam.getStatus());
+        assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
+
     }
 }

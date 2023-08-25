@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuHarness } from '@angular/material/menu/testing';
 
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveColumnComponent;
@@ -24,5 +25,14 @@ describe('ObjectiveColumnComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  test('Mat-menu should open and close', async () => {
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '.three-dot-menu' }));
+    expect(await menu.isOpen()).toBe(false);
+    await menu.open();
+    expect(await menu.isOpen()).toBe(true);
+    await menu.close();
+    expect(await menu.isOpen()).toBe(false);
   });
 });

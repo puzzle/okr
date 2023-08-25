@@ -125,7 +125,6 @@ public class MeasurePersistenceServiceIT {
     void getMeasuresByKeyResultIdAndMeasureDate_ShouldReturnMeasuresProperly() {
         List<Measure> measures = measurePersistenceService.getMeasuresByKeyResultIdAndMeasureDate(8L,
                 Instant.parse("2023-07-24T22:00:00.00Z"));
-
         assertEquals(1, measures.size());
     }
 

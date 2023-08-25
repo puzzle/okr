@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Measure {
+public class Measure implements MeasureValue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_measure")
     @NotNull

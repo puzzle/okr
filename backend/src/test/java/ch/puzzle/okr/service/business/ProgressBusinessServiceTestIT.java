@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.MeasureValue;
 import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -89,7 +90,7 @@ class ProgressBusinessServiceTestIT {
         KeyResult keyResult = KeyResult.Builder.builder().withId(1L).withExpectedEvolution(expectedEvolution)
                 .withBasisValue(basisValue).withTargetValue(targetValue).build();
 
-        List<MeasureRepository.MeasureValue> measureValues = new ArrayList<>();
+        List<MeasureValue> measureValues = new ArrayList<>();
         values.forEach(value -> measureValues.add(() -> value));
         when(measurePersistenceService.getMeasuresByKeyResultId(1L)).thenReturn(measureValues);
 

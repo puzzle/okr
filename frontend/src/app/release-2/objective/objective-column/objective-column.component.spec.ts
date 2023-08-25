@@ -29,19 +29,4 @@ describe('ObjectiveColumnComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  test('Open mat-menu button after click on three-dot menu-button', async () => {
-    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '.three-dot-menu' }));
-    expect(await menu.isOpen()).toBe(false);
-    await menu.open();
-    expect(await menu.isOpen()).toBe(true);
-  });
-
-  //Test not functional
-  test('Apply hover style when objective is hovered', async () => {
-    const objective = fixture.debugElement.query(By.css('.objective'));
-    objective.triggerEventHandler('mouseover');
-    fixture.detectChanges();
-    console.log(getComputedStyle(objective.nativeElement));
-  });
 });

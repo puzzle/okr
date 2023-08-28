@@ -42,10 +42,10 @@ public class QuarterBusinessService {
 
     // Is not functional anymore -> can be Deleted or refactored
     public List<Quarter> getQuarters() {
-        return quarterPersistenceService.findAll();
+        return quarterPersistenceService.getMostCurrentQuarters();
     }
 
-    protected synchronized Quarter getOrCreateQuarter(String label) {
+    protected synchronized Quarter getQuarter(String label) {
         Optional<Quarter> quarter = quarterPersistenceService.getByLabel(label);
         return quarter
                 .orElseGet(() -> quarterPersistenceService.save(Quarter.Builder.builder().withLabel(label).build()));
@@ -53,7 +53,7 @@ public class QuarterBusinessService {
 
     public Quarter getActiveQuarter() {
         // Needs to be fixed or removed -> getOrCreateQuarter is not functional anymore
-        return getOrCreateQuarter(createQuarterLabel(this.now));
+        return getQuarter(createQuarterLabel(this.now));
     }
 
     private String shortenYear(int fullYear) {

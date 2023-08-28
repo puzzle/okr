@@ -1,7 +1,7 @@
-import {TeamMin} from "./TeamMin";
-import {ObjectiveMin} from "./ObjectiveMin";
+import { TeamMin } from './TeamMin';
+import { ObjectiveMin } from './ObjectiveMin';
 
-export interface OverviewEntity{
+export interface OverviewEntity {
   team: TeamMin;
-  objectives:ObjectiveMin[];
+  objectives: ObjectiveMin[];
 }

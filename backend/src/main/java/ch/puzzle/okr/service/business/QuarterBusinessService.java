@@ -42,7 +42,11 @@ public class QuarterBusinessService {
 
     // Is not functional anymore -> can be Deleted or refactored
     public List<Quarter> getQuarters() {
-        return quarterPersistenceService.getMostCurrentQuarters();
+        List<Quarter> quarterList = quarterPersistenceService.getMostCurrentQuarters();
+        Quarter buffer = quarterList.get(0);
+        quarterList.set(0, quarterList.get(1));
+        quarterList.set(1, buffer);
+        return quarterList;
     }
 
     protected synchronized Quarter getQuarter(String label) {

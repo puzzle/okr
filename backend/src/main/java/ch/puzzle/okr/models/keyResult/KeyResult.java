@@ -1,8 +1,6 @@
 package ch.puzzle.okr.models.keyResult;
 
-import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class KeyResult {
+public abstract class KeyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
     @NotNull
@@ -41,25 +39,7 @@ public class KeyResult {
     @NotNull
     private LocalDateTime createdOn;
 
-    @NotNull
     private LocalDateTime modifiedOn;
-
-    public KeyResult() {
-    }
-
-    private KeyResult(Builder builder) {
-        id = builder.id;
-        setObjective(builder.objective);
-        setTitle(builder.title);
-        setDescription(builder.description);
-        setOwner(builder.owner);
-        setExpectedEvolution(builder.expectedEvolution);
-        setUnit(builder.unit);
-        setBasisValue(builder.basisValue);
-        setTargetValue(builder.targetValue);
-        setCreatedBy(builder.createdBy);
-        setModifiedOn(builder.modifiedOn);
-    }
 
     public Long getId() {
         return id;
@@ -146,83 +126,70 @@ public class KeyResult {
         return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn);
     }
 
-    public static final class Builder {
+    public KeyResult() {
+    }
+
+    public KeyResult(KeyResultBuilder builder) {
+        id = builder.id;
+        setObjective(builder.objective);
+        setTitle(builder.title);
+        setDescription(builder.description);
+        setOwner(builder.owner);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
+        setModifiedOn(builder.modifiedOn);
+    }
+
+    public abstract static class KeyResultBuilder {
         private @NotNull Long id;
         private @NotNull Objective objective;
         private @NotBlank @Size(min = 2, max = 250) String title;
         private @Size(min = 2, max = 4096) String description;
         private @NotNull User owner;
-        private @Size(min = 2, max = 250) ExpectedEvolution expectedEvolution;
-        private @NotNull @NotBlank Unit unit;
-        private Double basisValue;
-        private @NotNull Double targetValue;
         private @NotNull User createdBy;
-        private @NotNull LocalDateTime modifiedOn;
+        private @NotNull LocalDateTime createdOn;
+        private LocalDateTime modifiedOn;
 
-        private Builder() {
-        }
-
-        public static Builder builder() {
-            return new Builder();
-        }
-
-        public Builder withId(@NotNull Long id) {
+        public KeyResultBuilder withId(@NotNull Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder withObjective(@NotNull Objective objective) {
+        public KeyResultBuilder withObjective(@NotNull Objective objective) {
             this.objective = objective;
             return this;
         }
 
-        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+        public KeyResultBuilder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
             this.title = title;
             return this;
         }
 
-        public Builder withDescription(@Size(min = 2, max = 4096) String description) {
+        public KeyResultBuilder withDescription(@Size(min = 2, max = 4096) String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withOwner(@NotNull User owner) {
+        public KeyResultBuilder withOwner(@NotNull User owner) {
             this.owner = owner;
             return this;
         }
 
-        public Builder withExpectedEvolution(@Size(min = 2, max = 250) ExpectedEvolution expectedEvolution) {
-            this.expectedEvolution = expectedEvolution;
-            return this;
-        }
-
-        public Builder withUnit(@NotNull @NotBlank Unit unit) {
-            this.unit = unit;
-            return this;
-        }
-
-        public Builder withBasisValue(Double basisValue) {
-            this.basisValue = basisValue;
-            return this;
-        }
-
-        public Builder withTargetValue(@NotNull Double targetValue) {
-            this.targetValue = targetValue;
-            return this;
-        }
-
-        public Builder withCreatedBy(@NotNull User createdBy) {
+        public KeyResultBuilder withCreatedBy(@NotNull User createdBy) {
             this.createdBy = createdBy;
             return this;
         }
 
-        public Builder withModifiedOn(@NotNull LocalDateTime createdOn) {
-            this.modifiedOn = createdOn;
+        public KeyResultBuilder withCreatedOn(@NotNull LocalDateTime createdOn) {
+            this.createdOn = createdOn;
             return this;
         }
 
-        public KeyResult build() {
-            return new KeyResult(this);
+        public KeyResultBuilder withModifiedOn(LocalDateTime modifiedOn) {
+            this.modifiedOn = modifiedOn;
+            return this;
         }
+
+        public abstract KeyResult build();
     }
 }

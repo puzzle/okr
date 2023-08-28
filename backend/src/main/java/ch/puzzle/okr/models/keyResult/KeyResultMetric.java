@@ -39,4 +39,41 @@ public class KeyResultMetric extends KeyResult {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public KeyResultMetric() {
+    }
+
+    public KeyResultMetric(MetricBuilder builder) {
+        super(builder);
+        setBaseline(builder.baseline);
+        setStretchGoal(builder.stretchGoal);
+        setUnit(builder.unit);
+    }
+
+    public static class MetricBuilder extends KeyResultBuilder {
+        private @NotNull Double baseline;
+        private @NotNull Double stretchGoal;
+        private @NotNull String unit;
+
+        public MetricBuilder withBaseline(@NotNull Double baseline) {
+            this.baseline = baseline;
+            return this;
+        }
+
+        public MetricBuilder withStretchGoal(@NotNull Double stretchGoal) {
+            this.stretchGoal = stretchGoal;
+            return this;
+        }
+
+        public MetricBuilder withUnit(@NotNull String unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        @Override
+        public KeyResult build() {
+            return new KeyResultMetric(this);
+        }
+    }
+
 }

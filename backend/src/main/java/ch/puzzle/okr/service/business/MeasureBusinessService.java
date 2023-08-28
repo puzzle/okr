@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,9 @@ import java.util.Objects;
 @Service
 public class MeasureBusinessService {
     private final MeasurePersistenceService measurePersistenceService;
-    private final ObjectiveBusinessService objectiveBusinessService;
 
-    public MeasureBusinessService(MeasurePersistenceService measurePersistenceService,
-            ObjectiveBusinessService objectiveBusinessService) {
+    public MeasureBusinessService(MeasurePersistenceService measurePersistenceService) {
         this.measurePersistenceService = measurePersistenceService;
-        this.objectiveBusinessService = objectiveBusinessService;
     }
 
     public Measure saveMeasure(Measure measure) {
@@ -64,6 +61,10 @@ public class MeasureBusinessService {
                         "Only one Messung is allowed per day and Key Result!");
             }
         }
+    }
+
+    public List<Measure> getMeasuresByKeyResultId(Long keyResultId) {
+        return measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
     }
 
     public List<Measure> getAllMeasures() {

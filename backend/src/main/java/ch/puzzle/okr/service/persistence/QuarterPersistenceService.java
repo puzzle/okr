@@ -28,8 +28,6 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
         repository.deleteById(quarterId);
     }
 
-
-
     public Optional<Quarter> getByLabel(String label) {
         return ((QuarterRepository) repository).findByLabel(label);
         }

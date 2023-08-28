@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -130,7 +129,7 @@ class QuarterBusinessServiceTest {
         doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
 
         assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
-                quarterService.getOrCreateQuarters());
+                quarterService.getQuarters());
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {

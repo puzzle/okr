@@ -41,10 +41,8 @@ public class QuarterBusinessService {
     }
 
     // Is not functional anymore -> can be Deleted or refactored
-    public List<Quarter> getOrCreateQuarters() {
-        List<String> quarterLabelList = new ArrayList<>();
-
-        return quarterLabelList.stream().map(this::getOrCreateQuarter).toList();
+    public List<Quarter> getQuarters() {
+        return quarterPersistenceService.findAll();
     }
 
     protected synchronized Quarter getOrCreateQuarter(String label) {

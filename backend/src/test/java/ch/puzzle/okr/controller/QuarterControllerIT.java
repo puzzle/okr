@@ -54,7 +54,7 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetAllQuarters() throws Exception {
-        BDDMockito.given(quarterBusinessService.getOrCreateQuarters()).willReturn(quaterList);
+        BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(quaterList);
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -64,7 +64,7 @@ class QuarterControllerIT {
 
     @Test
     void shouldGetAllTeamsIfNoTeamsExists() throws Exception {
-        BDDMockito.given(quarterBusinessService.getOrCreateQuarters()).willReturn(Collections.emptyList());
+        BDDMockito.given(quarterBusinessService.getQuarters()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));

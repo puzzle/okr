@@ -1,7 +1,7 @@
-import {KeyresultMin} from "./KeyresultMin";
+import { KeyresultMin } from './KeyresultMin';
 
-export interface KeyResultOrdinalMin extends KeyresultMin{
-  commitZone:string,
-  targetZone:string,
-  stretchGoal:string,
+export interface KeyResultOrdinalMin extends KeyresultMin {
+  commitZone: string;
+  targetZone: string;
+  stretchGoal: string;
 }

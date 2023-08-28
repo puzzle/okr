@@ -1,4 +1,4 @@
 export interface TeamMin {
-  id:number;
-  name:string;
+  id: number;
+  name: string;
 }

@@ -1,8 +1,7 @@
-import {CheckInMinimal} from "./CheckInMin";
+import { CheckInMinimal } from './CheckInMin';
 
 export interface KeyresultMin {
-
-  id: number,
-  title: string
-  lastCheckIn:CheckInMinimal
+  id: number;
+  title: string;
+  lastCheckIn: CheckInMinimal;
 }

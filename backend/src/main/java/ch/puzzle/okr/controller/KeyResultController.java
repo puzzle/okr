@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/keyresults")
+@RequestMapping("api/v2/keyresults")
 public class KeyResultController {
 
     private final KeyResultBusinessService keyResultBusinessService;
@@ -35,23 +35,34 @@ public class KeyResultController {
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Got keyresult by Id", content = {
+            @ApiResponse(responseCode = "200", description = "Got KeyResult by Id", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id", content = @Content) })
     @GetMapping("/{id}")
-    public KeyResultDto getKeyResultbyId(@PathVariable long id) {
+    public KeyResultDto getKeyResultById(@PathVariable long id) {
         return keyResultMapper.toDto(keyResultBusinessService.getKeyResultById(id));
+    }
+
+    @Operation(summary = "Get CheckIns from KeyResult", description = "Get all CheckIns from one KeyResult by keyResultId.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all CheckIns from KeyResult.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get CheckIns from.", content = @Content) })
+    @GetMapping("/{id}/checkins")
+    public List<MeasureDto> getCheckInsFromKeyResult(
+            @Parameter(description = "The ID for getting all CheckIns from a KeyResult.", required = true) @PathVariable long id) {
+        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(measureMapper::toDto).toList();
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new KeyResult.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the key result tries to refer to.", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
-        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.saveKeyResult(keyResult));
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.createKeyResult(keyResult));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
@@ -65,26 +76,16 @@ public class KeyResultController {
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultBusinessService.updateKeyResult(keyResultMapper.toKeyResult(keyResultDto)));
+                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultDto)));
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 
-    @Operation(summary = "Get Measures from KeyResult", description = "Get all Measures from one KeyResult by keyResultId.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Measures from KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Measures from.", content = @Content) })
-    @GetMapping("/{id}/measures")
-    public List<MeasureDto> getMeasuresFromKeyResult(
-            @Parameter(description = "The ID for getting all Measures from a KeyResult.", required = true) @PathVariable long id) {
-        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(measureMapper::toDto).toList();
-    }
-
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted keyresult by Id"),
-            @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id") })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted KeyResult by Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id) {
-        progressService.deleteKeyResultAndUpdateProgress(id);
+        // TODO implement delete
+        keyResultBusinessService.deleteKeyResultById(id);
     }
 }

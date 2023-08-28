@@ -195,7 +195,7 @@ class KeyResultControllerIT {
 
         BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
         BDDMockito.given(this.objectivePersistenceService.findById(5L)).willReturn(objective);
-        BDDMockito.given(this.keyResultBusinessService.saveKeyResult(any())).willReturn(keyResult);
+        BDDMockito.given(this.keyResultBusinessService.createKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 
@@ -213,7 +213,7 @@ class KeyResultControllerIT {
 
         BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
         BDDMockito.given(this.objectivePersistenceService.findById(5L)).willReturn(objective);
-        BDDMockito.given(this.keyResultBusinessService.saveKeyResult(any())).willReturn(keyResult);
+        BDDMockito.given(this.keyResultBusinessService.createKeyResult(any())).willReturn(keyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(testKeyResult);
         BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(keyResult);
 

@@ -85,7 +85,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void saveKeyResult() {
         Mockito.when(keyResultPersistenceService.saveKeyResult(any())).thenReturn(keyResult);
-        KeyResult savedKeyResult = keyResultBusinessService.saveKeyResult(keyResult);
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(keyResult);
         assertEquals("Keyresult 1", savedKeyResult.getTitle());
     }
 
@@ -93,7 +93,7 @@ class KeyResultBusinessServiceTest {
     void shouldBePossibleToSaveKeyResultWithoutDescription() {
         Mockito.when(this.keyResultPersistenceService.saveKeyResult(any())).thenReturn(this.keyResult);
         this.keyResult.setDescription("");
-        KeyResult keyResult = this.keyResultBusinessService.saveKeyResult(this.keyResult);
+        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(this.keyResult);
         assertEquals("Keyresult 1", keyResult.getTitle());
         assertEquals("", keyResult.getDescription());
     }

@@ -1,7 +1,8 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
+
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service

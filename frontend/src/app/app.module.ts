@@ -38,6 +38,7 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
     oauthService.configure({ ...environment.oauth, issuer: config.issuer, scope: config.scope });
   };
 }
+import { TeamComponent } from './team/team.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -60,7 +61,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ExampleDialogComponent],
+  declarations: [AppComponent, ExampleDialogComponent, TeamComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

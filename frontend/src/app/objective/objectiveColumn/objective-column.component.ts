@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OverviewService } from '../../shared/services/overview.service';
+import { MenuEntry } from '../../shared/types/menu-entry';
+import { RouteService } from '../../shared/services/route.service';
 @Component({
   selector: 'app-objective-column',
   templateUrl: './objective-column.component.html',
@@ -8,8 +10,9 @@ import { OverviewService } from '../../shared/services/overview.service';
 export class ObjectiveColumnComponent implements OnInit {
   objectiveTitle: string = '';
   state: String = 'DRAFT';
+  menuEntries!: MenuEntry[];
 
-  constructor(private overviewService: OverviewService) {}
+  constructor(private overviewService: OverviewService, private routeService: RouteService) {}
 
   ngOnInit(): void {
     this.setObjectiveAndKeyResultProperties();
@@ -34,7 +37,17 @@ export class ObjectiveColumnComponent implements OnInit {
     }
   }
 
-  buttonDemo() {
-    console.log('Button of objective-column works!');
+  redirect(menuEntry: MenuEntry) {
+    if (menuEntry.showDialog) {
+      this.openDialog();
+    } else {
+      this.routeService.navigate(menuEntry.routeLine!);
+    }
+  }
+
+  openDialog() {
+    throw new Error(
+      'This function should not have been called, since openDialog should be false, even though it appears to be true!'
+    );
   }
 }

@@ -27,8 +27,12 @@
   </mat-card-content>
 </mat-card>
 <mat-menu #objectiveMenu="matMenu" xPosition="before" yPosition="below">
-  <button mat-menu-item class="objective-menu-option" (click)="buttonDemo()">Objective bearbeiten</button>
-  <button mat-menu-item class="objective-menu-option" (click)="buttonDemo()">Objective duplizieren</button>
-  <button mat-menu-item class="objective-menu-option" (click)="buttonDemo()">Objective abschliessen</button>
-  <button mat-menu-item class="objective-menu-option" (click)="buttonDemo()">Objective freigeben</button>
+  <button
+    mat-menu-item
+    class="objective-menu-option"
+    (click)="redirect(menuEntry); $event.stopPropagation()"
+    *ngFor="let menuEntry of menuEntries"
+  >
+    {{ menuEntry.displayName }}
+  </button>
 </mat-menu>

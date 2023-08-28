@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import org.springframework.http.HttpStatus;

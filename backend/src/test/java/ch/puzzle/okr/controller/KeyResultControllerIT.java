@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;

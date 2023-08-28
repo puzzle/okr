@@ -2,7 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;

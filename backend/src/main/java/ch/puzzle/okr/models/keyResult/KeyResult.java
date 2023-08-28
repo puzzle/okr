@@ -1,4 +1,9 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.models.keyResult;
+
+import ch.puzzle.okr.models.ExpectedEvolution;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
+import ch.puzzle.okr.models.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

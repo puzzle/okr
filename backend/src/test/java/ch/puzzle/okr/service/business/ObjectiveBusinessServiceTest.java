@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;

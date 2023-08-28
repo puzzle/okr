@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;

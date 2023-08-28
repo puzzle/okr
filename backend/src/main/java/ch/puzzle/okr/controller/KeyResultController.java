@@ -4,7 +4,7 @@ import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.KeyResult;
+import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -85,6 +85,6 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id) {
-        // Gets reimplemented by Lias
+        progressService.deleteKeyResultAndUpdateProgress(id);
     }
 }

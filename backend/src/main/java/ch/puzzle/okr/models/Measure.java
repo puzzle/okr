@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.models.keyResult.KeyResult;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -10,7 +10,12 @@ import { RouteService } from '../../shared/services/route.service';
 export class ObjectiveColumnComponent implements OnInit {
   objectiveTitle: string = '';
   state: String = 'DRAFT';
-  menuEntries!: MenuEntry[];
+  menuEntries: MenuEntry[] = [
+    { displayName: 'Objective bearbeiten', showDialog: false },
+    { displayName: 'Objective duplizieren', showDialog: false },
+    { displayName: 'Objective abschliessen', showDialog: false },
+    { displayName: 'Objective freigeben', showDialog: false },
+  ];
 
   constructor(private overviewService: OverviewService, private routeService: RouteService) {}
 

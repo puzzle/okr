@@ -214,14 +214,14 @@ class ObjectiveValidationServiceTest {
         String errorCreatedOn = "CreatedOn must not be null.";
         String errorCreatedBy = "CreatedBy must not be null.";
         String errorQuarter = "Quarter must not be null.";
-        String errorTeam = " Team must not be null.";
+        String errorTeam = "Team must not be null.";
         String errorState = "State must not be null.";
 
-        assertThat(exception.getReason()).contains(errorCreatedOn);
-        assertThat(exception.getReason()).contains(errorCreatedBy);
-        assertThat(exception.getReason()).contains(errorQuarter);
-        assertThat(exception.getReason()).contains(errorTeam);
-        assertThat(exception.getReason()).contains(errorState);
+        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
+        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
+        assertThat(exception.getReason().strip()).contains(errorQuarter);
+        assertThat(exception.getReason().strip()).contains(errorTeam);
+        assertThat(exception.getReason().strip()).contains(errorState);
     }
 
     @Test

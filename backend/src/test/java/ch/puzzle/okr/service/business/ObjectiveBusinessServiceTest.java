@@ -146,4 +146,11 @@ class ObjectiveBusinessServiceTest {
         verify(this.keyResultBusinessService, times(3)).deleteKeyResultById(5L);
         verify(this.objectiveBusinessService, times(1)).deleteObjectiveById(1L);
     }
+
+    @Test
+    void verifyActiveObjectivesAmountOfTeam() {
+        this.objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
+
+        verify(this.objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
+    }
 }

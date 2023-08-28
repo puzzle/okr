@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.business.QuarterService;
+import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.RegisterNewUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,10 +22,10 @@ import java.util.List;
 @RequestMapping("api/v1/quarters")
 public class QuarterController {
 
-    private final QuarterService quarterService;
+    private final QuarterBusinessService quarterService;
     private final RegisterNewUserService registerNewUserService;
 
-    public QuarterController(QuarterService quarterService, RegisterNewUserService registerNewUserService) {
+    public QuarterController(QuarterBusinessService quarterService, RegisterNewUserService registerNewUserService) {
         this.quarterService = quarterService;
         this.registerNewUserService = registerNewUserService;
     }
@@ -38,7 +38,7 @@ public class QuarterController {
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getOrCreateQuarters());
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getQuarters());
     }
 
     @Operation(summary = "Get start and end date of quarter by keyResultId", description = "Get start and end date of quarter by keyResultId")

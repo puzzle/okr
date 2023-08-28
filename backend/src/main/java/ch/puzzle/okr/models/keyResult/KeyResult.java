@@ -35,19 +35,11 @@ public class KeyResult {
     private User owner;
 
     @NotNull
-    private ExpectedEvolution expectedEvolution;
-
-    @NotNull
-    private Unit unit;
-
-    private Double basisValue;
-
-    @NotNull
-    private Double targetValue;
-
-    @NotNull
     @ManyToOne
     private User createdBy;
+
+    @NotNull
+    private LocalDateTime createdOn;
 
     @NotNull
     private LocalDateTime modifiedOn;
@@ -105,40 +97,24 @@ public class KeyResult {
         this.owner = owner;
     }
 
-    public ExpectedEvolution getExpectedEvolution() {
-        return expectedEvolution;
-    }
-
-    public void setExpectedEvolution(ExpectedEvolution expectedEvolution) {
-        this.expectedEvolution = expectedEvolution;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    public Double getBasisValue() {
-        return basisValue;
-    }
-
-    public void setBasisValue(Double basisValue) {
-        this.basisValue = basisValue;
-    }
-
-    public Double getTargetValue() {
-        return targetValue;
-    }
-
-    public void setTargetValue(Double targetValue) {
-        this.targetValue = targetValue;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public LocalDateTime getModifiedOn() {
+        return modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
@@ -148,9 +124,8 @@ public class KeyResult {
     @Override
     public String toString() {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
-                + description + '\'' + ", owner=" + owner + ", expectedEvolution=" + expectedEvolution + ", unit='"
-                + unit + '\'' + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", createdBy="
-                + createdBy + ", createdOn=" + modifiedOn + '}';
+                + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn
+                + ", modifiedOn=" + modifiedOn + '}';
     }
 
     @Override
@@ -162,16 +137,13 @@ public class KeyResult {
         KeyResult keyResult = (KeyResult) o;
         return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective)
                 && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description)
-                && Objects.equals(owner, keyResult.owner) && expectedEvolution == keyResult.expectedEvolution
-                && unit == keyResult.unit && Objects.equals(basisValue, keyResult.basisValue)
-                && Objects.equals(targetValue, keyResult.targetValue) && Objects.equals(createdBy, keyResult.createdBy)
-                && Objects.equals(modifiedOn, keyResult.modifiedOn);
+                && Objects.equals(owner, keyResult.owner) && Objects.equals(createdBy, keyResult.createdBy)
+                && Objects.equals(createdOn, keyResult.createdOn) && Objects.equals(modifiedOn, keyResult.modifiedOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, expectedEvolution, unit, basisValue, targetValue,
-                createdBy, modifiedOn);
+        return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn);
     }
 
     public static final class Builder {

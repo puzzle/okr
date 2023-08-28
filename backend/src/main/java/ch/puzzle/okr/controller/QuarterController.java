@@ -40,15 +40,4 @@ public class QuarterController {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getQuarters());
     }
-
-    @Operation(summary = "Get start and end date of quarter by keyResultId", description = "Get start and end date of quarter by keyResultId")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns a object containing the start date and the end date of quarter", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = StartEndDateDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Could not find given keyresult", content = @Content),
-            @ApiResponse(responseCode = "422", description = "Label is invalid", content = @Content) })
-    @GetMapping("/dates/{keyResultId}")
-    public StartEndDateDTO getStartAndEndDateOfKeyResult(@PathVariable long keyResultId) {
-        return this.quarterService.getStartAndEndDateOfKeyResult(keyResultId);
-    }
 }

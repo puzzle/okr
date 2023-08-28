@@ -40,7 +40,6 @@ public class QuarterBusinessService {
         return quarterPersistenceService.findById(quarterId);
     }
 
-    // Is not functional anymore -> can be Deleted or refactored
     public List<Quarter> getQuarters() {
         List<Quarter> quarterList = quarterPersistenceService.getMostCurrentQuarters();
         Quarter buffer = quarterList.get(0);
@@ -56,7 +55,7 @@ public class QuarterBusinessService {
     }
 
     public Quarter getActiveQuarter() {
-        // Needs to be fixed or removed -> getOrCreateQuarter is not functional anymore
+        // Needs to be fixed or removed -> getQuarter is not functional anymore
         return getQuarter(createQuarterLabel(this.now));
     }
 

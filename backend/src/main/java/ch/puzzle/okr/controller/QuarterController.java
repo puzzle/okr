@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.QuarterService;
+import ch.puzzle.okr.service.business.QuarterService;
 import ch.puzzle.okr.service.RegisterNewUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

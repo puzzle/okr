@@ -9,27 +9,29 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
-public class QuarterPersistenceService {
-    private final QuarterRepository quarterRepository;
+public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
 
-    public QuarterPersistenceService(QuarterRepository quarterRepository) {
-        this.quarterRepository = quarterRepository;
+    protected QuarterPersistenceService(QuarterRepository repository){
+        super(repository);
     }
-
-    public Quarter getQuarterById(Long quarterId) {
-        if (quarterId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute quarter id");
-        }
-        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                (String.format("Quarter with id %d not found", quarterId))));
+    @Override
+    public String getModelName() {
+        return "Quarter";
     }
 
     public synchronized Quarter getOrCreateQuarter(String label) {
-        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
-        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
+        Optional<Quarter> quarter =((QuarterRepository) repository).findByLabel(label);
+        return quarter.orElseGet(() -> repository.save(Quarter.Builder.builder().withLabel(label).build()));
     }
 
     void deleteQuarterById(Long quarterId) {
-        quarterRepository.deleteById(quarterId);
+        repository.deleteById(quarterId);
     }
+
+
+
+    public Optional<Quarter> getByLabel(String label) {
+        return ((QuarterRepository) repository).findByLabel(label);
+        }
+
 }

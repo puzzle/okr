@@ -1,7 +1,7 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +14,9 @@ import java.time.temporal.IsoFields;
 import java.util.*;
 
 @Service
-public class QuarterService {
-    protected static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
-    private static final Logger logger = LoggerFactory.getLogger(QuarterService.class);
+public class QuarterBusinessService {
+    public static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
+    private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
 
     static {
         yearToBusinessQuarterMap.put(1, 3);
@@ -25,14 +25,11 @@ public class QuarterService {
         yearToBusinessQuarterMap.put(4, 2);
     }
 
-    private final KeyResultService keyResultService;
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
     public YearMonth now;
 
-    public QuarterService(KeyResultService keyResultService, QuarterPersistenceService quarterPersistenceService, QuarterValidationService validator,
-                          YearMonth now) {
-        this.keyResultService = keyResultService;
+    public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService, QuarterValidationService validator, YearMonth now) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
         this.now = now;
@@ -76,7 +73,7 @@ public class QuarterService {
         return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear + 1), businessQuarter);
     }
 
-    private void generateQuarter(YearMonth yearMonth) {
+    private Quarter generateQuarter(YearMonth yearMonth) {
         // Logic to generate quarter
         Quarter quarter = Quarter.Builder.builder()
                 .withLabel(createQuarterLabel(yearMonth))
@@ -84,14 +81,15 @@ public class QuarterService {
                 .withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
         validator.validateOnSave(quarter);
-        quarterPersistenceService.save(quarter);
+        return quarterPersistenceService.save(quarter);
     }
 
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
-    public void scheduledGenerationQuarters() {
+    public Quarter scheduledGenerationQuarters() {
         if (YearMonth.now().getMonthValue() % 3 == 0) {
-            generateQuarter(YearMonth.now());
             logger.info("Generated quarters on first day of month");
+            return generateQuarter(YearMonth.now());
         }
+        return null;
     }
 }

@@ -1,8 +1,9 @@
-package ch.puzzle.okr.service;
+package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import ch.puzzle.okr.service.persistance.QuarterPersistenceService;
+import ch.puzzle.okr.service.business.QuarterBusinessService;
+import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,17 +30,15 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class QuarterServiceTest {
+class QuarterBusinessServiceTest {
     @MockBean
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
-    @MockBean
-    KeyResultService keyResultService = Mockito.mock(KeyResultService.class);
     @Mock
     QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
 
     @InjectMocks
     @Spy
-    private QuarterService quarterService;
+    private QuarterBusinessService quarterService;
 
     private static Stream<Arguments> shouldGetFutureQuarters() {
         return Stream.of(Arguments.of(2023, 7, List.of("GJ 23/24-Q2")), Arguments.of(2022, 10, List.of("GJ 22/23-Q3")),
@@ -102,7 +101,7 @@ class QuarterServiceTest {
 
     @Test
     void shouldFillHashMap() {
-        Map<Integer, Integer> hashMap = QuarterService.yearToBusinessQuarterMap;
+        Map<Integer, Integer> hashMap = QuarterBusinessService.yearToBusinessQuarterMap;
         assertEquals(3, hashMap.get(1));
         assertEquals(4, hashMap.get(2));
         assertEquals(1, hashMap.get(3));
@@ -111,22 +110,8 @@ class QuarterServiceTest {
 
     @ParameterizedTest
     @MethodSource
-    void shouldGetFutureQuarters(int year, int month, List<String> futureQuarters) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        assertEquals(futureQuarters, this.quarterService.getFutureQuarters(yearMonth, 1));
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void shouldGetPastQuarters(int year, int month, List<String> pastQuarters) {
-        YearMonth yearMonth = YearMonth.of(year, month);
-        assertEquals(pastQuarters, this.quarterService.getPastQuarters(yearMonth, 4));
-    }
-
-    @ParameterizedTest
-    @MethodSource
     void shouldGenerateQuarterLabel(int year, int quarter, String quarterLabel) {
-        assertEquals(quarterLabel, this.quarterService.generateQuarterLabel(year, quarter));
+        assertEquals(quarterLabel, this.quarterService.createQuarterLabel(year, quarter));
     }
 
     @ParameterizedTest

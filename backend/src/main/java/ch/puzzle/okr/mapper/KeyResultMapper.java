@@ -2,6 +2,8 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyResult.KeyResultMetric;
+import ch.puzzle.okr.models.keyResult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
@@ -29,13 +31,21 @@ public class KeyResultMapper {
                 keyResult.getBasisValue(), keyResult.getTargetValue(), 0L);
     }
 
-    public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
-                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
+    public KeyResult toKeyResultMetric(KeyResultDto keyResultDto) {
+        return (KeyResultMetric) new KeyResultMetric.MetricBuilder().withId(keyResultDto.id())
+                .withTitle(keyResultDto.title()).withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
                 .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
-                .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
-                .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
-                .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())
-                .withCreatedBy(userPersistenceService.findById(keyResultDto.ownerId())).build();
+                .withDescription(keyResultDto.description()).withCreatedOn(keyResultDto.createdOn)
+                .withCreatedBy(keyResultDto.createdBy).withModifiedOn(keyResultDto.modifiedOn).withBaseLine()
+                .withStretchGoal().withUnit().build();
+    }
+
+    public KeyResult toKeyResultOrdinal(KeyResultDto keyResultDto) {
+        return (KeyResultOrdinal) new KeyResultOrdinal.OrdinalBuilder().withId(keyResultDto.id())
+                .withTitle(keyResultDto.title()).withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
+                .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
+                .withDescription(keyResultDto.description()).withCreatedOn(keyResultDto.createdOn)
+                .withCreatedBy(keyResultDto.createdBy).withModifiedOn(keyResultDto.modifiedOn).withCommitZone()
+                .withTargetZone().withStretchZone().build();
     }
 }

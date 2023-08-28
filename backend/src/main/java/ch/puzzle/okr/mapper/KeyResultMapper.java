@@ -37,7 +37,7 @@ public class KeyResultMapper {
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
         return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
                 .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
-                .withObjective(objectivePersistenceService.getObjectiveById(keyResultDto.objectiveId()))
+                .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
                 .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
                 .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
                 .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())

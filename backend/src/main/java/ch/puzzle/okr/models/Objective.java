@@ -1,7 +1,5 @@
 package ch.puzzle.okr.models;
 
-import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,33 +12,39 @@ import java.util.Objects;
 public class Objective {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
-    @NotNull
     private Long id;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 2, max = 250)
+    @NotBlank(message = "Missing attribute title when saving objective")
+    @NotNull(message = "Attribute title can not be null when saving objective")
+    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
     private String title;
 
-    @NotNull
-    @ManyToOne
-    private User owner;
+    @NotNull(message = "State must not be null")
+    @Enumerated(EnumType.STRING)
+    private State state;
 
-    @NotNull
+    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters when saving objective")
+    private String description;
+
+    @NotNull(message = "Team must not be null")
     @ManyToOne
     private Team team;
 
-    @NotNull
+    @NotNull(message = "Quarter must not be null")
     @ManyToOne
     private Quarter quarter;
 
-    @Size(max = 4096)
-    private String description;
+    @NotNull(message = "CreatedBy must not be null")
+    @ManyToOne
+    private User createdBy;
 
-    private Long progress;
+    @NotNull(message = "CreatedOn must not be null")
+    private LocalDateTime createdOn;
 
-    @NotNull
     private LocalDateTime modifiedOn;
+
+    @ManyToOne
+    private User modifiedBy;
 
     public Objective() {
     }
@@ -48,12 +52,14 @@ public class Objective {
     private Objective(Builder builder) {
         id = builder.id;
         setTitle(builder.title);
-        setOwner(builder.owner);
+        setCreatedBy(builder.createdBy);
         setTeam(builder.team);
         setQuarter(builder.quarter);
         setDescription(builder.description);
-        setProgress(builder.progress);
         setModifiedOn(builder.modifiedOn);
+        setState(builder.state);
+        setCreatedOn(builder.createdOn);
+        setModifiedBy(builder.modifiedBy);
     }
 
     public Long getId() {
@@ -68,12 +74,12 @@ public class Objective {
         this.title = title;
     }
 
-    public User getOwner() {
-        return owner;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Team getTeam() {
@@ -100,14 +106,6 @@ public class Objective {
         this.description = description;
     }
 
-    public Long getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Long progress) {
-        this.progress = progress;
-    }
-
     public LocalDateTime getModifiedOn() {
         return modifiedOn;
     }
@@ -116,11 +114,35 @@ public class Objective {
         this.modifiedOn = modifiedOn;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public User getModifiedBy() {
+        return modifiedBy;
+    }
+
+    public void setModifiedBy(User modifiedBy) {
+        this.modifiedBy = modifiedBy;
+    }
+
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", owner=" + owner + ", team=" + team
-                + ", quarter=" + quarter + ", description='" + description + '\'' + ", progress=" + progress
-                + ", modifiedOn=" + modifiedOn + '}';
+        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
+                + ", quarter=" + quarter + ", description='" + description + '\'' + ", modifiedOn=" + modifiedOn
+                + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + '}';
     }
 
     @Override
@@ -131,25 +153,28 @@ public class Objective {
             return false;
         Objective objective = (Objective) o;
         return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
-                && Objects.equals(owner, objective.owner) && Objects.equals(team, objective.team)
+                && Objects.equals(createdBy, objective.createdBy) && Objects.equals(team, objective.team)
                 && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
-                && Objects.equals(progress, objective.progress) && Objects.equals(modifiedOn, objective.modifiedOn);
+                && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
+                && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, owner, team, quarter, description, progress, modifiedOn);
+        return Objects.hash(id, title, createdBy, team, quarter, description, modifiedOn, state, createdOn, modifiedBy);
     }
 
     public static final class Builder {
         private Long id;
         private String title;
-        private User owner;
+        private User createdBy;
         private Team team;
         private Quarter quarter;
         private String description;
-        private Long progress;
         private LocalDateTime modifiedOn;
+        private State state;
+        private LocalDateTime createdOn;
+        private User modifiedBy;
 
         public Builder() {
         }
@@ -168,8 +193,8 @@ public class Objective {
             return this;
         }
 
-        public Builder withOwner(User owner) {
-            this.owner = owner;
+        public Builder withCreatedBy(User createdBy) {
+            this.createdBy = createdBy;
             return this;
         }
 
@@ -188,13 +213,23 @@ public class Objective {
             return this;
         }
 
-        public Builder withProgress(Long progress) {
-            this.progress = progress;
+        public Builder withModifiedOn(LocalDateTime modifiedOn) {
+            this.modifiedOn = modifiedOn;
             return this;
         }
 
-        public Builder withModifiedOn(LocalDateTime modifiedOn) {
-            this.modifiedOn = modifiedOn;
+        public Builder withState(State state) {
+            this.state = state;
+            return this;
+        }
+
+        public Builder withCreatedOn(LocalDateTime createdOn) {
+            this.createdOn = createdOn;
+            return this;
+        }
+
+        public Builder withModifiedBy(User modifiedBy) {
+            this.modifiedBy = modifiedBy;
             return this;
         }
 

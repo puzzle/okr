@@ -1,9 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -21,21 +18,26 @@ public class ObjectivePersistenceServiceIT {
     Objective createdObjective;
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
+    @Autowired
+    TeamPersistenceService teamPersistenceService;
+    @Autowired
+    QuarterPersistenceService quarterPersistenceService;
 
     private static Objective createObjective(Long id) {
         return Objective.Builder.builder().withId(id).withTitle("title")
-                .withOwner(User.Builder.builder().withId(1L).build())
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
-                .withProgress(null).withModifiedOn(LocalDateTime.MAX).build();
+                .withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .withModifiedBy(User.Builder.builder().withId(1L).build()).build();
     }
 
     @AfterEach
     void tearDown() {
         try {
             if (createdObjective != null) {
-                objectivePersistenceService.getObjectiveById(createdObjective.getId());
-                objectivePersistenceService.deleteObjectiveById(createdObjective.getId());
+                objectivePersistenceService.findById(createdObjective.getId());
+                objectivePersistenceService.deleteById(createdObjective.getId());
             }
         } catch (ResponseStatusException ex) {
             // created key result already deleted
@@ -45,68 +47,46 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void getAllObjectives_ShouldReturnListOfObjectives() {
-        List<Objective> objectives = objectivePersistenceService.getAllObjectives();
+    void findAll_ShouldReturnListOfObjectives() {
+        List<Objective> objectives = objectivePersistenceService.findAll();
 
         assertEquals(7, objectives.size());
     }
 
     @Test
-    void getObjectiveById_ShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.getObjectiveById(5L);
+    void findById_ShouldReturnObjectiveProperly() {
+        Objective objective = objectivePersistenceService.findById(5L);
 
         assertEquals(5L, objective.getId());
         assertEquals("Wir wollen das leiseste Team bei Puzzle sein", objective.getTitle());
     }
 
     @Test
-    void getObjectiveById_ShouldThrowExceptionWhenObjectiveNotFound() {
+    void findById_ShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.getObjectiveById(321L));
+                () -> objectivePersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("Objective with id 321 not found", exception.getReason());
     }
 
     @Test
-    void getObjectiveById_ShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void findById_ShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.getObjectiveById(null));
+                () -> objectivePersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute objective id", exception.getReason());
-    }
-
-    @Test
-    void getObjectivesByTeam_ShouldReturnListOfObjectives() {
-        List<Objective> objectives = objectivePersistenceService.getObjectivesByTeam(5L);
-
-        assertEquals(2, objectives.size());
-    }
-
-    @Test
-    void getObjectivesByTeamIdOrderByTitleAsc_ShouldReturnListOfObjectives() {
-        List<Objective> objectives = objectivePersistenceService.getObjectivesByTeamIdOrderByTitleAsc(5L);
-
-        assertEquals(2, objectives.size());
-    }
-
-    @Test
-    void getObjectiveByTeamIdAndQuarterId_ShouldReturnListOfObjectives() {
-        List<Objective> objectives = objectivePersistenceService.getObjectiveByTeamIdAndQuarterId(5L, 2L);
-
-        assertEquals(2, objectives.size());
+        assertEquals("Missing identifier for Objective", exception.getReason());
     }
 
     @Test
     void saveObjective_shouldSaveNewObjectiv() {
         Objective objective = createObjective(null);
 
-        createdObjective = objectivePersistenceService.saveObjective(objective);
+        createdObjective = objectivePersistenceService.save(objective);
 
         assertNotNull(createdObjective.getId());
         assertEquals(objective.getDescription(), createdObjective.getDescription());
-        assertEquals(objective.getProgress(), createdObjective.getProgress());
         assertEquals(objective.getDescription(), createdObjective.getDescription());
         assertEquals(objective.getModifiedOn(), createdObjective.getModifiedOn());
     }
@@ -114,24 +94,47 @@ public class ObjectivePersistenceServiceIT {
     @Test
     void updateObjective_shouldUpdateObjective() {
         Objective objective = createObjective(null);
-        createdObjective = objectivePersistenceService.saveObjective(objective);
-        createdObjective.setProgress(5L);
+        createdObjective = objectivePersistenceService.save(objective);
+        createdObjective.setState(State.ONGOING);
 
-        Objective updatedObjective = objectivePersistenceService.updateObjective(createdObjective);
+        Objective updatedObjective = objectivePersistenceService.save(createdObjective);
 
         assertEquals(createdObjective.getId(), updatedObjective.getId());
-        assertEquals(5L, updatedObjective.getProgress());
+        assertEquals(State.ONGOING, updatedObjective.getState());
     }
 
     @Test
     void deleteObjective_ShouldThrowExceptionWhenKeyResultNotFound() {
         Objective objective = createObjective(321L);
-        createdObjective = objectivePersistenceService.saveObjective(objective);
-        objectivePersistenceService.deleteObjectiveById(createdObjective.getId());
+        createdObjective = objectivePersistenceService.save(objective);
+        objectivePersistenceService.deleteById(createdObjective.getId());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.getObjectiveById(createdObjective.getId()));
+                () -> objectivePersistenceService.findById(createdObjective.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
+    }
+
+    @Test
+    void countByTeamAndQuarter_shouldReturnActiveObjectivesOfTeamByQuarter() {
+        Integer count = objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
+                quarterPersistenceService.getQuarterById(2L));
+        assertEquals(2, count);
+    }
+
+    @Test
+    void countByTeamAndQuarter_shouldThrowErrorIfQuarterDoesNotExist() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
+                        quarterPersistenceService.getQuarterById(12L)));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
+
+        ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
+                        quarterPersistenceService.getQuarterById(2L)));
+        assertEquals(HttpStatus.NOT_FOUND, exceptionTeam.getStatus());
+        assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
+
     }
 }

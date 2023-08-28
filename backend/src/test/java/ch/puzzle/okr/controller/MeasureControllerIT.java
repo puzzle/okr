@@ -1,6 +1,5 @@
-package ch.puzzle.okr.controller.v1;
+package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.controller.v1.MeasureController;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.KeyResult;
@@ -73,7 +72,6 @@ class MeasureControllerIT {
     void setUp() {
         BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
-        doNothing().when(progressService).updateObjectiveProgress(anyLong());
     }
 
     @Test

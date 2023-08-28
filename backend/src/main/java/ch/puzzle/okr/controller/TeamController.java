@@ -1,4 +1,4 @@
-package ch.puzzle.okr.controller.v2;
+package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
@@ -20,12 +20,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v2/teams")
-public class TeamControllerV2 {
+public class TeamController {
     private final TeamBusinessService teamBusinessService;
     private final TeamMapper teamMapper;
     private final RegisterNewUserService registerNewUserService;
 
-    public TeamControllerV2(TeamBusinessService teamBusinessService, TeamMapper teamMapper,
+    public TeamController(TeamBusinessService teamBusinessService, TeamMapper teamMapper,
             RegisterNewUserService registerNewUserService) {
         this.teamBusinessService = teamBusinessService;
         this.teamMapper = teamMapper;

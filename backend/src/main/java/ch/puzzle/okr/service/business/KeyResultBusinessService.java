@@ -53,7 +53,7 @@ public class KeyResultBusinessService {
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
-        Objective objective = objectivePersistenceService.getObjectiveById(objectiveId);
+        Objective objective = objectivePersistenceService.findById(objectiveId);
         return keyResultPersistenceService.getKeyResultsByObjective(objective);
     }
 

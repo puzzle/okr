@@ -1,5 +1,9 @@
 package ch.puzzle.okr.dto;
 
-public record ObjectiveDto(Long id, String title, Long ownerId, String ownerFirstname, String ownerLastname,
-        Long teamId, String teamName, Long quarterId, String quarterLabel, String description, Long progress) {
+import ch.puzzle.okr.models.State;
+
+import java.time.LocalDateTime;
+
+public record ObjectiveDto(Long id, String title, Long teamId, Long quarterId, String description, State state,
+        LocalDateTime createdOn, LocalDateTime modifiedOn) {
 }

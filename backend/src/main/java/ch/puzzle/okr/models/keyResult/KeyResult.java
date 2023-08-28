@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class KeyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")

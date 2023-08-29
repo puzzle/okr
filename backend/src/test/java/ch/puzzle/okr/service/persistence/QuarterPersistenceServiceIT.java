@@ -26,7 +26,7 @@ public class QuarterPersistenceServiceIT {
 
     @Test
     void shouldReturnSingleQuarterWhenFindingByValidId() {
-        Quarter returnedQuarter = quarterPersistenceService.getQuarterById(1L);
+        Quarter returnedQuarter = quarterPersistenceService.findById(1L);
 
         assertEquals(1L, returnedQuarter.getId());
         assertEquals("GJ 22/23-Q4", returnedQuarter.getLabel());
@@ -35,7 +35,7 @@ public class QuarterPersistenceServiceIT {
     @Test
     void shouldThrowExceptionWhenFindingQuarterNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> quarterPersistenceService.getQuarterById(321L));
+                () -> quarterPersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("Quarter with id 321 not found", exception.getReason());
@@ -44,7 +44,7 @@ public class QuarterPersistenceServiceIT {
     @Test
     void shouldThrowExceptionWhenFindingOwnerWithNullId() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> quarterPersistenceService.getQuarterById(null));
+                () -> quarterPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Missing attribute quarter id", exception.getReason());

@@ -5,7 +5,6 @@ import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,7 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
         return ((QuarterRepository) repository).getTop6ByOrderByStartDateDesc();
     }
 
-    public Quarter getCurrentQuarters(YearMonth date) {
-        return ((QuarterRepository) repository).getByStartDateBeforeAndEndDateAfter(date, date);
+    public Quarter getCurrentQuarters() {
+        return ((QuarterRepository) repository).getByStartDateBeforeAndEndDateAfter(LocalDate.now(), LocalDate.now());
     }
 }

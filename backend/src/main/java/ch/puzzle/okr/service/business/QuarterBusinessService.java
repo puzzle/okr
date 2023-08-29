@@ -59,8 +59,8 @@ public class QuarterBusinessService {
 
     public Quarter getActiveQuarter() {
         System.out.println("*".repeat(200));
-        System.out.println(quarterPersistenceService.getCurrentQuarters(YearMonth.now()));
-        return quarterPersistenceService.getCurrentQuarters(YearMonth.now());
+        System.out.println(quarterPersistenceService.getCurrentQuarters());
+        return quarterPersistenceService.getCurrentQuarters();
     }
 
     private String shortenYear(int fullYear) {

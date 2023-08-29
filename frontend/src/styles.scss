@@ -119,12 +119,9 @@ html {
 }
 
 .objective-title {
-  font-family: Roboto, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
-  width: 13.5625rem;
   word-wrap: break-word;
-  margin-bottom: 1.083rem;
 }
 
 .three-dot-menu {
@@ -133,13 +130,7 @@ html {
   cursor: pointer;
 }
 
-.add-key-result-and-add-objective-text {
-  color: #1e5a96;
-  font-family: Roboto, sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  margin: 0;
-}
+$link-color: #1e5a96;
 
 .add-anchor {
   display: flex;

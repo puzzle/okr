@@ -1,3 +1,5 @@
+@import "../../../styles";
+
 .objective {
   width: 20rem;
   border-radius: 0.5rem;
@@ -30,11 +32,22 @@
   width: 12.25rem;
   padding: 0.5rem 1rem;
   line-height: normal;
-  font-family: Roboto, sans-serif;
 }
 
 .objective-menu-option:hover {
   padding-left: 0.75rem;
   border-left: 0.25rem solid darkblue;
   background: #eff7ff;
+}
+
+.objective-title {
+  margin-bottom: 1.083rem;
+  width: 13.5625rem;
+}
+
+.add-key-result-and-add-objective-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: $link-color;
 }

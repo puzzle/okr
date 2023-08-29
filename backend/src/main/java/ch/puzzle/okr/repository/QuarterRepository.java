@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,5 +18,6 @@ public interface QuarterRepository extends CrudRepository<Quarter, Long> {
 
     List<Quarter> getTop6ByOrderByStartDateDesc();
 
-    Quarter getByStartDateBeforeOrStartDateEqualsAndEndDateAfterOrEndDateEquals(LocalDate startDateBefore, LocalDate startDateEquals, LocalDate endDateAfter, LocalDate endDateEquals);
+    @Query(value = "Select * from quarter where quarter.start_date <= :date and quarter.end_date >= :date;", nativeQuery = true)
+    Quarter getActiveQuarter(@Param("date") LocalDate date);
 }

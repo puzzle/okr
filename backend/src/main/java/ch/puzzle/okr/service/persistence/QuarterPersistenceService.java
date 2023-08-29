@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,6 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
     }
 
     public Quarter getCurrentQuarters() {
-        return ((QuarterRepository) repository).getByStartDateBeforeOrStartDateEqualsAndEndDateAfterOrEndDateEquals(LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now());
+        return ((QuarterRepository) repository).getActiveQuarter(LocalDate.now());
     }
 }

@@ -107,7 +107,14 @@ class QuarterBusinessServiceTest {
         assertEquals(2, hashMap.get(4));
     }
 
-    //Can be removed?
+    // Can be removed?
+    @ParameterizedTest
+    @MethodSource
+    void shouldGenerateQuarterLabel(int year, int quarter, String quarterLabel) {
+        assertEquals(quarterLabel, this.quarterBusinessService.createQuarterLabel(year, quarter));
+    }
+
+    // Can be removed?
     @ParameterizedTest
     @MethodSource
     void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
@@ -134,6 +141,22 @@ class QuarterBusinessServiceTest {
                 Arguments.of(2023, 7, "GJ 23/24-Q1"), Arguments.of(2023, 8, "GJ 23/24-Q1"),
                 Arguments.of(2023, 9, "GJ 23/24-Q1"), Arguments.of(2023, 10, "GJ 23/24-Q2"),
                 Arguments.of(2023, 11, "GJ 23/24-Q2"), Arguments.of(2023, 12, "GJ 23/24-Q2"));
+    }
+
+    // Can be removed?
+    @ParameterizedTest
+    @MethodSource
+    void shouldGenerateCurrentQuarterLabel(int year, int month, String quarterLabel) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        quarterBusinessService.now = yearMonth;
+        assertEquals(quarterLabel, this.quarterBusinessService.createQuarterLabel(yearMonth));
+    }
+
+    // Can be removed?
+    @ParameterizedTest
+    @MethodSource
+    void shouldShortenYear(int year, String shortedYear) {
+        assertEquals(shortedYear, this.quarterBusinessService.shortenYear(year));
     }
 
     @ParameterizedTest

@@ -105,6 +105,7 @@ export const MY_FORMATS = {
     MatRadioModule,
     MatCardModule,
     NgOptimizedImage,
+    MatCardModule,
   ],
   providers: [
     {

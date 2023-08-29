@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OverviewService } from '../../shared/services/overview.service';
 import { MenuEntry } from '../../shared/types/menu-entry';
 import { RouteService } from '../../shared/services/route.service';
-import { State } from '../../shared/types/enums/State';
 import { Observable, Subject } from 'rxjs';
 import { Objective } from '../../shared/models/Objective';
 

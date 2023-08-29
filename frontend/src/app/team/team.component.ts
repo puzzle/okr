@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Team } from '../release-1/shared/services/team.service';
+import { OverviewEntity } from '../model/OverviewEntity';
 
 @Component({
   selector: 'app-team',
@@ -7,7 +7,8 @@ import { Team } from '../release-1/shared/services/team.service';
   styleUrls: ['./team.component.scss'],
 })
 export class TeamComponent implements OnInit {
-  @Input() team!: Team;
+  @Input() overViewEntity!: OverviewEntity;
+
   constructor() {
     /* TODO document why this constructor is empty */
   }

@@ -39,6 +39,8 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
   };
 }
 import { TeamComponent } from './team/team.component';
+import { OverviewComponent } from './overview/overview.component';
+import { MatCardModule } from '@angular/material/card';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -93,6 +95,7 @@ export const MY_FORMATS = {
     OAuthModule.forRoot(),
     A11yModule,
     MatRadioModule,
+    MatCardModule,
   ],
   providers: [
     {

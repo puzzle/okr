@@ -1,24 +1,18 @@
 @import "../../../styles";
 
 .objective {
-  width: 20rem;
+  max-width: 20rem;
   border-radius: 0.5rem;
-  padding: 0rem 1.25rem 1.25rem 0rem;
-  box-shadow: 0 0 0 0;
+  background-color: #ffffff;
+}
+
+.objective-main {
+  padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 .objective:hover {
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.06), 1px 1px 2px 0 rgba(0, 0, 0, 0.06), 3px 3px 4px 0 rgba(0, 0, 0, 0.05),
     8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
-}
-
-.add-anchor {
-  margin-left: 1.25rem;
-}
-
-.objective-header {
-  width: 17.5625rem;
-  margin-left: 1.25rem;
 }
 
 .status-indicator {
@@ -27,9 +21,15 @@
   margin-right: 0.5rem;
 }
 
+.add-key-result-and-add-objective-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: $link-color;
+}
+
 .objective-menu-option {
   height: 2.1875rem;
-  width: 12.25rem;
   padding: 0.5rem 1rem;
   line-height: normal;
 }
@@ -40,14 +40,6 @@
   background: #eff7ff;
 }
 
-.objective-title {
-  margin-bottom: 1.083rem;
-  width: 13.5625rem;
-}
-
-.add-key-result-and-add-objective-text {
-  font-size: 0.75rem;
-  font-weight: 700;
-  margin: 0;
-  color: $link-color;
+.objective-header {
+  margin-bottom: 1rem;
 }

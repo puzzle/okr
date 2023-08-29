@@ -1,31 +1,33 @@
-<mat-card class="objective d-flex flex-column align-items-start">
+<div class="objective d-flex flex-column align-items-start">
   <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
-  <header class="objective-header d-flex justify-content-between">
-    <div class="title-status d-flex">
-      <img
-        [attr.data-testId]="'status-indicator'"
-        class="status-indicator"
-        src="assets/icons/{{ (objective | async)?.state }}"
-        alt="A status indicator that indicates the progress and state of this objective"
-      />
-      <mat-card-title class="objective-title">{{ (objective | async)?.title }}</mat-card-title>
+  <div class="objective-main">
+    <div class="objective-header d-flex justify-content-between">
+      <div class="title-status d-flex">
+        <img
+          [attr.data-testId]="'status-indicator'"
+          class="status-indicator"
+          src="assets/icons/{{ (objective | async)?.state }}"
+          alt="A status indicator that indicates the progress and state of this objective"
+        />
+        <header class="objective-title">{{ (objective | async)?.title }}</header>
+      </div>
+      <div>
+        <img
+          [matMenuTriggerFor]="objectiveMenu"
+          class="three-dot-menu"
+          src="/assets/icons/threedot.svg"
+          alt="A three-dot-menu button"
+        />
+      </div>
     </div>
-    <div>
-      <img
-        [matMenuTriggerFor]="objectiveMenu"
-        class="three-dot-menu"
-        src="/assets/icons/threedot.svg"
-        alt="A three-dot-menu button"
-      />
-    </div>
-  </header>
-  <mat-card-content>
-    <a class="add-anchor">
-      <img src="/assets/icons/new-icon.svg" alt="Add key-result button" />
-      <p class="add-key-result-and-add-objective-text">Key Result hinzufügen</p>
-    </a>
-  </mat-card-content>
-</mat-card>
+    <section>
+      <a class="add-anchor">
+        <img src="/assets/icons/new-icon.svg" alt="Add key-result button" />
+        <p class="add-key-result-and-add-objective-text">Key Result hinzufügen</p>
+      </a>
+    </section>
+  </div>
+</div>
 <mat-menu #objectiveMenu="matMenu" xPosition="before" yPosition="below">
   <button
     mat-menu-item

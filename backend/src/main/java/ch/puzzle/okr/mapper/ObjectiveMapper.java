@@ -14,7 +14,8 @@ public class ObjectiveMapper {
     private final TeamPersistenceService teamPersistenceService;
     private final QuarterBusinessService quarterBusinessService;
 
-    public ObjectiveMapper(TeamPersistenceService teamPersistenceService, QuarterBusinessService quarterBusinessService) {
+    public ObjectiveMapper(TeamPersistenceService teamPersistenceService,
+            QuarterBusinessService quarterBusinessService) {
         this.teamPersistenceService = teamPersistenceService;
         this.quarterBusinessService = quarterBusinessService;
     }

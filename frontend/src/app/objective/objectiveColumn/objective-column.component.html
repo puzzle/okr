@@ -1,6 +1,6 @@
-<mat-card class="objective">
+<mat-card class="objective d-flex flex-column align-items-start">
   <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
-  <header class="objective-header">
+  <header class="objective-header d-flex justify-content-between">
     <div class="title-status d-flex">
       <img
         [attr.data-testId]="'status-indicator'"
@@ -29,7 +29,7 @@
 <mat-menu #objectiveMenu="matMenu" xPosition="before" yPosition="below">
   <button
     mat-menu-item
-    class="objective-menu-option"
+    class="objective-menu-option fs-6"
     (click)="redirect(menuEntry); $event.stopPropagation()"
     *ngFor="let menuEntry of menuEntries"
   >

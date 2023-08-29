@@ -2,15 +2,15 @@
   <div class="col-12">
     <p class="team-title">{{ overViewEntity.team.name }}</p>
     <div class="d-flex justify-content-center">
-      <div class="d-flex gap-3 row col-12 overflow-scroll flex-nowrap">
+      <div class="d-flex gap-3 row col-12 overflow-scroll flex-wrap flex-md-nowrap">
         <div
           *ngFor="let objective of overViewEntity.objectives"
-          class="bg-danger col-xs-12 col-sm-6 col-md-4 col-xl-3 col-xxl-2"
+          class="bg-danger col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
         >
           <p>{{ objective.title }}</p>
         </div>
         <button
-          class="objective-new bg-white border-puzzle d-flex justify-content-center align-items-center col-xs-12 col-sm-6 col-md-4 col-xl-3 col-xxl-2"
+          class="objective-new bg-white border-puzzle d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
           color="primary"
           mat-stroked-button
         >

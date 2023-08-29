@@ -1,25 +1,28 @@
-<div class="container-fluid row">
-  <div class="col-12">
-    <p class="team-title">{{ overViewEntity.team.name }}</p>
-    <div class="d-flex justify-content-center">
-      <div class="d-flex gap-3 row col-12 overflow-scroll flex-wrap flex-md-nowrap">
-        <div
-          *ngFor="let objective of overViewEntity.objectives"
-          class="bg-danger col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
-        >
-          <p>{{ objective.title }}</p>
-        </div>
-        <button
-          class="objective-new bg-white border-puzzle d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
-          color="primary"
-          mat-stroked-button
-        >
-          <span class="d-flex flex-row align-items-center justify-content-center">
-            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add" class="color-blue"></mat-icon>
-            <p class="text-bg-light color-blue">Objective hinzufügen</p>
-          </span>
-        </button>
+<div class="container-fluid row bg-team-bg">
+  <p class="team-title">{{ overViewEntity.team.name }}</p>
+  <div class="d-flex justify-content-center">
+    <div class="d-flex gap-3 row col-12 overflow-scroll flex-wrap flex-md-nowrap">
+      <div
+        *ngFor="let objective of overViewEntity.objectives"
+        class="bg-danger col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
+      >
+        <p>{{ objective.title }}</p>
       </div>
+      <button
+        class="objective-new bg-white border border-1 border-pzDarkBlue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"
+        color="primary"
+        mat-stroked-button
+      >
+        <span class="d-flex flex-row align-items-center justify-content-center">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="add"
+            class="color-pzDarkBlue"
+          ></mat-icon>
+          <p class="color-pzDarkBlue">Objective hinzufügen</p>
+        </span>
+      </button>
     </div>
   </div>
 </div>

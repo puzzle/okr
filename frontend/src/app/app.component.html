@@ -1,4 +1,4 @@
-<div class="okr-topbar">
+<div #okrTopbar class="okr-topbar">
   <pzsh-topbar>
     <!-- prettier-ignore -->
     <svg width="214" height="32" viewBox="0 0 214 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +33,7 @@
     </div>
   </pzsh-menu>
 </div>
-<pzsh-banner class="okr-banner">
+<pzsh-banner class="okr-banner" [style.margin-top.px]="this.okrTopbar.offsetHeight">
   <!-- prettier-ignore -->
   <svg slot="tangram" width="274" height="140" viewBox="0 0 274 140" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M274 123.723V0H150.291L274 123.723Z" fill="#2C97A6"/>

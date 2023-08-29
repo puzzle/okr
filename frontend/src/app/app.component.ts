@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -16,6 +16,9 @@ import { RouteService } from './shared/services/route.service';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
+
+  @ViewChild('okrTopbar')
+  okrTopbar: ElementRef | undefined;
 
   constructor(
     private router: Router,

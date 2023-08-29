@@ -37,7 +37,7 @@ class QuarterBusinessServiceTest {
 
     @InjectMocks
     @Spy
-    private QuarterBusinessService quarterService;
+    private QuarterBusinessService quarterBusinessService;
 
     private static Stream<Arguments> shouldGetFutureQuarters() {
         return Stream.of(Arguments.of(2023, 7, List.of("GJ 23/24-Q2")), Arguments.of(2022, 10, List.of("GJ 22/23-Q3")),
@@ -75,27 +75,27 @@ class QuarterBusinessServiceTest {
     @BeforeEach
     void beforeEach() {
 
-        quarterService.now = YearMonth.of(2022, 1);
+        quarterBusinessService.now = YearMonth.of(2022, 1);
     }
 
     @Test
     void shouldReturnProperQuarter() {
         Quarter quarter = Quarter.Builder.builder().withId(3L).withLabel("GJ 22/23-Q2").build();
         when(this.quarterPersistenceService.findById(anyLong())).thenReturn(quarter);
-        Quarter objectQuarter = this.quarterService.getQuarterById(3L);
+        Quarter objectQuarter = this.quarterBusinessService.getQuarterById(3L);
         assertEquals("GJ 22/23-Q2", objectQuarter.getLabel());
         assertEquals(3, objectQuarter.getId());
     }
 
     @Test
     void shouldThrowResponseException() {
-        assertThrows(ResponseStatusException.class, () -> this.quarterService.getQuarterById(null));
+        assertThrows(ResponseStatusException.class, () -> this.quarterBusinessService.getQuarterById(null));
     }
 
     @Test
     void shouldThrowExceptionBecauseOfNotFound() {
         when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.empty());
-        assertThrows(ResponseStatusException.class, () -> this.quarterService.getQuarterById(5L));
+        assertThrows(ResponseStatusException.class, () -> this.quarterBusinessService.getQuarterById(5L));
     }
 
     @Test
@@ -110,7 +110,7 @@ class QuarterBusinessServiceTest {
     @ParameterizedTest
     @MethodSource
     void shouldGenerateQuarterLabel(int year, int quarter, String quarterLabel) {
-        assertEquals(quarterLabel, this.quarterService.createQuarterLabel(year, quarter));
+        assertEquals(quarterLabel, this.quarterBusinessService.createQuarterLabel(year, quarter));
     }
 
     @ParameterizedTest
@@ -120,16 +120,16 @@ class QuarterBusinessServiceTest {
 
         Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
         YearMonth yearMonth = YearMonth.of(currentYear, month);
-        quarterService.now = yearMonth;
+        quarterBusinessService.now = yearMonth;
 
-        doReturn(currentQuarterLabel).when(this.quarterService).generateQuarterLabel(firstLabelYear,
+        doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
                 businessYearQuarter);
-        doReturn(futureQuarters).when(this.quarterService).getFutureQuarters(yearMonth, 1);
-        doReturn(pastQuarters).when(this.quarterService).getPastQuarters(yearMonth, 4);
+        doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
+        doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
         doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
 
         assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
-                quarterService.getQuarters());
+                quarterBusinessService.getQuarters());
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
@@ -145,14 +145,14 @@ class QuarterBusinessServiceTest {
     @MethodSource
     void shouldGenerateCurrentQuarterLabel(int year, int month, String quarterLabel) {
         YearMonth yearMonth = YearMonth.of(year, month);
-        quarterService.now = yearMonth;
+        quarterBusinessService.now = yearMonth;
 //        assertEquals(quarterLabel, quarterService.createQuarterLabel(yearMonth));
     }
 
     @ParameterizedTest
     @MethodSource
     void shouldShortenYear(int year, String shortedYear) {
-        assertEquals(shortedYear, this.quarterService.shortenYear(year));
+        assertEquals(shortedYear, this.quarterBusinessService.shortenYear(year));
     }
 
     @ParameterizedTest

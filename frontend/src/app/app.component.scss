@@ -7,6 +7,14 @@
   margin-left: 50px;
 }
 
+.okr-topbar {
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+}
+
 .okr-banner {
+  margin-top: 48px;
   height: 140px;
 }

@@ -29,7 +29,8 @@ public class QuarterBusinessService {
     private final QuarterValidationService validator;
     public YearMonth now;
 
-    public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService, QuarterValidationService validator, YearMonth now) {
+    public QuarterBusinessService(QuarterPersistenceService quarterPersistenceService,
+            QuarterValidationService validator, YearMonth now) {
         this.quarterPersistenceService = quarterPersistenceService;
         this.validator = validator;
         this.now = now;
@@ -71,16 +72,16 @@ public class QuarterBusinessService {
 
     private String createQuarterLabel(YearMonth yearMonth) {
         int businessQuarter = yearToBusinessQuarterMap.get(yearMonth.get(IsoFields.QUARTER_OF_YEAR));
-        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(), Month.JULY)) ? yearMonth.getYear() - 1 : yearMonth.getYear();
-        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear + 1), businessQuarter);
+        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(), Month.JULY))
+                ? yearMonth.getYear() - 1 : yearMonth.getYear();
+        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear + 1),
+                businessQuarter);
     }
 
     private Quarter generateQuarter(YearMonth yearMonth) {
         // Logic to generate quarter
-        Quarter quarter = Quarter.Builder.builder()
-                .withLabel(createQuarterLabel(yearMonth))
-                .withStartDate(yearMonth.plusMonths(4).atDay(1))
-                .withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
+        Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
+                .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
         validator.validateOnSave(quarter);
         return quarterPersistenceService.save(quarter);

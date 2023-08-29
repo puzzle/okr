@@ -55,8 +55,9 @@ public class QuarterBusinessService {
     }
 
     public Quarter getActiveQuarter() {
-        // Needs to be fixed or removed -> getQuarter is not functional anymore
-        return getQuarter(createQuarterLabel(this.now));
+        System.out.println("*".repeat(200));
+        System.out.println(quarterPersistenceService.getCurrentQuarters(YearMonth.now()));
+        return quarterPersistenceService.getCurrentQuarters(YearMonth.now());
     }
 
     private String shortenYear(int fullYear) {

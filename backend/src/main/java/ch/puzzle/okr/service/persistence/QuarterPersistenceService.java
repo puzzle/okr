@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.YearMonth;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +37,9 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
 
     public List<Quarter> getMostCurrentQuarters() {
         return ((QuarterRepository) repository).getTop6ByOrderByStartDateDesc();
+    }
+
+    public Quarter getCurrentQuarters(YearMonth date) {
+        return ((QuarterRepository) repository).getByStartDateBeforeAndEndDateAfter(date, date);
     }
 }

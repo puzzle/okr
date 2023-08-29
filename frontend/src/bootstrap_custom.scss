@@ -1,8 +1,8 @@
-$pzDarkBlue: #1e5a96;
-$team-bg: #f6f7f8;
+$pz-dark-blue: #1e5a96;
+$eggshell: #f6f7f8;
 
 $theme-colors: (
-  "pzDarkBlue": $pzDarkBlue,
-  "team-bg": $team-bg,
+  "pz-dark-blue": $pz-dark-blue,
+  "eggshell": $eggshell,
 );
 @import "bootstrap/scss/bootstrap";

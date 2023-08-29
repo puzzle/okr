@@ -111,7 +111,7 @@ html {
 
 //Applied since all menus have the same styling
 .mat-menu-panel {
-  border-radius: 8px !important;
+  border-radius: 0.5rem !important;
 }
 
 .mat-menu-content {
@@ -119,36 +119,30 @@ html {
 }
 
 .objective-title {
-  flex: 1 0 0;
-  color: #000;
   font-family: Roboto, sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
-  width: 217px;
+  width: 13.5625rem;
   word-wrap: break-word;
-  margin-bottom: 13px;
+  margin-bottom: 1.083rem;
 }
 
 .three-dot-menu {
-  width: 20px;
-  height: 20px;
+  width: 1.25rem;
+  height: 1.25rem;
   cursor: pointer;
 }
 
 .add-key-result-and-add-objective-text {
   color: #1e5a96;
   font-family: Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   margin: 0;
 }
 
-.objective-menu-option:hover {
-  border-left: 4px solid darkblue;
-  background: #eff7ff;
-}
-
-.objective-menu-option {
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
+.add-anchor {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
 }

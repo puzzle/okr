@@ -1,10 +1,10 @@
 .objective {
   display: flex;
-  width: 321px;
+  width: 20rem;
   flex-direction: column;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   align-items: flex-start;
-  padding: 0px 20px 20px 0px;
+  padding: 0rem 1.25rem 1.25rem 0rem;
   box-shadow: 0 0 0 0;
 }
 
@@ -13,38 +13,34 @@
     8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
 }
 
-.add-key-result-anchor {
-  display: flex;
-  cursor: pointer;
-  text-decoration: none;
-  margin-left: 20px;
-  width: max-content;
+.add-anchor {
+  margin-left: 1.25rem;
 }
 
 .objective-header {
-  width: 281px;
+  width: 17.5625rem;
   display: flex;
   justify-content: space-between;
-  margin-left: 20px;
-}
-
-.title-status {
-  display: flex;
+  margin-left: 1.25rem;
 }
 
 .status-indicator {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
 }
 
 .objective-menu-option {
-  height: 35px;
-  width: 196px;
-  padding: 8px 16px;
+  height: 2.1875rem;
+  width: 12.25rem;
+  padding: 0.5rem 1rem;
   line-height: normal;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
 }
 
 .objective-menu-option:hover {
-  padding-left: 12px;
+  padding-left: 0.75rem;
+  border-left: 0.25rem solid darkblue;
+  background: #eff7ff;
 }

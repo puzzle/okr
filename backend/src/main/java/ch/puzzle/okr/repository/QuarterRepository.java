@@ -17,5 +17,5 @@ public interface QuarterRepository extends CrudRepository<Quarter, Long> {
 
     List<Quarter> getTop6ByOrderByStartDateDesc();
 
-    Quarter getByStartDateBeforeAndEndDateAfter(LocalDate startDate, LocalDate endDate);
+    Quarter getByStartDateBeforeOrStartDateEqualsAndEndDateAfterOrEndDateEquals(LocalDate startDateBefore, LocalDate startDateEquals, LocalDate endDateAfter, LocalDate endDateEquals);
 }

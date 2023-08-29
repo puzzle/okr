@@ -39,6 +39,6 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
     }
 
     public Quarter getCurrentQuarters() {
-        return ((QuarterRepository) repository).getByStartDateBeforeAndEndDateAfter(LocalDate.now(), LocalDate.now());
+        return ((QuarterRepository) repository).getByStartDateBeforeOrStartDateEqualsAndEndDateAfterOrEndDateEquals(LocalDate.now(), LocalDate.now(), LocalDate.now(), LocalDate.now());
     }
 }

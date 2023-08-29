@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,9 +33,8 @@ public class TeamController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Teams with active objective in quarter", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
-    @GetMapping("/{quarterId}")
-    public List<TeamDto> getAllTeams(
-            @Parameter(description = "The ID of a Team to get a list of its Objectives.", required = false) @PathVariable Long quarterId) {
+    @GetMapping
+    public List<TeamDto> getAllTeams(@RequestParam(value = "quarterId", required = false) Long quarterId) {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return teamBusinessService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
     }

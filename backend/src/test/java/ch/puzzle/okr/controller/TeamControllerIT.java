@@ -62,18 +62,27 @@ class TeamControllerIT {
     void shouldGetAllTeams() throws Exception {
         BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
 
-        mvc.perform(get("/api/v2/teams/1").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is("Puzzle")))
                 .andExpect(jsonPath("$[0].activeObjectives", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(7)))
                 .andExpect(jsonPath("$[1].name", Is.is("OKR"))).andExpect(jsonPath("$[1].activeObjectives", Is.is(0)));
+        System.out.println(jsonPath("$"));
+    }
+
+    @Test
+    void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
+        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
+        mvc.perform(get("/api/v2/teams").contentType(MediaType.APPLICATION_JSON)).andExpectAll();
+        BDDMockito.verify(teamMapper).toDto(teamOKR, null);
+        BDDMockito.verify(teamMapper).toDto(teamPuzzle, null);
     }
 
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
         BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(Collections.emptyList());
 
-        mvc.perform(get("/api/v2/teams/1").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 }

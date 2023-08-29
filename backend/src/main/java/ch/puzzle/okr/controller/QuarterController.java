@@ -22,11 +22,12 @@ import java.util.List;
 @RequestMapping("api/v1/quarters")
 public class QuarterController {
 
-    private final QuarterBusinessService quarterService;
+    private final QuarterBusinessService quarterBusinessService;
     private final RegisterNewUserService registerNewUserService;
 
-    public QuarterController(QuarterBusinessService quarterService, RegisterNewUserService registerNewUserService) {
-        this.quarterService = quarterService;
+    public QuarterController(QuarterBusinessService quarterBusinessService,
+            RegisterNewUserService registerNewUserService) {
+        this.quarterBusinessService = quarterBusinessService;
         this.registerNewUserService = registerNewUserService;
     }
 
@@ -38,6 +39,6 @@ public class QuarterController {
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
-        return ResponseEntity.status(HttpStatus.OK).body(this.quarterService.getQuarters());
+        return ResponseEntity.status(HttpStatus.OK).body(this.quarterBusinessService.getQuarters());
     }
 }

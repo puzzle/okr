@@ -18,6 +18,6 @@ public interface QuarterRepository extends CrudRepository<Quarter, Long> {
 
     List<Quarter> getTop6ByOrderByStartDateDesc();
 
-    @Query(value = "Select * from quarter where quarter.start_date <= :date and quarter.end_date >= :date;", nativeQuery = true)
+    @Query(value = "Select q from Quarter q where q.startDate <= :date and q.endDate >= :date")
     Quarter getActiveQuarter(@Param("date") LocalDate date);
 }

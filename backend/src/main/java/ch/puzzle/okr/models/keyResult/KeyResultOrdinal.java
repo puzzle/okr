@@ -43,29 +43,36 @@ public class KeyResultOrdinal extends KeyResult {
     public KeyResultOrdinal() {
     }
 
-    public KeyResultOrdinal(OrdinalBuilder builder) {
+    public KeyResultOrdinal(Builder builder) {
         super(builder);
         setCommitZone(builder.commitZone);
         setTargetZone(builder.targetZone);
         setStretchZone(builder.stretchZone);
     }
 
-    public static class OrdinalBuilder extends KeyResultBuilder {
+    public static class Builder extends KeyResult.Builder {
         private @NotNull String commitZone;
         private @NotNull String targetZone;
         private @NotNull String stretchZone;
 
-        public OrdinalBuilder withCommitZone(@NotNull String commitZone) {
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withCommitZone(@NotNull String commitZone) {
             this.commitZone = commitZone;
             return this;
         }
 
-        public OrdinalBuilder withTargetZone(@NotNull String targetZone) {
+        public Builder withTargetZone(@NotNull String targetZone) {
             this.targetZone = targetZone;
             return this;
         }
 
-        public OrdinalBuilder withStretchZone(@NotNull String stretchZone) {
+        public Builder withStretchZone(@NotNull String stretchZone) {
             this.stretchZone = stretchZone;
             return this;
         }

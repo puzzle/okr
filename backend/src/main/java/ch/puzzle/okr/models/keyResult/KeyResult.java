@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 public abstract class KeyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
@@ -130,7 +131,7 @@ public abstract class KeyResult {
     public KeyResult() {
     }
 
-    public KeyResult(KeyResultBuilder builder) {
+    public KeyResult(Builder builder) {
         id = builder.id;
         setObjective(builder.objective);
         setTitle(builder.title);
@@ -141,7 +142,7 @@ public abstract class KeyResult {
         setModifiedOn(builder.modifiedOn);
     }
 
-    public abstract static class KeyResultBuilder {
+    public abstract static class Builder {
         private @NotNull Long id;
         private @NotNull Objective objective;
         private @NotBlank @Size(min = 2, max = 250) String title;
@@ -151,42 +152,42 @@ public abstract class KeyResult {
         private @NotNull LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
 
-        public KeyResultBuilder withId(@NotNull Long id) {
+        public Builder withId(@NotNull Long id) {
             this.id = id;
             return this;
         }
 
-        public KeyResultBuilder withObjective(@NotNull Objective objective) {
+        public Builder withObjective(@NotNull Objective objective) {
             this.objective = objective;
             return this;
         }
 
-        public KeyResultBuilder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
             this.title = title;
             return this;
         }
 
-        public KeyResultBuilder withDescription(@Size(min = 2, max = 4096) String description) {
+        public Builder withDescription(@Size(min = 2, max = 4096) String description) {
             this.description = description;
             return this;
         }
 
-        public KeyResultBuilder withOwner(@NotNull User owner) {
+        public Builder withOwner(@NotNull User owner) {
             this.owner = owner;
             return this;
         }
 
-        public KeyResultBuilder withCreatedBy(@NotNull User createdBy) {
+        public Builder withCreatedBy(@NotNull User createdBy) {
             this.createdBy = createdBy;
             return this;
         }
 
-        public KeyResultBuilder withCreatedOn(@NotNull LocalDateTime createdOn) {
+        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
             this.createdOn = createdOn;
             return this;
         }
 
-        public KeyResultBuilder withModifiedOn(LocalDateTime modifiedOn) {
+        public Builder withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
             return this;
         }

@@ -20,7 +20,8 @@ public class TeamMapper {
     }
 
     public TeamDto toDto(Team team, Long quarterId) {
-        long chosenQuarterId = quarterId == null ? quarterBusinessService.getActiveQuarter(LocalDate.now()).getId() : quarterId;
+        long chosenQuarterId = quarterId == null ? quarterBusinessService.getActiveQuarter(LocalDate.now()).getId()
+                : quarterId;
         Integer activeObjectives = teamBusinessService.activeObjectivesAmountOfTeam(team, chosenQuarterId);
         return new TeamDto(team.getId(), team.getName(), activeObjectives);
     }

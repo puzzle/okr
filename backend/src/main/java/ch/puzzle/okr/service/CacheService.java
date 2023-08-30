@@ -14,13 +14,15 @@ public class CacheService {
 
     private static final Logger logger = LoggerFactory.getLogger(CacheService.class);
 
+    public static final String USER_CACHE = "users";
+
     private final CacheManager cacheManager;
 
     public CacheService(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = USER_CACHE, allEntries = true)
     @Scheduled(fixedRateString = "${caching.users.TTL}")
     public void emptyUsersCache() {
         logger.info("emptying users cache");

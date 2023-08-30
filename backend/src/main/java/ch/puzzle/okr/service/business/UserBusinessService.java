@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.service.CacheService.USER_CACHE;
+
 @Service
 public class UserBusinessService {
 
@@ -28,7 +30,7 @@ public class UserBusinessService {
         return userPersistenceService.findById(ownerId);
     }
 
-    @Cacheable(value = "users", key = "#newUser.username")
+    @Cacheable(value = USER_CACHE, key = "#newUser.username")
     public User getOrCreateUser(User newUser) {
         validationService.validateOnCreate(newUser);
         return userPersistenceService.getOrCreateUser(newUser);

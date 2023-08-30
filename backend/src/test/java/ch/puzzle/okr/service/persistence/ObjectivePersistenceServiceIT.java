@@ -134,4 +134,12 @@ public class ObjectivePersistenceServiceIT {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
     }
+
+    @Test
+    void countByTeamAndQuarter_ShouldReturnCountValue() {
+        Integer count = objectivePersistenceService.countByTeamAndQuarter(Team.Builder.builder().withId(5L).build(),
+                Quarter.Builder.builder().withId(2L).build());
+
+        assertEquals(2, count);
+    }
 }

@@ -49,15 +49,7 @@ public class QuarterBusinessService {
         return quarterList;
     }
 
-    protected synchronized Quarter getQuarter(String label) {
-        Optional<Quarter> quarter = quarterPersistenceService.getByLabel(label);
-        return quarter
-                .orElseGet(() -> quarterPersistenceService.save(Quarter.Builder.builder().withLabel(label).build()));
-    }
-
     public Quarter getActiveQuarter() {
-        System.out.println("*".repeat(200));
-        System.out.println(quarterPersistenceService.getCurrentQuarters());
         return quarterPersistenceService.getCurrentQuarters();
     }
 

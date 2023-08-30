@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -30,6 +32,8 @@ public class QuarterPersistenceServiceIT {
 
         assertEquals(1L, returnedQuarter.getId());
         assertEquals("GJ 22/23-Q4", returnedQuarter.getLabel());
+        assertEquals(LocalDate.of(2023, 04, 01), returnedQuarter.getStartDate());
+        assertEquals(LocalDate.of(2023, 06, 30), returnedQuarter.getEndDate());
     }
 
     @Test
@@ -42,12 +46,12 @@ public class QuarterPersistenceServiceIT {
     }
 
     @Test
-    void shouldThrowExceptionWhenFindingOwnerWithNullId() {
+    void shouldThrowExceptionWhenFindingQuarterWithIdNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> quarterPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute quarter id", exception.getReason());
+        assertEquals("Missing identifier for Quarter", exception.getReason());
     }
 
 //    @Test

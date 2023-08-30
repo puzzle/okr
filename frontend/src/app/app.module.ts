@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +24,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { OauthInterceptor } from './release-1/shared/interceptors/oauth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -32,6 +32,17 @@ import { HelpDialogComponent } from './release-1/shared/dialog/help-dialog/help-
 import { A11yModule } from '@angular/cdk/a11y';
 import { ExampleDialogComponent } from './release-1/shared/dialog/example-dialog/example-dialog.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { ConfigService } from './config.service';
+import { firstValueFrom } from 'rxjs';
+import { environment } from '../environments/environment';
+
+function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
+  console.log('factory reached ===============');
+  return async () => {
+    const config = await firstValueFrom(configService.config$);
+    oauthService.configure({ ...environment.oauth, issuer: config.issuer });
+  };
+}
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -103,6 +114,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
+    { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

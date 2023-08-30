@@ -10,7 +10,7 @@ export const environment = {
   oauth: {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,
-    issuer: 'http://localhost:8000',
+    issuer: '',
     strictDiscoveryDocumentValidation: false,
     redirectUri: 'http://localhost:4200/auth/keycloakopenid/callback',
     scope: 'profile openid preferred_username given_name family_name email',

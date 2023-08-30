@@ -6,6 +6,7 @@ import { RouteService } from './release-1/shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 import { version } from './version';
+import { ConfigService } from './config.service';
 
 @Component({
   selector: 'app-root',
@@ -25,8 +26,6 @@ export class AppComponent implements OnInit {
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
-
-    oauthService.configure(environment.oauth);
 
     // Try to login via url state
     oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {

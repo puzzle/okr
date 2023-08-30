@@ -1,8 +1,7 @@
-package ch.puzzle.okr.controller.v1;
+package ch.puzzle.okr.controller.v2;
 
-import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.dto.OverviewDto;
-import ch.puzzle.okr.dto.TeamDto;
+import ch.puzzle.okr.dto.overview.*;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.service.OverviewService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -18,6 +17,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,33 +27,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(OverviewController.class)
-public class OverviewControllerIT {
+@WebMvcTest(OverviewControllerV2.class)
+public class OverviewControllerV2IT {
     @Autowired
     private MockMvc mvc;
     @MockBean
     private OverviewService overviewService;
 
-    static OverviewDto overviewDtoPuzzle = new OverviewDto(new TeamDto(1L, "Puzzle", 0),
-            List.of(new ObjectiveDto(1L, "Objective 1", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, "GJ 22/23-Q2",
-                    "This is a description", 20L),
-                    new ObjectiveDto(2L, "Objective 2", 1L, "Alice", "Wunderland", 1L, "Puzzle", 1L, "GJ 22/23-Q2",
-                            "This is a description", 20L)));
-    static OverviewDto overviewDtoOKR = new OverviewDto(new TeamDto(2L, "OKR", 0),
-            List.of(new ObjectiveDto(5L, "Objective 5", 1L, "Alice", "Wunderland", 2L, "OKR", 1L, "GJ 22/23-Q2",
-                    "This is a description", 20L),
-                    new ObjectiveDto(7L, "Objective 7", 1L, "Alice", "Wunderland", 2L, "OKR", 1L, "GJ 22/23-Q2",
-                            "This is a description", 20L)));
-    static OverviewDto overviewDtoKuchen = new OverviewDto(new TeamDto(3L, "Kuchen", 0), List.of(new ObjectiveDto(8L,
-            "Objective 8", 1L, "Alice", "Wunderland", 3L, "Kuchen", 1L, "GJ 22/23-Q2", "This is a description", 20L)));
-    static OverviewDto overviewDtoFindus = new OverviewDto(new TeamDto(4L, "Findus", 0), Collections.emptyList());
+    static OverviewDto overviewDtoPuzzle = new OverviewDto(new OverviewTeamDto(1L, "Puzzle"), List.of(
+            new OverviewObjectiveDto(1L, "Objective 1", "state", new OverviewQuarterDto(1L, "GJ 22/23-Q2"),
+                    List.of(new OverviewKeyResultMetricDto(20L, "This is a description", Unit.CHF, 5.0, 20.0,
+                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
+            new OverviewObjectiveDto(2L, "Objective 2", "state", new OverviewQuarterDto(1L, "GJ 22/23-Q2"),
+                    List.of(new OverviewKeyResultMetricDto(21L, "This is a description", Unit.CHF, 5.0, 20.0,
+                            new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
+    static OverviewDto overviewDtoOKR = new OverviewDto(new OverviewTeamDto(2L, "OKR"), List.of(
+            new OverviewObjectiveDto(5L, "Objective 5", "state", new OverviewQuarterDto(1L, "GJ 22/23-Q2"),
+                    List.of(new OverviewKeyResultMetricDto(20L, "This is a description", Unit.CHF, 5.0, 20.0,
+                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
+            new OverviewObjectiveDto(7L, "Objective 7", "state", new OverviewQuarterDto(1L, "GJ 22/23-Q2"),
+                    List.of(new OverviewKeyResultMetricDto(21L, "This is a description", Unit.CHF, 5.0, 20.0,
+                            new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
+    static OverviewDto overviewDtoKuchen = new OverviewDto(new OverviewTeamDto(3L, "Kuchen"),
+            List.of(new OverviewObjectiveDto(8L, "Objective 8", "state", new OverviewQuarterDto(1L, "GJ 22/23-Q2"),
+                    List.of(new OverviewKeyResultMetricDto(20L, "This is a description", Unit.CHF, 5.0, 20.0,
+                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now()))))));
+    static OverviewDto overviewDtoFindus = new OverviewDto(new OverviewTeamDto(4L, "Findus"), Collections.emptyList());
 
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), null))
+        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 2L, 3L, 4L)))
                 .willReturn(List.of(overviewDtoPuzzle, overviewDtoOKR, overviewDtoKuchen));
 
-        mvc.perform(get("/api/v1/overview").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
                 .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
                 .andExpect(jsonPath("$[0].objectives[0].id", Is.is(1)))
@@ -69,16 +75,16 @@ public class OverviewControllerIT {
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
         BDDMockito.given(overviewService.getOverview(any(), any())).willReturn(Collections.emptyList());
 
-        mvc.perform(get("/api/v1/overview").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
-    void shouldReturnOnlyFilteredTeams() throws Exception {
-        BDDMockito.given(overviewService.getOverview(List.of(1L, 3L), null))
+    void shouldReturnOnlyFilteredObjecticesByQuarterAndTeam() throws Exception {
+        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 3L)))
                 .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
 
-        mvc.perform(get("/api/v1/overview?team=1,3").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
                 .andExpect(jsonPath("$[0].objectives[0].id", Is.is(1)))
@@ -88,24 +94,11 @@ public class OverviewControllerIT {
     }
 
     @Test
-    void shouldReturnOnlyFilteredObjectivesByQuarter() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 1L))
-                .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
-
-        mvc.perform(get("/api/v1/overview?quarter=1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].team.id", Is.is(1))).andExpect(jsonPath("$[0].team.name", Is.is("Puzzle")))
-                .andExpect(jsonPath("$[0].objectives.size()", Is.is(2))).andExpect(jsonPath("$[1].team.id", Is.is(3)))
-                .andExpect(jsonPath("$[1].team.name", Is.is("Kuchen")))
-                .andExpect(jsonPath("$[1].objectives.size()", Is.is(1)));
-    }
-
-    @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewService.getOverview(Collections.emptyList(), 5L))
+        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(4L)))
                 .willReturn(List.of(overviewDtoFindus));
 
-        mvc.perform(get("/api/v1/overview?quarter=5").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].team.id", Is.is(4))).andExpect(jsonPath("$[0].team.name", Is.is("Findus")))
                 .andExpect(jsonPath("$[0].objectives.size()", Is.is(0)));

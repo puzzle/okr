@@ -38,6 +38,7 @@
     "bootstrap": "^5.2.3",
     "jquery": "^3.6.1",
     "moment": "^2.29.4",
+    "ngx-hide-on-scroll": "^0.2.1",
     "ngx-toastr": "^15.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
 
   @ViewChild('okrTopbar')
   okrTopbar: ElementRef | undefined;
-  offsetFlag: boolean = true;
 
   constructor(
     private router: Router,
@@ -56,13 +55,6 @@ export class AppComponent implements OnInit {
       .subscribe((event) => {
         this.currentUrl = event.url;
       });
-  }
-
-  @HostListener('document:wheel', ['$event'])
-  getScrollHeight(event: Event) {
-    console.log('moin');
-    if (window.scrollY > 0) this.offsetFlag = false;
-    else this.offsetFlag = true;
   }
 
   isOverview(): null | true {

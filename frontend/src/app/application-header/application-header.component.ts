@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-application-header',
   templateUrl: './application-header.component.html',
-  styleUrls: ['./application-header.component.scss']
+  styleUrls: ['./application-header.component.scss'],
 })
 export class ApplicationHeaderComponent implements OnInit {
   @ViewChild('okrTopbar')
@@ -11,9 +11,7 @@ export class ApplicationHeaderComponent implements OnInit {
   @ViewChild('okrBanner')
   okrBanner: ElementRef | undefined;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

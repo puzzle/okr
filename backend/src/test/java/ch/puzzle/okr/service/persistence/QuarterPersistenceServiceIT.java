@@ -50,23 +50,13 @@ public class QuarterPersistenceServiceIT {
         assertEquals("Missing attribute quarter id", exception.getReason());
     }
 
-    @Test
-    void getOrCreateQuarter_ShouldReturnSingleQuarterWhenQuarterFound() {
-        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").build();
-
-        Quarter returnedQuarter = quarterPersistenceService.getOrCreateQuarter(quarter.getLabel());
-
-        assertEquals(quarter.getId(), returnedQuarter.getId());
-        assertEquals(quarter.getLabel(), returnedQuarter.getLabel());
-    }
-
-    @Test
-    void getOrCreateQuarter_ShouldReturnSavedQuarterWhenQuarterNotFound() {
-        Quarter quarter = Quarter.Builder.builder().withId(null).withLabel("GJ 20/21-Q2").build();
-
-        createdQuarter = quarterPersistenceService.getOrCreateQuarter(quarter.getLabel());
-
-        assertNotNull(createdQuarter.getId());
-        assertEquals(quarter.getLabel(), createdQuarter.getLabel());
-    }
+//    @Test
+//    void getOrCreateQuarter_ShouldReturnSingleQuarterWhenQuarterFound() {
+//        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").build();
+//
+//        Quarter returnedQuarter = quarterPersistenceService.getOrCreateQuarter(quarter.getLabel());
+//
+//        assertEquals(quarter.getId(), returnedQuarter.getId());
+//        assertEquals(quarter.getLabel(), returnedQuarter.getLabel());
+//    }
 }

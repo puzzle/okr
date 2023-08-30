@@ -20,11 +20,6 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
         return "Quarter";
     }
 
-    public synchronized Quarter getOrCreateQuarter(String label) {
-        Optional<Quarter> quarter = ((QuarterRepository) repository).findByLabel(label);
-        return quarter.orElseGet(() -> repository.save(Quarter.Builder.builder().withLabel(label).build()));
-    }
-
     void deleteQuarterById(Long quarterId) {
         repository.deleteById(quarterId);
     }

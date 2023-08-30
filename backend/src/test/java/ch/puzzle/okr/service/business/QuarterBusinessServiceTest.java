@@ -124,10 +124,10 @@ class QuarterBusinessServiceTest {
         YearMonth yearMonth = YearMonth.of(currentYear, month);
         quarterBusinessService.now = yearMonth;
 
-        doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
-                businessYearQuarter);
-        doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
-        doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
+//        doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
+//                businessYearQuarter);
+//        doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
+//        doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
         doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
 
         assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),

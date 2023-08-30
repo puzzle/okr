@@ -16,7 +16,7 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     @Override
     public String getModelName() {
-        return "Objective";
+        return "KeyResult";
     }
 
     public List<KeyResult> getKeyResultsByObjective(Objective objective) {

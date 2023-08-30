@@ -15,5 +15,21 @@
 }
 
 .okr-banner {
-  height: 140px;
+  position: fixed;
+  width: 100%;
+  height: 15%;
+}
+
+pzsh-banner.banner--hidden {
+  animation: fadeOut 0.5s;
+  opacity: 0;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

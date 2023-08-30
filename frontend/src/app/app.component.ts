@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
 
   @ViewChild('okrTopbar')
   okrTopbar: ElementRef | undefined;
+  @ViewChild('okrBanner')
+  okrBanner: ElementRef | undefined;
 
   constructor(
     private router: Router,

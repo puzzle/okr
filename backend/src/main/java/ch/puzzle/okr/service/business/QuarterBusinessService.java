@@ -51,9 +51,9 @@ public class QuarterBusinessService {
         return quarterList;
     }
 
-    public Quarter getActiveQuarter() {
-        validator.validateOnGet(LocalDate.now());
-        return quarterPersistenceService.getCurrentQuarter();
+    public Quarter getActiveQuarter(LocalDate now) {
+        validator.validateOnGet(now);
+        return quarterPersistenceService.getCurrentQuarter(now);
     }
 
     private String shortenYear(int fullYear) {

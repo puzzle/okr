@@ -6,6 +6,8 @@ import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
 public class TeamMapper {
 
@@ -18,7 +20,7 @@ public class TeamMapper {
     }
 
     public TeamDto toDto(Team team, Long quarterId) {
-        long chosenQuarterId = quarterId == null ? quarterBusinessService.getActiveQuarter().getId() : quarterId;
+        long chosenQuarterId = quarterId == null ? quarterBusinessService.getActiveQuarter(LocalDate.now()).getId() : quarterId;
         Integer activeObjectives = teamBusinessService.activeObjectivesAmountOfTeam(team, chosenQuarterId);
         return new TeamDto(team.getId(), team.getName(), activeObjectives);
     }

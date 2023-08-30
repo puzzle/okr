@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.IsoFields;
@@ -46,11 +47,13 @@ public class QuarterBusinessService {
         Quarter buffer = quarterList.get(0);
         quarterList.set(0, quarterList.get(1));
         quarterList.set(1, buffer);
+        quarterList.forEach(quarter -> validator.validateOnGet(quarter.getId()));
         return quarterList;
     }
 
     public Quarter getActiveQuarter() {
-        return quarterPersistenceService.getCurrentQuarters();
+        validator.validateOnGet(LocalDate.now());
+        return quarterPersistenceService.getCurrentQuarter();
     }
 
     private String shortenYear(int fullYear) {

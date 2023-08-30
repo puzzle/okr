@@ -17,11 +17,6 @@ export class AppComponent implements OnInit {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
 
-  @ViewChild('okrTopbar')
-  okrTopbar: ElementRef | undefined;
-  @ViewChild('okrBanner')
-  okrBanner: ElementRef | undefined;
-
   constructor(
     private router: Router,
     private translate: TranslateService,

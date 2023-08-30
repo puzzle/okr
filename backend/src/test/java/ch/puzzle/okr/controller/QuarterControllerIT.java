@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.StartEndDateDTO;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
@@ -68,25 +67,5 @@ class QuarterControllerIT {
 
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
-    }
-
-    @Test
-    void shouldGetStartAndEndDateOfKeyResult() throws Exception {
-        BDDMockito.given(quarterBusinessService.getStartAndEndDateOfKeyresult(1)).willReturn(StartEndDateDTO.Builder
-                .builder().withStartDate(LocalDate.of(2021, 7, 1)).withEndDate(LocalDate.of(2021, 9, 30)).build());
-
-        mvc.perform(get("/api/v1/quarters/dates/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.startDate", Is.is("2021-07-01")))
-                .andExpect(jsonPath("$.endDate", Is.is("2021-09-30")));
-    }
-
-    @Test
-    void shouldThrowNotFoundException() throws Exception {
-        BDDMockito.given(quarterBusinessService.getStartAndEndDateOfKeyresult(1))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not Found"));
-
-        mvc.perform(get("/api/v1/quarters/dates/keyresult/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

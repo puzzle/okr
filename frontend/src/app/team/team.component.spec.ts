@@ -1,7 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 
 import { TeamComponent } from './team.component';
-import { By } from '@angular/platform-browser';
 import { OverviewEntity } from '../model/OverviewEntity';
 import { TeamMin } from '../model/TeamMin';
 import { QuarterMin } from '../model/QuarterMin';
@@ -11,12 +10,14 @@ import { KeyResultOrdinalMin } from '../model/KeyResultOrdinalMin';
 import { KeyresultMin } from '../model/KeyresultMin';
 import { ObjectiveMin } from '../model/ObjectiveMin';
 import { MatIcon } from '@angular/material/icon';
+import runOnlyPendingTimers = jest.runOnlyPendingTimers;
 
 const BS_WIDTH_XS = 400;
 const BS_WIDTH_SM = 600;
 const BS_WIDTH_MD = 800;
-const BS_WIDTH_XL = 1000;
-const BS_WIDTH_XXL = 1200;
+const BS_WIDTH_LG = 1000;
+const BS_WIDTH_XL = 1200;
+const BS_WIDTH_XXL = 1400;
 
 const overviewEntity: OverviewEntity = {
   team: {
@@ -342,17 +343,31 @@ describe('TeamComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it.skip('One per row', () => {
-    // Object.defineProperty(window, 'innerWidth', {
-    //   configurable: true,
-    //   value: BS_WIDTH_XS,
-    //   writable: true,
-    // });
+  test.each([
+    [BS_WIDTH_XS, 100],
+    [BS_WIDTH_SM, 41],
+    [BS_WIDTH_MD, 33],
+    [BS_WIDTH_LG, 33],
+    [BS_WIDTH_XL, 25],
+    [BS_WIDTH_XXL, 16],
+  ])('Check width of objective in parent in percentage', (browserWidth: number, objectiveWidthPctExpected: number) => {
+    //Use the following line to prove calc logic in browser
+    //Math.floor(temp0.getBoundingClientRect().width / temp0.parentElement.getBoundingClientRect().width * 100)
+
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: browserWidth,
+      writable: true,
+    });
     fixture.detectChanges();
-    const objectives = fixture.debugElement.queryAll(By.css('[data-testid="objective"]'));
-    console.log(objectives);
-    objectives.forEach((objective) => {
-      expect(objective.nativeElement.getBoundingClientRect()).toBe(400);
+    fixture.whenStable().then(() => {
+      const objectives = fixture.nativeElement.querySelectorAll('[data-testid="objective"]');
+      objectives.forEach((objective: any) => {
+        const parentWidth = objective.parentElement.getBoundingClientRect().width;
+        const objectiveWidth = objective.getBoundingClientRect().width;
+        const objectiveWidthPct = Math.floor((parentWidth / objectiveWidth) * 100);
+        expect(objectiveWidthPct).toBe(objectiveWidthPctExpected);
+      });
     });
   });
 });

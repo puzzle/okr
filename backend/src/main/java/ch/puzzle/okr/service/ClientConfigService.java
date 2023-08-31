@@ -1,4 +1,4 @@
-package ch.puzzle.okr.clientconfig;
+package ch.puzzle.okr.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

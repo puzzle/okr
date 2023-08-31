@@ -7,7 +7,7 @@ import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;

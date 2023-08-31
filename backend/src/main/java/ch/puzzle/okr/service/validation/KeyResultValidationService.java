@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import org.springframework.stereotype.Service;
 

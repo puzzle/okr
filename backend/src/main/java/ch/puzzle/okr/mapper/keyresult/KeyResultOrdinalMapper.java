@@ -1,18 +1,18 @@
-package ch.puzzle.okr.mapper.keyResult;
+package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.keyResult.OrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.models.keyResult.KeyResult;
-import ch.puzzle.okr.models.keyResult.KeyResultOrdinal;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-public class OrdinalMapper extends KeyResultMapper {
+public class KeyResultOrdinalMapper extends KeyResultMapper {
 
-    public OrdinalMapper(UserPersistenceService userPersistenceService,
+    public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
             ObjectivePersistenceService objectivePersistenceService) {
         super(userPersistenceService, objectivePersistenceService);
     }

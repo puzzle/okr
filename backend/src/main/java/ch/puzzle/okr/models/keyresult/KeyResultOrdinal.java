@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.keyResult;
+package ch.puzzle.okr.models.keyresult;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -51,9 +51,9 @@ public class KeyResultOrdinal extends KeyResult {
     }
 
     public static class Builder extends KeyResult.Builder {
-        private @NotNull String commitZone;
-        private @NotNull String targetZone;
-        private @NotNull String stretchZone;
+        private String commitZone;
+        private String targetZone;
+        private String stretchZone;
 
         private Builder() {
         }
@@ -62,17 +62,17 @@ public class KeyResultOrdinal extends KeyResult {
             return new Builder();
         }
 
-        public Builder withCommitZone(@NotNull String commitZone) {
+        public Builder withCommitZone(String commitZone) {
             this.commitZone = commitZone;
             return this;
         }
 
-        public Builder withTargetZone(@NotNull String targetZone) {
+        public Builder withTargetZone(String targetZone) {
             this.targetZone = targetZone;
             return this;
         }
 
-        public Builder withStretchZone(@NotNull String stretchZone) {
+        public Builder withStretchZone(String stretchZone) {
             this.stretchZone = stretchZone;
             return this;
         }

@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.keyResult;
+package ch.puzzle.okr.models.keyresult;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -51,9 +51,9 @@ public class KeyResultMetric extends KeyResult {
     }
 
     public static class Builder extends KeyResult.Builder {
-        private @NotNull Double baseline;
-        private @NotNull Double stretchGoal;
-        private @NotNull String unit;
+        private Double baseline;
+        private Double stretchGoal;
+        private String unit;
 
         private Builder() {
         }
@@ -62,17 +62,17 @@ public class KeyResultMetric extends KeyResult {
             return new Builder();
         }
 
-        public Builder withBaseline(@NotNull Double baseline) {
+        public Builder withBaseline(Double baseline) {
             this.baseline = baseline;
             return this;
         }
 
-        public Builder withStretchGoal(@NotNull Double stretchGoal) {
+        public Builder withStretchGoal(Double stretchGoal) {
             this.stretchGoal = stretchGoal;
             return this;
         }
 
-        public Builder withUnit(@NotNull String unit) {
+        public Builder withUnit(String unit) {
             this.unit = unit;
             return this;
         }

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

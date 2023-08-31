@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.keyResult;
+package ch.puzzle.okr.models.keyresult;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
@@ -143,46 +143,46 @@ public abstract class KeyResult {
     }
 
     public abstract static class Builder {
-        private @NotNull Long id;
-        private @NotNull Objective objective;
-        private @NotBlank @Size(min = 2, max = 250) String title;
-        private @Size(min = 2, max = 4096) String description;
-        private @NotNull User owner;
-        private @NotNull User createdBy;
-        private @NotNull LocalDateTime createdOn;
+        private Long id;
+        private Objective objective;
+        private String title;
+        private String description;
+        private User owner;
+        private User createdBy;
+        private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
 
-        public Builder withId(@NotNull Long id) {
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder withObjective(@NotNull Objective objective) {
+        public Builder withObjective(Objective objective) {
             this.objective = objective;
             return this;
         }
 
-        public Builder withTitle(@NotBlank @Size(min = 2, max = 250) String title) {
+        public Builder withTitle(String title) {
             this.title = title;
             return this;
         }
 
-        public Builder withDescription(@Size(min = 2, max = 4096) String description) {
+        public Builder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder withOwner(@NotNull User owner) {
+        public Builder withOwner(User owner) {
             this.owner = owner;
             return this;
         }
 
-        public Builder withCreatedBy(@NotNull User createdBy) {
+        public Builder withCreatedBy(User createdBy) {
             this.createdBy = createdBy;
             return this;
         }
 
-        public Builder withCreatedOn(@NotNull LocalDateTime createdOn) {
+        public Builder withCreatedOn(LocalDateTime createdOn) {
             this.createdOn = createdOn;
             return this;
         }

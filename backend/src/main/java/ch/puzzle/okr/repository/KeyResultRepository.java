@@ -1,6 +1,6 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

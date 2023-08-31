@@ -2,7 +2,7 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.models.keyResult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;

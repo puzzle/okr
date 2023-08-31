@@ -1,13 +1,14 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;
@@ -27,7 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +35,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -55,16 +54,13 @@ class ObjectiveControllerIT {
             State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, 1L, "This is a description",
             State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN);
-    static KeyResult keyResult1 = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
-    static KeyResult keyResult2 = KeyResult.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static MeasureDto measure1Dto = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
-            Instant.parse("2022-08-12T01:01:00.00Z"));
-    static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10D, "foo", "boo", 1L, null,
-            Instant.parse("2022-08-12T01:01:00.00Z"));
-    static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, 0L);
-    static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",
-            "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, 0L);
+    static KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
+    static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
+    static KeyResultMetricDto metricDto = new KeyResultMetricDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
+            "Wunderland", 1L, "Alice", "Wunderland", LocalDateTime.MIN, LocalDateTime.MAX, 1.0, 4.0, "ECTS");
+    static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(7L, 1L, "Keyresult 2", "Description", 1L,
+            "Alice", "Wunderland", 1L, "Alice", "Wunderland", LocalDateTime.MIN, LocalDateTime.MAX, "Blume", "Baum",
+            "Wald");
 
     @Autowired
     private MockMvc mvc;
@@ -76,24 +72,13 @@ class ObjectiveControllerIT {
     private ObjectiveMapper objectiveMapper;
     @MockBean
     private KeyResultMapper keyResultMapper;
-    @MockBean
-    private MeasureMapper measureMapper;
 
     @BeforeEach
     void setUp() {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
-        BDDMockito.given(keyResultMapper.toDto(keyResult1)).willReturn(keyresult1Dto);
-        BDDMockito.given(keyResultMapper.toDto(keyResult2)).willReturn(keyresult2Dto);
-    }
-
-    @Test
-    void shouldReturnErrorWhenObjectiveDoesntExistWhenGettingKeyResults() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(1L))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 1 not found"));
-
-        mvc.perform(get("/api/v2/objectives/1/keyresults").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
+        BDDMockito.given(keyResultMapper.toDto(metricKeyResult)).willReturn(metricDto);
+        BDDMockito.given(keyResultMapper.toDto(ordinalKeyResult)).willReturn(keyResultOrdinalDto);
     }
 
     @Test

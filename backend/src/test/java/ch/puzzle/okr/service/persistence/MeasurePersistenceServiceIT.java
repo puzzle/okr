@@ -1,9 +1,9 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class MeasurePersistenceServiceIT {
         return Measure.Builder.builder().withId(id)
                 .withCreatedBy(User.Builder.builder().withId(1l).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
+                .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();

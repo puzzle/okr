@@ -1,7 +1,9 @@
-<div class="container-fluid row">
+<div class="container-fluid row w-auto">
   <p class="team-title">{{ overViewEntity.team.name }}</p>
   <div class="d-flex justify-content-center">
-    <div class="d-flex gap-3 row col-12 overflow-scroll flex-wrap flex-md-nowrap">
+    <div
+      class="d-flex gap-3 row col-12 overflow-scroll flex-wrap flex-md-nowrap justify-content-sm-between justify-content-md-start"
+    >
       <div
         *ngFor="let objective of overViewEntity.objectives"
         class="bg-danger col-xs-12 col-sm-5 col-md-4 col-xl-3 col-xxl-2"

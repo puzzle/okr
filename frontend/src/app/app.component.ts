@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { config, filter, first, firstValueFrom, map } from 'rxjs';
+import { config, filter, first, firstValueFrom, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './release-1/shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -18,7 +18,7 @@ import { resolve } from '@angular/compiler-cli';
 })
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
-  isEnvStaging: boolean = false;
+  isEnvStaging$: Observable<boolean>;
 
   constructor(
     private router: Router,
@@ -39,13 +39,14 @@ export class AppComponent implements OnInit {
       oauthService.setupAutomaticSilentRefresh();
       location.hash = '';
     });
+    this.isEnvStaging$ = this.configService.config$.pipe(
+      map((config) => {
+        return config.activeProfile === 'staging';
+      })
+    );
   }
 
-  async ngOnInit(): Promise<void> {
-    const config = await firstValueFrom(this.configService.config$);
-    if (config.activeProfile === 'staging') {
-      this.isEnvStaging = true;
-    }
+  ngOnInit(): void {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

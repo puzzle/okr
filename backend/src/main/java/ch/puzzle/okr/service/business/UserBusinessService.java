@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ch.puzzle.okr.service.CacheService.USER_CACHE;
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @Service
 public class UserBusinessService {

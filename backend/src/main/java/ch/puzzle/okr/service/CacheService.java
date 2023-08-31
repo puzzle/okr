@@ -8,13 +8,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
+
 @EnableScheduling
 @Service
 public class CacheService {
 
     private static final Logger logger = LoggerFactory.getLogger(CacheService.class);
-
-    public static final String USER_CACHE = "users";
 
     private final CacheManager cacheManager;
 

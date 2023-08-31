@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -42,11 +43,11 @@ public class CacheServiceIT {
     @Test
     void emptyUsersCache_ShouldClearUserCache() {
         createdUser = userBusinessService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cacheManager.getCache("users").get("username", User.class);
+        User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
 
         cacheService.emptyUsersCache();
 
-        User userAfterClearCache = cacheManager.getCache("users").get("username", User.class);
+        User userAfterClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }
@@ -54,11 +55,11 @@ public class CacheServiceIT {
     @Test
     void emptyAllCaches_ShouldClearAllCaches() {
         createdUser = userBusinessService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cacheManager.getCache("users").get("username", User.class);
+        User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
 
         cacheService.emptyAllCaches();
 
-        User userAfterClearCache = cacheManager.getCache("users").get("username", User.class);
+        User userAfterClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }

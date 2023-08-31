@@ -7,7 +7,7 @@ import { OverviewEntity } from '../model/OverviewEntity';
   styleUrls: ['./team.component.scss'],
 })
 export class TeamComponent implements OnInit {
-  @Input() overViewEntity!: OverviewEntity;
+  @Input() overviewEntity!: OverviewEntity;
 
   constructor() {
     /* TODO document why this constructor is empty */

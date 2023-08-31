@@ -10,8 +10,6 @@ export class ConfigService {
   public config$: Observable<any>;
 
   constructor(private httpClient: HttpClient) {
-    console.log('constructor reached');
     this.config$ = this.httpClient.get('/config').pipe(shareReplay());
-    console.log(this.config$);
   }
 }

@@ -37,7 +37,6 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
-  console.log('factory reached ===============');
   return async () => {
     const config = await firstValueFrom(configService.config$);
     oauthService.configure({ ...environment.oauth, issuer: config.issuer });

@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { config, filter, first, firstValueFrom, map } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './release-1/shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 import { version } from './version';
 import { ConfigService } from './config.service';
+import { resolveConfig } from 'prettier';
+import { resolve } from '@angular/compiler-cli';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +24,8 @@ export class AppComponent implements OnInit {
     private router: Router,
     private translate: TranslateService,
     private routeService: RouteService,
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private configService: ConfigService
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -38,8 +41,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.isEnvStaging = environment.staging;
+  async ngOnInit(): Promise<void> {
+    const config = await firstValueFrom(this.configService.config$);
+    if (config.activeProfile === 'staging') {
+      this.isEnvStaging = true;
+    }
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

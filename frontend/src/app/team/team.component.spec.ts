@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeamComponent } from './team.component';
 import { OverviewEntity } from '../model/OverviewEntity';
@@ -10,7 +10,7 @@ import { KeyResultOrdinalMin } from '../model/KeyResultOrdinalMin';
 import { KeyresultMin } from '../model/KeyresultMin';
 import { ObjectiveMin } from '../model/ObjectiveMin';
 import { MatIcon } from '@angular/material/icon';
-import runOnlyPendingTimers = jest.runOnlyPendingTimers;
+import { By } from '@angular/platform-browser';
 
 const BS_WIDTH_XS = 400;
 const BS_WIDTH_SM = 600;
@@ -367,6 +367,31 @@ describe('TeamComponent', () => {
         const objectiveWidth = objective.getBoundingClientRect().width;
         const objectiveWidthPct = Math.floor((parentWidth / objectiveWidth) * 100);
         expect(objectiveWidthPct).toBe(objectiveWidthPctExpected);
+      });
+    });
+  });
+
+  test.each([
+    [BS_WIDTH_XS, false],
+    [BS_WIDTH_SM, false],
+    [BS_WIDTH_MD, true],
+    [BS_WIDTH_LG, true],
+    [BS_WIDTH_XL, true],
+    [BS_WIDTH_XXL, true],
+  ])('Check if objective container has scrollbar', (browserWidth: number, hasScrollbar: boolean) => {
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: browserWidth,
+      writable: true,
+    });
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const objectiveContainer = fixture.debugElement.query(By.css('[data-testid="objective-container"]'));
+
+      objectiveContainer.nativeElement.getAttribute('width').then((width: number) => {
+        objectiveContainer.nativeElement.getAttribute('scrollWidth').then((scrollWidth: number) => {
+          expect(scrollWidth > width).toBe(hasScrollbar);
+        });
       });
     });
   });

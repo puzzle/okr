@@ -1,8 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.KeyResultMeasureDto;
-import ch.puzzle.okr.dto.MeasureDto;
-import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.keyResult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
@@ -33,8 +30,6 @@ class KeyResultBusinessServiceTest {
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
     @MockBean
     MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
-    @MockBean
-    KeyResultMeasureMapper keyResultMeasureMapper = Mockito.mock(KeyResultMeasureMapper.class);
     List<KeyResult> keyResults;
     User user;
     Objective objective;
@@ -160,36 +155,4 @@ class KeyResultBusinessServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
-
-    @Test
-    void shouldGetAllKeyResultsFromObjectiveWithMeasure() {
-        when(objectivePersistenceService.findById(any())).thenReturn(objective);
-        when(measurePersistenceService.getLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(keyResult, measure1)).thenReturn(new KeyResultMeasureDto(5L, 1L,
-                "Keyresult 1", "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D,
-                new MeasureDto(1L, 1L, 10D, "", "", 1L, null, null), 0L));
-
-        List<KeyResultMeasureDto> keyResultList = keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(1L);
-
-        assertEquals(3, keyResultList.size());
-        assertEquals("Keyresult 1", keyResultList.get(0).title());
-        assertEquals(1, keyResultList.get(0).measure().id());
-        assertEquals(1, keyResultList.get(0).objectiveId());
-    }
-
-    @Test
-    void shouldReturnNullObjectWhenMeasureIsNull() {
-        when(objectivePersistenceService.findById(any())).thenReturn(objective);
-        when(measurePersistenceService.getLastMeasuresOfKeyresults(any())).thenReturn(measures);
-        when(keyResultPersistenceService.getKeyResultsByObjective(any())).thenReturn(keyResults);
-        when(keyResultMeasureMapper.toDto(any(), any())).thenReturn(new KeyResultMeasureDto(5L, 1L, "Keyresult 1",
-                "Description", 1L, "Paco", "Egiman", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, null, 0L));
-
-        List<KeyResultMeasureDto> keyResultList = keyResultBusinessService.getAllKeyResultsByObjectiveWithMeasure(1L);
-
-        assertEquals(3, keyResultList.size());
-        assertNull(keyResultList.get(0).measure());
-    }
-
 }

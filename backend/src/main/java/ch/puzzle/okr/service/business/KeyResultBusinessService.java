@@ -37,7 +37,6 @@ public class KeyResultBusinessService {
     }
 
     public KeyResult getKeyResultById(Long id) {
-        // TODO Check if last checkIn and objective comes with
         validator.validateOnGet(id);
         return keyResultPersistenceService.findById(id);
     }
@@ -66,18 +65,4 @@ public class KeyResultBusinessService {
         Objective objective = objectivePersistenceService.findById(objectiveId);
         return keyResultPersistenceService.getKeyResultsByObjective(objective);
     }
-
-    // @Deprecated
-    // public List<Measure> getLastMeasures(Long objectiveId) {
-    // return measurePersistenceService.getLastMeasuresOfKeyresults(objectiveId);
-    // }
-
-    // @Deprecated
-    // public List<KeyResultMeasureDto> getAllKeyResultsByObjectiveWithMeasure(Long id) {
-    // List<Measure> measureList = getLastMeasures(id);
-    // return getAllKeyResultsByObjective(id).stream()
-    // .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
-    // .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
-    // .toList();
-    // }
 }

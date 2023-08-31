@@ -1,7 +1,6 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
@@ -30,7 +29,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -63,11 +61,6 @@ class ObjectiveControllerIT {
             Instant.parse("2022-08-12T01:01:00.00Z"));
     static MeasureDto measure2Dto = new MeasureDto(2L, 7L, 10D, "foo", "boo", 1L, null,
             Instant.parse("2022-08-12T01:01:00.00Z"));
-    static List<KeyResultMeasureDto> keyResultsMeasureList = List.of(
-            new KeyResultMeasureDto(5L, 1L, "Keyresult 1", "Description", 1L, "Paco", "Egiman",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, measure1Dto, 0L),
-            new KeyResultMeasureDto(7L, 1L, "Keyresult 2", "Description", 1L, "Robin", "Papier",
-                    ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, measure2Dto, 0L));
     static KeyResultDto keyresult1Dto = new KeyResultDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
             "Wunderland", ExpectedEvolution.CONSTANT, Unit.PERCENT, 20D, 100D, 0L);
     static KeyResultDto keyresult2Dto = new KeyResultDto(7L, 1L, "Keyresult 2", "Description", 1L, "Alice",

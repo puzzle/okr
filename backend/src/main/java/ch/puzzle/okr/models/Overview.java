@@ -4,6 +4,8 @@ import org.hibernate.annotations.Immutable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,7 +18,8 @@ public class Overview {
     private OverviewId overviewId;
     private String teamName;
     private String objectiveTitle;
-    private Long progress;
+    @Enumerated(EnumType.STRING)
+    private State objectiveState;
     private Long quarterId;
     private String quarterLabel;
     private String keyResultTitle;
@@ -34,7 +37,7 @@ public class Overview {
         overviewId = builder.overviewId;
         teamName = builder.teamName;
         objectiveTitle = builder.objectiveTitle;
-        progress = builder.progress;
+        objectiveState = builder.objectiveState;
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
         keyResultTitle = builder.keyResultTitle;
@@ -58,8 +61,8 @@ public class Overview {
         return objectiveTitle;
     }
 
-    public Long getProgress() {
-        return progress;
+    public State getObjectiveState() {
+        return objectiveState;
     }
 
     public Long getQuarterId() {
@@ -107,8 +110,8 @@ public class Overview {
         Overview overview = (Overview) o;
         return Objects.equals(overviewId, overview.overviewId) && Objects.equals(teamName, overview.teamName)
                 && Objects.equals(objectiveTitle, overview.objectiveTitle)
-                && Objects.equals(progress, overview.progress) && Objects.equals(quarterId, overview.quarterId)
-                && Objects.equals(quarterLabel, overview.quarterLabel)
+                && Objects.equals(objectiveState, overview.objectiveState)
+                && Objects.equals(quarterId, overview.quarterId) && Objects.equals(quarterLabel, overview.quarterLabel)
                 && Objects.equals(keyResultTitle, overview.keyResultTitle) && unit == overview.unit
                 && Objects.equals(basisValue, overview.basisValue) && Objects.equals(targetValue, overview.targetValue)
                 && Objects.equals(measureValue, overview.measureValue)
@@ -117,24 +120,24 @@ public class Overview {
 
     @Override
     public int hashCode() {
-        return Objects.hash(overviewId, teamName, objectiveTitle, progress, quarterId, quarterLabel, keyResultTitle,
-                unit, basisValue, targetValue, measureValue, measureDate, createdOn);
+        return Objects.hash(overviewId, teamName, objectiveTitle, objectiveState, quarterId, quarterLabel,
+                keyResultTitle, unit, basisValue, targetValue, measureValue, measureDate, createdOn);
     }
 
     @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", objectiveTitle='"
-                + objectiveTitle + '\'' + ", progress=" + progress + ", quarterId=" + quarterId + ", quarterLabel='"
-                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", unit=" + unit
-                + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", measureValue=" + measureValue
-                + ", measureDate=" + measureDate + ", createdOn=" + createdOn + '}';
+                + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", quarterId=" + quarterId
+                + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", unit="
+                + unit + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", measureValue="
+                + measureValue + ", measureDate=" + measureDate + ", createdOn=" + createdOn + '}';
     }
 
     public static final class Builder {
         private OverviewId overviewId;
         private String teamName;
         private String objectiveTitle;
-        private Long progress;
+        private State objectiveState;
         private Long quarterId;
         private String quarterLabel;
         private String keyResultTitle;
@@ -167,8 +170,8 @@ public class Overview {
             return this;
         }
 
-        public Builder withProgress(Long progress) {
-            this.progress = progress;
+        public Builder withObjectiveState(State objectiveState) {
+            this.objectiveState = objectiveState;
             return this;
         }
 

@@ -6,11 +6,11 @@
     <parent>
         <groupId>ch.puzzle.okr</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.15-SNAPSHOT</version>
+        <version>1.0.18-SNAPSHOT</version>
     </parent>
 
     <artifactId>backend</artifactId>
-    <version>1.0.15-SNAPSHOT</version>
+    <version>1.0.18-SNAPSHOT</version>
     <name>backend</name>
     <description>Puzzle OKR Tool</description>
 
@@ -64,6 +64,11 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit</artifactId>
+            <version>1.0.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -80,7 +85,6 @@
                 <configuration>
                     <excludes>
                         <exclude>ch/puzzle/okr/service/ProgressService*</exclude>
-                        <exclude>ch/puzzle/okr/service/business/ObjectiveBusinessService*</exclude>
                         <exclude>ch/puzzle/okr/service/business/MeasureBusinessService*</exclude>
                         <exclude>ch/puzzle/okr/service/business/KeyResultBusinessService*</exclude>
                         <exclude>ch/puzzle/okr/service/business/ProgressBusinessService*</exclude>
@@ -166,7 +170,7 @@
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.75</minimum>
+                                            <minimum>0.8</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

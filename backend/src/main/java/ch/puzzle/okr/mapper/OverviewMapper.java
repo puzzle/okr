@@ -83,9 +83,8 @@ public class OverviewMapper {
             keyResults.add(createKeyResultDto(overview));
         }
         return new OverviewObjectiveDto(overview.getOverviewId().getObjectiveId(), overview.getObjectiveTitle(),
-                // TODO set current state properly
-                "current state", new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()),
-                keyResults);
+                overview.getObjectiveState(),
+                new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()), keyResults);
     }
 
     private OverviewKeyResultDto createKeyResultDto(Overview overview) {

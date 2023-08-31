@@ -1,11 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { config, filter, first, firstValueFrom, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { RouteService } from './release-1/shared/services/route.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 import { version } from './version';
+import { ConfigService } from './config.service';
+import { resolveConfig } from 'prettier';
+import { resolve } from '@angular/compiler-cli';
 
 @Component({
   selector: 'app-root',
@@ -15,18 +18,17 @@ import { version } from './version';
 })
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
-  isEnvStaging: boolean = false;
+  isEnvStaging$: Observable<boolean>;
 
   constructor(
     private router: Router,
     private translate: TranslateService,
     private routeService: RouteService,
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private configService: ConfigService
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
-
-    oauthService.configure(environment.oauth);
 
     // Try to login via url state
     oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
@@ -37,10 +39,14 @@ export class AppComponent implements OnInit {
       oauthService.setupAutomaticSilentRefresh();
       location.hash = '';
     });
+    this.isEnvStaging$ = this.configService.config$.pipe(
+      map((config) => {
+        return config.activeProfile === 'staging';
+      })
+    );
   }
 
   ngOnInit(): void {
-    this.isEnvStaging = environment.staging;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),

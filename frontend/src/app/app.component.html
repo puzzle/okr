@@ -34,7 +34,7 @@
     </pzsh-subnav>
   </pzsh-nav>
 </pzsh-menu>
-<div *ngIf="isEnvStaging" class="staging-banner">
+<div *ngIf="isEnvStaging$ | async" class="staging-banner">
   <div class="staging-text">STAGING ENVIRONMENT!</div>
 </div>
 <router-outlet></router-outlet>

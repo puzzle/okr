@@ -1,3 +1,10 @@
+truncate table measure cascade;
+truncate table key_result cascade;
+truncate table objective cascade;
+truncate table person cascade;
+truncate table quarter cascade;
+truncate table team cascade;
+
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;

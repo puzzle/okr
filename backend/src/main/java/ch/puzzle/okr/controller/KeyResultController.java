@@ -85,7 +85,6 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id) {
-        // TODO implement delete
         keyResultBusinessService.deleteKeyResultById(id);
     }
 }

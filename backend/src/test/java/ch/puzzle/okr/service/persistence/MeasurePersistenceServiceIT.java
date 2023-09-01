@@ -25,7 +25,7 @@ public class MeasurePersistenceServiceIT {
 
     private static Measure createMeasure(Long id) {
         return Measure.Builder.builder().withId(id)
-                .withCreatedBy(User.Builder.builder().withId(1l).withFirstname("Frank").build())
+                .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
                 .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())

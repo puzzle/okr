@@ -36,7 +36,7 @@ class KeyResultBusinessServiceTest {
     @MockBean
     MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
     @InjectMocks
-    private KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);;
+    KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);;
     List<KeyResult> keyResults;
     User user;
     Objective objective;

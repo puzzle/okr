@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -56,11 +57,14 @@ class ObjectiveControllerIT {
             State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN);
     static KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static KeyResultMetricDto metricDto = new KeyResultMetricDto(5L, 1L, "Keyresult 1", "Description", 1L, "Alice",
-            "Wunderland", 1L, "Alice", "Wunderland", LocalDateTime.MIN, LocalDateTime.MAX, 1.0, 4.0, "ECTS");
-    static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(7L, 1L, "Keyresult 2", "Description", 1L,
-            "Alice", "Wunderland", 1L, "Alice", "Wunderland", LocalDateTime.MIN, LocalDateTime.MAX, "Blume", "Baum",
-            "Wald");
+    static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "Keyresult 1", "Description", 1.0, 5.0,
+            "ECTS", 1L, "Alice", "Wunderland", 1L, "INPROGRESS", 1L, "GJ 22/23-Q4", LocalDate.MIN, LocalDate.MAX, 1L,
+            3.0, 4, LocalDateTime.MIN, "Neuer Mitarbeiter", 1L, "Alice", "Wunderland", LocalDateTime.MIN,
+            LocalDateTime.MAX);
+    static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "Keyresult 1", "Description",
+            "Eine Pflanze", "Ein Baum", "Ein Wald", 1L, "Alice", "Wunderland", 1L, "INPROGRESS", 1L, "GJ 22/23-Q4",
+            LocalDate.MIN, LocalDate.MAX, 1L, 3.0, 4, LocalDateTime.MIN, "Neuer Mitarbeiter", 1L, "Alice", "Wunderland",
+            LocalDateTime.MIN, LocalDateTime.MAX);
 
     @Autowired
     private MockMvc mvc;
@@ -77,7 +81,7 @@ class ObjectiveControllerIT {
     void setUp() {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
-        BDDMockito.given(keyResultMapper.toDto(metricKeyResult)).willReturn(metricDto);
+        BDDMockito.given(keyResultMapper.toDto(metricKeyResult)).willReturn(keyResultMetricDto);
         BDDMockito.given(keyResultMapper.toDto(ordinalKeyResult)).willReturn(keyResultOrdinalDto);
     }
 

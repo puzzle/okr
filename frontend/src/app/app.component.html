@@ -1,14 +1,8 @@
-<app-application-header #okrHeader></app-application-header>
-<div
-  [style.margin-top.px]="
-    this.okrHeader.okrBanner?.nativeElement.offsetHeight + this.okrHeader.okrTopbar?.nativeElement.offsetHeight
-  "
->
-  <div *ngIf="isEnvStaging$ | async" class="staging-banner">
-    <div class="staging-text">STAGING ENVIRONMENT!</div>
-  </div>
-  <router-outlet></router-outlet>
-  <div class="version flex-row">
-    {{ version }}
-  </div>
+<app-application-header></app-application-header>
+<div *ngIf="isEnvStaging$ | async" class="staging-banner">
+  <div class="staging-text">STAGING ENVIRONMENT!</div>
+</div>
+<router-outlet></router-outlet>
+<div class="version flex-row">
+  {{ version }}
 </div>

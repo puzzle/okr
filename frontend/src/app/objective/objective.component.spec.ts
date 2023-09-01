@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ObjectiveColumnComponent } from './objective-column.component';
+import { ObjectiveComponent } from './objective.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -7,29 +7,29 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { By } from '@angular/platform-browser';
-import { State } from '../../shared/types/enums/State';
+import { State } from '../shared/types/enums/State';
 import { RouterTestingModule } from '@angular/router/testing';
-import { OverviewService } from '../../shared/services/overview.service';
+import { OverviewService } from '../shared/services/overview.service';
 import { of } from 'rxjs';
-import { Objective } from '../../shared/models/Objective';
+import { Objective } from '../shared/models/Objective';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
 };
 describe('ObjectiveColumnComponent', () => {
-  let component: ObjectiveColumnComponent;
-  let fixture: ComponentFixture<ObjectiveColumnComponent>;
+  let component: ObjectiveComponent;
+  let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
 
   beforeEach(async () => {
     overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
     await TestBed.configureTestingModule({
-      declarations: [ObjectiveColumnComponent],
+      declarations: [ObjectiveComponent],
       imports: [MatMenuModule, MatCardModule, NoopAnimationsModule, RouterTestingModule],
       providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
     }).compileComponents();
-    fixture = TestBed.createComponent(ObjectiveColumnComponent);
+    fixture = TestBed.createComponent(ObjectiveComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
   });

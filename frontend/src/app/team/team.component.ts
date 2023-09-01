@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { OverviewEntity } from '../model/OverviewEntity';
+import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 
 @Component({
   selector: 'app-team',

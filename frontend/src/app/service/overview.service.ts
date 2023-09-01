@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { OverviewEntity } from '../model/OverviewEntity';
-import { QuarterMin } from '../model/QuarterMin';
-import { CheckInMinimal } from '../model/CheckInMin';
-import { KeyResultMetricMin } from '../model/KeyResultMetricMin';
-import { ObjectiveMin } from '../model/ObjectiveMin';
-import { KeyresultMin } from '../model/KeyresultMin';
-import { KeyResultOrdinalMin } from '../model/KeyResultOrdinalMin';
-import { TeamMin } from '../model/TeamMin';
+import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { QuarterMin } from '../shared/types/model/QuarterMin';
+import { CheckInMinimal } from '../shared/types/model/CheckInMin';
+import { KeyResultMetricMin } from '../shared/types/model/KeyResultMetricMin';
+import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
+import { KeyresultMin } from '../shared/types/model/KeyresultMin';
+import { KeyResultOrdinalMin } from '../shared/types/model/KeyResultOrdinalMin';
+import { TeamMin } from '../shared/types/model/TeamMin';
 import { State } from '../shared/types/enums/State';
 
 @Injectable({

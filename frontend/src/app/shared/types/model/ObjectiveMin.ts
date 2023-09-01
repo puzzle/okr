@@ -1,6 +1,6 @@
 import { KeyresultMin } from './KeyresultMin';
 import { QuarterMin } from './QuarterMin';
-import { State } from '../shared/types/enums/State';
+import { State } from '../enums/State';
 
 export interface ObjectiveMin {
   id: number;

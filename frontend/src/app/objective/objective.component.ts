@@ -1,18 +1,15 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { OverviewService } from '../../shared/services/overview.service';
-import { MenuEntry } from '../../shared/types/menu-entry';
-import { RouteService } from '../../shared/services/route.service';
-import { Observable, Subject } from 'rxjs';
-import { Objective } from '../../shared/models/Objective';
-import { ObjectiveMin } from '../../model/ObjectiveMin';
+import { MenuEntry } from '../shared/types/menu-entry';
+import { RouteService } from '../shared/services/route.service';
+import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 
 @Component({
   selector: 'app-objective-column',
-  templateUrl: './objective-column.component.html',
-  styleUrls: ['./objective-column.component.scss'],
+  templateUrl: './objective.component.html',
+  styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveColumnComponent implements OnInit {
+export class ObjectiveComponent implements OnInit {
   @Input() objective!: ObjectiveMin;
   menuEntries: MenuEntry[] = [
     { displayName: 'Objective bearbeiten', showDialog: false },

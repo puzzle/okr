@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ObjectiveColumnComponent } from './objective/objectiveColumn/objective-column.component';
 import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [

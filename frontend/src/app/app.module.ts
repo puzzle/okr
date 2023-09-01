@@ -29,7 +29,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
-import { ObjectiveModule } from './objective/objective.module';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
@@ -41,6 +40,7 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { MatCardModule } from '@angular/material/card';
+import { ObjectiveComponent } from "./objective/objective.component";
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -63,7 +63,7 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ExampleDialogComponent, TeamComponent, OverviewComponent],
+  declarations: [AppComponent, ExampleDialogComponent, TeamComponent, OverviewComponent, ObjectiveComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -78,7 +78,6 @@ export const MY_FORMATS = {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatExpansionModule,
-    ObjectiveModule,
     MatInputModule,
     MatTooltipModule,
     MatAutocompleteModule,

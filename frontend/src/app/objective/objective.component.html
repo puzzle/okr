@@ -1,11 +1,11 @@
 <div class="objective d-flex flex-column align-items-start rounded-3 bg-white">
-  <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
+  <img src="../../assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
   <div class="objective-main">
     <header class="objective-header d-flex justify-content-between">
       <div class="title-status d-flex">
         <img
           class="status-indicator"
-          src="assets/icons/{{ objective.state }}"
+          src="../../assets/icons/{{ objective.state }}"
           alt="A status indicator that indicates the progress and state of this objective"
         />
         <div class="objective-title">{{ objective.title }}</div>
@@ -14,14 +14,14 @@
         <img
           [matMenuTriggerFor]="objectiveMenu"
           class="three-dot-menu"
-          src="/assets/icons/threedot.svg"
+          src="../../assets/icons/threedot.svg"
           alt="A three-dot-menu button"
         />
       </div>
     </header>
     <section>
       <a class="add-anchor">
-        <img src="/assets/icons/new-icon.svg" alt="Add key-result button" />
+        <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
         <p class="add-key-result-and-add-objective-text">Key Result hinzufügen</p>
       </a>
     </section>

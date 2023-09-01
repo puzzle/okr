@@ -6,28 +6,19 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
   styleUrls: ['./application-header.component.scss'],
 })
 export class ApplicationHeaderComponent implements OnInit {
-  @ViewChild('okrBanner')
-  okrBanner: ElementRef | undefined;
-  @ViewChild('okrTopbar')
-  okrTopbar: ElementRef | undefined;
   lastScrollTop: number = 0;
 
   constructor() {}
 
   ngOnInit(): void {
-    let navbar = document.getElementById('okrBanner');
-    window.addEventListener('scroll', this.scrollFunction);
+    window.addEventListener('scroll', this.changeHeaderAppearance);
   }
 
-  scrollFunction() {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+  changeHeaderAppearance() {
+    let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     let navbar = document.getElementById('okrBanner');
     if (navbar != null) {
-      if (scrollTop > this.lastScrollTop) {
-        navbar.style.top = '-220px';
-      } else {
-        navbar.style.top = '48px';
-      }
+      navbar.style.top = scrollTop > this.lastScrollTop ? '-220px' : '48px';
     }
     this.lastScrollTop = scrollTop;
   }

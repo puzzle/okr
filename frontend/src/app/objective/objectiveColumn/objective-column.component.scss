@@ -1,0 +1,58 @@
+@import "../../../styles";
+
+.objective {
+  max-width: 20rem;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+
+  &:hover {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.06), 1px 1px 2px 0 rgba(0, 0, 0, 0.06), 3px 3px 4px 0 rgba(0, 0, 0, 0.05),
+      8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.objective-main {
+  padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+.status-indicator {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.5rem;
+}
+
+.add-key-result-and-add-objective-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: $link-color;
+}
+
+.objective-menu-option {
+  height: 2.1875rem;
+  padding: 0.5rem 1rem;
+  line-height: normal;
+
+  &:hover {
+    padding-left: 0.75rem;
+    border-left: 0.25rem solid darkblue;
+    background: #eff7ff;
+  }
+}
+
+.objective-header {
+  margin-bottom: 1rem;
+}
+
+.objective-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  word-wrap: break-word;
+  line-height: normal;
+}
+
+.add-anchor {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+}

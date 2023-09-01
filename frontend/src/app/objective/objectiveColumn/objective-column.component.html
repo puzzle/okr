@@ -4,7 +4,6 @@
     <header class="objective-header d-flex justify-content-between">
       <div class="title-status d-flex">
         <img
-          [attr.data-testId]="'status-indicator'"
           class="status-indicator"
           src="assets/icons/{{ (objective | async)?.state }}"
           alt="A status indicator that indicates the progress and state of this objective"

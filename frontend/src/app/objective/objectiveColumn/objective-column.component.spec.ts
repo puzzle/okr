@@ -59,7 +59,7 @@ describe('ObjectiveColumnComponent', () => {
     fixture.detectChanges();
     expect(overviewServiceMock.getObjectiveWithKeyresults).toHaveBeenCalledTimes(1);
 
-    let statusIndicatorSrc = fixture.debugElement.query(By.css('[data-testId="status-indicator"]')).attributes['src'];
+    let statusIndicatorSrc = fixture.debugElement.query(By.css('img[class="status-indicator"]')).attributes['src'];
     expect(statusIndicatorSrc).toBe(path);
   });
 });

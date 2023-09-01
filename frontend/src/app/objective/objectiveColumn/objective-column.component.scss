@@ -43,3 +43,16 @@
 .objective-header {
   margin-bottom: 1rem;
 }
+
+.objective-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  word-wrap: break-word;
+  line-height: normal;
+}
+
+.add-anchor {
+  display: flex;
+  cursor: pointer;
+  text-decoration: none;
+}

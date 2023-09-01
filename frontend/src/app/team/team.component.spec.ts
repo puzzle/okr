@@ -350,26 +350,29 @@ describe('TeamComponent', () => {
     [BS_WIDTH_LG, 33],
     [BS_WIDTH_XL, 25],
     [BS_WIDTH_XXL, 16],
-  ])('Check width of objective in parent in percentage', (browserWidth: number, objectiveWidthPctExpected: number) => {
-    //Use the following line to prove calc logic in browser
-    //Math.floor(temp0.getBoundingClientRect().width / temp0.parentElement.getBoundingClientRect().width * 100)
-
-    Object.defineProperty(window, 'innerWidth', {
-      configurable: true,
-      value: browserWidth,
-      writable: true,
-    });
-    fixture.detectChanges();
-    fixture.whenStable().then(() => {
+  ])(
+    'Check width of objective in parent in percentage',
+    async (browserWidth: number, objectiveWidthPctExpected: number) => {
+      //Use the following line in browser to prove calc logic
+      //Math.floor(temp0.getBoundingClientRect().width / temp0.parentElement.getBoundingClientRect().width * 100)
+      Object.defineProperty(window, 'innerWidth', {
+        configurable: true,
+        value: browserWidth,
+        writable: true,
+      });
+      fixture.detectChanges();
+      await fixture.whenStable();
+      await fixture.whenRenderingDone();
+      await new Promise((r) => setTimeout(r, 4000));
       const objectives = fixture.nativeElement.querySelectorAll('[data-testid="objective"]');
       objectives.forEach((objective: any) => {
         const parentWidth = objective.parentElement.getBoundingClientRect().width;
         const objectiveWidth = objective.getBoundingClientRect().width;
-        const objectiveWidthPct = Math.floor((parentWidth / objectiveWidth) * 100);
+        const objectiveWidthPct: number = Math.floor((parentWidth / objectiveWidth) * 100);
         expect(objectiveWidthPct).toBe(objectiveWidthPctExpected);
       });
-    });
-  });
+    }
+  );
 
   test.each([
     [BS_WIDTH_XS, false],
@@ -378,7 +381,7 @@ describe('TeamComponent', () => {
     [BS_WIDTH_LG, true],
     [BS_WIDTH_XL, true],
     [BS_WIDTH_XXL, true],
-  ])('Check if objective container has scrollbar', (browserWidth: number, hasScrollbar: boolean) => {
+  ])('Check if objective container has scrollbar', async (browserWidth: number, hasScrollbar: boolean) => {
     Object.defineProperty(window, 'innerWidth', {
       configurable: true,
       value: browserWidth,

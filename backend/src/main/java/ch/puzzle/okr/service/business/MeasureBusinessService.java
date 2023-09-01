@@ -80,8 +80,7 @@ public class MeasureBusinessService {
     }
 
     public Double getCurrentValue(KeyResult keyResult) {
-        Measure measure = measurePersistenceService
-                .getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        Measure measure = measurePersistenceService.findFirstMeasureByKeyResultId(keyResult.getId());
         return measure != null ? measure.getValue() : null;
     }
 }

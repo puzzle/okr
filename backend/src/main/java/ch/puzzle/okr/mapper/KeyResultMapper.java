@@ -33,10 +33,10 @@ public class KeyResultMapper {
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
-        if (keyResult instanceof KeyResultMetric) {
-            return keyResultMetricMapper.toKeyResultMetricDto(keyResult);
-        } else if (keyResult instanceof KeyResultOrdinal) {
-            return keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResult);
+        if (keyResult instanceof KeyResultMetric keyResultMetric) {
+            return keyResultMetricMapper.toKeyResultMetricDto(keyResultMetric);
+        } else if (keyResult instanceof KeyResultOrdinal keyResultOrdinal) {
+            return keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResultOrdinal);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The KeyResult " + keyResult + " can't be converted to a metric or ordinal KeyResult");

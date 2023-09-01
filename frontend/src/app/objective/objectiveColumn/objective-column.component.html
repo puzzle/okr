@@ -5,10 +5,10 @@
       <div class="title-status d-flex">
         <img
           class="status-indicator"
-          src="assets/icons/{{ (objective | async)?.state }}"
+          src="assets/icons/{{ objective.state }}"
           alt="A status indicator that indicates the progress and state of this objective"
         />
-        <div class="objective-title">{{ (objective | async)?.title }}</div>
+        <div class="objective-title">{{ objective.title }}</div>
       </div>
       <div>
         <img

@@ -7,5 +7,6 @@ import { ObjectiveColumnComponent } from './objectiveColumn/objective-column.com
 @NgModule({
   declarations: [ObjectiveColumnComponent],
   imports: [CommonModule, MatMenuModule, MatButtonModule],
+  exports: [ObjectiveColumnComponent],
 })
 export class ObjectiveModule {}

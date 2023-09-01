@@ -40,7 +40,7 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { MatCardModule } from '@angular/material/card';
-import { ObjectiveComponent } from "./objective/objective.component";
+import { ObjectiveComponent } from './objective/objective.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

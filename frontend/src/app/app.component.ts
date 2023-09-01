@@ -1,11 +1,11 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
-import {filter, map, Observable} from 'rxjs';
-import {TranslateService} from '@ngx-translate/core';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {version} from './version';
-import {ConfigService} from './config.service';
-import {RouteService} from "./shared/services/route.service";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map, Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { version } from './version';
+import { ConfigService } from './config.service';
+import { RouteService } from './shared/services/route.service';
 
 @Component({
   selector: 'app-root',

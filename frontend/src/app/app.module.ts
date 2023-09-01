@@ -21,7 +21,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
-import { OauthInterceptor } from './release-1/shared/interceptors/oauth.interceptor';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { A11yModule } from '@angular/cdk/a11y';
@@ -31,6 +30,7 @@ import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { ObjectiveModule } from './objective/objective.module';
+import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {

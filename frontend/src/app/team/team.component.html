@@ -8,12 +8,12 @@
       <app-objective-column
         *ngFor="let objective of overviewEntity.objectives"
         [objective]="objective"
-        class="col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 col-xxl-1"
+        class="col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 p-0"
         data-testid="objective"
       ></app-objective-column>
 
       <button
-        class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 col-xxl-1"
+        class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 p-0"
         color="primary"
         mat-stroked-button
       >
@@ -24,7 +24,7 @@
             class="color-pz-dark-blue"
             fontIcon="add"
           ></mat-icon>
-          <p class="color-pz-dark-blue">Objective hinzufügen</p>
+          <p class="color-pz-dark-blue text-opacity-25">Objective hinzufügen</p>
         </span>
       </button>
     </div>

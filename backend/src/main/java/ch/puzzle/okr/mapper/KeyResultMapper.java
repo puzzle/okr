@@ -18,16 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 public class KeyResultMapper {
 
     // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserPersistenceService userPersistenceService;
-    private final ObjectivePersistenceService objectivePersistenceService;
     private final KeyResultMetricMapper keyResultMetricMapper;
     private final KeyResultOrdinalMapper keyResultOrdinalMapper;
 
-    public KeyResultMapper(UserPersistenceService userPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService, KeyResultOrdinalMapper keyResultOrdinalMapper,
-            KeyResultMetricMapper keyResultMetricMapper) {
-        this.userPersistenceService = userPersistenceService;
-        this.objectivePersistenceService = objectivePersistenceService;
+    public KeyResultMapper(KeyResultOrdinalMapper keyResultOrdinalMapper, KeyResultMetricMapper keyResultMetricMapper) {
         this.keyResultOrdinalMapper = keyResultOrdinalMapper;
         this.keyResultMetricMapper = keyResultMetricMapper;
     }

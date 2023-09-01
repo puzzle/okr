@@ -31,7 +31,7 @@ UPDATE key_result k
 SET created_on = k.modified_on
 WHERE k.id = r.id;
 UPDATE key_result k
-    SET type = 'Metric'
+    SET type = 'metric'
     where k.id = r.id;
 
 END LOOP;

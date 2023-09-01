@@ -5,15 +5,15 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@DiscriminatorValue("Ordinal")
+@DiscriminatorValue("ordinal")
 public class KeyResultOrdinal extends KeyResult {
-    @NotNull
+    @NotNull(message = "CommitZone must not be null")
     private String commitZone;
 
-    @NotNull
+    @NotNull(message = "TargetZone must not be null")
     private String targetZone;
 
-    @NotNull
+    @NotNull(message = "StretchZone must not be null")
     private String stretchZone;
 
     public String getCommitZone() {
@@ -41,6 +41,7 @@ public class KeyResultOrdinal extends KeyResult {
     }
 
     public KeyResultOrdinal() {
+        super();
     }
 
     public KeyResultOrdinal(Builder builder) {

@@ -19,22 +19,22 @@ public abstract class KeyResult {
     @NotNull
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Objective must not be null")
     @ManyToOne
     private Objective objective;
 
-    @NotBlank
-    @Size(min = 2, max = 250)
+    @NotBlank(message = "Title can not be blank")
+    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
     private String title;
 
     @Size(max = 4096)
     private String description;
 
-    @NotNull
+    @NotNull(message = "Owner must not be null")
     @ManyToOne
     private User owner;
 
-    @NotNull
+    @NotNull(message = "CreatedBy must not be null")
     @ManyToOne
     private User createdBy;
 

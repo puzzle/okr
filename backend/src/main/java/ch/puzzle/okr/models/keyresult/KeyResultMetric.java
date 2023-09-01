@@ -5,15 +5,15 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@DiscriminatorValue("Metric")
+@DiscriminatorValue("metric")
 public class KeyResultMetric extends KeyResult {
-    @NotNull
+    @NotNull(message = "Baseline must not be null")
     private Double baseline;
 
-    @NotNull
+    @NotNull(message = "StretchGoal must not be null")
     private Double stretchGoal;
 
-    @NotNull
+    @NotNull(message = "Unit must not be null")
     private String unit;
 
     public Double getBaseline() {
@@ -41,6 +41,7 @@ public class KeyResultMetric extends KeyResult {
     }
 
     public KeyResultMetric() {
+        super();
     }
 
     public KeyResultMetric(Builder builder) {

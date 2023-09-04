@@ -46,8 +46,8 @@ public class CheckInController {
             @ApiResponse(responseCode = "400", description = "Can't create new Check-In, not allowed to give an ID", content = @Content) })
     @PostMapping
     public ResponseEntity<MeasureDto> createMeasure(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true)
-            @RequestBody MeasureDto measureDto, @AuthenticationPrincipal Jwt jwt) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody MeasureDto measureDto,
+            @AuthenticationPrincipal Jwt jwt) {
         Measure measure = measureMapper.toMeasure(measureDto);
         MeasureDto createdMeasure = measureMapper.toDto(measureBusinessService.saveMeasure(measure));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);

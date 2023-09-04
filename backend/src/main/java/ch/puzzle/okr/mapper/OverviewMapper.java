@@ -20,16 +20,15 @@ public class OverviewMapper {
         this.teamMapper = teamMapper;
     }
 
-    public List<ch.puzzle.okr.dto.overview.OverviewDto> toDto(List<Overview> overviews) {
-        List<ch.puzzle.okr.dto.overview.OverviewDto> overviewDtos = new ArrayList<>();
+    public List<OverviewDto> toDto(List<Overview> overviews) {
+        List<OverviewDto> overviewDtos = new ArrayList<>();
         overviews.forEach(overview -> {
             processTeams(overviewDtos, overview);
         });
         return overviewDtos;
     }
 
-    private Optional<ch.puzzle.okr.dto.overview.OverviewDto> getMatchingOverviewDto(Long teamId,
-            List<ch.puzzle.okr.dto.overview.OverviewDto> result) {
+    private Optional<OverviewDto> getMatchingOverviewDto(Long teamId, List<OverviewDto> result) {
         return result.stream().filter(overviewDto -> Objects.equals(teamId, overviewDto.team().id())).findFirst();
     }
 
@@ -38,9 +37,8 @@ public class OverviewMapper {
         return objectives.stream().filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id())).findFirst();
     }
 
-    private void processTeams(List<ch.puzzle.okr.dto.overview.OverviewDto> overviewDtos, Overview overview) {
-        Optional<ch.puzzle.okr.dto.overview.OverviewDto> overviewDto = getMatchingOverviewDto(
-                overview.getOverviewId().getTeamId(), overviewDtos);
+    private void processTeams(List<OverviewDto> overviewDtos, Overview overview) {
+        Optional<OverviewDto> overviewDto = getMatchingOverviewDto(overview.getOverviewId().getTeamId(), overviewDtos);
         if (overviewDto.isPresent()) {
             processObjectives(overviewDto.get(), overview);
         } else {
@@ -48,7 +46,7 @@ public class OverviewMapper {
         }
     }
 
-    private void processObjectives(ch.puzzle.okr.dto.overview.OverviewDto overviewDto, Overview overview) {
+    private void processObjectives(OverviewDto overviewDto, Overview overview) {
         Optional<OverviewObjectiveDto> overviewObjectiveDto = getMatchingObjectiveDto(
                 overview.getOverviewId().getObjectiveId(), overviewDto.objectives());
         if (overviewObjectiveDto.isPresent()) {
@@ -62,11 +60,11 @@ public class OverviewMapper {
         overviewObjectiveDto.keyResults().add(createKeyResultDto(overview));
     }
 
-    private ch.puzzle.okr.dto.overview.OverviewDto createOverviewDto(Overview overview) {
+    private OverviewDto createOverviewDto(Overview overview) {
         List<OverviewObjectiveDto> objectives = new ArrayList<>();
         objectives.add(createObjectiveDto(overview));
-        return new ch.puzzle.okr.dto.overview.OverviewDto(
-                new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()), objectives);
+        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
+                objectives);
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {

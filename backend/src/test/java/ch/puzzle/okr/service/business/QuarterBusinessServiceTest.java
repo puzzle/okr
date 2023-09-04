@@ -89,7 +89,7 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldCallMethodsOnGetQuarter() {
+    void shouldCallValidatorAndFindByIdOnGetQuarter() {
         this.quarterBusinessService.getQuarterById(1L);
         verify(this.quarterValidationService, times(1)).validateOnGet(anyLong());
         verify(this.quarterPersistenceService, times(1)).findById(anyLong());
@@ -101,7 +101,7 @@ class QuarterBusinessServiceTest {
         verify(this.quarterValidationService, times(1)).validateOnGet(null);
     }
     @Test
-    void shouldCallMethodsOnGetActiveQuarter() {
+    void shouldCallValidatorAndGetCurrentQuarterOnGetActiveQuarter() {
         this.quarterBusinessService.getActiveQuarter(LocalDate.now());
         verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(any(LocalDate.class));
         verify(this.quarterPersistenceService, times(1)).getCurrentQuarter(any(LocalDate.class));

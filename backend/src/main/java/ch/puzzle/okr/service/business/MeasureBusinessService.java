@@ -79,10 +79,6 @@ public class MeasureBusinessService {
         return measurePersistenceService.getMeasureById(id);
     }
 
-    public void deleteMeasureById(Long measureId) {
-        measurePersistenceService.deleteMeasureById(measureId);
-    }
-
     public Double getCurrentValue(KeyResult keyResult) {
         Measure measure = measurePersistenceService.findFirstMeasureByKeyResultId(keyResult.getId());
         return measure != null ? measure.getValue() : null;

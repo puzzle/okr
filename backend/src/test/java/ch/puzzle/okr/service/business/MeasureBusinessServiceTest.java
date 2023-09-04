@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MeasureBusinessServiceTest {
@@ -112,12 +110,5 @@ class MeasureBusinessServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> this.measureBusinessService.updateMeasure(1L, measure));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-    }
-
-    @Test
-    void shouldDeleteMeasure() {
-        measureBusinessService.deleteMeasureById(1L);
-
-        verify(measurePersistenceService, times(1)).deleteMeasureById(1L);
     }
 }

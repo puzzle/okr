@@ -8,7 +8,6 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,14 +28,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
@@ -72,31 +69,6 @@ class CheckInControllerIT {
     void setUp() {
         BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
         BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
-    }
-
-    @Test
-    void shouldGetAllMeasures() throws Exception {
-        BDDMockito.given(measureBusinessService.getAllMeasures()).willReturn(measureList);
-
-        mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].keyResultId", Is.is(8)))
-                .andExpect(jsonPath("$[0].value", Is.is(30D)))
-                .andExpect(jsonPath("$[0].changeInfo", Is.is("changeInfo")))
-                .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives")))
-                .andExpect(jsonPath("$[0].createdById", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(4)))
-                .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35D)))
-                .andExpect(jsonPath("$[1].changeInfo", Is.is("changeInfo")))
-                .andExpect(jsonPath("$[1].measureDate", Is.is("2022-08-12T01:01:00Z")))
-                .andExpect(jsonPath("$[1].createdById", Is.is(2)));
-    }
-
-    @Test
-    void shouldGetAllMeasureIfNoMeasureExists() throws Exception {
-        BDDMockito.given(measureBusinessService.getAllMeasures()).willReturn(Collections.emptyList());
-
-        mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
@@ -165,21 +137,5 @@ class CheckInControllerIT {
                 .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    void shouldDeleteMeasure() throws Exception {
-        when(measureBusinessService.getMeasureById(anyLong())).thenReturn(measure);
-        mvc.perform(delete("/api/v1/measures/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
-    void throwExceptionWhenMeasureWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Measure with measureId 100 not found"))
-                .when(measureBusinessService).getMeasureById(anyLong());
-
-        mvc.perform(delete("/api/v1/measures/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

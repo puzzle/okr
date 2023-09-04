@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 
 @Component({
   selector: 'app-keyresult',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./keyresult.component.scss'],
 })
 export class KeyresultComponent implements OnInit {
+  @Input() keyResult!: KeyresultMin;
+
   constructor() {}
 
   ngOnInit(): void {}

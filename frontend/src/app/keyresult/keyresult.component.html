@@ -1,4 +1,7 @@
 <div class="key-result w-100 h-100 rounded-2 mb-3 p-3">
-  <div class="lh-base">Absolute Verrechenbarkeit</div>
-  <p class="last-checkin">Letztes Checkin: Noch kein Check-In vorhanden</p>
+  <div class="lh-base">{{ keyResult.title }}</div>
+  <p *ngIf="keyResult.lastCheckIn.createdOn != undefined; else noCheckin" class="last-checkin">
+    Letztes Checking: {{ keyResult.lastCheckIn.createdOn | date }}
+  </p>
+  <ng-template #noCheckin class="last-checkin">Noch kein Check-In vorhanden</ng-template>
 </div>

@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-application-header',
   templateUrl: './application-header.component.html',
   styleUrls: ['./application-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   lastScrollPosition: number = 0;

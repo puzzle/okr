@@ -41,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
-@WebMvcTest(MeasureController.class)
-class MeasureControllerIT {
+@WebMvcTest(CheckInController.class)
+class CheckInControllerIT {
     static Objective objective = Objective.Builder.builder().withId(1L).build();
     static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -13,9 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
@@ -23,16 +26,19 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {
+    TestHelper testHelper = new TestHelper();
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
     @MockBean
     MeasureBusinessService measureBusinessService = Mockito.mock(MeasureBusinessService.class);
     @MockBean
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
+    @MockBean
+    UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
     @MockBean
     MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
     @InjectMocks
@@ -46,7 +52,9 @@ class KeyResultBusinessServiceTest {
     Measure measure2;
     Measure measure3;
     List<Measure> measures;
+    Jwt jwtToken;
     @InjectMocks
+    @Spy
     private KeyResultBusinessService keyResultBusinessService;
 
     @BeforeEach
@@ -67,6 +75,8 @@ class KeyResultBusinessServiceTest {
                 .build();
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
         this.measures = List.of(measure1, measure2, measure3);
+
+        this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test
@@ -89,57 +99,83 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldEditMetricKeyResult() {
-        KeyResult newKeyresult = KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update")
-                .build();
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
+        doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
     @Test
     void shouldEditOrdinalKeyResult() {
-        KeyResult newKeyresult = KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update")
-                .build();
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
+        doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
     @Test
     void saveMetricKeyResult() {
-        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(this.metricKeyResult);
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(this.metricKeyResult);
-        assertEquals("Keyresult Metric", savedKeyResult.getTitle());
+        KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(8.0).withId(1L)
+                .withTitle("Keyresult Metric save").withDescription("The description").build());
+        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
+        doNothing().when(newKeyresult).setCreatedOn(any());
+
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(newKeyresult, jwtToken);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        assertEquals("Keyresult Metric save", savedKeyResult.getTitle());
     }
 
     @Test
     void saveOrdinalKeyResult() {
-        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(this.ordinalKeyResult);
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(this.ordinalKeyResult);
-        assertEquals("Keyresult Ordinal", savedKeyResult.getTitle());
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withCommitZone("Eine Pflanze").withTargetZone("Ein Baum").withId(1L)
+                        .withTitle("Keyresult ordinal save").withDescription("The description").build());
+        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
+        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
+        doNothing().when(newKeyresult).setCreatedOn(any());
+
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(newKeyresult, jwtToken);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        assertEquals("Keyresult ordinal save", savedKeyResult.getTitle());
     }
 
     @Test
     void shouldBePossibleToSaveMetricKeyResultWithoutDescription() {
-        Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(this.metricKeyResult);
-        this.metricKeyResult.setDescription("");
-        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(this.metricKeyResult);
-        assertEquals("Keyresult Metric", keyResult.getTitle());
+        KeyResult newKeyresult = spy(KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(8.0).withId(1L)
+                .withTitle("Keyresult Metric save").build());
+        Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
+        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
+        doNothing().when(newKeyresult).setCreatedOn(any());
+
+        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(newKeyresult, jwtToken);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        assertEquals("Keyresult Metric save", keyResult.getTitle());
     }
 
     @Test
     void shouldBePossibleToSaveOrdinalKeyResultWithoutDescription() {
-        Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(this.ordinalKeyResult);
-        this.ordinalKeyResult.setDescription("");
-        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(this.ordinalKeyResult);
-        assertEquals("Keyresult Ordinal", keyResult.getTitle());
-        assertEquals("", keyResult.getDescription());
+        KeyResult newKeyresult = spy(KeyResultOrdinal.Builder.builder().withCommitZone("Eine Pflanze")
+                .withTargetZone("Ein Baum").withId(1L).withTitle("Keyresult ordinal save").build());
+        Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
+        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
+        doNothing().when(newKeyresult).setCreatedOn(any());
+
+        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(newKeyresult, jwtToken);
+        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        assertEquals("Keyresult ordinal save", keyResult.getTitle());
+        assertNull(keyResult.getDescription());
     }
 
     @Test
@@ -205,5 +241,17 @@ class KeyResultBusinessServiceTest {
                 () -> keyResultBusinessService.getAllMeasuresByKeyResult(1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
+    }
+
+    @Test
+    void shouldDeleteKeyResultAndAssociatedCheckIns() {
+        when(this.keyResultPersistenceService.findById(anyLong())).thenReturn(metricKeyResult);
+        when(this.measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
+        when(measureBusinessService.getMeasuresByKeyResultId(1L)).thenReturn(measures);
+
+        this.keyResultBusinessService.deleteKeyResultById(1L);
+
+        verify(this.measureBusinessService, times(1)).deleteMeasureById(1L);
+        verify(this.keyResultBusinessService, times(1)).deleteKeyResultById(1L);
     }
 }

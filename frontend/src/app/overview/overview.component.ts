@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Observable } from 'rxjs';
-import { OverviewService } from '../service/overview.service';
+import { OverviewService } from '../shared/services/overview.service';
 
 @Component({
   selector: 'app-overview',

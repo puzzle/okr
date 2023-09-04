@@ -10,8 +10,8 @@ import { By } from '@angular/platform-browser';
 import { State } from '../shared/types/enums/State';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../shared/services/overview.service';
-import { of } from 'rxjs';
-import { Objective } from '../shared/models/Objective';
+import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
+import { QuarterMin } from '../shared/types/model/QuarterMin';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -39,6 +39,17 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test('Mat-menu should open and close', async () => {
+    component.objective = {
+      id: 1,
+      title: 'Increase User Engagement',
+      state: State.ONGOING,
+      quarter: {
+        id: 1,
+        label: 'GJ 23/24-Q1',
+      } as QuarterMin,
+      keyresults: [],
+    };
+    fixture.detectChanges();
     const menu = await loader.getHarness(MatMenuHarness.with({ selector: '.three-dot-menu' }));
     expect(await menu.isOpen()).toBe(false);
     await menu.open();
@@ -48,16 +59,23 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test.each([
-    [State.ONGOING, 'assets/icons/ongoing-icon.svg'],
-    [State.DRAFT, 'assets/icons/draft-icon.svg'],
-    [State.SUCCESSFUL, 'assets/icons/successful-icon.svg'],
-    [State.NOTSUCCESSFUL, 'assets/icons/not-successful-icon.svg'],
+    [State.ONGOING, '../../assets/icons/ongoing-icon.svg'],
+    [State.DRAFT, '../../assets/icons/draft-icon.svg'],
+    [State.SUCCESSFUL, '../../assets/icons/successful-icon.svg'],
+    [State.NOTSUCCESSFUL, '../../assets/icons/not-successful-icon.svg'],
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
-    overviewServiceMock.getObjectiveWithKeyresults.mockReturnValue(
-      of<Objective>({ id: 1, title: 'Increase User Engagement', state: state })
-    );
+    const objective: ObjectiveMin = {
+      id: 1,
+      title: 'Increase User Engagement',
+      state: state,
+      quarter: {
+        id: 1,
+        label: 'GJ 23/24-Q1',
+      } as QuarterMin,
+      keyresults: [],
+    };
+    component.objective = objective;
     fixture.detectChanges();
-    expect(overviewServiceMock.getObjectiveWithKeyresults).toHaveBeenCalledTimes(1);
 
     let statusIndicatorSrc = fixture.debugElement.query(By.css('img[class="status-indicator"]')).attributes['src'];
     expect(statusIndicatorSrc).toBe(path);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Observable } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
@@ -7,6 +7,7 @@ import { OverviewService } from '../shared/services/overview.service';
   selector: 'app-overview',
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit {
   overviewEntities!: Observable<OverviewEntity[]>;

@@ -1,5 +1,5 @@
-import { AsyncFactoryFn, ComponentHarness } from "@angular/cdk/testing";
-import { MatMenuHarness } from "@angular/material/menu/testing";
+import { AsyncFactoryFn, ComponentHarness } from '@angular/cdk/testing';
+import { MatMenuHarness } from '@angular/material/menu/testing';
 
 export class ObjectiveHarness extends ComponentHarness {
   static hostSelector = 'app-objective-column';

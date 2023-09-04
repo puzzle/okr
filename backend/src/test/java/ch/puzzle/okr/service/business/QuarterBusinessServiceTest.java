@@ -94,9 +94,10 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionBecauseOfNotFound() {
-        when(this.quarterPersistenceService.findById(anyLong())).thenReturn(null);
-        assertThrows(ResponseStatusException.class, () -> this.quarterBusinessService.getQuarterById(5L));
+    void shouldCallMethodsOnGetActiveQuarter() {
+        this.quarterBusinessService.getActiveQuarter(any());
+        Mockito.verify(this.quarterValidationService).validateActiveQuarterOnGet(any());
+        Mockito.verify(this.quarterPersistenceService).getCurrentQuarter(any());
     }
 
     @Test

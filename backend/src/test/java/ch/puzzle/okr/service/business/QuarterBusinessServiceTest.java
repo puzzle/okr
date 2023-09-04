@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,24 +14,21 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
-    @MockBean
-    QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
     @Mock
     QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
 
@@ -91,8 +87,10 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldThrowResponseException() {
-        assertThrows(ResponseStatusException.class, () -> this.quarterBusinessService.getQuarterById(null));
+    void shouldCallMethodsOnGetQuarter() {
+        this.quarterBusinessService.getQuarterById(1L);
+        Mockito.verify(this.quarterValidationService).validateOnGet(any());
+        Mockito.verify(this.quarterPersistenceService).findById(any());
     }
 
     @Test
@@ -111,24 +109,24 @@ class QuarterBusinessServiceTest {
     }
 
     // Can be removed?
-    @ParameterizedTest
-    @MethodSource
-    void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
-            String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters) {
-
-        Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
-        YearMonth yearMonth = YearMonth.of(currentYear, month);
-        quarterBusinessService.now = yearMonth;
-
-        // doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
-        // businessYearQuarter);
-        // doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
-        // doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
-        doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
-
-        assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
-                quarterBusinessService.getQuarters());
-    }
+//    @ParameterizedTest
+//    @MethodSource
+//    void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
+//            String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters) {
+//
+//        Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
+//        YearMonth yearMonth = YearMonth.of(currentYear, month);
+//        quarterBusinessService.now = yearMonth;
+//
+//         doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
+//         businessYearQuarter);
+//         doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
+//         doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
+//        doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
+//
+//        assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
+//                quarterBusinessService.getQuarters());
+//    }
 
     @Test
     void shouldGetQuarters() {

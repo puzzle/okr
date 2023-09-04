@@ -52,7 +52,7 @@ public class QuarterBusinessService {
     }
 
     public Quarter getActiveQuarter(LocalDate now) {
-        validator.validateOnGet(now);
+        validator.validateActiveQuarterOnGet(now);
         return quarterPersistenceService.getCurrentQuarter(now);
     }
 

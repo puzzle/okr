@@ -1,15 +1,12 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstract;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
-import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,10 +34,10 @@ public class KeyResultMapper {
         }
     }
 
-    public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        if (keyResultDto instanceof KeyResultMetricDto) {
+    public KeyResult toKeyResult(KeyResultAbstract keyResultDto) {
+        if (keyResultDto.getKeyResultType().equals("metric")) {
             return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
-        } else if (keyResultDto instanceof KeyResultOrdinalDto) {
+        } else if (keyResultDto.getKeyResultType().equals("ordinal")) {
             return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

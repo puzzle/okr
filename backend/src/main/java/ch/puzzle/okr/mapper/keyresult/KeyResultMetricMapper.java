@@ -1,7 +1,10 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstract;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
+import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -16,39 +19,52 @@ public class KeyResultMetricMapper {
     private final UserPersistenceService userPersistenceService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final MeasurePersistenceService measurePersistenceService;
+    private final MeasureMapper measureMapper;
 
     public KeyResultMetricMapper(UserPersistenceService userPersistenceService,
             ObjectivePersistenceService objectivePersistenceService,
-            MeasurePersistenceService measurePersistenceService) {
+            MeasurePersistenceService measurePersistenceService, MeasureMapper measureMapper) {
         this.userPersistenceService = userPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.measurePersistenceService = measurePersistenceService;
+        this.measureMapper = measureMapper;
     }
 
     public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult) {
         Measure lastMeasure = measurePersistenceService.findFirstMeasureByKeyResultId(keyResult.getId());
-        return new KeyResultMetricDto(keyResult.getId(), keyResult.getTitle(), keyResult.getDescription(),
+        MeasureDto measureDto = lastMeasure == null ? null : measureMapper.toDto(lastMeasure);
+        return new KeyResultMetricDto(keyResult.getId(), "metric", keyResult.getTitle(), keyResult.getDescription(),
                 keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(), keyResult.getOwner().getId(),
                 keyResult.getOwner().getFirstname(), keyResult.getOwner().getLastname(),
                 keyResult.getObjective().getId(), keyResult.getObjective().getState().toString(),
                 keyResult.getObjective().getQuarter().getId(), keyResult.getObjective().getQuarter().getLabel(),
                 keyResult.getObjective().getQuarter().getStartDate(),
-                keyResult.getObjective().getQuarter().getEndDate(), lastMeasure.getId(), lastMeasure.getValue(),
-                lastMeasure.getConfidence(), lastMeasure.getCreatedOn(), lastMeasure.getComment(),
-                keyResult.getCreatedBy().getId(), keyResult.getCreatedBy().getFirstname(),
-                keyResult.getCreatedBy().getLastname(), keyResult.getCreatedOn(), keyResult.getModifiedOn());
+                keyResult.getObjective().getQuarter().getEndDate(), measureDto, keyResult.getCreatedBy().getId(),
+                keyResult.getCreatedBy().getFirstname(), keyResult.getCreatedBy().getLastname(),
+                keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultMetric(KeyResultDto keyResultDto) {
-        return KeyResultMetric.Builder.builder().withBaseline(((KeyResultMetricDto) keyResultDto).baseline())
-                .withStretchGoal(((KeyResultMetricDto) keyResultDto).stretchGoal())
-                .withUnit(((KeyResultMetricDto) keyResultDto).unit()).withId(((KeyResultMetricDto) keyResultDto).id())
-                .withObjective(objectivePersistenceService.findById(((KeyResultMetricDto) keyResultDto).objectiveId()))
-                .withTitle(((KeyResultMetricDto) keyResultDto).title())
-                .withDescription(((KeyResultMetricDto) keyResultDto).description())
-                .withOwner(userPersistenceService.findById(((KeyResultMetricDto) keyResultDto).ownerId()))
-                .withCreatedBy(userPersistenceService.findById(((KeyResultMetricDto) keyResultDto).createdById()))
-                .withCreatedOn(((KeyResultMetricDto) keyResultDto).createdOn())
-                .withModifiedOn(((KeyResultMetricDto) keyResultDto).modifiedOn()).build();
+    public KeyResult toKeyResultMetric(KeyResultAbstract keyResultAbstract) {
+        KeyResultMetricDto keyResultDto = abstractToMetricDto(keyResultAbstract);
+        return KeyResultMetric.Builder.builder().withBaseline(keyResultDto.baseline())
+                .withStretchGoal(keyResultDto.stretchGoal()).withUnit(keyResultDto.unit()).withId(keyResultDto.id())
+                .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
+                .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
+                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
+                .withCreatedBy(userPersistenceService.findById(keyResultDto.createdById()))
+                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn()).build();
+    }
+
+    public KeyResultMetricDto abstractToMetricDto(KeyResultAbstract keyResultAbstract) {
+        return new KeyResultMetricDto(keyResultAbstract.getId(), keyResultAbstract.getKeyResultType(),
+                keyResultAbstract.getTitle(), keyResultAbstract.getDescription(), keyResultAbstract.getBaseline(),
+                keyResultAbstract.getStretchGoal(), keyResultAbstract.getUnit(), keyResultAbstract.getOwnerId(),
+                keyResultAbstract.getOwnerFirstname(), keyResultAbstract.getOwnerLastname(),
+                keyResultAbstract.getObjectiveId(), keyResultAbstract.getObjectiveState(),
+                keyResultAbstract.getObjectiveQuarterId(), keyResultAbstract.getObjectiveQuarterLabel(),
+                keyResultAbstract.getObjectiveQuarterStartDate(), keyResultAbstract.getObjectiveQuarterEndDate(),
+                keyResultAbstract.getLastCheckIn(), keyResultAbstract.getCreatedById(),
+                keyResultAbstract.getCreatedByFirstname(), keyResultAbstract.getCreatedByLastname(),
+                keyResultAbstract.getCreatedOn(), keyResultAbstract.getModifiedOn());
     }
 }

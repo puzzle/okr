@@ -12,11 +12,10 @@ import java.util.Objects;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
+@DiscriminatorColumn(name = "key_result_type")
 public abstract class KeyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
-    @NotNull
     private Long id;
 
     @NotNull(message = "Objective must not be null")
@@ -27,7 +26,7 @@ public abstract class KeyResult {
     @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
     private String title;
 
-    @Size(max = 4096)
+    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters")
     private String description;
 
     @NotNull(message = "Owner must not be null")
@@ -38,7 +37,7 @@ public abstract class KeyResult {
     @ManyToOne
     private User createdBy;
 
-    @NotNull
+    @NotNull(message = "CreatedOn must not be null")
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;

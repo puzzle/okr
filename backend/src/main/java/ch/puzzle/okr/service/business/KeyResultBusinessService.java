@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,20 +19,23 @@ public class KeyResultBusinessService {
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final MeasureBusinessService measureBusinessService;
+    private final UserBusinessService userBusinessService;
     private final KeyResultValidationService validator;
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             ObjectivePersistenceService objectivePersistenceService, MeasureBusinessService measureBusinessService,
-            KeyResultValidationService validator) {
+            UserBusinessService userBusinessService, KeyResultValidationService validator) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.measureBusinessService = measureBusinessService;
+        this.userBusinessService = userBusinessService;
         this.validator = validator;
     }
 
     @Transactional
-    public KeyResult createKeyResult(KeyResult keyResult) {
+    public KeyResult createKeyResult(KeyResult keyResult, Jwt token) {
         keyResult.setCreatedOn(LocalDateTime.now());
+        keyResult.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         validator.validateOnCreate(keyResult);
         return keyResultPersistenceService.save(keyResult);
     }

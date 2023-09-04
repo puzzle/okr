@@ -2,6 +2,9 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstract;
+import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -14,6 +17,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +41,8 @@ public class KeyResultController {
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Got KeyResult by Id", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultMetricDto.class,
+                            KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id", content = @Content) })
     @GetMapping("/{id}")
     public KeyResultDto getKeyResultById(@PathVariable long id) {
@@ -57,26 +63,29 @@ public class KeyResultController {
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstract.class,
+                            KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
-    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
-        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.createKeyResult(keyResult));
+    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultAbstract keyResultAbstract,
+            @AuthenticationPrincipal Jwt jwt) {
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultAbstract);
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.createKeyResult(keyResult, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
     @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated KeyResult in db.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = KeyResultDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstract.class,
+                            KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
-            @RequestBody KeyResultDto keyResultDto) {
+            @RequestBody KeyResultAbstract keyResultAbstract) {
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultDto)));
+                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultAbstract)));
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

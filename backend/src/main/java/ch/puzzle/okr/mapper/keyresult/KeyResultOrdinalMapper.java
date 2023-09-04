@@ -34,13 +34,11 @@ public class KeyResultOrdinalMapper {
         Measure lastMeasure = measurePersistenceService.findFirstMeasureByKeyResultId(keyResult.getId());
         MeasureDto measureDto = lastMeasure == null ? null : measureMapper.toDto(lastMeasure);
         return new KeyResultOrdinalDto(keyResult.getId(), "ordinal", keyResult.getTitle(), keyResult.getDescription(),
-                keyResult.getCommitZone(), keyResult.getTargetZone(), keyResult.getStretchZone(),
-                keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(), keyResult.getOwner().getLastname(),
+                keyResult.getCommitZone(), keyResult.getTargetZone(), keyResult.getStretchZone(), keyResult.getOwner(),
                 keyResult.getObjective().getId(), keyResult.getObjective().getState().toString(),
                 keyResult.getObjective().getQuarter().getId(), keyResult.getObjective().getQuarter().getLabel(),
                 keyResult.getObjective().getQuarter().getStartDate(),
-                keyResult.getObjective().getQuarter().getEndDate(), measureDto, keyResult.getCreatedBy().getId(),
-                keyResult.getCreatedBy().getFirstname(), keyResult.getCreatedBy().getLastname(),
+                keyResult.getObjective().getQuarter().getEndDate(), measureDto, keyResult.getCreatedBy(),
                 keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
@@ -51,21 +49,19 @@ public class KeyResultOrdinalMapper {
                 .withId(keyResultDto.id())
                 .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
                 .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
-                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
-                .withCreatedBy(userPersistenceService.findById(keyResultDto.createdById()))
+                .withOwner(userPersistenceService.findById(keyResultDto.owner().getId()))
+                .withCreatedBy(userPersistenceService.findById(keyResultDto.createdBy().getId()))
                 .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn()).build();
     }
 
     public KeyResultOrdinalDto abstractToOrdinalDto(KeyResultAbstract keyResultAbstract) {
         return new KeyResultOrdinalDto(keyResultAbstract.getId(), keyResultAbstract.getKeyResultType(),
                 keyResultAbstract.getTitle(), keyResultAbstract.getDescription(), keyResultAbstract.getCommitZone(),
-                keyResultAbstract.getTargetZone(), keyResultAbstract.getStretchZone(), keyResultAbstract.getOwnerId(),
-                keyResultAbstract.getOwnerFirstname(), keyResultAbstract.getOwnerLastname(),
+                keyResultAbstract.getTargetZone(), keyResultAbstract.getStretchZone(), keyResultAbstract.getOwner(),
                 keyResultAbstract.getObjectiveId(), keyResultAbstract.getObjectiveState(),
                 keyResultAbstract.getObjectiveQuarterId(), keyResultAbstract.getObjectiveQuarterLabel(),
                 keyResultAbstract.getObjectiveQuarterStartDate(), keyResultAbstract.getObjectiveQuarterEndDate(),
-                keyResultAbstract.getLastCheckIn(), keyResultAbstract.getCreatedById(),
-                keyResultAbstract.getCreatedByFirstname(), keyResultAbstract.getCreatedByLastname(),
-                keyResultAbstract.getCreatedOn(), keyResultAbstract.getModifiedOn());
+                keyResultAbstract.getLastCheckIn(), keyResultAbstract.getCreatedBy(), keyResultAbstract.getCreatedOn(),
+                keyResultAbstract.getModifiedOn());
     }
 }

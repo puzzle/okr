@@ -1,6 +1,7 @@
 package ch.puzzle.okr.dto.keyresult;
 
 import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.models.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,9 +17,7 @@ public class KeyResultAbstract {
     String commitZone;
     String targetZone;
     String stretchZone;
-    Long ownerId;
-    String ownerFirstname;
-    String ownerLastname;
+    User owner;
     Long objectiveId;
     String objectiveState;
     Long objectiveQuarterId;
@@ -26,9 +25,7 @@ public class KeyResultAbstract {
     LocalDate objectiveQuarterStartDate;
     LocalDate objectiveQuarterEndDate;
     MeasureDto lastCheckIn;
-    Long createdById;
-    String createdByFirstname;
-    String createdByLastname;
+    User createdBy;
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
 
@@ -115,30 +112,6 @@ public class KeyResultAbstract {
         this.stretchZone = stretchZone;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public String getOwnerFirstname() {
-        return ownerFirstname;
-    }
-
-    public void setOwnerFirstname(String ownerFirstname) {
-        this.ownerFirstname = ownerFirstname;
-    }
-
-    public String getOwnerLastname() {
-        return ownerLastname;
-    }
-
-    public void setOwnerLastname(String ownerLastname) {
-        this.ownerLastname = ownerLastname;
-    }
-
     public Long getObjectiveId() {
         return objectiveId;
     }
@@ -195,30 +168,6 @@ public class KeyResultAbstract {
         this.lastCheckIn = lastCheckIn;
     }
 
-    public Long getCreatedById() {
-        return createdById;
-    }
-
-    public void setCreatedById(Long createdById) {
-        this.createdById = createdById;
-    }
-
-    public String getCreatedByFirstname() {
-        return createdByFirstname;
-    }
-
-    public void setCreatedByFirstname(String createdByFirstname) {
-        this.createdByFirstname = createdByFirstname;
-    }
-
-    public String getCreatedByLastname() {
-        return createdByLastname;
-    }
-
-    public void setCreatedByLastname(String createdByLastname) {
-        this.createdByLastname = createdByLastname;
-    }
-
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -233,5 +182,21 @@ public class KeyResultAbstract {
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 }

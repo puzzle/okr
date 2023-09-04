@@ -6,11 +6,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -18,6 +20,8 @@ class UserPersistenceServiceIT {
     User createdUser;
     @Autowired
     private UserPersistenceService userPersistenceService;
+    @Autowired
+    private CacheManager cacheManager;
 
     @AfterEach
     void tearDown() {
@@ -25,6 +29,7 @@ class UserPersistenceServiceIT {
             userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
+        cacheManager.getCache(USER_CACHE).clear();
     }
 
     @Test
@@ -64,11 +69,38 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
-        User newUser = User.Builder.builder().withId(11L).withFirstname("Alice").withLastname("Wunderland")
-                .withUsername("alice").withEmail("wunderland@puzzle.ch").build();
+    void findUserByUsername_ShouldReturnExistingUser() {
+        User returnedUser = userPersistenceService.findUserByUsername("alice");
 
-        User returnedUser = userPersistenceService.getOrCreateUser(newUser);
+        assertEquals(11L, returnedUser.getId());
+        assertEquals("Alice", returnedUser.getFirstname());
+        assertEquals("Wunderland", returnedUser.getLastname());
+        assertEquals("alice", returnedUser.getUsername());
+        assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
+    void findUserByUsername_ShouldThrowExceptionWhenUserNotFound() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> userPersistenceService.findUserByUsername("unknown"));
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("User with username unknown not found", exception.getReason());
+    }
+
+    @Test
+    void findUserByUsername_ShouldAddUserToCache() {
+        userPersistenceService.findUserByUsername("alice");
+
+        User cachedUser = cacheManager.getCache(USER_CACHE).get("alice", User.class);
+        assertNotNull(cachedUser);
+    }
+
+    @Test
+    void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
+        User existingUser = User.Builder.builder().withUsername("alice").build();
+
+        User returnedUser = userPersistenceService.getOrCreateUser(existingUser);
 
         assertEquals(11L, returnedUser.getId());
         assertEquals("Alice", returnedUser.getFirstname());
@@ -89,5 +121,14 @@ class UserPersistenceServiceIT {
         assertEquals("lastname", createdUser.getLastname());
         assertEquals("username", createdUser.getUsername());
         assertEquals("lastname@puzzle.ch", createdUser.getEmail());
+    }
+
+    @Test
+    void getOrCreateUser_ShouldAddUserToCache() {
+        User existingUser = User.Builder.builder().withUsername("alice").build();
+        userPersistenceService.getOrCreateUser(existingUser);
+
+        User cachedUser = cacheManager.getCache(USER_CACHE).get("alice", User.class);
+        assertNotNull(cachedUser);
     }
 }

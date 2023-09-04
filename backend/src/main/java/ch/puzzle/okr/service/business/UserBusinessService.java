@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,6 @@ public class UserBusinessService {
         return userPersistenceService.findById(ownerId);
     }
 
-    @Cacheable(value = "users", key = "#newUser.username")
     public User getOrCreateUser(User newUser) {
         validationService.validateOnCreate(newUser);
         return userPersistenceService.getOrCreateUser(newUser);

@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
@@ -89,15 +91,28 @@ class QuarterBusinessServiceTest {
     @Test
     void shouldCallMethodsOnGetQuarter() {
         this.quarterBusinessService.getQuarterById(1L);
-        Mockito.verify(this.quarterValidationService).validateOnGet(any());
-        Mockito.verify(this.quarterPersistenceService).findById(any());
+        verify(this.quarterValidationService, times(1)).validateOnGet(anyLong());
+        verify(this.quarterPersistenceService, times(1)).findById(anyLong());
     }
 
     @Test
+    void shouldReturnExceptionWhenIdIsNullOnGetQuarter() {
+        this.quarterBusinessService.getQuarterById(null);
+        verify(this.quarterValidationService, times(1)).validateOnGet(null);
+    }
+    @Test
     void shouldCallMethodsOnGetActiveQuarter() {
-        this.quarterBusinessService.getActiveQuarter(any());
-        Mockito.verify(this.quarterValidationService).validateActiveQuarterOnGet(any());
-        Mockito.verify(this.quarterPersistenceService).getCurrentQuarter(any());
+        this.quarterBusinessService.getActiveQuarter(LocalDate.now());
+        verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(any(LocalDate.class));
+        verify(this.quarterPersistenceService, times(1)).getCurrentQuarter(any(LocalDate.class));
+    }
+
+    @Test
+    void shouldReturnExceptionWhenIdIsNullOnGetActiveQuarter() {
+        Mockito.doThrow(new RuntimeException()).when(this.quarterValidationService).validateActiveQuarterOnGet(null);
+        assertThrows(RuntimeException.class, () -> quarterBusinessService.getActiveQuarter(null));
+        verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(null);
+        verify(this.quarterPersistenceService, never()).getCurrentQuarter(null);
     }
 
     @Test

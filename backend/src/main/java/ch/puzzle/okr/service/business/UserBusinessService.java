@@ -3,13 +3,10 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @Service
 public class UserBusinessService {
@@ -31,7 +28,6 @@ public class UserBusinessService {
         return userPersistenceService.findById(ownerId);
     }
 
-    @Cacheable(value = USER_CACHE, key = "#newUser.username")
     public User getOrCreateUser(User newUser) {
         validationService.validateOnCreate(newUser);
         return userPersistenceService.getOrCreateUser(newUser);

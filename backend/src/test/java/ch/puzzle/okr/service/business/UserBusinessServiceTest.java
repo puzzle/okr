@@ -12,11 +12,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.puzzle.okr.TestHelper.mockJwtToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -125,5 +127,52 @@ class UserBusinessServiceTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Not allowed to give an id", exception.getReason());
+    }
+
+    @Test
+    void getUserByAuthorisationToken_ShouldReturnUser_WhenUserFound() {
+        User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Jwt jwt = mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
+        Mockito.when(userPersistenceService.findUserByUsername(user.getUsername())).thenReturn(user);
+
+        User returnedUser = userBusinessService.getUserByAuthorisationToken(jwt);
+
+        assertEquals(1L, returnedUser.getId());
+        assertEquals("Bob", returnedUser.getFirstname());
+        assertEquals("Kaufmann", returnedUser.getLastname());
+        assertEquals("bkaufmann", returnedUser.getUsername());
+        assertEquals("kaufmann@puzzle.ch", returnedUser.getEmail());
+    }
+
+    @Test
+    void getUserByAuthorisationToken_ShouldThrowResponseStatusExceptionWhenJwtIsNull() {
+        User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received token is null"))
+                .when(validationService).validateAuthorisationToken(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userBusinessService.getUserByAuthorisationToken(null);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Received token is null", exception.getReason());
+    }
+
+    @Test
+    void getUserByAuthorisationToken_ShouldThrowResponseStatusExceptionWhenUserNotFound() {
+        User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        Jwt jwt = mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail());
+        Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with username bkaufmann not found"))
+                .when(userPersistenceService).findUserByUsername(user.getUsername());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userBusinessService.getUserByAuthorisationToken(jwt);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("User with username bkaufmann not found", exception.getReason());
     }
 }

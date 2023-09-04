@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
@@ -20,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ch.puzzle.okr.TestHelper.mockJwtToken;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
-    TestHelper testHelper = new TestHelper();
     @InjectMocks
     @Spy
     ObjectiveBusinessService objectiveBusinessService;
@@ -66,7 +65,7 @@ class ObjectiveBusinessServiceTest {
                 .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
                 .withModifiedOn(LocalDateTime.MAX).build();
 
-        this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
+        this.jwtToken = mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test

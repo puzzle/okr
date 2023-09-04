@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.business.UserBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -20,8 +19,6 @@ public class CacheServiceIT {
     private CacheService cacheService;
     @Autowired
     private CacheManager cacheManager;
-    @Autowired
-    private UserBusinessService userBusinessService;
     @Autowired
     private UserPersistenceService userPersistenceService;
 
@@ -42,7 +39,7 @@ public class CacheServiceIT {
 
     @Test
     void emptyUsersCache_ShouldClearUserCache() {
-        createdUser = userBusinessService.getOrCreateUser(createUser());
+        createdUser = userPersistenceService.getOrCreateUser(createUser());
         User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
 
         cacheService.emptyUsersCache();
@@ -54,7 +51,7 @@ public class CacheServiceIT {
 
     @Test
     void emptyAllCaches_ShouldClearAllCaches() {
-        createdUser = userBusinessService.getOrCreateUser(createUser());
+        createdUser = userPersistenceService.getOrCreateUser(createUser());
         User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
 
         cacheService.emptyAllCaches();

@@ -6,10 +6,8 @@ import { KeyresultMin } from '../shared/types/model/KeyresultMin';
   templateUrl: './keyresult.component.html',
   styleUrls: ['./keyresult.component.scss'],
 })
-export class KeyresultComponent implements OnInit {
+export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
 
   constructor() {}
-
-  ngOnInit(): void {}
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 
 @Component({
@@ -6,14 +6,6 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
   templateUrl: './team.component.html',
   styleUrls: ['./team.component.scss'],
 })
-export class TeamComponent implements OnInit {
+export class TeamComponent {
   @Input() overviewEntity!: OverviewEntity;
-
-  constructor() {
-    /* TODO document why this constructor is empty */
-  }
-
-  ngOnInit(): void {
-    // TODO document why this method 'ngOnInit' is empty
-  }
 }

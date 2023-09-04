@@ -68,7 +68,7 @@ describe('ObjectiveColumnComponent', () => {
     [State.NOTSUCCESSFUL, '../../assets/icons/not-successful-icon.svg'],
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
     component.objective = { ...objective, state: state };
-
+    fixture.detectChanges();
     const image = fixture.debugElement.query(By.css('img.status-indicator'));
     let statusIndicatorSrc = image.attributes['src'];
     expect(statusIndicatorSrc).toBe(path);

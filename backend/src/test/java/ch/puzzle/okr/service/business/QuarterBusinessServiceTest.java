@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
+import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +35,9 @@ class QuarterBusinessServiceTest {
     QuarterRepository quarterRepository = Mockito.mock(QuarterRepository.class);
     @Mock
     QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
+
+    @Mock
+    QuarterValidationService quarterValidationService = Mockito.mock(QuarterValidationService.class);
 
     @InjectMocks
     @Spy
@@ -93,7 +97,7 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldThrowExceptionBecauseOfNotFound() {
-        when(this.quarterRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(this.quarterPersistenceService.findById(anyLong())).thenReturn(null);
         assertThrows(ResponseStatusException.class, () -> this.quarterBusinessService.getQuarterById(5L));
     }
 
@@ -124,6 +128,11 @@ class QuarterBusinessServiceTest {
 
         assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
                 quarterBusinessService.getQuarters());
+    }
+
+    @Test
+    void shouldGetQuarters() {
+
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {

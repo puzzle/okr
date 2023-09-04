@@ -32,6 +32,34 @@ public class KeyResultAbstract {
     public KeyResultAbstract() {
     }
 
+    public KeyResultAbstract(Long id, String keyResultType, String title, String description, Double baseline,
+            Double stretchGoal, String unit, String commitZone, String targetZone, String stretchZone, User owner,
+            Long objectiveId, String objectiveState, Long objectiveQuarterId, String objectiveQuarterLabel,
+            LocalDate objectiveQuarterStartDate, LocalDate objectiveQuarterEndDate, MeasureDto lastCheckIn,
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn) {
+        this.id = id;
+        this.keyResultType = keyResultType;
+        this.title = title;
+        this.description = description;
+        this.baseline = baseline;
+        this.stretchGoal = stretchGoal;
+        this.unit = unit;
+        this.commitZone = commitZone;
+        this.targetZone = targetZone;
+        this.stretchZone = stretchZone;
+        this.owner = owner;
+        this.objectiveId = objectiveId;
+        this.objectiveState = objectiveState;
+        this.objectiveQuarterId = objectiveQuarterId;
+        this.objectiveQuarterLabel = objectiveQuarterLabel;
+        this.objectiveQuarterStartDate = objectiveQuarterStartDate;
+        this.objectiveQuarterEndDate = objectiveQuarterEndDate;
+        this.lastCheckIn = lastCheckIn;
+        this.createdBy = createdBy;
+        this.createdOn = createdOn;
+        this.modifiedOn = modifiedOn;
+    }
+
     public Long getId() {
         return id;
     }

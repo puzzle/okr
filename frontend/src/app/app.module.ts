@@ -41,6 +41,7 @@ import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { MatCardModule } from '@angular/material/card';
 import { ObjectiveComponent } from './objective/objective.component';
+import { NgOptimizedImage } from '@angular/common';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -95,6 +96,7 @@ export const MY_FORMATS = {
     A11yModule,
     MatRadioModule,
     MatCardModule,
+    NgOptimizedImage,
   ],
   providers: [
     {

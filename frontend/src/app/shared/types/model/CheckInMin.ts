@@ -1,4 +1,4 @@
-export interface CheckInMinimal {
+export interface CheckInMin {
   id: number;
   value: number | string;
   confidence: number;

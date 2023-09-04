@@ -5,8 +5,8 @@
       <div class="title-status d-flex">
         <img
           class="status-indicator"
-          src="../../assets/icons/{{ objective.state }}"
           alt="A status indicator that indicates the progress and state of this objective"
+          [src]="'../../assets/icons/' + objective.state"
         />
         <div class="objective-title">{{ objective.title }}</div>
       </div>

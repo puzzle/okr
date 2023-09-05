@@ -9,4 +9,6 @@ export class KeyResultDialogComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  saveKeyResult() {}
 }

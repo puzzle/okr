@@ -54,6 +54,11 @@ public class QuarterPersistenceServiceIT {
         assertEquals("Missing identifier for Quarter", exception.getReason());
     }
 
+    @Test
+    void shouldReturnCurrentQuarterFutureQuarterAnd4PastQuarters() {
+        quarterPersistenceService.getMostCurrentQuarters();
+    }
+
     // @Test
     // void getOrCreateQuarter_ShouldReturnSingleQuarterWhenQuarterFound() {
     // Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").build();

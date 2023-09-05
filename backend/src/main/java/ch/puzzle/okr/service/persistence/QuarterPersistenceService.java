@@ -24,10 +24,6 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
         repository.deleteById(quarterId);
     }
 
-    public Optional<Quarter> getByLabel(String label) {
-        return ((QuarterRepository) repository).findByLabel(label);
-    }
-
     public List<Quarter> getMostCurrentQuarters() {
         return ((QuarterRepository) repository).getTop6ByOrderByStartDateDesc();
     }

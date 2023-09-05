@@ -26,6 +26,7 @@ public class OverviewBusinessService {
         }
         if (CollectionUtils.isEmpty(teamIds)) {
             // TODO get current team (of current user) if teamIds is empty
+            return overviewPersistenceService.getOverviewByQuarterId(quarterId);
         }
         return overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
     }

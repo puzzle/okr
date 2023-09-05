@@ -18,4 +18,8 @@ public class OverviewPersistenceService {
     public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
         return overviewRepositroy.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
     }
+
+    public List<Overview> getOverviewByQuarterId(Long quarterId) {
+        return overviewRepositroy.getOverviewByQuarterId(quarterId);
+    }
 }

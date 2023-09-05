@@ -12,4 +12,7 @@ public interface OverviewRepositroy extends ReadOnlyRepository<Overview, Overvie
     @Query(value = "from Overview where quarterId = :quarter_id and overviewId.teamId in (:team_ids)")
     List<Overview> getOverviewByQuarterIdAndTeamIds(@Param("quarter_id") Long quarterId,
             @Param("team_ids") List<Long> teamIds);
+
+    @Query(value = "from Overview where quarterId = :quarter_id")
+    List<Overview> getOverviewByQuarterId(@Param("quarter_id") Long quarterId);
 }

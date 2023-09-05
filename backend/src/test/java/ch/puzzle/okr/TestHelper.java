@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TestHelper {
-    public Jwt mockJwtToken(String username, String firstname, String lastname, String email) {
+    private TestHelper() {
+    }
+
+    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();

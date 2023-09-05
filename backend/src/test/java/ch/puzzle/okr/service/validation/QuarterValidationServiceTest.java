@@ -27,16 +27,21 @@ public class QuarterValidationServiceTest {
     @InjectMocks
     private QuarterValidationService validator;
 
-     @Test
-     void validateOnSave_ShouldBeSuccessfulWhenValidQuarter() {
-         validator.validateOnSave(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-         verify(validator, times(1)).throwExceptionIfModelIsNull(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-         verify(validator, times(1)).validate(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-     }
+    @Test
+    void validateOnSave_ShouldBeSuccessfulWhenValidQuarter() {
+        validator.validateOnSave(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
+                .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
+        verify(validator, times(1))
+                .throwExceptionIfModelIsNull(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
+                        .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
+        verify(validator, times(1)).validate(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
+                .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
+    }
 
     @Test
     void validateOnSave_ShouldThrowExceptionWhenAttrsAreNull() {
-        Quarter invalidQuarter = Quarter.Builder.builder().withId(null).withLabel(null).withStartDate(null).withEndDate(null).build();
+        Quarter invalidQuarter = Quarter.Builder.builder().withId(null).withLabel(null).withStartDate(null)
+                .withEndDate(null).build();
         ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnSave(invalidQuarter));
 

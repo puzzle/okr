@@ -1,0 +1,32 @@
+<div class="container-fluid row w-auto">
+  <p class="team-title">{{ overviewEntity.team.name }}</p>
+  <div class="d-flex justify-content-center">
+    <div
+      class="d-flex gap-3 row col-12 overflow-auto flex-wrap flex-md-nowrap justify-content-sm-between justify-content-md-start pb-2"
+      data-testid="objective-container"
+    >
+      <app-objective-column
+        *ngFor="let objective of overviewEntity.objectives"
+        [objective]="objective"
+        class="col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-3 p-0"
+        data-testid="objective"
+      ></app-objective-column>
+
+      <button
+        class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 p-0"
+        color="primary"
+        mat-stroked-button
+      >
+        <span class="d-flex flex-row align-items-center justify-content-center">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            class="color-pz-dark-blue"
+            fontIcon="add"
+          ></mat-icon>
+          <p class="color-pz-dark-blue text-opacity-25">Objective hinzufügen</p>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

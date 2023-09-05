@@ -1,7 +1,13 @@
 @import "assets/fonts/Roboto";
 @import "assets/fonts/MaterialIcons";
+@import "bootstrap_custom";
 
 body {
+  margin: 0;
+  padding: 0;
+}
+
+p {
   margin: 0;
   padding: 0;
 }
@@ -10,7 +16,10 @@ html,
 body {
   font-size: 100%;
   height: 100%;
+  overflow-x: hidden;
+  background-color: lightgray;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -65,6 +74,7 @@ body {
   border: 1px solid #dddddd !important;
   background-color: #f9f9f9;
 }
+
 html {
   scroll-behavior: auto !important;
 }
@@ -87,15 +97,6 @@ html {
   color: #ff1a0c !important;
 }
 
-.version {
-  color: #7f7f7f;
-  display: block;
-  margin-left: 3rem;
-  width: 100%;
-  bottom: 1rem;
-  position: relative;
-}
-
 .staging-banner {
   display: flex;
   margin-top: 1rem;
@@ -115,4 +116,19 @@ html {
   white-space: nowrap;
   font-weight: bold;
   font-size: 5rem;
+}
+
+//Applied since all menus have the same styling
+.mat-menu-panel {
+  border-radius: 0.5rem !important;
+}
+
+.mat-menu-content {
+  padding: 0 !important;
+}
+
+.three-dot-menu {
+  width: 1.25rem;
+  height: 1.25rem;
+  cursor: pointer;
 }

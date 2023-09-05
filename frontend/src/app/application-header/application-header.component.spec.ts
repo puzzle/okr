@@ -96,4 +96,28 @@ describe('ApplicationHeaderComponent', () => {
       'top: ' + component.PUZZLE_TOP_BAR_HEIGHT
     );
   }));
+
+  it('should call setOKRBannerStyle() when changing header appearance', () => {
+    jest.spyOn(component, 'setOKRBannerStyle').mockReturnValue();
+
+    //Set bannerHeight to default and execute header appearance change
+    let bannerHeight: number = 160;
+    component.changeHeaderAppearance(bannerHeight);
+
+    //Assert that banner is visible
+    fixture.detectChanges();
+    expect(component.setOKRBannerStyle).toHaveBeenCalled();
+  });
+
+  it('should call removeScrollEventListener() when updating scroll event listeners', () => {
+    jest.spyOn(component, 'removeScrollEventListener').mockReturnValue();
+
+    //Set bannerHeight to default and execute updating of scroll event listeners
+    let bannerHeight: number = 160;
+    component.updateScrollEventListeners(bannerHeight);
+
+    //Assert that banner is visible
+    fixture.detectChanges();
+    expect(component.removeScrollEventListener).toHaveBeenCalled();
+  });
 });

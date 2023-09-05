@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { KeyresultComponent } from './keyresult.component';
+import { keyResultMetric } from '../shared/testData';
 
 describe('KeyresultComponent', () => {
   let component: KeyresultComponent;
@@ -13,6 +13,7 @@ describe('KeyresultComponent', () => {
 
     fixture = TestBed.createComponent(KeyresultComponent);
     component = fixture.componentInstance;
+    component.keyResult = keyResultMetric;
     fixture.detectChanges();
   });
 

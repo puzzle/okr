@@ -71,6 +71,7 @@ export const MY_FORMATS = {
     TeamComponent,
     OverviewComponent,
     ObjectiveComponent,
+    KeyresultComponent,
     ApplicationHeaderComponent,
   ],
   imports: [

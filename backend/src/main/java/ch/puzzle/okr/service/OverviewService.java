@@ -1,20 +1,24 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.mapper.OverviewMapper;
-import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import ch.puzzle.okr.service.business.TeamBusinessService;
+import ch.puzzle.okr.service.business.OverviewBusinessService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OverviewService {
     private final OverviewMapper overviewMapper;
-    private final ObjectiveBusinessService objectiveBusinessService;
-    private final TeamBusinessService teamBusinessService;
+    private final OverviewBusinessService overviewBusinessService;
 
-    public OverviewService(OverviewMapper overviewMapper, ObjectiveBusinessService objectiveBusinessService,
-            TeamBusinessService teamBusinessService) {
-        this.objectiveBusinessService = objectiveBusinessService;
+    public OverviewService(OverviewMapper overviewMapper, OverviewBusinessService overviewBusinessService) {
         this.overviewMapper = overviewMapper;
-        this.teamBusinessService = teamBusinessService;
+        this.overviewBusinessService = overviewBusinessService;
+    }
+
+    public List<ch.puzzle.okr.dto.overview.OverviewDto> getOverviewByQuarterIdAndTeamIds(Long quarterFilter,
+            List<Long> teamFilter) {
+        return overviewMapper
+                .toDto(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter));
     }
 }

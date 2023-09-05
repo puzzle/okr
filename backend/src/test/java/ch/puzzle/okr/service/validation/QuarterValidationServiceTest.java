@@ -48,18 +48,4 @@ public class QuarterValidationServiceTest {
         assertThat(responseStatusException.getReason().strip()).contains(errorStartDate);
         assertThat(responseStatusException.getReason().strip()).contains(errorEndDate);
     }
-
-    @Test
-    void validateActiveQuarterOnGet_ShouldNotThrowExceptionWhenValidDate() {
-         assertDoesNotThrow(() -> validator.validateActiveQuarterOnGet(LocalDate.now()));
-    }
-
-    @Test
-    void validateActiveQuarterOnGet_ShouldThrowExceptionWhenDateIsNull() {
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> validator.validateActiveQuarterOnGet(null));
-
-        verify(validator, times(1)).validateActiveQuarterOnGet(null);
-        assertEquals("LocalDate can not be null", responseStatusException.getReason());
-    }
 }

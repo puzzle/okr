@@ -14,9 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,7 +47,12 @@ public class QuarterValidationServiceTest {
         assertThat(responseStatusException.getReason().strip()).contains(errorLabel);
         assertThat(responseStatusException.getReason().strip()).contains(errorStartDate);
         assertThat(responseStatusException.getReason().strip()).contains(errorEndDate);
-     }
+    }
+
+    @Test
+    void validateActiveQuarterOnGet_ShouldNotThrowExceptionWhenValidDate() {
+         assertDoesNotThrow(() -> validator.validateActiveQuarterOnGet(LocalDate.now()));
+    }
 
     @Test
     void validateActiveQuarterOnGet_ShouldThrowExceptionWhenDateIsNull() {

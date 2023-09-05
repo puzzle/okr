@@ -65,7 +65,14 @@ export const MY_FORMATS = {
 };
 
 @NgModule({
-  declarations: [AppComponent, ExampleDialogComponent, TeamComponent, OverviewComponent, ObjectiveComponent, ApplicationHeaderComponent],
+  declarations: [
+    AppComponent,
+    ExampleDialogComponent,
+    TeamComponent,
+    OverviewComponent,
+    ObjectiveComponent,
+    ApplicationHeaderComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

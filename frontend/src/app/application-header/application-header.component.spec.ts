@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 class ResizeObserverMock {
   observe() {}
   unobserve() {}
+  disconnect() {}
 }
 
 describe('ApplicationHeaderComponent', () => {

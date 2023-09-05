@@ -5,6 +5,8 @@ jobs:
 
   Tests:
     runs-on: ubuntu-latest
+    env:
+      TZ: 'Europe/Zurich'
     services:
       postgres:
         image: postgres:12

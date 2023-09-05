@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-application-header',
@@ -6,20 +6,15 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit } 
   styleUrls: ['./application-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationHeaderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
   lastScrollPosition: number = 0;
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
 
   resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-    this.removeScrollEventListener();
-    this.setScrollEventListener(entries[0].contentRect.height);
+    this.updateScrollEventListeners(entries[0].contentRect.height);
   });
-
-  constructor() {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     //Define puzzleBanner reference and add resizeObserver
@@ -29,6 +24,7 @@ export class ApplicationHeaderComponent implements OnInit, AfterViewInit, OnDest
 
   ngOnDestroy(): void {
     this.removeScrollEventListener();
+    this.resizeObserver.disconnect();
   }
 
   changeHeaderAppearance(bannerHeight: number) {
@@ -52,7 +48,8 @@ export class ApplicationHeaderComponent implements OnInit, AfterViewInit, OnDest
     }
   }
 
-  setScrollEventListener(bannerHeight: number) {
+  updateScrollEventListeners(bannerHeight: number) {
+    this.removeScrollEventListener();
     this.eventListener = () => this.changeHeaderAppearance(bannerHeight);
     window.addEventListener('scroll', this.eventListener);
   }

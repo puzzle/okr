@@ -1,0 +1,15 @@
+<div class="d-flex align-items-center gap-1">
+  <div class="border border-dark rounded-1 py-1 px-3">
+    <p>{{ value }}/{{ max }}</p>
+  </div>
+
+  <mat-slider
+    *ngIf="showSlider"
+    [min]="min"
+    [max]="max"
+    [step]="1"
+    [tickInterval]="1"
+    [(ngModel)]="keyResult.lastCheckIn.confidence"
+  >
+  </mat-slider>
+</div>

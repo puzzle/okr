@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,6 +43,8 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
     oauthService.configure({ ...environment.oauth, issuer: config.issuer });
   };
 }
+import { ConfidenceComponent } from './confidence/confidence.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -105,6 +107,8 @@ export const MY_FORMATS = {
     A11yModule,
     MatRadioModule,
     NgOptimizedImage,
+    MatSliderModule,
+    FormsModule,
   ],
   providers: [
     {

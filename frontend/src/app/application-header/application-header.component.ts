@@ -47,7 +47,7 @@ export class ApplicationHeaderComponent implements OnInit, AfterViewInit, OnDest
       setTimeout(() => {
         this.okrBanner!.style.position = 'fixed';
       }, 200);
-    } else if (scrollTop < 10) {
+    } else if (scrollTop == 0) {
       this.okrBanner!.style.position = 'relative';
     }
   }

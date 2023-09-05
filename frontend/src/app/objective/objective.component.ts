@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
+import { State } from '../shared/types/enums/State';
 
 @Component({
   selector: 'app-objective-column',
@@ -21,7 +22,7 @@ export class ObjectiveComponent implements OnInit {
   constructor(private routeService: RouteService) {}
 
   ngOnInit(): void {
-    // TODO document why this method 'ngOnInit' is empty
+    this.objective = { ...this.objective, state: State[this.objective.state as string as keyof typeof State] };
   }
 
   redirect(menuEntry: MenuEntry) {

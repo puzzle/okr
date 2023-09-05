@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -27,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.postgresql.hostchooser.HostRequirement.any;
 
 @ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
@@ -74,11 +72,6 @@ class QuarterBusinessServiceTest {
                 Arguments.of(2020, "20"), Arguments.of(2023, "23"));
     }
 
-    @BeforeEach
-    void beforeEach() {
-        quarterBusinessService.now = YearMonth.of(2022, 1);
-    }
-
     @Test
     void shouldReturnProperQuarter() {
         Quarter quarter = Quarter.Builder.builder().withId(3L).withLabel("GJ 22/23-Q2").build();
@@ -103,17 +96,17 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldCallValidatorAndGetCurrentQuarterOnGetActiveQuarter() {
-        this.quarterBusinessService.getActiveQuarter(LocalDate.now());
+        this.quarterBusinessService.getCurrentQuarter();
         verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(any(LocalDate.class));
-        verify(this.quarterPersistenceService, times(1)).getCurrentQuarter(any(LocalDate.class));
+        verify(this.quarterPersistenceService, times(1)).getCurrentQuarter();
     }
 
     @Test
     void shouldReturnExceptionWhenIdIsNullOnGetActiveQuarter() {
         Mockito.doThrow(new RuntimeException()).when(this.quarterValidationService).validateActiveQuarterOnGet(null);
-        assertThrows(RuntimeException.class, () -> quarterBusinessService.getActiveQuarter(null));
+        assertThrows(RuntimeException.class, () -> quarterBusinessService.getCurrentQuarter());
         verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(null);
-        verify(this.quarterPersistenceService, never()).getCurrentQuarter(null);
+        verify(this.quarterPersistenceService, never()).getCurrentQuarter();
     }
 
     @Test

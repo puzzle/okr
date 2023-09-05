@@ -4,6 +4,8 @@ import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { NotifierService } from '../shared/services/notifier.service';
 import { Router } from '@angular/router';
+import {KeyResultDialogComponent} from "../key-result-dialog/key-result-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-objective-column',
@@ -22,6 +24,7 @@ export class ObjectiveComponent {
   ];
 
   constructor(
+    private dialog: MatDialog,
     private routeService: RouteService,
     private notifierService: NotifierService,
     private router: Router,
@@ -43,5 +46,12 @@ export class ObjectiveComponent {
 
   openObjectiveDetail() {
     this.router.navigate(['objective', this.objective.id]);
+  }
+
+  openAddKeyResultDialog() {
+    const dialogRef = this.dialog.open(KeyResultDialogComponent, {
+      width: '44.9375em',
+      height: '40.375em',
+    });
   }
 }

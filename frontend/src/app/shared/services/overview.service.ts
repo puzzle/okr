@@ -1,15 +1,772 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { OverviewEntity } from '../types/model/OverviewEntity';
+import { QuarterMin } from '../types/model/QuarterMin';
+import { CheckInMin } from '../types/model/CheckInMin';
+import { KeyResultMetricMin } from '../types/model/KeyResultMetricMin';
+import { ObjectiveMin } from '../types/model/ObjectiveMin';
+import { KeyresultMin } from '../types/model/KeyresultMin';
+import { KeyResultOrdinalMin } from '../types/model/KeyResultOrdinalMin';
+import { TeamMin } from '../types/model/TeamMin';
 import { State } from '../types/enums/State';
-import { of } from 'rxjs';
-import { Objective } from '../models/Objective';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OverviewService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  getObjectiveWithKeyresults() {
-    return of<Objective>({ id: 1, title: 'Increase User Engagement', state: State.DRAFT });
+  getOverview(): Observable<OverviewEntity[]> {
+    return of([
+      {
+        team: {
+          id: 1,
+          name: 'Marketing Team',
+        } as TeamMin,
+        objectives: [
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+        ] as ObjectiveMin[],
+      },
+      {
+        team: {
+          id: 2,
+          name: 'Development Team',
+        },
+        objectives: [],
+      },
+      {
+        team: {
+          id: 1,
+          name: 'Marketing Team',
+        } as TeamMin,
+        objectives: [
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+        ] as ObjectiveMin[],
+      },
+      {
+        team: {
+          id: 2,
+          name: 'Development Team',
+        },
+        objectives: [],
+      },
+      {
+        team: {
+          id: 1,
+          name: 'Marketing Team',
+        } as TeamMin,
+        objectives: [
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+          {
+            id: 101,
+            title: 'Increase User Engagement',
+            state: State.ONGOING,
+            quarter: {
+              id: 1,
+              label: 'GJ 23/24-Q1',
+            } as QuarterMin,
+            keyresults: [
+              {
+                id: 201,
+                title: 'Achieve 20% Increase in Daily Active Users',
+                unit: '%',
+                baseLine: 10.0,
+                stretchGoal: 25.0,
+                lastCheckIn: {
+                  id: 815,
+                  value: 15,
+                  confidence: 5,
+                  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultMetricMin,
+              {
+                id: 202,
+                title: 'Reduce Bounce Rate',
+                commitZone: '3 Birnen',
+                targetZone: '2 Birnen und 2 Äpfel',
+                stretchGoal: 'Alle Früchte',
+                lastCheckIn: {
+                  id: 816,
+                  value: 'COMMIT',
+                  confidence: 7,
+                  createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+                } as CheckInMin,
+              } as KeyResultOrdinalMin,
+            ] as KeyresultMin[],
+          } as ObjectiveMin,
+        ] as ObjectiveMin[],
+      },
+      {
+        team: {
+          id: 2,
+          name: 'Development Team',
+        },
+        objectives: [],
+      },
+    ] as OverviewEntity[]);
   }
 }

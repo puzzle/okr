@@ -1,10 +1,6 @@
-@import "../../../styles";
+@import "../../styles";
 
 .objective {
-  max-width: 20rem;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-
   &:hover {
     box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.06), 1px 1px 2px 0 rgba(0, 0, 0, 0.06), 3px 3px 4px 0 rgba(0, 0, 0, 0.05),
       8px 6px 6px 0 rgba(0, 0, 0, 0.03), 14px 11px 7px 0 rgba(0, 0, 0, 0.01), 21px 18px 8px 0 rgba(0, 0, 0, 0);
@@ -13,6 +9,7 @@
 
 .objective-main {
   padding: 0 1.25rem 1.25rem 1.25rem;
+  width: 100%;
 }
 
 .status-indicator {
@@ -25,7 +22,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   margin: 0;
-  color: $link-color;
+  color: $pz-dark-blue;
 }
 
 .objective-menu-option {

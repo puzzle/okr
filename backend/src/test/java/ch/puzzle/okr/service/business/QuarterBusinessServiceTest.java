@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -109,29 +110,50 @@ class QuarterBusinessServiceTest {
         assertEquals(2, hashMap.get(4));
     }
 
-    // Can be removed?
-    // @ParameterizedTest
-    // @MethodSource
-    // void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
-    // String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters) {
-    //
-    // Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
-    // YearMonth yearMonth = YearMonth.of(currentYear, month);
-    // quarterBusinessService.now = yearMonth;
-    //
-    // doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
-    // businessYearQuarter);
-    // doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
-    // doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
-    // doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
-    //
-    // assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
-    // quarterBusinessService.getQuarters());
-    // }
+//     Can be removed?
+//     @ParameterizedTest
+//     @MethodSource
+//     void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
+//     String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters) {
+//
+//     Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
+//     YearMonth yearMonth = YearMonth.of(currentYear, month);
+//     quarterBusinessService.now = yearMonth;
+//
+//     doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
+//     businessYearQuarter);
+//     doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
+//     doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
+//     doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
+//
+//     assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
+//     quarterBusinessService.getQuarters());
+//     }
 
     @Test
     void shouldGetQuarters() {
+        // initial List
+        List<Quarter> quarterList = new ArrayList<>();
+        quarterList.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
+        Mockito.when(this.quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
+
+        //Final List
+        List<Quarter> quarterListFormatted = new ArrayList<>();
+        quarterListFormatted.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+
+        verify(this.quarterPersistenceService).getMostCurrentQuarters();
+        assertEquals(quarterListFormatted, quarterBusinessService.getQuarters());
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {

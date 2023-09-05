@@ -50,8 +50,8 @@ export class ObjectiveComponent {
 
   openAddKeyResultDialog() {
     const dialogRef = this.dialog.open(KeyResultDialogComponent, {
-      width: '44.9375em',
-      height: '40.375em',
+      width: '45em',
+      height: '40em',
     });
   }
 }

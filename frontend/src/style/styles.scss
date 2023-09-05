@@ -1,6 +1,8 @@
-@import "assets/fonts/Roboto";
-@import "assets/fonts/MaterialIcons";
-@import "bootstrap_custom";
+@import "./custom_angular";
+@import "./vars";
+@import "../assets/fonts/Roboto";
+@import "../assets/fonts/MaterialIcons";
+@import "./custom_bootstrap";
 
 body {
   margin: 0;

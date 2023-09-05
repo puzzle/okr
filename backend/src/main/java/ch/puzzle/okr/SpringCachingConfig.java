@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class SpringCachingConfig {
 
+    public static final String USER_CACHE = "users";
+
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager("users");
+        return new ConcurrentMapCacheManager(USER_CACHE);
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
+
 @EnableScheduling
 @Service
 public class CacheService {
@@ -20,7 +22,7 @@ public class CacheService {
         this.cacheManager = cacheManager;
     }
 
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = USER_CACHE, allEntries = true)
     @Scheduled(fixedRateString = "${caching.users.TTL}")
     public void emptyUsersCache() {
         logger.info("emptying users cache");

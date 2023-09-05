@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ObjectiveColumnComponent } from './objective/objectiveColumn/objective-column.component';
+import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
-  { path: 'objectivestest', component: ObjectiveColumnComponent, pathMatch: 'full' },
+  { path: '', component: OverviewComponent, pathMatch: 'full' },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

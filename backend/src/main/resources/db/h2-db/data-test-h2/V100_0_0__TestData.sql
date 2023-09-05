@@ -1,3 +1,14 @@
+SET REFERENTIAL_INTEGRITY FALSE;
+
+truncate table measure;
+truncate table key_result;
+truncate table objective;
+truncate table person;
+truncate table quarter;
+truncate table team;
+
+SET REFERENTIAL_INTEGRITY TRUE;
+
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;

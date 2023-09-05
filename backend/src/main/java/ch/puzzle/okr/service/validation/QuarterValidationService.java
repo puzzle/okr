@@ -28,10 +28,4 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
         throwExceptionIfModelIsNull(model);
         validate(model);
     }
-
-    public void validateActiveQuarterOnGet(LocalDate localDate) {
-        if (localDate == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "LocalDate can not be null");
-        }
-    }
 }

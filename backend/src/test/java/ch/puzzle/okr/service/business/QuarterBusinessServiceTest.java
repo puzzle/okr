@@ -95,18 +95,9 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldCallValidatorAndGetCurrentQuarterOnGetActiveQuarter() {
+    void shouldCallGetCurrentQuarterOnGetCurrentQuarter() {
         this.quarterBusinessService.getCurrentQuarter();
-        verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(any(LocalDate.class));
         verify(this.quarterPersistenceService, times(1)).getCurrentQuarter();
-    }
-
-    @Test
-    void shouldReturnExceptionWhenIdIsNullOnGetActiveQuarter() {
-        Mockito.doThrow(new RuntimeException()).when(this.quarterValidationService).validateActiveQuarterOnGet(null);
-        assertThrows(RuntimeException.class, () -> quarterBusinessService.getCurrentQuarter());
-        verify(this.quarterValidationService, times(1)).validateActiveQuarterOnGet(null);
-        verify(this.quarterPersistenceService, never()).getCurrentQuarter();
     }
 
     @Test

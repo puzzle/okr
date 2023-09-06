@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,15 +15,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -144,8 +140,8 @@ class QuarterBusinessServiceTest {
         quarterListFormatted.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item")
                 .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
-        verify(this.quarterPersistenceService).getMostCurrentQuarters();
         assertEquals(quarterListFormatted, quarterBusinessService.getQuarters());
+        verify(this.quarterPersistenceService).getMostCurrentQuarters();
     }
 
     private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {

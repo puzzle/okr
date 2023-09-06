@@ -1,9 +1,5 @@
 package ch.puzzle.okr.dto.keyresult;
 
-import ch.puzzle.okr.dto.MeasureDto;
-import ch.puzzle.okr.models.User;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class KeyResultAbstract {
@@ -17,15 +13,10 @@ public class KeyResultAbstract {
     String commitZone;
     String targetZone;
     String stretchZone;
-    User owner;
-    Long objectiveId;
-    String objectiveState;
-    Long objectiveQuarterId;
-    String objectiveQuarterLabel;
-    LocalDate objectiveQuarterStartDate;
-    LocalDate objectiveQuarterEndDate;
-    MeasureDto lastCheckIn;
-    User createdBy;
+    KeyResultUserDto owner;
+    KeyResultObjectiveDto objective;
+    KeyResultLastCheckInDto lastCheckIn;
+    KeyResultUserDto createdBy;
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
 
@@ -33,10 +24,9 @@ public class KeyResultAbstract {
     }
 
     public KeyResultAbstract(Long id, String keyResultType, String title, String description, Double baseline,
-            Double stretchGoal, String unit, String commitZone, String targetZone, String stretchZone, User owner,
-            Long objectiveId, String objectiveState, Long objectiveQuarterId, String objectiveQuarterLabel,
-            LocalDate objectiveQuarterStartDate, LocalDate objectiveQuarterEndDate, MeasureDto lastCheckIn,
-            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn) {
+            Double stretchGoal, String unit, String commitZone, String targetZone, String stretchZone,
+            KeyResultUserDto owner, KeyResultObjectiveDto objective, KeyResultLastCheckInDto lastCheckIn,
+            KeyResultUserDto createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn) {
         this.id = id;
         this.keyResultType = keyResultType;
         this.title = title;
@@ -48,12 +38,7 @@ public class KeyResultAbstract {
         this.targetZone = targetZone;
         this.stretchZone = stretchZone;
         this.owner = owner;
-        this.objectiveId = objectiveId;
-        this.objectiveState = objectiveState;
-        this.objectiveQuarterId = objectiveQuarterId;
-        this.objectiveQuarterLabel = objectiveQuarterLabel;
-        this.objectiveQuarterStartDate = objectiveQuarterStartDate;
-        this.objectiveQuarterEndDate = objectiveQuarterEndDate;
+        this.objective = objective;
         this.lastCheckIn = lastCheckIn;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
@@ -140,60 +125,36 @@ public class KeyResultAbstract {
         this.stretchZone = stretchZone;
     }
 
-    public Long getObjectiveId() {
-        return objectiveId;
+    public KeyResultUserDto getOwner() {
+        return owner;
     }
 
-    public void setObjectiveId(Long objectiveId) {
-        this.objectiveId = objectiveId;
+    public void setOwner(KeyResultUserDto owner) {
+        this.owner = owner;
     }
 
-    public String getObjectiveState() {
-        return objectiveState;
+    public KeyResultObjectiveDto getObjective() {
+        return objective;
     }
 
-    public void setObjectiveState(String objectiveState) {
-        this.objectiveState = objectiveState;
+    public void setObjective(KeyResultObjectiveDto objective) {
+        this.objective = objective;
     }
 
-    public Long getObjectiveQuarterId() {
-        return objectiveQuarterId;
-    }
-
-    public void setObjectiveQuarterId(Long objectiveQuarterId) {
-        this.objectiveQuarterId = objectiveQuarterId;
-    }
-
-    public String getObjectiveQuarterLabel() {
-        return objectiveQuarterLabel;
-    }
-
-    public void setObjectiveQuarterLabel(String objectiveQuarterLabel) {
-        this.objectiveQuarterLabel = objectiveQuarterLabel;
-    }
-
-    public LocalDate getObjectiveQuarterStartDate() {
-        return objectiveQuarterStartDate;
-    }
-
-    public void setObjectiveQuarterStartDate(LocalDate objectiveQuarterStartDate) {
-        this.objectiveQuarterStartDate = objectiveQuarterStartDate;
-    }
-
-    public LocalDate getObjectiveQuarterEndDate() {
-        return objectiveQuarterEndDate;
-    }
-
-    public void setObjectiveQuarterEndDate(LocalDate objectiveQuarterEndDate) {
-        this.objectiveQuarterEndDate = objectiveQuarterEndDate;
-    }
-
-    public MeasureDto getLastCheckIn() {
+    public KeyResultLastCheckInDto getLastCheckIn() {
         return lastCheckIn;
     }
 
-    public void setLastCheckIn(MeasureDto lastCheckIn) {
+    public void setLastCheckIn(KeyResultLastCheckInDto lastCheckIn) {
         this.lastCheckIn = lastCheckIn;
+    }
+
+    public KeyResultUserDto getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(KeyResultUserDto createdBy) {
+        this.createdBy = createdBy;
     }
 
     public LocalDateTime getCreatedOn() {
@@ -210,21 +171,5 @@ public class KeyResultAbstract {
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
     }
 }

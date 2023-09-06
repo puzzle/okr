@@ -14,6 +14,7 @@ alter table key_result
     drop column if exists unit,
     drop column if exists expected_evolution,
     alter column stretch_goal drop not null,
+    alter column modified_on drop not null,
     add column if not exists key_result_type varchar(255),
     add column if not exists created_on timestamp,
     add column if not exists unit varchar(30),

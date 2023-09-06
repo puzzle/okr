@@ -131,6 +131,14 @@ class QuarterBusinessServiceTest {
         assertEquals(quarter, quarterBusinessService.scheduledGenerationQuarters());
     }
 
+    @Test
+    void shouldReturnNullWhenNoQuarterGenerationNeeded() {
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 29/30-Q4")
+                .withStartDate(LocalDate.of(2030, 4, 1)).withEndDate(LocalDate.of(2030, 6, 30)).build();
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
+        assertEquals(null, quarterBusinessService.scheduledGenerationQuarters());
+    }
+
     private int monthFromQuarter(int quarter) {
         return quarter * 3 - 2;
     }

@@ -114,23 +114,35 @@ class QuarterBusinessServiceTest {
     void shouldGetQuarters() {
         // initial List
         List<Quarter> quarterList = new ArrayList<>();
-        quarterList.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterList.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterList.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterList.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterList.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterList.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterList.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
         Mockito.when(this.quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
 
-        //Final List
+        // Final List
         List<Quarter> quarterListFormatted = new ArrayList<>();
-        quarterListFormatted.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterListFormatted.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterListFormatted.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterListFormatted.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterListFormatted.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
-        quarterListFormatted.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item").withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(2L).withLabel("Initial second item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(1L).withLabel("Initial first item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(3L).withLabel("Initial third item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(4L).withLabel("Initial fourth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(5L).withLabel("Initial fifth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
+        quarterListFormatted.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item")
+                .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
         verify(this.quarterPersistenceService).getMostCurrentQuarters();
         assertEquals(quarterListFormatted, quarterBusinessService.getQuarters());

@@ -54,12 +54,14 @@ public class QuarterValidationServiceTest {
         assertThat(responseStatusException.getReason().strip()).contains(errorEndDate);
     }
 
-    @Test void validateOnGet_ShouldBeSuccessfulWhenValidId() {
+    @Test
+    void validateOnGet_ShouldBeSuccessfulWhenValidId() {
         assertDoesNotThrow(() -> validator.validateOnGet(1L));
         verify(validator, times(1)).validateOnGet(anyLong());
     }
 
-    @Test void validateOnGet_ShouldThrowExceptionWhenIdIsNull() {
+    @Test
+    void validateOnGet_ShouldThrowExceptionWhenIdIsNull() {
         RuntimeException runtimeException = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

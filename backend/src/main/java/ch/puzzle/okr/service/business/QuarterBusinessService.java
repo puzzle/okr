@@ -80,11 +80,16 @@ public class QuarterBusinessService {
         return quarterPersistenceService.save(quarter);
     }
 
+    public YearMonth getCurrentYearMonth() {
+        return YearMonth.now();
+    }
+
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
     public Quarter scheduledGenerationQuarters() {
-        if (YearMonth.now().getMonthValue() % 3 == 0) {
+        YearMonth yearMonth = getCurrentYearMonth();
+        if (yearMonth.getMonthValue() % 3 == 0) {
             logger.info("Generated quarters on first day of month");
-            return generateQuarter(YearMonth.now());
+            return generateQuarter(yearMonth);
         }
         return null;
     }

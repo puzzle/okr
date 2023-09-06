@@ -15,6 +15,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,37 +37,8 @@ class QuarterBusinessServiceTest {
     @Spy
     private QuarterBusinessService quarterBusinessService;
 
-    private static Stream<Arguments> shouldGetFutureQuarters() {
-        return Stream.of(Arguments.of(2023, 7, List.of("GJ 23/24-Q2")), Arguments.of(2022, 10, List.of("GJ 22/23-Q3")),
-                Arguments.of(2022, 1, List.of("GJ 21/22-Q4")), Arguments.of(2023, 4, List.of("GJ 23/24-Q1")));
-    }
-
-    private static Stream<Arguments> shouldGetPastQuarters() {
-        return Stream.of(Arguments.of(2023, 7, List.of("GJ 22/23-Q4", "GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1")),
-                Arguments.of(2022, 10, List.of("GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3", "GJ 21/22-Q2")),
-                Arguments.of(2022, 1, List.of("GJ 21/22-Q2", "GJ 21/22-Q1", "GJ 20/21-Q4", "GJ 20/21-Q3")),
-                Arguments.of(2023, 4, List.of("GJ 22/23-Q3", "GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4")));
-    }
-
-    private static Stream<Arguments> shouldGenerateQuarterLabel() {
-        return Stream.of(Arguments.of(2023, 1, "GJ 23/24-Q1"), Arguments.of(22, 2, "GJ 22/23-Q2"),
-                Arguments.of(2021, 3, "GJ 21/22-Q3"), Arguments.of(22, 4, "GJ 22/23-Q4"));
-    }
-
     private static Stream<Arguments> shouldGetFirstMonthFromQuarter() {
         return Stream.of(Arguments.of(1, 1), Arguments.of(2, 4), Arguments.of(3, 7), Arguments.of(4, 10));
-    }
-
-    private static Stream<Arguments> shouldGetOrCreateQuarters() {
-        return Stream.of(Arguments.of(2023, 2022, 1, 3, "GJ 22/23-Q3", List.of("GJ 22/23-Q4"),
-                List.of("GJ 22/23-Q2", "GJ 22/23-Q1", "GJ 21/22-Q4", "GJ 21/22-Q3"))
-
-        );
-    }
-
-    private static Stream<Arguments> shouldShortenYear() {
-        return Stream.of(Arguments.of(2000, "00"), Arguments.of(2005, "05"), Arguments.of(2014, "14"),
-                Arguments.of(2020, "20"), Arguments.of(2023, "23"));
     }
 
     @Test
@@ -144,19 +116,19 @@ class QuarterBusinessServiceTest {
         verify(this.quarterPersistenceService).getMostCurrentQuarters();
     }
 
-    private static Stream<Arguments> shouldGenerateCurrentQuarterLabel() {
-        return Stream.of(Arguments.of(2023, 1, "GJ 22/23-Q3"), Arguments.of(2023, 2, "GJ 22/23-Q3"),
-                Arguments.of(2023, 3, "GJ 22/23-Q3"), Arguments.of(2023, 4, "GJ 22/23-Q4"),
-                Arguments.of(2023, 5, "GJ 22/23-Q4"), Arguments.of(2023, 6, "GJ 22/23-Q4"),
-                Arguments.of(2023, 7, "GJ 23/24-Q1"), Arguments.of(2023, 8, "GJ 23/24-Q1"),
-                Arguments.of(2023, 9, "GJ 23/24-Q1"), Arguments.of(2023, 10, "GJ 23/24-Q2"),
-                Arguments.of(2023, 11, "GJ 23/24-Q2"), Arguments.of(2023, 12, "GJ 23/24-Q2"));
-    }
-
     @ParameterizedTest
     @MethodSource
     void shouldGetFirstMonthFromQuarter(int quarter, int month) {
         assertEquals(month, monthFromQuarter(quarter));
+    }
+
+    @Test
+    void shouldGenerateCorrectQuarter() {
+        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 29/30-Q4")
+                .withStartDate(LocalDate.of(2030, 4, 1)).withEndDate(LocalDate.of(2030, 6, 30)).build();
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 3));
+        Mockito.when(this.quarterPersistenceService.save(any())).thenReturn(quarter);
+        assertEquals(quarter, quarterBusinessService.scheduledGenerationQuarters());
     }
 
     private int monthFromQuarter(int quarter) {

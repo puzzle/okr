@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 public class QuarterPersistenceServiceIT {
@@ -57,16 +57,10 @@ public class QuarterPersistenceServiceIT {
 
     @Test
     void shouldReturnCurrentQuarterFutureQuarterAnd4PastQuarters() {
-        quarterPersistenceService.getMostCurrentQuarters();
-    }
+        List<Quarter> quarterListFromFunction = quarterPersistenceService.getMostCurrentQuarters();
 
-    // @Test
-    // void getOrCreateQuarter_ShouldReturnSingleQuarterWhenQuarterFound() {
-    // Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4").build();
-    //
-    // Quarter returnedQuarter = quarterPersistenceService.getOrCreateQuarter(quarter.getLabel());
-    //
-    // assertEquals(quarter.getId(), returnedQuarter.getId());
-    // assertEquals(quarter.getLabel(), returnedQuarter.getLabel());
-    // }
+        assertEquals(6, quarterListFromFunction.size());
+        assertTrue(
+                quarterListFromFunction.get(0).getStartDate().isAfter(quarterListFromFunction.get(5).getStartDate()));
+    }
 }

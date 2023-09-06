@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,10 +57,10 @@ class MeasureControllerIT {
                     KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withTargetZone("Wald").withId(9L).build())
             .withValue(35D).withChangeInfo("ChangeInfo").build();
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
-    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, 5, "Comment 1", 1L, LocalDateTime.MAX,
-            LocalDateTime.MAX);
-    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35D, 8, "Comment 2", 2L, LocalDateTime.MAX,
-            LocalDateTime.MAX);
+    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
+            Instant.parse("2022-08-12T01:01:00.00Z"));
+    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35D, "changeInfo", "Initiatives", 2L,
+            LocalDateTime.MAX, Instant.parse("2022-08-12T01:01:00.00Z"));
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -80,10 +81,13 @@ class MeasureControllerIT {
         mvc.perform(get("/api/v1/measures").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].keyResultId", Is.is(8)))
-                .andExpect(jsonPath("$[0].keyResultId", Is.is(8))).andExpect(jsonPath("$[0].value", Is.is(30.0)))
-                .andExpect(jsonPath("$[0].confidence", Is.is(5)))
-                .andExpect(jsonPath("$[1].comment", Is.is("Comment 2")))
-                .andExpect(jsonPath("$[1].createdOn", Is.is("+999999999-12-31T23:59:59.999999999")))
+                .andExpect(jsonPath("$[0].value", Is.is(30D)))
+                .andExpect(jsonPath("$[0].changeInfo", Is.is("changeInfo")))
+                .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives")))
+                .andExpect(jsonPath("$[0].createdById", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(4)))
+                .andExpect(jsonPath("$[1].keyResultId", Is.is(9))).andExpect(jsonPath("$[1].value", Is.is(35D)))
+                .andExpect(jsonPath("$[1].changeInfo", Is.is("changeInfo")))
+                .andExpect(jsonPath("$[1].measureDate", Is.is("2022-08-12T01:01:00Z")))
                 .andExpect(jsonPath("$[1].createdById", Is.is(2)));
     }
 
@@ -97,8 +101,8 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, 1, "Comment", 1L, LocalDateTime.now(),
-                LocalDateTime.of(2022, 8, 12, 1, 0, 0));
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+                Instant.parse("2022-08-12T01:01:00.00Z"));
 
         BDDMockito.given(measureBusinessService.saveMeasure(any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
@@ -109,7 +113,7 @@ class MeasureControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30D)))
-                .andExpect(jsonPath("$.confidence", Is.is(1))).andExpect(jsonPath("$.comment", Is.is("Comment")));
+                .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
     }
 
     @Test
@@ -125,8 +129,8 @@ class MeasureControllerIT {
 
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, 1, "Comment", 1L, LocalDateTime.now(),
-                LocalDateTime.of(2022, 8, 12, 1, 0, 0));
+        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+                Instant.parse("2022-08-12T01:01:00.00Z"));
         BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
@@ -136,8 +140,9 @@ class MeasureControllerIT {
                 .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30D)))
-                .andExpect(jsonPath("$.createdById", Is.is(1))).andExpect(jsonPath("$.confidence", Is.is(1)))
-                .andExpect(jsonPath("$.value", Is.is(30.0)));
+                .andExpect(jsonPath("$.createdById", Is.is(1)))
+                .andExpect(jsonPath("$.measureDate", Is.is("2022-08-12T01:01:00Z")))
+                .andExpect(jsonPath("$.initiatives", Is.is("initiatives")));
     }
 
     @Test

@@ -2,8 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
+import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
@@ -29,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -49,8 +49,8 @@ class ObjectiveControllerIT {
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34D, 4, "Comment 1", 1L, LocalDateTime.MAX,
-            LocalDateTime.MAX);
+    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
+            Instant.parse("2022-08-12T01:01:00.00Z"));
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
@@ -60,12 +60,19 @@ class ObjectiveControllerIT {
             State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN);
     static KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
     static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
+    static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
+    static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
+            LocalDate.MAX);
+    static KeyResultLastCheckInDto keyResultLastCheckInDto = new KeyResultLastCheckInDto(1L, 4.0, 6, LocalDateTime.MIN,
+            "Comment");
+    static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
+
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
-            1.0, 5.0, "ECTS", user, 1L, "INPROGRESS", 1L, "GJ 22/23-Q4", LocalDate.MIN, LocalDate.MAX, null, user,
+            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto,
             LocalDateTime.MIN, LocalDateTime.MAX);
     static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
-            "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", user, 1L, "INPROGRESS", 1L, "GJ 22/23-Q4",
-            LocalDate.MIN, LocalDate.MAX, measureDto1, user, LocalDateTime.MIN, LocalDateTime.MAX);
+            "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
+            keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
     @Autowired
     private MockMvc mvc;

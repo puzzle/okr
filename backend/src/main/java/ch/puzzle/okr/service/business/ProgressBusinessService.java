@@ -4,7 +4,6 @@ import ch.puzzle.okr.models.ExpectedEvolution;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.MeasureValue;
-import ch.puzzle.okr.repository.MeasureRepository;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

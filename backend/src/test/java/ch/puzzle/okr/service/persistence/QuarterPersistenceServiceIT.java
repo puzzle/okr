@@ -10,7 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringIntegrationTest
 public class QuarterPersistenceServiceIT {

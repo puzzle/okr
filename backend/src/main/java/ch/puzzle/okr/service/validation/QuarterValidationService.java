@@ -1,13 +1,8 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Quarter;
-
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
 
 @Service
 public class QuarterValidationService extends ValidationBase<Quarter, Long> {

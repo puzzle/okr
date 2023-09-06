@@ -171,8 +171,8 @@ class ObjectiveValidationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
-        assertEquals(exception.getStatus(), HttpStatus.BAD_REQUEST);
-        assertEquals(exception.getReason(), expectedErrorMessage);
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(expectedErrorMessage, exception.getReason());
     }
 
     @Test
@@ -247,8 +247,8 @@ class ObjectiveValidationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, objectiveInvalid));
-        assertEquals(exception.getStatus(), HttpStatus.INTERNAL_SERVER_ERROR);
-        assertEquals(exception.getReason(), expectedErrorMessage);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
+        assertEquals(expectedErrorMessage, exception.getReason());
     }
 
     @Test

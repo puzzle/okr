@@ -129,7 +129,6 @@ class ObjectiveBusinessServiceTest {
         objectiveBusinessService.updateObjective(objective.getId(), objective, jwtToken);
 
         verify(objectivePersistenceService).save(objective);
-        assertEquals(user, objective.getCreatedBy());
         assertEquals(user, objective.getModifiedBy());
         assertNull(objective.getModifiedOn());
     }

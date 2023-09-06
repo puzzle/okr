@@ -125,8 +125,7 @@ class ObjectiveValidationServiceTest {
     void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
-                .withCreatedOn(LocalDateTime.MAX).build();
+                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
@@ -160,6 +159,20 @@ class ObjectiveValidationServiceTest {
         assertThat(exception.getReason().strip()).contains(errorQuarter);
         assertThat(exception.getReason().strip()).contains(errorTeam);
         assertThat(exception.getReason().strip()).contains(errorState);
+    }
+
+    @Test
+    void validateOnCreate_ShouldThrowExceptionWhenAttrModifiedByIsSet() {
+        Objective objectiveInvalid = Objective.Builder.builder().withId(null)
+                .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(user).build();
+
+        String expectedErrorMessage = String.format("Not allowed to set ModifiedBy %s on create", user);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveInvalid));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(expectedErrorMessage, exception.getReason());
     }
 
     @Test
@@ -206,7 +219,7 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
-        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").build();
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withModifiedBy(user).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
@@ -222,6 +235,20 @@ class ObjectiveValidationServiceTest {
         assertThat(exception.getReason().strip()).contains(errorQuarter);
         assertThat(exception.getReason().strip()).contains(errorTeam);
         assertThat(exception.getReason().strip()).contains(errorState);
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
+        Objective objectiveInvalid = Objective.Builder.builder().withId(1L)
+                .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
+                .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(null).build();
+
+        String expectedErrorMessage = String.format("Something went wrong. ModifiedBy  %s is not set.", null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
+        assertEquals(expectedErrorMessage, exception.getReason());
     }
 
     @Test

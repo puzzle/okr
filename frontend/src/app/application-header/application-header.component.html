@@ -1,0 +1,31 @@
+<div id="applicationHeader">
+  <div id="okrTopbar">
+    <pzsh-topbar>
+      <img ngSrc="assets/images/okr-logo.svg" alt="okr-logo" height="32" width="214" />
+    </pzsh-topbar>
+    <pzsh-menu>
+      <div slot="actions">
+        <pzsh-menu-dropdown href="#">
+          <div slot="toggle">
+            <pzsh-icon name="user"></pzsh-icon>
+            Max Mustermann
+          </div>
+          <div slot="items">
+            <pzsh-menu-dropdown-item href="#">
+              <pzsh-icon name="setting"></pzsh-icon>
+              Account Settings
+            </pzsh-menu-dropdown-item>
+            <pzsh-menu-dropdown-item href="#">
+              <pzsh-icon name="sign-out-alt"></pzsh-icon>
+              Logout
+            </pzsh-menu-dropdown-item>
+          </div>
+        </pzsh-menu-dropdown>
+      </div>
+    </pzsh-menu>
+  </div>
+  <pzsh-banner id="okrBanner">
+    <img slot="tangram" ngSrc="assets/images/triangles-okr-header.svg" alt="okr-tangram" height="140" width="274" />
+    <div slot="content"></div>
+  </pzsh-banner>
+</div>

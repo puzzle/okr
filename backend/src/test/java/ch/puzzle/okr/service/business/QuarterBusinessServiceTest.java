@@ -110,26 +110,6 @@ class QuarterBusinessServiceTest {
         assertEquals(2, hashMap.get(4));
     }
 
-//     Can be removed?
-//     @ParameterizedTest
-//     @MethodSource
-//     void shouldGetOrCreateQuarters(int currentYear, int firstLabelYear, int month, int businessYearQuarter,
-//     String currentQuarterLabel, List<String> futureQuarters, List<String> pastQuarters) {
-//
-//     Quarter quarter = Quarter.Builder.builder().withLabel(currentQuarterLabel).withId(1L).build();
-//     YearMonth yearMonth = YearMonth.of(currentYear, month);
-//     quarterBusinessService.now = yearMonth;
-//
-//     doReturn(currentQuarterLabel).when(this.quarterBusinessService).generateQuarterLabel(firstLabelYear,
-//     businessYearQuarter);
-//     doReturn(futureQuarters).when(this.quarterBusinessService).getFutureQuarters(yearMonth, 1);
-//     doReturn(pastQuarters).when(this.quarterBusinessService).getPastQuarters(yearMonth, 4);
-//     doReturn(Optional.of(quarter)).when(this.quarterRepository).findByLabel(anyString());
-//
-//     assertEquals(List.of(quarter, quarter, quarter, quarter, quarter, quarter),
-//     quarterBusinessService.getQuarters());
-//     }
-
     @Test
     void shouldGetQuarters() {
         // initial List

@@ -9,6 +9,7 @@ truncate table team;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
+ALTER SEQUENCE sequence_alignment RESTART WITH 200;
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
@@ -39,7 +40,7 @@ values (4, '/BBT'),
        (5, 'Puzzle ITC'),
        (6, 'LoremIpsum');
 
-insert into public.objective (id, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
+insert into objective (id, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)
 values (4, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that kills the competition.', 1, 2, 5,
         'ONGOING', null, '2023-07-25 08:17:51.309958'),
@@ -103,3 +104,8 @@ values  (1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam n
         (19, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:50:19.024254', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 35, 1, 19, 5, 'metric', null),
         (20, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-25 08:50:44.059020', 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ', '2023-07-24 22:00:00.000000', 0.5, 1, 18, 5, 'metric', null);
 
+insert into alignment (id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id) values
+       (1, 4, 'objective', null, 3),
+       (2, 4, 'keyResult', 8, null);
+
+                                                                                                                  );

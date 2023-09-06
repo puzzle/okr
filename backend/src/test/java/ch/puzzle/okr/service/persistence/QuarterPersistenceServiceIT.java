@@ -4,6 +4,9 @@ import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +15,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
 public class QuarterPersistenceServiceIT {
@@ -62,5 +67,14 @@ public class QuarterPersistenceServiceIT {
         assertEquals(6, quarterListFromFunction.size());
         assertTrue(
                 quarterListFromFunction.get(0).getStartDate().isAfter(quarterListFromFunction.get(5).getStartDate()));
+    }
+
+    @Test
+    void shouldReturnCurrentQuarter() {
+        Quarter quarter = quarterPersistenceService.getCurrentQuarter();
+        assertTrue(LocalDate.now().isAfter(quarter.getStartDate()));
+        assertTrue(LocalDate.now().isBefore(quarter.getEndDate()));
+        assertNotNull(quarter.getId());
+        assertNotNull(quarter.getLabel());
     }
 }

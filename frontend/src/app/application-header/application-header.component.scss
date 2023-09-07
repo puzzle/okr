@@ -1,3 +1,7 @@
+//:root{
+
+//}
+
 #applicationHeader {
   height: 210px;
 }
@@ -7,6 +11,9 @@
   top: 0;
   width: 100%;
   z-index: 2;
+  pzsh-topbar {
+    --pzsh-page-padding-horizontal-desktop: 2rem;
+  }
 }
 
 #okrBanner {

@@ -42,7 +42,7 @@ describe('ObjectiveColumnComponent', () => {
   test('Mat-menu should open and close', async () => {
     fixture.detectChanges();
 
-    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '.three-dot-menu' }));
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="objective-menu"]' }));
     expect(await menu.isOpen()).toBeFalsy();
     await menu.open();
     expect(await menu.isOpen()).toBeTruthy();
@@ -58,7 +58,7 @@ describe('ObjectiveColumnComponent', () => {
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
     component.objective = { ...objective, state: state };
     fixture.detectChanges();
-    const image = fixture.debugElement.query(By.css('img.status-indicator'));
+    const image = fixture.debugElement.query(By.css('[data-testid="objective-state"]'));
     let statusIndicatorSrc = image.attributes['src'];
     expect(statusIndicatorSrc).toBe(path);
   });

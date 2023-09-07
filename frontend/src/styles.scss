@@ -21,60 +21,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.key {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.value {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-weight: normal;
-  font-size: 1rem;
-}
-
-.form-container {
-  margin-left: 10%;
-}
-
-.fit-content {
-  width: fit-content;
-}
-
-.form-field-width {
-  width: 40em;
-}
-
-.form-field-height {
-  height: 5em;
-}
-
-.heading-label {
-  font-size: 28px;
-  font-weight: 400;
-  padding-left: 70px;
-  margin-bottom: 40px !important;
-  margin-top: 0px !important;
-}
-
-.buttons {
-  margin-bottom: min(10px);
-}
-
-.help-dialog-custom-panel-class > mat-dialog-container {
-  background-color: #1e5a96;
-}
-
-.close-button-help-dialog .mat-button-focus-overlay {
-  background-color: transparent !important;
-}
-
-.help-icon {
-  padding-bottom: 1rem;
-  cursor: pointer;
-  color: dimgrey;
-}
-
 .staging-banner {
   display: flex;
   margin-top: 1rem;

@@ -30,8 +30,8 @@ public class QuarterPersistenceServiceIT {
 
         assertEquals(1L, returnedQuarter.getId());
         assertEquals("GJ 22/23-Q4", returnedQuarter.getLabel());
-        assertEquals(LocalDate.of(2023, 04, 01), returnedQuarter.getStartDate());
-        assertEquals(LocalDate.of(2023, 06, 30), returnedQuarter.getEndDate());
+        assertEquals(LocalDate.of(2023, 4, 1), returnedQuarter.getStartDate());
+        assertEquals(LocalDate.of(2023, 6, 30), returnedQuarter.getEndDate());
     }
 
     @Test

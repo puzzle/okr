@@ -41,7 +41,7 @@ class TeamBusinessServiceTest {
     @Mock
     QuarterBusinessService quarterService;
     @InjectMocks
-    private TeamValidationService validator = Mockito.mock(TeamValidationService.class);;
+    private TeamValidationService validator = Mockito.mock(TeamValidationService.class);
     @InjectMocks
     private TeamBusinessService teamBusinessService;
 

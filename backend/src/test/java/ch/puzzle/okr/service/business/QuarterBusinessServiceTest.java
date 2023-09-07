@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -21,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -44,30 +46,22 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldReturnProperQuarter() {
-        Quarter quarter = Quarter.Builder.builder().withId(3L).withLabel("GJ 22/23-Q2").build();
-        when(this.quarterPersistenceService.findById(anyLong())).thenReturn(quarter);
-        Quarter objectQuarter = this.quarterBusinessService.getQuarterById(3L);
-        assertEquals("GJ 22/23-Q2", objectQuarter.getLabel());
-        assertEquals(3, objectQuarter.getId());
-    }
+        quarterBusinessService.getQuarterById(3L);
+        verify(quarterValidationService, times(1)).validateOnGet(3L);
+        verify(quarterPersistenceService, times(1)).findById(3L);
 
-    @Test
-    void shouldCallValidatorAndFindByIdOnGetQuarter() {
-        this.quarterBusinessService.getQuarterById(1L);
-        verify(this.quarterValidationService, times(1)).validateOnGet(anyLong());
-        verify(this.quarterPersistenceService, times(1)).findById(anyLong());
     }
 
     @Test
     void shouldReturnExceptionWhenIdIsNullOnGetQuarter() {
-        this.quarterBusinessService.getQuarterById(null);
-        verify(this.quarterValidationService, times(1)).validateOnGet(null);
+        quarterBusinessService.getQuarterById(null);
+        verify(quarterValidationService, times(1)).validateOnGet(null);
     }
 
     @Test
     void shouldCallGetCurrentQuarterOnGetCurrentQuarter() {
-        this.quarterBusinessService.getCurrentQuarter();
-        verify(this.quarterPersistenceService, times(1)).getCurrentQuarter();
+        quarterBusinessService.getCurrentQuarter();
+        verify(quarterPersistenceService, times(1)).getCurrentQuarter();
     }
 
     @Test
@@ -87,7 +81,7 @@ class QuarterBusinessServiceTest {
         quarterList.add(Quarter.Builder.builder().withId(6L).withLabel("Initial sixth item")
                 .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
-        Mockito.when(this.quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
+        Mockito.when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
 
         // Final List
         List<Quarter> quarterListFormatted = new ArrayList<>();
@@ -105,13 +99,7 @@ class QuarterBusinessServiceTest {
                 .withStartDate(LocalDate.now()).withEndDate(LocalDate.now()).build());
 
         assertEquals(quarterListFormatted, quarterBusinessService.getQuarters());
-        verify(this.quarterPersistenceService).getMostCurrentQuarters();
-    }
-
-    @ParameterizedTest
-    @MethodSource
-    void shouldGetFirstMonthFromQuarter(int quarter, int month) {
-        assertEquals(month, monthFromQuarter(quarter));
+        verify(quarterPersistenceService).getMostCurrentQuarters();
     }
 
     @Test
@@ -137,9 +125,5 @@ class QuarterBusinessServiceTest {
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService, times(0)).save(any());
-    }
-
-    private int monthFromQuarter(int quarter) {
-        return quarter * 3 - 2;
     }
 }

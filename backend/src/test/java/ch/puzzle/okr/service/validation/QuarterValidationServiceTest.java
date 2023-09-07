@@ -28,33 +28,6 @@ public class QuarterValidationServiceTest {
     private QuarterValidationService validator;
 
     @Test
-    void validateOnSave_ShouldBeSuccessfulWhenValidQuarter() {
-        validator.validateOnSave(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
-                .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-        verify(validator, times(1))
-                .throwExceptionIfModelIsNull(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
-                        .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-        verify(validator, times(1)).validate(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q4")
-                .withStartDate(LocalDate.of(2023, 4, 1)).withEndDate(LocalDate.of(2023, 6, 30)).build());
-    }
-
-    @Test
-    void validateOnSave_ShouldThrowExceptionWhenAttrsAreNull() {
-        Quarter invalidQuarter = Quarter.Builder.builder().withId(null).withLabel(null).withStartDate(null)
-                .withEndDate(null).build();
-        ResponseStatusException responseStatusException = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnSave(invalidQuarter));
-
-        String errorLabel = "Attribute label can not be null when saving quarter.";
-        String errorStartDate = "Attribute startDate can not be null when saving quarter.";
-        String errorEndDate = "Attribute endDate can not be null when saving quarter.";
-
-        assertThat(responseStatusException.getReason().strip()).contains(errorLabel);
-        assertThat(responseStatusException.getReason().strip()).contains(errorStartDate);
-        assertThat(responseStatusException.getReason().strip()).contains(errorEndDate);
-    }
-
-    @Test
     void validateOnGet_ShouldBeSuccessfulWhenValidId() {
         assertDoesNotThrow(() -> validator.validateOnGet(1L));
         verify(validator, times(1)).validateOnGet(anyLong());

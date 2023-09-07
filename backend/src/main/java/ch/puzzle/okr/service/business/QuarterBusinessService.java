@@ -76,7 +76,6 @@ public class QuarterBusinessService {
         Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
                 .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
-        validator.validateOnSave(quarter);
         quarterPersistenceService.save(quarter);
     }
 

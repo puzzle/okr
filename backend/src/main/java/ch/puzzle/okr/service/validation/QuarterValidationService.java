@@ -21,8 +21,4 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
         throw new IllegalCallerException("This method must not be called because there is no update of quarters");
     }
 
-    public void validateOnSave(Quarter model) {
-        throwExceptionIfModelIsNull(model);
-        validate(model);
-    }
 }

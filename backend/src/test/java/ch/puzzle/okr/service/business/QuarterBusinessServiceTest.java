@@ -71,15 +71,6 @@ class QuarterBusinessServiceTest {
     }
 
     @Test
-    void shouldFillHashMap() {
-        Map<Integer, Integer> hashMap = QuarterBusinessService.yearToBusinessQuarterMap;
-        assertEquals(3, hashMap.get(1));
-        assertEquals(4, hashMap.get(2));
-        assertEquals(1, hashMap.get(3));
-        assertEquals(2, hashMap.get(4));
-    }
-
-    @Test
     void shouldGetQuarters() {
         // initial List
         List<Quarter> quarterList = new ArrayList<>();

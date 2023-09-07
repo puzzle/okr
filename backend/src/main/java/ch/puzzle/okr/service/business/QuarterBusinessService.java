@@ -17,15 +17,7 @@ import java.util.Map;
 
 @Service
 public class QuarterBusinessService {
-    public static final Map<Integer, Integer> yearToBusinessQuarterMap = new HashMap<>(4);
     private static final Logger logger = LoggerFactory.getLogger(QuarterBusinessService.class);
-
-    static {
-        yearToBusinessQuarterMap.put(1, 3);
-        yearToBusinessQuarterMap.put(2, 4);
-        yearToBusinessQuarterMap.put(3, 1);
-        yearToBusinessQuarterMap.put(4, 2);
-    }
 
     private final QuarterPersistenceService quarterPersistenceService;
     private final QuarterValidationService validator;
@@ -66,9 +58,8 @@ public class QuarterBusinessService {
     private String createQuarterLabel(YearMonth yearMonth) {
         // generation of quarter is two quarter in advance therefore the current quarter of the year corresponds with
         // the business quarter we want to generate
-        int businessQuarter = yearMonth.get(IsoFields.QUARTER_OF_YEAR);
         return String.format("GJ %s/%s-Q%x", shortenYear(yearMonth.getYear()), shortenYear(yearMonth.getYear() + 1),
-                businessQuarter);
+                yearMonth.get(IsoFields.QUARTER_OF_YEAR));
     }
 
     private void generateQuarter(YearMonth yearMonth) {

@@ -99,17 +99,22 @@ create table if not exists measure
 
 create table if not exists key_result
 (
-    id                 bigint           not null,
-    basis_value        double precision,
-    description        varchar(4096),
-    expected_evolution integer          not null,
-    modified_on        timestamp        not null,
-    target_value       double precision not null,
-    title              varchar(250),
-    unit               integer          not null,
-    created_by_id      bigint           not null,
-    objective_id       bigint           not null,
-    owner_id           bigint           not null,
+    id              bigint    not null,
+        baseline        double precision,
+    description     varchar(4096),
+    modified_on     timestamp,
+    stretch_goal    double precision,
+    title           varchar(250),
+    created_by_id   bigint    not null,
+    objective_id    bigint    not null,
+    owner_id        bigint    not null,
+    key_result_type varchar(255),
+    created_on      timestamp not null,
+    unit            varchar(30),
+    commit_zone     varchar(1024),
+    target_zone     varchar(1024),
+    stretch_zone    varchar(1024),
+
     primary key (id),
     constraint fk4ba6rgbr8mrkc8vvyqd5il4v9
         foreign key (created_by_id) references person,

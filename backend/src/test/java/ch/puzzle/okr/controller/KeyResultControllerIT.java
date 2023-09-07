@@ -73,13 +73,14 @@ class KeyResultControllerIT {
             "Comment");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
-    static KeyResultAbstract keyResultAbstractMetric = new KeyResultAbstract(5L, "metric", "Keyresult Metric",
+    static KeyResultAbstractDto keyResultAbstractDtoMetric = new KeyResultAbstractDto(5L, "metric", "Keyresult Metric",
             "Description", 1.0, 5.0, "ECTS", null, null, null, keyResultUserDto, keyResultObjectiveDto,
             keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
-    static KeyResultAbstract keyResultAbstractOrdinal = new KeyResultAbstract(5L, "ordinal", "Keyresult Ordinal",
-            "Description", null, null, null, "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto,
-            keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
+    static KeyResultAbstractDto keyResultAbstractDtoOrdinal = new KeyResultAbstractDto(5L, "ordinal",
+            "Keyresult Ordinal", "Description", null, null, null, "Eine Pflanze", "Ein Baum", "Ein Wald",
+            keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN,
+            LocalDateTime.MAX);
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
             1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto,
             LocalDateTime.MIN, LocalDateTime.MAX);
@@ -174,8 +175,8 @@ class KeyResultControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractMetric)).willReturn(metricKeyResult);
-        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractOrdinal)).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractDtoMetric)).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractDtoOrdinal)).willReturn(ordinalKeyResult);
         BDDMockito.given(measureMapper.toDto(measure1)).willReturn(measureDto1);
         BDDMockito.given(measureMapper.toDto(measure2)).willReturn(measureDto2);
     }

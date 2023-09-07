@@ -28,7 +28,8 @@ public class KeyResultPersistenceServiceIT {
         return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS").withId(id)
                 .withTitle("Title").withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
-                .withObjective(Objective.Builder.builder().withId(1L).build()).withCreatedOn(LocalDateTime.MAX).build();
+                .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
+                .build();
     }
 
     @AfterEach
@@ -73,7 +74,7 @@ public class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Key result with id 321 not found", exception.getReason());
+        assertEquals("KeyResult with id 321 not found", exception.getReason());
     }
 
     @Test
@@ -82,7 +83,7 @@ public class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute key result id", exception.getReason());
+        assertEquals("Missing identifier for KeyResult", exception.getReason());
     }
 
     @Test
@@ -99,7 +100,7 @@ public class KeyResultPersistenceServiceIT {
 
     @Test
     void updateKeyResult_ShouldThrowExceptionWhenKeyResultNotFound() {
-        KeyResult keyResult = createKeyResult(321L);
+        KeyResult keyResult = createKeyResult(3281L);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultPersistenceService.save(keyResult));
@@ -125,6 +126,6 @@ public class KeyResultPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Key result with id %d not found", createdKeyResult.getId()), exception.getReason());
+        assertEquals(String.format("KeyResult with id %d not found", createdKeyResult.getId()), exception.getReason());
     }
 }

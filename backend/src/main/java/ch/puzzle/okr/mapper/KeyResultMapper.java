@@ -35,7 +35,7 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
-        // TODO use instanceOf
+        // TODO use helper method for validation
         if (keyResultDto.getKeyResultType().equals("metric")) {
             return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
         } else if (keyResultDto.getKeyResultType().equals("ordinal")) {

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -124,19 +125,26 @@ class QuarterBusinessServiceTest {
 
     @Test
     void shouldGenerateCorrectQuarter() {
-        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 29/30-Q4")
-                .withStartDate(LocalDate.of(2030, 4, 1)).withEndDate(LocalDate.of(2030, 6, 30)).build();
+        Quarter quarterStandard = Quarter.Builder.builder().withId(null).withLabel("GJ 30/31-Q1")
+                .withStartDate(LocalDate.of(2030, 7, 1)).withEndDate(LocalDate.of(2030, 9, 30)).build();
+
+        Quarter quarterAfterMidYear = Quarter.Builder.builder().withId(null).withLabel("GJ 30/31-Q3")
+                .withStartDate(LocalDate.of(2031, 1, 1)).withEndDate(LocalDate.of(2031, 3, 31)).build();
+
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 3));
-        Mockito.when(this.quarterPersistenceService.save(any())).thenReturn(quarter);
-        assertEquals(quarter, quarterBusinessService.scheduledGenerationQuarters());
+        quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService).save(quarterStandard);
+
+        Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 9));
+        quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService).save(quarterAfterMidYear);
     }
 
     @Test
     void shouldReturnNullWhenNoQuarterGenerationNeeded() {
-        Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 29/30-Q4")
-                .withStartDate(LocalDate.of(2030, 4, 1)).withEndDate(LocalDate.of(2030, 6, 30)).build();
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 4));
-        assertEquals(null, quarterBusinessService.scheduledGenerationQuarters());
+        quarterBusinessService.scheduledGenerationQuarters();
+        verify(quarterPersistenceService, times(0)).save(any());
     }
 
     private int monthFromQuarter(int quarter) {

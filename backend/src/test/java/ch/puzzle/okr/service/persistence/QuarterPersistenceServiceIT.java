@@ -20,17 +20,9 @@ import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
 public class QuarterPersistenceServiceIT {
-    Quarter createdQuarter;
+
     @Autowired
     private QuarterPersistenceService quarterPersistenceService;
-
-    @AfterEach
-    void tearDown() {
-        if (createdQuarter != null) {
-            quarterPersistenceService.deleteQuarterById(createdQuarter.getId());
-            createdQuarter = null;
-        }
-    }
 
     @Test
     void shouldReturnSingleQuarterWhenFindingByValidId() {

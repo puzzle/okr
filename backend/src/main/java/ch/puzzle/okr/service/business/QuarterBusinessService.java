@@ -64,20 +64,20 @@ public class QuarterBusinessService {
     }
 
     private String createQuarterLabel(YearMonth yearMonth) {
-        int businessQuarter = yearToBusinessQuarterMap.get(yearMonth.get(IsoFields.QUARTER_OF_YEAR));
-        int activeBusinessYear = yearMonth.isBefore(YearMonth.of(yearMonth.getYear(), Month.JULY))
-                ? yearMonth.getYear() - 1 : yearMonth.getYear();
-        return String.format("GJ %s/%s-Q%x", shortenYear(activeBusinessYear), shortenYear(activeBusinessYear + 1),
+        // generation of quarter is two quarter in advance therefore the current quarter of the year corresponds with
+        // the business
+        // quarter we want to generate
+        int businessQuarter = yearMonth.get(IsoFields.QUARTER_OF_YEAR);
+        return String.format("GJ %s/%s-Q%x", shortenYear(yearMonth.getYear()), shortenYear(yearMonth.getYear() + 1),
                 businessQuarter);
     }
 
-    private Quarter generateQuarter(YearMonth yearMonth) {
-        // Logic to generate quarter
+    private void generateQuarter(YearMonth yearMonth) {
         Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
                 .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
         validator.validateOnSave(quarter);
-        return quarterPersistenceService.save(quarter);
+        quarterPersistenceService.save(quarter);
     }
 
     public YearMonth getCurrentYearMonth() {
@@ -85,12 +85,11 @@ public class QuarterBusinessService {
     }
 
     @Scheduled(cron = "0 59 23 L * ?") // Cron expression for 23:59:00 on the last day of every month
-    public Quarter scheduledGenerationQuarters() {
+    public void scheduledGenerationQuarters() {
         YearMonth yearMonth = getCurrentYearMonth();
         if (yearMonth.getMonthValue() % 3 == 0) {
             logger.info("Generated quarters on first day of month");
-            return generateQuarter(yearMonth);
+            generateQuarter(yearMonth);
         }
-        return null;
     }
 }

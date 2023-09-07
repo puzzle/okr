@@ -33,7 +33,6 @@ import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
 import { ApplicationHeaderComponent } from './application-header/application-header.component';
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
-import { MatCardModule } from '@angular/material/card';
 import { ObjectiveComponent } from './objective/objective.component';
 import { NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
@@ -105,9 +104,7 @@ export const MY_FORMATS = {
     OAuthModule.forRoot(),
     A11yModule,
     MatRadioModule,
-    MatCardModule,
     NgOptimizedImage,
-    MatCardModule,
   ],
   providers: [
     {

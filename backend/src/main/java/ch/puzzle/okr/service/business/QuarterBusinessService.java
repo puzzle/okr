@@ -65,8 +65,7 @@ public class QuarterBusinessService {
 
     private String createQuarterLabel(YearMonth yearMonth) {
         // generation of quarter is two quarter in advance therefore the current quarter of the year corresponds with
-        // the business
-        // quarter we want to generate
+        // the business quarter we want to generate
         int businessQuarter = yearMonth.get(IsoFields.QUARTER_OF_YEAR);
         return String.format("GJ %s/%s-Q%x", shortenYear(yearMonth.getYear()), shortenYear(yearMonth.getYear() + 1),
                 businessQuarter);
@@ -87,7 +86,7 @@ public class QuarterBusinessService {
     public void scheduledGenerationQuarters() {
         YearMonth yearMonth = getCurrentYearMonth();
         if (yearMonth.getMonthValue() % 3 == 0) {
-            logger.info("Generated quarters on first day of month");
+            logger.info("Generated quarters on last day of month");
             generateQuarter(yearMonth);
         }
     }

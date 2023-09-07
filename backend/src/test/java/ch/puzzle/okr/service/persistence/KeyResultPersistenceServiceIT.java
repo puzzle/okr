@@ -1,14 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,34 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringIntegrationTest
 public class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
-    User user;
-    Objective objective;
-    KeyResult metricKeyResult;
-    KeyResult ordinalKeyResult;
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
+    @Autowired
+    private ObjectivePersistenceService objectivePersistenceService;
 
     private static KeyResult createKeyResult(Long id) {
-        User user = User.Builder.builder().withId(1L).withUsername("johnny").withFirstname("Johnny")
-                .withLastname("Appleseed").withEmail("appleseed@puzzle.ch").build();
-        Objective objective = Objective.Builder.builder().withId(4L).withCreatedOn(LocalDateTime.MIN)
-                .withState(State.DRAFT).withTitle("Objective").build();
-
-        return KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit("PERCENT").withId(id)
-                .withTitle("Keyresult 1").withObjective(objective).withOwner(user).withCreatedBy(user)
-                .withModifiedOn(LocalDateTime.now()).withCreatedOn(LocalDateTime.now()).build();
-    }
-
-    @BeforeEach
-    void setup() {
-        this.user = User.Builder.builder().withId(1L).withEmail("newMail@tese.com").build();
-
-        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-
-        this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withId(5L)
-                .withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user).build();
-        this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
-                .withId(7L).withTitle("Keyresult Ordinal").withObjective(this.objective).withOwner(this.user).build();
+        return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS").withId(id)
+                .withTitle("Title").withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withOwner(User.Builder.builder().withId(1L).build())
+                .withObjective(Objective.Builder.builder().withId(1L).build()).withCreatedOn(LocalDateTime.MAX).build();
     }
 
     @AfterEach

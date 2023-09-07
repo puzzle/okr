@@ -8,10 +8,8 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -76,18 +74,21 @@ public class KeyResultBusinessService {
 
     public KeyResult validateUpdatedKeyResult(Long id, KeyResult keyResult) {
         KeyResult savedKeyResult = getKeyResultById(id);
-        if ((savedKeyResult instanceof KeyResultMetric && keyResult instanceof KeyResultOrdinal)
-                || (savedKeyResult instanceof KeyResultOrdinal && keyResult instanceof KeyResultMetric)) {
-            if (!measureBusinessService.getMeasuresByKeyResultId(id).isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "You can not change the type of a KeyResult when there are CheckIns on this KeyResult");
-
-                // TODO Update other values of key Result except type with baseline, unit, stretchGoal and the three
-                // zones
-            }
-            return keyResultPersistenceService.save(keyResult);
+        KeyResult keyResultToSave;
+        if (savedKeyResult instanceof KeyResultMetric && keyResult instanceof KeyResultOrdinal specificKeyResult) {
+            // throw new ResponseStatusException(HttpStatus.IM_USED, "You can not change the type of a KeyResult when
+            // there are CheckIns on this KeyResult");
+            keyResultToSave = specificKeyResult;
+        } else if (savedKeyResult instanceof KeyResultOrdinal
+                && keyResult instanceof KeyResultMetric specificKeyResult) {
+            // throw new ResponseStatusException(HttpStatus.IM_USED, "You can not change the type of a KeyResult when
+            // there are CheckIns on this KeyResult");
+            keyResultToSave = specificKeyResult;
         } else {
-            return keyResultPersistenceService.save(keyResult);
+            keyResultToSave = keyResult;
         }
+
+        validator.validateOnUpdate(id, keyResultToSave);
+        return keyResultPersistenceService.save(keyResult);
     }
 }

@@ -99,17 +99,17 @@ public class Quarter {
             return this;
         }
 
-        public Builder withLabel(@NotNull String label) {
+        public Builder withLabel(String label) {
             this.label = label;
             return this;
         }
 
-        public Builder withStartDate(@NotNull LocalDate startDate) {
+        public Builder withStartDate(LocalDate startDate) {
             this.startDate = startDate;
             return this;
         }
 
-        public Builder withEndDate(@NotNull LocalDate endDate) {
+        public Builder withEndDate(LocalDate endDate) {
             this.endDate = endDate;
             return this;
         }

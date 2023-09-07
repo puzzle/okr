@@ -5,12 +5,14 @@
   <div class="row ps-2">
     <header class="d-flex">
       <img
+        data-testid="objective-state"
         class="icon col-1"
         alt="A status indicator that indicates the progress and state of this objective"
         [src]="'../../assets/icons/' + objective.state"
       />
       <div class="title col-10 ps-2 pt-1">{{ objective.title }}</div>
       <img
+        data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"
         class="col-1 icon"
         src="assets/icons/threedot.svg"

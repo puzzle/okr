@@ -21,9 +21,7 @@ export class ObjectiveComponent implements OnInit {
 
   constructor(private routeService: RouteService) {}
 
-  ngOnInit(): void {
-    this.objective = { ...this.objective, state: State[this.objective.state as string as keyof typeof State] };
-  }
+  ngOnInit(): void {}
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {

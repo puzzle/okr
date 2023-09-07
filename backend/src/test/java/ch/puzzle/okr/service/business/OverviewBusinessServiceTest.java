@@ -41,20 +41,20 @@ public class OverviewBusinessServiceTest {
 
         assertEquals(1, overviews.size());
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(1L, List.of(4L));
-        verify(quarterBusinessService, times(0)).getActiveQuarter();
+        verify(quarterBusinessService, times(0)).getCurrentQuarter();
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L)))
                 .thenReturn(List.of(createObjective()));
-        when(quarterBusinessService.getActiveQuarter())
+        when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build());
 
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(null, List.of(4L));
 
         assertEquals(1, overviews.size());
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(1L, List.of(4L));
-        verify(quarterBusinessService, times(1)).getActiveQuarter();
+        verify(quarterBusinessService, times(1)).getCurrentQuarter();
     }
 }

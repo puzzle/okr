@@ -2,18 +2,24 @@ package ch.puzzle.okr.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
 public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
-    @NotNull
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Attribute label can not be null when saving quarter")
     @Column(unique = true)
     private String label;
+
+    @NotNull(message = "Attribute startDate can not be null when saving quarter")
+    private LocalDate startDate;
+
+    @NotNull(message = "Attribute endDate can not be null when saving quarter")
+    private LocalDate endDate;
 
     public Quarter() {
     }
@@ -21,6 +27,8 @@ public class Quarter {
     public Quarter(Builder builder) {
         this.id = builder.id;
         setLabel(builder.label);
+        setStartDate(builder.startDate);
+        setEndDate(builder.endDate);
     }
 
     public Long getId() {
@@ -35,9 +43,26 @@ public class Quarter {
         this.label = label;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
     @Override
     public String toString() {
-        return "Quarter{" + "id=" + id + ", year=" + label + '}';
+        return "Quarter{" + "id=" + id + ", label='" + label + '\'' + ", startDate=" + startDate + ", endDate="
+                + endDate + '}';
     }
 
     @Override
@@ -47,17 +72,20 @@ public class Quarter {
         if (o == null || getClass() != o.getClass())
             return false;
         Quarter quarter = (Quarter) o;
-        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label);
+        return Objects.equals(id, quarter.id) && Objects.equals(label, quarter.label)
+                && Objects.equals(startDate, quarter.startDate) && Objects.equals(endDate, quarter.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, label);
+        return Objects.hash(id, label, startDate, endDate);
     }
 
     public static final class Builder {
-        private @NotNull Long id;
-        private @NotNull String label;
+        private Long id;
+        private String label;
+        private LocalDate startDate;
+        private LocalDate endDate;
 
         private Builder() {
         }
@@ -71,8 +99,18 @@ public class Quarter {
             return this;
         }
 
-        public Builder withLabel(@NotNull String label) {
+        public Builder withLabel(String label) {
             this.label = label;
+            return this;
+        }
+
+        public Builder withStartDate(LocalDate startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder withEndDate(LocalDate endDate) {
+            this.endDate = endDate;
             return this;
         }
 

@@ -118,7 +118,7 @@ public class ObjectivePersistenceServiceIT {
     @Test
     void countByTeamAndQuarter_shouldReturnActiveObjectivesOfTeamByQuarter() {
         Integer count = objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
-                quarterPersistenceService.getQuarterById(2L));
+                quarterPersistenceService.findById(2L));
         assertEquals(2, count);
     }
 
@@ -126,13 +126,13 @@ public class ObjectivePersistenceServiceIT {
     void countByTeamAndQuarter_shouldThrowErrorIfQuarterDoesNotExist() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
-                        quarterPersistenceService.getQuarterById(12L)));
+                        quarterPersistenceService.findById(12L)));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
 
         ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
-                        quarterPersistenceService.getQuarterById(2L)));
+                        quarterPersistenceService.findById(2L)));
         assertEquals(HttpStatus.NOT_FOUND, exceptionTeam.getStatus());
         assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
 

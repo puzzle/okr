@@ -22,7 +22,7 @@ public class OverviewBusinessService {
 
     public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
         if (Objects.isNull(quarterId)) {
-            quarterId = quarterBusinessService.getActiveQuarter().getId();
+            quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
         if (CollectionUtils.isEmpty(teamIds)) {
             // TODO get current team (of current user) if teamIds is empty

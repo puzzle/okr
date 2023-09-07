@@ -24,14 +24,14 @@ values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
        (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
        (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
 
-insert into quarter (id, label)
-values (1, 'GJ 22/23-Q4'),
-       (2, 'GJ 23/24-Q1'),
-       (3, 'GJ 22/23-Q3'),
-       (4, 'GJ 22/23-Q2'),
-       (5, 'GJ 22/23-Q1'),
-       (6, 'GJ 21/22-Q4'),
-       (7, 'GJ 23/24-Q2');
+insert into quarter (id, label, start_date, end_date)
+values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
+       (2, 'GJ 23/24-Q1', '2023-07-01', '2023-09-30'),
+       (3, 'GJ 22/23-Q3', '2023-01-01', '2023-03-31'),
+       (4, 'GJ 22/23-Q2', '2022-10-01', '2022-12-31'),
+       (5, 'GJ 22/23-Q1', '2022-07-01', '2022-09-30'),
+       (6, 'GJ 21/22-Q4', '2022-04-01', '2022-06-30'),
+       (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31');
 
 insert into team (id, name)
 values (4, '/BBT'),

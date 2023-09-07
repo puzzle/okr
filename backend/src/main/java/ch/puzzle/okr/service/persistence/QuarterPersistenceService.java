@@ -2,34 +2,32 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.repository.QuarterRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
-public class QuarterPersistenceService {
-    private final QuarterRepository quarterRepository;
+public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
 
-    public QuarterPersistenceService(QuarterRepository quarterRepository) {
-        this.quarterRepository = quarterRepository;
+    protected QuarterPersistenceService(QuarterRepository repository) {
+        super(repository);
     }
 
-    public Quarter getQuarterById(Long quarterId) {
-        if (quarterId == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute quarter id");
-        }
-        return quarterRepository.findById(quarterId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                (String.format("Quarter with id %d not found", quarterId))));
+    @Override
+    public String getModelName() {
+        return "Quarter";
     }
 
-    public synchronized Quarter getOrCreateQuarter(String label) {
-        Optional<Quarter> quarter = quarterRepository.findByLabel(label);
-        return quarter.orElseGet(() -> quarterRepository.save(Quarter.Builder.builder().withLabel(label).build()));
+    public List<Quarter> getMostCurrentQuarters() {
+        return getQuarterRepository().getTop6ByOrderByStartDateDesc();
     }
 
-    void deleteQuarterById(Long quarterId) {
-        quarterRepository.deleteById(quarterId);
+    public Quarter getCurrentQuarter() {
+        return getQuarterRepository().getActiveQuarter(LocalDate.now());
+    }
+
+    private QuarterRepository getQuarterRepository() {
+        return (QuarterRepository) repository;
     }
 }

@@ -6,7 +6,6 @@ import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

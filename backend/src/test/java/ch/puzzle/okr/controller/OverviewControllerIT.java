@@ -92,7 +92,7 @@ public class OverviewControllerIT {
     }
 
     @Test
-    void shouldReturnOnlyFilteredObjecticesByQuarterAndTeam() throws Exception {
+    void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
         BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 3L)))
                 .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
 

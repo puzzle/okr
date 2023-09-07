@@ -16,11 +16,8 @@ html,
 body {
   font-size: 100%;
   height: 100%;
-  background-color: $eggshell;
-}
-
-body {
   margin: 0;
+  background-color: $eggshell;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -64,20 +61,6 @@ body {
   margin-bottom: min(10px);
 }
 
-.outer-cards {
-  border: 1px solid #dddddd !important;
-  background-color: #f0f0f0;
-}
-
-.inner-cards {
-  border: 1px solid #dddddd !important;
-  background-color: #f9f9f9;
-}
-
-html {
-  scroll-behavior: auto !important;
-}
-
 .help-dialog-custom-panel-class > mat-dialog-container {
   background-color: #1e5a96;
 }
@@ -90,10 +73,6 @@ html {
   padding-bottom: 1rem;
   cursor: pointer;
   color: dimgrey;
-}
-
-.red-progress {
-  color: #ff1a0c !important;
 }
 
 .staging-banner {
@@ -126,7 +105,35 @@ html {
   padding: 0 !important;
 }
 
-.three-dot-menu {
+.title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  word-wrap: break-word;
+}
+
+.anchor {
+  text-decoration: none;
+}
+
+.add-button-text {
+  font-size: 1rem;
+  font-weight: bold;
+  color: $pz-dark-blue;
+}
+
+.menu-option {
+  line-height: normal !important;
+  font-size: 1rem;
+  height: 2rem !important;
+  &:hover {
+    padding-left: 0.75rem;
+    border-left: 0.25rem solid darkblue;
+    background: white;
+  }
+}
+
+.icon {
+  margin-top: 0.25rem;
   width: 1.25rem;
   height: 1.25rem;
   cursor: pointer;

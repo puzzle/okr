@@ -1,28 +1,26 @@
-<div class="objective d-flex flex-column align-items-start rounded-3 bg-white">
-  <img src="../../assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
-  <div class="w-100 ps-3 pb-3 pe-3">
-    <header class="mb-3 d-flex justify-content-between">
-      <div class="title-status d-flex">
-        <img
-          class="status-indicator me-2"
-          alt="A status indicator that indicates the progress and state of this objective"
-          [src]="'../../assets/icons/' + objective.state"
-        />
-        <div class="fs-5 fw-bold text-break lh-base">{{ objective.title }}</div>
-      </div>
-      <div>
-        <img
-          [matMenuTriggerFor]="objectiveMenu"
-          class="three-dot-menu"
-          src="../../assets/icons/threedot.svg"
-          alt="A three-dot-menu button"
-        />
-      </div>
+<div class="objective rounded-3 bg-white container">
+  <span class="col">
+    <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
+  </span>
+  <div class="row ps-2">
+    <header class="d-flex">
+      <img
+        class="icon col-1"
+        alt="A status indicator that indicates the progress and state of this objective"
+        [src]="'../../assets/icons/' + objective.state"
+      />
+      <div class="title col-10 ps-2 pt-1">{{ objective.title }}</div>
+      <img
+        [matMenuTriggerFor]="objectiveMenu"
+        class="col-1 icon"
+        src="assets/icons/threedot.svg"
+        alt="A three-dot-menu button"
+      />
     </header>
-    <section>
-      <a class="add-anchor d-flex text-decoration-none" role="button">
+    <section class="py-2">
+      <a class="anchor d-flex" role="button">
         <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
-        <p class="add-key-result-text fs-6 fw-bold m-0">Key Result hinzufügen</p>
+        <p class="add-button-text">Key Result hinzufügen</p>
       </a>
     </section>
   </div>
@@ -30,7 +28,7 @@
 <mat-menu #objectiveMenu="matMenu" xPosition="before" yPosition="below">
   <button
     mat-menu-item
-    class="objective-menu-option fs-6 h-100 lh-sm"
+    class="menu-option"
     (click)="redirect(menuEntry); $event.stopPropagation()"
     *ngFor="let menuEntry of menuEntries"
   >

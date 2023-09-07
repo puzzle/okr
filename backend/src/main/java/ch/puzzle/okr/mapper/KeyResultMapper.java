@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultAbstract;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -34,7 +34,8 @@ public class KeyResultMapper {
         }
     }
 
-    public KeyResult toKeyResult(KeyResultAbstract keyResultDto) {
+    public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
+        // TODO use instanceOf
         if (keyResultDto.getKeyResultType().equals("metric")) {
             return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
         } else if (keyResultDto.getKeyResultType().equals("ordinal")) {

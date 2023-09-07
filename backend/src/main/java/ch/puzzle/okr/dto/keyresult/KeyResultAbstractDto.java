@@ -2,7 +2,7 @@ package ch.puzzle.okr.dto.keyresult;
 
 import java.time.LocalDateTime;
 
-public class KeyResultAbstract {
+public class KeyResultAbstractDto {
     Long id;
     String keyResultType;
     String title;
@@ -20,10 +20,10 @@ public class KeyResultAbstract {
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
 
-    public KeyResultAbstract() {
+    public KeyResultAbstractDto() {
     }
 
-    public KeyResultAbstract(Long id, String keyResultType, String title, String description, Double baseline,
+    public KeyResultAbstractDto(Long id, String keyResultType, String title, String description, Double baseline,
             Double stretchGoal, String unit, String commitZone, String targetZone, String stretchZone,
             KeyResultUserDto owner, KeyResultObjectiveDto objective, KeyResultLastCheckInDto lastCheckIn,
             KeyResultUserDto createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn) {

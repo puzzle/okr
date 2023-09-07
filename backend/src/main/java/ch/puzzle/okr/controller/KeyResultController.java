@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultAbstract;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
@@ -63,13 +63,13 @@ public class KeyResultController {
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstract.class,
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstractDto.class,
                             KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
-    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultAbstract keyResultAbstract,
+    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultAbstractDto keyResultAbstractDto,
             @AuthenticationPrincipal Jwt jwt) {
-        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultAbstract);
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultAbstractDto);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.createKeyResult(keyResult, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
@@ -77,15 +77,15 @@ public class KeyResultController {
     @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated KeyResult in db.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstract.class,
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstractDto.class,
                             KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
-            @RequestBody KeyResultAbstract keyResultAbstract) {
+            @RequestBody KeyResultAbstractDto keyResultAbstractDto) {
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultAbstract)));
+                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultAbstractDto)));
         return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

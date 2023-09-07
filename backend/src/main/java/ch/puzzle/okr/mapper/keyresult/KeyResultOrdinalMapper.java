@@ -41,13 +41,14 @@ public class KeyResultOrdinalMapper {
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultOrdinalDto(keyResult.getId(), "ordinal", keyResult.getTitle(), keyResult.getDescription(),
-                keyResult.getCommitZone(), keyResult.getTargetZone(), keyResult.getStretchZone(), ownerDto,
-                objectiveDto, lastCheckInDto, createdByDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
+        return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
+                keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
+                keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, createdByDto,
+                keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultOrdinal(KeyResultAbstract keyResultAbstract) {
-        KeyResultOrdinalDto keyResultDto = abstractToOrdinalDto(keyResultAbstract);
+    public KeyResult toKeyResultOrdinal(KeyResultAbstractDto keyResultAbstractDto) {
+        KeyResultOrdinalDto keyResultDto = abstractToOrdinalDto(keyResultAbstractDto);
         return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultDto.commitZone())
                 .withTargetZone(keyResultDto.targetZone()).withStretchZone(keyResultDto.stretchZone())
                 .withId(keyResultDto.id())
@@ -55,15 +56,18 @@ public class KeyResultOrdinalMapper {
                 .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
                 .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
                 .withCreatedBy(userPersistenceService.findById(keyResultDto.createdBy().id()))
-                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn()).build();
+                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
+                .withKeyResultType(keyResultDto.keyResultType()).build();
     }
 
-    public KeyResultOrdinalDto abstractToOrdinalDto(KeyResultAbstract keyResultAbstract) {
-        return new KeyResultOrdinalDto(keyResultAbstract.getId(), keyResultAbstract.getKeyResultType(),
-                keyResultAbstract.getTitle(), keyResultAbstract.getDescription(), keyResultAbstract.getCommitZone(),
-                keyResultAbstract.getTargetZone(), keyResultAbstract.getStretchZone(), keyResultAbstract.getOwner(),
-                keyResultAbstract.getObjective(), keyResultAbstract.getLastCheckIn(), keyResultAbstract.getCreatedBy(),
-                keyResultAbstract.getCreatedOn(), keyResultAbstract.getModifiedOn());
+    public KeyResultOrdinalDto abstractToOrdinalDto(KeyResultAbstractDto keyResultAbstractDto) {
+        return new KeyResultOrdinalDto(keyResultAbstractDto.getId(), keyResultAbstractDto.getKeyResultType(),
+                keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
+                keyResultAbstractDto.getCommitZone(), keyResultAbstractDto.getTargetZone(),
+                keyResultAbstractDto.getStretchZone(), keyResultAbstractDto.getOwner(),
+                keyResultAbstractDto.getObjective(), keyResultAbstractDto.getLastCheckIn(),
+                keyResultAbstractDto.getCreatedBy(), keyResultAbstractDto.getCreatedOn(),
+                keyResultAbstractDto.getModifiedOn());
     }
 
     public KeyResultLastCheckInDto getLastCheckInDto(Long keyResultId) {

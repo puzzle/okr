@@ -42,6 +42,9 @@ public abstract class KeyResult {
 
     private LocalDateTime modifiedOn;
 
+    @Column(name = "key_result_type", insertable = false, updatable = false)
+    private String keyResultType;
+
     public Long getId() {
         return id;
     }
@@ -102,11 +105,19 @@ public abstract class KeyResult {
         this.modifiedOn = modifiedOn;
     }
 
+    public String getKeyResultType() {
+        return keyResultType;
+    }
+
+    public void setKeyResultType(String keyResultType) {
+        this.keyResultType = keyResultType;
+    }
+
     @Override
     public String toString() {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
                 + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn
-                + ", modifiedOn=" + modifiedOn + '}';
+                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + '\'' + '}';
     }
 
     @Override
@@ -119,12 +130,13 @@ public abstract class KeyResult {
         return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective)
                 && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description)
                 && Objects.equals(owner, keyResult.owner) && Objects.equals(createdBy, keyResult.createdBy)
-                && Objects.equals(createdOn, keyResult.createdOn) && Objects.equals(modifiedOn, keyResult.modifiedOn);
+                && Objects.equals(createdOn, keyResult.createdOn) && Objects.equals(modifiedOn, keyResult.modifiedOn)
+                && Objects.equals(keyResultType, keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn);
+        return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn, keyResultType);
     }
 
     public KeyResult() {
@@ -139,6 +151,7 @@ public abstract class KeyResult {
         setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
         setModifiedOn(builder.modifiedOn);
+        setKeyResultType(builder.keyResultType);
     }
 
     public abstract static class Builder {
@@ -150,6 +163,7 @@ public abstract class KeyResult {
         private User createdBy;
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
+        private String keyResultType;
 
         public Builder withId(Long id) {
             this.id = id;
@@ -188,6 +202,11 @@ public abstract class KeyResult {
 
         public Builder withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
+            return this;
+        }
+
+        public Builder withKeyResultType(String keyResultType) {
+            this.keyResultType = keyResultType;
             return this;
         }
 

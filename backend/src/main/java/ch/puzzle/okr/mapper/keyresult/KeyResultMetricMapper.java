@@ -41,28 +41,31 @@ public class KeyResultMetricMapper {
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultMetricDto(keyResult.getId(), "metric", keyResult.getTitle(), keyResult.getDescription(),
-                keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(), ownerDto, objectiveDto,
-                lastCheckInDto, createdByDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
+        return new KeyResultMetricDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
+                keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(),
+                ownerDto, objectiveDto, lastCheckInDto, createdByDto, keyResult.getCreatedOn(),
+                keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultMetric(KeyResultAbstract keyResultAbstract) {
-        KeyResultMetricDto keyResultDto = abstractToMetricDto(keyResultAbstract);
+    public KeyResult toKeyResultMetric(KeyResultAbstractDto keyResultAbstractDto) {
+        KeyResultMetricDto keyResultDto = abstractToMetricDto(keyResultAbstractDto);
         return KeyResultMetric.Builder.builder().withBaseline(keyResultDto.baseline())
                 .withStretchGoal(keyResultDto.stretchGoal()).withUnit(keyResultDto.unit()).withId(keyResultDto.id())
                 .withObjective(objectivePersistenceService.findById(keyResultDto.objective().id()))
                 .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
                 .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
                 .withCreatedBy(userPersistenceService.findById(keyResultDto.createdBy().id()))
-                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn()).build();
+                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
+                .withKeyResultType(keyResultDto.keyResultType()).build();
     }
 
-    public KeyResultMetricDto abstractToMetricDto(KeyResultAbstract keyResultAbstract) {
-        return new KeyResultMetricDto(keyResultAbstract.getId(), keyResultAbstract.getKeyResultType(),
-                keyResultAbstract.getTitle(), keyResultAbstract.getDescription(), keyResultAbstract.getBaseline(),
-                keyResultAbstract.getStretchGoal(), keyResultAbstract.getUnit(), keyResultAbstract.getOwner(),
-                keyResultAbstract.getObjective(), keyResultAbstract.getLastCheckIn(), keyResultAbstract.getCreatedBy(),
-                keyResultAbstract.getCreatedOn(), keyResultAbstract.getModifiedOn());
+    public KeyResultMetricDto abstractToMetricDto(KeyResultAbstractDto keyResultAbstractDto) {
+        return new KeyResultMetricDto(keyResultAbstractDto.getId(), keyResultAbstractDto.getKeyResultType(),
+                keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
+                keyResultAbstractDto.getBaseline(), keyResultAbstractDto.getStretchGoal(),
+                keyResultAbstractDto.getUnit(), keyResultAbstractDto.getOwner(), keyResultAbstractDto.getObjective(),
+                keyResultAbstractDto.getLastCheckIn(), keyResultAbstractDto.getCreatedBy(),
+                keyResultAbstractDto.getCreatedOn(), keyResultAbstractDto.getModifiedOn());
     }
 
     public KeyResultLastCheckInDto getLastCheckInDto(Long keyResultId) {

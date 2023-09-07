@@ -8,6 +8,4 @@ import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
-
-  constructor() {}
 }

@@ -3,6 +3,7 @@ import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { State } from '../shared/types/enums/State';
+import { objective } from '../shared/testData';
 
 @Component({
   selector: 'app-objective-column',
@@ -10,7 +11,7 @@ import { State } from '../shared/types/enums/State';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent implements OnInit {
+export class ObjectiveComponent {
   @Input() objective!: ObjectiveMin;
   menuEntries: MenuEntry[] = [
     { displayName: 'Objective bearbeiten', showDialog: false },
@@ -20,8 +21,6 @@ export class ObjectiveComponent implements OnInit {
   ];
 
   constructor(private routeService: RouteService) {}
-
-  ngOnInit(): void {}
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {

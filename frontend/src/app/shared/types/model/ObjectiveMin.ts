@@ -7,5 +7,5 @@ export interface ObjectiveMin {
   title: string;
   state: State;
   quarter: QuarterMin;
-  keyresults: KeyresultMin[];
+  keyResults: KeyresultMin[];
 }

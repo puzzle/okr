@@ -1,9 +1,9 @@
-<div class="objective rounded-3 bg-white container">
+<div class="objective rounded-3 bg-white">
   <span class="col">
     <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
   </span>
-  <div class="row ps-2">
-    <header class="d-flex">
+  <div class="row mx-1">
+    <section class="d-flex justify-content-between mb-2">
       <img
         data-testid="objective-state"
         class="icon col-1"
@@ -18,8 +18,15 @@
         src="assets/icons/threedot.svg"
         alt="A three-dot-menu button"
       />
-    </header>
-    <section class="py-2">
+    </section>
+    <section class="d-flex gap-3 pe-0 row">
+      <app-keyresult
+        *ngFor="let keyResult of objective.keyresults"
+        [keyResult]="keyResult"
+        class="pe-0"
+      ></app-keyresult>
+    </section>
+    <section class="py-3">
       <a class="anchor d-flex" role="button">
         <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
         <p class="add-button-text">Key Result hinzufügen</p>

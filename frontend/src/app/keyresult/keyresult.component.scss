@@ -1,0 +1,10 @@
+.key-result {
+  background-color: #e5e8eb;
+  border: 1px solid #5d6974;
+
+  &:hover {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1), 2px 1px 5px 0 rgba(0, 0, 0, 0.1), 8px 5px 9px 0 rgba(0, 0, 0, 0.09),
+      18px 11px 13px 0 rgba(0, 0, 0, 0.05), 32px 19px 15px 0 rgba(0, 0, 0, 0.01), 51px 29px 16px 0 rgba(0, 0, 0, 0);
+    cursor: pointer;
+  }
+}

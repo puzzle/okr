@@ -36,6 +36,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { MatCardModule } from '@angular/material/card';
 import { ObjectiveComponent } from './objective/objective.component';
 import { NgOptimizedImage } from '@angular/common';
+import { KeyresultComponent } from './keyresult/keyresult.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {

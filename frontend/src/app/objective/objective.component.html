@@ -19,6 +19,7 @@
         alt="A three-dot-menu button"
       />
     </header>
+    <app-keyresult *ngFor="let keyResult of objective.keyresults" [keyResult]="keyResult"></app-keyresult>
     <section class="py-2">
       <a class="anchor d-flex" role="button">
         <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />

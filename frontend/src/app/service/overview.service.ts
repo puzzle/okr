@@ -139,7 +139,7 @@ export class OverviewService {
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -156,7 +156,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -169,14 +169,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -193,7 +193,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -206,14 +206,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -230,7 +230,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -243,14 +243,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -267,7 +267,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -280,14 +280,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -304,7 +304,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -317,14 +317,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -341,7 +341,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -354,14 +354,14 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,
           {
             id: 101,
             title: 'Increase User Engagement',
-            state: 'ONGOING',
+            state: State.ONGOING,
             quarter: {
               id: 1,
               label: 'GJ 23/24-Q1',
@@ -378,7 +378,7 @@ export class OverviewService {
                   value: 15,
                   confidence: 5,
                   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultMetricMin,
               {
                 id: 202,
@@ -391,7 +391,7 @@ export class OverviewService {
                   value: 'COMMIT',
                   confidence: 7,
                   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
-                } as CheckInMinimal,
+                } as CheckInMin,
               } as KeyResultOrdinalMin,
             ] as KeyresultMin[],
           } as ObjectiveMin,

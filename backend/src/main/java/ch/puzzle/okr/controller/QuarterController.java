@@ -31,11 +31,9 @@ public class QuarterController {
         this.registerNewUserService = registerNewUserService;
     }
 
-    @Operation(summary = "Get quarters by Team", description = "Get a List of quarters for current date")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a List of current quarters", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create quarters", content = @Content) })
+    @Operation(summary = "Get quarters", description = "Get a List of quarters depending on current date")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned a List of quarters", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }) })
     @GetMapping("")
     public ResponseEntity<List<Quarter>> getCurrentQuarters() {
         this.registerNewUserService.registerNewUser(SecurityContextHolder.getContext());

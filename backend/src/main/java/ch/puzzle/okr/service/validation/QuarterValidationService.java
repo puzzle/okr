@@ -13,10 +13,12 @@ public class QuarterValidationService extends ValidationBase<Quarter, Long> {
 
     @Override
     public void validateOnCreate(Quarter model) {
+        throw new IllegalCallerException("This method must not be called");
     }
 
     @Override
     public void validateOnUpdate(Long id, Quarter model) {
+        throw new IllegalCallerException("This method must not be called because there is no update of quarters");
     }
 
     public void validateOnSave(Quarter model) {

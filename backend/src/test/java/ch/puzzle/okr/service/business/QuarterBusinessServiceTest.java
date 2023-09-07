@@ -132,6 +132,7 @@ class QuarterBusinessServiceTest {
                 .withStartDate(LocalDate.of(2031, 1, 1)).withEndDate(LocalDate.of(2031, 3, 31)).build();
 
         Mockito.when(quarterBusinessService.getCurrentYearMonth()).thenReturn(YearMonth.of(2030, 3));
+
         quarterBusinessService.scheduledGenerationQuarters();
         verify(quarterPersistenceService).save(quarterStandard);
 

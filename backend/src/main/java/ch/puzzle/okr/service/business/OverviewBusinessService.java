@@ -25,7 +25,7 @@ public class OverviewBusinessService {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
         if (CollectionUtils.isEmpty(teamIds)) {
-            // TODO get current team (of current user) if teamIds is empty
+            // TODO get current team (of current user) if teamIds is empty and remove temp implementation
             return overviewPersistenceService.getOverviewByQuarterId(quarterId);
         }
         return overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);

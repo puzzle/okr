@@ -34,9 +34,6 @@ create table if not exists person
             unique
 );
 
-alter table person
-    owner to "user";
-
 create table if not exists quarter
 (
     id    bigint       not null
@@ -55,9 +52,6 @@ create table if not exists team
         primary key,
     name varchar(250) not null
 );
-
-alter table team
-    owner to "user";
 
 create table if not exists objective
 (
@@ -78,9 +72,6 @@ create table if not exists objective
             references team
 );
 
-alter table objective
-    owner to "user";
-
 create table if not exists measure
 (
     id            bigint           not null primary key,
@@ -92,9 +83,6 @@ create table if not exists measure
     created_by_id bigint           not null,
     key_result_id bigint           not null
 );
-
-alter table measure
-    owner to "user";
 
 create table if not exists key_result
 (
@@ -118,9 +106,6 @@ create table if not exists key_result
             references person
 );
 
-alter table key_result
-    owner to "user";
-
 create table if not exists measure
 (
     id            bigint           not null
@@ -137,9 +122,6 @@ create table if not exists measure
         constraint fkoiu1l4cagu6bsdwyfy90v4tvn
             references key_result
 );
-
-alter table measure
-    owner to "user";
 
 create index if not exists idx_objective_title
     on objective (title);

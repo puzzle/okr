@@ -6,4 +6,7 @@ public class Constants {
     }
 
     public static final String TEAM_PUZZLE = "Puzzle ITC";
+
+    public static final String USER_CACHE = "users";
+
 }

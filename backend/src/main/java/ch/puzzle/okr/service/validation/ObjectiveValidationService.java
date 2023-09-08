@@ -33,7 +33,6 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
                     String.format("Something went wrong. ModifiedBy  %s is not set.", model.getModifiedBy()));
         }
         doesEntityExist(id);
-
         validate(model);
     }
 }

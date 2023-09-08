@@ -6,7 +6,6 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.ProgressService;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -64,8 +63,7 @@ class MeasureControllerIT {
     private MockMvc mvc;
     @MockBean
     private MeasureBusinessService measureBusinessService;
-    @MockBean
-    private ProgressService progressService;
+
     @MockBean
     private MeasureMapper measureMapper;
 

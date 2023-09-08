@@ -32,8 +32,6 @@ class MeasureBusinessServiceTest {
     @MockBean
     MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
     @MockBean
-    ProgressBusinessService progressBusinessService = Mockito.mock(ProgressBusinessService.class);
-    @MockBean
     ObjectiveBusinessService objectiveBusinessService = Mockito.mock(ObjectiveBusinessService.class);
 
     @InjectMocks

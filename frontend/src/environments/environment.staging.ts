@@ -6,10 +6,10 @@ export const environment = {
   oauth: {
     decreaseExpirationBySec: 30,
     clearHashAfterLogin: true,
-    issuer: '',
+    issuer: 'https://sso.puzzle.ch/auth/realms/pitc',
     strictDiscoveryDocumentValidation: false,
-    redirectUri: `https://okr.ocp-staging.cloudscale.puzzle.ch:/auth/keycloakopenid/callback`,
-    scope: '',
+    redirectUri: `${window.location.protocol}//${window.location.hostname}:${window.location.port}/auth/keycloakopenid/callback`,
+    scope: 'profile openid',
     clientId: 'pitc_okr_prod',
     responseType: 'code',
     showDebugInformation: true,

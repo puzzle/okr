@@ -25,14 +25,12 @@ public class KeyResultController {
     private final KeyResultBusinessService keyResultBusinessService;
     private final KeyResultMapper keyResultMapper;
     private final MeasureMapper measureMapper;
-    private final ProgressService progressService;
 
     public KeyResultController(KeyResultBusinessService keyResultBusinessService, KeyResultMapper keyResultMapper,
-            MeasureMapper measureMapper, ProgressService progressService) {
+            MeasureMapper measureMapper) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.keyResultMapper = keyResultMapper;
         this.measureMapper = measureMapper;
-        this.progressService = progressService;
     }
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
@@ -87,6 +85,6 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the keyresult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id) {
-        progressService.deleteKeyResultAndUpdateProgress(id);
+        // Gets reimplemented by Lias
     }
 }

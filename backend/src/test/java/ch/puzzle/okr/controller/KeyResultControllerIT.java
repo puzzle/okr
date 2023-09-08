@@ -127,8 +127,6 @@ class KeyResultControllerIT {
     UserPersistenceService userPersistenceService;
     @MockBean
     ObjectivePersistenceService objectivePersistenceService;
-    @MockBean
-    ProgressService progressService;
     @Autowired
     private MockMvc mvc;
 
@@ -304,14 +302,5 @@ class KeyResultControllerIT {
     void shouldDeleteKeyResult() throws Exception {
         mvc.perform(delete("/api/v1/keyresults/10").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
-    void throwExceptionWhenKeyresultWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Key result with id 1 not found"))
-                .when(progressService).deleteKeyResultAndUpdateProgress(anyLong());
-
-        mvc.perform(delete("/api/v1/keyresults/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }

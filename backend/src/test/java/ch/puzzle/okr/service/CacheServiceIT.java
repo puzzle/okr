@@ -1,19 +1,21 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringIntegrationTest
-public class CacheServiceIT {
+class CacheServiceIT {
 
     @Autowired
     private CacheService cacheService;
@@ -23,6 +25,12 @@ public class CacheServiceIT {
     private UserPersistenceService userPersistenceService;
 
     private User createdUser;
+    private Cache cache;
+
+    @BeforeEach
+    void beforeEach() {
+        cache = cacheManager.getCache(Constants.USER_CACHE);
+    }
 
     @AfterEach
     void tearDown() {
@@ -40,11 +48,11 @@ public class CacheServiceIT {
     @Test
     void emptyUsersCache_ShouldClearUserCache() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
+        User userBeforeClearCache = cache.get("username", User.class);
 
         cacheService.emptyUsersCache();
 
-        User userAfterClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
+        User userAfterClearCache = cache.get("username", User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }
@@ -52,11 +60,11 @@ public class CacheServiceIT {
     @Test
     void emptyAllCaches_ShouldClearAllCaches() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
+        User userBeforeClearCache = cache.get("username", User.class);
 
         cacheService.emptyAllCaches();
 
-        User userAfterClearCache = cacheManager.getCache(USER_CACHE).get("username", User.class);
+        User userAfterClearCache = cache.get("username", User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }

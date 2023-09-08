@@ -63,8 +63,7 @@ class MeasureControllerIT {
     private MockMvc mvc;
     @MockBean
     private MeasureBusinessService measureBusinessService;
-    @MockBean
-    private ProgressService progressService;
+
     @MockBean
     private MeasureMapper measureMapper;
 

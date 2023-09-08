@@ -16,21 +16,17 @@ public class KeyResultMapper {
 
     private final ObjectivePersistenceService objectivePersistenceService;
 
-    private final ProgressBusinessService progressBusinessService;
-
     public KeyResultMapper(UserPersistenceService userPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService, ProgressBusinessService progressBusinessService) {
+            ObjectivePersistenceService objectivePersistenceService) {
         this.userPersistenceService = userPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.progressBusinessService = progressBusinessService;
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
         return new KeyResultDto(keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
                 keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
-                keyResult.getBasisValue(), keyResult.getTargetValue(),
-                progressBusinessService.calculateKeyResultProgress(keyResult));
+                keyResult.getBasisValue(), keyResult.getTargetValue(), 0L);
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {

@@ -6,6 +6,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
+import { ObjectiveMin } from './shared/types/model/ObjectiveMin';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
+  objective!: ObjectiveMin;
 
   constructor(
     private router: Router,
@@ -44,8 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
       }),
     );
     this.notifierService.drawerSubject.subscribe({
-      next: (value) => {
-        console.log(this.drawerOpen);
+      next: (objective) => {
         this.drawerOpen = true;
       },
     });

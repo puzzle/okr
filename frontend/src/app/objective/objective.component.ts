@@ -12,6 +12,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class ObjectiveComponent {
   @Input() objective!: ObjectiveMin;
+  @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [
     { displayName: 'Objective bearbeiten', showDialog: false },
     { displayName: 'Objective duplizieren', showDialog: false },
@@ -36,6 +37,6 @@ export class ObjectiveComponent {
   }
 
   openDrawer() {
-    this.notifierService.drawerSubject.next('');
+    this.notifierService.drawerSubject.next(this.objective);
   }
 }

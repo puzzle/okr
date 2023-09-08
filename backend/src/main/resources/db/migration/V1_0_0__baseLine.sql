@@ -1,26 +1,14 @@
 create sequence if not exists sequence_key_result;
 
-alter sequence sequence_key_result owner to "user";
-
 create sequence if not exists sequence_measure;
-
-alter sequence sequence_measure owner to "user";
 
 create sequence if not exists sequence_objective;
 
-alter sequence sequence_objective owner to "user";
-
 create sequence if not exists sequence_person;
-
-alter sequence sequence_person owner to "user";
 
 create sequence if not exists sequence_quarter;
 
-alter sequence sequence_quarter owner to "user";
-
 create sequence if not exists sequence_team;
-
-alter sequence sequence_team owner to "user";
 
 create table if not exists person
 (
@@ -42,9 +30,6 @@ create table if not exists quarter
         constraint uk_dgtrbsqpu1pdfxob0kkw6y44a
             unique
 );
-
-alter table quarter
-    owner to "user";
 
 create table if not exists team
 (

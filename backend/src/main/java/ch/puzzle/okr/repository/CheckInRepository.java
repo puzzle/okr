@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.Instant;
 import java.util.List;
 
-public interface MeasureRepository extends CrudRepository<Measure, Long> {
+public interface CheckInRepository extends CrudRepository<Measure, Long> {
     List<Measure> findMeasuresByKeyResultIdOrderByMeasureDateDesc(@Param("keyResult_id") Long keyResultId);
 
     List<MeasureValue> findMeasuresByKeyResultId(@Param("keyResult_id") Long keyResultId);

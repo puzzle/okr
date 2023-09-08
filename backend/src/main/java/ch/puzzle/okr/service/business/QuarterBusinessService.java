@@ -8,12 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.IsoFields;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class QuarterBusinessService {

@@ -100,8 +100,52 @@ class OKRArchitectureTest {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().haveSimpleName(repository).should().onlyHaveDependentClassesThat()
-                .haveSimpleName(persistenceService);
+        ArchRule rule = classes().that().haveSimpleName("ObjectiveRepository").should().onlyHaveDependentClassesThat()
+                .haveSimpleName("ObjectivePersistenceService");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void checkInRepositoryOnlyCalledFromCheckInService() {
+        JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.okr");
+
+        ArchRule rule = classes().that().haveSimpleName("CheckInRepository").should().onlyHaveDependentClassesThat()
+                .haveSimpleName("CheckInPersistenceService");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void quarterRepositoryOnlyCalledFromQuarterService() {
+        JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.okr");
+
+        ArchRule rule = classes().that().haveSimpleName("QuarterRepository").should().onlyHaveDependentClassesThat()
+                .haveSimpleName("QuarterPersistenceService");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void teamRepositoryOnlyCalledFromTeamService() {
+        JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.okr");
+
+        ArchRule rule = classes().that().haveSimpleName("TeamRepository").should().onlyHaveDependentClassesThat()
+                .haveSimpleName("TeamPersistenceService");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void userRepositoryOnlyCalledFromUserService() {
+        JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
+                .importPackages("ch.puzzle.okr");
+
+        ArchRule rule = classes().that().haveSimpleName("UserRepository").should().onlyHaveDependentClassesThat()
+                .haveSimpleName("UserPersistenceService");
 
         rule.check(importedClasses);
     }

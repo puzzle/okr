@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.business.MeasureBusinessService;
+import ch.puzzle.okr.service.business.CheckInBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class CheckInController {
 
     private final MeasureMapper measureMapper;
-    private final MeasureBusinessService measureBusinessService;
+    private final CheckInBusinessService checkInBusinessService;
 
-    public CheckInController(MeasureMapper measureMapper, MeasureBusinessService measureBusinessService) {
+    public CheckInController(MeasureMapper measureMapper, CheckInBusinessService checkInBusinessService) {
         this.measureMapper = measureMapper;
-        this.measureBusinessService = measureBusinessService;
+        this.checkInBusinessService = checkInBusinessService;
     }
 
     @Operation(summary = "Get Check-In", description = "Get Check-In by ID")
@@ -36,7 +36,7 @@ public class CheckInController {
     @GetMapping("/{id}")
     public ResponseEntity<MeasureDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(measureMapper.toDto(this.measureBusinessService.getMeasureById(id)));
+                .body(measureMapper.toDto(this.checkInBusinessService.getMeasureById(id)));
     }
 
     @Operation(summary = "Create Check-In", description = "Create a new Check-In")
@@ -49,7 +49,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody MeasureDto measureDto,
             @AuthenticationPrincipal Jwt jwt) {
         Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto createdMeasure = measureMapper.toDto(measureBusinessService.saveMeasure(measure));
+        MeasureDto createdMeasure = measureMapper.toDto(checkInBusinessService.saveMeasure(measure, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
@@ -65,7 +65,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody MeasureDto measureDto,
             @AuthenticationPrincipal Jwt jwt) {
         Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto updatedMeasure = this.measureMapper.toDto(this.measureBusinessService.updateMeasure(id, measure));
+        MeasureDto updatedMeasure = this.measureMapper.toDto(this.checkInBusinessService.updateMeasure(id, measure, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 }

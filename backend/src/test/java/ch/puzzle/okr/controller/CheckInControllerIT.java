@@ -5,6 +5,7 @@ import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
@@ -61,7 +62,7 @@ class CheckInControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private MeasureBusinessService measureBusinessService;
+    private CheckInBusinessService checkInBusinessService;
     @MockBean
     private MeasureMapper measureMapper;
 
@@ -76,11 +77,11 @@ class CheckInControllerIT {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
 
-        BDDMockito.given(measureBusinessService.saveMeasure(any())).willReturn(measure);
+        BDDMockito.given(checkInBusinessService.saveMeasure(any(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+        mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}")
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
@@ -90,10 +91,10 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingMeasureNullName() throws Exception {
-        BDDMockito.given(measureBusinessService.saveMeasure(any()))
+        BDDMockito.given(checkInBusinessService.saveMeasure(any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
 
-        mvc.perform(post("/api/v1/measures").contentType(MediaType.APPLICATION_JSON).content(
+        mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}")
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -103,11 +104,11 @@ class CheckInControllerIT {
     void shouldReturnCorrectMeasure() throws Exception {
         MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
-        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any())).willReturn(measure);
+        BDDMockito.given(checkInBusinessService.updateMeasure(anyLong(), any(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
         BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
 
-        mvc.perform(put("/api/v1/measures/1").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/v2/checkIns/1").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"measureDate \": null}"))
@@ -119,7 +120,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any()))
+        BDDMockito.given(checkInBusinessService.updateMeasure(anyLong(), any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
         mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -130,9 +131,9 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(measureBusinessService.updateMeasure(anyLong(), any()))
+        BDDMockito.given(checkInBusinessService.updateMeasure(anyLong(), any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        mvc.perform(put("/api/v1/measures/3").contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put("/api/v2/checkIns/3").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                 .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))

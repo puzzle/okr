@@ -2,11 +2,7 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.test.SpringIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,8 +11,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
 public class QuarterPersistenceServiceIT {

@@ -40,7 +40,7 @@ import { KeyresultComponent } from './keyresult/keyresult.component';
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
     const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer, scope: config.scope });
+    oauthService.configure({ ...environment.oauth, issuer: config.issuer });
   };
 }
 

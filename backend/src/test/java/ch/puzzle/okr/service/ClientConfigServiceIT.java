@@ -23,7 +23,6 @@ public class ClientConfigServiceIT {
 
         assertEquals("prod", configMap.get("activeProfile"));
         assertEquals("http://localhost:8000", configMap.get("issuer"));
-        assertEquals("test", configMap.get("scope"));
     }
 
 }

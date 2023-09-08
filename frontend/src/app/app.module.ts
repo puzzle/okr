@@ -36,6 +36,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
 import { NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
+import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -76,6 +77,7 @@ export const MY_FORMATS = {
     KeyresultComponent,
     ApplicationHeaderComponent,
     ConfidenceComponent,
+    ObjectiveDetailComponent,
   ],
   imports: [
     BrowserModule,

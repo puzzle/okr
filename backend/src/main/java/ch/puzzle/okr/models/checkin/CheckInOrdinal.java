@@ -1,4 +1,53 @@
 package ch.puzzle.okr.models.checkin;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@DiscriminatorValue("ordinal")
 public class CheckInOrdinal extends CheckIn {
+    @NotNull(message = "Value must not be null")
+    private Zone value;
+
+    /* Getter and Setter */
+    public Zone getValue() {
+        return value;
+    }
+
+    public void setValue(Zone value) {
+        this.value = value;
+    }
+
+    /* Constructor */
+    public CheckInOrdinal() {
+        super();
+    }
+
+    public CheckInOrdinal(Builder builder) {
+        super(builder);
+        setValue(builder.value);
+    }
+
+    /* Builder */
+    public static final class Builder extends CheckIn.Builder {
+        private Zone value;
+
+        private Builder() {
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withValue(Zone value) {
+            this.value = value;
+            return this;
+        }
+
+        @Override
+        public CheckIn build() {
+            return new CheckInOrdinal(this);
+        }
+    }
 }

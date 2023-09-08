@@ -16,7 +16,6 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-    private static final Integer YEAR_IN_SECONDS = 31536000;
 
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
@@ -43,6 +42,6 @@ public class SecurityConfig {
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
                 .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
-                .maxAgeInSeconds(YEAR_IN_SECONDS)).build();
+                .maxAgeInSeconds(31536000)).build();
     }
 }

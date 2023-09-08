@@ -64,12 +64,12 @@ class CheckInControllerIT {
     @MockBean
     private CheckInBusinessService checkInBusinessService;
     @MockBean
-    private MeasureMapper measureMapper;
+    private CheckInMapper checkInMapper;
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(measureMapper.toDto(measure)).willReturn(checkInDto);
-        BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherCheckInDto);
+        BDDMockito.given(checkInMapper.toDto(measure)).willReturn(checkInDto);
+        BDDMockito.given(checkInMapper.toDto(anotherMeasure)).willReturn(anotherCheckInDto);
     }
 
     @Test
@@ -78,8 +78,8 @@ class CheckInControllerIT {
                 Instant.parse("2022-08-12T01:01:00.00Z"));
 
         BDDMockito.given(checkInBusinessService.saveMeasure(any(), any())).willReturn(measure);
-        BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
-        BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
+        BDDMockito.given(checkInMapper.toDto(any())).willReturn(testMeasure);
+        BDDMockito.given(checkInMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON).content(
                 "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"measureDate \": \"2022-08-12T01:01:00\"}")
@@ -105,8 +105,8 @@ class CheckInControllerIT {
         CheckInDto testMeasure = new CheckInDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
         BDDMockito.given(checkInBusinessService.updateMeasure(anyLong(), any(), any())).willReturn(measure);
-        BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);
-        BDDMockito.given(measureMapper.toMeasure(any())).willReturn(measure);
+        BDDMockito.given(checkInMapper.toDto(any())).willReturn(testMeasure);
+        BDDMockito.given(checkInMapper.toMeasure(any())).willReturn(measure);
 
         mvc.perform(put("/api/v2/checkIns/1").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

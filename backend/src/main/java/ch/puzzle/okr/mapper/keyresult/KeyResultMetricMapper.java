@@ -32,8 +32,6 @@ public class KeyResultMetricMapper {
     public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult) {
         KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(),
                 keyResult.getOwner().getFirstname(), keyResult.getOwner().getLastname());
-        KeyResultUserDto createdByDto = new KeyResultUserDto(keyResult.getCreatedBy().getId(),
-                keyResult.getCreatedBy().getFirstname(), keyResult.getCreatedBy().getLastname());
         KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective().getQuarter().getId(),
                 keyResult.getObjective().getQuarter().getLabel(), keyResult.getObjective().getQuarter().getStartDate(),
                 keyResult.getObjective().getQuarter().getEndDate());
@@ -43,8 +41,7 @@ public class KeyResultMetricMapper {
 
         return new KeyResultMetricDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(),
-                ownerDto, objectiveDto, lastCheckInDto, createdByDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn());
+                ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
     public KeyResult toKeyResultMetric(KeyResultAbstractDto keyResultAbstractDto) {
@@ -54,7 +51,6 @@ public class KeyResultMetricMapper {
                 .withObjective(objectivePersistenceService.findById(keyResultDto.objective().id()))
                 .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
                 .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
-                .withCreatedBy(userPersistenceService.findById(keyResultDto.createdBy().id()))
                 .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
                 .withKeyResultType(keyResultDto.keyResultType()).build();
     }
@@ -64,8 +60,8 @@ public class KeyResultMetricMapper {
                 keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
                 keyResultAbstractDto.getBaseline(), keyResultAbstractDto.getStretchGoal(),
                 keyResultAbstractDto.getUnit(), keyResultAbstractDto.getOwner(), keyResultAbstractDto.getObjective(),
-                keyResultAbstractDto.getLastCheckIn(), keyResultAbstractDto.getCreatedBy(),
-                keyResultAbstractDto.getCreatedOn(), keyResultAbstractDto.getModifiedOn());
+                keyResultAbstractDto.getLastCheckIn(), keyResultAbstractDto.getCreatedOn(),
+                keyResultAbstractDto.getModifiedOn());
     }
 
     public KeyResultLastCheckInDto getLastCheckInDto(Long keyResultId) {

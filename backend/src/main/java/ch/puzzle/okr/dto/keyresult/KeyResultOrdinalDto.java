@@ -6,6 +6,6 @@ import java.time.LocalDateTime;
 
 public record KeyResultOrdinalDto(Long id, String keyResultType, String title, String description, String commitZone,
         String targetZone, String stretchZone, KeyResultUserDto owner, KeyResultObjectiveDto objective,
-        KeyResultLastCheckInDto lastCheckIn, KeyResultUserDto createdBy, LocalDateTime createdOn,
-        LocalDateTime modifiedOn) implements KeyResultDto {
+        KeyResultLastCheckInDto lastCheckIn, LocalDateTime createdOn, LocalDateTime modifiedOn)
+        implements KeyResultDto {
 }

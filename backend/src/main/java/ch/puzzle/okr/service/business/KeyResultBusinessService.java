@@ -1,9 +1,8 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -19,17 +18,17 @@ public class KeyResultBusinessService {
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final ObjectivePersistenceService objectivePersistenceService;
-    private final MeasureBusinessService measureBusinessService;
+    private final CheckInBusinessService checkInBusinessService;
     private final UserBusinessService userBusinessService;
     private final KeyResultValidationService validator;
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService, MeasureBusinessService measureBusinessService,
-            UserBusinessService userBusinessService, KeyResultValidationService validator) {
+            ObjectivePersistenceService objectivePersistenceService, UserBusinessService userBusinessService,
+                                    KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.measureBusinessService = measureBusinessService;
         this.userBusinessService = userBusinessService;
+        this.checkInBusinessService = checkInBusinessService;
         this.validator = validator;
     }
 
@@ -69,14 +68,14 @@ public class KeyResultBusinessService {
     @Transactional
     public void deleteKeyResultById(Long id) {
         validator.validateOnDelete(id);
-        measureBusinessService.getMeasuresByKeyResultId(id)
-                .forEach(measure -> measureBusinessService.deleteMeasureById(measure.getId()));
+        checkInBusinessService.getCheckInsByKeyResultId(id)
+                .forEach(measure -> checkInBusinessService.deleteCheckIn(measure.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 
-    public List<Measure> getAllMeasuresByKeyResult(long keyResultId) {
+    public List<CheckIn> getAllMeasuresByKeyResult(long keyResultId) {
         KeyResult keyResult = keyResultPersistenceService.findById(keyResultId);
-        return measureBusinessService.getMeasuresByKeyResultId(keyResult.getId());
+        return checkInBusinessService.getCheckInsByKeyResultId(keyResult.getId());
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
@@ -85,11 +84,11 @@ public class KeyResultBusinessService {
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {
-        return measureBusinessService.getMeasuresByKeyResultId(id).isEmpty();
+        return checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
-        return !measureBusinessService.getMeasuresByKeyResultId(id).isEmpty()
+        return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty()
                 && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 }

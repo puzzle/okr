@@ -1,12 +1,12 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.keyresult.KeyResultDto;
-import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.mapper.MeasureMapper;
+import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,13 +29,13 @@ public class KeyResultController {
 
     private final KeyResultBusinessService keyResultBusinessService;
     private final KeyResultMapper keyResultMapper;
-    private final MeasureMapper measureMapper;
+    private final CheckInMapper checkInMapper;
 
     public KeyResultController(KeyResultBusinessService keyResultBusinessService, KeyResultMapper keyResultMapper,
-            MeasureMapper measureMapper) {
+                               CheckInMapper checkInMapper) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.keyResultMapper = keyResultMapper;
-        this.measureMapper = measureMapper;
+        this.checkInMapper = checkInMapper;
     }
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
@@ -52,12 +52,12 @@ public class KeyResultController {
     @Operation(summary = "Get CheckIns from KeyResult", description = "Get all CheckIns from one KeyResult by keyResultId.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all CheckIns from KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get CheckIns from.", content = @Content) })
     @GetMapping("/{id}/checkins")
-    public List<MeasureDto> getCheckInsFromKeyResult(
+    public List<CheckInDto> getCheckInsFromKeyResult(
             @Parameter(description = "The ID for getting all CheckIns from a KeyResult.", required = true) @PathVariable long id) {
-        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(measureMapper::toDto).toList();
+        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.models.checkIn;
 
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

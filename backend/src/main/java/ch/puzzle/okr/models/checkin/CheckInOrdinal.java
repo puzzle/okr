@@ -8,15 +8,15 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorValue("ordinal")
 public class CheckInOrdinal extends CheckIn {
     @NotNull(message = "Value must not be null")
-    private Zone value;
+    private Zone valueOrdinal;
 
     /* Getter and Setter */
     public Zone getValue() {
-        return value;
+        return valueOrdinal;
     }
 
     public void setValue(Zone value) {
-        this.value = value;
+        this.valueOrdinal = value;
     }
 
     /* Constructor */

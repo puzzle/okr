@@ -83,14 +83,16 @@ create table if not exists objective
 create index if not exists idx_objective_title
     on objective (title);
 
-create table if not exists measure
+create table if not exists check_in
 (
     id            bigint           not null,
-    change_info   varchar(255)     not null,
-    created_on    timestamp        not null,
+    change_info   varchar(4096),
     initiatives   varchar(4096),
-    measure_date  timestamp        not null,
-    "value"       double precision not null,
+    confidence    integer,
+    created_on    timestamp        not null,
+    modified_on   timestamp        not null,
+    value_metric   double precision,
+    value_ordinal  varchar(4096),
     created_by_id bigint           not null,
     key_result_id bigint           not null,
     primary key (id)

@@ -8,15 +8,15 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorValue("metric")
 public class CheckInMetric extends CheckIn {
     @NotNull(message = "Value must not be null")
-    private Double value;
+    private Double valueMetric;
 
     /* Getter and Setter */
     public Double getValue() {
-        return value;
+        return valueMetric;
     }
 
     public void setValue(Double value) {
-        this.value = value;
+        this.valueMetric = value;
     }
 
     /* Constructor */

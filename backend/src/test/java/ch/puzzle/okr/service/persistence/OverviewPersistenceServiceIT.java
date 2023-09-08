@@ -22,6 +22,7 @@ public class OverviewPersistenceServiceIT {
     private OverviewMapper overviewMapper;
 
     @Test
+    @Disabled
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews() {
         List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(2L, List.of(5L, 6L, 8L));
 

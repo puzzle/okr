@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
-public class CheckInPersistenceService extends PersistenceBase<Measure, Long> {
+public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long> {
 
     protected CheckInPersistenceService(CheckInRepository repository) {
         super(repository);
@@ -19,20 +19,20 @@ public class CheckInPersistenceService extends PersistenceBase<Measure, Long> {
         return null;
     }
 
-    public List<Measure> getMeasuresByKeyResultIdAndMeasureDate(Long keyResultId, Instant measureDate) {
+    public List<CheckIn> getMeasuresByKeyResultIdAndMeasureDate(Long keyResultId, Instant measureDate) {
         return ((CheckInRepository) repository).findMeasuresByKeyResultIdAndMeasureDate(keyResultId, measureDate);
     }
 
-    public List<Measure> getMeasuresByKeyResultIdOrderByMeasureDateDesc(Long keyResultId) {
+    public List<CheckIn> getMeasuresByKeyResultIdOrderByMeasureDateDesc(Long keyResultId) {
         return ((CheckInRepository) repository).findMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
 
     }
 
-    public List<Measure> getLastMeasuresOfKeyresults(Long objectiveId) {
+    public List<CheckIn> getLastMeasuresOfKeyresults(Long objectiveId) {
         return ((CheckInRepository) repository).findLastMeasuresOfKeyresults(objectiveId);
     }
 
-    public Measure getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(Long keyResultId) {
+    public CheckIn getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(Long keyResultId) {
         return ((CheckInRepository) repository).findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
     }
 }

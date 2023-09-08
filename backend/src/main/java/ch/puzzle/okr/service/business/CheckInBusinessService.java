@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -19,20 +19,20 @@ public class CheckInBusinessService {
         this.userBusinessService = userBusinessService;
     }
 
-    public Measure getMeasureById(Long id) {
+    public CheckIn getCheckInById(Long id) {
         validator.validateOnGet(id);
         return checkInPersistenceService.findById(id);
     }
 
-    public Measure saveMeasure(Measure measure, Jwt token) {
-        measure.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
-        validator.validateOnCreate(measure);
-        return checkInPersistenceService.save(measure);
+    public CheckIn saveCheckIn(CheckIn checkIn, Jwt token) {
+        checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        validator.validateOnCreate(checkIn);
+        return checkInPersistenceService.save(checkIn);
     }
 
-    public Measure updateMeasure(Long id, Measure measure, Jwt token) {
-        measure.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
-        validator.validateOnUpdate(id, measure);
-        return checkInPersistenceService.save(measure);
+    public CheckIn updateCheckIn(Long id, CheckIn checkIn, Jwt token) {
+        checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        validator.validateOnUpdate(id, checkIn);
+        return checkInPersistenceService.save(checkIn);
     }
 }

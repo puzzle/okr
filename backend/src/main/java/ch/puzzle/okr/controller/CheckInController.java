@@ -36,7 +36,7 @@ public class CheckInController {
     @GetMapping("/{id}")
     public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(checkInMapper.toDto(this.checkInBusinessService.getMeasureById(id)));
+                .body(checkInMapper.toDto(this.checkInBusinessService.getCheckInById(id)));
     }
 
     @Operation(summary = "Create Check-In", description = "Create a new Check-In")
@@ -49,7 +49,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
-        CheckInDto createdMeasure = checkInMapper.toDto(checkInBusinessService.saveMeasure(checkIn, jwt));
+        CheckInDto createdMeasure = checkInMapper.toDto(checkInBusinessService.saveCheckIn(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
@@ -66,7 +66,7 @@ public class CheckInController {
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto updatedMeasure = this.checkInMapper
-                .toDto(this.checkInBusinessService.updateMeasure(id, checkIn, jwt));
+                .toDto(this.checkInBusinessService.updateCheckIn(id, checkIn, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }
 }

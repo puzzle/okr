@@ -3,8 +3,6 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -49,9 +47,15 @@ public class KeyResultBusinessService {
 
     @Transactional
     public KeyResult updateKeyResult(Long id, KeyResult keyResult) {
+        KeyResult savedKeyResult = keyResultPersistenceService.findById(id);
+        keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
         keyResult.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, keyResult);
-        return validateUpdatedKeyResult(id, keyResult);
+        if (isKeyResultTypeChangeable(id)) {
+            return keyResultPersistenceService.updateEntity(id, keyResult);
+        } else {
+            return keyResultPersistenceService.updateAbstractEntity(id, keyResult);
+        }
     }
 
     @Transactional
@@ -72,23 +76,12 @@ public class KeyResultBusinessService {
         return keyResultPersistenceService.getKeyResultsByObjective(objective);
     }
 
-    public KeyResult validateUpdatedKeyResult(Long id, KeyResult keyResult) {
-        KeyResult savedKeyResult = getKeyResultById(id);
-        KeyResult keyResultToSave;
-        if (savedKeyResult instanceof KeyResultMetric && keyResult instanceof KeyResultOrdinal specificKeyResult) {
-            // throw new ResponseStatusException(HttpStatus.IM_USED, "You can not change the type of a KeyResult when
-            // there are CheckIns on this KeyResult");
-            keyResultToSave = specificKeyResult;
-        } else if (savedKeyResult instanceof KeyResultOrdinal
-                && keyResult instanceof KeyResultMetric specificKeyResult) {
-            // throw new ResponseStatusException(HttpStatus.IM_USED, "You can not change the type of a KeyResult when
-            // there are CheckIns on this KeyResult");
-            keyResultToSave = specificKeyResult;
-        } else {
-            keyResultToSave = keyResult;
-        }
+    private boolean isKeyResultTypeChangeable(Long id) {
+        return measureBusinessService.getMeasuresByKeyResultId(id).isEmpty();
+    }
 
-        validator.validateOnUpdate(id, keyResultToSave);
-        return keyResultPersistenceService.save(keyResult);
+    public boolean isImUsed(Long id, KeyResult keyResult) {
+        return !measureBusinessService.getMeasuresByKeyResultId(id).isEmpty()
+                && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 }

@@ -84,9 +84,12 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultAbstractDto keyResultAbstractDto) {
+        KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultAbstractDto);
+        boolean isKeyResultImUse = keyResultBusinessService.isImUsed(id, mappedKeyResult);
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultBusinessService.updateKeyResult(id, keyResultMapper.toKeyResult(keyResultAbstractDto)));
-        return ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
+                .toDto(keyResultBusinessService.updateKeyResult(id, mappedKeyResult));
+        return isKeyResultImUse ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedKeyResult)
+                : ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")

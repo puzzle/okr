@@ -3,21 +3,13 @@ package ch.puzzle.okr.service.persistence;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
-import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long> {
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @PersistenceContext
-    private Session session;
 
     protected KeyResultPersistenceService(KeyResultRepository repository) {
         super(repository);
@@ -32,9 +24,25 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
         return ((KeyResultRepository) this.repository).findByObjectiveId(objective.getId());
     }
 
-    public KeyResult updateKeyResult(KeyResult savedKeyResult, KeyResult keyResult) {
-        session.evict(savedKeyResult);
-        session.update(keyResult);
-        return ((KeyResultRepository) this.repository).findById(keyResult.getId()).get();
+    @Transactional
+    public KeyResult updateEntity(Long id, KeyResult keyResult) {
+        KeyResult savedKeyResult = findById(id);
+        keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
+        keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
+        keyResult.setObjective(savedKeyResult.getObjective());
+
+        // Delete Entity in order to prevent duplicates
+        deleteById(id);
+        return save(keyResult);
+    }
+
+    public KeyResult updateAbstractEntity(Long id, KeyResult keyResult) {
+        KeyResult savedKeyResult = findById(id);
+        savedKeyResult.setTitle(keyResult.getTitle());
+        savedKeyResult.setDescription(keyResult.getDescription());
+        savedKeyResult.setOwner(keyResult.getOwner());
+        savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
+
+        return save(savedKeyResult);
     }
 }

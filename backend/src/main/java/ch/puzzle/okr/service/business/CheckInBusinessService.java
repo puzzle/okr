@@ -46,4 +46,8 @@ public class CheckInBusinessService {
     public List<CheckIn> getCheckInsByKeyResultId(Long keyResultId) {
         return checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(keyResultId);
     }
+
+    public CheckIn getLastCheckInByKeyResultId(Long keyResultId) {
+        return checkInPersistenceService.getLastCheckInOfKeyResult(keyResultId);
+    }
 }

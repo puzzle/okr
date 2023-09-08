@@ -1,12 +1,14 @@
 package ch.puzzle.okr.mapper.keyresult;
 
-import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
+import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
-import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
+import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.service.business.MeasureBusinessService;
+import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
@@ -16,16 +18,17 @@ public class KeyResultMetricMapper {
 
     private final UserPersistenceService userPersistenceService;
     private final ObjectiveBusinessService objectiveBusinessService;
-    private final MeasureBusinessService measureBusinessService;
-    private final MeasureMapper measureMapper;
+
+    private final CheckInBusinessService checkInBusinessService;
+    private final CheckInMapper checkInMapper;
 
     public KeyResultMetricMapper(UserPersistenceService userPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, MeasureBusinessService measureBusinessService,
-            MeasureMapper measureMapper) {
+            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
+                                 CheckInMapper checkInMapper) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
-        this.measureBusinessService = measureBusinessService;
-        this.measureMapper = measureMapper;
+        this.checkInBusinessService = checkInBusinessService;
+        this.checkInMapper = checkInMapper;
     }
 
     public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult) {
@@ -64,14 +67,14 @@ public class KeyResultMetricMapper {
     }
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {
-        Measure lastMeasure = measureBusinessService.getFirstMeasureByKeyResult(keyResultId);
+        CheckIn lastCheckIn = checkInBusinessService.getLastCheckInByKeyResultId(keyResultId);
         KeyResultLastCheckInMetricDto lastCheckInDto;
-        if (lastMeasure == null) {
+        if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            MeasureDto measureDto = measureMapper.toDto(lastMeasure);
-            // TODO: Replace value, confidence and comment with values from measureDto
-            lastCheckInDto = new KeyResultLastCheckInMetricDto(measureDto.id(), 1.0, 0, lastMeasure.getCreatedOn(),
+            CheckInDto checkInDto = checkInMapper.toDto(lastCheckIn);
+            // TODO: Replace value, confidence and comment with values from checkinDto
+            lastCheckInDto = new KeyResultLastCheckInMetricDto(checkInDto.getId(), ((CheckInMetricDto) checkInDto).getValue(), checkInDto.getConfidence(), lastCheckIn.getCreatedOn(),
                     "Comment");
         }
         return lastCheckInDto;

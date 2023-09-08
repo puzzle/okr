@@ -57,7 +57,7 @@ public class KeyResultController {
     @GetMapping("/{id}/checkins")
     public List<CheckInDto> getCheckInsFromKeyResult(
             @Parameter(description = "The ID for getting all CheckIns from a KeyResult.", required = true) @PathVariable long id) {
-        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(checkInMapper::toDto).toList();
+        return keyResultBusinessService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")

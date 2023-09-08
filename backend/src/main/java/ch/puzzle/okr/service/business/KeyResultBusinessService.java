@@ -69,11 +69,11 @@ public class KeyResultBusinessService {
     public void deleteKeyResultById(Long id) {
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
-                .forEach(measure -> checkInBusinessService.deleteCheckIn(measure.getId()));
+                .forEach(checkIn -> checkInBusinessService.deleteCheckIn(checkIn.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 
-    public List<CheckIn> getAllMeasuresByKeyResult(long keyResultId) {
+    public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId) {
         KeyResult keyResult = keyResultPersistenceService.findById(keyResultId);
         return checkInBusinessService.getCheckInsByKeyResultId(keyResult.getId());
     }

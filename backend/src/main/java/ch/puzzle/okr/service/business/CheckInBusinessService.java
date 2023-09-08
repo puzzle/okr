@@ -6,6 +6,7 @@ import ch.puzzle.okr.service.validation.CheckInValidationService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -26,18 +27,21 @@ public class CheckInBusinessService {
         return checkInPersistenceService.findById(id);
     }
 
+    @Transactional
     public CheckIn saveCheckIn(CheckIn checkIn, Jwt token) {
         checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         validator.validateOnCreate(checkIn);
         return checkInPersistenceService.save(checkIn);
     }
 
+    @Transactional
     public CheckIn updateCheckIn(Long id, CheckIn checkIn, Jwt token) {
         checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         validator.validateOnUpdate(id, checkIn);
         return checkInPersistenceService.save(checkIn);
     }
 
+    @Transactional
     public void deleteCheckIn(Long id) {
         validator.validateOnDelete(id);
         checkInPersistenceService.deleteById(id);

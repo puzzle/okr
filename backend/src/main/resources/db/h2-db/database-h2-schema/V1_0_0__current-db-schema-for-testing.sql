@@ -83,21 +83,22 @@ create table if not exists objective
 create index if not exists idx_objective_title
     on objective (title);
 
-create table if not exists check_in
+create table check_in
 (
-    id            bigint           not null,
+    id            bigint    not null
+        constraint measure_pkey
+            primary key,
     change_info   varchar(4096),
+    created_on    timestamp not null,
     initiatives   varchar(4096),
+    modified_on   timestamp,
+    value_metric  double precision,
+    created_by_id bigint    not null,
+    key_result_id bigint    not null,
     confidence    integer,
-    created_on    timestamp        not null,
-    modified_on   timestamp        not null,
-    value_metric   double precision,
-    value_ordinal  varchar(4096),
-    created_by_id bigint           not null,
-    key_result_id bigint           not null,
-    primary key (id)
+    check_in_type varchar(255),
+    value_ordinal text
 );
-
 
 create table if not exists key_result
 (

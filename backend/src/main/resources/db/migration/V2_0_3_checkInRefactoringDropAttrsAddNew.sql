@@ -1,6 +1,9 @@
 alter table measure rename value to value_metric;
 alter table measure
     alter column value_metric drop not null,
+    alter column measure_date drop not null,
+    alter column change_info drop not null,
+    alter column change_info TYPE varchar(4096),
     add column if not exists confidence    integer,
     add column if not exists check_in_type varchar(255),
     add column if not exists value_ordinal text;

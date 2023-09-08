@@ -24,7 +24,7 @@ public class KeyResultMetricMapper {
 
     public KeyResultMetricMapper(UserPersistenceService userPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-                                 CheckInMapper checkInMapper) {
+            CheckInMapper checkInMapper) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
@@ -74,7 +74,8 @@ public class KeyResultMetricMapper {
         } else {
             CheckInDto checkInDto = checkInMapper.toDto(lastCheckIn);
             // TODO: Replace value, confidence and comment with values from checkinDto
-            lastCheckInDto = new KeyResultLastCheckInMetricDto(checkInDto.getId(), ((CheckInMetricDto) checkInDto).getValue(), checkInDto.getConfidence(), lastCheckIn.getCreatedOn(),
+            lastCheckInDto = new KeyResultLastCheckInMetricDto(checkInDto.getId(),
+                    ((CheckInMetricDto) checkInDto).getValue(), checkInDto.getConfidence(), lastCheckIn.getCreatedOn(),
                     "Comment");
         }
         return lastCheckInDto;

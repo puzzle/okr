@@ -75,8 +75,9 @@ public class KeyResultOrdinalMapper {
         } else {
             CheckInDto checkInDto = checkInMapper.toDto(lastCheckIn);
             // TODO: Replace value, confidence and comment with values from checkInDto
-            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(checkInDto.getId(), ((CheckInOrdinalDto) checkInDto).getValue().toString(), checkInDto.getConfidence(), lastCheckIn.getCreatedOn(),
-                    "Comment");
+            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(checkInDto.getId(),
+                    ((CheckInOrdinalDto) checkInDto).getValue().toString(), checkInDto.getConfidence(),
+                    lastCheckIn.getCreatedOn(), "Comment");
         }
         return lastCheckInDto;
     }

@@ -53,7 +53,7 @@ export const objective: ObjectiveMin = {
   title: 'Increase User Engagement',
   state: State.ONGOING,
   quarter: quarter,
-  keyresults: [keyResultMetric, keyResultOrdinal] as KeyresultMin[],
+  keyResults: [keyResultMetric, keyResultOrdinal] as KeyresultMin[],
 } as ObjectiveMin;
 export const overViewEntity1: OverviewEntity = {
   team: team1,

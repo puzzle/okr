@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
@@ -9,7 +9,7 @@ import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent implements OnInit {
+export class ObjectiveComponent {
   @Input() objective!: ObjectiveMin;
   menuEntries: MenuEntry[] = [
     { displayName: 'Objective bearbeiten', showDialog: false },
@@ -19,10 +19,6 @@ export class ObjectiveComponent implements OnInit {
   ];
 
   constructor(private routeService: RouteService) {}
-
-  ngOnInit(): void {
-    // TODO document why this method 'ngOnInit' is empty
-  }
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {

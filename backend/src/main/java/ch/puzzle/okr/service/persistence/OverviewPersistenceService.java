@@ -18,4 +18,9 @@ public class OverviewPersistenceService {
     public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
         return overviewRepositroy.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
     }
+
+    public List<Overview> getOverviewByQuarterId(Long quarterId) {
+        // TODO remove function as soon as teamids are able to be read from jwt token
+        return overviewRepositroy.getOverviewByQuarterId(quarterId);
+    }
 }

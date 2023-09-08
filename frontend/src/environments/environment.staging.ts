@@ -8,7 +8,7 @@ export const environment = {
     clearHashAfterLogin: true,
     issuer: '',
     strictDiscoveryDocumentValidation: false,
-    redirectUri: `https://okr.ocp-staging.cloudscale.puzzle.ch/auth/keycloakopenid/callback`,
+    redirectUri: `https://okr.ocp-staging.cloudscale.puzzle.ch:/auth/keycloakopenid/callback`,
     scope: '',
     clientId: 'pitc_okr_prod',
     responseType: 'code',

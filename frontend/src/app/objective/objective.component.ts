@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
+import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-objective-column',
@@ -18,7 +19,7 @@ export class ObjectiveComponent {
     { displayName: 'Objective freigeben', showDialog: false },
   ];
 
-  constructor(private routeService: RouteService) {}
+  constructor(private routeService: RouteService, private notifierService: NotifierService) {}
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {
@@ -32,5 +33,9 @@ export class ObjectiveComponent {
     throw new Error(
       'This function should not have been called, since openDialog should be false, even though it appears to be true!',
     );
+  }
+
+  openDrawer() {
+    this.notifierService.drawerSubject.next('');
   }
 }

@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
+import { NotifierService } from './shared/services/notifier.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import { RouteService } from './shared/services/route.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
+    private notifierService: NotifierService
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -41,6 +43,12 @@ export class AppComponent implements OnInit {
         return config.activeProfile === 'staging';
       }),
     );
+    this.notifierService.drawerSubject.subscribe({
+      next: (value) => {
+        console.log(this.drawerOpen);
+        this.drawerOpen = true;
+      },
+    });
   }
 
   ngOnInit(): void {
@@ -52,6 +60,10 @@ export class AppComponent implements OnInit {
       .subscribe((event) => {
         this.currentUrl = event.url;
       });
+  }
+
+  ngOnDestroy() {
+    this.notifierService.drawerSubject.unsubscribe();
   }
 
   isOverview(): null | true {

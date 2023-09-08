@@ -115,24 +115,22 @@ public abstract class CheckIn {
 
     @Override
     public String toString() {
-        return "CheckIn{" +
-                "id=" + id +
-                ", comment='" + comment + '\'' +
-                ", confidence=" + confidence +
-                ", keyResult=" + keyResult +
-                ", createdBy=" + createdBy +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", checkInType='" + checkInType + '\'' +
-                '}';
+        return "CheckIn{" + "id=" + id + ", comment='" + comment + '\'' + ", confidence=" + confidence + ", keyResult="
+                + keyResult + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
+                + ", checkInType='" + checkInType + '\'' + '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         CheckIn checkIn = (CheckIn) o;
-        return Objects.equals(id, checkIn.id) && Objects.equals(comment, checkIn.comment) && Objects.equals(confidence, checkIn.confidence) && Objects.equals(keyResult, checkIn.keyResult) && Objects.equals(createdBy, checkIn.createdBy) && Objects.equals(createdOn, checkIn.createdOn) && Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
+        return Objects.equals(id, checkIn.id) && Objects.equals(comment, checkIn.comment)
+                && Objects.equals(confidence, checkIn.confidence) && Objects.equals(keyResult, checkIn.keyResult)
+                && Objects.equals(createdBy, checkIn.createdBy) && Objects.equals(createdOn, checkIn.createdOn)
+                && Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class KeyResultController {
     private final CheckInMapper checkInMapper;
 
     public KeyResultController(KeyResultBusinessService keyResultBusinessService, KeyResultMapper keyResultMapper,
-                               CheckInMapper checkInMapper) {
+            CheckInMapper checkInMapper) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.keyResultMapper = keyResultMapper;
         this.checkInMapper = checkInMapper;

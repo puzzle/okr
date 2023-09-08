@@ -24,7 +24,7 @@ public class KeyResultBusinessService {
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             ObjectivePersistenceService objectivePersistenceService, UserBusinessService userBusinessService,
-                                    KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
+            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.userBusinessService = userBusinessService;

@@ -15,6 +15,7 @@ import { RouteService } from './shared/services/route.service';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
+  drawerOpen: boolean = false;
 
   constructor(
     private router: Router,

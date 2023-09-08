@@ -59,10 +59,7 @@ class CheckInBusinessServiceTest {
                 .withCreatedOn(LocalDateTime.MAX).withKeyResult(this.ordinalKeyResult).withValue(30D)
                 .withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
-        this.user = User.Builder.builder()
-                .withEmail("Email")
-                .withFirstname("Firstname")
-                .withLastname("Lastname")
+        this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
                 .build();
         this.measures.add(measureWithId);
     }

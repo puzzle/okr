@@ -13,7 +13,7 @@ public class CheckInBusinessService {
     private final UserBusinessService userBusinessService;
 
     public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService,
-                                  CheckInValidationService validator, UserBusinessService userBusinessService) {
+            CheckInValidationService validator, UserBusinessService userBusinessService) {
         this.checkInPersistenceService = checkInPersistenceService;
         this.validator = validator;
         this.userBusinessService = userBusinessService;

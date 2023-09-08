@@ -1,37 +1,37 @@
-package ch.puzzle.okr.models.checkin;
+package ch.puzzle.okr.models.checkIn;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@DiscriminatorValue("metric")
-public class CheckInMetric extends CheckIn {
+@DiscriminatorValue("ordinal")
+public class CheckInOrdinal extends CheckIn {
     @NotNull(message = "Value must not be null")
-    private Double valueMetric;
+    private Zone valueOrdinal;
 
     /* Getter and Setter */
-    public Double getValue() {
-        return valueMetric;
+    public Zone getValue() {
+        return valueOrdinal;
     }
 
-    public void setValue(Double value) {
-        this.valueMetric = value;
+    public void setValue(Zone value) {
+        this.valueOrdinal = value;
     }
 
     /* Constructor */
-    public CheckInMetric() {
+    public CheckInOrdinal() {
         super();
     }
 
-    public CheckInMetric(Builder builder) {
+    public CheckInOrdinal(Builder builder) {
         super(builder);
         setValue(builder.value);
     }
 
     /* Builder */
     public static final class Builder extends CheckIn.Builder {
-        private Double value;
+        private Zone value;
 
         private Builder() {
         }
@@ -40,14 +40,14 @@ public class CheckInMetric extends CheckIn {
             return new Builder();
         }
 
-        public Builder withValue(Double value) {
+        public Builder withValue(Zone value) {
             this.value = value;
             return this;
         }
 
         @Override
         public CheckIn build() {
-            return new CheckInMetric(this);
+            return new CheckInOrdinal(this);
         }
     }
 }

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
@@ -55,9 +55,9 @@ class CheckInControllerIT {
                     KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withTargetZone("Wald").withId(9L).build())
             .withValue(35D).withChangeInfo("ChangeInfo").build();
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
-    static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
+    static CheckInDto checkInDto = new CheckIn(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
             Instant.parse("2022-08-12T01:01:00.00Z"));
-    static MeasureDto anotherMeasureDto = new MeasureDto(4L, 9L, 35D, "changeInfo", "Initiatives", 2L,
+    static CheckInDto anotherCheckInDto = new CheckInDto(4L, 9L, 35D, "changeInfo", "Initiatives", 2L,
             LocalDateTime.MAX, Instant.parse("2022-08-12T01:01:00.00Z"));
     @Autowired
     private MockMvc mvc;
@@ -68,13 +68,13 @@ class CheckInControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(measureMapper.toDto(measure)).willReturn(measureDto);
-        BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherMeasureDto);
+        BDDMockito.given(measureMapper.toDto(measure)).willReturn(checkInDto);
+        BDDMockito.given(measureMapper.toDto(anotherMeasure)).willReturn(anotherCheckInDto);
     }
 
     @Test
     void shouldReturnMeasureWhenCreatingNewMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+        CheckInDto testMeasure = new CheckInDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
 
         BDDMockito.given(checkInBusinessService.saveMeasure(any(), any())).willReturn(measure);
@@ -102,7 +102,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnCorrectMeasure() throws Exception {
-        MeasureDto testMeasure = new MeasureDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
+        CheckInDto testMeasure = new CheckInDto(5L, 5L, 30D, "changeInfo", "initiatives", 1L, LocalDateTime.now(),
                 Instant.parse("2022-08-12T01:01:00.00Z"));
         BDDMockito.given(checkInBusinessService.updateMeasure(anyLong(), any(), any())).willReturn(measure);
         BDDMockito.given(measureMapper.toDto(any())).willReturn(testMeasure);

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
@@ -31,10 +31,10 @@ public class CheckInController {
     @Operation(summary = "Get Check-In", description = "Get Check-In by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a Check-In with a specified ID", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Did not find a Check-In with a specified ID", content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<MeasureDto> getCheckInById(@PathVariable long id) {
+    public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(measureMapper.toDto(this.checkInBusinessService.getMeasureById(id)));
     }
@@ -42,30 +42,30 @@ public class CheckInController {
     @Operation(summary = "Create Check-In", description = "Create a new Check-In")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new Check-In.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Check-In, not allowed to give an ID", content = @Content) })
     @PostMapping
-    public ResponseEntity<MeasureDto> createMeasure(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody MeasureDto measureDto,
+    public ResponseEntity<CheckInDto> createMeasure(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
-        Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto createdMeasure = measureMapper.toDto(checkInBusinessService.saveMeasure(measure, jwt));
+        Measure measure = measureMapper.toMeasure(checkInDto);
+        CheckInDto createdMeasure = measureMapper.toDto(checkInBusinessService.saveMeasure(measure, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMeasure);
     }
 
     @Operation(summary = "Update Check-In", description = "Update a Check-In by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Check-In in db", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Check-In, attributes are not set", content = @Content),
             @ApiResponse(responseCode = "404", description = "Given ID of Check-In wasn't found.", content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<MeasureDto> updateMeasure(
+    public ResponseEntity<CheckInDto> updateMeasure(
             @Parameter(description = "The ID for updating a Check-In.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody MeasureDto measureDto,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
-        Measure measure = measureMapper.toMeasure(measureDto);
-        MeasureDto updatedMeasure = this.measureMapper
+        Measure measure = measureMapper.toMeasure(checkInDto);
+        CheckInDto updatedMeasure = this.measureMapper
                 .toDto(this.checkInBusinessService.updateMeasure(id, measure, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedMeasure);
     }

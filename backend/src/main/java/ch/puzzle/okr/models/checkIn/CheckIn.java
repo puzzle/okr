@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.checkin;
+package ch.puzzle.okr.models.checkIn;
 
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.User;
@@ -23,7 +23,7 @@ public abstract class CheckIn {
     private String initiatives;
 
     @Max(10)
-    @Min(0)
+    @Min(1)
     private Integer confidence;
 
     @NotNull(message = "KeyResult must not be null")

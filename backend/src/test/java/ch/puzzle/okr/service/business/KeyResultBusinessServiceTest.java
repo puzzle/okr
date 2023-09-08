@@ -178,7 +178,7 @@ class KeyResultBusinessServiceTest {
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(ordinalKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
         verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -196,7 +196,7 @@ class KeyResultBusinessServiceTest {
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(metricKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
         verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());

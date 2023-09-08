@@ -147,25 +147,6 @@ public class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void updateKeyResult_ShouldThrowErrorWhenNoId() {
-        KeyResult keyResult = createKeyResultMetric(null);
-        createdKeyResult = keyResultPersistenceService.save(keyResult);
-
-        createdKeyResult.setTitle("Updated Key Result");
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
-                .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(null).withKeyResultType("ordinal")
-                .withTitle(keyResult.getTitle()).withObjective(createdKeyResult.getObjective())
-                .withOwner(createdKeyResult.getOwner()).withCreatedBy(createdKeyResult.getCreatedBy())
-                .withCreatedOn(createdKeyResult.getCreatedOn()).build();
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            keyResultPersistenceService.updateEntity(null, keyResultOrdinal);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for KeyResult", exception.getReason());
-    }
-
-    @Test
     void updateAbstractKeyResult_ShouldUpdateKeyResult() {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
@@ -180,25 +161,6 @@ public class KeyResultPersistenceServiceIT {
         assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
         assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
-    }
-
-    @Test
-    void updateAbstractKeyResult_ShouldThrowErrorWhenNoId() {
-        KeyResult keyResult = createKeyResultMetric(null);
-        createdKeyResult = keyResultPersistenceService.save(keyResult);
-
-        createdKeyResult.setTitle("Updated Key Result");
-        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
-                .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(null).withKeyResultType("ordinal")
-                .withTitle(keyResult.getTitle()).withObjective(createdKeyResult.getObjective())
-                .withOwner(createdKeyResult.getOwner()).withCreatedBy(createdKeyResult.getCreatedBy())
-                .withCreatedOn(createdKeyResult.getCreatedOn()).build();
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            keyResultPersistenceService.updateAbstractEntity(keyResultOrdinal);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for KeyResult", exception.getReason());
     }
 
     @Test

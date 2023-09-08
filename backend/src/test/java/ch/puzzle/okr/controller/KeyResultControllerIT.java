@@ -75,18 +75,17 @@ class KeyResultControllerIT {
 
     static KeyResultAbstractDto keyResultAbstractDtoMetric = new KeyResultAbstractDto(5L, "metric", "Keyresult Metric",
             "Description", 1.0, 5.0, "ECTS", null, null, null, keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
+            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
     static KeyResultAbstractDto keyResultAbstractDtoOrdinal = new KeyResultAbstractDto(5L, "ordinal",
             "Keyresult Ordinal", "Description", null, null, null, "Eine Pflanze", "Ein Baum", "Ein Wald",
-            keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN,
-            LocalDateTime.MAX);
+            keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
-            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto,
-            LocalDateTime.MIN, LocalDateTime.MAX);
+            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN,
+            LocalDateTime.MAX);
     static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
             "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
+            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L).withTitle("Keyresult 2")
             .withOwner(user).withObjective(objective).build();
@@ -196,7 +195,6 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
                 .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
-                .andExpect(jsonPath("$.createdBy.lastname", Is.is("Appleseed")))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")));
     }
 
@@ -215,7 +213,6 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.objective.keyResultQuarterDto.label", Is.is("GJ 22/23-Q4")))
                 .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
-                .andExpect(jsonPath("$.createdBy.firstname", Is.is("Johnny")))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")))
                 .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
                 .andExpect(jsonPath("$.targetZone", Is.is("Ein Baum")));
@@ -241,8 +238,10 @@ class KeyResultControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.title", Is.is("Keyresult 1")))
                 .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
                 .andExpect(jsonPath("$.keyResultType", Is.is("metric"))).andExpect(jsonPath("$.baseline", Is.is(1.0)))
-                .andExpect(jsonPath("$.createdBy.firstname", Is.is("Johnny")))
-                .andExpect(jsonPath("$.unit", Is.is("ECTS"))).andReturn();
+                .andExpect(jsonPath("$.stretchGoal", Is.is(5.0))).andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6))).andExpect(jsonPath("$.unit", Is.is("ECTS")))
+                .andReturn();
     }
 
     @Test
@@ -273,8 +272,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
                 .andExpect(jsonPath("$.objective.keyResultQuarterDto.startDate", Is.is("-999999999-01-01")))
                 .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
-                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
-                .andExpect(jsonPath("$.createdBy.lastname", Is.is("Appleseed")));
+                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)));
     }
 
     @Test
@@ -295,7 +293,6 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
                 .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
-                .andExpect(jsonPath("$.createdBy.lastname", Is.is("Appleseed")))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")))
                 .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
                 .andExpect(jsonPath("$.targetZone", Is.is("Ein Baum")));

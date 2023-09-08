@@ -64,9 +64,11 @@ class KeyResultBusinessServiceTest {
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
         this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withId(5L)
-                .withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user).build();
+                .withKeyResultType("metric").withTitle("Keyresult Metric").withObjective(this.objective)
+                .withOwner(this.user).withCreatedBy(this.user).build();
         this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
-                .withId(7L).withTitle("Keyresult Ordinal").withObjective(this.objective).withOwner(this.user).build();
+                .withKeyResultType("ordinal").withId(7L).withTitle("Keyresult Ordinal").withObjective(this.objective)
+                .withOwner(this.user).withCreatedBy(this.user).build();
 
         measure1 = Measure.Builder.builder().withId(1L).withKeyResult(this.metricKeyResult).withCreatedBy(user).build();
         measure2 = Measure.Builder.builder().withId(2L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
@@ -98,29 +100,105 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldEditMetricKeyResult() {
+    void shouldEditMetricKeyResultWhenNoTypeChange() {
+        List<Measure> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
-        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
+        Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
     @Test
-    void shouldEditOrdinalKeyResult() {
+    void shouldEditOrdinalKeyResultWhenNoTypeChange() {
+        List<Measure> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
-        Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
+        Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).save(newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        assertEquals(1L, newKeyresult.getId());
+        assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
+    }
+
+    @Test
+    void shouldEditMetricKeyResultWhenATypeChange() {
+        List<Measure> emptyList = Collections.emptyList();
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
+        Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
+        Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        doNothing().when(newKeyresult).setModifiedOn(any());
+
+        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        assertEquals(1L, newKeyresult.getId());
+        assertEquals("Keyresult Metric update", newKeyresult.getTitle());
+    }
+
+    @Test
+    void shouldEditOrdinalKeyResultWhenATypeChange() {
+        List<Measure> emptyList = Collections.emptyList();
+        KeyResult newKeyresult = spy(
+                KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
+        Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
+        Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        doNothing().when(newKeyresult).setModifiedOn(any());
+
+        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        assertEquals(1L, newKeyresult.getId());
+        assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
+    }
+
+    @Test
+    void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndMeasures() {
+        List<Measure> emptyList = this.measures;
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
+        Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
+        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        doNothing().when(newKeyresult).setModifiedOn(any());
+
+        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(1L, newKeyresult);
+        verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        assertEquals(1L, newKeyresult.getId());
+        assertEquals("Keyresult Metric update", newKeyresult.getTitle());
+    }
+
+    @Test
+    void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndMeasures() {
+        List<Measure> emptyList = this.measures;
+        KeyResult newKeyresult = spy(
+                KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
+        Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
+        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        doNothing().when(newKeyresult).setModifiedOn(any());
+
+        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(1L, newKeyresult);
+        verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
+        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
@@ -253,5 +331,45 @@ class KeyResultBusinessServiceTest {
 
         verify(this.measureBusinessService, times(1)).deleteMeasureById(1L);
         verify(this.keyResultBusinessService, times(1)).deleteKeyResultById(1L);
+    }
+
+    @Test
+    void shouldReturnImUsedProperly_False1() {
+        when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
+        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(Collections.emptyList());
+
+        boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.metricKeyResult);
+
+        assertFalse(returnValue);
+    }
+
+    @Test
+    void shouldReturnImUsedProperly_False2() {
+        when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
+        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(Collections.emptyList());
+
+        boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.ordinalKeyResult);
+
+        assertFalse(returnValue);
+    }
+
+    @Test
+    void shouldReturnImUsedProperly_False3() {
+        when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
+        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(measures);
+
+        boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.metricKeyResult);
+
+        assertFalse(returnValue);
+    }
+
+    @Test
+    void shouldReturnImUsedProperly_True1() {
+        when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
+        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(measures);
+
+        boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.ordinalKeyResult);
+
+        assertTrue(returnValue);
     }
 }

@@ -68,11 +68,11 @@ class ObjectiveControllerIT {
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
-            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, keyResultUserDto,
-            LocalDateTime.MIN, LocalDateTime.MAX);
+            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN,
+            LocalDateTime.MAX);
     static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
             "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, keyResultUserDto, LocalDateTime.MIN, LocalDateTime.MAX);
+            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
     @Autowired
     private MockMvc mvc;

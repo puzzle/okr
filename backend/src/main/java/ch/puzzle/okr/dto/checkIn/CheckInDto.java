@@ -16,7 +16,8 @@ public abstract class CheckInDto {
     LocalDateTime modifiedOn;
     String checkInType;
 
-    public CheckInDto(Long id, String changeInfo, String initiatives, Integer confidence, KeyResult keyResult, User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType) {
+    public CheckInDto(Long id, String changeInfo, String initiatives, Integer confidence, KeyResult keyResult,
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType) {
         this.id = id;
         this.changeInfo = changeInfo;
         this.initiatives = initiatives;

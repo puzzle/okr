@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
-
 @Component({
   selector: 'app-keyresult',
   templateUrl: './keyresult.component.html',

@@ -1,6 +1,10 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -18,21 +22,32 @@ public class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
+    @Autowired
+    private ObjectivePersistenceService objectivePersistenceService;
 
-    private static KeyResult createKeyResult(Long id) {
-        User user = User.Builder.builder().withId(1L).build();
-        Objective objective = Objective.Builder.builder().withId(4L).build();
-        return KeyResult.Builder.builder().withId(id).withUnit(Unit.PERCENT).withTitle("Keyresult 1")
-                .withObjective(objective).withOwner(user).withCreatedBy(user).withModifiedOn(LocalDateTime.now())
-                .withExpectedEvolution(ExpectedEvolution.INCREASE).withTargetValue(2.0).build();
+    private static KeyResult createKeyResultMetric(Long id) {
+        return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS").withId(id)
+                .withKeyResultType("metric").withTitle("Title").withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withOwner(User.Builder.builder().withId(1L).build())
+                .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
+                .build();
+    }
+
+    private static KeyResult createKeyResultOrdinal(Long id) {
+        return KeyResultOrdinal.Builder.builder().withCommitZone("Hamster").withTargetZone("Katze")
+                .withStretchZone("ZOO").withId(id).withKeyResultType("ordinal").withTitle("Ordinal KeyResult")
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withOwner(User.Builder.builder().withId(1L).build())
+                .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
+                .build();
     }
 
     @AfterEach
     void tearDown() {
         try {
             if (createdKeyResult != null) {
-                keyResultPersistenceService.getKeyResultById(createdKeyResult.getId());
-                keyResultPersistenceService.deleteKeyResultById(createdKeyResult.getId());
+                keyResultPersistenceService.findById(createdKeyResult.getId());
+                keyResultPersistenceService.deleteById(createdKeyResult.getId());
             }
         } catch (ResponseStatusException ex) {
             // created key result already deleted
@@ -43,22 +58,21 @@ public class KeyResultPersistenceServiceIT {
 
     @Test
     void saveKeyResult_ShouldSaveNewKeyResult() {
-        KeyResult keyResult = createKeyResult(null);
+        KeyResult keyResult = createKeyResultMetric(null);
 
-        createdKeyResult = keyResultPersistenceService.saveKeyResult(keyResult);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
 
         assertNotNull(createdKeyResult.getId());
-        assertEquals(keyResult.getUnit(), createdKeyResult.getUnit());
+        assertEquals(keyResult.getModifiedOn(), createdKeyResult.getModifiedOn());
         assertEquals(keyResult.getTitle(), createdKeyResult.getTitle());
         assertEquals(keyResult.getObjective(), createdKeyResult.getObjective());
         assertEquals(keyResult.getOwner(), createdKeyResult.getOwner());
-        assertEquals(keyResult.getExpectedEvolution(), createdKeyResult.getExpectedEvolution());
-        assertEquals(keyResult.getTargetValue(), createdKeyResult.getTargetValue());
+        assertEquals(keyResult.getDescription(), createdKeyResult.getDescription());
     }
 
     @Test
     void getKeyResultById_ShouldReturnKeyResultProperly() {
-        KeyResult keyResult = keyResultPersistenceService.getKeyResultById(3L);
+        KeyResult keyResult = keyResultPersistenceService.findById(3L);
 
         assertEquals(3L, keyResult.getId());
         assertEquals("Steigern der URS um 25%", keyResult.getTitle());
@@ -67,42 +81,86 @@ public class KeyResultPersistenceServiceIT {
     @Test
     void getKeyResultById_ShouldThrowExceptionWhenKeyResultNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.getKeyResultById(321L));
+                () -> keyResultPersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Key result with id 321 not found", exception.getReason());
+        assertEquals("KeyResult with id 321 not found", exception.getReason());
     }
 
     @Test
     void getKeyResultById_ShouldThrowExceptionWhenKeyResultIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.getKeyResultById(null));
+                () -> keyResultPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute key result id", exception.getReason());
+        assertEquals("Missing identifier for KeyResult", exception.getReason());
     }
 
     @Test
-    void updateKeyResult_ShouldUpdateKeyResult() {
-        KeyResult keyResult = createKeyResult(null);
-        createdKeyResult = keyResultPersistenceService.saveKeyResult(keyResult);
+    void updateKeyResult_ShouldUpdateKeyResultNoTypeChange() {
+        KeyResult keyResult = createKeyResultOrdinal(null);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
         createdKeyResult.setTitle("Updated Key Result");
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.updateKeyResult(createdKeyResult);
+        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult.getId(),
+                createdKeyResult);
+
+        assertNotNull(createdKeyResult.getId());
+        assertEquals("Updated Key Result", updatedKeyResult.getTitle());
+        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
+
+        // Should delete the old KeyResult
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            keyResultPersistenceService.findById(createdKeyResult.getId());
+        });
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+    }
+
+    @Test
+    void updateKeyResult_ShouldUpdateKeyResultWithTypeChange() {
+        KeyResult keyResult = createKeyResultMetric(null);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
+
+        createdKeyResult.setTitle("Updated Key Result");
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
+                .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(createdKeyResult.getId())
+                .withKeyResultType("ordinal").withTitle(keyResult.getTitle())
+                .withObjective(createdKeyResult.getObjective()).withOwner(createdKeyResult.getOwner())
+                .withCreatedBy(createdKeyResult.getCreatedBy()).withCreatedOn(createdKeyResult.getCreatedOn()).build();
+
+        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult.getId(),
+                keyResultOrdinal);
+
+        assertNotNull(createdKeyResult.getId());
+        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
+        assertEquals("Updated Key Result", updatedKeyResult.getTitle());
+        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
+
+        // Should delete the old KeyResult
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            keyResultPersistenceService.findById(createdKeyResult.getId());
+        });
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+    }
+
+    @Test
+    void updateAbstractKeyResult_ShouldUpdateKeyResult() {
+        KeyResult keyResult = createKeyResultOrdinal(null);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
+        createdKeyResult.setTitle("Updated Key Result");
+        createdKeyResult.setDescription("This is a new description");
+
+        KeyResult updatedKeyResult = keyResultPersistenceService.updateAbstractEntity(createdKeyResult);
 
         assertEquals(createdKeyResult.getId(), updatedKeyResult.getId());
         assertEquals("Updated Key Result", updatedKeyResult.getTitle());
-    }
-
-    @Test
-    void updateKeyResult_ShouldThrowExceptionWhenKeyResultNotFound() {
-        KeyResult keyResult = createKeyResult(321L);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.updateKeyResult(keyResult));
-
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Could not find key result with id 321", exception.getReason());
+        assertEquals("This is a new description", updatedKeyResult.getDescription());
+        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
+        assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
     }
 
     @Test
@@ -115,13 +173,25 @@ public class KeyResultPersistenceServiceIT {
 
     @Test
     void deleteKeyResultById_ShouldDeleteExistingKeyResult() {
-        KeyResult keyResult = createKeyResult(null);
-        createdKeyResult = keyResultPersistenceService.saveKeyResult(keyResult);
-        keyResultPersistenceService.deleteKeyResultById(createdKeyResult.getId());
+        KeyResult keyResult = createKeyResultMetric(null);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
+        keyResultPersistenceService.deleteById(createdKeyResult.getId());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.getKeyResultById(createdKeyResult.getId()));
+                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Key result with id %d not found", createdKeyResult.getId()), exception.getReason());
+        assertEquals(String.format("KeyResult with id %d not found", createdKeyResult.getId()), exception.getReason());
+    }
+
+    @Test
+    void deleteKeyResult_ShouldThrowExceptionWhenKeyResultNotFound() {
+        KeyResult keyResult = createKeyResultMetric(35234L);
+        KeyResult createdKeyResult = keyResultPersistenceService.save(keyResult);
+        keyResultPersistenceService.deleteById(createdKeyResult.getId());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(String.format("KeyResult with id %d not found", createdKeyResult.getId()), exception.getReason());
     }
 }

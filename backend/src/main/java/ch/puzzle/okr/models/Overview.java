@@ -8,7 +8,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Immutable
@@ -23,9 +22,12 @@ public class Overview {
     private Long quarterId;
     private String quarterLabel;
     private String keyResultTitle;
-    private Unit unit;
-    private Double basisValue;
-    private Double targetValue;
+    private Double baseline;
+    private Double stretchGoal;
+    private String unit;
+    private String commitZone;
+    private String targetZone;
+    private String stretchZone;
     private Double measureValue;
     private Instant measureDate;
     private LocalDateTime createdOn;
@@ -41,9 +43,12 @@ public class Overview {
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
         keyResultTitle = builder.keyResultTitle;
+        baseline = builder.baseline;
+        stretchGoal = builder.stretchGoal;
         unit = builder.unit;
-        basisValue = builder.basisValue;
-        targetValue = builder.targetValue;
+        commitZone = builder.commitZone;
+        targetZone = builder.targetZone;
+        stretchZone = builder.stretchZone;
         measureValue = builder.measureValue;
         measureDate = builder.measureDate;
         createdOn = builder.createdOn;
@@ -77,16 +82,28 @@ public class Overview {
         return keyResultTitle;
     }
 
-    public Unit getUnit() {
+    public Double getBaseline() {
+        return baseline;
+    }
+
+    public Double getStretchGoal() {
+        return stretchGoal;
+    }
+
+    public String getUnit() {
         return unit;
     }
 
-    public Double getBasisValue() {
-        return basisValue;
+    public String getCommitZone() {
+        return commitZone;
     }
 
-    public Double getTargetValue() {
-        return targetValue;
+    public String getTargetZone() {
+        return targetZone;
+    }
+
+    public String getStretchZone() {
+        return stretchZone;
     }
 
     public Double getMeasureValue() {
@@ -102,35 +119,14 @@ public class Overview {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        Overview overview = (Overview) o;
-        return Objects.equals(overviewId, overview.overviewId) && Objects.equals(teamName, overview.teamName)
-                && Objects.equals(objectiveTitle, overview.objectiveTitle)
-                && Objects.equals(objectiveState, overview.objectiveState)
-                && Objects.equals(quarterId, overview.quarterId) && Objects.equals(quarterLabel, overview.quarterLabel)
-                && Objects.equals(keyResultTitle, overview.keyResultTitle) && unit == overview.unit
-                && Objects.equals(basisValue, overview.basisValue) && Objects.equals(targetValue, overview.targetValue)
-                && Objects.equals(measureValue, overview.measureValue)
-                && Objects.equals(measureDate, overview.measureDate) && Objects.equals(createdOn, overview.createdOn);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(overviewId, teamName, objectiveTitle, objectiveState, quarterId, quarterLabel,
-                keyResultTitle, unit, basisValue, targetValue, measureValue, measureDate, createdOn);
-    }
-
-    @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", objectiveTitle='"
                 + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", quarterId=" + quarterId
-                + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", unit="
-                + unit + ", basisValue=" + basisValue + ", targetValue=" + targetValue + ", measureValue="
-                + measureValue + ", measureDate=" + measureDate + ", createdOn=" + createdOn + '}';
+                + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
+                + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
+                + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
+                + stretchZone + '\'' + ", measureValue=" + measureValue + ", measureDate=" + measureDate
+                + ", createdOn=" + createdOn + '}';
     }
 
     public static final class Builder {
@@ -141,9 +137,12 @@ public class Overview {
         private Long quarterId;
         private String quarterLabel;
         private String keyResultTitle;
-        private Unit unit;
-        private Double basisValue;
-        private Double targetValue;
+        private Double baseline;
+        private Double stretchGoal;
+        private String unit;
+        private String commitZone;
+        private String targetZone;
+        private String stretchZone;
         private Double measureValue;
         private Instant measureDate;
         private LocalDateTime createdOn;
@@ -190,18 +189,33 @@ public class Overview {
             return this;
         }
 
-        public Builder withUnit(Unit unit) {
+        public Builder withBaseline(Double baseline) {
+            this.baseline = baseline;
+            return this;
+        }
+
+        public Builder withStretchGoal(Double stretchGoal) {
+            this.stretchGoal = stretchGoal;
+            return this;
+        }
+
+        public Builder withUnit(String unit) {
             this.unit = unit;
             return this;
         }
 
-        public Builder withBasisValue(Double basisValue) {
-            this.basisValue = basisValue;
+        public Builder withCommitZone(String commitZone) {
+            this.commitZone = commitZone;
             return this;
         }
 
-        public Builder withTargetValue(Double targetValue) {
-            this.targetValue = targetValue;
+        public Builder withTargetZone(String targetZone) {
+            this.targetZone = targetZone;
+            return this;
+        }
+
+        public Builder withStretchZone(String stretchZone) {
+            this.stretchZone = stretchZone;
             return this;
         }
 

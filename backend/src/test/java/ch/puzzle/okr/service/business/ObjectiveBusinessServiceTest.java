@@ -1,6 +1,8 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
@@ -43,7 +45,7 @@ class ObjectiveBusinessServiceTest {
 
     Objective objective;
     Objective fullObjective1;
-    KeyResult keyResult;
+    KeyResult ordinalKeyResult;
     User user;
     Quarter quarter;
     List<KeyResult> keyResultList;
@@ -53,9 +55,9 @@ class ObjectiveBusinessServiceTest {
     @BeforeEach
     void setUp() {
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-        this.keyResult = KeyResult.Builder.builder().withId(5L).withTitle("Keyresult 1").withObjective(objective)
-                .build();
-        this.keyResultList = List.of(keyResult, keyResult, keyResult);
+        this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
+                .withId(5L).withTitle("Keyresult Ordinal").withObjective(this.objective).build();
+        this.keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
         user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann")
                 .withEmail("kaufmann@puzzle.ch").build();

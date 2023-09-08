@@ -80,7 +80,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void saveObjective_shouldSaveNewObjectiv() {
+    void saveObjective_shouldSaveNewObjective() {
         Objective objective = createObjective(null);
 
         createdObjective = objectivePersistenceService.save(objective);

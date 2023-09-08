@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,12 +13,9 @@ import java.util.Objects;
 @Service
 public class MeasureBusinessService {
     private final MeasurePersistenceService measurePersistenceService;
-    private final ObjectiveBusinessService objectiveBusinessService;
 
-    public MeasureBusinessService(MeasurePersistenceService measurePersistenceService,
-            ObjectiveBusinessService objectiveBusinessService) {
+    public MeasureBusinessService(MeasurePersistenceService measurePersistenceService) {
         this.measurePersistenceService = measurePersistenceService;
-        this.objectiveBusinessService = objectiveBusinessService;
     }
 
     public Measure saveMeasure(Measure measure) {
@@ -66,6 +63,14 @@ public class MeasureBusinessService {
         }
     }
 
+    public List<Measure> getMeasuresByKeyResultId(Long keyResultId) {
+        return measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
+    }
+
+    public Measure getFirstMeasureByKeyResult(Long id) {
+        return measurePersistenceService.findFirstMeasureByKeyResultId(id);
+    }
+
     public List<Measure> getAllMeasures() {
         return measurePersistenceService.getAllMeasures();
     }
@@ -79,8 +84,7 @@ public class MeasureBusinessService {
     }
 
     public Double getCurrentValue(KeyResult keyResult) {
-        Measure measure = measurePersistenceService
-                .getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
+        Measure measure = measurePersistenceService.findFirstMeasureByKeyResultId(keyResult.getId());
         return measure != null ? measure.getValue() : null;
     }
 }

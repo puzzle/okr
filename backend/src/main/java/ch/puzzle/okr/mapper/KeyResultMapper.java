@@ -1,41 +1,50 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.KeyResultDto;
-import ch.puzzle.okr.models.KeyResult;
-import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
-import ch.puzzle.okr.service.persistence.UserPersistenceService;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
+import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
+import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
+import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class KeyResultMapper {
 
-    // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
-    private final UserPersistenceService userPersistenceService;
+    private final KeyResultMetricMapper keyResultMetricMapper;
+    private final KeyResultOrdinalMapper keyResultOrdinalMapper;
 
-    private final ObjectivePersistenceService objectivePersistenceService;
-
-    public KeyResultMapper(UserPersistenceService userPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService) {
-        this.userPersistenceService = userPersistenceService;
-        this.objectivePersistenceService = objectivePersistenceService;
+    public KeyResultMapper(KeyResultOrdinalMapper keyResultOrdinalMapper, KeyResultMetricMapper keyResultMetricMapper) {
+        this.keyResultOrdinalMapper = keyResultOrdinalMapper;
+        this.keyResultMetricMapper = keyResultMetricMapper;
     }
 
     public KeyResultDto toDto(KeyResult keyResult) {
-        return new KeyResultDto(keyResult.getId(), keyResult.getObjective().getId(), keyResult.getTitle(),
-                keyResult.getDescription(), keyResult.getOwner().getId(), keyResult.getOwner().getFirstname(),
-                keyResult.getOwner().getLastname(), keyResult.getExpectedEvolution(), keyResult.getUnit(),
-                keyResult.getBasisValue(), keyResult.getTargetValue(), 0L);
+        if (keyResult instanceof KeyResultMetric keyResultMetric) {
+            return keyResultMetricMapper.toKeyResultMetricDto(keyResultMetric);
+        } else if (keyResult instanceof KeyResultOrdinal keyResultOrdinal) {
+            return keyResultOrdinalMapper.toKeyResultOrdinalDto(keyResultOrdinal);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "The KeyResult " + keyResult + " can't be converted to a metric or ordinal KeyResult");
+        }
     }
 
-    public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        return KeyResult.Builder.builder().withId(keyResultDto.id()).withTitle(keyResultDto.title())
-                .withOwner(userPersistenceService.findById(keyResultDto.ownerId()))
-                .withObjective(objectivePersistenceService.findById(keyResultDto.objectiveId()))
-                .withDescription(keyResultDto.description()).withTargetValue(keyResultDto.targetValue())
-                .withBasisValue(keyResultDto.basicValue()).withExpectedEvolution(keyResultDto.expectedEvolution())
-                .withUnit(keyResultDto.unit()).withModifiedOn(LocalDateTime.now())
-                .withCreatedBy(userPersistenceService.findById(keyResultDto.ownerId())).build();
+    public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
+        if (isSpecificKeyResult(keyResultDto, "metric")) {
+            return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
+        } else if (isSpecificKeyResult(keyResultDto, "ordinal")) {
+            return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultDto);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "The provided KeyResultDto is neither metric nor ordinal");
+        }
+    }
+
+    private boolean isSpecificKeyResult(KeyResultAbstractDto keyResultDto, String type) {
+        return keyResultDto.getKeyResultType().equals(type);
     }
 }

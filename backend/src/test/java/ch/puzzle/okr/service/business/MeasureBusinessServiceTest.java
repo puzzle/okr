@@ -1,9 +1,9 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,22 +41,22 @@ class MeasureBusinessServiceTest {
     private Measure measureWithId;
     private List<Measure> measures = new ArrayList<>();
     private Measure falseMeasure;
+    KeyResult ordinalKeyResult;
 
     @BeforeEach
     void setUp() {
+        this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
+                .withId(7L).withTitle("Keyresult Ordinal").build();
+
         this.measure = Measure.Builder.builder()
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
-                .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
-                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withCreatedOn(LocalDateTime.MAX).withKeyResult(this.ordinalKeyResult).withValue(30D)
+                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
         this.measureWithId = Measure.Builder.builder().withId(1L)
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
-                .withCreatedOn(LocalDateTime.MAX)
-                .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withTargetValue(50D)
-                        .withObjective(Objective.Builder.builder().withId(1L).build()).build())
-                .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+                .withCreatedOn(LocalDateTime.MAX).withKeyResult(this.ordinalKeyResult).withValue(30D)
+                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
                 .withMeasureDate(Instant.parse("2021-11-03T00:00:00.00Z")).build();
         this.falseMeasure = Measure.Builder.builder().withId(3L).build();
 
@@ -70,7 +70,7 @@ class MeasureBusinessServiceTest {
         assertEquals(returnMeasure.getValue(), 30);
         assertEquals(returnMeasure.getChangeInfo(), "ChangeInfo");
         assertEquals(returnMeasure.getInitiatives(), "Initiatives");
-        assertEquals(returnMeasure.getKeyResult().getId(), 8);
+        assertEquals(returnMeasure.getKeyResult().getId(), 7);
         assertEquals(returnMeasure.getCreatedBy().getFirstname(), "Frank");
     }
 

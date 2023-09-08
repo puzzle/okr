@@ -60,8 +60,8 @@ public class MeasurePersistenceService {
         return measureRepository.findLastMeasuresOfKeyresults(objectiveId);
     }
 
-    public Measure getFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(Long keyResultId) {
-        return measureRepository.findFirstMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
+    public Measure findFirstMeasureByKeyResultId(Long keyResultId) {
+        return measureRepository.findFirstMeasureByKeyResultIdOrderByMeasureDateDesc(keyResultId);
     }
 
     public void deleteMeasureById(Long measureId) {

@@ -1,9 +1,9 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.MeasureDto;
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 
 @Component
 public class MeasureMapper {
-    private final KeyResultPersistenceService keyResultPersistenceService;
+    private final KeyResultBusinessService keyResultBusinessService;
     // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
     private final UserPersistenceService userPersistenceService;
 
-    public MeasureMapper(KeyResultPersistenceService keyResultPersistenceService,
+    public MeasureMapper(KeyResultBusinessService keyResultBusinessService,
             UserPersistenceService userPersistenceService) {
-        this.keyResultPersistenceService = keyResultPersistenceService;
+        this.keyResultBusinessService = keyResultBusinessService;
         this.userPersistenceService = userPersistenceService;
     }
 
@@ -46,6 +46,6 @@ public class MeasureMapper {
     }
 
     private KeyResult mapKeyResult(MeasureDto measureDto) {
-        return keyResultPersistenceService.getKeyResultById(measureDto.keyResultId());
+        return keyResultBusinessService.getKeyResultById(measureDto.keyResultId());
     }
 }

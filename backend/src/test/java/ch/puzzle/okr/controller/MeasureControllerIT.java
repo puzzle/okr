@@ -2,10 +2,11 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -46,13 +47,14 @@ class MeasureControllerIT {
     static Measure measure = Measure.Builder.builder().withId(5L)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(8L).withBasisValue(12D).withObjective(objective)
-                    .withTargetValue(50D).build())
+            .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
+                    .withObjective(objective).build())
             .withValue(30D).withChangeInfo("ChangeInfo").withInitiatives("Initiatives").build();
     static Measure anotherMeasure = Measure.Builder.builder().withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
-            .withKeyResult(KeyResult.Builder.builder().withId(9L).withBasisValue(0D).withTargetValue(100D).build())
+            .withKeyResult(
+                    KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withTargetZone("Wald").withId(9L).build())
             .withValue(35D).withChangeInfo("ChangeInfo").build();
     static List<Measure> measureList = Arrays.asList(measure, anotherMeasure);
     static MeasureDto measureDto = new MeasureDto(5L, 8L, 30D, "changeInfo", "Initiatives", 1L, LocalDateTime.MAX,
@@ -63,7 +65,6 @@ class MeasureControllerIT {
     private MockMvc mvc;
     @MockBean
     private MeasureBusinessService measureBusinessService;
-
     @MockBean
     private MeasureMapper measureMapper;
 

@@ -1,55 +1,81 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.dto.KeyResultMeasureDto;
-import ch.puzzle.okr.mapper.KeyResultMeasureMapper;
-import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
-import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class KeyResultBusinessService {
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final ObjectivePersistenceService objectivePersistenceService;
-    private final MeasurePersistenceService measurePersistenceService;
-    private final KeyResultMeasureMapper keyResultMeasureMapper;
+    private final MeasureBusinessService measureBusinessService;
+    private final UserBusinessService userBusinessService;
+    private final KeyResultValidationService validator;
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService,
-            MeasurePersistenceService measurePersistenceService, KeyResultMeasureMapper keyResultMeasureMapper) {
+            ObjectivePersistenceService objectivePersistenceService, MeasureBusinessService measureBusinessService,
+            UserBusinessService userBusinessService, KeyResultValidationService validator) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.measurePersistenceService = measurePersistenceService;
-        this.keyResultMeasureMapper = keyResultMeasureMapper;
+        this.measureBusinessService = measureBusinessService;
+        this.userBusinessService = userBusinessService;
+        this.validator = validator;
     }
 
-    public KeyResult saveKeyResult(KeyResult keyResult) {
-        return keyResultPersistenceService.saveKeyResult(keyResult);
+    @Transactional
+    public KeyResult createKeyResult(KeyResult keyResult, Jwt token) {
+        keyResult.setCreatedOn(LocalDateTime.now());
+        keyResult.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        validator.validateOnCreate(keyResult);
+        return keyResultPersistenceService.save(keyResult);
     }
 
     public KeyResult getKeyResultById(Long id) {
-        return keyResultPersistenceService.getKeyResultById(id);
+        validator.validateOnGet(id);
+        return keyResultPersistenceService.findById(id);
     }
 
-    public KeyResult updateKeyResult(KeyResult keyResult) {
-        return keyResultPersistenceService.updateKeyResult(keyResult);
+    @Transactional
+    public KeyResult updateKeyResult(Long id, KeyResult keyResult) {
+        KeyResult savedKeyResult = keyResultPersistenceService.findById(id);
+        keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
+        keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
+        keyResult.setObjective(savedKeyResult.getObjective());
+        keyResult.setModifiedOn(LocalDateTime.now());
+        if (isKeyResultTypeChangeable(id)) {
+            validator.validateOnUpdate(id, keyResult);
+            return keyResultPersistenceService.updateEntity(id, keyResult);
+        } else {
+            savedKeyResult.setTitle(keyResult.getTitle());
+            savedKeyResult.setDescription(keyResult.getDescription());
+            savedKeyResult.setOwner(keyResult.getOwner());
+            savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
+            validator.validateOnUpdate(id, keyResult);
+            return keyResultPersistenceService.updateAbstractEntity(savedKeyResult);
+        }
+    }
+
+    @Transactional
+    public void deleteKeyResultById(Long id) {
+        validator.validateOnDelete(id);
+        measureBusinessService.getMeasuresByKeyResultId(id)
+                .forEach(measure -> measureBusinessService.deleteMeasureById(measure.getId()));
+        keyResultPersistenceService.deleteById(id);
     }
 
     public List<Measure> getAllMeasuresByKeyResult(long keyResultId) {
-        KeyResult keyResult = keyResultPersistenceService.getKeyResultById(keyResultId);
-        return measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResult.getId());
-    }
-
-    public List<Measure> getLastMeasures(Long objectiveId) {
-        return measurePersistenceService.getLastMeasuresOfKeyresults(objectiveId);
+        KeyResult keyResult = keyResultPersistenceService.findById(keyResultId);
+        return measureBusinessService.getMeasuresByKeyResultId(keyResult.getId());
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
@@ -57,20 +83,12 @@ public class KeyResultBusinessService {
         return keyResultPersistenceService.getKeyResultsByObjective(objective);
     }
 
-    public List<KeyResultMeasureDto> getAllKeyResultsByObjectiveWithMeasure(Long id) {
-        List<Measure> measureList = getLastMeasures(id);
-        return getAllKeyResultsByObjective(id).stream()
-                .map(i -> keyResultMeasureMapper.toDto(i, measureList.stream()
-                        .filter(j -> Objects.equals(j.getKeyResult().getId(), i.getId())).findFirst().orElse(null)))
-                .toList();
+    private boolean isKeyResultTypeChangeable(Long id) {
+        return measureBusinessService.getMeasuresByKeyResultId(id).isEmpty();
     }
 
-    @Transactional
-    public void deleteKeyResultById(Long id) {
-        List<Measure> measures = getAllMeasuresByKeyResult(id);
-        for (Measure measure : measures) {
-            measurePersistenceService.deleteMeasureById(measure.getId());
-        }
-        keyResultPersistenceService.deleteKeyResultById(id);
+    public boolean isImUsed(Long id, KeyResult keyResult) {
+        return !measureBusinessService.getMeasuresByKeyResultId(id).isEmpty()
+                && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 }

@@ -6,7 +6,6 @@ import ch.puzzle.okr.dto.goal.GoalObjectiveDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
-import ch.puzzle.okr.service.business.ProgressBusinessService;
 import org.springframework.stereotype.Component;
 
 @Component

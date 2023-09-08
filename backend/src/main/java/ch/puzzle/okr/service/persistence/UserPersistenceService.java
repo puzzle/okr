@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -8,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @Service
 public class UserPersistenceService extends PersistenceBase<User, Long> {
@@ -22,13 +21,13 @@ public class UserPersistenceService extends PersistenceBase<User, Long> {
         return "User";
     }
 
-    @Cacheable(value = USER_CACHE, key = "#newUser.username")
+    @Cacheable(value = Constants.USER_CACHE, key = "#newUser.username")
     public synchronized User getOrCreateUser(User newUser) {
         Optional<User> user = getUserRepository().findByUsername(newUser.getUsername());
         return user.orElseGet(() -> repository.save(newUser));
     }
 
-    @Cacheable(value = USER_CACHE, key = "#username")
+    @Cacheable(value = Constants.USER_CACHE, key = "#username")
     public User findUserByUsername(String username) {
         return getUserRepository().findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,

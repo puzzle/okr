@@ -1,18 +1,20 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -22,6 +24,12 @@ class UserPersistenceServiceIT {
     private UserPersistenceService userPersistenceService;
     @Autowired
     private CacheManager cacheManager;
+    private Cache cache;
+
+    @BeforeEach
+    void beforeEach() {
+        cache = cacheManager.getCache(Constants.USER_CACHE);
+    }
 
     @AfterEach
     void tearDown() {
@@ -29,14 +37,14 @@ class UserPersistenceServiceIT {
             userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
-        cacheManager.getCache(USER_CACHE).clear();
+        cache.clear();
     }
 
     @Test
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
         List<User> userList = userPersistenceService.findAll();
 
-        Assertions.assertThat(userList.size()).isEqualTo(6);
+        Assertions.assertThat(userList).hasSize(6);
     }
 
     @Test
@@ -92,7 +100,7 @@ class UserPersistenceServiceIT {
     void findUserByUsername_ShouldAddUserToCache() {
         userPersistenceService.findUserByUsername("alice");
 
-        User cachedUser = cacheManager.getCache(USER_CACHE).get("alice", User.class);
+        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get("alice", User.class);
         assertNotNull(cachedUser);
     }
 
@@ -128,7 +136,7 @@ class UserPersistenceServiceIT {
         User existingUser = User.Builder.builder().withUsername("alice").build();
         userPersistenceService.getOrCreateUser(existingUser);
 
-        User cachedUser = cacheManager.getCache(USER_CACHE).get("alice", User.class);
+        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get("alice", User.class);
         assertNotNull(cachedUser);
     }
 }

@@ -23,11 +23,6 @@ public class TeamMapper {
         return new TeamDto(team.getId(), team.getName(), activeObjectives);
     }
 
-    @Deprecated
-    public TeamDto toDto(Team team) {
-        return new TeamDto(team.getId(), team.getName());
-    }
-
     public Team toTeam(TeamDto teamDto) {
         return Team.Builder.builder().withId(teamDto.id()).withName(teamDto.name()).build();
     }

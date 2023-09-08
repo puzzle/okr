@@ -3,7 +3,6 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.KeyResultMeasureDto;
 import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.business.ProgressBusinessService;
 import org.springframework.stereotype.Component;
 
 @Component

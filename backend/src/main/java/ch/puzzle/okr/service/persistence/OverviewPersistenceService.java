@@ -20,6 +20,7 @@ public class OverviewPersistenceService {
     }
 
     public List<Overview> getOverviewByQuarterId(Long quarterId) {
+        // TODO remove function as soon as teamids are able to be read from jwt token
         return overviewRepositroy.getOverviewByQuarterId(quarterId);
     }
 }

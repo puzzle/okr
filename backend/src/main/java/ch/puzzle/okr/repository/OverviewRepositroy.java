@@ -13,6 +13,7 @@ public interface OverviewRepositroy extends ReadOnlyRepository<Overview, Overvie
     List<Overview> getOverviewByQuarterIdAndTeamIds(@Param("quarter_id") Long quarterId,
             @Param("team_ids") List<Long> teamIds);
 
+    // TODO remove function below as soon as teamids are able to be read from jwt token
     @Query(value = "from Overview where quarterId = :quarter_id")
     List<Overview> getOverviewByQuarterId(@Param("quarter_id") Long quarterId);
 }

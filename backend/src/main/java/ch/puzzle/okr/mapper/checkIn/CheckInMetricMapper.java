@@ -12,29 +12,26 @@ public class CheckInMetricMapper {
     private final KeyResultBusinessService keyResultBusinessService;
     private final UserBusinessService userBusinessService;
 
-    public CheckInMetricMapper(KeyResultBusinessService keyResultBusinessService, UserBusinessService userBusinessService) {
+    public CheckInMetricMapper(KeyResultBusinessService keyResultBusinessService,
+            UserBusinessService userBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.userBusinessService = userBusinessService;
     }
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
-                checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult(), checkInMetric.getCreatedBy(),
-                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getCheckInType(), checkInMetric.getValue());
+                checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult(),
+                checkInMetric.getCreatedBy(), checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(),
+                checkInMetric.getCheckInType(), checkInMetric.getValue());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
-        return CheckInMetric.Builder.builder()
-                .withValue(checkInMetricDto.getValue())
-                .withId(checkInMetricDto.getId())
-                .withChangeInfo(checkInMetricDto.getChangeInfo())
-                .withInitiatives(checkInMetricDto.getInitiatives())
+        return CheckInMetric.Builder.builder().withValue(checkInMetricDto.getValue()).withId(checkInMetricDto.getId())
+                .withChangeInfo(checkInMetricDto.getChangeInfo()).withInitiatives(checkInMetricDto.getInitiatives())
                 .withConfidence(checkInMetricDto.getConfidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.getKeyResult().getId()))
                 .withCreatedBy(userBusinessService.getOwnerById(checkInMetricDto.getCreatedBy().getId()))
-                .withCreatedOn(checkInMetricDto.getCreatedOn())
-                .withModifiedOn(checkInMetricDto.getModifiedOn())
-                .withCheckInType(checkInMetricDto.getCheckInType())
-                .build();
+                .withCreatedOn(checkInMetricDto.getCreatedOn()).withModifiedOn(checkInMetricDto.getModifiedOn())
+                .withCheckInType(checkInMetricDto.getCheckInType()).build();
     }
 }

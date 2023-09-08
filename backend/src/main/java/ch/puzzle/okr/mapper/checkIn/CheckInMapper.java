@@ -27,15 +27,14 @@ public class CheckInMapper {
             return checkInOrdinalMapper.toDto(checkInOrdinal);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The CheckIn " + checkIn + " can't be converted to a metric " +
-                            "or ordinal CheckIn");
+                    "The CheckIn " + checkIn + " can't be converted to a metric " + "or ordinal CheckIn");
         }
     }
 
     public CheckIn toCheckIn(CheckInDto checkInDto) {
-        if(isMetricCheckIn(checkInDto)) {
+        if (isMetricCheckIn(checkInDto)) {
             return checkInMetricMapper.toCheckInMetric((CheckInMetricDto) checkInDto);
-        } else if(isOrdinalCheckIn(checkInDto)) {
+        } else if (isOrdinalCheckIn(checkInDto)) {
             return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

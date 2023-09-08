@@ -9,7 +9,7 @@ public class CheckInMetricDto extends CheckInDto {
     private Double value;
 
     public CheckInMetricDto(Long id, String changeInfo, String initiatives, Integer confidence, KeyResult keyResult,
-                            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, Double value) {
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, Double value) {
         super(id, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn, modifiedOn, checkInType);
         this.value = value;
     }

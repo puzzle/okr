@@ -10,7 +10,7 @@ public class CheckInOrdinalDto extends CheckInDto {
     private Zone value;
 
     public CheckInOrdinalDto(Long id, String changeInfo, String initiatives, Integer confidence, KeyResult keyResult,
-                             User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, Zone value) {
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, Zone value) {
         super(id, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn, modifiedOn, checkInType);
         this.value = value;
     }

@@ -24,11 +24,13 @@ public class ForwardFilter implements Filter {
             return;
         }
         if (request.getParameter("error") != null) {
-            logger.error("error from keycloak " + request.getParameter("error"));
+            logger.error(String.format("error from keycloak %s", request.getParameter("error")));
             return;
         }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);
+
+        // TOdo ask paco about it
 
         // could be simpyfied by using state-parameter in url for passing through filters....
         // if (request.getRequestURI().equals("/") || request.getRequestURI().startsWith("/api/")

@@ -13,11 +13,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 
-//@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+    private static final Integer YEAR_IN_SECONDS = 31536000;
 
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
@@ -44,6 +43,6 @@ public class SecurityConfig {
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
                 .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
-                .maxAgeInSeconds(31536000)).build();
+                .maxAgeInSeconds(YEAR_IN_SECONDS)).build();
     }
 }

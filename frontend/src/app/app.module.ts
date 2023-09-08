@@ -37,6 +37,7 @@ import { ObjectiveComponent } from './objective/objective.component';
 import { NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -110,6 +111,7 @@ export const MY_FORMATS = {
     A11yModule,
     MatRadioModule,
     NgOptimizedImage,
+    MatSidenavModule,
     MatSliderModule,
     FormsModule,
   ],

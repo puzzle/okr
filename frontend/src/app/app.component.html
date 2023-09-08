@@ -2,4 +2,11 @@
 <div *ngIf="isEnvStaging$ | async" class="staging-banner">
   <div class="staging-text">STAGING ENVIRONMENT!</div>
 </div>
-<router-outlet></router-outlet>
+<mat-drawer-container hasBackdrop="true">
+  <mat-drawer mode="over" opened="true" position="end">
+    <app-objective-detail></app-objective-detail>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -29,21 +29,5 @@ public class ForwardFilter implements Filter {
         }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);
-
-        // TOdo ask paco about it
-
-        // could be simpyfied by using state-parameter in url for passing through filters....
-        // if (request.getRequestURI().equals("/") || request.getRequestURI().startsWith("/api/")
-        // || request.getRequestURI().startsWith("/index.html") || request.getRequestURI().startsWith("/runtime.")
-        // || request.getRequestURI().startsWith("/polyfills.") || request.getRequestURI().startsWith("/main.")
-        // || request.getRequestURI().startsWith("/scripts.") || request.getRequestURI().startsWith("/styles.")
-        // || request.getRequestURI().startsWith("/favicon.ico")
-        // || request.getRequestURI().startsWith("/3rdpartylicenses.txt")
-        // || request.getRequestURI().startsWith("/assets/") || request.getRequestURI().startsWith("/v3/api-docs")
-        // || request.getRequestURI().startsWith("/swagger-ui")) {
-        // } else {
-        // logger.info(String.format("====> make a forward from '%s' to '%s'", request.getRequestURI(), "/"));
-        // servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
-        // }
     }
 }

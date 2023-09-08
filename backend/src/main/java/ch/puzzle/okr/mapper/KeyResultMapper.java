@@ -35,14 +35,24 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
-        // TODO use helper method for validation
-        if (keyResultDto.getKeyResultType().equals("metric")) {
+        if (isMetricKeyResult(keyResultDto)) {
             return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
-        } else if (keyResultDto.getKeyResultType().equals("ordinal")) {
+        } else if (isOrdinalKeyResult(keyResultDto)) {
             return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "The KeyResultDto " + keyResultDto + " can't be converted to a metric or ordinal KeyResultDto");
+                    "The provided KeyResultDto is neither metric nor ordinal");
         }
+    }
+
+    private boolean isMetricKeyResult(KeyResultAbstractDto keyResultDto) {
+        return keyResultDto.getKeyResultType().equals("metric") && keyResultDto.getBaseline() != null
+                && keyResultDto.getStretchGoal() != null && keyResultDto.getUnit() != null;
+    }
+
+    private boolean isOrdinalKeyResult(KeyResultAbstractDto keyResultDto) {
+        return keyResultDto.getKeyResultType().equals("ordinal") && keyResultDto.getCommitZone() != null
+                && keyResultDto.getTargetZone() != null && keyResultDto.getStretchZone() != null;
+
     }
 }

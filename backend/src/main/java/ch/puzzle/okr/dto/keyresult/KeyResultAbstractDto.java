@@ -15,7 +15,7 @@ public class KeyResultAbstractDto {
     String stretchZone;
     KeyResultUserDto owner;
     KeyResultObjectiveDto objective;
-    KeyResultLastCheckInDto lastCheckIn;
+    KeyResultLastCheckIn lastCheckIn;
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
 
@@ -24,7 +24,7 @@ public class KeyResultAbstractDto {
 
     public KeyResultAbstractDto(Long id, String keyResultType, String title, String description, Double baseline,
             Double stretchGoal, String unit, String commitZone, String targetZone, String stretchZone,
-            KeyResultUserDto owner, KeyResultObjectiveDto objective, KeyResultLastCheckInDto lastCheckIn,
+            KeyResultUserDto owner, KeyResultObjectiveDto objective, KeyResultLastCheckIn lastCheckIn,
             LocalDateTime createdOn, LocalDateTime modifiedOn) {
         this.id = id;
         this.keyResultType = keyResultType;
@@ -139,11 +139,11 @@ public class KeyResultAbstractDto {
         this.objective = objective;
     }
 
-    public KeyResultLastCheckInDto getLastCheckIn() {
+    public KeyResultLastCheckIn getLastCheckIn() {
         return lastCheckIn;
     }
 
-    public void setLastCheckIn(KeyResultLastCheckInDto lastCheckIn) {
+    public void setLastCheckIn(KeyResultLastCheckIn lastCheckIn) {
         this.lastCheckIn = lastCheckIn;
     }
 

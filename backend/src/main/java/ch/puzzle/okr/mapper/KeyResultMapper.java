@@ -1,6 +1,6 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 public class KeyResultMapper {
 
-    // TODO: Remove UserService when Login works and use logged in user for createdBy in toKeyResult method
     private final KeyResultMetricMapper keyResultMetricMapper;
     private final KeyResultOrdinalMapper keyResultOrdinalMapper;
 
@@ -35,9 +34,9 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
-        if (isMetricKeyResult(keyResultDto)) {
+        if (isSpecificKeyResult(keyResultDto, "metric")) {
             return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
-        } else if (isOrdinalKeyResult(keyResultDto)) {
+        } else if (isSpecificKeyResult(keyResultDto, "ordinal")) {
             return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -45,14 +44,7 @@ public class KeyResultMapper {
         }
     }
 
-    private boolean isMetricKeyResult(KeyResultAbstractDto keyResultDto) {
-        return keyResultDto.getKeyResultType().equals("metric") && keyResultDto.getBaseline() != null
-                && keyResultDto.getStretchGoal() != null && keyResultDto.getUnit() != null;
-    }
-
-    private boolean isOrdinalKeyResult(KeyResultAbstractDto keyResultDto) {
-        return keyResultDto.getKeyResultType().equals("ordinal") && keyResultDto.getCommitZone() != null
-                && keyResultDto.getTargetZone() != null && keyResultDto.getStretchZone() != null;
-
+    private boolean isSpecificKeyResult(KeyResultAbstractDto keyResultDto, String type) {
+        return keyResultDto.getKeyResultType().equals(type);
     }
 }

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.KeyResultDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
@@ -85,10 +85,10 @@ public class KeyResultController {
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultAbstractDto keyResultAbstractDto) {
         KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultAbstractDto);
-        boolean isKeyResultImUse = keyResultBusinessService.isImUsed(id, mappedKeyResult);
+        boolean isKeyResultImUsed = keyResultBusinessService.isImUsed(id, mappedKeyResult);
         KeyResultDto updatedKeyResult = keyResultMapper
                 .toDto(keyResultBusinessService.updateKeyResult(id, mappedKeyResult));
-        return isKeyResultImUse ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedKeyResult)
+        return isKeyResultImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedKeyResult)
                 : ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
 

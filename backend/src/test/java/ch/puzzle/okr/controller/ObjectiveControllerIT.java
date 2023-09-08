@@ -63,8 +63,10 @@ class ObjectiveControllerIT {
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
             LocalDate.MAX);
-    static KeyResultLastCheckInDto keyResultLastCheckInDto = new KeyResultLastCheckInDto(1L, 4.0, 6, LocalDateTime.MIN,
-            "Comment");
+    static KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 4.0, 6,
+            LocalDateTime.MIN, "Comment");
+    static KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(1L,
+            "Baum", 6, LocalDateTime.MIN, "Comment");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
@@ -72,7 +74,7 @@ class ObjectiveControllerIT {
             LocalDateTime.MAX);
     static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
             "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
+            keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
     @Autowired
     private MockMvc mvc;

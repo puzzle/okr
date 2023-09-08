@@ -69,8 +69,10 @@ class KeyResultControllerIT {
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
             LocalDate.MAX);
-    static KeyResultLastCheckInDto keyResultLastCheckInDto = new KeyResultLastCheckInDto(1L, 4.0, 6, LocalDateTime.MIN,
-            "Comment");
+    static KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 4.0, 6,
+            LocalDateTime.MIN, "Comment");
+    static KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(1L,
+            "Baum", 6, LocalDateTime.MIN, "Comment");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
     static KeyResultAbstractDto keyResultAbstractDtoMetric = new KeyResultAbstractDto(5L, "metric", "Keyresult Metric",
@@ -85,7 +87,7 @@ class KeyResultControllerIT {
             LocalDateTime.MAX);
     static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
             "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
+            keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX);
     static Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L).withTitle("Keyresult 2")
             .withOwner(user).withObjective(objective).build();
@@ -211,7 +213,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.objective.id", Is.is(1)))
                 .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
                 .andExpect(jsonPath("$.objective.keyResultQuarterDto.label", Is.is("GJ 22/23-Q4")))
-                .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
+                .andExpect(jsonPath("$.lastCheckIn.zone", Is.is("Baum")))
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")))
                 .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
@@ -291,7 +293,7 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.keyResultType", Is.is("ordinal")))
                 .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
                 .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
-                .andExpect(jsonPath("$.lastCheckIn.value", Is.is(4.0)))
+                .andExpect(jsonPath("$.lastCheckIn.zone", Is.is("Baum")))
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")))
                 .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
@@ -346,11 +348,6 @@ class KeyResultControllerIT {
     void shouldReturnNotFoundWhenUpdatingKeyResult() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultBusinessService)
                 .updateKeyResult(any(), any());
-        //
-        // BDDMockito.given(keyResultBusinessService.updateKeyResult(any(), any()))
-        // .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"));
-
-        System.out.println(putBodyMetric);
 
         mvc.perform(put("/api/v2/keyresults/1000").content(putBodyMetric).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))

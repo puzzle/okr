@@ -67,6 +67,10 @@ public class MeasureBusinessService {
         return measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(keyResultId);
     }
 
+    public Measure getFirstMeasureByKeyResult(Long id) {
+        return measurePersistenceService.findFirstMeasureByKeyResultId(id);
+    }
+
     public List<Measure> getAllMeasures() {
         return measurePersistenceService.getAllMeasures();
     }

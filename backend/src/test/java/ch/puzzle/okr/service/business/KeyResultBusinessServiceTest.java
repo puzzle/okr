@@ -173,12 +173,12 @@ class KeyResultBusinessServiceTest {
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
-        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any())).thenReturn(newKeyresult);
         Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(1L, newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(newKeyresult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
         verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -191,12 +191,12 @@ class KeyResultBusinessServiceTest {
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
-        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any(), any())).thenReturn(newKeyresult);
+        Mockito.when(keyResultPersistenceService.updateAbstractEntity(any())).thenReturn(newKeyresult);
         Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
-        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(1L, newKeyresult);
+        verify(keyResultPersistenceService, times(1)).updateAbstractEntity(newKeyresult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
         verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());

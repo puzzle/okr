@@ -49,12 +49,19 @@ public class KeyResultBusinessService {
     public KeyResult updateKeyResult(Long id, KeyResult keyResult) {
         KeyResult savedKeyResult = keyResultPersistenceService.findById(id);
         keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
+        keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
+        keyResult.setObjective(savedKeyResult.getObjective());
         keyResult.setModifiedOn(LocalDateTime.now());
-        validator.validateOnUpdate(id, keyResult);
         if (isKeyResultTypeChangeable(id)) {
+            validator.validateOnUpdate(id, keyResult);
             return keyResultPersistenceService.updateEntity(id, keyResult);
         } else {
-            return keyResultPersistenceService.updateAbstractEntity(id, keyResult);
+            savedKeyResult.setTitle(keyResult.getTitle());
+            savedKeyResult.setDescription(keyResult.getDescription());
+            savedKeyResult.setOwner(keyResult.getOwner());
+            savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
+            validator.validateOnUpdate(id, keyResult);
+            return keyResultPersistenceService.updateAbstractEntity(savedKeyResult);
         }
     }
 

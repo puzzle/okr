@@ -26,23 +26,12 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     @Transactional
     public KeyResult updateEntity(Long id, KeyResult keyResult) {
-        KeyResult savedKeyResult = findById(id);
-        keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
-        keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
-        keyResult.setObjective(savedKeyResult.getObjective());
-
         // Delete Entity in order to prevent duplicates
         deleteById(id);
         return save(keyResult);
     }
 
-    public KeyResult updateAbstractEntity(Long id, KeyResult keyResult) {
-        KeyResult savedKeyResult = findById(id);
-        savedKeyResult.setTitle(keyResult.getTitle());
-        savedKeyResult.setDescription(keyResult.getDescription());
-        savedKeyResult.setOwner(keyResult.getOwner());
-        savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
-
-        return save(savedKeyResult);
+    public KeyResult updateAbstractEntity(KeyResult keyResult) {
+        return save(keyResult);
     }
 }

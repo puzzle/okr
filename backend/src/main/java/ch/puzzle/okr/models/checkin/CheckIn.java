@@ -42,11 +42,7 @@ public abstract class CheckIn {
     @Column(name = "check_in_type", insertable = false, updatable = false)
     private String checkInType;
 
-    /* Constructor */
-    public CheckIn() {
-    }
-
-    /* Implement Getter and Setter */
+    /* Getter and Setter */
     public Long getId() {
         return id;
     }
@@ -112,7 +108,6 @@ public abstract class CheckIn {
     }
 
     /* toString(), equals() and hashCode() methods */
-
     @Override
     public String toString() {
         return "CheckIn{" + "id=" + id + ", comment='" + comment + '\'' + ", confidence=" + confidence + ", keyResult="
@@ -136,6 +131,21 @@ public abstract class CheckIn {
     @Override
     public int hashCode() {
         return Objects.hash(id, comment, confidence, keyResult, createdBy, createdOn, modifiedOn, checkInType);
+    }
+
+    /* Constructor */
+    public CheckIn() {
+    }
+
+    public CheckIn(Builder builder) {
+        id = builder.id;
+        setComment(builder.comment);
+        setConfidence(builder.confidence);
+        setKeyResult(builder.keyResult);
+        setCreatedBy(builder.createdBy);
+        setCreatedOn(builder.createdOn);
+        setModifiedOn(builder.modifiedOn);
+        setCheckInType(builder.checkInType);
     }
 
     /* Builder */

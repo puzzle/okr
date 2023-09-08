@@ -4,10 +4,7 @@ import ch.puzzle.okr.models.KeyResult;
 import ch.puzzle.okr.models.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,8 +16,11 @@ public abstract class CheckIn {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_check_in")
     private Long id;
 
-    @Size(max = 4096, message = "Attribute comment has a max length of 4096 characters")
-    private String comment;
+    @Size(max = 4096, message = "Attribute changeInfo has a max length of 4096 characters")
+    private String changeInfo;
+
+    @Size(max = 4096, message = "Attribute initiatives has a max length of 4096 characters")
+    private String initiatives;
 
     @Max(10)
     @Min(0)
@@ -51,12 +51,20 @@ public abstract class CheckIn {
         this.id = id;
     }
 
-    public String getComment() {
-        return comment;
+    public String getChangeInfo() {
+        return changeInfo;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setChangeInfo(String changeInfo) {
+        this.changeInfo = changeInfo;
+    }
+
+    public String getInitiatives() {
+        return initiatives;
+    }
+
+    public void setInitiatives(String initiatives) {
+        this.initiatives = initiatives;
     }
 
     public Integer getConfidence() {
@@ -108,11 +116,13 @@ public abstract class CheckIn {
     }
 
     /* toString(), equals() and hashCode() methods */
+
     @Override
     public String toString() {
-        return "CheckIn{" + "id=" + id + ", comment='" + comment + '\'' + ", confidence=" + confidence + ", keyResult="
-                + keyResult + ", createdBy=" + createdBy + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn
-                + ", checkInType='" + checkInType + '\'' + '}';
+        return "CheckIn{" + "id=" + id + ", changeInfo='" + changeInfo + '\'' + ", initiatives='" + initiatives + '\''
+                + ", confidence=" + confidence + ", keyResult=" + keyResult + ", createdBy=" + createdBy
+                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", checkInType='" + checkInType + '\''
+                + '}';
     }
 
     @Override
@@ -122,15 +132,17 @@ public abstract class CheckIn {
         if (o == null || getClass() != o.getClass())
             return false;
         CheckIn checkIn = (CheckIn) o;
-        return Objects.equals(id, checkIn.id) && Objects.equals(comment, checkIn.comment)
-                && Objects.equals(confidence, checkIn.confidence) && Objects.equals(keyResult, checkIn.keyResult)
-                && Objects.equals(createdBy, checkIn.createdBy) && Objects.equals(createdOn, checkIn.createdOn)
-                && Objects.equals(modifiedOn, checkIn.modifiedOn) && Objects.equals(checkInType, checkIn.checkInType);
+        return Objects.equals(id, checkIn.id) && Objects.equals(changeInfo, checkIn.changeInfo)
+                && Objects.equals(initiatives, checkIn.initiatives) && Objects.equals(confidence, checkIn.confidence)
+                && Objects.equals(keyResult, checkIn.keyResult) && Objects.equals(createdBy, checkIn.createdBy)
+                && Objects.equals(createdOn, checkIn.createdOn) && Objects.equals(modifiedOn, checkIn.modifiedOn)
+                && Objects.equals(checkInType, checkIn.checkInType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, comment, confidence, keyResult, createdBy, createdOn, modifiedOn, checkInType);
+        return Objects.hash(id, changeInfo, initiatives, confidence, keyResult, createdBy, createdOn, modifiedOn,
+                checkInType);
     }
 
     /* Constructor */
@@ -139,7 +151,8 @@ public abstract class CheckIn {
 
     public CheckIn(Builder builder) {
         id = builder.id;
-        setComment(builder.comment);
+        setChangeInfo(builder.changeInfo);
+        setInitiatives(builder.initiatives);
         setConfidence(builder.confidence);
         setKeyResult(builder.keyResult);
         setCreatedBy(builder.createdBy);
@@ -151,7 +164,8 @@ public abstract class CheckIn {
     /* Builder */
     public abstract static class Builder {
         private Long id;
-        private String comment;
+        private String changeInfo;
+        private String initiatives;
         private Integer confidence;
         private KeyResult keyResult;
         private User createdBy;
@@ -164,8 +178,13 @@ public abstract class CheckIn {
             return this;
         }
 
-        public Builder withComment(String comment) {
-            this.comment = comment;
+        public Builder withChangeInfo(String changeInfo) {
+            this.changeInfo = changeInfo;
+            return this;
+        }
+
+        public Builder withInitiatives(String initiatives) {
+            this.initiatives = initiatives;
             return this;
         }
 

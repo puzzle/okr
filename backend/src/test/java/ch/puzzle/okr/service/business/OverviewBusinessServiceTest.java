@@ -27,7 +27,7 @@ public class OverviewBusinessServiceTest {
     @Mock
     QuarterBusinessService quarterBusinessService;
 
-    private static Overview createObjective() {
+    private static Overview createOverview() {
         return Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).build())
                 .withObjectiveTitle("Objective 1").build();
     }
@@ -35,7 +35,7 @@ public class OverviewBusinessServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L)))
-                .thenReturn(List.of(createObjective()));
+                .thenReturn(List.of(createOverview()));
 
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L));
 
@@ -47,7 +47,7 @@ public class OverviewBusinessServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L)))
-                .thenReturn(List.of(createObjective()));
+                .thenReturn(List.of(createOverview()));
         when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build());
 

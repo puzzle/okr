@@ -72,11 +72,9 @@ public class KeyResultMetricMapper {
         if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            CheckInDto checkInDto = checkInMapper.toDto(lastCheckIn);
-            // TODO: Replace value, confidence and comment with values from checkinDto
-            lastCheckInDto = new KeyResultLastCheckInMetricDto(checkInDto.getId(),
-                    ((CheckInMetricDto) checkInDto).getValue(), checkInDto.getConfidence(), lastCheckIn.getCreatedOn(),
-                    "Comment");
+            lastCheckInDto = new KeyResultLastCheckInMetricDto(lastCheckIn.getId(),
+                    ((CheckInMetric) lastCheckIn).getValue(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
+                    lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }
         return lastCheckInDto;
     }

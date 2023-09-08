@@ -1,10 +1,10 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
@@ -73,11 +73,9 @@ public class KeyResultOrdinalMapper {
         if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            CheckInDto checkInDto = checkInMapper.toDto(lastCheckIn);
-            // TODO: Replace value, confidence and comment with values from checkInDto
-            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(checkInDto.getId(),
-                    ((CheckInOrdinalDto) checkInDto).getValue().toString(), checkInDto.getConfidence(),
-                    lastCheckIn.getCreatedOn(), "Comment");
+            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(),
+                    ((CheckInOrdinal) lastCheckIn).getValue().toString(), lastCheckIn.getConfidence(),
+                    lastCheckIn.getCreatedOn(), lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }
         return lastCheckInDto;
     }

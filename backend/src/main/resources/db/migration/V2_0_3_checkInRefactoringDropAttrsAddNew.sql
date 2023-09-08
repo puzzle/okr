@@ -16,6 +16,7 @@ $$
     BEGIN
         FOR r in SELECT * FROM measure
             LOOP
+                UPDATE measure m SET confidence = 5 WHERE confidence IS NULL AND m.id = r.id;
                 UPDATE measure m SET check_in_type = 'metric' WHERE m.id = r.id;
             end loop;
     end

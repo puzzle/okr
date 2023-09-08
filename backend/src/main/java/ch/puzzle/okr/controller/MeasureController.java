@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.mapper.MeasureMapper;
 import ch.puzzle.okr.models.Measure;
-import ch.puzzle.okr.service.ProgressService;
 import ch.puzzle.okr.service.business.MeasureBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,13 +23,10 @@ public class MeasureController {
 
     private final MeasureMapper measureMapper;
     private final MeasureBusinessService measureBusinessService;
-    private final ProgressService progressService;
 
-    public MeasureController(MeasureMapper measureMapper, MeasureBusinessService measureBusinessService,
-            ProgressService progressService) {
+    public MeasureController(MeasureMapper measureMapper, MeasureBusinessService measureBusinessService) {
         this.measureMapper = measureMapper;
         this.measureBusinessService = measureBusinessService;
-        this.progressService = progressService;
     }
 
     @Operation(summary = "Get Measures", description = "Get all Measures from db.")

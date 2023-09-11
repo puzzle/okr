@@ -1,12 +1,7 @@
 @import "_variables";
 
-.border-cs {
-  border: solid;
-}
-
-.view-only {
-  background-color: $confidence-view-only;
-}
 .edit {
-  background-color: green;
+  border: solid #ddd 1px;
+  background-color: #fff;
+  padding: 0.25em 0.75rem;
 }

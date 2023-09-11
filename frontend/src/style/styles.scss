@@ -91,3 +91,9 @@ body {
   height: 1.25rem;
   cursor: pointer;
 }
+
+.keyResult-attribute-show {
+  background-color: $confidence-view-only;
+  padding: 0.25em 0.75rem;
+  border-radius: 2px;
+}

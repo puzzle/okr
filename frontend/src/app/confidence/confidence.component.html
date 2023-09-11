@@ -1,11 +1,11 @@
 <div class="d-flex align-items-center gap-1">
-  <div [ngClass]="showSlider ? 'edit' : 'view-only'">
+  <div [ngClass]="edit ? 'edit' : 'keyResult-attribute-show'">
     <p>{{ keyResult.lastCheckIn.confidence }}/{{ max }}</p>
   </div>
 
   <mat-slider
     color="primary"
-    *ngIf="showSlider"
+    *ngIf="edit"
     [min]="min"
     [max]="max"
     [step]="1"

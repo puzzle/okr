@@ -10,7 +10,6 @@ import { CheckInMin } from '../shared/types/model/CheckInMin';
 export class ConfidenceComponent implements OnInit {
   min: number = 0;
   max: number = 10;
-  value: number = 5;
   @Input() edit: boolean = true;
   @Input() keyResult!: KeyresultMin;
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { KeyResultOrdinalMin } from '../shared/types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
+import { CheckInMin } from '../shared/types/model/CheckInMin';
 
 @Component({
   selector: 'app-confidence',
@@ -13,8 +13,9 @@ export class ConfidenceComponent implements OnInit {
   value: number = 5;
   @Input() edit: boolean = true;
   @Input() keyResult!: KeyresultMin;
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.keyResult.lastCheckIn == null) {
+      this.keyResult.lastCheckIn = { confidence: 5, value: 0, createdOn: new Date() } as CheckInMin;
+    }
+  }
 }

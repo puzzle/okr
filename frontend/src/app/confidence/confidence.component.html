@@ -1,16 +1,16 @@
 <div class="d-flex align-items-center gap-1">
   <div [ngClass]="edit ? 'edit' : 'keyResult-attribute-show'">
-    <p>{{ keyResult.lastCheckIn.confidence }}/{{ max }}</p>
+    <p [ngClass]="edit ? 'fw-bold' : 'fw-normal'">{{ keyResult.lastCheckIn.confidence }}/{{ max }}</p>
   </div>
 
   <mat-slider
-    color="primary"
     *ngIf="edit"
-    [min]="min"
+    [(ngModel)]="keyResult.lastCheckIn.confidence"
     [max]="max"
+    [min]="min"
     [step]="1"
     [tickInterval]="1"
-    [(ngModel)]="keyResult.lastCheckIn.confidence"
+    color="primary"
   >
   </mat-slider>
 </div>

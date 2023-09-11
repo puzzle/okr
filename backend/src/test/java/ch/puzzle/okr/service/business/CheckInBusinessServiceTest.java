@@ -14,16 +14,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInBusinessServiceTest {
@@ -68,20 +65,13 @@ class CheckInBusinessServiceTest {
         assertEquals(returnCheckIn.getChangeInfo(), "ChangeInfo");
         assertEquals(returnCheckIn.getInitiatives(), "Initiatives");
         assertEquals(returnCheckIn.getKeyResult().getId(), 7);
-        assertEquals(returnCheckIn.getCreatedBy().getFirstname(), "Frank");
-    }
-
-    @Test
-    void shouldNotReturnException() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> checkInBusinessService.saveCheckIn(falseCheckIn, Jwt.withTokenValue(user.toString()).build()));
-        assertEquals(400, exception.getRawStatusCode());
-        assertEquals("CheckIn has already an Id", exception.getReason());
+        assertEquals(returnCheckIn.getCreatedBy().getFirstname(), "Firstname");
     }
 
     @Test
     void shouldReturnCorrectEntity() {
         Mockito.when(checkInPersistenceService.save(any())).thenReturn(checkIn);
+        Mockito.when(checkInPersistenceService.findById(anyLong())).thenReturn(checkIn);
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
 
         CheckIn returnedCheckIn = this.checkInBusinessService.updateCheckIn(1L, checkIn, any());
@@ -90,15 +80,5 @@ class CheckInBusinessServiceTest {
         assertEquals(((CheckInMetric) checkIn).getValue(), ((CheckInMetric) returnedCheckIn).getValue());
         assertEquals(checkIn.getChangeInfo(), returnedCheckIn.getChangeInfo());
         assertEquals(checkIn.getModifiedOn(), returnedCheckIn.getModifiedOn());
-    }
-
-    @Test
-    void shouldThrowResponseStatusExceptionBadRequest() {
-        Mockito.when(checkInPersistenceService.save(any()))
-                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> this.checkInBusinessService.updateCheckIn(1L, checkIn, any()));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
     }
 }

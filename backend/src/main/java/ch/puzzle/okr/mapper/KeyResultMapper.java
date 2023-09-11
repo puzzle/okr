@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;

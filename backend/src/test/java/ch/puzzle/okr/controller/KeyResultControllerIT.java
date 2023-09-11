@@ -9,8 +9,6 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -65,9 +63,9 @@ class KeyResultControllerIT {
     static List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
 
     static CheckInDto checkInDto1 = new CheckInMetricDto(1L, "Changeinfo1", "Initiatives1", 6, metricKeyResult, user,
-            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 46D);
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 23D);
     static CheckInDto checkInDto2 = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5, metricKeyResult, user,
-            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 30D);
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 12D);
 
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,

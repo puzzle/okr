@@ -1,7 +1,5 @@
 package ch.puzzle.okr.mapper.keyresult;
 
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.checkIn.CheckIn;

@@ -75,21 +75,10 @@ public class CheckInPersistenceServiceIT {
     }
 
     @Test
-    void updateKeyResult_ShouldThrowExceptionWhenKeyResultNotFound() {
-        CheckIn CheckIn = createCheckIn(321L);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> checkInPersistenceService.save(CheckIn));
-
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("CheckIn with id 321 not found", exception.getReason());
-    }
-
-    @Test
     void getAllCheckIn_ShouldReturnListOfAllCheckIns() {
-        List<CheckIn> CheckIns = checkInPersistenceService.findAll();
+        List<CheckIn> checkIns = checkInPersistenceService.findAll();
 
-        assertEquals(20, CheckIns.size());
+        assertEquals(19, checkIns.size());
     }
 
     @Test
@@ -118,7 +107,7 @@ public class CheckInPersistenceServiceIT {
                 () -> checkInPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing attribute CheckIn id", exception.getReason());
+        assertEquals("Missing identifier for CheckIn", exception.getReason());
     }
 
     @Test

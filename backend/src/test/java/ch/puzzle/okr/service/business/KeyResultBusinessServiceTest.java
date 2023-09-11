@@ -77,7 +77,7 @@ class KeyResultBusinessServiceTest {
                 .build();
         checkIn2 = CheckInOrdinal.Builder.builder().withId(2L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
                 .build();
-        checkIn2 = CheckInOrdinal.Builder.builder().withId(3L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
+        checkIn3 = CheckInOrdinal.Builder.builder().withId(3L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
                 .build();
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
         this.checkIns = List.of(checkIn1, checkIn2, checkIn3);
@@ -172,7 +172,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndcheckIns() {
+    void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = this.checkIns;
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
@@ -190,7 +190,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndcheckIns() {
+    void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndCheckIns() {
         List<CheckIn> emptyList = this.checkIns;
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());

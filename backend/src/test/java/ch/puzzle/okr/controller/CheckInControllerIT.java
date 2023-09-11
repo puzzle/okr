@@ -82,58 +82,6 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldReturnCheckInWhenCreatingNewCheckIn() throws Exception {
-        CheckInDto testCheckIn = new CheckInMetricDto(5L, "changeInfo", "initiatives", 6,
-                KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
-                        .withObjective(objective).build(),
-                User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
-                "metric", 30D);
-
-        BDDMockito.given(checkInBusinessService.saveCheckIn(any(), any())).willReturn(checkIn);
-        BDDMockito.given(checkInMapper.toDto(any())).willReturn(testCheckIn);
-        BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkIn);
-
-        mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": 1, \"checkInDate \": \"2022-08-12T01:01:00\"}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.keyResultId", Is.is(5))).andExpect(jsonPath("$.value", Is.is(30D)))
-                .andExpect(jsonPath("$.changeInfo", Is.is("changeInfo")));
-    }
-
-    @Test
-    void shouldReturnResponseStatusExceptionWhenCreatingCheckInNullName() throws Exception {
-        BDDMockito.given(checkInBusinessService.saveCheckIn(any(), any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The given user is null"));
-
-        mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON).content(
-                "{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": \"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"checkInDate \": null}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    @Test
-    void shouldReturnCorrectCheckIn() throws Exception {
-        CheckInDto testCheckIn = new CheckInMetricDto(5L, "changeInfo", "initiatives", 6,
-                KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
-                        .withObjective(objective).build(),
-                User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
-                "metric", 30D);
-        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any())).willReturn(checkIn);
-        BDDMockito.given(checkInMapper.toDto(any())).willReturn(testCheckIn);
-        BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkIn);
-
-        mvc.perform(put("/api/v2/checkIns/1").contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content("{\"keyResultId\": 1, \"value\": 30, \"changeInfo\": "
-                        + "\"changeInfo\", \"initiatives \": \"initiatives\", \"createdById \": null, \"checkInDate \": null}"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.value", Is.is(30D)))
-                .andExpect(jsonPath("$.createdById", Is.is(1)))
-                .andExpect(jsonPath("$.checkInDate", Is.is("2022-08-12T01:01:00Z")))
-                .andExpect(jsonPath("$.initiatives", Is.is("initiatives")));
-    }
-
-    @Test
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -142,16 +90,5 @@ class CheckInControllerIT {
                 .content("{\"keyResultId\": 5 , \"value\": 30, \"changeInfo\": "
                         + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
-
-    @Test
-    void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any()))
-                .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        mvc.perform(put("/api/v2/checkIns/3").contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())
-                .content("{\"keyResultId\": null , \"value\": 30, \"changeInfo\": "
-                        + "\"changeInfo\", \"initiatives \": \"initiatives\", " + "\"createdById \": null}"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }

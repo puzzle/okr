@@ -1,7 +1,8 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
+import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
@@ -49,8 +50,9 @@ class ObjectiveControllerIT {
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
-            Instant.parse("2022-08-12T01:01:00.00Z"));
+    static CheckInDto checkInDto1 = new CheckInMetricDto(5L, "foo", "boo", 6, KeyResultMetric.Builder.builder()
+            .withBaseline(3.0).withStretchGoal(6.0).withId(8L).withObjective(objective1).build(), user,
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 30D);
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
@@ -64,9 +66,9 @@ class ObjectiveControllerIT {
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
             LocalDate.MAX);
     static KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 4.0, 6,
-            LocalDateTime.MIN, "Comment");
+            LocalDateTime.MIN, "ChangeInfo1", "Initiatives2");
     static KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(1L,
-            "Baum", 6, LocalDateTime.MIN, "Comment");
+            "Baum", 6, LocalDateTime.MIN, "ChangeInfo2", "Initiatives2");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",

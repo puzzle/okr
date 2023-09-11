@@ -144,11 +144,10 @@ select t.id                as "team_id",
        kr.commit_zone,
        kr.target_zone,
        kr.stretch_zone,
-       coalesce(c.id, -1)  as "measure_id",
-       c.value_metric      as "measure_value",
-       c.value_ordinal     as "measure_value",
+       coalesce(c.id, -1)  as "check_in_id",
+       c.value_metric      as "check_in_value_metric",
+       c.value_ordinal     as "check_in_value_ordinal",
        c.confidence,
-       c.modified_on,
        c.created_on
 FROM TEAM T
          LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID

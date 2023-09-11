@@ -20,7 +20,7 @@ public class CheckInOrdinalMapper {
 
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
         return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getChangeInfo(),
-                checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult(),
+                checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult().getId(),
                 checkInOrdinal.getCreatedBy(), checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(),
                 checkInOrdinal.getCheckInType(), checkInOrdinal.getValue());
     }
@@ -29,7 +29,7 @@ public class CheckInOrdinalMapper {
         return CheckInOrdinal.Builder.builder().withValue(checkInOrdinal.getValue()).withId(checkInOrdinal.getId())
                 .withChangeInfo(checkInOrdinal.getChangeInfo()).withInitiatives(checkInOrdinal.getInitiatives())
                 .withConfidence(checkInOrdinal.getConfidence())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinal.getKeyResult().getId()))
+                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinal.getKeyResultId()))
                 .withCreatedBy(userBusinessService.getOwnerById(checkInOrdinal.getCreatedBy().getId()))
                 .withCreatedOn(checkInOrdinal.getCreatedOn()).withModifiedOn(checkInOrdinal.getModifiedOn())
                 .withCheckInType(checkInOrdinal.getCheckInType()).build();

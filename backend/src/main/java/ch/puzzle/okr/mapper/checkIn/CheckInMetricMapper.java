@@ -20,7 +20,7 @@ public class CheckInMetricMapper {
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
-                checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult(),
+                checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
                 checkInMetric.getCreatedBy(), checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(),
                 checkInMetric.getCheckInType(), checkInMetric.getValue());
     }
@@ -29,7 +29,7 @@ public class CheckInMetricMapper {
         return CheckInMetric.Builder.builder().withValue(checkInMetricDto.getValue()).withId(checkInMetricDto.getId())
                 .withChangeInfo(checkInMetricDto.getChangeInfo()).withInitiatives(checkInMetricDto.getInitiatives())
                 .withConfidence(checkInMetricDto.getConfidence())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.getKeyResult().getId()))
+                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.getKeyResultId()))
                 .withCreatedBy(userBusinessService.getOwnerById(checkInMetricDto.getCreatedBy().getId()))
                 .withCreatedOn(checkInMetricDto.getCreatedOn()).withModifiedOn(checkInMetricDto.getModifiedOn())
                 .withCheckInType(checkInMetricDto.getCheckInType()).build();

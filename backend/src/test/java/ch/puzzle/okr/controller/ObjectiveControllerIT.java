@@ -1,8 +1,6 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
@@ -10,7 +8,6 @@ import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -50,9 +46,6 @@ class ObjectiveControllerIT {
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    static CheckInDto checkInDto1 = new CheckInMetricDto(5L, "foo", "boo", 6, KeyResultMetric.Builder.builder()
-            .withBaseline(3.0).withStretchGoal(6.0).withId(8L).withObjective(objective1).build(), user,
-            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 30D);
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
@@ -82,8 +75,6 @@ class ObjectiveControllerIT {
     private MockMvc mvc;
     @MockBean
     private ObjectiveBusinessService objectiveBusinessService;
-    @MockBean
-    private KeyResultBusinessService keyResultBusinessService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
     @MockBean

@@ -12,7 +12,6 @@ import ch.puzzle.okr.models.checkIn.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,9 +34,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
@@ -58,14 +55,10 @@ class CheckInControllerIT {
             .withChangeInfo("ChangeInfo").build();
     static List<CheckIn> checkInList = Arrays.asList(checkIn, anotherCheckIn);
 
-    static CheckInDto checkInDto = new CheckInMetricDto(5L, "Changeinfo1", "Initiatives1", 6,
-            KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L).withObjective(objective)
-                    .build(),
+    static CheckInDto checkInDto = new CheckInMetricDto(5L, "Changeinfo1", "Initiatives1", 6, 1L,
             User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
             "metric", 46D);
-    static CheckInDto anotherCheckInDto = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5,
-            KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L).withObjective(objective)
-                    .build(),
+    static CheckInDto anotherCheckInDto = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5, 2L,
             User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
             "metric", 30D);
     @Autowired

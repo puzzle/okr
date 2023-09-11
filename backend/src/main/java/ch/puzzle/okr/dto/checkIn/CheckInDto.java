@@ -1,7 +1,6 @@
 package ch.puzzle.okr.dto.checkIn;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 
 import java.time.LocalDateTime;
 
@@ -10,19 +9,20 @@ public abstract class CheckInDto {
     String changeInfo;
     String initiatives;
     Integer confidence;
-    KeyResult keyResult;
+
+    Long keyResultId;
     User createdBy;
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
     String checkInType;
 
-    public CheckInDto(Long id, String changeInfo, String initiatives, Integer confidence, KeyResult keyResult,
+    public CheckInDto(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
             User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType) {
         this.id = id;
         this.changeInfo = changeInfo;
         this.initiatives = initiatives;
         this.confidence = confidence;
-        this.keyResult = keyResult;
+        this.keyResultId = keyResultId;
         this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -61,12 +61,12 @@ public abstract class CheckInDto {
         this.confidence = confidence;
     }
 
-    public KeyResult getKeyResult() {
-        return keyResult;
+    public Long getKeyResultId() {
+        return keyResultId;
     }
 
-    public void setKeyResult(KeyResult keyResult) {
-        this.keyResult = keyResult;
+    public void setKeyResultId(Long keyResultId) {
+        this.keyResultId = keyResultId;
     }
 
     public User getCreatedBy() {

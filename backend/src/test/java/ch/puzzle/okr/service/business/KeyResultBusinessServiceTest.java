@@ -1,7 +1,8 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;

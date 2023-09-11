@@ -8,6 +8,7 @@ import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
 import { ObjectiveService } from './shared/services/objective.service';
 import { Objective } from './shared/types/model/Objective';
+import { doc } from 'prettier';
 
 @Component({
   selector: 'app-root',
@@ -94,6 +95,5 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routeService.navigate(location);
     return false;
   }
-
   login() {}
 }

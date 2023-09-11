@@ -1,7 +1,6 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.keyresult.*;
-import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -17,14 +16,11 @@ public class KeyResultOrdinalMapper {
     private final UserPersistenceService userPersistenceService;
     private final ObjectiveBusinessService objectiveBusinessService;
     private final CheckInBusinessService checkInBusinessService;
-    private final CheckInMapper checkInMapper;
 
     public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-            CheckInMapper checkInMapper) {
+            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
-        this.checkInMapper = checkInMapper;
         this.checkInBusinessService = checkInBusinessService;
     }
 

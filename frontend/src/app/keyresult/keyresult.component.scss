@@ -1,6 +1,6 @@
 .key-result {
-  background-color: #e5e8eb;
-  border: 1px solid #5d6974;
+  background-color: $keyResult-bg;
+  border: 1px solid $keyResult-border;
   word-wrap: break-word;
 
   &:hover {

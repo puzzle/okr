@@ -1,5 +1,5 @@
 <div class="d-flex align-items-center gap-1" *ngIf="keyResult">
-  <div [ngClass]="edit ? 'edit' : 'keyResult-attribute-show'">
+  <div [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'">
     <p [ngClass]="edit ? 'fw-bold' : 'fw-normal'">{{ keyResult.lastCheckIn?.confidence }}/{{ max }}</p>
   </div>
 

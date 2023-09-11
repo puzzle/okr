@@ -75,6 +75,7 @@ export const MY_FORMATS = {
     ObjectiveComponent,
     KeyresultComponent,
     ApplicationHeaderComponent,
+    ConfidenceComponent,
   ],
   imports: [
     BrowserModule,

@@ -11,7 +11,7 @@ export class ConfidenceComponent implements OnInit {
   min: number = 0;
   max: number = 10;
   value: number = 5;
-  showSlider: boolean = true;
+  @Input() showSlider: boolean = true;
   @Input() keyResult!: KeyresultMin;
 
   constructor() {}

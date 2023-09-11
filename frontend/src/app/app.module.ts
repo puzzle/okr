@@ -36,6 +36,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
+import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
@@ -84,6 +85,7 @@ export const MY_FORMATS = {
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
     ScoringComponent,
+    KeyresultDetailComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
   ],

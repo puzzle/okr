@@ -7,6 +7,7 @@ import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
 import { ObjectiveMin } from './shared/types/model/ObjectiveMin';
+import { ObjectiveService } from './shared/services/objective.service';
 
 @Component({
   selector: 'app-root',
@@ -26,7 +27,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private objectiveService: ObjectiveService
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -47,7 +49,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.notifierService.drawerSubject.subscribe({
       next: (objective) => {
-        this.objective = objective;
+        // this.objective = objectiveService.getFullObjective(objective.id).subscribe();
         this.drawerOpen = true;
       },
     });

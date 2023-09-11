@@ -47,6 +47,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.notifierService.drawerSubject.subscribe({
       next: (objective) => {
+        this.objective = objective;
         this.drawerOpen = true;
       },
     });

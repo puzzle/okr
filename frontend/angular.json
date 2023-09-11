@@ -23,7 +23,7 @@
             "polyfills": "zone.js",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": ["./src/favicon.ico", "./src/assets"],
             "styles": [
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -31,7 +31,7 @@
               "./src/style/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./src/style"]
+              "includePaths": ["./src/style", "./src/assets"]
             },
             "scripts": [
               "node_modules/@puzzleitc/puzzle-shell/dist/bundle.js",

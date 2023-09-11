@@ -1,12 +1,16 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.MeasureDto;
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
+import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInMetric;
+import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -31,7 +35,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -53,25 +56,26 @@ class KeyResultControllerIT {
     static User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
-    static Measure measure1 = Measure.Builder.builder().withId(1L).withKeyResult(metricKeyResult).withCreatedBy(user)
-            .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1").withInitiatives("Initiatives1")
-            .withValue(23D).withMeasureDate(Instant.parse("2021-11-03T05:55:00.00Z")).build();
-    static Measure measure2 = Measure.Builder.builder().withId(4L).withKeyResult(metricKeyResult).withCreatedBy(user)
-            .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2")
-            .withValue(12D).withMeasureDate(Instant.parse("2022-08-29T22:44:00.00Z")).build();
-    static List<Measure> measureList = Arrays.asList(measure1, measure2);
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 35.0, "Changeinfo 1", "Initiatives 1", 1L, LocalDateTime.MAX,
-            Instant.parse("2022-08-29T22:44:00.00Z"));
-    static MeasureDto measureDto2 = new MeasureDto(2L, 5L, 65.0, "Changeinfo 2", "Initiatives 2", 1L, LocalDateTime.MAX,
-            Instant.parse("2022-08-29T22:44:00.00Z"));
+    static CheckIn checkIn1 = CheckInMetric.Builder.builder().withValue(23D).withId(1L).withKeyResult(metricKeyResult)
+            .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo1")
+            .withInitiatives("Initiatives1").build();
+    static CheckIn checkIn2 = CheckInMetric.Builder.builder().withValue(12D).withId(4L).withKeyResult(metricKeyResult)
+            .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2")
+            .withInitiatives("Initiatives2").build();
+    static List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
+
+    static CheckInDto checkInDto1 = new CheckInMetricDto(1L, "Changeinfo1", "Initiatives1", 6, metricKeyResult, user,
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 46D);
+    static CheckInDto checkInDto2 = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5, metricKeyResult, user,
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 30D);
 
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
             LocalDate.MAX);
     static KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 4.0, 6,
-            LocalDateTime.MIN, "Comment");
+            LocalDateTime.MIN, "ChangeInfo1", "Initiatives1");
     static KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(1L,
-            "Baum", 6, LocalDateTime.MIN, "Comment");
+            "Baum", 6, LocalDateTime.MIN, "Changeinfo2", "Initiatives2");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
@@ -168,7 +172,7 @@ class KeyResultControllerIT {
     @MockBean
     KeyResultMapper keyResultMapper;
     @MockBean
-    MeasureMapper measureMapper;
+    CheckInMapper checkInMapper;
     @MockBean
     KeyResultBusinessService keyResultBusinessService;
     @MockBean
@@ -180,6 +184,8 @@ class KeyResultControllerIT {
 
     @BeforeEach
     void setUp() {
+        BDDMockito.given(checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
+        BDDMockito.given(checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
     }
 
     @Test
@@ -232,9 +238,9 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnCheckInsFromKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultBusinessService.getAllMeasuresByKeyResult(5)).willReturn(measureList);
-        BDDMockito.given(this.measureMapper.toDto(measure1)).willReturn(measureDto1);
-        BDDMockito.given(this.measureMapper.toDto(measure2)).willReturn(measureDto2);
+        BDDMockito.given(this.keyResultBusinessService.getAllCheckInsByKeyResult(5)).willReturn(checkInList);
+        BDDMockito.given(this.checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
+        BDDMockito.given(this.checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
 
         mvc.perform(get("/api/v2/keyresults/5/checkins").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -249,8 +255,8 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void shouldGetAllMeasuresIfNoMeasureExistsInKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1)).willReturn(Collections.emptyList());
+    void shouldGetAllCheckInsIfNoCheckInExistsInKeyResult() throws Exception {
+        BDDMockito.given(keyResultBusinessService.getAllCheckInsByKeyResult(1)).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/keyresults/1/checkins").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -258,7 +264,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingMeasuresFromKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1))
+        BDDMockito.given(keyResultBusinessService.getAllCheckInsByKeyResult(1))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
 
         mvc.perform(get("/api/v2/keyresults/1/checkins").contentType(MediaType.APPLICATION_JSON))

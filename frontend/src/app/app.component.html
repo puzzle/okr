@@ -2,8 +2,9 @@
 <div *ngIf="isEnvStaging$ | async" class="staging-banner">
   <div class="staging-text">STAGING ENVIRONMENT!</div>
 </div>
+
 <mat-drawer-container hasBackdrop="true">
-  <mat-drawer class="w-25 p-3 rounded-3" mode="over" [(opened)]="drawerOpen" position="end">
+  <mat-drawer class="mt-5 position-fixed w-25 p-3 rounded-3" mode="over" [(opened)]="drawerOpen" position="end">
     <app-objective-detail *ngIf="objective != undefined" [objective]="objective"></app-objective-detail>
   </mat-drawer>
   <mat-drawer-content>

@@ -88,6 +88,7 @@ export const MY_FORMATS = {
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
+    KeyresultDetailComponent,
   ],
   imports: [
     CommonModule,

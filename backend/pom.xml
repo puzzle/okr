@@ -87,6 +87,7 @@
                         <exclude>ch/puzzle/okr/service/ProgressService*</exclude>
                         <exclude>ch/puzzle/okr/service/business/MeasureBusinessService*</exclude>
                         <exclude>ch/puzzle/okr/service/business/ProgressBusinessService*</exclude>
+                        <exclude>ch/puzzle/okr/service/persistence/OverviewPersistenceService*</exclude>
                         <exclude>ch/puzzle/okr/service/persistence/MeasurePersistenceService*</exclude>
                         <exclude>ch/puzzle/okr/models/**</exclude>
                         <exclude>ch/puzzle/okr/dto/**</exclude>

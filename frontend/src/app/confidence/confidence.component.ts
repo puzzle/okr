@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { CheckInMin } from '../shared/types/model/CheckInMin';
 
@@ -7,14 +7,14 @@ import { CheckInMin } from '../shared/types/model/CheckInMin';
   templateUrl: './confidence.component.html',
   styleUrls: ['./confidence.component.scss'],
 })
-export class ConfidenceComponent implements OnInit {
-  min: number = 0;
+export class ConfidenceComponent implements OnChanges {
+  min: number = 1;
   max: number = 10;
   @Input() edit: boolean = true;
   @Input() keyResult!: KeyresultMin;
 
-  ngOnInit(): void {
-    if (this.keyResult.lastCheckIn == null) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['keyResult']?.currentValue?.lastCheckIn === null) {
       this.keyResult.lastCheckIn = { confidence: 5 } as CheckInMin;
     }
   }

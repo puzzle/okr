@@ -19,7 +19,7 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long> {
     }
 
     public List<CheckIn> getCheckInsByKeyResultIdOrderByCheckInDateDesc(Long keyResultId) {
-        return ((CheckInRepository) repository).findCheckInsByKeyResultIdOrderByCreatedOnDateDesc(keyResultId);
+        return ((CheckInRepository) repository).findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);
     }
 
     public CheckIn getLastCheckInOfKeyResult(Long keyResultId) {

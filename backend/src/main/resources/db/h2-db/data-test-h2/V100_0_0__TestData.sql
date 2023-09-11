@@ -1,6 +1,6 @@
 SET REFERENTIAL_INTEGRITY FALSE;
 
-truncate table measure;
+truncate table check_in;
 truncate table key_result;
 truncate table objective;
 truncate table person;
@@ -14,7 +14,7 @@ ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
 ALTER SEQUENCE sequence_objective RESTART WITH 200;
 ALTER SEQUENCE sequence_key_result RESTART WITH 200;
-ALTER SEQUENCE sequence_measure RESTART WITH 200;
+ALTER SEQUENCE sequence_check_in RESTART WITH 200;
 
 insert into person (id, email, firstname, lastname, username)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),

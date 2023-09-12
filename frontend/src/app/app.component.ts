@@ -52,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
       next: (objective) => {
         this.objectiveService.getFullObjective(objective.id).subscribe((objective) => {
           this.objective = objective;
+          this.disableScrolling();
         });
         this.drawerOpen = true;
       },
@@ -95,5 +96,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.routeService.navigate(location);
     return false;
   }
+
+  private disableScrolling() {
+    document.body.setAttribute('style', 'overflow: hidden;');
+  }
+  enableScrolling() {
+    document.body.setAttribute('style', 'overflow: visible;');
+  }
+
   login() {}
 }

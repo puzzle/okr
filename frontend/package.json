@@ -60,7 +60,8 @@
       "<rootDir>/setup-jest.ts"
     ],
     "moduleNameMapper": {
-      "^zone.js/(.*)$": "<rootDir>/node_modules/zone.js/$1"
+      "zone.js/bundles/zone-testing-bundle.umd": "<rootDir>/node_modules/zone.js/bundles/zone-testing-bundle.umd",
+      "zone.js/bundles/zone-bundle.umd": "<rootDir>/node_modules/zone.js/bundles/zone-testing-bundle.umd"
     }
   }
 }

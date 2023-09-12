@@ -31,7 +31,7 @@ describe('ObjectiveColumnComponent', () => {
     fixture = TestBed.createComponent(ObjectiveComponent);
     component = fixture.componentInstance;
 
-    loader = TestbedHarnessEnvironment.loader(fixture);
+    loader = TestbedHarnessEnvironment.documentRootLoader(fixture);
     component.objective = objective;
   });
 

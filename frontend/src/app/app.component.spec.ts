@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+// @ts-ignore
+import * as de from '../assets/i18n/de.json';
 
 // FixMe: Fix this test!
 xdescribe('AppComponent', () => {
@@ -30,7 +32,7 @@ xdescribe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         TranslateTestingModule.withTranslations({
-          de: require('../assets/i18n/de.json'),
+          de: de,
         }),
         OAuthModule.forRoot(),
       ],

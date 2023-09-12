@@ -83,7 +83,7 @@ create table if not exists objective
 create index if not exists idx_objective_title
     on objective (title);
 
-create table check_in
+create table if not exists check_in
 (
     id            bigint    not null
         constraint measure_pkey

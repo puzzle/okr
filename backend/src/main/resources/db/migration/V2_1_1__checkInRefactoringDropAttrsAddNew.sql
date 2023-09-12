@@ -11,7 +11,6 @@ ALTER TABLE measure
 ALTER TABLE measure
     RENAME measure_date TO modified_on;
 
-
 UPDATE measure SET confidence = 5;
 update measure SET check_in_type = 'metric';
 

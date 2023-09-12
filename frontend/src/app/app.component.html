@@ -8,6 +8,9 @@
     <mat-drawer
       class="mt-5 position-fixed w-25 p-3"
       mode="over"
+      (keydown.escape)="closeDrawer()"
+      (keydown.enter)="closeDrawer()"
+      (keydown.space)="closeDrawer()"
       (closed)="enableScrolling()"
       [(opened)]="drawerOpen"
       position="end"

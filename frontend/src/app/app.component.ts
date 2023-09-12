@@ -106,5 +106,11 @@ export class AppComponent implements OnInit, OnDestroy {
     document.body.setAttribute('style', 'overflow: visible;');
   }
 
+  closeDrawer() {
+    this.drawerOpen = false;
+  }
+
   login() {}
+
+  protected readonly close = close;
 }

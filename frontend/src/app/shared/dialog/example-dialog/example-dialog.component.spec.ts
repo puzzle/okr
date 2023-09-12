@@ -1,7 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ExampleDialogComponent } from './example-dialog.component';
-import { HarnessLoader } from '@angular/cdk/testing';
+import { HarnessLoader, parallel } from '@angular/cdk/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
@@ -22,8 +22,8 @@ describe('ExampleDialogComponent', () => {
 
   let errors = errorData;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
         NoopAnimationsModule,
@@ -54,7 +54,7 @@ describe('ExampleDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be able to save form', async () => {
+  it('should be able to save form', waitForAsync(async () => {
     //Insert values into name input
     const nameInput = await loader.getHarness(MatInputHarness);
     await nameInput.setValue('Name');
@@ -78,7 +78,7 @@ describe('ExampleDialogComponent', () => {
     expect(formObject.name).toBe('Name');
     expect(formObject.gender).toBe(await buttons[0].getValue());
     expect(formObject.hobby).toBe(await selectOptions[0].getText());
-  });
+  }));
 
   it('should display error message of too short input', async () => {
     //Insert values into name input which don't match length validator
@@ -94,7 +94,7 @@ describe('ExampleDialogComponent', () => {
     expect(submitButton.nativeElement.disabled).toBeTruthy();
   });
 
-  it('should display error message of required dropdown', async () => {
+  it('should display error message of required dropdown', waitForAsync(async () => {
     //Open and close mat-select element to trigger validation
     const matSelect = await loader.getHarness(MatSelectHarness);
     await matSelect.open();
@@ -107,32 +107,33 @@ describe('ExampleDialogComponent', () => {
     //Check if submit button is disabled
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
     expect(submitButton.nativeElement.disabled).toBeTruthy();
-  });
+  }));
 
-  it('should not save form unless radio button is checked', async () => {
-    //Insert value into input
-    const nameInput = await loader.getHarness(MatInputHarness);
-    await nameInput.setValue('Name');
+  it('should not save form unless radio button is checked', waitForAsync(async () => {
+    await parallel(() => [loader.getHarness(MatInputHarness), loader.getHarness(MatSelectHarness)]).then(
+      waitForAsync(async ([nameInput, matSelect]) => {
+        await nameInput.setValue('Name');
 
-    //Select value from dropdown
-    const matSelect = await loader.getHarness(MatSelectHarness);
-    await matSelect.open();
-    const selectOptions = await matSelect.getOptions();
-    await selectOptions[1].click();
+        //Select value from dropdown
+        await matSelect.open();
+        const selectOptions = await matSelect.getOptions();
+        await selectOptions[1].click();
 
-    //Verify that the submit button is disabled because the radio button is not checked yet
-    const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(await submitButton.nativeElement.disabled).toBeTruthy();
+        //Verify that the submit button is disabled because the radio button is not checked yet
+        const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
+        expect(await submitButton.nativeElement.disabled).toBeTruthy();
 
-    //Check radio button
-    const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
-    await buttons[1].check();
+        //Check radio button
+        const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
+        await buttons[1].check();
 
-    //Check submit button and form output
-    expect(await submitButton.nativeElement.disabled).toBeFalsy();
-    const formObject = fixture.componentInstance.dialogForm.value;
-    expect(formObject.name).toBe('Name');
-    expect(formObject.gender).toBe(await buttons[1].getValue());
-    expect(formObject.hobby).toBe(await selectOptions[1].getText());
-  });
+        //Check submit button and form output
+        expect(await submitButton.nativeElement.disabled).toBeFalsy();
+        const formObject = fixture.componentInstance.dialogForm.value;
+        expect(formObject.name).toBe('Name');
+        expect(formObject.gender).toBe(await buttons[1].getValue());
+        expect(formObject.hobby).toBe(await selectOptions[1].getText());
+      }),
+    );
+  }));
 });

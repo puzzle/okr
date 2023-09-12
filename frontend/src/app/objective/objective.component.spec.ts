@@ -19,10 +19,10 @@ describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
   let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
-  beforeEach(async () => {
+  beforeEach(() => {
     overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
-    await TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [ObjectiveComponent],
       imports: [MatMenuModule, MatCardModule, NoopAnimationsModule, RouterTestingModule],
       providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
@@ -31,7 +31,7 @@ describe('ObjectiveColumnComponent', () => {
     fixture = TestBed.createComponent(ObjectiveComponent);
     component = fixture.componentInstance;
 
-    loader = TestbedHarnessEnvironment.documentRootLoader(fixture);
+    loader = TestbedHarnessEnvironment.loader(fixture);
     component.objective = objective;
   });
 

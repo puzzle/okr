@@ -3,7 +3,9 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OauthInterceptor implements HttpInterceptor {
   constructor(private oauthService: OAuthService) {}
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

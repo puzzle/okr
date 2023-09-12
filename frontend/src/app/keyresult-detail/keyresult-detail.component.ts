@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {KeyResult} from "../shared/types/model/KeyResult";
+import { Component, Input, OnInit } from '@angular/core';
+import { KeyResult } from '../shared/types/model/KeyResult';
 
 @Component({
   selector: 'app-keyresult-detail',

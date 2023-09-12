@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { MatDialog } from '@angular/material/dialog';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
-import { NotifierService } from "../shared/services/notifier.service";
+import { NotifierService } from '../shared/services/notifier.service';
+
 @Component({
   selector: 'app-keyresult',
   templateUrl: './keyresult.component.html',

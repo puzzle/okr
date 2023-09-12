@@ -1,6 +1,6 @@
-import {KeyResult} from "./KeyResult";
+import { KeyResult } from './KeyResult';
 
-export interface KeyResultMetric extends KeyResult{
+export interface KeyResultMetric extends KeyResult {
   baseline: number;
   stretchGoal: number;
   unit: String;

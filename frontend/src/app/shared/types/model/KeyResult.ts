@@ -1,5 +1,5 @@
 import { CheckInMin } from './CheckInMin';
-import {Objective} from "./Objective";
+import { Objective } from './Objective';
 
 export interface KeyResult {
   id: number;

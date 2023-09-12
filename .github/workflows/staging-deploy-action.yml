@@ -52,10 +52,10 @@ jobs:
           }
           git push -f origin main
 
-      - name: Set up node 16
+      - name: Set up node 18
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18.17.1
 
       - name: Install Dependencies
         run: cd ./frontend && npm ci

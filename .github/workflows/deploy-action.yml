@@ -24,10 +24,10 @@ jobs:
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_OUTPUT
         id: store-version
 
-      - name: Set up node 16
+      - name: Set up node 18
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18.17.1
 
       - name: Install Dependencies
         run: cd ./frontend && npm ci

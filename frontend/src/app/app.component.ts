@@ -51,8 +51,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.notifierService.drawerSubject.subscribe({
       next: (objective) => {
         this.objectiveService.getFullObjective(objective.id).subscribe((objective) => {
-          this.objective = objective;
           this.disableScrolling();
+          this.objective = objective;
         });
         this.drawerOpen = true;
       },
@@ -98,9 +98,11 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private disableScrolling() {
+    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 3;');
     document.body.setAttribute('style', 'overflow: hidden;');
   }
   enableScrolling() {
+    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 1;');
     document.body.setAttribute('style', 'overflow: visible;');
   }
 

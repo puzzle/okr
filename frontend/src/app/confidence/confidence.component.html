@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center gap-1" *ngIf="keyResult">
+<div class="d-flex align-items-center gap-1" *ngIf="keyResult?.lastCheckIn?.confidence">
   <div [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'">
     <p [ngClass]="edit ? 'fw-bold' : 'fw-normal'" data-testid="confidence">
       {{ keyResult.lastCheckIn?.confidence }}/{{ max }}

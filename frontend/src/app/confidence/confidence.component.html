@@ -7,7 +7,8 @@
 
   <mat-slider
     *ngIf="edit"
-    [(ngModel)]="keyResult.lastCheckIn!.confidence"
+    [value]="keyResult.lastCheckIn!.confidence"
+    (input)="keyResult.lastCheckIn!.confidence = $event.value!"
     [max]="max"
     [min]="min"
     [step]="1"

@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {KeyResult} from "../types/model/KeyResult";
+import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {KeyResult} from '../types/model/KeyResult'
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class KeyresultService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
-  getBasicKeyResult(keyresultId: number) {
+  getFullKeyResult(keyresultId: number) {
     return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId);
   }
 }

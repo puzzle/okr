@@ -1,4 +1,3 @@
-import { CheckInMin } from './CheckInMin';
 import { Objective } from './Objective';
 import {CheckIn} from "./CheckIn";
 

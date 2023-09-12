@@ -98,7 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private disableScrolling() {
-    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 3;');
+    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 2;');
     document.body.setAttribute('style', 'overflow: hidden;');
   }
   enableScrolling() {

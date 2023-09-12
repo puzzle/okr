@@ -47,7 +47,7 @@ class CheckInControllerIT {
             .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
                     .withObjective(objective).build())
             .build();
-    static CheckIn anotherCheckIn = CheckInOrdinal.Builder.builder().withValue(Zone.COMMIT).withId(4L)
+    static CheckIn anotherCheckIn = CheckInOrdinal.Builder.builder().withValue(Zone.COMMIT.toString()).withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(

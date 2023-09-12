@@ -8,14 +8,14 @@ import javax.validation.constraints.NotNull;
 @DiscriminatorValue("ordinal")
 public class CheckInOrdinal extends CheckIn {
     @NotNull(message = "Value must not be null")
-    private Zone valueOrdinal;
+    private String valueOrdinal;
 
     /* Getter and Setter */
-    public Zone getValue() {
+    public String getValue() {
         return valueOrdinal;
     }
 
-    public void setValue(Zone value) {
+    public void setValue(String value) {
         this.valueOrdinal = value;
     }
 
@@ -31,7 +31,7 @@ public class CheckInOrdinal extends CheckIn {
 
     /* Builder */
     public static final class Builder extends CheckIn.Builder {
-        private Zone value;
+        private String value;
 
         private Builder() {
         }
@@ -40,7 +40,7 @@ public class CheckInOrdinal extends CheckIn {
             return new Builder();
         }
 
-        public Builder withValue(Zone value) {
+        public Builder withValue(String value) {
             this.value = value;
             return this;
         }

@@ -1,24 +1,23 @@
 package ch.puzzle.okr.dto.checkIn;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.checkIn.Zone;
 
 import java.time.LocalDateTime;
 
 public class CheckInOrdinalDto extends CheckInDto {
-    private Zone value;
+    private String value;
 
     public CheckInOrdinalDto(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
-            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, Zone value) {
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String value) {
         super(id, changeInfo, initiatives, confidence, keyResultId, createdBy, createdOn, modifiedOn, checkInType);
         this.value = value;
     }
 
-    public Zone getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Zone value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

@@ -125,6 +125,7 @@ export const MY_FORMATS = {
     MatSliderModule,
     FormsModule,
     MatDividerModule,
+    MatSidenavModule,
   ],
   providers: [
     {

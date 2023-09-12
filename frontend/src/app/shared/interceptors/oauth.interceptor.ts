@@ -18,8 +18,8 @@ export class OauthInterceptor implements HttpInterceptor {
       this.oauthService.events.pipe(
         filter((e) => e.type === 'token_received'),
         timeout(500),
-        map((_) => this.oauthService.getAccessToken())
-      )
+        map((_) => this.oauthService.getAccessToken()),
+      ),
     ).pipe(
       take(1),
       mergeMap((token) => {
@@ -31,7 +31,7 @@ export class OauthInterceptor implements HttpInterceptor {
 
         return next.handle(req);
         // .pipe(catchError((err) => this.errorHandler.handleError(err)));
-      })
+      }),
     );
   }
 }

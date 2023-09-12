@@ -30,7 +30,7 @@ export class ObjectiveComponent {
 
   openDialog() {
     throw new Error(
-      'This function should not have been called, since openDialog should be false, even though it appears to be true!'
+      'This function should not have been called, since openDialog should be false, even though it appears to be true!',
     );
   }
 }

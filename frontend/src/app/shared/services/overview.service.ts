@@ -22,7 +22,7 @@ export class OverviewService {
           return overview;
         });
         return overviews;
-      })
+      }),
     );
   }
 }

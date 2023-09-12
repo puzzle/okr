@@ -7,7 +7,7 @@ xdescribe('OauthInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [OauthInterceptor],
-    })
+    }),
   );
 
   it('should be created', () => {

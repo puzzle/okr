@@ -19,7 +19,11 @@ export class RouteService {
     this.previousUrl = url;
   }
 
-  constructor(private location: Location, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private location: Location,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     this.currentUrl = this.router.url;
     router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -48,7 +52,7 @@ export class RouteService {
   public removeFromSelectedObjectives(objectiveId: number) {
     this.route.queryParams.pipe(first()).subscribe((params) => {
       const selectedObjectives = (params['objectives']?.split(',') ?? []).filter(
-        (item: string | null | undefined) => getNumberOrNull(item) !== objectiveId
+        (item: string | null | undefined) => getNumberOrNull(item) !== objectiveId,
       );
       const queryParams = {
         objectives: selectedObjectives.join(','),
@@ -165,7 +169,7 @@ export class RouteService {
           },
         };
         return this.router.navigate(['/'], navExtras);
-      })
+      }),
     );
   }
 
@@ -180,7 +184,7 @@ export class RouteService {
           },
         };
         return this.router.navigate(['/'], navExtras);
-      })
+      }),
     );
   }
 }

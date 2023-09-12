@@ -74,7 +74,7 @@ describe('ApplicationHeaderComponent', () => {
     //Assert that banner is hidden was changed
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: -' + (component.PUZZLE_TOP_BAR_HEIGHT + bannerHeight)
+      'top: -' + (component.PUZZLE_TOP_BAR_HEIGHT + bannerHeight),
     );
   }));
 
@@ -93,7 +93,7 @@ describe('ApplicationHeaderComponent', () => {
     //Assert that banner is visible
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: ' + component.PUZZLE_TOP_BAR_HEIGHT
+      'top: ' + component.PUZZLE_TOP_BAR_HEIGHT,
     );
   }));
 

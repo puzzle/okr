@@ -17,7 +17,10 @@ export class ExampleDialogComponent {
     hobby: new FormControl<string>('', [Validators.required]),
   });
 
-  constructor(public dialog: MatDialogRef<ExampleDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {}
+  constructor(
+    public dialog: MatDialogRef<ExampleDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any,
+  ) {}
 
   save() {
     this.dialog.close({ data: this.dialogForm.value });

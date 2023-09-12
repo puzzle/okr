@@ -1,5 +1,5 @@
 import { Objective } from './Objective';
-import {CheckIn} from "./CheckIn";
+import { CheckIn } from "./CheckIn";
 
 export interface KeyResult {
   id: number;

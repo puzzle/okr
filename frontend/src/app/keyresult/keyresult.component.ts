@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { MatDialog } from '@angular/material/dialog';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
+import { NotifierService } from "../shared/services/notifier.service";
 @Component({
   selector: 'app-keyresult',
   templateUrl: './keyresult.component.html',
@@ -9,7 +10,7 @@ import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private notifierService:NotifierService) {}
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
@@ -18,5 +19,9 @@ export class KeyresultComponent {
     });
 
     dialogRef.afterClosed().subscribe(() => {});
+  }
+
+  openDrawer() {
+    this.notifierService.closeDetailSubject.next();
   }
 }

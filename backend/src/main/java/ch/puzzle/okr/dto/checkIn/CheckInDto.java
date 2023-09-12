@@ -4,7 +4,7 @@ import ch.puzzle.okr.models.User;
 
 import java.time.LocalDateTime;
 
-public abstract class CheckInDto {
+public class CheckInDto {
     Long id;
     String changeInfo;
     String initiatives;
@@ -27,6 +27,9 @@ public abstract class CheckInDto {
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
         this.checkInType = checkInType;
+    }
+
+    public CheckInDto() {
     }
 
     public Long getId() {

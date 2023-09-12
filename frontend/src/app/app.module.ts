@@ -38,7 +38,7 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
 import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
-import {MatSidenavModule} from "@angular/material/sidenav";
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
 import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { ConfidenceComponent } from './confidence/confidence.component';

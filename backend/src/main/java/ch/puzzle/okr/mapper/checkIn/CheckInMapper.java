@@ -32,7 +32,9 @@ public class CheckInMapper {
     }
 
     public CheckIn toCheckIn(CheckInDto checkInDto) {
-        if (isMetricCheckIn(checkInDto)) {
+        if (checkInDto.getCheckInType() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided type of this CheckIn is null");
+        } else if (isMetricCheckIn(checkInDto)) {
             return checkInMetricMapper.toCheckInMetric((CheckInMetricDto) checkInDto);
         } else if (isOrdinalCheckIn(checkInDto)) {
             return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto);

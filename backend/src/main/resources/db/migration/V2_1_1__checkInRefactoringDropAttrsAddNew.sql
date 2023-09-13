@@ -1,4 +1,5 @@
-ALTER TABLE measure RENAME value TO value_metric;
+ALTER TABLE measure
+    RENAME value TO value_metric;
 ALTER TABLE measure
     ALTER COLUMN value_metric DROP NOT NULL,
 ALTER
@@ -43,8 +44,8 @@ select t.id                as "team_id",
        kr.target_zone,
        kr.stretch_zone,
        coalesce(c.id, -1)  as "check_in_id",
-       c.value_metric     as "check_in_value",
-       c.zone    as "check_in_zone",
+       c.value_metric      as "check_in_value",
+       c.zone              as "check_in_zone",
        c.confidence,
        c.created_on
 FROM TEAM T

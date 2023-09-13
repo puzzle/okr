@@ -81,7 +81,7 @@ public class OverviewMapper {
         OverviewLastCheckInMetricDto lastCheckIn = null;
         if (overview.getOverviewId().getCheckInId() != null && overview.getOverviewId().getCheckInId() > -1) {
             lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),
-                    overview.getCheckInValueMetric(), overview.getConfidence(), overview.getCreatedOn());
+                    overview.getCheckInValue(), overview.getConfidence(), overview.getCreatedOn());
         }
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
                 overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(), lastCheckIn);

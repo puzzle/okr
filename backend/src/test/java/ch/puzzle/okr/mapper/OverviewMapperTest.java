@@ -55,7 +55,7 @@ public class OverviewMapperTest {
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withMeasureId(4L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                .withCheckInValueMetric(27.5).withConfidence(5).build());
+                .withCheckInValue(27.5).withConfidence(5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -70,7 +70,7 @@ public class OverviewMapperTest {
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withMeasureId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withCheckInValueMetric(27.5).build(),
+                        .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(5L).build())
@@ -90,12 +90,12 @@ public class OverviewMapperTest {
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withMeasureId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withCheckInValueMetric(27.5).build(),
+                        .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(2L)
                                 .withKeyResultId(6L).withMeasureId(7L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
-                        .withCheckInValueMetric(33.5).build());
+                        .withCheckInValue(33.5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -111,7 +111,7 @@ public class OverviewMapperTest {
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withMeasureId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withCheckInValueMetric(27.5).build(),
+                        .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
                                 .withKeyResultId(6L).build())

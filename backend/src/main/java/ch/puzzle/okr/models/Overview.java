@@ -27,8 +27,8 @@ public class Overview {
     private String commitZone;
     private String targetZone;
     private String stretchZone;
-    private Double checkInValueMetric;
-    private String checkInValueOrdinal;
+    private Double checkInValue;
+    private String checkInZone;
     private Integer confidence;
     private LocalDateTime createdOn;
 
@@ -49,8 +49,8 @@ public class Overview {
         commitZone = builder.commitZone;
         targetZone = builder.targetZone;
         stretchZone = builder.stretchZone;
-        checkInValueMetric = builder.checkInValueMetric;
-        checkInValueOrdinal = builder.checkInValueOrdinal;
+        checkInValue = builder.checkInValue;
+        checkInZone = builder.checkInZone;
         confidence = builder.confidence;
         createdOn = builder.createdOn;
     }
@@ -107,12 +107,12 @@ public class Overview {
         return stretchZone;
     }
 
-    public Double getCheckInValueMetric() {
-        return checkInValueMetric;
+    public Double getCheckInValue() {
+        return checkInValue;
     }
 
-    public String getCheckInValueOrdinal() {
-        return checkInValueOrdinal;
+    public String getCheckInZone() {
+        return checkInZone;
     }
 
     public Integer getConfidence() {
@@ -130,8 +130,8 @@ public class Overview {
                 + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
                 + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
                 + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-                + stretchZone + '\'' + ", checkInValueMetric=" + checkInValueMetric + ", checkInValueOrdinal='"
-                + checkInValueOrdinal + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
+                + stretchZone + '\'' + ", checkInValueMetric=" + checkInValue + ", checkInValueOrdinal='" + checkInZone
+                + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
     }
 
     public static final class Builder {
@@ -148,8 +148,8 @@ public class Overview {
         private String commitZone;
         private String targetZone;
         private String stretchZone;
-        private Double checkInValueMetric;
-        private String checkInValueOrdinal;
+        private Double checkInValue;
+        private String checkInZone;
         private Integer confidence;
         private LocalDateTime createdOn;
 
@@ -225,13 +225,13 @@ public class Overview {
             return this;
         }
 
-        public Builder withCheckInValueMetric(Double valueMetric) {
-            this.checkInValueMetric = valueMetric;
+        public Builder withCheckInValue(Double checkInValue) {
+            this.checkInValue = checkInValue;
             return this;
         }
 
-        public Builder withCheckInValueOrdinal(String valueMetric) {
-            this.checkInValueOrdinal = valueMetric;
+        public Builder withCheckInZone(String checkInZone) {
+            this.checkInZone = checkInZone;
             return this;
         }
 

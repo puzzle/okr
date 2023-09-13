@@ -26,9 +26,9 @@ ALTER TABLE "public"."measure"
 ALTER TABLE "public"."sequence_measure"
     RENAME TO "sequence_check_in";
 
-DROP VIEW overview;
-CREATE VIEW overview AS
-SELECT t.id                as "team_id",
+DROP VIEW IF EXISTS OVERVIEW;
+CREATE VIEW OVERVIEW AS
+select t.id                as "team_id",
        t.name              as "team_name",
        coalesce(o.id, -1)  as "objective_id",
        o.title             as "objective_title",
@@ -44,19 +44,14 @@ SELECT t.id                as "team_id",
        kr.target_zone,
        kr.stretch_zone,
        coalesce(c.id, -1)  as "check_in_id",
-       c."value_metric"           as "check_in_value_metric",
-       c."value_ordinal" as "check_in_value_ordinal",
-       c."confidence",
+       c.value_metric      as "check_in_value_metric",
+       c.value_ordinal     as "check_in_value_ordinal",
+       c.confidence,
        c.created_on
-FROM team t
-         LEFT JOIN objective o ON t.id = o.team_id
-         LEFT JOIN quarter q ON o.quarter_id = q.id
-         LEFT JOIN key_result kr ON o.id = kr.objective_id
-         LEFT JOIN "check_in" c ON kr.id = c.key_result_id AND c.modified_on = (SELECT MAX(cc.modified_on)
-                                                                              FROM "check_in" cc
-                                                                              WHERE cc.key_result_id = c.key_result_id)
-
-
-
-
-
+FROM TEAM T
+         LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
+         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
+         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
+         LEFT JOIN check_in C ON KR.ID = C.KEY_RESULT_ID AND C.modified_on = (SELECT MAX(CC.modified_on)
+                                                                              FROM check_in CC
+                                                                              WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);

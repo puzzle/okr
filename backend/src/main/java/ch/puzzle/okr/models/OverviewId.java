@@ -10,7 +10,7 @@ public class OverviewId implements Serializable {
     private Long teamId;
     private Long objectiveId;
     private Long keyResultId;
-    private Long measureId;
+    private Long checkInId;
 
     public OverviewId() {
     }
@@ -19,7 +19,7 @@ public class OverviewId implements Serializable {
         this.teamId = teamId;
         this.objectiveId = objectiveId;
         this.keyResultId = keyResultId;
-        this.measureId = measureId;
+        this.checkInId = measureId;
     }
 
     private OverviewId(Builder builder) {
@@ -42,14 +42,14 @@ public class OverviewId implements Serializable {
         return keyResultId;
     }
 
-    public Long getMeasureId() {
-        return measureId;
+    public Long getCheckInId() {
+        return checkInId;
     }
 
     @Override
     public String toString() {
         return "OverviewId{" + "teamId=" + teamId + ", objectiveId=" + objectiveId + ", keyResultId=" + keyResultId
-                + ", measureId=" + measureId + '}';
+                + ", measureId=" + checkInId + '}';
     }
 
     @Override
@@ -60,12 +60,12 @@ public class OverviewId implements Serializable {
             return false;
         OverviewId that = (OverviewId) o;
         return Objects.equals(teamId, that.teamId) && Objects.equals(objectiveId, that.objectiveId)
-                && Objects.equals(keyResultId, that.keyResultId) && Objects.equals(measureId, that.measureId);
+                && Objects.equals(keyResultId, that.keyResultId) && Objects.equals(checkInId, that.checkInId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(objectiveId, keyResultId, measureId);
+        return Objects.hash(objectiveId, keyResultId, checkInId);
     }
 
     public static final class Builder {

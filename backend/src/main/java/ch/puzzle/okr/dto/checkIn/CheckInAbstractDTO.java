@@ -18,7 +18,9 @@ public class CheckInAbstractDTO {
     String zone;
     Double valueMetric;
 
-    public CheckInAbstractDTO(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId, User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone, Double valueMetric) {
+    public CheckInAbstractDTO(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone,
+            Double valueMetric) {
         this.id = id;
         this.changeInfo = changeInfo;
         this.initiatives = initiatives;

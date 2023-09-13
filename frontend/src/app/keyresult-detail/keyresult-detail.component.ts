@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {KeyResult} from '../shared/types/model/KeyResult';
-import {DATE_FORMAT} from "../shared/constantLibary";
 
 @Component({
   selector: 'app-keyresult-detail',

@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,8 +65,8 @@ public class CheckInPersistenceServiceIT {
 
     @Test
     void updateKeyResult_ShouldUpdateKeyResult() {
-        CheckIn CheckIn = createCheckIn(null);
-        createdCheckIn = checkInPersistenceService.save(CheckIn);
+        CheckIn checkIn = createCheckIn(null);
+        createdCheckIn = checkInPersistenceService.save(checkIn);
         createdCheckIn.setChangeInfo("Updated CheckIn");
 
         CheckIn updateCheckIn = checkInPersistenceService.save(createdCheckIn);
@@ -112,13 +113,30 @@ public class CheckInPersistenceServiceIT {
 
     @Test
     void deleteCheckInById_ShouldDeleteCheckIn() {
-        CheckIn CheckIn = createCheckIn(null);
-        createdCheckIn = checkInPersistenceService.save(CheckIn);
+        CheckIn checkIn = createCheckIn(null);
+        createdCheckIn = checkInPersistenceService.save(checkIn);
         checkInPersistenceService.deleteById(createdCheckIn.getId());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInPersistenceService.findById(createdCheckIn.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("CheckIn with id %d not found", createdCheckIn.getId()), exception.getReason());
+    }
+
+    @Test
+    void shouldGetCheckInsByKeyResultIdAndOrderThemByDateDesc() {
+        List<CheckIn> checkIns = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(7L);
+        assertTrue(checkIns.get(0).getCreatedOn().isAfter(checkIns.get(checkIns.size() - 1).getCreatedOn()));
+    }
+
+    @Test
+    void shouldGetLastCheckInOfKeyResult() {
+        CheckIn checkIn = checkInPersistenceService.getLastCheckInOfKeyResult(7L);
+        List<CheckIn> checkInList = checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(7L);
+        for (CheckIn checkInLoop : checkInList) {
+            if (!Objects.equals(checkInLoop.getId(), checkIn.getId())) {
+                assertTrue(checkIn.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
+            }
+        }
     }
 }

@@ -18,10 +18,10 @@ public class CheckInValidationService extends ValidationBase<CheckIn, Long> {
     }
 
     @Override
-    public void validateOnUpdate(Long aLong, CheckIn model) {
+    public void validateOnUpdate(Long id, CheckIn model) {
         throwExceptionIfModelIsNull(model);
-        throwExceptionWhenIdIsNull(model.getId());
-        doesEntityExist(model.getId());
+        throwExceptionWhenIdIsNull(id);
+        doesEntityExist(id);
 
         validate(model);
     }

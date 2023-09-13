@@ -25,15 +25,16 @@ public abstract class CheckIn {
     @Size(max = 4096, message = "Attribute initiatives has a max length of 4096 characters")
     private String initiatives;
 
-    @Max(10)
-    @Min(1)
+    @Max(value = 10, message = "Attribute confidence has a max value of 10")
+    @Min(value = 1, message = "Attribute confidence has a min value of 1")
+    @NotNull(message = "Confidence must not be null")
     private Integer confidence;
 
     @NotNull(message = "KeyResult must not be null")
     @ManyToOne
     private KeyResult keyResult;
 
-    @NotNull(message = "Owner must not be null")
+    @NotNull(message = "CreatedBy must not be null")
     @ManyToOne
     private User createdBy;
 

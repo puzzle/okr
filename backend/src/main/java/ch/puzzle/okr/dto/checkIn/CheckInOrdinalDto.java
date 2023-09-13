@@ -5,19 +5,19 @@ import ch.puzzle.okr.models.User;
 import java.time.LocalDateTime;
 
 public class CheckInOrdinalDto extends CheckInDto {
-    private String value;
+    private String zone;
 
     public CheckInOrdinalDto(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
-            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String value) {
+            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone) {
         super(id, changeInfo, initiatives, confidence, keyResultId, createdBy, createdOn, modifiedOn, checkInType);
-        this.value = value;
+        this.zone = zone;
     }
 
     public String getValue() {
-        return value;
+        return zone;
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.zone = value;
     }
 }

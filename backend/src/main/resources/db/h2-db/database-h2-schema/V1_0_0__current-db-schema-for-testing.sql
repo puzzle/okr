@@ -97,7 +97,7 @@ create table if not exists check_in
     key_result_id bigint    not null,
     confidence    integer,
     check_in_type varchar(255),
-    value_ordinal text
+    zone          text
 );
 
 create table if not exists key_result
@@ -145,8 +145,8 @@ select t.id                as "team_id",
        kr.target_zone,
        kr.stretch_zone,
        coalesce(c.id, -1)  as "check_in_id",
-       c.value_metric      as "check_in_value_metric",
-       c.value_ordinal     as "check_in_value_ordinal",
+       c.value_metric      as "check_in_value",
+       c.zone              as "check_in_zone",
        c.confidence,
        c.created_on
 FROM TEAM T

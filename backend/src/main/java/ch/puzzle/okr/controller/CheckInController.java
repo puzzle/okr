@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.checkIn.CheckIn;
@@ -46,7 +47,7 @@ public class CheckInController {
             @ApiResponse(responseCode = "400", description = "Can't create new Check-In, not allowed to give an ID", content = @Content) })
     @PostMapping
     public ResponseEntity<CheckInDto> createCheckIn(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInDto checkInDto,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInAbstractDTO checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.saveCheckIn(checkIn, jwt));
@@ -62,7 +63,7 @@ public class CheckInController {
     @PutMapping("/{id}")
     public ResponseEntity<CheckInDto> updateCheckIn(
             @Parameter(description = "The ID for updating a Check-In.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInDto checkInDto,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInAbstractDTO checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto updatedCheckIn = this.checkInMapper

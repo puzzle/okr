@@ -1,5 +1,6 @@
 package ch.puzzle.okr.mapper.checkIn;
 
+import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
@@ -25,13 +26,13 @@ public class CheckInOrdinalMapper {
                 checkInOrdinal.getCheckInType(), checkInOrdinal.getValue());
     }
 
-    public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinal) {
-        return CheckInOrdinal.Builder.builder().withValue(checkInOrdinal.getValue()).withId(checkInOrdinal.getId())
-                .withChangeInfo(checkInOrdinal.getChangeInfo()).withInitiatives(checkInOrdinal.getInitiatives())
-                .withConfidence(checkInOrdinal.getConfidence())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinal.getKeyResultId()))
-                .withCreatedBy(userBusinessService.getOwnerById(checkInOrdinal.getCreatedBy().getId()))
-                .withCreatedOn(checkInOrdinal.getCreatedOn()).withModifiedOn(checkInOrdinal.getModifiedOn())
-                .withCheckInType(checkInOrdinal.getCheckInType()).build();
+    public CheckIn toCheckInOrdinal(CheckInAbstractDTO checkInAbstractDTO) {
+        return CheckInOrdinal.Builder.builder().withValue(checkInAbstractDTO.getZone())
+                .withId(checkInAbstractDTO.getId()).withChangeInfo(checkInAbstractDTO.getChangeInfo())
+                .withInitiatives(checkInAbstractDTO.getInitiatives()).withConfidence(checkInAbstractDTO.getConfidence())
+                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInAbstractDTO.getKeyResultId()))
+                .withCreatedBy(userBusinessService.getOwnerById(checkInAbstractDTO.getCreatedBy().getId()))
+                .withCreatedOn(checkInAbstractDTO.getCreatedOn()).withModifiedOn(checkInAbstractDTO.getModifiedOn())
+                .withCheckInType(checkInAbstractDTO.getCheckInType()).build();
     }
 }

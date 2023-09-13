@@ -1,5 +1,4 @@
-ALTER TABLE measure
-    RENAME value TO value_metric;
+ALTER TABLE measure RENAME value TO value_metric;
 ALTER TABLE measure
     ALTER COLUMN value_metric DROP NOT NULL,
 ALTER
@@ -12,7 +11,7 @@ NOT NULL,
 COLUMN change_info TYPE VARCHAR(4096),
     ADD COLUMN confidence    INTEGER,
     ADD COLUMN check_in_type VARCHAR(255),
-    ADD COLUMN value_ordinal TEXT;
+    ADD COLUMN zone TEXT;
 ALTER TABLE measure
     RENAME measure_date TO modified_on;
 
@@ -44,8 +43,8 @@ select t.id                as "team_id",
        kr.target_zone,
        kr.stretch_zone,
        coalesce(c.id, -1)  as "check_in_id",
-       c.value_metric      as "check_in_value_metric",
-       c.value_ordinal     as "check_in_value_ordinal",
+       c.value_metric     as "check_in_value",
+       c.zone    as "check_in_zone",
        c.confidence,
        c.created_on
 FROM TEAM T

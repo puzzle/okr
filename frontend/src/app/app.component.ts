@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
-import {NotifierService} from "./shared/services/notifier.service";
+import { NotifierService } from "./shared/services/notifier.service";
 
 @Component({
   selector: 'app-root',

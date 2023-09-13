@@ -52,8 +52,7 @@ public class CheckInValidationServiceTest {
     private CheckInValidationService validator;
 
     private static Stream<Arguments> confidenceValidationArguments() {
-        return Stream.of(
-                arguments(-1, List.of("Attribute confidence has a min value of 1")),
+        return Stream.of(arguments(-1, List.of("Attribute confidence has a min value of 1")),
                 arguments(11, List.of("Missing attribute title when saving objective")),
                 arguments(null, List.of("Confidence must not be null")));
     }
@@ -70,49 +69,28 @@ public class CheckInValidationServiceTest {
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).build();
 
-        this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(13D).withStretchGoal(25D).withUnit("MEMBERS")
-                .withId(8L).withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user).build();
+        this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(13D).withStretchGoal(25D)
+                .withUnit("MEMBERS").withId(8L).withTitle("Keyresult Metric").withObjective(this.objective)
+                .withOwner(this.user).build();
 
         this.keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Commit Zone")
                 .withTargetZone("Target Zone").withTitle("Keyresult Ordinal").withObjective(this.objective)
                 .withOwner(this.user).build();
 
-        this.fullCheckIn = CheckInMetric.Builder.builder().withValue(45D)
-                .withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives")
-                .withCheckInType("metric")
-                .withConfidence(10)
-                .withKeyResult(this.keyResultMetric)
-                .withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX)
-                .withCreatedBy(user)
-                .build();
+        this.fullCheckIn = CheckInMetric.Builder.builder().withValue(45D).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withCheckInType("metric").withConfidence(10)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .withCreatedBy(user).build();
 
-        this.checkInMetric = CheckInMetric.Builder.builder()
-                .withValue(27D)
-                .withId(1L)
-                .withChangeInfo("ChangeInfoMetric")
-                .withInitiatives("InitiativesMetric")
-                .withCheckInType("metric")
-                .withConfidence(8)
-                .withKeyResult(this.keyResultMetric)
-                .withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX)
-                .withCreatedBy(user)
-                .build();
+        this.checkInMetric = CheckInMetric.Builder.builder().withValue(27D).withId(1L)
+                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withCheckInType("metric")
+                .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
 
-        this.checkInOrdinal = CheckInOrdinal.Builder.builder()
-                .withValue(Zone.STRETCH.toString())
-                .withId(1L)
-                .withChangeInfo("ChangeInfoMetric")
-                .withInitiatives("InitiativesMetric")
-                .withCheckInType("metric")
-                .withConfidence(8)
-                .withKeyResult(this.keyResultMetric)
-                .withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX)
-                .withCreatedBy(user)
-                .build();
+        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withValue(Zone.STRETCH.toString()).withId(1L)
+                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withCheckInType("metric")
+                .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
 
         /* Mock essential methods */
         when(checkInPersistenceService.getModelName()).thenReturn("CheckIn");
@@ -161,10 +139,10 @@ public class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnCreate_ShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<String> errors) {
-        CheckIn checkIn = CheckInMetric.Builder.builder()
-                .withValue(40.9).withCheckInType("metric").withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
-                .withConfidence(confidence).withCreatedBy(this.user).withKeyResult(this.keyResultMetric)
-                .withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX).build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withCheckInType("metric")
+                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withConfidence(confidence)
+                .withCreatedBy(this.user).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(checkIn));
@@ -221,11 +199,10 @@ public class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<String> errors) {
-        CheckIn checkIn = CheckInMetric.Builder.builder()
-                .withValue(40.9).withId(2L).withCheckInType("metric").withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(this.user)
-                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
-                .build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(2L).withCheckInType("metric")
+                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withConfidence(confidence)
+                .withCreatedBy(this.user).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
+                .withModifiedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, checkIn));

@@ -88,10 +88,27 @@ jobs:
           push: true
           tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version }}-TST
 
-#      - name: Output image
-#        id: image
-#        run: |
-#          # NOTE: Set the image as an output because the `env` context is not
-#          # available to the inputs of a reusable workflow call.
-#          image_name="${IMAGE_REGISTRY}/${IMAGE_NAME}"
-#          echo "image=$image_name" >> "$GITHUB_OUTPUT"
+      - name: Output image
+        id: image
+        run: |
+          # NOTE: Set the image as an output because the `env` context is not
+          # available to the inputs of a reusable workflow call.
+          image_name="${{ secrets.QUAY_REGISTRY }}/${IMAGE_NAME}"
+          echo "image=$image_name" >> "$GITHUB_OUTPUT"
+
+  # This step calls the container workflow to generate provenance and push it to
+  # the container registry.
+  provenance:
+    needs: [okr-build]
+    permissions:
+      actions: read # for detecting the Github Actions environment.
+      id-token: write # for creating OIDC tokens for signing.
+      packages: write # for uploading attestations.
+#    if: startsWith(github.ref, 'refs/tags/')
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.9.0
+    with:
+      image: ${{ needs.okr-build.outputs.image }}
+      digest: ${{ needs.okr-build.outputs.digest }}
+    secrets:
+      registry-username: ${{ secrets.QUAY_USERNAME }}
+      registry-password: ${{ secrets.QUAY_TOKEN }}

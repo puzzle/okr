@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       registryPath: ${{ secrets.QUAY_REGISTRY }}
-      imageName: ${ IMAGE_NAME }
+      imageName: ${{ env.IMAGE_NAME }}
       digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout the repository

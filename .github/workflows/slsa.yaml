@@ -5,6 +5,10 @@ permissions: read-all
 
 jobs:
   staging-okr-deploy:
+    permissions:
+      id-token: write # For signing.
+      contents: read # For repo checkout of private repos.
+      actions: read # For getting workflow run on private repos.
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -44,10 +48,5 @@ jobs:
 
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P staging
-
-  provenance:
-    permissions:
-      id-token: write # For signing.
-      contents: read # For repo checkout of private repos.
-      actions: read # For getting workflow run on private repos.
-    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_maven_slsa3.yml@main
+      - name: create provenance
+        uses: slsa-framework/slsa-github-generator/.github/workflows/builder_maven_slsa3.yml@main

@@ -103,6 +103,9 @@ jobs:
           image_name="${{ secrets.QUAY_REGISTRY }}/${IMAGE_NAME}"
           echo "image=$image_name"
           echo "image=$image_name" >> "$GITHUB_OUTPUT"
+          image_digest="${{steps.build.outputs.digest}}"
+          echo "digest=image_digest"
+          echo "digest=$image_digest" >> "$GITHUB_OUTPUT"
 
       - name: Output state
         run: |
@@ -110,8 +113,8 @@ jobs:
 
       - name: Output needed
         run: |
-          echo "Image: [${{steps.image.outputs.image}}]"
-          echo "Digest: [${{steps.build.outputs.containerimage.digest}}]"
+          echo "Image: ${{steps.image.outputs.image}}"
+          echo "Digest: ${{steps.build.outputs.digest}}"
 
   info:
     needs: [okr-build]

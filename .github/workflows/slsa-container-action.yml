@@ -9,7 +9,8 @@ jobs:
   okr-build:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ secrets.QUAY_REGISTRY }}/${ IMAGE_NAME }
+      registryPath: ${{ secrets.QUAY_REGISTRY }}
+      imageName: ${ IMAGE_NAME }
       digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout the repository
@@ -125,9 +126,12 @@ jobs:
     steps:
       - name: Output state
         run: |
-          echo "image"
-          output_infos=${{needs.okr-build.outputs.image}}
-          echo "$output_infos"
+          echo "registryPath"
+          registryPath=${{needs.okr-build.outputs.registryPath}}
+          echo "$registryPath"
+          echo "imageName"
+          imageName=${{needs.okr-build.outputs.imageName}}
+          echo "$imageName"
           echo "build2"
           output_infos2=${{needs.okr-build.outputs.digest}}
           echo "$output_infos2"

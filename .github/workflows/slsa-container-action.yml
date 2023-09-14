@@ -1,0 +1,36 @@
+name: 'SLSA container build'
+
+on: [push]
+
+jobs:
+  okr-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Extract Maven project version
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_OUTPUT
+        id: store-version
+
+      - name: Set up node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install Dependencies
+        run: cd ./frontend && npm ci
+
+      - name: Build frontend with Angular
+        run: cd ./frontend && npm run build
+
+      - name: Build backend with Maven
+        run: mvn -B clean package --file pom.xml -P build-for-docker

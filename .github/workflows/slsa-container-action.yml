@@ -82,11 +82,16 @@ jobs:
 
       - name: Build and push the Docker image
         uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
+        id: build
         with:
           context: .
           file: docker/Dockerfile
           push: true
           tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version }}-TST
+
+      - name: Output image infos
+        run: |
+          echo  ${{join(steps.image.outputs.*, '\n')}}
 
       - name: Output image
         id: image
@@ -96,6 +101,10 @@ jobs:
           image_name="${{ secrets.QUAY_REGISTRY }}/${IMAGE_NAME}"
           echo "image=$image_name"
           echo "image=$image_name" >> "$GITHUB_OUTPUT"
+
+      - name: Output state
+        run: |
+          echo  ${{join(steps.image.outputs.*, '\n')}}
 
   # This step calls the container workflow to generate provenance and push it to
   # the container registry.

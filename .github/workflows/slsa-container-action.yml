@@ -113,8 +113,8 @@ jobs:
       - name: Output state
         run: |
           echo "build"
-          echo ${{join(needs.okr-build.outputs.*, '\n')}}
-          echo ${{join(needs.build.outputs.*, '\n')}}
+          echo "${{join(needs.okr-build.outputs.*, '\n')}}"
+          echo "${{join(needs.build.outputs.*, '\n')}}"
 
 
   # This step calls the container workflow to generate provenance and push it to

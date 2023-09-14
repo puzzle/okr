@@ -91,7 +91,7 @@ jobs:
 
       - name: Output image infos
         run: |
-          echo  ${{join(steps.image.outputs.*, '\n')}}
+          echo  ${{join(steps.build.outputs.*, '\n')}}
 
       - name: Output image
         id: image
@@ -105,6 +105,17 @@ jobs:
       - name: Output state
         run: |
           echo  ${{join(steps.image.outputs.*, '\n')}}
+
+  info:
+    needs: [okr-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output state
+        run: |
+          echo "build"
+          echo ${{join(needs.okr-build.outputs.*, '\n')}}
+          echo ${{join(needs.build.outputs.*, '\n')}}
+
 
   # This step calls the container workflow to generate provenance and push it to
   # the container registry.

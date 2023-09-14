@@ -8,6 +8,9 @@ env:
 jobs:
   okr-build:
     runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+      digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout the repository
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v2.3.4
@@ -126,7 +129,7 @@ jobs:
           output_infos=${{needs.okr-build.outputs.image}}
           echo "$output_infos"
           echo "build2"
-          output_infos2=${{needs.okr-build.outputs.image}}
+          output_infos2=${{needs.okr-build.outputs.digest}}
           echo "$output_infos2"
 
   # This step calls the container workflow to generate provenance and push it to

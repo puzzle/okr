@@ -122,11 +122,12 @@ jobs:
     steps:
       - name: Output state
         run: |
-          echo "build"
-          output_infos=${{join(needs.okr-build.outputs.*, '\n')}}
+          echo "image"
+          output_infos=${{needs.okr-build.outputs.image}}
           echo "$output_infos"
           echo "build2"
-          output_infos2=${{join(needs.build.outputs.*, '\n')}}
+          output_infos2=${{needs.okr-build.outputs.image}}
+          echo "$output_infos2"
 
   # This step calls the container workflow to generate provenance and push it to
   # the container registry.

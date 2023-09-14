@@ -2,12 +2,15 @@ name: 'SLSA container build'
 
 on: [push]
 
+env:
+  IMAGE_NAME: "okr"
+
 jobs:
   okr-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v2.3.4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -34,3 +37,61 @@ jobs:
 
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P build-for-docker
+
+  # This step builds our image, pushes it, and outputs the repo hash digest.
+#  container-build:
+#    permissions:
+#      contents: read
+#      packages: write
+#    outputs:
+#      image: ${{ steps.image.outputs.image }}
+#      digest: ${{ steps.build.outputs.digest }}
+#    runs-on: ubuntu-latest
+#    steps:
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@dc7b9719a96d48369863986a06765841d7ea23f6 # v2.0.0
+
+#      - name: Authenticate Docker
+#        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # v2.0.0
+#        with:
+#          registry: ${{ env.IMAGE_REGISTRY }}
+#          username: ${{ github.actor }}
+#          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to Quay registry
+        uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # v2.0.0
+        with:
+          registry: ${{ secrets.QUAY_REGISTRY }}
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@69f6fc9d46f2f8bf0d5491e4aabe0bb8c6a4678a # v4.0.1
+        with:
+          images: ${{ secrets.QUAY_REGISTRY }}/${{ env.IMAGE_NAME }}
+
+#      - name: Build and push Docker image
+#        uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
+#        id: build
+#        with:
+#          push: false
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build and push the Docker image
+        uses: docker/build-push-action@e551b19e49efd4e98792db7592c17c09b89db8d8 # v3.0.0
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: true
+          tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version }}-TST
+
+#      - name: Output image
+#        id: image
+#        run: |
+#          # NOTE: Set the image as an output because the `env` context is not
+#          # available to the inputs of a reusable workflow call.
+#          image_name="${IMAGE_REGISTRY}/${IMAGE_NAME}"
+#          echo "image=$image_name" >> "$GITHUB_OUTPUT"

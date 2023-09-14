@@ -1,6 +1,5 @@
 name: Build with provenance
-on:
-  - workflow_dispatch
+on: [push]
 
 permissions: read-all
 

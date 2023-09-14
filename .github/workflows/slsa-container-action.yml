@@ -91,7 +91,9 @@ jobs:
 
       - name: Output image infos
         run: |
-          echo  ${{join(steps.build.outputs.*, '\n')}}
+          echo "image"
+          output_infos="${{join(steps.build.outputs.*, '\n')}}"
+          echo "$output_infos"
 
       - name: Output image
         id: image

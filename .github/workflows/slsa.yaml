@@ -5,12 +5,10 @@ permissions: read-all
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: read
-      actions: read
-    steps:
-    - uses: slsa-framework/slsa-github-generator/.github/workflows/builder_maven_slsa3.yml@v1.9.0
-      env:
-        PACKAGE_DIR: ./backend
+      id-token: write # For signing.
+      contents: read # For repo checkout of private repos.
+      actions: read # For getting workflow run on private repos.
+    uses: slsa-framework/slsa-github-generator/.github/workflows/builder_maven_slsa3.yml@main
+    with:
+      directory: ./backend

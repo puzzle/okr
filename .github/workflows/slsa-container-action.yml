@@ -126,15 +126,9 @@ jobs:
     steps:
       - name: Output state
         run: |
-          echo "registryPath"
-          registryPath=${{needs.okr-build.outputs.registryPath}}
-          echo "$registryPath"
-          echo "imageName"
-          imageName=${{needs.okr-build.outputs.imageName}}
-          echo "$imageName"
-          echo "build2"
-          output_infos2=${{needs.okr-build.outputs.digest}}
-          echo "$output_infos2"
+          echo "registryPath: ${{ needs.okr-build.outputs.registryPath }}"
+          echo "imageName: ${{ needs.okr-build.outputs.imageName }}"
+          echo "Digest: ${{ needs.okr-build.outputs.digest }}"
 
   # This step calls the container workflow to generate provenance and push it to
   # the container registry.

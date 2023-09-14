@@ -107,6 +107,7 @@ jobs:
 #    if: startsWith(github.ref, 'refs/tags/')
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.9.0
     with:
+      private-repository: true
       image: ${{ needs.okr-build.outputs.image }}
       digest: ${{ needs.okr-build.outputs.digest }}
     secrets:

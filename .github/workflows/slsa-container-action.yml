@@ -9,7 +9,7 @@ jobs:
   okr-build:
     runs-on: ubuntu-latest
     outputs:
-      image: ${{ steps.image.outputs.image }}
+      image: ${{ secrets.QUAY_REGISTRY }}/${ IMAGE_NAME }
       digest: ${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout the repository

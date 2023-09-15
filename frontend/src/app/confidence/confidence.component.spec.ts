@@ -34,20 +34,20 @@ describe('ConfidenceComponent', () => {
   });
 
   it.each([
-    [{ confidence: 8 } as CheckInMin, 8],
-    [null, 5],
-  ])('should create', async (checkIn: CheckInMin | null, expected: number) => {
+    [{ confidence: 8 } as CheckInMin, '8'],
+    [null, '5'],
+  ])('should create', async (checkIn: CheckInMin | null, expected: string) => {
     component.keyResult.lastCheckIn = checkIn;
     component.ngOnChanges({
       keyResult: new SimpleChange(null, component.keyResult, true),
     });
     fixture.detectChanges();
     await fixture.whenStable();
-    const slider = await loader.getHarness(MatSliderHarness);
     const textField = fixture.debugElement.query(By.css("[data-testid='confidence']"));
     const expectedLabel = expected + '/' + component.max;
+    const sliderInputField = fixture.debugElement.query(By.css('mat-slider > input '));
 
-    expect(await slider.getValue()).toBe(expected);
+    expect(await sliderInputField.nativeElement.value).toBe(expected);
     expect(textField.nativeElement.innerHTML).toContain(expectedLabel);
   });
 

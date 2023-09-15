@@ -4,13 +4,23 @@ import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { MatDrawerHarness } from '@angular/material/sidenav/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 // @ts-ignore
 import * as de from '../assets/i18n/de.json';
 
 // FixMe: Fix this test!
-xdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
+  let loader: HarnessLoader;
 
   const oauthServiceMock = {
     oauthService: {
@@ -35,6 +45,7 @@ xdescribe('AppComponent', () => {
           de: de,
         }),
         OAuthModule.forRoot(),
+        HttpClientTestingModule,
       ],
       providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
       declarations: [AppComponent],
@@ -44,6 +55,8 @@ xdescribe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   test('should create the app', () => {
@@ -98,5 +111,48 @@ xdescribe('AppComponent', () => {
     test('should convert false value to null', () => {
       expect(component.convertFalseToNull(false)).toEqual(null);
     });
+  });
+});
+
+export class TranslateServiceStub {
+  setDefaultLang() {}
+  use() {}
+}
+
+export class OAuthServiceStub {
+  loadDiscoveryDocumentAndTryLogin(): Promise<any> {
+    return new Promise<any>(() => {});
+  }
+}
+
+describe('AppComponent2', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let loader: HarnessLoader;
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      imports: [MatMenuModule, MatCardModule, NoopAnimationsModule, RouterTestingModule, HttpClientTestingModule],
+      providers: [
+        {
+          provide: TranslateService,
+          useClass: TranslateServiceStub,
+        },
+        {
+          provide: OAuthService,
+          useClass: OAuthServiceStub,
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+
+    loader = TestbedHarnessEnvironment.loader(fixture);
+  });
+
+  test('should open and close mat-drawer', () => {
+    const drawer = loader.getHarness(MatDrawerHarness.with({ selector: '[data-testid="mat-drawer"]' }));
+    console.log(drawer);
   });
 });

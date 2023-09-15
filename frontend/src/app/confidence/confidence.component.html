@@ -5,16 +5,7 @@
     </p>
   </div>
 
-  <mat-slider
-    *ngIf="edit"
-    [value]="keyResult.lastCheckIn!.confidence"
-    (input)="keyResult.lastCheckIn!.confidence = $event.value!"
-    [max]="max"
-    [min]="min"
-    [step]="1"
-    [tickInterval]="1"
-    [thumbLabel]="true"
-    color="primary"
-  >
+  <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [discrete]="true" [showTickMarks]="true">
+    <input matSliderThumb [(ngModel)]="keyResult.lastCheckIn!.confidence" />
   </mat-slider>
 </div>

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { ExampleDialogComponent } from './example-dialog.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -23,8 +22,8 @@ describe('ExampleDialogComponent', () => {
 
   let errors = errorData;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
         NoopAnimationsModule,
@@ -55,31 +54,55 @@ describe('ExampleDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be able to save form', waitForAsync(async () => {
+  it('should be able to set name', waitForAsync(async () => {
     //Insert values into name input
     const nameInput = await loader.getHarness(MatInputHarness);
     await nameInput.setValue('Name');
 
-    //Check radio button
-    const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
-    await buttons[0].check();
-
-    //Get mat-select element and click it (dropdown)
-    const matSelect = await loader.getHarness(MatSelectHarness);
-    await matSelect.open();
-    const selectOptions = await matSelect.getOptions();
-    await selectOptions[0].click();
-
     //Check if save button is disabled
     const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(await submitButton.nativeElement.disabled).toBeFalsy();
+    expect(await submitButton.nativeElement.disabled).toBeTruthy();
 
     //Validate if object was created correctly
     const formObject = fixture.componentInstance.dialogForm.value;
     expect(formObject.name).toBe('Name');
-    expect(formObject.gender).toBe(await buttons[0].getValue());
-    expect(formObject.hobby).toBe(await selectOptions[0].getText());
   }));
+
+  it('should be able to set buttons', waitForAsync(async () => {
+    //Check radio button
+    const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
+    await buttons[0].check();
+
+    //Check if save button is disabled
+    const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
+    expect(await submitButton.nativeElement.disabled).toBeTruthy();
+
+    //Validate if object was created correctly
+    const formObject = fixture.componentInstance.dialogForm.value;
+    expect(formObject.name).toBe('');
+    expect(formObject.gender).toBe(await buttons[0].getValue());
+  }));
+
+  it('should be able to set select', async () => {
+    //Get mat-select element and click it (dropdown)
+    const matSelect = await loader.getHarness(MatSelectHarness);
+    await matSelect.open();
+
+    const selectOptions = await matSelect.getOptions();
+    fixture.detectChanges();
+    expect(selectOptions).toHaveLength(3);
+
+    await selectOptions[0].click();
+
+    //Check if save button is disabled
+    const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
+    expect(await submitButton.nativeElement.disabled).toBeTruthy();
+
+    //Validate if object was created correctly
+    const formObject = fixture.componentInstance.dialogForm.value;
+    expect(formObject.name).toBe('');
+    expect(formObject.hobby).toBe(await selectOptions[0].getText());
+  });
 
   it('should display error message of too short input', async () => {
     //Insert values into name input which don't match length validator

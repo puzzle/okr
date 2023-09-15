@@ -4,6 +4,7 @@ import { OverviewComponent } from './overview/overview.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent, pathMatch: 'full' },
+  { path: 'objective/:id', component: OverviewComponent, pathMatch: 'full' },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

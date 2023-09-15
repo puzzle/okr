@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, map, Observable } from 'rxjs';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
@@ -8,7 +8,6 @@ import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
 import { ObjectiveService } from './shared/services/objective.service';
 import { Objective } from './shared/types/model/Objective';
-import { doc } from 'prettier';
 
 @Component({
   selector: 'app-root',
@@ -23,13 +22,14 @@ export class AppComponent implements OnInit, OnDestroy {
   objective!: Objective;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private translate: TranslateService,
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
     private notifierService: NotifierService,
-    private objectiveService: ObjectiveService
+    private objectiveService: ObjectiveService,
+    private route: ActivatedRoute
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -50,13 +50,17 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     this.notifierService.drawerSubject.subscribe({
       next: (objective) => {
-        this.objectiveService.getFullObjective(objective.id).subscribe((objective) => {
-          this.disableScrolling();
-          this.objective = objective;
-        });
-        this.drawerOpen = true;
+        this.routeSidenav(objective.id);
       },
     });
+  }
+
+  routeSidenav(id: number) {
+    this.objectiveService.getFullObjective(id).subscribe((objective) => {
+      this.disableScrolling();
+      this.objective = objective;
+    });
+    this.drawerOpen = true;
   }
 
   ngOnInit(): void {

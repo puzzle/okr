@@ -6,6 +6,6 @@
     "types": [],
     "typeRoots": ["src/custom-types"]
   },
-  "files": ["src/main.ts", "src/polyfills.ts"],
+  "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"]
 }

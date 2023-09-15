@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Objective } from '../shared/types/model/Objective';
 
@@ -9,7 +9,11 @@ import { Objective } from '../shared/types/model/Objective';
 })
 export class ObjectiveDetailComponent implements OnInit {
   @Input() objective!: Objective;
+  @Output() close: EventEmitter<any> = new EventEmitter<any>();
   constructor() {}
 
+  closeDrawer() {
+    this.close.emit();
+  }
   ngOnInit(): void {}
 }

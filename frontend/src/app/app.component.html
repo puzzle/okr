@@ -15,7 +15,11 @@
       [(opened)]="drawerOpen"
       position="end"
     >
-      <app-objective-detail *ngIf="objective != undefined" [objective]="objective"></app-objective-detail>
+      <app-objective-detail
+        *ngIf="objective != undefined"
+        [objective]="objective"
+        (close)="closeDrawer()"
+      ></app-objective-detail>
     </mat-drawer>
     <mat-drawer-content>
       <router-outlet></router-outlet>

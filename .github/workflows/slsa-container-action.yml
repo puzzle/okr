@@ -144,6 +144,6 @@ jobs:
       private-repository: true
       digest: ${{ needs.okr-build.outputs.digest }}
     secrets:
-      image: ${{ secrets.QUAY_REGISTRY }}/${{ env.IMAGE_NAME }}
+      image: ${{ secrets.QUAY_REGISTRY }}/okr
       registry-username: ${{ secrets.QUAY_USERNAME }}
       registry-password: ${{ secrets.QUAY_TOKEN }}

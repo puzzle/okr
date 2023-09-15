@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 import { ExampleDialogComponent } from './example-dialog.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { By } from '@angular/platform-browser';
 // @ts-ignore
 import * as errorData from '../../../../assets/errors/error-messages.json';
+import { ObjectiveComponent } from '../../../objective/objective.component';
 
 describe('ExampleDialogComponent', () => {
   let component: ExampleDialogComponent;
@@ -22,8 +23,8 @@ describe('ExampleDialogComponent', () => {
 
   let errors = errorData;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
         NoopAnimationsModule,
@@ -42,17 +43,17 @@ describe('ExampleDialogComponent', () => {
           useValue: {},
         },
       ],
-      declarations: [ExampleDialogComponent],
+      declarations: [ExampleDialogComponent, ObjectiveComponent],
     }).compileComponents();
     fixture = TestBed.createComponent(ExampleDialogComponent);
-    loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
-  it('should create', () => {
+  it('should create', fakeAsync(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 
   it('should be able to set name', waitForAsync(async () => {
     //Insert values into name input

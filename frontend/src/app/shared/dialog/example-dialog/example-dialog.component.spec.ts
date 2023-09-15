@@ -90,8 +90,7 @@ describe('ExampleDialogComponent', () => {
     await matSelect.open();
 
     const selectOptions = await matSelect.getOptions();
-    fixture.detectChanges();
-    expect(selectOptions).toHaveLength(3);
+    expect(selectOptions).toHaveLength(5);
 
     await selectOptions[0].click();
 

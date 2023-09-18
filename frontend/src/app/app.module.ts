@@ -48,6 +48,7 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
 }
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -79,6 +80,7 @@ export const MY_FORMATS = {
     KeyresultComponent,
     ApplicationHeaderComponent,
     ConfidenceComponent,
+    CheckInHistoryDialogComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
   ],

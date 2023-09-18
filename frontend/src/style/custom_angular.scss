@@ -1,0 +1,18 @@
+@use "@angular/material" as mat;
+@import "_variables";
+
+$my-primary: mat.define-palette($pz-dark-blue-palette, 500);
+$my-accent: mat.define-palette(mat.$grey-palette);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$pz-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+      warn: $my-warn,
+    ),
+  )
+);
+
+@include mat.all-component-themes($pz-theme);

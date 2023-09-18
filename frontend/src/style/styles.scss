@@ -1,6 +1,8 @@
-@import "assets/fonts/Roboto";
-@import "assets/fonts/MaterialIcons";
-@import "bootstrap_custom";
+@import "custom_angular";
+@import "_variables";
+@import "custom_bootstrap";
+@import "fonts/Roboto";
+@import "fonts/MaterialIcons";
 
 body {
   margin: 0;
@@ -88,4 +90,16 @@ body {
   width: 1.25rem;
   height: 1.25rem;
   cursor: pointer;
+}
+
+.keyResult-attribute-show {
+  background-color: $keyResult-attribute-show-bg;
+  padding: 0.25em 0.75rem;
+  border-radius: 2px;
+}
+
+.keyResult-attribute-edit {
+  border: solid $keyResult-attribute-edit-border 1px;
+  background-color: $keyResult-attribute-edit-bg;
+  padding: 0.25em 0.75rem;
 }

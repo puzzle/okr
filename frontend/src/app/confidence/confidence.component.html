@@ -1,0 +1,11 @@
+<div class="d-flex align-items-center gap-1" *ngIf="keyResult?.lastCheckIn?.confidence">
+  <div [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'">
+    <p [ngClass]="edit ? 'fw-bold' : 'fw-normal'" data-testid="confidence">
+      {{ keyResult.lastCheckIn?.confidence }}/{{ max }}
+    </p>
+  </div>
+
+  <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [discrete]="true" [showTickMarks]="true">
+    <input matSliderThumb [(ngModel)]="keyResult.lastCheckIn!.confidence" />
+  </mat-slider>
+</div>

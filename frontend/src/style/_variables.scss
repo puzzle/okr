@@ -1,0 +1,37 @@
+//Get color palette for color https://m2.material.io/design/color/the-color-system.html#tools-for-picking-colors
+
+$pz-dark-blue: #1e5a96;
+$eggshell: #f6f7f8;
+
+$keyResult-border: #5d6974;
+$keyResult-bg: #e5e8eb;
+
+$keyResult-attribute-show-bg: #f5f5f5;
+$keyResult-attribute-edit-bg: #ffffffff;
+$keyResult-attribute-edit-border: #ddddddff;
+
+$pz-dark-blue-palette: (
+  50: lighten($pz-dark-blue, 50%),
+  100: lighten($pz-dark-blue, 40%),
+  200: lighten($pz-dark-blue, 30%),
+  300: lighten($pz-dark-blue, 20%),
+  400: lighten($pz-dark-blue, 10%),
+  500: $pz-dark-blue,
+  600: darken($pz-dark-blue, 10%),
+  700: darken($pz-dark-blue, 20%),
+  800: darken($pz-dark-blue, 30%),
+  900: darken($pz-dark-blue, 40%),
+  1000: darken($pz-dark-blue, 50%),
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);

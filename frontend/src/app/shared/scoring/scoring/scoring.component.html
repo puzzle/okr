@@ -1,0 +1,22 @@
+<div class="container d-flex flex-row w-100">
+  <div class="d-flex flex-column">
+    <p class="text-center">Fail</p>
+    <div class="child" [style.--barWidth]="failWidth" [style.--barColor]="failColor"></div>
+  </div>
+
+  <div class="d-flex flex-column">
+    <p class="text-center">Commit</p>
+    <div class="child" [style.--barWidth]="commitWidth" [style.--barColor]="commitColor"></div>
+  </div>
+
+  <div class="d-flex flex-column">
+    <p class="text-center">Target</p>
+    <div class="child" [style.--barWidth]="targetWidth" [style.--barColor]="targetColor"></div>
+  </div>
+
+  <div class="d-flex flex-column mlLeft">
+    <p class="text-center">Stretch</p>
+    <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
+  </div>
+</div>
+<p class="metricLabel">{{ metricLabel }}</p>

@@ -1,0 +1,42 @@
+div {
+  position: relative;
+}
+
+.child:after {
+  content: "\A";
+  position: absolute;
+  background: var(--barColor);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--barWidth);
+  @if var(--barWidth) != "100%" {
+    border-right: 1px #5d6974 solid;
+  }
+}
+
+.child {
+  outline: 1px solid #5d6974;
+  height: 21px;
+  width: 63px;
+  background-color: white;
+}
+
+.starIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.mlLeft {
+  margin-left: 16px;
+}
+
+p {
+  font-size: 8px;
+}
+
+.metricLabel {
+  font-weight: bold;
+  font-size: 12px;
+  margin-left: 50px;
+}

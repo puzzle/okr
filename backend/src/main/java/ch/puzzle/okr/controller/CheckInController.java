@@ -49,7 +49,7 @@ public class CheckInController {
     public ResponseEntity<CheckInDto> createCheckIn(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInAbstractDTO checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
-        CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
+        CheckIn checkIn = checkInMapper.toCheckIn(checkInDto, jwt);
         CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.saveCheckIn(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
@@ -65,7 +65,7 @@ public class CheckInController {
             @Parameter(description = "The ID for updating a Check-In.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInAbstractDTO checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
-        CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
+        CheckIn checkIn = checkInMapper.toCheckIn(checkInDto, jwt);
         CheckInDto updatedCheckIn = this.checkInMapper
                 .toDto(this.checkInBusinessService.updateCheckIn(id, checkIn, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);

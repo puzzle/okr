@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,16 +23,16 @@ public class CheckInOrdinalMapper {
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
         return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getChangeInfo(),
                 checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult().getId(),
-                checkInOrdinal.getCreatedBy(), checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(),
-                checkInOrdinal.getCheckInType(), checkInOrdinal.getValue());
+                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getCheckInType(),
+                checkInOrdinal.getValue());
     }
 
-    public CheckIn toCheckInOrdinal(CheckInAbstractDTO checkInAbstractDTO) {
+    public CheckIn toCheckInOrdinal(CheckInAbstractDTO checkInAbstractDTO, Jwt jwt) {
         return CheckInOrdinal.Builder.builder().withValue(checkInAbstractDTO.getZone())
                 .withId(checkInAbstractDTO.getId()).withChangeInfo(checkInAbstractDTO.getChangeInfo())
                 .withInitiatives(checkInAbstractDTO.getInitiatives()).withConfidence(checkInAbstractDTO.getConfidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInAbstractDTO.getKeyResultId()))
-                .withCreatedBy(userBusinessService.getOwnerById(checkInAbstractDTO.getCreatedBy().getId()))
+                .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
                 .withCreatedOn(checkInAbstractDTO.getCreatedOn()).withModifiedOn(checkInAbstractDTO.getModifiedOn())
                 .withCheckInType(checkInAbstractDTO.getCheckInType()).build();
     }

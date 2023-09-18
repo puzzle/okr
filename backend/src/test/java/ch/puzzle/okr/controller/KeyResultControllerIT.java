@@ -63,9 +63,9 @@ class KeyResultControllerIT {
     static List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
 
     static CheckInDto checkInDto1 = new CheckInMetricDto(1L, "Changeinfo1", "Initiatives1", 6, metricKeyResult.getId(),
-            user, LocalDateTime.MAX, LocalDateTime.MAX, "metric", 23D);
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 23D);
     static CheckInDto checkInDto2 = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5, metricKeyResult.getId(),
-            user, LocalDateTime.MAX, LocalDateTime.MAX, "metric", 12D);
+            LocalDateTime.MAX, LocalDateTime.MAX, "metric", 12D);
 
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
@@ -243,11 +243,10 @@ class KeyResultControllerIT {
         mvc.perform(get("/api/v2/keyresults/5/checkins").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].valueMetric", Is.is(23.0)))
-                .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdBy.id", Is.is(1)))
+                .andExpect(jsonPath("$[0].keyResultId", Is.is(5)))
                 .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo1")))
                 .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives1"))).andExpect(jsonPath("$[1].id", Is.is(4)))
                 .andExpect(jsonPath("$[1].valueMetric", Is.is(12.0))).andExpect(jsonPath("$[1].keyResultId", Is.is(5)))
-                .andExpect(jsonPath("$[1].createdBy.id", Is.is(1)))
                 .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo2")))
                 .andExpect(jsonPath("$[1].initiatives", Is.is("Initiatives2")));
     }

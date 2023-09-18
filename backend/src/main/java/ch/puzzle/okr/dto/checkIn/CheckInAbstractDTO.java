@@ -11,7 +11,6 @@ public class CheckInAbstractDTO {
     Integer confidence;
 
     Long keyResultId;
-    User createdBy;
     LocalDateTime createdOn;
     LocalDateTime modifiedOn;
     String checkInType;
@@ -19,14 +18,12 @@ public class CheckInAbstractDTO {
     Double valueMetric;
 
     public CheckInAbstractDTO(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
-            User createdBy, LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone,
-            Double valueMetric) {
+            LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone, Double valueMetric) {
         this.id = id;
         this.changeInfo = changeInfo;
         this.initiatives = initiatives;
         this.confidence = confidence;
         this.keyResultId = keyResultId;
-        this.createdBy = createdBy;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
         this.checkInType = checkInType;
@@ -74,20 +71,8 @@ public class CheckInAbstractDTO {
         this.keyResultId = keyResultId;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public LocalDateTime getCreatedOn() {
         return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
     }
 
     public LocalDateTime getModifiedOn() {

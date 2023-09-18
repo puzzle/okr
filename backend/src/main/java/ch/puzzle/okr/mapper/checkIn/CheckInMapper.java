@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,13 +31,13 @@ public class CheckInMapper {
         }
     }
 
-    public CheckIn toCheckIn(CheckInAbstractDTO checkInDto) {
+    public CheckIn toCheckIn(CheckInAbstractDTO checkInDto, Jwt jwt) {
         if (checkInDto.getCheckInType() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided type of this CheckIn is null");
         } else if (isMetricCheckIn(checkInDto)) {
-            return checkInMetricMapper.toCheckInMetric(checkInDto);
+            return checkInMetricMapper.toCheckInMetric(checkInDto, jwt);
         } else if (isOrdinalCheckIn(checkInDto)) {
-            return checkInOrdinalMapper.toCheckInOrdinal(checkInDto);
+            return checkInOrdinalMapper.toCheckInOrdinal(checkInDto, jwt);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The provided CheckInDto is neither metric nor ordinal");

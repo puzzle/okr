@@ -1,7 +1,8 @@
 package ch.puzzle.okr.mapper;
 
-import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMetricMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultOrdinalMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -33,18 +34,14 @@ public class KeyResultMapper {
         }
     }
 
-    public KeyResult toKeyResult(KeyResultAbstractDto keyResultDto) {
-        if (isSpecificKeyResult(keyResultDto, "metric")) {
-            return keyResultMetricMapper.toKeyResultMetric(keyResultDto);
-        } else if (isSpecificKeyResult(keyResultDto, "ordinal")) {
-            return keyResultOrdinalMapper.toKeyResultOrdinal(keyResultDto);
+    public KeyResult toKeyResult(KeyResultDto keyResultDto) {
+        if(keyResultDto instanceof KeyResultMetricDto) {
+            return keyResultMetricMapper.toKeyResultMetric((KeyResultMetricDto) keyResultDto);
+        } else if(keyResultDto instanceof KeyResultOrdinalDto) {
+            return keyResultOrdinalMapper.toKeyResultOrdinal((KeyResultOrdinalDto) keyResultDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The provided KeyResultDto is neither metric nor ordinal");
         }
-    }
-
-    private boolean isSpecificKeyResult(KeyResultAbstractDto keyResultDto, String type) {
-        return keyResultDto.getKeyResultType().equals(type);
     }
 }

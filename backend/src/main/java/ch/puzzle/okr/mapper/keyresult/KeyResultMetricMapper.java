@@ -40,24 +40,14 @@ public class KeyResultMetricMapper {
                 ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultMetric(KeyResultAbstractDto keyResultAbstractDto) {
-        KeyResultMetricDto keyResultDto = abstractToMetricDto(keyResultAbstractDto);
-        return KeyResultMetric.Builder.builder().withBaseline(keyResultDto.baseline())
-                .withStretchGoal(keyResultDto.stretchGoal()).withUnit(keyResultDto.unit()).withId(keyResultDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultDto.objective().id()))
-                .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
-                .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
-                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
-                .withKeyResultType(keyResultDto.keyResultType()).build();
-    }
-
-    public KeyResultMetricDto abstractToMetricDto(KeyResultAbstractDto keyResultAbstractDto) {
-        return new KeyResultMetricDto(keyResultAbstractDto.getId(), keyResultAbstractDto.getKeyResultType(),
-                keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
-                keyResultAbstractDto.getBaseline(), keyResultAbstractDto.getStretchGoal(),
-                keyResultAbstractDto.getUnit(), keyResultAbstractDto.getOwner(), keyResultAbstractDto.getObjective(),
-                (KeyResultLastCheckInMetricDto) keyResultAbstractDto.getLastCheckIn(),
-                keyResultAbstractDto.getCreatedOn(), keyResultAbstractDto.getModifiedOn());
+    public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
+        return KeyResultMetric.Builder.builder().withBaseline(keyResultMetricDto.baseline())
+                .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit()).withId(keyResultMetricDto.id())
+                .withObjective(objectiveBusinessService.getObjectiveById(keyResultMetricDto.objective().id()))
+                .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
+                .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
+                .withCreatedOn(keyResultMetricDto.createdOn()).withModifiedOn(keyResultMetricDto.modifiedOn())
+                .withKeyResultType(keyResultMetricDto.keyResultType()).build();
     }
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {

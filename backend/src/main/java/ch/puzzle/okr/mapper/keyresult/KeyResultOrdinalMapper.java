@@ -40,26 +40,15 @@ public class KeyResultOrdinalMapper {
                 keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultOrdinal(KeyResultAbstractDto keyResultAbstractDto) {
-        KeyResultOrdinalDto keyResultDto = abstractToOrdinalDto(keyResultAbstractDto);
-        return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultDto.commitZone())
-                .withTargetZone(keyResultDto.targetZone()).withStretchZone(keyResultDto.stretchZone())
-                .withId(keyResultDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultDto.objective().id()))
-                .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
-                .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
-                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
-                .withKeyResultType(keyResultDto.keyResultType()).build();
-    }
-
-    public KeyResultOrdinalDto abstractToOrdinalDto(KeyResultAbstractDto keyResultAbstractDto) {
-        return new KeyResultOrdinalDto(keyResultAbstractDto.getId(), keyResultAbstractDto.getKeyResultType(),
-                keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
-                keyResultAbstractDto.getCommitZone(), keyResultAbstractDto.getTargetZone(),
-                keyResultAbstractDto.getStretchZone(), keyResultAbstractDto.getOwner(),
-                keyResultAbstractDto.getObjective(),
-                (KeyResultLastCheckInOrdinalDto) keyResultAbstractDto.getLastCheckIn(),
-                keyResultAbstractDto.getCreatedOn(), keyResultAbstractDto.getModifiedOn());
+    public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {
+        return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultOrdinalDto.commitZone())
+                .withTargetZone(keyResultOrdinalDto.targetZone()).withStretchZone(keyResultOrdinalDto.stretchZone())
+                .withId(keyResultOrdinalDto.id())
+                .withObjective(objectiveBusinessService.getObjectiveById(keyResultOrdinalDto.objective().id()))
+                .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
+                .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
+                .withCreatedOn(keyResultOrdinalDto.createdOn()).withModifiedOn(keyResultOrdinalDto.modifiedOn())
+                .withKeyResultType(keyResultOrdinalDto.keyResultType()).build();
     }
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {

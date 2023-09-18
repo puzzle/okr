@@ -16,8 +16,8 @@ describe('ConfidenceComponent', () => {
   let fixture: ComponentFixture<ConfidenceComponent>;
   let loader: HarnessLoader;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       declarations: [ConfidenceComponent],
       imports: [MatSliderModule, FormsModule],
     }).compileComponents();
@@ -36,7 +36,7 @@ describe('ConfidenceComponent', () => {
   it.each([
     [{ confidence: 8 } as CheckInMin, '8'],
     [null, '5'],
-  ])('should create', async (checkIn: CheckInMin | null, expected: string) => {
+  ])('should set confidence of component with right value', async (checkIn: CheckInMin | null, expected: string) => {
     component.keyResult.lastCheckIn = checkIn;
     component.ngOnChanges({
       keyResult: new SimpleChange(null, component.keyResult, true),
@@ -51,7 +51,7 @@ describe('ConfidenceComponent', () => {
     expect(textField.nativeElement.innerHTML).toContain(expectedLabel);
   });
 
-  it.each([[true], [false]])('should create', async (editable) => {
+  it.each([[true], [false]])('should show slider on based on input var', async (editable) => {
     component.edit = editable;
     fixture.detectChanges();
     const slider = fixture.debugElement.query(By.css('mat-slider'));

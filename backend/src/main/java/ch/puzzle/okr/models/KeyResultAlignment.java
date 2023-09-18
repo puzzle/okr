@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models;
 
+import ch.puzzle.okr.models.keyresult.KeyResult;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

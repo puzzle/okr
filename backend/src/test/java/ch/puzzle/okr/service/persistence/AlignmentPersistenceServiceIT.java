@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ public class AlignmentPersistenceServiceIT {
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
         return KeyResultAlignment.Builder.builder().withId(id)
                 .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
-                .withTargetKeyResult(KeyResult.Builder.builder().withId(8L).build()).build();
+                .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build()).build();
     }
 
     @AfterEach

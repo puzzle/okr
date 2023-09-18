@@ -66,6 +66,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInAbstractDTO checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto, jwt);
+        checkIn.setId(id);
         CheckInDto updatedCheckIn = this.checkInMapper
                 .toDto(this.checkInBusinessService.updateCheckIn(id, checkIn, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);

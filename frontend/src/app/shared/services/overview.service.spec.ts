@@ -20,7 +20,7 @@ describe('OverviewService', () => {
     }).compileComponents();
     service = TestBed.inject(OverviewService);
     httpClient.get.mockReturnValue(
-      of([{ ...overViewEntity1, objectives: { ...overViewEntity1.objectives[0], state: 'DRAFT' } }])
+      of([{ ...overViewEntity1, objectives: { ...overViewEntity1.objectives[0], state: 'DRAFT' } }]),
     );
   });
 

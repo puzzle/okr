@@ -3,7 +3,9 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { filter, map, merge, mergeMap, Observable, of, take, timeout } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OauthInterceptor implements HttpInterceptor {
   constructor(private oauthService: OAuthService) {}
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -16,8 +18,8 @@ export class OauthInterceptor implements HttpInterceptor {
       this.oauthService.events.pipe(
         filter((e) => e.type === 'token_received'),
         timeout(500),
-        map((_) => this.oauthService.getAccessToken())
-      )
+        map((_) => this.oauthService.getAccessToken()),
+      ),
     ).pipe(
       take(1),
       mergeMap((token) => {
@@ -29,7 +31,7 @@ export class OauthInterceptor implements HttpInterceptor {
 
         return next.handle(req);
         // .pipe(catchError((err) => this.errorHandler.handleError(err)));
-      })
+      }),
     );
   }
 }

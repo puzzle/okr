@@ -2,6 +2,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { ApplicationHeaderComponent } from './application-header.component';
 import { By } from '@angular/platform-browser';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 class ResizeObserverMock {
   observe() {}
@@ -18,6 +19,7 @@ describe('ApplicationHeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ApplicationHeaderComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ApplicationHeaderComponent);
@@ -74,7 +76,7 @@ describe('ApplicationHeaderComponent', () => {
     //Assert that banner is hidden was changed
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: -' + (component.PUZZLE_TOP_BAR_HEIGHT + bannerHeight)
+      'top: -' + (component.PUZZLE_TOP_BAR_HEIGHT + bannerHeight),
     );
   }));
 
@@ -93,7 +95,7 @@ describe('ApplicationHeaderComponent', () => {
     //Assert that banner is visible
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: ' + component.PUZZLE_TOP_BAR_HEIGHT
+      'top: ' + component.PUZZLE_TOP_BAR_HEIGHT,
     );
   }));
 

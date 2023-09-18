@@ -43,11 +43,11 @@ body {
 }
 
 //Applied since all menus have the same styling
-.mat-menu-panel {
+.mat-mdc-menu-panel {
   border-radius: 0.5rem !important;
 }
 
-.mat-menu-content {
+.mat-mdc-menu-content {
   padding: 0 !important;
 }
 
@@ -66,15 +66,16 @@ body {
 }
 
 .add-button-text {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: bold;
   color: $pz-dark-blue;
 }
 
-.menu-option {
+.mat-mdc-menu-item {
   line-height: normal !important;
   font-size: 1rem;
   height: 2rem !important;
+  min-height: 0 !important;
   &:hover {
     padding-left: 0.75rem;
     border-left: 0.25rem solid darkblue;

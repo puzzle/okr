@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     private translate: TranslateService,
     private routeService: RouteService,
     private oauthService: OAuthService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
     this.isEnvStaging$ = this.configService.config$.pipe(
       map((config) => {
         return config.activeProfile === 'staging';
-      })
+      }),
     );
   }
 
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
-        map((event) => event as NavigationEnd)
+        map((event) => event as NavigationEnd),
       )
       .subscribe((event) => {
         this.currentUrl = event.url;

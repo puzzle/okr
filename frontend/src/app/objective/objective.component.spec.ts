@@ -11,6 +11,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../shared/services/overview.service';
 import { objective } from '../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
+import { KeyresultComponent } from '../keyresult/keyresult.component';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -19,11 +20,11 @@ describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
   let fixture: ComponentFixture<ObjectiveComponent>;
   let loader: HarnessLoader;
-  beforeEach(async () => {
+  beforeEach(() => {
     overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
-    await TestBed.configureTestingModule({
-      declarations: [ObjectiveComponent],
+    TestBed.configureTestingModule({
+      declarations: [ObjectiveComponent, KeyresultComponent],
       imports: [MatMenuModule, MatCardModule, NoopAnimationsModule, RouterTestingModule],
       providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
     }).compileComponents();

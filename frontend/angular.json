@@ -20,7 +20,7 @@
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": "zone.js",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
@@ -32,7 +32,6 @@
             ],
             "scripts": [
               "node_modules/@puzzleitc/puzzle-shell/dist/bundle.js",
-              "./node_modules/jquery/dist/jquery.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },

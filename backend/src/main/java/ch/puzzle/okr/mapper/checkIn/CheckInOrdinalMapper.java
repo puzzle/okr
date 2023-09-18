@@ -31,7 +31,8 @@ public class CheckInOrdinalMapper {
                 .withConfidence(checkInOrdinalDto.confidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()))
                 .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
-                .withCheckInType(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()).getKeyResultType())
+                .withCheckInType(
+                        keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()).getKeyResultType())
                 .withCreatedOn(checkInOrdinalDto.createdOn()).withModifiedOn(checkInOrdinalDto.modifiedOn()).build();
     }
 }

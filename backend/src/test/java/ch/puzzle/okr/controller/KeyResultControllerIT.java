@@ -65,7 +65,7 @@ class KeyResultControllerIT {
     static CheckInDto checkInDto1 = new CheckInMetricDto(1L, "Changeinfo1", "Initiatives1", 6, metricKeyResult.getId(),
             LocalDateTime.MAX, LocalDateTime.MAX, 23D);
     static CheckInDto checkInDto2 = new CheckInMetricDto(4L, "Changeinfo2", "Initiatives2", 5, metricKeyResult.getId(),
-            LocalDateTime.MAX, LocalDateTime.MAX,  12D);
+            LocalDateTime.MAX, LocalDateTime.MAX, 12D);
 
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,

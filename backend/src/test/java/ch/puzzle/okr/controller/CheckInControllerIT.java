@@ -66,10 +66,11 @@ class CheckInControllerIT {
 
     /* Test DTOs */
     static CheckInDto checkInMetricDto = new CheckInMetricDto(5L, "Changeinfo1", "Initiatives1", 6, 1L,
-            User.Builder.builder().withId(1L).withFirstname("Frank").build(), null, null, "metric", 46D);
+            User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
+            "metric", 46D);
     static CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, "Changeinfo2", "Initiatives2", 5, 2L,
-            User.Builder.builder().withId(1L).withFirstname("Frank").build(), null, null, "metric",
-            String.valueOf(Zone.COMMIT));
+            User.Builder.builder().withId(1L).withFirstname("Frank").build(), LocalDateTime.MAX, LocalDateTime.MAX,
+            "ordinal", String.valueOf(Zone.COMMIT));
 
     @BeforeEach
     void setUp() {
@@ -82,16 +83,13 @@ class CheckInControllerIT {
         BDDMockito.given(checkInBusinessService.getCheckInById(5L)).willReturn(checkInMetric);
 
         mvc.perform(get("/api/v2/checkIns/5").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(checkInMetricDto.getId().intValue())))
-                .andExpect(jsonPath("$.initiatives", Is.is(checkInMetricDto.getInitiatives())))
-                .andExpect(jsonPath("$.confidence", Is.is(checkInMetricDto.getConfidence())))
-                .andExpect(jsonPath("$.keyResultId", Is.is(checkInMetricDto.getKeyResultId().intValue())))
-                .andExpect(jsonPath("$.createdBy.id", Is.is(checkInMetricDto.getCreatedBy().getId().intValue())))
-                .andExpect(jsonPath("$.checkInType", Is.is(checkInMetricDto.getCheckInType())))
-                .andExpect(jsonPath("$.modifiedOn", Is.is(checkInMetricDto.getModifiedOn())))
-                .andExpect(jsonPath("$.createdOn", Is.is(checkInMetricDto.getCreatedOn())))
-                .andExpect(jsonPath("$.value", Is.is(((CheckInMetricDto) checkInMetricDto).getValue())));
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives1")))
+                .andExpect(jsonPath("$.confidence", Is.is(6))).andExpect(jsonPath("$.keyResultId", Is.is(1)))
+                .andExpect(jsonPath("$.createdBy.id", Is.is(1))).andExpect(jsonPath("$.checkInType", Is.is("metric")))
+                .andExpect(jsonPath("$.modifiedOn", Is.is(LocalDateTime.MAX.toString())))
+                .andExpect(jsonPath("$.createdOn", Is.is(LocalDateTime.MAX.toString())))
+                .andExpect(jsonPath("$.valueMetric", Is.is(46D)));
     }
 
     @Test
@@ -99,16 +97,13 @@ class CheckInControllerIT {
         BDDMockito.given(checkInBusinessService.getCheckInById(5L)).willReturn(checkInOrdinal);
 
         mvc.perform(get("/api/v2/checkIns/5").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(checkInOrdinalDto.getId().intValue())))
-                .andExpect(jsonPath("$.initiatives", Is.is(checkInOrdinalDto.getInitiatives())))
-                .andExpect(jsonPath("$.confidence", Is.is(checkInOrdinalDto.getConfidence())))
-                .andExpect(jsonPath("$.keyResultId", Is.is(checkInOrdinalDto.getKeyResultId().intValue())))
-                .andExpect(jsonPath("$.createdBy.id", Is.is(checkInOrdinalDto.getCreatedBy().getId().intValue())))
-                .andExpect(jsonPath("$.checkInType", Is.is(checkInOrdinalDto.getCheckInType())))
-                .andExpect(jsonPath("$.modifiedOn", Is.is(checkInOrdinalDto.getModifiedOn())))
-                .andExpect(jsonPath("$.createdOn", Is.is(checkInOrdinalDto.getCreatedOn())))
-                .andExpect(jsonPath("$.value", Is.is(((CheckInOrdinalDto) checkInOrdinalDto).getValue())));
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(4)))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives2")))
+                .andExpect(jsonPath("$.confidence", Is.is(5))).andExpect(jsonPath("$.keyResultId", Is.is(2)))
+                .andExpect(jsonPath("$.createdBy.id", Is.is(1))).andExpect(jsonPath("$.checkInType", Is.is("ordinal")))
+                .andExpect(jsonPath("$.modifiedOn", Is.is(LocalDateTime.MAX.toString())))
+                .andExpect(jsonPath("$.createdOn", Is.is(LocalDateTime.MAX.toString())))
+                .andExpect(jsonPath("$.zone", Is.is(Zone.COMMIT.toString())));
     }
 
     @Test
@@ -127,13 +122,11 @@ class CheckInControllerIT {
 
         mvc.perform(put("/api/v2/checkIns/5").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"changeinfo\": \"Changeinfo1\"}"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.id", Is.is(checkInMetricDto.getId().intValue())))
-                .andExpect(jsonPath("$.changeInfo", Is.is(checkInMetricDto.getChangeInfo())))
-                .andExpect(jsonPath("$.initiatives", Is.is(checkInMetricDto.getInitiatives())))
-                .andExpect(jsonPath("$.confidence", Is.is(checkInMetricDto.getConfidence())))
-                .andExpect(jsonPath("$.checkInType", Is.is(checkInMetricDto.getCheckInType())))
-                .andExpect(jsonPath("$.keyResultId", Is.is(checkInMetricDto.getKeyResultId().intValue())));
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.changeInfo", Is.is("Changeinfo1")))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives1")))
+                .andExpect(jsonPath("$.confidence", Is.is(6))).andExpect(jsonPath("$.checkInType", Is.is("metric")))
+                .andExpect(jsonPath("$.keyResultId", Is.is(1)));
     }
 
     @Test
@@ -151,15 +144,12 @@ class CheckInControllerIT {
 
         mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"changeinfo\": \"Changeinfo1\"}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id", Is.is(checkInMetricDto.getId().intValue())))
-                .andExpect(jsonPath("$.changeInfo", Is.is(checkInMetricDto.getChangeInfo())))
-                .andExpect(jsonPath("$.initiatives", Is.is(checkInMetricDto.getInitiatives())))
-                .andExpect(jsonPath("$.confidence", Is.is(checkInMetricDto.getConfidence())))
-                .andExpect(jsonPath("$.keyResultId", Is.is(checkInMetricDto.getKeyResultId().intValue())))
-                .andExpect(jsonPath("$.createdBy.id", Is.is(checkInMetricDto.getCreatedBy().getId().intValue())))
-                .andExpect(jsonPath("$.value", Is.is(((CheckInMetricDto) checkInMetricDto).getValue())))
-                .andExpect(jsonPath("$.checkInType", Is.is(checkInMetricDto.getCheckInType())));
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.changeInfo", Is.is("Changeinfo1")))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives1")))
+                .andExpect(jsonPath("$.confidence", Is.is(6))).andExpect(jsonPath("$.keyResultId", Is.is(1)))
+                .andExpect(jsonPath("$.createdBy.id", Is.is(1))).andExpect(jsonPath("$.valueMetric", Is.is(46D)))
+                .andExpect(jsonPath("$.checkInType", Is.is("metric")));
     }
 
     @Test
@@ -168,14 +158,12 @@ class CheckInControllerIT {
 
         mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"changeinfo\": \"Changeinfo1\"}"))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id", Is.is(checkInOrdinalDto.getId().intValue())))
-                .andExpect(jsonPath("$.changeInfo", Is.is(checkInOrdinalDto.getChangeInfo())))
-                .andExpect(jsonPath("$.initiatives", Is.is(checkInOrdinalDto.getInitiatives())))
-                .andExpect(jsonPath("$.confidence", Is.is(checkInOrdinalDto.getConfidence())))
-                .andExpect(jsonPath("$.keyResultId", Is.is(checkInOrdinalDto.getKeyResultId().intValue())))
-                .andExpect(jsonPath("$.createdBy.id", Is.is(checkInOrdinalDto.getCreatedBy().getId().intValue())))
-                .andExpect(jsonPath("$.value", Is.is(((CheckInOrdinalDto) checkInOrdinalDto).getValue())))
-                .andExpect(jsonPath("$.checkInType", Is.is(checkInOrdinalDto.getCheckInType())));
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(4)))
+                .andExpect(jsonPath("$.changeInfo", Is.is("Changeinfo2")))
+                .andExpect(jsonPath("$.initiatives", Is.is("Initiatives2")))
+                .andExpect(jsonPath("$.confidence", Is.is(5))).andExpect(jsonPath("$.keyResultId", Is.is(2)))
+                .andExpect(jsonPath("$.createdBy.id", Is.is(1)))
+                .andExpect(jsonPath("$.zone", Is.is(Zone.COMMIT.toString())))
+                .andExpect(jsonPath("$.checkInType", Is.is("ordinal")));
     }
 }

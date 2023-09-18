@@ -69,6 +69,10 @@ export class AppComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.notifierService.closeDetailSubject.unsubscribe();
+  }
+
   isOverview(): null | true {
     return this.convertFalseToNull(!this.isTeam());
   }

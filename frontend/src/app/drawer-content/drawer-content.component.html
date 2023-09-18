@@ -1,1 +1,6 @@
-<p>drawer-content works!</p>
+<div [ngSwitch]="typeof(drawerContent)">
+  <ng-container *ngSwitchCase="'ObjectiveMin'">
+    <!--    <app-objective-detail></app-objective-detail>-->
+  </ng-container>
+  <ng-container *ngSwitchCase="'KeyresultMin'"></ng-container>
+</div>

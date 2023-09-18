@@ -242,14 +242,14 @@ class KeyResultControllerIT {
 
         mvc.perform(get("/api/v2/keyresults/5/checkins").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].value", Is.is(35.0)))
-                .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdById", Is.is(1)))
-                .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo 1")))
-                .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives 1")))
-                .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].value", Is.is(65.0)))
-                .andExpect(jsonPath("$[1].keyResultId", Is.is(5))).andExpect(jsonPath("$[1].createdById", Is.is(1)))
-                .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo 2")))
-                .andExpect(jsonPath("$[1].initiatives", Is.is("Initiatives 2")));
+                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].valueMetric", Is.is(23.0)))
+                .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdBy.id", Is.is(1)))
+                .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo1")))
+                .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives1"))).andExpect(jsonPath("$[1].id", Is.is(4)))
+                .andExpect(jsonPath("$[1].valueMetric", Is.is(12.0))).andExpect(jsonPath("$[1].keyResultId", Is.is(5)))
+                .andExpect(jsonPath("$[1].createdBy.id", Is.is(1)))
+                .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo2")))
+                .andExpect(jsonPath("$[1].initiatives", Is.is("Initiatives2")));
     }
 
     @Test

@@ -10,6 +10,7 @@ import { ObjectiveService } from './shared/services/objective.service';
 import { Objective } from './shared/types/model/Objective';
 import { ObjectiveMin } from './shared/types/model/ObjectiveMin';
 import { KeyresultMin } from './shared/types/model/KeyresultMin';
+import { SidenavModel } from './shared/types/model/SidenavModel';
 
 @Component({
   selector: 'app-root',

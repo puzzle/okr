@@ -16,6 +16,7 @@ export class OverviewService {
       map((overviews) => {
         overviews.forEach((overview) => {
           overview.objectives.forEach((objective) => {
+            objective.type = 'objective';
             objective.state = State[objective.state as string as keyof typeof State];
             return objective;
           });

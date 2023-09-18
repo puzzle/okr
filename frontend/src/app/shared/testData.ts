@@ -37,6 +37,7 @@ export const keyResultMetric: KeyResultMetricMin = {
   baseLine: 10.0,
   stretchGoal: 25.0,
   lastCheckIn: checkInMetric,
+  type: 'keyResult',
 } as KeyResultMetricMin;
 
 export const keyResultOrdinal: KeyResultOrdinalMin = {

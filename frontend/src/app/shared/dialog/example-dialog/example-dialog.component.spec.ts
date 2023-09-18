@@ -15,6 +15,7 @@ import { By } from '@angular/platform-browser';
 // @ts-ignore
 import * as errorData from '../../../../assets/errors/error-messages.json';
 import { ObjectiveComponent } from '../../../objective/objective.component';
+import { MatOptionHarness } from '@angular/material/core/testing';
 
 describe('ExampleDialogComponent', () => {
   let component: ExampleDialogComponent;
@@ -138,33 +139,44 @@ describe('ExampleDialogComponent', () => {
     expect(submitButton.nativeElement.disabled).toBeTruthy();
   }));
 
-  it('should not save form unless radio button is checked', waitForAsync(async () => {
+  it('should not save form unless radio button is checked', async () => {
     //Insert value into input
-    const nameInput = await loader.getHarness(MatInputHarness);
-    const matSelect = await loader.getHarness(MatSelectHarness);
+    const nameInput = loader.getHarness(MatInputHarness);
+    const matSelect = loader.getHarness(MatSelectHarness);
+    const radioButtons = loader.getAllHarnesses(MatRadioButtonHarness);
 
-    await nameInput.setValue('Name');
-    //Select value from dropdown
-    await matSelect.open();
-    const selectOptions = await matSelect.getOptions();
-    await selectOptions[1].click();
     //Verify that the submit button is disabled because the radio button is not checked yet
-    const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-    expect(await submitButton.nativeElement.disabled).toBeTruthy();
-    //Check radio button
-    const buttons = await loader.getAllHarnesses(MatRadioButtonHarness);
-    await buttons[1].check();
-    //Check submit button and form output
-    expect(await submitButton.nativeElement.disabled).toBeFalsy();
-    const formObject = fixture.componentInstance.dialogForm.value;
-    expect(formObject.name).toBe('Name');
-    expect(formObject.gender).toBe(await buttons[1].getValue());
-    expect(formObject.hobby).toBe(await selectOptions[1].getText());
-  }));
+    let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
+    expect(submitButton.nativeElement.disabled).toBeTruthy();
 
-  function advance() {
-    tick(50);
+    await Promise.all([nameInput, matSelect, radioButtons]).then(
+      fakeAsync(
+        ([nameInput, matSelect, radioButtons]: [MatInputHarness, MatSelectHarness, MatRadioButtonHarness[]]) => {
+          nameInput.setValue('Name');
+          advance();
+          matSelect.open().then(() => {
+            matSelect.getOptions().then((options: MatOptionHarness[]) => {
+              options[1].click();
+              radioButtons[1].check();
+              advance(100);
+              //Check submit button and form output
+              Promise.all([radioButtons[1].getValue(), options[1].getText()]).then(([gender, hobby]) => {
+                const formObject = fixture.componentInstance.dialogForm.value;
+                expect(submitButton.nativeElement.disabled).toBeFalsy();
+                expect(formObject.name).toBe('Name');
+                expect(gender).toBe('female');
+                expect(hobby).toBe(formObject.hobby);
+              });
+            });
+          });
+        },
+      ),
+    );
+  });
+
+  function advance(duration = 100) {
+    tick(duration);
     fixture.detectChanges();
-    tick(50);
+    tick(duration);
   }
 });

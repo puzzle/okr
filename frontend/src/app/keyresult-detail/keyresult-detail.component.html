@@ -1,12 +1,14 @@
-<h5 class="mb-3">{{keyResult.title}}</h5>
-<div class="fs-6 justify-content-space-between">
-  <div>
-    <p>{{keyResult.keyResultType}}</p>
-  </div>
-  <div>
-    <p>Owner Owner</p>
-  </div>
-  <div>
-    <p>{{keyResult.createdOn}} - {{keyResult.modifiedOn}}</p>
+<div class="mb-2" cdkTrapFocus="true">
+  <h5 class="mb-2 title">{{keyResult.title}}</h5>
+  <div class="d-flex justify-content-between keyresultHeader">
+    <div>
+      <p>{{keyResult.keyResultType}}</p>
+    </div>
+    <div>
+      <p>Owner Owner</p>
+    </div>
+    <div>
+      <p>{{keyResult.createdOn | date:'shortDate'}} - {{keyResult.modifiedOn | date:'shortDate'}}</p>
+    </div>
   </div>
 </div>

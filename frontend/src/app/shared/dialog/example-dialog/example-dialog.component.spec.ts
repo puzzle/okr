@@ -158,7 +158,7 @@ describe('ExampleDialogComponent', () => {
             matSelect.getOptions().then((options: MatOptionHarness[]) => {
               options[1].click();
               radioButtons[1].check();
-              advance(100);
+              advance();
               //Check submit button and form output
               Promise.all([radioButtons[1].getValue(), options[1].getText()]).then(([gender, hobby]) => {
                 const formObject = fixture.componentInstance.dialogForm.value;

@@ -1,5 +1,8 @@
 <div class="mb-2" cdkTrapFocus="true">
-  <h5 class="mb-2 title">{{keyResult.title}}</h5>
+  <div class="d-flex justify-content-between">
+    <h5 class="mb-2 title">{{keyResult.title}}</h5>
+    <button mat-icon-button (click)="closeDrawer()"><mat-icon>close</mat-icon></button>
+  </div>
   <div class="d-flex justify-content-between keyresultHeader">
     <div>
       <p>{{keyResult.keyResultType}}</p>

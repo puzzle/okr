@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 
 @Component({
@@ -9,6 +9,10 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 export class KeyresultDetailComponent implements OnInit {
   @Input() keyResult!: KeyResult;
   constructor() {}
+  @Output() close: EventEmitter<any> = new EventEmitter<any>();
+  closeDrawer() {
+    this.close.emit()
+  }
 
   ngOnInit(): void {}
 }

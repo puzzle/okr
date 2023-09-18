@@ -60,11 +60,10 @@ class KeyResultControllerIT {
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo("Changeinfo2").withInitiatives("Initiatives2")
             .withValue(12D).withMeasureDate(Instant.parse("2022-08-29T22:44:00.00Z")).build();
     static List<Measure> measureList = Arrays.asList(measure1, measure2);
-
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 34D, "Changeinfo1", "Ininitatives1", 1L, LocalDateTime.MAX,
-            Instant.parse("2022-03-24T18:45:00.00Z"));
-    static MeasureDto measureDto2 = new MeasureDto(4L, 5L, 12D, "Changeinfo2", "Ininitatives2", 1L, LocalDateTime.MAX,
-            Instant.parse("2022-10-18T10:33:00.00Z"));
+    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 35.0, "Changeinfo 1", "Initiatives 1", 1L, LocalDateTime.MAX,
+            Instant.parse("2022-08-29T22:44:00.00Z"));
+    static MeasureDto measureDto2 = new MeasureDto(2L, 5L, 65.0, "Changeinfo 2", "Initiatives 2", 1L, LocalDateTime.MAX,
+            Instant.parse("2022-08-29T22:44:00.00Z"));
 
     static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
     static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
@@ -75,13 +74,6 @@ class KeyResultControllerIT {
             "Baum", 6, LocalDateTime.MIN, "Comment");
     static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
 
-    static KeyResultAbstractDto keyResultAbstractDtoMetric = new KeyResultAbstractDto(5L, "metric", "Keyresult Metric",
-            "Description", 1.0, 5.0, "ECTS", null, null, null, keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
-
-    static KeyResultAbstractDto keyResultAbstractDtoOrdinal = new KeyResultAbstractDto(5L, "ordinal",
-            "Keyresult Ordinal", "Description", null, null, null, "Eine Pflanze", "Ein Baum", "Ein Wald",
-            keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX);
     static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
             1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN,
             LocalDateTime.MAX);
@@ -92,23 +84,35 @@ class KeyResultControllerIT {
     static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L).withTitle("Keyresult 2")
             .withOwner(user).withObjective(objective).build();
 
-    static String createBody = """
+    static String createBodyMetric = """
             {
                 "id":null,
                 "objectiveId":5,
                 "title":"",
                 "description":"",
                 "ownerId":5,
-                "ownerFirstname":"",
-                "ownerLastname":"",
                "createdById":5,
-               "createdByFirstname":"",
-               "createdByLastname":"",
                "createdOn":null,
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":""
+               "unit":"PT"
+            }
+            """;
+
+    static String createBodyOrdinal = """
+            {
+                "id":null,
+                "objectiveId":5,
+                "title":"",
+                "description":"",
+                "ownerId":5,
+               "createdById":5,
+               "createdOn":null,
+               "modifiedOn":null,
+               "commitZone":"Eine Pflanze",
+               "targetZone":"Ein Baum",
+               "stretchZone":"Ein Wald"
             }
             """;
 
@@ -176,10 +180,6 @@ class KeyResultControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractDtoMetric)).willReturn(metricKeyResult);
-        BDDMockito.given(keyResultMapper.toKeyResult(keyResultAbstractDtoOrdinal)).willReturn(ordinalKeyResult);
-        BDDMockito.given(measureMapper.toDto(measure1)).willReturn(measureDto1);
-        BDDMockito.given(measureMapper.toDto(measure2)).willReturn(measureDto2);
     }
 
     @Test
@@ -217,11 +217,12 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)))
                 .andExpect(jsonPath("$.createdOn", Is.is("-999999999-01-01T00:00:00")))
                 .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
-                .andExpect(jsonPath("$.targetZone", Is.is("Ein Baum")));
+                .andExpect(jsonPath("$.targetZone", Is.is("Ein Baum")))
+                .andExpect(jsonPath("$.stretchZone", Is.is("Ein Wald")));
     }
 
     @Test
-    void shouldNotFindTheKeyResultWithId() throws Exception {
+    void shouldNotFindTheKeyResultWithGivenId() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(55L))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 55 not found"));
 
@@ -230,40 +231,47 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void shouldReturnUpdatedKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.updateKeyResult(any(), any())).willReturn(metricKeyResult);
-        BDDMockito.given(keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
-        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+    void shouldReturnCheckInsFromKeyResult() throws Exception {
+        BDDMockito.given(this.keyResultBusinessService.getAllMeasuresByKeyResult(5)).willReturn(measureList);
+        BDDMockito.given(this.measureMapper.toDto(measure1)).willReturn(measureDto1);
+        BDDMockito.given(this.measureMapper.toDto(measure2)).willReturn(measureDto2);
 
-        mvc.perform(put("/api/v2/keyresults/1").contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Keyresult 1\"}"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.title", Is.is("Keyresult 1")))
-                .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
-                .andExpect(jsonPath("$.keyResultType", Is.is("metric"))).andExpect(jsonPath("$.baseline", Is.is(1.0)))
-                .andExpect(jsonPath("$.stretchGoal", Is.is(5.0))).andExpect(jsonPath("$.objective.id", Is.is(1)))
-                .andExpect(jsonPath("$.lastCheckIn.id", Is.is(1)))
-                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6))).andExpect(jsonPath("$.unit", Is.is("ECTS")))
-                .andReturn();
+        mvc.perform(get("/api/v2/keyresults/5/checkins").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].value", Is.is(35.0)))
+                .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdById", Is.is(1)))
+                .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo 1")))
+                .andExpect(jsonPath("$[0].initiatives", Is.is("Initiatives 1")))
+                .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].value", Is.is(65.0)))
+                .andExpect(jsonPath("$[1].keyResultId", Is.is(5))).andExpect(jsonPath("$[1].createdById", Is.is(1)))
+                .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo 2")))
+                .andExpect(jsonPath("$[1].initiatives", Is.is("Initiatives 2")));
     }
 
     @Test
-    void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(keyResultBusinessService.updateKeyResult(any(), any()))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, any()));
-        mvc.perform(put("/api/v2/keyresults/10").contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Updated Keyresult 1\"}"))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    void shouldGetAllMeasuresIfNoMeasureExistsInKeyResult() throws Exception {
+        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1)).willReturn(Collections.emptyList());
+
+        mvc.perform(get("/api/v2/keyresults/1/checkins").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
     }
 
     @Test
-    void createKeyResult() throws Exception {
-        BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
-        BDDMockito.given(this.objectivePersistenceService.findById(5L)).willReturn(objective);
+    void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingMeasuresFromKeyResult() throws Exception {
+        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
+
+        mvc.perform(get("/api/v2/keyresults/1/checkins").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
+    }
+
+    @Test
+    void createMetricKeyResult() throws Exception {
         BDDMockito.given(this.keyResultBusinessService.createKeyResult(any(), any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
-        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
 
-        mvc.perform(post("/api/v2/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/v2/keyresults").content(createBodyMetric).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.unit", Is.is("ECTS"))).andExpect(jsonPath("$.description", Is.is("Description")))
@@ -278,12 +286,31 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void createKeyResultWithEnumKeys() throws Exception {
-        BDDMockito.given(this.userPersistenceService.findById(5L)).willReturn(user);
-        BDDMockito.given(this.objectivePersistenceService.findById(5L)).willReturn(objective);
+    void createOrdinalKeyResult() throws Exception {
         BDDMockito.given(this.keyResultBusinessService.createKeyResult(any(), any())).willReturn(ordinalKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
-        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+
+        mvc.perform(post("/api/v2/keyresults").content(createBodyOrdinal).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath("$.id", Is.is(5)))
+                .andExpect(jsonPath("$.commitZone", Is.is("Eine Pflanze")))
+                .andExpect(jsonPath("$.description", Is.is("Description")))
+                .andExpect(jsonPath("$.keyResultType", Is.is("ordinal")))
+                .andExpect(jsonPath("$.targetZone", Is.is("Ein Baum")))
+                .andExpect(jsonPath("$.stretchZone", Is.is("Ein Wald")))
+                .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
+                .andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(jsonPath("$.objective.state", Is.is("ONGOING")))
+                .andExpect(jsonPath("$.objective.keyResultQuarterDto.startDate", Is.is("-999999999-01-01")))
+                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6)));
+    }
+
+    @Test
+    void createKeyResultWithEnumKeys() throws Exception {
+        BDDMockito.given(this.keyResultBusinessService.createKeyResult(any(), any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
         mvc.perform(post("/api/v2/keyresults").content(createBodyWithEnumKeys).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -301,47 +328,50 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void invalidDTO() throws Exception {
+    void createKeyResultShouldThrowErrorWhenInvalidDto() throws Exception {
         BDDMockito.given(this.keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
-        mvc.perform(post("/api/v2/keyresults").content(createBody).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/v2/keyresults").content(createBodyOrdinal).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
-    void shouldReturnMeasuresFromKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(5)).willReturn(measureList);
+    void shouldReturnUpdatedKeyResult() throws Exception {
+        BDDMockito.given(this.keyResultBusinessService.updateKeyResult(any(), any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultBusinessService.isImUsed(any(), any())).willReturn(false);
 
-        mvc.perform(get("/api/v2/keyresults/5/checkins").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].value", Is.is(34D)))
-                .andExpect(jsonPath("$[0].keyResultId", Is.is(5))).andExpect(jsonPath("$[0].createdById", Is.is(1)))
-                .andExpect(jsonPath("$[0].changeInfo", Is.is("Changeinfo1")))
-                .andExpect(jsonPath("$[0].initiatives", Is.is("Ininitatives1")))
-                .andExpect(jsonPath("$[1].id", Is.is(4))).andExpect(jsonPath("$[1].value", Is.is(12D)))
-                .andExpect(jsonPath("$[1].createdById", Is.is(1)))
-                .andExpect(jsonPath("$[1].changeInfo", Is.is("Changeinfo2")))
-                .andExpect(jsonPath("$[1].initiatives", Is.is("Ininitatives2")))
-                .andExpect(jsonPath("$[1].keyResultId", Is.is(5)));
+        mvc.perform(put("/api/v2/keyresults/1").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Keyresult 1\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.title", Is.is("Keyresult 1")))
+                .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
+                .andExpect(jsonPath("$.keyResultType", Is.is("metric"))).andExpect(jsonPath("$.baseline", Is.is(1.0)))
+                .andExpect(jsonPath("$.stretchGoal", Is.is(5.0))).andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6))).andExpect(jsonPath("$.unit", Is.is("ECTS")))
+                .andReturn();
     }
 
     @Test
-    void shouldGetAllMeasuresIfNoMeasureExistsInKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1)).willReturn(Collections.emptyList());
+    void shouldReturnUpdatedKeyResultWithImUsed() throws Exception {
+        BDDMockito.given(this.keyResultBusinessService.updateKeyResult(any(), any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultBusinessService.isImUsed(any(), any())).willReturn(true);
 
-        mvc.perform(get("/api/v2/keyresults/1/checkins").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
-    }
-
-    @Test
-    void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingMeasuresFromKeyResult() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getAllMeasuresByKeyResult(1))
-                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
-
-        mvc.perform(get("/api/v2/keyresults/1/measures").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isNotFound()).andExpect(status().isNotFound());
+        mvc.perform(put("/api/v2/keyresults/1").contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content("{\"title\":  \"Keyresult 1\"}"))
+                .andExpect(MockMvcResultMatchers.status().isImUsed())
+                .andExpect(jsonPath("$.title", Is.is("Keyresult 1")))
+                .andExpect(jsonPath("$.owner.firstname", Is.is("Johnny")))
+                .andExpect(jsonPath("$.keyResultType", Is.is("metric"))).andExpect(jsonPath("$.baseline", Is.is(1.0)))
+                .andExpect(jsonPath("$.stretchGoal", Is.is(5.0))).andExpect(jsonPath("$.objective.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.id", Is.is(1)))
+                .andExpect(jsonPath("$.lastCheckIn.confidence", Is.is(6))).andExpect(jsonPath("$.unit", Is.is("ECTS")))
+                .andReturn();
     }
 
     @Test

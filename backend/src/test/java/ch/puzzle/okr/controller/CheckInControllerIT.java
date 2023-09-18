@@ -129,6 +129,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
+        BDDMockito.given(checkInMapper.toCheckIn(any(), any())).willReturn(checkInMetric);
         BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
 

@@ -2,6 +2,8 @@ package ch.puzzle.okr.mapper.checkIn;
 
 import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInDto;
+import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
+import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
@@ -31,13 +33,11 @@ public class CheckInMapper {
         }
     }
 
-    public CheckIn toCheckIn(CheckInAbstractDTO checkInDto, Jwt jwt) {
-        if (checkInDto.getCheckInType() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided type of this CheckIn is null");
-        } else if (isMetricCheckIn(checkInDto)) {
-            return checkInMetricMapper.toCheckInMetric(checkInDto, jwt);
-        } else if (isOrdinalCheckIn(checkInDto)) {
-            return checkInOrdinalMapper.toCheckInOrdinal(checkInDto, jwt);
+    public CheckIn toCheckIn(CheckInDto checkInDto, Jwt jwt) {
+        if (checkInDto instanceof CheckInMetricDto) {
+            return checkInMetricMapper.toCheckInMetric((CheckInMetricDto) checkInDto, jwt);
+        } else if (checkInDto instanceof CheckInOrdinalDto) {
+            return checkInOrdinalMapper.toCheckInOrdinal((CheckInOrdinalDto) checkInDto, jwt);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The provided CheckInDto is neither metric nor ordinal");

@@ -1,6 +1,5 @@
 package ch.puzzle.okr.mapper.checkIn;
 
-import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
@@ -27,13 +26,13 @@ public class CheckInMetricMapper {
                 checkInMetric.getValue());
     }
 
-    public CheckIn toCheckInMetric(CheckInAbstractDTO checkInAbstractDTO, Jwt jwt) {
-        return CheckInMetric.Builder.builder().withValue(checkInAbstractDTO.getValue())
-                .withId(checkInAbstractDTO.getId()).withChangeInfo(checkInAbstractDTO.getChangeInfo())
-                .withInitiatives(checkInAbstractDTO.getInitiatives()).withConfidence(checkInAbstractDTO.getConfidence())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInAbstractDTO.getKeyResultId()))
+    public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto, Jwt jwt) {
+        return CheckInMetric.Builder.builder().withValue(checkInMetricDto.valueMetric()).withId(checkInMetricDto.id())
+                .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
+                .withConfidence(checkInMetricDto.confidence())
+                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId()))
                 .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
-                .withCreatedOn(checkInAbstractDTO.getCreatedOn()).withModifiedOn(checkInAbstractDTO.getModifiedOn())
-                .withCheckInType(checkInAbstractDTO.getCheckInType()).build();
+                .withCreatedOn(checkInMetricDto.createdOn()).withModifiedOn(checkInMetricDto.modifiedOn())
+                .withCheckInType(checkInMetricDto.checkInType()).build();
     }
 }

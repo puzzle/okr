@@ -6,6 +6,8 @@
 
   <mat-drawer-container id="drawer-container" hasBackdrop="true">
     <mat-drawer
+      cdkTrapFocus="true"
+      cdkTrapFocusAutoCapture="true"
       data-test-id="mat-drawer"
       class="mt-5 position-fixed w-25 p-3"
       mode="over"
@@ -17,11 +19,11 @@
       [(opened)]="drawerOpen"
       position="end"
     >
-      <app-objective-detail
-        *ngIf="objective != undefined"
-        [objective]="objective"
+      <app-drawer-content
+        *ngIf="drawerContent != undefined"
+        [drawerContent]="drawerContent"
         (close)="closeDrawer()"
-      ></app-objective-detail>
+      ></app-drawer-content>
     </mat-drawer>
     <mat-drawer-content>
       <router-outlet></router-outlet>

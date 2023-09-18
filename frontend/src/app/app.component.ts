@@ -8,6 +8,8 @@ import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
 import { ObjectiveService } from './shared/services/objective.service';
 import { Objective } from './shared/types/model/Objective';
+import { ObjectiveMin } from './shared/types/model/ObjectiveMin';
+import { KeyresultMin } from './shared/types/model/KeyresultMin';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
-  objective!: Objective;
+  drawerContent!: ObjectiveMin | KeyresultMin;
 
   constructor(
     public router: Router,
@@ -49,19 +51,16 @@ export class AppComponent implements OnInit, OnDestroy {
       }),
     );
     this.notifierService.drawerSubject.subscribe({
-      next: (objective) => {
-        this.routeSidenav(objective.id);
+      next: (responseObject) => {
+        this.routeSidenav(responseObject);
       },
     });
   }
 
-  routeSidenav(id: number) {
-    this.objectiveService.getFullObjective(id).subscribe((objective) => {
-      this.disableScrolling();
-      this.objective = objective;
-      this.router.navigate(['objective', id]);
-    });
+  routeSidenav(responseObject: ObjectiveMin | KeyresultMin) {
+    this.drawerContent = responseObject;
     this.drawerOpen = true;
+    this.disableScrolling();
   }
 
   ngOnInit(): void {

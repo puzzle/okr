@@ -9,9 +9,7 @@ import { Objective } from '../shared/types/model/Objective';
 export class ObjectiveDetailComponent implements OnInit {
   @Input() objective!: Objective;
   @Output() close: EventEmitter<any> = new EventEmitter<any>();
-  constructor() // private route: Route, // private router: Router,
-  // private activatedRouteSnapshot: ActivatedRouteSnapshot
-  {}
+  constructor() {} // private activatedRouteSnapshot: ActivatedRouteSnapshot // private route: Route, // private router: Router,
 
   closeDrawer() {
     this.close.emit();

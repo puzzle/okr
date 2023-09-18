@@ -41,10 +41,6 @@ public class CheckInBusinessService {
     @Transactional
     public CheckIn updateCheckIn(Long id, CheckIn checkIn, Jwt token) {
         CheckIn savedCheckIn = checkInPersistenceService.findById(id);
-        if (!checkIn.getCheckInType().equals(savedCheckIn.getCheckInType())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "It is not possible to change the type of a Check-In");
-        }
         checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         checkIn.setCreatedOn(savedCheckIn.getCreatedOn());
         checkIn.setKeyResult(savedCheckIn.getKeyResult());

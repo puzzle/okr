@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 
 @JsonDeserialize(as = CheckInOrdinalDto.class)
 public record CheckInOrdinalDto(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
-        LocalDateTime createdOn, LocalDateTime modifiedOn, String checkInType, String zone) implements CheckInDto {
+        LocalDateTime createdOn, LocalDateTime modifiedOn, String zone) implements CheckInDto {
 }

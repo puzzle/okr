@@ -22,8 +22,7 @@ public class CheckInOrdinalMapper {
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
         return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getChangeInfo(),
                 checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult().getId(),
-                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getCheckInType(),
-                checkInOrdinal.getValue());
+                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getValue());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto, Jwt jwt) {
@@ -32,7 +31,7 @@ public class CheckInOrdinalMapper {
                 .withConfidence(checkInOrdinalDto.confidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()))
                 .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
-                .withCreatedOn(checkInOrdinalDto.createdOn()).withModifiedOn(checkInOrdinalDto.modifiedOn())
-                .withCheckInType(checkInOrdinalDto.checkInType()).build();
+                .withCheckInType(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()).getKeyResultType())
+                .withCreatedOn(checkInOrdinalDto.createdOn()).withModifiedOn(checkInOrdinalDto.modifiedOn()).build();
     }
 }

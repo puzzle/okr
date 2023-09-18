@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.checkIn.CheckIn;

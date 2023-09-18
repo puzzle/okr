@@ -119,16 +119,6 @@ class CheckInBusinessServiceTest {
     }
 
     @Test
-    void shouldNotEditWhenTypeChange() {
-        when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInMetric);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            checkInBusinessService.updateCheckIn(this.checkInOrdinal.getId(), this.checkInOrdinal, this.jwt);
-        });
-        assertTrue(exception.getMessage().contains("It is not possible to change the type of a Check-In"));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-    }
-
-    @Test
     void shouldSaveMetricCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
         CheckIn createdCheckIn = checkInBusinessService.saveCheckIn(this.checkInMetric, this.jwt);

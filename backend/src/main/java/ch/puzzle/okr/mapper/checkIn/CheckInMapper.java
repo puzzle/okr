@@ -1,6 +1,5 @@
 package ch.puzzle.okr.mapper.checkIn;
 
-import ch.puzzle.okr.dto.checkIn.CheckInAbstractDTO;
 import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
@@ -42,13 +41,5 @@ public class CheckInMapper {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     "The provided CheckInDto is neither metric nor ordinal");
         }
-    }
-
-    public boolean isMetricCheckIn(CheckInAbstractDTO checkInDto) {
-        return checkInDto.getCheckInType().equals("metric");
-    }
-
-    public boolean isOrdinalCheckIn(CheckInAbstractDTO checkInDto) {
-        return checkInDto.getCheckInType().equals("ordinal");
     }
 }

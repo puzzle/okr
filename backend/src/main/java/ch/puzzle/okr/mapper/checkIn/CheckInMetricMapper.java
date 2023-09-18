@@ -22,17 +22,16 @@ public class CheckInMetricMapper {
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
                 checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
-                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getCheckInType(),
-                checkInMetric.getValue());
+                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto, Jwt jwt) {
         return CheckInMetric.Builder.builder().withValue(checkInMetricDto.valueMetric()).withId(checkInMetricDto.id())
                 .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
                 .withConfidence(checkInMetricDto.confidence())
+                .withCheckInType(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId()).getKeyResultType())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId()))
                 .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
-                .withCreatedOn(checkInMetricDto.createdOn()).withModifiedOn(checkInMetricDto.modifiedOn())
-                .withCheckInType(checkInMetricDto.checkInType()).build();
+                .withCreatedOn(checkInMetricDto.createdOn()).withModifiedOn(checkInMetricDto.modifiedOn()).build();
     }
 }

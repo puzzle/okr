@@ -81,6 +81,7 @@ export const MY_FORMATS = {
     ApplicationHeaderComponent,
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
+    CheckInHistoryDialogComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
   ],

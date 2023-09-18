@@ -1,6 +1,6 @@
-<div class="mb-2" cdkTrapFocus="true">
+<div class="mb-2 keyresult-content" cdkTrapFocus="true">
   <div class="d-flex justify-content-between">
-    <h5 class="mb-2 title">{{keyResult.title}}</h5>
+    <h1 class="mb-2 title">{{keyResult.title}}</h1>
     <button mat-icon-button (click)="closeDrawer()">
       <mat-icon>close</mat-icon>
     </button>
@@ -16,5 +16,12 @@
     <div>
       <p>{{keyResult.createdOn | date:'shortDate'}} - {{keyResult.modifiedOn | date:'shortDate'}}</p>
     </div>
+  </div>
+  <div>
+    <h2 class="sub-title-keyresult">Letztes Check-in ({{keyResult.lastCheckIn}})</h2>
+  </div>
+  <div>
+    <h2 class="sub-title-keyresult">Beschrieb</h2>
+    <p>{{keyResult.description}}</p>
   </div>
 </div>

@@ -14,10 +14,11 @@ import java.io.IOException;
 
 public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
     @Override
-    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public KeyResultDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-        if(root.has("keyResultType") && root.get("keyResultType").asText().equals("metric")) {
+        if (root.has("keyResultType") && root.get("keyResultType").asText().equals("metric")) {
             return mapper.readValue(root.toString(), KeyResultMetricDto.class);
         }
         return mapper.readValue(root.toString(), KeyResultOrdinalDto.class);

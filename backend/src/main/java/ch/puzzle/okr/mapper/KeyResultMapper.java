@@ -35,9 +35,9 @@ public class KeyResultMapper {
     }
 
     public KeyResult toKeyResult(KeyResultDto keyResultDto) {
-        if(keyResultDto instanceof KeyResultMetricDto) {
+        if (keyResultDto instanceof KeyResultMetricDto) {
             return keyResultMetricMapper.toKeyResultMetric((KeyResultMetricDto) keyResultDto);
-        } else if(keyResultDto instanceof KeyResultOrdinalDto) {
+        } else if (keyResultDto instanceof KeyResultOrdinalDto) {
             return keyResultOrdinalMapper.toKeyResultOrdinal((KeyResultOrdinalDto) keyResultDto);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,

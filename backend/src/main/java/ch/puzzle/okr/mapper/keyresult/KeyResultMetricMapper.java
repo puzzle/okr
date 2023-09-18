@@ -42,7 +42,8 @@ public class KeyResultMetricMapper {
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
         return KeyResultMetric.Builder.builder().withBaseline(keyResultMetricDto.baseline())
-                .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit()).withId(keyResultMetricDto.id())
+                .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit())
+                .withId(keyResultMetricDto.id())
                 .withObjective(objectiveBusinessService.getObjectiveById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
                 .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))

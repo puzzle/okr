@@ -14,10 +14,11 @@ import java.io.IOException;
 
 public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
     @Override
-    public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public CheckInDto deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+            throws IOException, JacksonException {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
-        if(root.has("checkInType") && root.get("checkInType").asText().equals("metric")) {
+        if (root.has("checkInType") && root.get("checkInType").asText().equals("metric")) {
             return mapper.readValue(root.toString(), CheckInMetricDto.class);
         }
         return mapper.readValue(root.toString(), CheckInOrdinalDto.class);

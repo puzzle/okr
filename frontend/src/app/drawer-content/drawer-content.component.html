@@ -1,7 +1,6 @@
 <div [ngSwitch]="drawerContent.type">
-  {{ drawerContent.type }}
   <ng-container *ngSwitchCase="'objective'">
-    <app-objective-detail></app-objective-detail>
+    <app-objective-detail *ngIf="fullObjective" [objective]="fullObjective"></app-objective-detail>
   </ng-container>
   <ng-container *ngSwitchCase="'keyresult'"></ng-container>
 </div>

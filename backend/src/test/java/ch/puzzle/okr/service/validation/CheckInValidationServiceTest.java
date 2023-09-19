@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -167,7 +168,7 @@ public class CheckInValidationServiceTest {
 
         String errorConfidence = "Confidence must not be null";
         String errorKeyResult = "KeyResult must not be null";
-        String errorCreatedBy = "KeyResult must not be null";
+        String errorCreatedBy = "CreatedBy must not be null";
         String errorCreatedOn = "CreatedOn must not be null";
         String errorValue = "Value must not be null";
 
@@ -221,18 +222,19 @@ public class CheckInValidationServiceTest {
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
-        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(11L).withChangeInfo("ChangeInfo").build();
+        CheckIn checkInInvalid = CheckInMetric.Builder.builder().withId(11L).withChangeInfo("ChangeInfo")
+                .withKeyResult(KeyResultMetric.Builder.builder().withId(13L).build()).build();
+        BDDMockito.when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(13L))
+                .thenReturn(List.of(checkInInvalid));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(11L, checkInInvalid));
 
         String errorConfidence = "Confidence must not be null";
-        String errorKeyResult = "KeyResult must not be null";
-        String errorCreatedBy = "KeyResult must not be null";
+        String errorCreatedBy = "CreatedBy must not be null";
         String errorCreatedOn = "CreatedOn must not be null";
         String errorValue = "Value must not be null";
 
         assertThat(exception.getReason().strip()).contains(errorConfidence);
-        assertThat(exception.getReason().strip()).contains(errorKeyResult);
         assertThat(exception.getReason().strip()).contains(errorCreatedBy);
         assertThat(exception.getReason().strip()).contains(errorCreatedOn);
         assertThat(exception.getReason().strip()).contains(errorValue);

@@ -95,8 +95,7 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInMetric.getId(), this.checkInMetric,
-                this.jwt);
+        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInMetric.getId(), this.checkInMetric);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), newCheckIn.getId());
@@ -109,8 +108,7 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInOrdinal.getId(), this.checkInOrdinal,
-                this.jwt);
+        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInOrdinal.getId(), this.checkInOrdinal);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), newCheckIn.getId());

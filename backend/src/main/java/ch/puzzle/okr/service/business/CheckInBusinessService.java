@@ -3,10 +3,8 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -39,11 +37,10 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public CheckIn updateCheckIn(Long id, CheckIn checkIn, Jwt token) {
+    public CheckIn updateCheckIn(Long id, CheckIn checkIn) {
         CheckIn savedCheckIn = checkInPersistenceService.findById(id);
-        checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         checkIn.setCreatedOn(savedCheckIn.getCreatedOn());
-        checkIn.setKeyResult(savedCheckIn.getKeyResult());
+        checkIn.setCreatedBy(savedCheckIn.getCreatedBy());
         checkIn.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, checkIn);
         return checkInPersistenceService.save(checkIn);

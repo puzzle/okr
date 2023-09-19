@@ -120,8 +120,8 @@ class CheckInControllerIT {
     void shouldReturnUpdatedCheckIn() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).withKeyResultType("metric").build());
-        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any())).willReturn(checkInMetric);
-        BDDMockito.given(checkInMapper.toCheckIn(any(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
 
         mvc.perform(put("/api/v2/checkIns/5").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -136,8 +136,8 @@ class CheckInControllerIT {
     void shouldReturnNotFound() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).withKeyResultType("metric").build());
-        BDDMockito.given(checkInMapper.toCheckIn(any(), any())).willReturn(checkInMetric);
-        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any(), any()))
+        BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
 
         mvc.perform(put("/api/v2/checkIns/5").contentType(MediaType.APPLICATION_JSON)

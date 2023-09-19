@@ -4,19 +4,14 @@ import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
 import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import ch.puzzle.okr.service.business.UserBusinessService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CheckInMetricMapper {
     private final KeyResultBusinessService keyResultBusinessService;
-    private final UserBusinessService userBusinessService;
 
-    public CheckInMetricMapper(KeyResultBusinessService keyResultBusinessService,
-            UserBusinessService userBusinessService) {
+    public CheckInMetricMapper(KeyResultBusinessService keyResultBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
-        this.userBusinessService = userBusinessService;
     }
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
@@ -25,14 +20,12 @@ public class CheckInMetricMapper {
                 checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue());
     }
 
-    public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto, Jwt jwt) {
+    public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
         return CheckInMetric.Builder.builder().withValue(checkInMetricDto.valueMetric()).withId(checkInMetricDto.id())
                 .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
                 .withConfidence(checkInMetricDto.confidence())
                 .withCheckInType(
                         keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId()).getKeyResultType())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId()))
-                .withCreatedBy(userBusinessService.getUserByAuthorisationToken(jwt))
-                .withCreatedOn(checkInMetricDto.createdOn()).withModifiedOn(checkInMetricDto.modifiedOn()).build();
+                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId())).build();
     }
 }

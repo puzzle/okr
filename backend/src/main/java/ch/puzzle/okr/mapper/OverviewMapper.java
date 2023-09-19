@@ -78,6 +78,7 @@ public class OverviewMapper {
     }
 
     private OverviewKeyResultDto createKeyResultDto(Overview overview) {
+        // TODO enhance for OverviewKeyResultOrdinalDto and OverviewLastCheckInOrdinalDto
         OverviewLastCheckInMetricDto lastCheckIn = null;
         if (overview.getOverviewId().getCheckInId() != null && overview.getOverviewId().getCheckInId() > -1) {
             lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),

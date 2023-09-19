@@ -9,5 +9,6 @@ import { SidenavModel } from '../types/model/SidenavModel';
 })
 export class NotifierService {
   drawerSubject = new Subject<ObjectiveMin | KeyresultMin>();
+  closeDetailSubject: Subject<void> = new Subject();
   constructor() {}
 }

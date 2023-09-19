@@ -30,9 +30,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
-    private notifierService: NotifierService,
     private objectiveService: ObjectiveService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notifierService: NotifierService
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -72,7 +72,16 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((event) => {
         this.currentUrl = event.url;
+        if (this.currentUrl.startsWith('/objective/')) {
+          this.openObjectiveDetail();
+          const objectiveId = this.currentUrl.split('/')[2];
+          this.sidenavContentInformation = { id: objectiveId, type: 'objective' };
+        }
       });
+
+    this.notifierService.closeDetailSubject.subscribe(() => {
+      this.closeDrawer();
+    });
   }
 
   ngOnDestroy() {

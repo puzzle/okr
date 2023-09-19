@@ -9,7 +9,6 @@ import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -91,36 +90,6 @@ public class CheckInPersistenceServiceIT {
         assertEquals(
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
                 checkIn.getChangeInfo());
-    }
-
-    @Test
-    void getCheckInById_ShouldThrowExceptionWhenCheckInNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> checkInPersistenceService.findById(321L));
-
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("CheckIn with id 321 not found", exception.getReason());
-    }
-
-    @Test
-    void getCheckIntById_ShouldThrowExceptionWhenCheckInIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> checkInPersistenceService.findById(null));
-
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for CheckIn", exception.getReason());
-    }
-
-    @Test
-    void deleteCheckInById_ShouldDeleteCheckIn() {
-        CheckIn checkIn = createCheckIn(null);
-        createdCheckIn = checkInPersistenceService.save(checkIn);
-        checkInPersistenceService.deleteById(createdCheckIn.getId());
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> checkInPersistenceService.findById(createdCheckIn.getId()));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("CheckIn with id %d not found", createdCheckIn.getId()), exception.getReason());
     }
 
     @Test

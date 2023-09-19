@@ -28,41 +28,41 @@ public class CheckInController {
         this.checkInBusinessService = checkInBusinessService;
     }
 
-    @Operation(summary = "Get Check-In", description = "Get Check-In by ID")
+    @Operation(summary = "Get Check-in", description = "Get Check-in by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned a Check-In with a specified ID", content = {
+            @ApiResponse(responseCode = "200", description = "Returned a Check-in with a specified ID", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find a Check-In with a specified ID", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Did not find a Check-in with a specified ID", content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(checkInMapper.toDto(this.checkInBusinessService.getCheckInById(id)));
     }
 
-    @Operation(summary = "Create Check-In", description = "Create a new Check-In")
+    @Operation(summary = "Create Check-in", description = "Create a new Check-in")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created new Check-In.", content = {
+            @ApiResponse(responseCode = "201", description = "Created new Check-in.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Check-In, not allowed to give an ID", content = @Content) })
+            @ApiResponse(responseCode = "400", description = "Can't create new Check-in, not allowed to give an ID", content = @Content) })
     @PostMapping
     public ResponseEntity<CheckInDto> createCheckIn(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to create a new Check-In.", required = true) @RequestBody CheckInDto checkInDto,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto, jwt);
         CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.saveCheckIn(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
 
-    @Operation(summary = "Update Check-In", description = "Update a Check-In by ID")
+    @Operation(summary = "Update Check-in", description = "Update a Check-in by ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated Check-In in db", content = {
+            @ApiResponse(responseCode = "200", description = "Updated Check-in in db", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Check-In, attributes are not set", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Given ID of Check-In wasn't found.", content = @Content) })
+            @ApiResponse(responseCode = "400", description = "Can't create new Check-in, attributes are not set", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Given ID of Check-in wasn't found.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<CheckInDto> updateCheckIn(
-            @Parameter(description = "The ID for updating a Check-In.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-In as json to update an existing Check-In.", required = true) @RequestBody CheckInDto checkInDto,
+            @Parameter(description = "The ID for updating a Check-in.", required = true) @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to update an existing Check-in.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto, jwt);
         checkIn.setId(id);

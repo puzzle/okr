@@ -48,14 +48,14 @@ public class KeyResultController {
         return keyResultMapper.toDto(keyResultBusinessService.getKeyResultById(id));
     }
 
-    @Operation(summary = "Get CheckIns from KeyResult", description = "Get all CheckIns from one KeyResult by keyResultId.")
+    @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all CheckIns from KeyResult.", content = {
+            @ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get CheckIns from.", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content) })
     @GetMapping("/{id}/checkins")
     public List<CheckInDto> getCheckInsFromKeyResult(
-            @Parameter(description = "The ID for getting all CheckIns from a KeyResult.", required = true) @PathVariable long id) {
+            @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
         return keyResultBusinessService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 

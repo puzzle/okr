@@ -1,7 +1,7 @@
 repository,persistenceService
 KeyResultRepository,KeyResultPersistenceService
 ObjectiveRepository,ObjectivePersistenceService
-MeasureRepository,MeasurePersistenceService
+CheckInRepository,CheckInPersistenceService
 QuarterRepository,QuarterPersistenceService
 TeamRepository,TeamPersistenceService
 UserRepository,UserPersistenceService

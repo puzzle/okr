@@ -47,8 +47,8 @@ public class KeyResultOrdinalMapper {
                 .withObjective(objectiveBusinessService.getObjectiveById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
                 .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
-                .withCreatedOn(keyResultOrdinalDto.createdOn()).withModifiedOn(keyResultOrdinalDto.modifiedOn())
-                .withKeyResultType(keyResultOrdinalDto.keyResultType()).build();
+                .withModifiedOn(keyResultOrdinalDto.modifiedOn()).withKeyResultType(keyResultOrdinalDto.keyResultType())
+                .build();
     }
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {

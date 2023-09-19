@@ -1,7 +1,7 @@
 <div *ngIf="objective != undefined">
   <div class="mb-2 d-flex justify-content-between">
-    <div class="title mt-1">{{ objective.title }}</div>
-    <button mat-icon-button (click)="closeDrawer()"><mat-icon>close</mat-icon></button>
+    <div class="title">{{ objective.title }}</div>
+    <img (click)="closeDrawer()" height="15" width="15" src="assets/icons/close.svg" role="button" />
   </div>
   <div class="title fs-6">Beschrieb</div>
   <p>{{ objective.description }}</p>

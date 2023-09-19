@@ -49,7 +49,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
-        CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.saveCheckIn(checkIn, jwt));
+        CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.createCheckIn(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
 

@@ -10,12 +10,10 @@ import ch.puzzle.okr.models.checkIn.CheckIn;
 import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import ch.puzzle.okr.models.checkIn.Zone;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -150,7 +148,7 @@ class CheckInControllerIT {
     void shouldCreateCheckInMetric() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).withKeyResultType("metric").build());
-        BDDMockito.given(checkInBusinessService.saveCheckIn(any(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInMetric);
 
         mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -166,7 +164,7 @@ class CheckInControllerIT {
     void shouldCreateCheckInOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).withKeyResultType("ordinal").build());
-        BDDMockito.given(checkInBusinessService.saveCheckIn(any(), any())).willReturn(checkInOrdinal);
+        BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInOrdinal);
 
         mvc.perform(post("/api/v2/checkIns").contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

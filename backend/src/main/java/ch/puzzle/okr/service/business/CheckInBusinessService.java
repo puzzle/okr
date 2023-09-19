@@ -29,7 +29,7 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public CheckIn saveCheckIn(CheckIn checkIn, Jwt token) {
+    public CheckIn createCheckIn(CheckIn checkIn, Jwt token) {
         checkIn.setCreatedOn(LocalDateTime.now());
         checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
         validator.validateOnCreate(checkIn);

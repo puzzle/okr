@@ -119,7 +119,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveMetricCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
-        CheckIn createdCheckIn = checkInBusinessService.saveCheckIn(this.checkInMetric, this.jwt);
+        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInMetric, this.jwt);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), createdCheckIn.getId());
@@ -131,7 +131,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveOrdinalCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
-        CheckIn createdCheckIn = checkInBusinessService.saveCheckIn(this.checkInOrdinal, this.jwt);
+        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInOrdinal, this.jwt);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), createdCheckIn.getId());

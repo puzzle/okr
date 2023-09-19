@@ -15,19 +15,19 @@ public class OverviewId implements Serializable {
     public OverviewId() {
     }
 
-    public OverviewId(Long teamId, Long objectiveId, Long keyResultId, Long measureId) {
+    public OverviewId(Long teamId, Long objectiveId, Long keyResultId, Long checkInId) {
         this.teamId = teamId;
         this.objectiveId = objectiveId;
         this.keyResultId = keyResultId;
-        this.checkInId = measureId;
+        this.checkInId = checkInId;
     }
 
     private OverviewId(Builder builder) {
-        this(builder.teamId, builder.objectiveId, builder.keyResultId, builder.measureId);
+        this(builder.teamId, builder.objectiveId, builder.keyResultId, builder.checkInId);
     }
 
-    public static OverviewId of(Long teamId, Long objectiveId, Long keyResultId, Long measureId) {
-        return new OverviewId(teamId, objectiveId, keyResultId, measureId);
+    public static OverviewId of(Long teamId, Long objectiveId, Long keyResultId, Long checkInId) {
+        return new OverviewId(teamId, objectiveId, keyResultId, checkInId);
     }
 
     public Long getTeamId() {
@@ -49,7 +49,7 @@ public class OverviewId implements Serializable {
     @Override
     public String toString() {
         return "OverviewId{" + "teamId=" + teamId + ", objectiveId=" + objectiveId + ", keyResultId=" + keyResultId
-                + ", measureId=" + checkInId + '}';
+                + ", checkInId=" + checkInId + '}';
     }
 
     @Override
@@ -72,7 +72,7 @@ public class OverviewId implements Serializable {
         private Long teamId;
         private Long objectiveId;
         private Long keyResultId;
-        private Long measureId;
+        private Long checkInId;
 
         public Builder() {
         }
@@ -96,8 +96,8 @@ public class OverviewId implements Serializable {
             return this;
         }
 
-        public Builder withMeasureId(Long measureId) {
-            this.measureId = measureId;
+        public Builder withCheckInId(Long checkInId) {
+            this.checkInId = checkInId;
             return this;
         }
 

@@ -260,7 +260,7 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingMeasuresFromKeyResult() throws Exception {
+    void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingCheckInsFromKeyResult() throws Exception {
         BDDMockito.given(keyResultBusinessService.getAllCheckInsByKeyResult(1))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
 

@@ -50,10 +50,10 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultAndCheckInsFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
-                        .withMeasureId(4L).build())
+                        .withCheckInId(4L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withCheckInValue(27.5).withConfidence(5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
@@ -64,11 +64,11 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
@@ -84,16 +84,16 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(2L)
-                                .withKeyResultId(6L).withMeasureId(7L).build())
+                                .withKeyResultId(6L).withCheckInId(7L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
                         .withCheckInValue(33.5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
@@ -109,7 +109,7 @@ public class OverviewMapperTest {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                         .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()

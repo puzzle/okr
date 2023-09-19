@@ -2,21 +2,24 @@ package ch.puzzle.okr.models.checkIn;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @DiscriminatorValue("ordinal")
 public class CheckInOrdinal extends CheckIn {
     @NotNull(message = "Value must not be null")
-    private String zone;
+    @Enumerated(EnumType.STRING)
+    private Zone zone;
 
     /* Getter and Setter */
-    public String getValue() {
+    public Zone getZone() {
         return zone;
     }
 
-    public void setValue(String value) {
-        this.zone = value;
+    public void setZone(Zone zone) {
+        this.zone = zone;
     }
 
     /* Constructor */
@@ -26,12 +29,12 @@ public class CheckInOrdinal extends CheckIn {
 
     public CheckInOrdinal(Builder builder) {
         super(builder);
-        setValue(builder.value);
+        setZone(builder.zone);
     }
 
     /* Builder */
     public static final class Builder extends CheckIn.Builder {
-        private String value;
+        private Zone zone;
 
         private Builder() {
         }
@@ -40,8 +43,8 @@ public class CheckInOrdinal extends CheckIn {
             return new Builder();
         }
 
-        public Builder withValue(String value) {
-            this.value = value;
+        public Builder withZone(Zone zone) {
+            this.zone = zone;
             return this;
         }
 

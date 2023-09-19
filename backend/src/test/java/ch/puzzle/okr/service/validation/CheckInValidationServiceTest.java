@@ -88,7 +88,7 @@ public class CheckInValidationServiceTest {
                 .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
                 .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
 
-        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withValue(Zone.STRETCH.toString()).withId(1L)
+        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.STRETCH).withId(1L)
                 .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withCheckInType("metric")
                 .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
                 .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();

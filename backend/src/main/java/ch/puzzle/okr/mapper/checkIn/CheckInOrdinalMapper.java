@@ -17,11 +17,11 @@ public class CheckInOrdinalMapper {
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
         return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getChangeInfo(),
                 checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult().getId(),
-                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getValue());
+                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getZone());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
-        return CheckInOrdinal.Builder.builder().withValue(checkInOrdinalDto.zone()).withId(checkInOrdinalDto.id())
+        return CheckInOrdinal.Builder.builder().withZone(checkInOrdinalDto.zone()).withId(checkInOrdinalDto.id())
                 .withChangeInfo(checkInOrdinalDto.changeInfo()).withInitiatives(checkInOrdinalDto.initiatives())
                 .withConfidence(checkInOrdinalDto.confidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId()))

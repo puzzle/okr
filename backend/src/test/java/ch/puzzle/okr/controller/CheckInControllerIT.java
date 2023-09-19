@@ -62,7 +62,7 @@ class CheckInControllerIT {
             .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
                     .withObjective(objective).build())
             .build();
-    static CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withValue(Zone.COMMIT.toString()).withId(4L)
+    static CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX)
             .withKeyResult(
@@ -73,7 +73,7 @@ class CheckInControllerIT {
     static CheckInDto checkInMetricDto = new CheckInMetricDto(5L, "Changeinfo1", "Initiatives1", 6, 1L,
             LocalDateTime.MAX, LocalDateTime.MAX, 46D);
     static CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, "Changeinfo2", "Initiatives2", 5, 2L,
-            LocalDateTime.MAX, LocalDateTime.MAX, String.valueOf(Zone.COMMIT));
+            LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT);
 
     @BeforeEach
     void setUp() {

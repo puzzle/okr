@@ -59,9 +59,9 @@ class CheckInBusinessServiceTest {
         this.checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withCheckInType("metric")
                 .withConfidence(5).withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
                 .withKeyResult(metricKeyResult).build();
-        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withValue(Zone.COMMIT.toString())
-                .withCheckInType("ordinal").withConfidence(5).withChangeInfo("ChangeInfo2")
-                .withInitiatives("Initiatives2").withCreatedBy(user).withKeyResult(ordinalKeyResult).build();
+        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withCheckInType("ordinal")
+                .withConfidence(5).withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
+                .withKeyResult(ordinalKeyResult).build();
 
         this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
                 .build();
@@ -137,7 +137,7 @@ class CheckInBusinessServiceTest {
         assertEquals(this.checkInOrdinal.getId(), createdCheckIn.getId());
         assertEquals(this.checkInOrdinal.getChangeInfo(), createdCheckIn.getChangeInfo());
         assertEquals(this.checkInOrdinal.getCheckInType(), createdCheckIn.getCheckInType());
-        assertEquals(((CheckInOrdinal) this.checkInOrdinal).getValue(), ((CheckInOrdinal) createdCheckIn).getValue());
+        assertEquals(((CheckInOrdinal) this.checkInOrdinal).getZone(), ((CheckInOrdinal) createdCheckIn).getZone());
     }
 
     @Test

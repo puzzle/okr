@@ -70,7 +70,7 @@ public class OverviewMapperTest {
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withCheckInValue(27.5).build(),
+                        .withCheckInZone("COMMIT").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(5L).build())
@@ -111,7 +111,7 @@ public class OverviewMapperTest {
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withCheckInValue(27.5).build(),
+                        .withCheckInZone("TARGET").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
                                 .withKeyResultId(6L).build())

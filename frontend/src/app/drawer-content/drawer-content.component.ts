@@ -1,25 +1,27 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { SidenavModel } from '../shared/types/model/SidenavModel';
-import { ObjectiveService } from '../shared/services/objective.service';
-import { Objective } from '../shared/types/model/Objective';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-drawer-content',
   templateUrl: './drawer-content.component.html',
   styleUrls: ['./drawer-content.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrawerContentComponent implements OnInit, OnChanges {
-  @Input() drawerContent!: SidenavModel;
-  fullObjective!: Objective;
-  constructor(private objectiveService: ObjectiveService) {}
+  @Input() drawerContent!: { id: string; type: string };
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['drawerContent'].currentValue != null) {
-      this.objectiveService.getFullObjective(this.drawerContent.id).subscribe((fullObjective: Objective) => {
-        this.fullObjective = fullObjective;
-      });
-    }
+    this.changeDetectorRef.markForCheck();
+    console.log(this.drawerContent);
   }
 }

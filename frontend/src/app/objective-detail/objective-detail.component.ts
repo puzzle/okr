@@ -25,7 +25,7 @@ export class ObjectiveDetailComponent implements OnInit, OnChanges {
     private objectiveService: ObjectiveService,
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
   ) {}
 
   closeDrawer() {
@@ -44,7 +44,7 @@ export class ObjectiveDetailComponent implements OnInit, OnChanges {
         this.closeDrawer();
         console.error(error);
         this.router.navigate(['']);
-      }
+      },
     );
   }
 }

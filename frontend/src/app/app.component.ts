@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
-  drawerContent!: ObjectiveMin | KeyresultMin;
+  sidenavContentInformation!: { id: string; type: string };
 
   constructor(
     public router: Router,
@@ -30,9 +30,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
-    private objectiveService: ObjectiveService,
-    private route: ActivatedRoute,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -51,15 +49,9 @@ export class AppComponent implements OnInit, OnDestroy {
         return config.activeProfile === 'staging';
       }),
     );
-    this.notifierService.drawerSubject.subscribe({
-      next: (responseObject) => {
-        this.routeSidenav(responseObject);
-      },
-    });
   }
 
-  routeSidenav(responseObject: ObjectiveMin | KeyresultMin) {
-    this.drawerContent = responseObject;
+  openObjectiveDetail() {
     this.drawerOpen = true;
     this.disableScrolling();
   }
@@ -84,9 +76,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.notifierService.drawerSubject.unsubscribe();
-  }
+  ngOnDestroy() {}
 
   isOverview(): null | true {
     return this.convertFalseToNull(!this.isTeam());

@@ -3,6 +3,7 @@ import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { NotifierService } from '../shared/services/notifier.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objective-column',
@@ -20,7 +21,11 @@ export class ObjectiveComponent {
     { displayName: 'Objective freigeben', showDialog: false },
   ];
 
-  constructor(private routeService: RouteService, private notifierService: NotifierService) {}
+  constructor(
+    private routeService: RouteService,
+    private notifierService: NotifierService,
+    private router: Router,
+  ) {}
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {
@@ -36,7 +41,7 @@ export class ObjectiveComponent {
     );
   }
 
-  openDrawer() {
-    this.notifierService.drawerSubject.next(this.objective);
+  openObjectiveDetail() {
+    this.router.navigate(['objective', this.objective.id]);
   }
 }

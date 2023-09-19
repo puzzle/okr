@@ -104,6 +104,7 @@ export class AppComponent implements OnInit {
     this.drawerOpen = true;
     this.disableScrolling();
   }
+
   closeDrawer() {
     this.drawerOpen = false;
     this.router.navigate(['/']);

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { KeyResultMetric } from '../types/model/KeyResultMetric';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {KeyResult} from "../types/model/KeyResult";
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import { KeyResultMetric } from '../types/model/KeyResultMetric';
 export class KeyresultService {
   constructor(private httpClient: HttpClient) {}
 
-  getFullKeyResult(keyresultId: number) {
-    return this.httpClient.get<KeyResultMetric>('/api/v2/keyresults/' + keyresultId);
+  getBasicKeyResult(keyresultId: number) {
+    return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId);
   }
 }

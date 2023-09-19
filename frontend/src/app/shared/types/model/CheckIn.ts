@@ -1,9 +1,9 @@
-import {KeyResult} from "./KeyResult";
+import { KeyResult } from './KeyResult';
 
 export interface CheckIn {
   id: number;
   changeInfo: string;
-  initiatives: string
+  initiatives: string;
   confidence: number;
   keyresult: KeyResult;
   createdBy: string;

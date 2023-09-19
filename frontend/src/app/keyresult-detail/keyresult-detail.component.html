@@ -17,12 +17,12 @@
       <p>Owner Owner</p>
     </div>
     <div>
-      <p>{{keyResult.createdOn | date:'dd.MM.yyy'}} - {{keyResult.modifiedOn | date:'dd.MM.yyy'}}</p>
+      <p>{{ keyResult.createdOn | date: "dd.MM.yyy" }} - {{ keyResult.modifiedOn | date: "dd.MM.yyy" }}</p>
     </div>
   </div>
   <div class="mb-3">
-    <h2 class="sub-title-keyresult">Letztes Check-in ({{keyResult.lastCheckIn?.createdOn | date: 'dd.MM.yyy'}})</h2>
-    <p>{{keyResult.lastCheckIn?.changeInfo}}</p>
+    <h2 class="sub-title-keyresult">Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})</h2>
+    <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
     <p>This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo.</p>
     <p></p>
   </div>

@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
     this.isEnvStaging$ = this.configService.config$.pipe(
       map((config) => {
         return config.activeProfile === 'staging';
-      })
+      }),
     );
   }
 

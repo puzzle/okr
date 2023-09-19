@@ -1,25 +1,25 @@
-ALTER TABLE measure
-    RENAME value TO value_metric;
-ALTER TABLE measure
-    ALTER COLUMN value_metric DROP NOT NULL,
+ALTER TABLE MEASURE
+    RENAME VALUE TO VALUE_METRIC;
+ALTER TABLE MEASURE
+    ALTER COLUMN VALUE_METRIC DROP NOT NULL,
 ALTER
-COLUMN measure_date DROP
+COLUMN MEASURE_DATE DROP
 NOT NULL,
     ALTER
-COLUMN change_info DROP
+COLUMN CHANGE_INFO DROP
 NOT NULL,
     ALTER
-COLUMN change_info TYPE VARCHAR(4096),
-    ADD COLUMN confidence    INTEGER,
-    ADD COLUMN check_in_type VARCHAR(255),
-    ADD COLUMN zone TEXT;
-ALTER TABLE measure
-    RENAME measure_date TO modified_on;
+COLUMN CHANGE_INFO TYPE VARCHAR(4096),
+    ADD COLUMN CONFIDENCE    INTEGER,
+    ADD COLUMN CHECK_IN_TYPE VARCHAR(255),
+    ADD COLUMN ZONE TEXT;
+ALTER TABLE MEASURE
+    RENAME MEASURE_DATE TO MODIFIED_ON;
 
-UPDATE measure
-SET confidence = 5;
-UPDATE measure
-SET check_in_type = 'metric';
+UPDATE MEASURE
+SET CONFIDENCE = 5;
+UPDATE MEASURE
+SET CHECK_IN_TYPE = 'metric';
 
 ALTER TABLE "public"."measure"
     RENAME TO "check_in";
@@ -28,30 +28,30 @@ ALTER TABLE "public"."sequence_measure"
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
-select t.id                as "team_id",
-       t.name              as "team_name",
-       coalesce(o.id, -1)  as "objective_id",
-       o.title             as "objective_title",
-       o.state             as "objective_state",
-       q.id                as "quarter_id",
-       q.label             as "quarter_label",
-       coalesce(kr.id, -1) as "key_result_id",
-       kr.title            as "key_result_title",
-       kr.unit,
-       kr.baseline,
-       kr.stretch_goal,
-       kr.commit_zone,
-       kr.target_zone,
-       kr.stretch_zone,
-       coalesce(c.id, -1)  as "check_in_id",
-       c.value_metric      as "check_in_value",
-       c.zone              as "check_in_zone",
-       c.confidence,
-       c.created_on
+SELECT T.ID                AS "TEAM_ID",
+       T.NAME              AS "TEAM_NAME",
+       COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
+       O.TITLE             AS "OBJECTIVE_TITLE",
+       O.STATE             AS "OBJECTIVE_STATE",
+       Q.ID                AS "QUARTER_ID",
+       Q.LABEL             AS "QUARTER_LABEL",
+       COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
+       KR.TITLE            AS "KEY_RESULT_TITLE",
+       KR.UNIT,
+       KR.BASELINE,
+       KR.STRETCH_GOAL,
+       KR.COMMIT_ZONE,
+       KR.TARGET_ZONE,
+       KR.STRETCH_ZONE,
+       COALESCE(C.ID, -1)  AS "CHECK_IN_ID",
+       C.VALUE_METRIC      AS "CHECK_IN_VALUE",
+       C.ZONE              AS "CHECK_IN_ZONE",
+       C.CONFIDENCE,
+       C.CREATED_ON
 FROM TEAM T
          LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
          LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
-         LEFT JOIN check_in C ON KR.ID = C.KEY_RESULT_ID AND C.modified_on = (SELECT MAX(CC.modified_on)
-                                                                              FROM check_in CC
+         LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
+                                                                              FROM CHECK_IN CC
                                                                               WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);

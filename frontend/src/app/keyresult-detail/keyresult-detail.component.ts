@@ -15,5 +15,13 @@ export class KeyresultDetailComponent implements OnInit {
     this.close.emit();
   }
 
+  checkIfKeyresultIsMetric(keyresult: string) {
+    if (keyresult == "metric") {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   ngOnInit(): void {}
 }

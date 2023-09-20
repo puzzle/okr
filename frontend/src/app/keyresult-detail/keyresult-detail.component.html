@@ -7,7 +7,10 @@
   </div>
   <div class="d-flex justify-content-between keyresult-header mb-3">
     <div>
-      <p>{{ keyResult.keyResultType }}</p>
+      <p *ngIf="checkIfKeyresultIsMetric( keyResult.keyResultType ); else elseBlock">Metrisch</p>
+      <ng-template #elseBlock>
+        <p>Ordinal</p>
+      </ng-template>
     </div>
     <div class="d-flex align-items-center">
       <img src="assets/icons/person-icon.svg" width="10" height="10" class="me-1">

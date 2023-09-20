@@ -56,11 +56,11 @@ class CheckInBusinessServiceTest {
                 .withUnit(Unit.CHF.toString()).withId(8L).withTitle("Keyresult Metric").build();
 
         /* CheckIn definition */
-        this.checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withCheckInType("metric")
-                .withConfidence(5).withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
+        this.checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)
+                .withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
                 .withKeyResult(metricKeyResult).build();
-        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withCheckInType("ordinal")
-                .withConfidence(5).withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
+        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withConfidence(5)
+                .withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
                 .withKeyResult(ordinalKeyResult).build();
 
         this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")

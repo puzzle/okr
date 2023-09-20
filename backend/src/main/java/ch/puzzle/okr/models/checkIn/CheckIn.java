@@ -115,10 +115,6 @@ public abstract class CheckIn {
         return checkInType;
     }
 
-    public void setCheckInType(String checkInType) {
-        this.checkInType = checkInType;
-    }
-
     /* toString(), equals() and hashCode() methods */
 
     @Override
@@ -162,7 +158,6 @@ public abstract class CheckIn {
         setCreatedBy(builder.createdBy);
         setCreatedOn(builder.createdOn);
         setModifiedOn(builder.modifiedOn);
-        setCheckInType(builder.checkInType);
     }
 
     /* Builder */
@@ -175,7 +170,6 @@ public abstract class CheckIn {
         private User createdBy;
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
-        private String checkInType;
 
         public Builder withId(Long id) {
             this.id = id;
@@ -214,11 +208,6 @@ public abstract class CheckIn {
 
         public Builder withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
-            return this;
-        }
-
-        public Builder withCheckInType(String checkInType) {
-            this.checkInType = checkInType;
             return this;
         }
 

@@ -54,8 +54,8 @@ class CheckInControllerIT {
 
     /* Test entities */
     static Objective objective = Objective.Builder.builder().withId(1L).build();
-    static CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withCheckInType("metric")
-            .withConfidence(5).withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
+    static CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withConfidence(5)
+            .withChangeInfo("ChangeInfo").withInitiatives("Initiatives")
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
                     .withObjective(objective).build())

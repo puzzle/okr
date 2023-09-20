@@ -30,7 +30,7 @@ public class CheckInPersistenceServiceIT {
                 .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withModifiedOn(LocalDateTime.MAX)
-                .withConfidence(5).withCheckInType("metric").build();
+                .withConfidence(5).build();
     }
 
     @AfterEach

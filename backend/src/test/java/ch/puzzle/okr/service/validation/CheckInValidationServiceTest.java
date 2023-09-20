@@ -79,19 +79,18 @@ public class CheckInValidationServiceTest {
                 .withOwner(this.user).build();
 
         this.fullCheckIn = CheckInMetric.Builder.builder().withValue(45D).withChangeInfo("ChangeInfo")
-                .withInitiatives("Initiatives").withCheckInType("metric").withConfidence(10)
+                .withInitiatives("Initiatives").withConfidence(10).withKeyResult(this.keyResultMetric)
+                .withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
+
+        this.checkInMetric = CheckInMetric.Builder.builder().withValue(27D).withId(1L)
+                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withConfidence(8)
                 .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
                 .withCreatedBy(user).build();
 
-        this.checkInMetric = CheckInMetric.Builder.builder().withValue(27D).withId(1L)
-                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withCheckInType("metric")
-                .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
-
         this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.STRETCH).withId(1L)
-                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withCheckInType("metric")
-                .withConfidence(8).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).withCreatedBy(user).build();
+                .withChangeInfo("ChangeInfoMetric").withInitiatives("InitiativesMetric").withConfidence(8)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .withCreatedBy(user).build();
 
         /* Mock essential methods */
         when(checkInPersistenceService.getModelName()).thenReturn("CheckIn");
@@ -140,10 +139,10 @@ public class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnCreate_ShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<String> errors) {
-        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withCheckInType("metric")
-                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withConfidence(confidence)
-                .withCreatedBy(this.user).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(this.user)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(checkIn));
@@ -200,10 +199,10 @@ public class CheckInValidationServiceTest {
     @ParameterizedTest
     @MethodSource("confidenceValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenConfidenceIsInvalid(Integer confidence, List<String> errors) {
-        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(2L).withCheckInType("metric")
-                .withChangeInfo("ChangeInfo").withInitiatives("Initiatives").withConfidence(confidence)
-                .withCreatedBy(this.user).withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX)
-                .withModifiedOn(LocalDateTime.MAX).build();
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(2L).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(this.user)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, checkIn));

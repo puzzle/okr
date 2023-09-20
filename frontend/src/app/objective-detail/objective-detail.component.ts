@@ -18,7 +18,7 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveDetailComponent implements OnInit, OnChanges {
+export class ObjectiveDetailComponent implements OnChanges {
   objective!: Objective;
   @Input() objectiveId!: string;
   constructor(
@@ -31,8 +31,6 @@ export class ObjectiveDetailComponent implements OnInit, OnChanges {
   closeDrawer() {
     this.notifierService.closeDetailSubject.next();
   }
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.objectiveService.getFullObjective(parseInt(this.objectiveId)).subscribe(

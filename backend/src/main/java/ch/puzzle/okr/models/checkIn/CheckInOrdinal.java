@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @DiscriminatorValue("ordinal")
 public class CheckInOrdinal extends CheckIn {
-    @NotNull(message = "Value must not be null")
+    @NotNull(message = "Zone must not be null")
     @Enumerated(EnumType.STRING)
     private Zone zone;
 

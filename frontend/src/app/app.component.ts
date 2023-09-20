@@ -13,11 +13,12 @@ import { NotifierService } from './shared/services/notifier.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
   sidenavContentInformation!: { id: string; type: string };
+  protected readonly close = close;
 
   constructor(
     public router: Router,
@@ -71,8 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.disableScrolling();
   }
 
-  ngOnDestroy() {}
-
   isOverview(): null | true {
     return this.convertFalseToNull(!this.isTeam());
   }
@@ -111,6 +110,4 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   login() {}
-
-  protected readonly close = close;
 }

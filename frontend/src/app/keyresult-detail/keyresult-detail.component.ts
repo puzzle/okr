@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
+import { CheckIn } from "../shared/types/model/CheckIn";
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -23,5 +24,14 @@ export class KeyresultDetailComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  checkIfThereIsALastCheckIn(lastCheckin: CheckIn) {
+    // if (lastCheckin === null) {
+    //   return false;
+    // } else {
+    //   return true;
+    // }
+  }
+
+  ngOnInit(): void {
+  }
 }

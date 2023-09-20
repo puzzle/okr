@@ -50,12 +50,12 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultAndCheckInsFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
-                        .withMeasureId(4L).build())
+                        .withCheckInId(4L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                .withMeasureValue(27.5).build());
+                .withCheckInValue(27.5).withConfidence(5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -64,13 +64,13 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withMeasureValue(27.5).build(),
+                        .withCheckInZone("COMMIT").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
                                 .withKeyResultId(5L).build())
@@ -84,18 +84,18 @@ public class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultAndMeasureFound() {
+    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withMeasureValue(27.5).build(),
+                        .withCheckInValue(27.5).build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(2L)
-                                .withKeyResultId(6L).withMeasureId(7L).build())
+                                .withKeyResultId(6L).withCheckInId(7L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
-                        .withMeasureValue(33.5).build());
+                        .withCheckInValue(33.5).build());
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertEquals(1, overviewDtos.size());
@@ -109,9 +109,9 @@ public class OverviewMapperTest {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
-                                .withKeyResultId(3L).withMeasureId(4L).build())
+                                .withKeyResultId(3L).withCheckInId(4L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
-                        .withMeasureValue(27.5).build(),
+                        .withCheckInZone("TARGET").build(),
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(5L).withTeamId(4L)
                                 .withKeyResultId(6L).build())

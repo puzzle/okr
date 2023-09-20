@@ -1,5 +1,5 @@
 create sequence if not exists sequence_key_result;
-create sequence if not exists sequence_measure;
+create sequence if not exists sequence_check_in;
 create sequence if not exists sequence_objective;
 create sequence if not exists sequence_person;
 create sequence if not exists sequence_quarter;
@@ -39,10 +39,10 @@ create table if not exists person
 
 create table if not exists quarter
 (
-    id    bigint       not null,
-    label varchar(255) not null,
-    start_date date not null,
-    end_date date not null,
+    id         bigint       not null,
+    label      varchar(255) not null,
+    start_date date         not null,
+    end_date   date         not null,
     primary key (id),
     constraint uk_dgtrbsqpu1pdfxob0kkw6y44a
         unique (label)
@@ -83,24 +83,27 @@ create table if not exists objective
 create index if not exists idx_objective_title
     on objective (title);
 
-create table if not exists measure
+create table if not exists check_in
 (
-    id            bigint           not null,
-    change_info   varchar(255)     not null,
-    created_on    timestamp        not null,
+    id            bigint    not null
+        constraint measure_pkey
+            primary key,
+    change_info   varchar(4096),
+    created_on    timestamp not null,
     initiatives   varchar(4096),
-    measure_date  timestamp        not null,
-    "value"       double precision not null,
-    created_by_id bigint           not null,
-    key_result_id bigint           not null,
-    primary key (id)
+    modified_on   timestamp,
+    value_metric  double precision,
+    created_by_id bigint    not null,
+    key_result_id bigint    not null,
+    confidence    integer,
+    check_in_type varchar(255),
+    zone          text
 );
-
 
 create table if not exists key_result
 (
     id              bigint    not null,
-        baseline        double precision,
+    baseline        double precision,
     description     varchar(4096),
     modified_on     timestamp,
     stretch_goal    double precision,
@@ -126,30 +129,31 @@ create table if not exists key_result
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
-SELECT T.ID                AS "TEAM_ID",
-       T.NAME              AS "TEAM_NAME",
-       COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
-       O.TITLE             AS "OBJECTIVE_TITLE",
-       O.STATE             AS "OBJECTIVE_STATE",
-       Q.ID                AS "QUARTER_ID",
-       Q.LABEL             AS "QUARTER_LABEL",
-       COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
-       KR.TITLE            AS "KEY_RESULT_TITLE",
-       KR.UNIT,
-       KR.BASELINE,
-       KR.STRETCH_GOAL,
-       KR.COMMIT_ZONE,
-       KR.TARGET_ZONE,
-       KR.STRETCH_ZONE,
-       COALESCE(M.ID, -1)  AS "MEASURE_ID",
-       M."value"           AS "MEASURE_VALUE",
-       M.MEASURE_DATE,
-       M.CREATED_ON
+select t.id                as "team_id",
+       t.name              as "team_name",
+       coalesce(o.id, -1)  as "objective_id",
+       o.title             as "objective_title",
+       o.state             as "objective_state",
+       q.id                as "quarter_id",
+       q.label             as "quarter_label",
+       coalesce(kr.id, -1) as "key_result_id",
+       kr.title            as "key_result_title",
+       kr.unit,
+       kr.baseline,
+       kr.stretch_goal,
+       kr.commit_zone,
+       kr.target_zone,
+       kr.stretch_zone,
+       coalesce(c.id, -1)  as "check_in_id",
+       c.value_metric      as "check_in_value",
+       c.zone              as "check_in_zone",
+       c.confidence,
+       c.created_on
 FROM TEAM T
          LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
          LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
-         LEFT JOIN MEASURE M ON KR.ID = M.KEY_RESULT_ID AND M.MEASURE_DATE = (SELECT MAX(MM.MEASURE_DATE)
-                                                                              FROM MEASURE MM
-                                                                              WHERE MM.KEY_RESULT_ID = M.KEY_RESULT_ID)
+         LEFT JOIN check_in C ON KR.ID = C.KEY_RESULT_ID AND C.modified_on = (SELECT MAX(CC.modified_on)
+                                                                              FROM check_in CC
+                                                                              WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID)
 ;

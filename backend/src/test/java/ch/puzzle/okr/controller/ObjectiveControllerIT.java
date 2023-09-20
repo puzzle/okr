@@ -1,15 +1,8 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.dto.keyresult.*;
-import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,8 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -49,8 +40,6 @@ class ObjectiveControllerIT {
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
     static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    static MeasureDto measureDto1 = new MeasureDto(1L, 5L, 10D, "foo", "boo", 1L, null,
-            Instant.parse("2022-08-12T01:01:00.00Z"));
     static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
@@ -58,41 +47,18 @@ class ObjectiveControllerIT {
             State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, "Objective 2", 1L, 1L, "This is a description",
             State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN);
-    static KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle("Keyresult 1").build();
-    static KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(7L).withTitle("Keyresult 2").build();
-    static KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, "Johnny", "Appleseed");
-    static KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, "GJ 22/23-Q4", LocalDate.MIN,
-            LocalDate.MAX);
-    static KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 4.0, 6,
-            LocalDateTime.MIN, "Comment");
-    static KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(1L,
-            "Baum", 6, LocalDateTime.MIN, "Comment");
-    static KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L, "ONGOING", keyResultQuarterDto);
-
-    static KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, "metric", "Keyresult 1", "Description",
-            1.0, 5.0, "ECTS", keyResultUserDto, keyResultObjectiveDto, keyResultLastCheckInDto, LocalDateTime.MIN,
-            LocalDateTime.MAX);
-    static KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, "ordinal", "Keyresult 1",
-            "Description", "Eine Pflanze", "Ein Baum", "Ein Wald", keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX);
 
     @Autowired
     private MockMvc mvc;
     @MockBean
     private ObjectiveBusinessService objectiveBusinessService;
     @MockBean
-    private KeyResultBusinessService keyResultBusinessService;
-    @MockBean
     private ObjectiveMapper objectiveMapper;
-    @MockBean
-    private KeyResultMapper keyResultMapper;
 
     @BeforeEach
     void setUp() {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
-        BDDMockito.given(keyResultMapper.toDto(metricKeyResult)).willReturn(keyResultMetricDto);
-        BDDMockito.given(keyResultMapper.toDto(ordinalKeyResult)).willReturn(keyResultOrdinalDto);
     }
 
     @Test

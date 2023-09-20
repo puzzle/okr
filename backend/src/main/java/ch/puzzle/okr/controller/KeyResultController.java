@@ -1,12 +1,11 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.checkIn.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
-import ch.puzzle.okr.dto.MeasureDto;
-import ch.puzzle.okr.dto.keyresult.KeyResultAbstractDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.mapper.MeasureMapper;
+import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,13 +28,13 @@ public class KeyResultController {
 
     private final KeyResultBusinessService keyResultBusinessService;
     private final KeyResultMapper keyResultMapper;
-    private final MeasureMapper measureMapper;
+    private final CheckInMapper checkInMapper;
 
     public KeyResultController(KeyResultBusinessService keyResultBusinessService, KeyResultMapper keyResultMapper,
-            MeasureMapper measureMapper) {
+            CheckInMapper checkInMapper) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.keyResultMapper = keyResultMapper;
-        this.measureMapper = measureMapper;
+        this.checkInMapper = checkInMapper;
     }
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
@@ -49,27 +48,27 @@ public class KeyResultController {
         return keyResultMapper.toDto(keyResultBusinessService.getKeyResultById(id));
     }
 
-    @Operation(summary = "Get CheckIns from KeyResult", description = "Get all CheckIns from one KeyResult by keyResultId.")
+    @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all CheckIns from KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = MeasureDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get CheckIns from.", content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Returned all Check-ins from KeyResult.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to get Check-ins from.", content = @Content) })
     @GetMapping("/{id}/checkins")
-    public List<MeasureDto> getCheckInsFromKeyResult(
-            @Parameter(description = "The ID for getting all CheckIns from a KeyResult.", required = true) @PathVariable long id) {
-        return keyResultBusinessService.getAllMeasuresByKeyResult(id).stream().map(measureMapper::toDto).toList();
+    public List<CheckInDto> getCheckInsFromKeyResult(
+            @Parameter(description = "The ID for getting all Check-ins from a KeyResult.", required = true) @PathVariable long id) {
+        return keyResultBusinessService.getAllCheckInsByKeyResult(id).stream().map(checkInMapper::toDto).toList();
     }
 
     @Operation(summary = "Create KeyResult", description = "Create a new KeyResult.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created new KeyResult.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstractDto.class,
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultDto.class,
                             KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
-    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultAbstractDto keyResultAbstractDto,
+    public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto,
             @AuthenticationPrincipal Jwt jwt) {
-        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultAbstractDto);
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultBusinessService.createKeyResult(keyResult, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
@@ -77,14 +76,14 @@ public class KeyResultController {
     @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated KeyResult in db.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultAbstractDto.class,
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultDto.class,
                             KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
-            @RequestBody KeyResultAbstractDto keyResultAbstractDto) {
-        KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultAbstractDto);
+            @RequestBody KeyResultDto keyResultDto) {
+        KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultDto);
         boolean isKeyResultImUsed = keyResultBusinessService.isImUsed(id, mappedKeyResult);
         KeyResultDto updatedKeyResult = keyResultMapper
                 .toDto(keyResultBusinessService.updateKeyResult(id, mappedKeyResult));

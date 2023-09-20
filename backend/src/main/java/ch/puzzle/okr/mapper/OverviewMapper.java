@@ -80,10 +80,9 @@ public class OverviewMapper {
     private OverviewKeyResultDto createKeyResultDto(Overview overview) {
         // TODO enhance for OverviewKeyResultOrdinalDto and OverviewLastCheckInOrdinalDto
         OverviewLastCheckInMetricDto lastCheckIn = null;
-        if (overview.getOverviewId().getMeasureId() != null && overview.getOverviewId().getMeasureId() > -1) {
-            lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getMeasureId(),
-                    overview.getMeasureValue(), 5, // TODO set confidence value properly
-                    overview.getCreatedOn());
+        if (overview.getOverviewId().getCheckInId() != null && overview.getOverviewId().getCheckInId() > -1) {
+            lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),
+                    overview.getCheckInValue(), overview.getConfidence(), overview.getCreatedOn());
         }
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
                 overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(), lastCheckIn);

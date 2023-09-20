@@ -1,12 +1,11 @@
 package ch.puzzle.okr.mapper.keyresult;
 
-import ch.puzzle.okr.dto.MeasureDto;
 import ch.puzzle.okr.dto.keyresult.*;
-import ch.puzzle.okr.mapper.MeasureMapper;
-import ch.puzzle.okr.models.Measure;
+import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.service.business.MeasureBusinessService;
+import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
@@ -16,16 +15,14 @@ public class KeyResultMetricMapper {
 
     private final UserPersistenceService userPersistenceService;
     private final ObjectiveBusinessService objectiveBusinessService;
-    private final MeasureBusinessService measureBusinessService;
-    private final MeasureMapper measureMapper;
+
+    private final CheckInBusinessService checkInBusinessService;
 
     public KeyResultMetricMapper(UserPersistenceService userPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, MeasureBusinessService measureBusinessService,
-            MeasureMapper measureMapper) {
+            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
-        this.measureBusinessService = measureBusinessService;
-        this.measureMapper = measureMapper;
+        this.checkInBusinessService = checkInBusinessService;
     }
 
     public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult) {
@@ -43,36 +40,26 @@ public class KeyResultMetricMapper {
                 ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
     }
 
-    public KeyResult toKeyResultMetric(KeyResultAbstractDto keyResultAbstractDto) {
-        KeyResultMetricDto keyResultDto = abstractToMetricDto(keyResultAbstractDto);
-        return KeyResultMetric.Builder.builder().withBaseline(keyResultDto.baseline())
-                .withStretchGoal(keyResultDto.stretchGoal()).withUnit(keyResultDto.unit()).withId(keyResultDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultDto.objective().id()))
-                .withTitle(keyResultDto.title()).withDescription(keyResultDto.description())
-                .withOwner(userPersistenceService.findById(keyResultDto.owner().id()))
-                .withCreatedOn(keyResultDto.createdOn()).withModifiedOn(keyResultDto.modifiedOn())
-                .withKeyResultType(keyResultDto.keyResultType()).build();
-    }
-
-    public KeyResultMetricDto abstractToMetricDto(KeyResultAbstractDto keyResultAbstractDto) {
-        return new KeyResultMetricDto(keyResultAbstractDto.getId(), keyResultAbstractDto.getKeyResultType(),
-                keyResultAbstractDto.getTitle(), keyResultAbstractDto.getDescription(),
-                keyResultAbstractDto.getBaseline(), keyResultAbstractDto.getStretchGoal(),
-                keyResultAbstractDto.getUnit(), keyResultAbstractDto.getOwner(), keyResultAbstractDto.getObjective(),
-                (KeyResultLastCheckInMetricDto) keyResultAbstractDto.getLastCheckIn(),
-                keyResultAbstractDto.getCreatedOn(), keyResultAbstractDto.getModifiedOn());
+    public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
+        return KeyResultMetric.Builder.builder().withBaseline(keyResultMetricDto.baseline())
+                .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit())
+                .withId(keyResultMetricDto.id())
+                .withObjective(objectiveBusinessService.getObjectiveById(keyResultMetricDto.objective().id()))
+                .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
+                .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
+                .withModifiedOn(keyResultMetricDto.modifiedOn()).withKeyResultType(keyResultMetricDto.keyResultType())
+                .build();
     }
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {
-        Measure lastMeasure = measureBusinessService.getFirstMeasureByKeyResult(keyResultId);
+        CheckIn lastCheckIn = checkInBusinessService.getLastCheckInByKeyResultId(keyResultId);
         KeyResultLastCheckInMetricDto lastCheckInDto;
-        if (lastMeasure == null) {
+        if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            MeasureDto measureDto = measureMapper.toDto(lastMeasure);
-            // TODO: Replace value, confidence and comment with values from measureDto
-            lastCheckInDto = new KeyResultLastCheckInMetricDto(measureDto.id(), 1.0, 0, lastMeasure.getCreatedOn(),
-                    "Comment");
+            lastCheckInDto = new KeyResultLastCheckInMetricDto(lastCheckIn.getId(),
+                    ((CheckInMetric) lastCheckIn).getValue(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
+                    lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }
         return lastCheckInDto;
     }

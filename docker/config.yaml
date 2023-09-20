@@ -17,3 +17,13 @@ people:
       uid: gl
       roles:
         - test
+  bob:
+    name: Bob Baumeister
+    given_name: Bob
+    family_name: Appleseed
+    preferred_username: bob
+    email: baumeister@puzzle.ch
+    pitc:
+      uid: gl
+      roles:
+        - test

@@ -1,12 +1,16 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkIn.CheckInMetric;
+import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
-import ch.puzzle.okr.service.persistence.MeasurePersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,13 +38,13 @@ class KeyResultBusinessServiceTest {
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
     @MockBean
-    MeasureBusinessService measureBusinessService = Mockito.mock(MeasureBusinessService.class);
+    CheckInBusinessService checkInBusinessService = Mockito.mock(CheckInBusinessService.class);
     @MockBean
     ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
     @MockBean
     UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
     @MockBean
-    MeasurePersistenceService measurePersistenceService = Mockito.mock(MeasurePersistenceService.class);
+    CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
     @InjectMocks
     KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);;
     List<KeyResult> keyResults;
@@ -48,10 +52,10 @@ class KeyResultBusinessServiceTest {
     Objective objective;
     KeyResult metricKeyResult;
     KeyResult ordinalKeyResult;
-    Measure measure1;
-    Measure measure2;
-    Measure measure3;
-    List<Measure> measures;
+    CheckIn checkIn1;
+    CheckIn checkIn2;
+    CheckIn checkIn3;
+    List<CheckIn> checkIns;
     Jwt jwtToken;
     @InjectMocks
     @Spy
@@ -70,13 +74,14 @@ class KeyResultBusinessServiceTest {
                 .withKeyResultType("ordinal").withId(7L).withTitle("Keyresult Ordinal").withObjective(this.objective)
                 .withOwner(this.user).withCreatedBy(this.user).build();
 
-        measure1 = Measure.Builder.builder().withId(1L).withKeyResult(this.metricKeyResult).withCreatedBy(user).build();
-        measure2 = Measure.Builder.builder().withId(2L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
+        checkIn1 = CheckInMetric.Builder.builder().withId(1L).withKeyResult(this.metricKeyResult).withCreatedBy(user)
                 .build();
-        measure3 = Measure.Builder.builder().withId(3L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
+        checkIn2 = CheckInOrdinal.Builder.builder().withId(2L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
+                .build();
+        checkIn3 = CheckInOrdinal.Builder.builder().withId(3L).withKeyResult(this.ordinalKeyResult).withCreatedBy(user)
                 .build();
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
-        this.measures = List.of(measure1, measure2, measure3);
+        this.checkIns = List.of(checkIn1, checkIn2, checkIn3);
 
         this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
@@ -101,104 +106,104 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldEditMetricKeyResultWhenNoTypeChange() {
-        List<Measure> emptyList = Collections.emptyList();
+        List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
     @Test
     void shouldEditOrdinalKeyResultWhenNoTypeChange() {
-        List<Measure> emptyList = Collections.emptyList();
+        List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
     @Test
     void shouldEditMetricKeyResultWhenATypeChange() {
-        List<Measure> emptyList = Collections.emptyList();
+        List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
     @Test
     void shouldEditOrdinalKeyResultWhenATypeChange() {
-        List<Measure> emptyList = Collections.emptyList();
+        List<CheckIn> emptyList = Collections.emptyList();
         KeyResult newKeyresult = spy(
                 KeyResultOrdinal.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
         Mockito.when(keyResultPersistenceService.updateEntity(any(), any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
 
     @Test
-    void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndMeasures() {
-        List<Measure> emptyList = this.measures;
+    void shouldOnlyEditCoupleOfAttributesFromMetricKeyResultWhenATypeChangeAndCheckIns() {
+        List<CheckIn> emptyList = this.checkIns;
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Metric update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.updateAbstractEntity(any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateAbstractEntity(ordinalKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
 
     @Test
-    void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndMeasures() {
-        List<Measure> emptyList = this.measures;
+    void shouldOnlyEditCoupleOfAttributesFromOrdinalKeyResultWhenATypeChangeAndCheckIns() {
+        List<CheckIn> emptyList = this.checkIns;
         KeyResult newKeyresult = spy(
                 KeyResultMetric.Builder.builder().withId(1L).withTitle("Keyresult Ordinal update").build());
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
         Mockito.when(keyResultPersistenceService.updateAbstractEntity(any())).thenReturn(newKeyresult);
-        Mockito.when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(emptyList);
+        Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
         verify(keyResultPersistenceService, times(1)).updateAbstractEntity(metricKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(1L, newKeyresult);
-        verify(measureBusinessService, times(1)).getMeasuresByKeyResultId(1L);
+        verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
@@ -286,37 +291,37 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldGetAllMeasuresByKeyResult() {
+    void shouldGetAllcheckInsByKeyResult() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
-        when(measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
-        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(measures);
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(any())).thenReturn(checkIns);
+        when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
-        List<Measure> measureList = keyResultBusinessService.getAllMeasuresByKeyResult(1);
+        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1);
 
-        assertEquals(3, measureList.size());
-        assertEquals(1, measureList.get(0).getId());
-        assertEquals("Keyresult Metric", measureList.get(0).getKeyResult().getTitle());
-        assertEquals("Objective 1", measureList.get(0).getKeyResult().getObjective().getTitle());
-        assertEquals("newMail@tese.com", measureList.get(0).getCreatedBy().getEmail());
+        assertEquals(3, checkInList.size());
+        assertEquals(1, checkInList.get(0).getId());
+        assertEquals("Keyresult Metric", checkInList.get(0).getKeyResult().getTitle());
+        assertEquals("Objective 1", checkInList.get(0).getKeyResult().getObjective().getTitle());
+        assertEquals("newMail@tese.com", checkInList.get(0).getCreatedBy().getEmail());
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoMeasuresInKeyResult() {
+    void shouldReturnEmptyListWhenNocheckInsInKeyResult() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
-        when(measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(any()))
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(any()))
                 .thenReturn(Collections.emptyList());
 
-        List<Measure> measureList = keyResultBusinessService.getAllMeasuresByKeyResult(1);
+        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1);
 
-        assertEquals(0, measureList.size());
+        assertEquals(0, checkInList.size());
     }
 
     @Test
-    void shouldThrowExceptionWhenGetMeasuresFromNonExistingKeyResult() {
+    void shouldThrowExceptionWhenGetcheckInsFromNonExistingKeyResult() {
         when(keyResultPersistenceService.findById(1L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultBusinessService.getAllMeasuresByKeyResult(1));
+                () -> keyResultBusinessService.getAllCheckInsByKeyResult(1));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
@@ -324,19 +329,19 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckIns() {
         when(this.keyResultPersistenceService.findById(anyLong())).thenReturn(metricKeyResult);
-        when(this.measurePersistenceService.getMeasuresByKeyResultIdOrderByMeasureDateDesc(any())).thenReturn(measures);
-        when(measureBusinessService.getMeasuresByKeyResultId(1L)).thenReturn(measures);
+        when(this.checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(any())).thenReturn(checkIns);
+        when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
 
         this.keyResultBusinessService.deleteKeyResultById(1L);
 
-        verify(this.measureBusinessService, times(1)).deleteMeasureById(1L);
+        verify(this.checkInBusinessService, times(1)).deleteCheckIn(1L);
         verify(this.keyResultBusinessService, times(1)).deleteKeyResultById(1L);
     }
 
     @Test
     void shouldReturnImUsedProperly_False1() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
-        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(Collections.emptyList());
+        when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.metricKeyResult);
 
@@ -346,7 +351,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldReturnImUsedProperly_False2() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
-        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(Collections.emptyList());
+        when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.ordinalKeyResult);
 
@@ -356,7 +361,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldReturnImUsedProperly_False3() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
-        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(measures);
+        when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.metricKeyResult);
 
@@ -366,7 +371,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldReturnImUsedProperly_True1() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
-        when(measureBusinessService.getMeasuresByKeyResultId(any())).thenReturn(measures);
+        when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.ordinalKeyResult);
 

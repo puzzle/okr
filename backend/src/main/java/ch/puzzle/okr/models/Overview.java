@@ -6,7 +6,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,8 +27,9 @@ public class Overview {
     private String commitZone;
     private String targetZone;
     private String stretchZone;
-    private Double measureValue;
-    private Instant measureDate;
+    private Double checkInValue;
+    private String checkInZone;
+    private Integer confidence;
     private LocalDateTime createdOn;
 
     public Overview() {
@@ -49,8 +49,9 @@ public class Overview {
         commitZone = builder.commitZone;
         targetZone = builder.targetZone;
         stretchZone = builder.stretchZone;
-        measureValue = builder.measureValue;
-        measureDate = builder.measureDate;
+        checkInValue = builder.checkInValue;
+        checkInZone = builder.checkInZone;
+        confidence = builder.confidence;
         createdOn = builder.createdOn;
     }
 
@@ -106,12 +107,16 @@ public class Overview {
         return stretchZone;
     }
 
-    public Double getMeasureValue() {
-        return measureValue;
+    public Double getCheckInValue() {
+        return checkInValue;
     }
 
-    public Instant getMeasureDate() {
-        return measureDate;
+    public String getCheckInZone() {
+        return checkInZone;
+    }
+
+    public Integer getConfidence() {
+        return confidence;
     }
 
     public LocalDateTime getCreatedOn() {
@@ -125,8 +130,8 @@ public class Overview {
                 + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
                 + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
                 + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-                + stretchZone + '\'' + ", measureValue=" + measureValue + ", measureDate=" + measureDate
-                + ", createdOn=" + createdOn + '}';
+                + stretchZone + '\'' + ", checkInValueMetric=" + checkInValue + ", checkInValueOrdinal='" + checkInZone
+                + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
     }
 
     public static final class Builder {
@@ -143,8 +148,9 @@ public class Overview {
         private String commitZone;
         private String targetZone;
         private String stretchZone;
-        private Double measureValue;
-        private Instant measureDate;
+        private Double checkInValue;
+        private String checkInZone;
+        private Integer confidence;
         private LocalDateTime createdOn;
 
         public Builder() {
@@ -219,13 +225,18 @@ public class Overview {
             return this;
         }
 
-        public Builder withMeasureValue(Double measureValue) {
-            this.measureValue = measureValue;
+        public Builder withCheckInValue(Double checkInValue) {
+            this.checkInValue = checkInValue;
             return this;
         }
 
-        public Builder withMeasureDate(Instant measureDate) {
-            this.measureDate = measureDate;
+        public Builder withCheckInZone(String checkInZone) {
+            this.checkInZone = checkInZone;
+            return this;
+        }
+
+        public Builder withConfidence(Integer confidence) {
+            this.confidence = confidence;
             return this;
         }
 

@@ -9,7 +9,7 @@
 * Run multiple times to increase data
 
 ### What it does 
-1 Run produces 1 Objective with 5 Keyresults and 5 Measures for each Keyresult.
+1 Run produces 1 Objective with 5 Keyresults and 5 Check-ins for each Keyresult.
 Its is set up to run 100 Times.
 The Counter starts at 1000 to match the sequence of the Database.
 

@@ -6,6 +6,7 @@
       [style.width]="isOverview ? '63px' : '98px'"
       [style.--barWidth]="failWidth"
       [style.--barColor]="failColor"
+      [style.--endLine]="!(failWidth == '100%' || failWidth == '0')"
     ></div>
   </div>
 
@@ -16,6 +17,7 @@
       [style.width]="isOverview ? '63px' : '98px'"
       [style.--barWidth]="commitWidth"
       [style.--barColor]="commitColor"
+      [style.--endLine]="!(commitWidth == '100%' || commitWidth == '0')"
     ></div>
   </div>
 
@@ -26,6 +28,7 @@
       [style.width]="isOverview ? '63px' : '98px'"
       [style.--barWidth]="targetWidth"
       [style.--barColor]="targetColor"
+      [style.--endLine]="!(targetWidth == '100%' || targetWidth == '0')"
     ></div>
   </div>
 

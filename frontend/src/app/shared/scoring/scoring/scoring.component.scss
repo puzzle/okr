@@ -10,7 +10,7 @@ div {
   bottom: 0;
   left: 0;
   width: var(--barWidth);
-  @if (--barWidth != "100%" and --barWidth != "0") {
+  @if (var(--endLine) == true) {
     border-right: 1px #5d6974 solid;
   }
 }

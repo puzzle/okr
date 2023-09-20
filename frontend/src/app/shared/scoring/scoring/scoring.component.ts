@@ -14,9 +14,10 @@ export class ScoringComponent implements OnInit {
   failColor: string = '#ffffff';
   commitColor: string = '#ffffff';
   targetColor: string = '#ffffff';
-  isStretched: boolean = false;
   iconPath: string = 'empty';
   metricLabel: string = '';
+  isOverview: boolean = false;
+  labelMargin: string = '0';
 
   constructor() {}
 
@@ -52,13 +53,17 @@ export class ScoringComponent implements OnInit {
 
   calculatePercentagesMetric() {
     // let baseline: number = this.keyResult.baseLine;
-    let baseline: number = 4;
-    // let baseline: number = this.keyResult.stretchGoal;
-    let stretchGoal: number = 20;
-    // let baseline: number = this.keyResult.lastCheckin.value;
-    let checkInValue: number = 17;
+    let baseline: number = 1;
+    // let stretchGoal: number = this.keyResult.stretchGoal;
+    let stretchGoal: number = 21;
+    // let checkInValue: number = this.keyResult.lastCheckin.value;
+    let checkInValue: number = 13;
 
     let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);
+
+    let digits = checkInValue.toString().length;
+
+    this.labelMargin = (294 / 100) * (decimal * 100) - digits * 12 + 'px';
 
     if (decimal < 0.3) {
       this.failWidth = ((decimal * 100) / 30) * 100 + '%';
@@ -94,7 +99,6 @@ export class ScoringComponent implements OnInit {
   }
 
   setStretchIcon() {
-    this.isStretched = true;
     this.iconPath = 'filled';
     this.failColor = this.commitColor = this.targetColor = 'url("../../../../assets/images/scoring-stars.svg")';
   }

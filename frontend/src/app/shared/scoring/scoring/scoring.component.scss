@@ -10,7 +10,7 @@ div {
   bottom: 0;
   left: 0;
   width: var(--barWidth);
-  @if var(--barWidth) != "100%" {
+  @if (--barWidth != "100%" and --barWidth != "0") {
     border-right: 1px #5d6974 solid;
   }
 }
@@ -18,7 +18,6 @@ div {
 .child {
   outline: 1px solid #5d6974;
   height: 21px;
-  width: 63px;
   background-color: white;
 }
 
@@ -38,5 +37,5 @@ p {
 .metricLabel {
   font-weight: bold;
   font-size: 12px;
-  margin-left: 50px;
+  margin-left: var(--labelMargin);
 }

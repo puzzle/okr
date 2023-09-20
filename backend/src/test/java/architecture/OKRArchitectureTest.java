@@ -100,8 +100,8 @@ class OKRArchitectureTest {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().haveSimpleName("ObjectiveRepository").should().onlyHaveDependentClassesThat()
-                .haveSimpleName("ObjectivePersistenceService");
+        ArchRule rule = classes().that().haveSimpleName(repository).should().onlyHaveDependentClassesThat()
+                .haveSimpleName(persistenceService);
 
         rule.check(importedClasses);
     }

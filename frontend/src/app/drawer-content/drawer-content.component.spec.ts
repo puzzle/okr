@@ -13,6 +13,8 @@ describe('DrawerContentComponent', () => {
 
     fixture = TestBed.createComponent(DrawerContentComponent);
     component = fixture.componentInstance;
+    //TODO: Set DrawerContent differently in other tests
+    component.drawerContent = { id: '1', type: 'objective' };
     fixture.detectChanges();
   });
 

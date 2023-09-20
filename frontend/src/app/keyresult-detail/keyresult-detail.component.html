@@ -23,17 +23,17 @@
     </div>
   </div>
   <div class="mb-3">
-    <h2 class="sub-title-keyresult">Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})</h2>
+    <h2 class="sub-title-keyresult fw-bold">Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})</h2>
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
     <p>This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo.</p>
-    <p class="text-button-font mt-2" role="button">Alle Check-ins anzeigen</p>
+    <p class="text-button-font fw-bold mt-2" role="button">Alle Check-ins anzeigen</p>
   </div>
   <div class="mb-3">
-    <h2 class="sub-title-keyresult">Beschrieb</h2>
+    <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
     <p>{{ keyResult.description }}</p>
   </div>
   <div class="d-flex align-items-center">
-    <button class="save-keyresult d-flex justify-content-center align-items-center me-4">Check-in erfassen</button>
-    <p class="text-button-font" role="button">Key Result bearbeiten</p>
+    <button class="save-keyresult fw-bold text-white d-flex justify-content-center align-items-center me-4">Check-in erfassen</button>
+    <p class="text-button-font fw-bold" role="button">Key Result bearbeiten</p>
   </div>
 </div>

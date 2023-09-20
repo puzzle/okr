@@ -16,7 +16,7 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkIfKeyresultIsMetric(keyresult: string) {
-    if (keyresult == "metric") {
+    if (keyresult == 'metric') {
       return true;
     } else {
       return false;

@@ -96,11 +96,9 @@ export class AppComponent implements OnInit {
   }
 
   private disableScrolling() {
-    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 100;');
     document.body.setAttribute('style', 'overflow: hidden;');
   }
   enableScrolling() {
-    document.getElementById('drawer-container')?.setAttribute('style', 'z-index: 99;');
     document.body.setAttribute('style', 'overflow: visible;');
   }
 

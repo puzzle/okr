@@ -51,11 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
     );
   }
 
-  openObjectiveDetail() {
-    this.drawerOpen = true;
-    this.disableScrolling();
-  }
-
   ngOnInit(): void {
     this.router.events
       .pipe(
@@ -65,7 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event) => {
         this.currentUrl = event.url;
         if (this.currentUrl.startsWith('/objective/')) {
-          this.openObjectiveDetail();
+          this.openDrawer();
           const objectiveId = this.currentUrl.split('/')[2];
           this.sidenavContentInformation = { id: objectiveId, type: 'objective' };
         }
@@ -74,6 +69,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.notifierService.closeDetailSubject.subscribe(() => {
       this.closeDrawer();
     });
+  }
+
+  openDrawer() {
+    this.drawerOpen = true;
+    this.disableScrolling();
   }
 
   ngOnDestroy() {}

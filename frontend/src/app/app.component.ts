@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, Observable, Subscription } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
-import { ObjectiveService } from './shared/services/objective.service';
-import { Objective } from './shared/types/model/Objective';
-import { ObjectiveMin } from './shared/types/model/ObjectiveMin';
-import { KeyresultMin } from './shared/types/model/KeyresultMin';
-import { SidenavModel } from './shared/types/model/SidenavModel';
 
 @Component({
   selector: 'app-root',

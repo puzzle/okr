@@ -5,7 +5,7 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-  <div class="d-flex justify-content-between keyresult-header mb-3">
+  <div class="keyresult-header d-flex justify-content-between mb-3">
     <div>
       <p *ngIf="checkIfKeyresultIsMetric( keyResult.keyResultType ); else elseBlock">Metrisch</p>
       <ng-template #elseBlock>
@@ -18,16 +18,22 @@
     </div>
     <div>
       <p>{{ keyResult.createdOn | date: "dd.MM.yyy" }} - {{ keyResult.modifiedOn | date: "dd.MM.yyy" }}</p>
+      <!-- Change to objective.startDate & objective.endDate once the full objective model is created -->
+      <p>{{keyResult.createdOn | date:'dd.MM.yyy'}} - {{keyResult.modifiedOn | date:'dd.MM.yyy'}}</p>
     </div>
   </div>
   <div class="mb-3">
     <h2 class="sub-title-keyresult">Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})</h2>
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
     <p>This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo.</p>
-    <p></p>
+    <p class="text-button-font mt-2" role="button">Alle Check-ins anzeigen</p>
   </div>
-  <div>
+  <div class="mb-3">
     <h2 class="sub-title-keyresult">Beschrieb</h2>
     <p>{{ keyResult.description }}</p>
+  </div>
+  <div class="d-flex align-items-center">
+    <button class="save-keyresult d-flex justify-content-center align-items-center me-4">Check-in erfassen</button>
+    <p class="text-button-font" role="button">Key Result bearbeiten</p>
   </div>
 </div>

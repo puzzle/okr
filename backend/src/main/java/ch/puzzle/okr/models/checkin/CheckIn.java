@@ -146,10 +146,10 @@ public abstract class CheckIn {
     }
 
     /* Constructor */
-    public CheckIn() {
+    protected CheckIn() {
     }
 
-    public CheckIn(Builder builder) {
+    protected CheckIn(Builder builder) {
         id = builder.id;
         setChangeInfo(builder.changeInfo);
         setInitiatives(builder.initiatives);

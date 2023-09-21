@@ -139,10 +139,10 @@ public abstract class KeyResult {
         return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn, keyResultType);
     }
 
-    public KeyResult() {
+    protected KeyResult() {
     }
 
-    public KeyResult(Builder builder) {
+    protected KeyResult(Builder builder) {
         id = builder.id;
         setObjective(builder.objective);
         setTitle(builder.title);

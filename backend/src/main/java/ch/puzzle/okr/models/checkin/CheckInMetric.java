@@ -3,6 +3,7 @@ package ch.puzzle.okr.models.checkin;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("metric")
@@ -27,6 +28,14 @@ public class CheckInMetric extends CheckIn {
     public CheckInMetric(Builder builder) {
         super(builder);
         setValue(builder.value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CheckInMetric) {
+            return super.equals(o) && Objects.equals(this.valueMetric, ((CheckInMetric) o).valueMetric);
+        }
+        return false;
     }
 
     /* Builder */

@@ -26,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -217,6 +218,23 @@ public class CheckInValidationServiceTest {
         for (int i = 0; i < exceptionParts.length; i++) {
             assert (errors.contains(errorArray[i]));
         }
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenCheckInsOfKeyResultIsEmpty() {
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(2L).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(2).withCreatedBy(this.user)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(8L))
+                .thenReturn(Collections.emptyList());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(3L, checkIn));
+        verify(validator, times(1)).throwExceptionIfModelIsNull(checkIn);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(3L);
+        assertEquals("Can not change key result id of check-in", exception.getReason());
+
     }
 
     @Test

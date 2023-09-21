@@ -8,8 +8,8 @@
       <span *ngIf="keyResult.lastCheckIn == null" class="sub-title">Noch kein Check-in vorhanden</span>
     </div>
 
-    <div class="d-flex align-items-center flex-md-wrap justify-content-end gap-2">
-      <p class="sub-title">Confidence</p>
+    <div class="d-flex align-items-center flex-md-wrap justify-content-end">
+      <p class="sub-title me-2">Confidence</p>
       <app-confidence [edit]="false" [keyResult]="keyResult"></app-confidence>
     </div>
   </div>

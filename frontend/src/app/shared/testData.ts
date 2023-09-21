@@ -7,13 +7,15 @@ import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from './types/model/KeyresultMin';
 import { ObjectiveMin } from './types/model/ObjectiveMin';
 import { OverviewEntity } from './types/model/OverviewEntity';
+import { Objective } from './types/model/Objective';
+import { Quarter } from './types/model/Quarter';
 
 export const team1: TeamMin = {
   id: 1,
   name: 'Marketing Team',
 } as TeamMin;
 
-export const quarter: QuarterMin = {
+export const quarterMin: QuarterMin = {
   id: 1,
   label: 'GJ 23/24-Q1',
 } as QuarterMin;
@@ -49,14 +51,32 @@ export const keyResultOrdinal: KeyResultOrdinalMin = {
   lastCheckIn: checkInOrdinal,
 } as KeyResultOrdinalMin;
 
-export const objective: ObjectiveMin = {
+export const objectiveMin: ObjectiveMin = {
   id: 101,
   title: 'Increase User Engagement',
   state: State.ONGOING,
-  quarter: quarter,
+  quarter: quarterMin,
   keyResults: [keyResultMetric, keyResultOrdinal] as KeyresultMin[],
 } as ObjectiveMin;
 export const overViewEntity1: OverviewEntity = {
   team: team1,
-  objectives: [objective, objective, objective] as ObjectiveMin[],
+  objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+};
+
+export const quarter: Quarter = {
+  id: 1,
+  label: '23.02.2025',
+  endDate: new Date(),
+  startDate: new Date(),
+};
+
+export const objective: Objective = {
+  team: team1,
+  createdOn: new Date(),
+  title: 'title',
+  state: State.NOTSUCCESSFUL,
+  id: 1,
+  quarter: quarter,
+  description: 'description',
+  modifiedOn: new Date(),
 };

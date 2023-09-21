@@ -1,4 +1,4 @@
-import { objective } from '../../testData';
+import { objectiveMin } from '../../testData';
 
 export class SidenavModel {
   id: number;

@@ -4,7 +4,7 @@ import { OverviewService } from './overview.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { overViewEntity1 } from '../testData';
+import { overViewEntityMin } from '../testData';
 import { State } from '../types/enums/State';
 
 const httpClient = {
@@ -20,7 +20,7 @@ describe('OverviewService', () => {
     }).compileComponents();
     service = TestBed.inject(OverviewService);
     httpClient.get.mockReturnValue(
-      of([{ ...overViewEntity1, objectives: { ...overViewEntity1.objectives[0], state: 'DRAFT' } }]),
+      of([{ ...overViewEntityMin, objectives: { ...overViewEntityMin.objectives[0], state: 'DRAFT' } }]),
     );
   });
 

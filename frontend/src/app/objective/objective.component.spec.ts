@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { State } from '../shared/types/enums/State';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../shared/services/overview.service';
-import { objective } from '../shared/testData';
+import { objectiveMin } from '../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 
@@ -33,7 +33,7 @@ describe('ObjectiveColumnComponent', () => {
     component = fixture.componentInstance;
 
     loader = TestbedHarnessEnvironment.loader(fixture);
-    component.objective = objective;
+    component.objective = objectiveMin;
   });
 
   it('should create', () => {
@@ -57,7 +57,7 @@ describe('ObjectiveColumnComponent', () => {
     [State.SUCCESSFUL, '../../assets/icons/successful-icon.svg'],
     [State.NOTSUCCESSFUL, '../../assets/icons/not-successful-icon.svg'],
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
-    component.objective = { ...objective, state: state };
+    component.objective = { ...objectiveMin, state: state };
     fixture.detectChanges();
     const image = fixture.debugElement.query(By.css('[data-testid="objective-state"]'));
     let statusIndicatorSrc = image.attributes['src'];

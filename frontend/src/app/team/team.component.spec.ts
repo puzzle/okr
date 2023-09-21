@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamComponent } from './team.component';
 import { MatIcon } from '@angular/material/icon';
-import { overViewEntity1 } from '../shared/testData';
+import { overViewEntityMin } from '../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,7 +19,7 @@ describe('TeamComponent', () => {
 
     fixture = TestBed.createComponent(TeamComponent);
     component = fixture.componentInstance;
-    component.overviewEntity = overViewEntity1;
+    component.overviewEntity = overViewEntityMin;
     fixture.detectChanges();
   });
 

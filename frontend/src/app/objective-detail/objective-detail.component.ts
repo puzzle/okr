@@ -5,6 +5,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
@@ -33,16 +34,16 @@ export class ObjectiveDetailComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.objectiveService.getFullObjective(parseInt(this.objectiveId)).subscribe(
-      (fullObjective) => {
+    this.objectiveService.getFullObjective(parseInt(this.objectiveId)).subscribe({
+      next: (fullObjective) => {
         this.objective = fullObjective;
         this.changeDetectorRef.markForCheck();
       },
-      (error) => {
+      error: (error) => {
         this.closeDrawer();
         console.error(error);
         this.router.navigate(['']);
       },
-    );
+    });
   }
 }

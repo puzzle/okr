@@ -52,23 +52,6 @@ class TeamValidationServiceTest {
     @InjectMocks
     private TeamValidationService validator;
 
-    private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(
-                arguments(StringUtils.repeat('1', 251),
-                        List.of("Attribute name must have size between 2 and 250 characters when saving team.")),
-                arguments(StringUtils.repeat('1', 1),
-                        List.of("Attribute name must have size between 2 and 250 characters when saving team.")),
-                arguments("",
-                        List.of("Attribute name must have size between 2 and 250 characters when saving team.",
-                                "Missing attribute name when saving team.")),
-                arguments(" ",
-                        List.of("Attribute name must have size between 2 and 250 characters when saving team.",
-                                "Missing attribute name when saving team.")),
-                arguments("         ", List.of("Missing attribute name when saving team.")),
-                arguments(null, List.of("Missing attribute name when saving team.",
-                        "Attribute name can not be null when saving team.")));
-    }
-
     @Test
     void validateOnGet_ShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGet(1L);

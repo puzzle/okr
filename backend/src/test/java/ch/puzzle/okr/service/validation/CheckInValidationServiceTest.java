@@ -9,6 +9,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
+import org.h2.util.json.JSONValidationTargetWithoutUniqueKeys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +55,7 @@ public class CheckInValidationServiceTest {
 
     private static Stream<Arguments> confidenceValidationArguments() {
         return Stream.of(arguments(-1, List.of("Attribute confidence has a min value of 1")),
-                arguments(11, List.of("Missing attribute title when saving objective")),
+                arguments(11, List.of("Attribute confidence has a max value of 10")),
                 arguments(null, List.of("Confidence must not be null")));
     }
 
@@ -151,11 +152,10 @@ public class CheckInValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
         for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
     }
 
@@ -203,6 +203,7 @@ public class CheckInValidationServiceTest {
                 .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(this.user)
                 .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
                 .build();
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(8L)).thenReturn(List.of(checkIn));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, checkIn));
@@ -211,11 +212,10 @@ public class CheckInValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
         for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
     }
 

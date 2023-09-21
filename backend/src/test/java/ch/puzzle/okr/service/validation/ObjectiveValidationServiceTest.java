@@ -134,7 +134,7 @@ class ObjectiveValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
@@ -208,7 +208,7 @@ class ObjectiveValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {

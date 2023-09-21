@@ -81,16 +81,15 @@ class KeyResultValidationServiceTest {
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 251), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving objective")),
+                        .of("Attribute title must have a length between 2 and 250 characters when saving key result")),
                 arguments(StringUtils.repeat('1', 1), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments("", List.of("Missing attribute title when saving objective",
-                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments(" ", List.of("Missing attribute title when saving objective",
-                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments("         ", List.of("Missing attribute title when saving objective")),
-                arguments(null, List.of("Missing attribute title when saving objective",
-                        "Attribute title can not be null when saving objective")));
+                        .of("Attribute title must have a length between 2 and 250 characters when saving key result")),
+                arguments("", List.of("Title can not be blank",
+                        "Attribute title must have a length between 2 and 250 characters when saving key result")),
+                arguments(" ", List.of("Title can not be blank",
+                        "Attribute title must have a length between 2 and 250 characters when saving key result")),
+                arguments("         ", List.of("Title can not be blank")),
+                arguments(null, List.of("Title can not be blank", "Title can not be null")));
     }
 
     @Test
@@ -148,12 +147,13 @@ class KeyResultValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            System.out.println(exceptionParts[i].strip());
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
             System.out.println(exceptionParts[i]);
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
     }
 
@@ -198,21 +198,21 @@ class KeyResultValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS")
-                .withId(2L).withTitle(title).withOwner(this.user).withObjective(this.objective).withCreatedBy(this.user)
+                .withId(3L).withTitle(title).withOwner(this.user).withObjective(this.objective).withCreatedBy(this.user)
                 .withCreatedOn(LocalDateTime.MIN).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(2L, keyResult));
+                () -> validator.validateOnUpdate(3L, keyResult));
 
         String[] exceptionParts = exception.getReason().split("\\.");
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
     }
 

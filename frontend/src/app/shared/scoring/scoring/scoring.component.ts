@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 
 @Component({
@@ -7,7 +7,7 @@ import { KeyresultMin } from '../../types/model/KeyresultMin';
   styleUrls: ['./scoring.component.scss'],
 })
 export class ScoringComponent implements OnInit {
-  @Input keyResult!: KeyresultMin;
+  // @Input keyResult!: KeyresultMin;
   failWidth: string = '50%';
   commitWidth: string = '0';
   targetWidth: string = '0';
@@ -17,7 +17,13 @@ export class ScoringComponent implements OnInit {
   iconPath: string = 'empty';
   metricLabel: string = '';
   isOverview: boolean = false;
-  labelMargin: string = '0';
+  labelWidth: string = '0';
+  endLineFail: string = '';
+  endLineCommit: string = '';
+  endLineTarget: string = '';
+  isFailZone: boolean = false;
+  isCommitZone: boolean = false;
+  isTargetZone: boolean = false;
 
   constructor() {}
 
@@ -30,6 +36,7 @@ export class ScoringComponent implements OnInit {
     this.calculatePercentagesMetric();
 
     this.setBarColorsMetric();
+
     // }
     // else {
     // this.setColorsOrdinal();
@@ -52,44 +59,68 @@ export class ScoringComponent implements OnInit {
   }
 
   calculatePercentagesMetric() {
+    // this.metricLabel = this.keyResult.unit + checkInValue;
+    this.metricLabel = 'CHF 230000';
+
     // let baseline: number = this.keyResult.baseLine;
-    let baseline: number = 1;
+    let baseline: number = 0;
     // let stretchGoal: number = this.keyResult.stretchGoal;
-    let stretchGoal: number = 21;
+    let stretchGoal: number = 10;
     // let checkInValue: number = this.keyResult.lastCheckin.value;
-    let checkInValue: number = 13;
+    let checkInValue: number = 6;
 
     let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);
 
-    let digits = checkInValue.toString().length;
+    console.log(decimal);
 
-    this.labelMargin = (294 / 100) * (decimal * 100) - digits * 12 + 'px';
+    // this.labelWidth = decimal * 100 + "%";
 
     if (decimal < 0.3) {
       this.failWidth = ((decimal * 100) / 30) * 100 + '%';
+      if (this.failWidth != '100%' && this.failWidth != '0') {
+        this.endLineFail = 'endLine';
+      }
       this.commitWidth = this.targetWidth = '0';
+      this.isFailZone = true;
     } else if (decimal < 0.7) {
       this.failWidth = '100%';
       this.commitWidth = ((decimal * 100 - 30) / 40) * 100 + '%';
+      if (this.commitWidth != '100%' && this.commitWidth != '0') {
+        this.endLineCommit = 'endLine';
+      }
       this.targetWidth = '0';
+      this.isCommitZone = true;
+
+      let percent = ((decimal * 100 - 30) / 40) * 100 - 33;
+      console.log(percent);
+      this.labelWidth = 30 + percent + '%';
+      console.log(this.labelWidth);
     } else {
-      this.targetWidth = decimal > 1.0 ? '100%' : ((decimal * 100 - 70) / 30) * 100 + '%';
+      this.targetWidth = decimal > 1.0 ? '100%' : ((decimal * 100 - 70) / 30) * 100 - 66 + '%';
+
+      if (this.targetWidth != '100%' && this.targetWidth != '0') {
+        this.endLineTarget = 'endLine';
+      }
       this.failWidth = this.commitWidth = '100%';
+      this.isTargetZone = true;
     }
-    // this.metricLabel = this.keyResult.unit + checkInValue;
-    this.metricLabel = 'CHF 23000';
   }
 
   setColorsOrdinal() {
-    if (this.keyResult.lastCheckIn!.value === 'FAIL') {
+    let value = 'FAIL';
+
+    // if (this.keyResult.lastCheckIn!.value === 'FAIL') {
+    if (value === 'FAIL') {
       this.failWidth = '100%';
       this.failColor = '#BA3838';
       this.commitColor = this.targetColor = '#ffffff';
-    } else if (this.keyResult.lastCheckIn!.value === 'COMMIT') {
+      // } else if (this.keyResult.lastCheckIn!.value === 'COMMIT') {
+    } else if (value === 'COMMIT') {
       this.failWidth = this.commitWidth = '100%';
       this.failColor = this.commitColor = '#FFD600';
       this.targetColor = '#ffffff';
-    } else if (this.keyResult.lastCheckIn!.value === 'TARGET') {
+      // } else if (this.keyResult.lastCheckIn!.value === 'TARGET') {
+    } else if (value === 'TARGET') {
       this.failWidth = this.commitWidth = this.targetWidth = '100%';
       this.failColor = this.commitColor = this.targetColor = '#1E8A29';
     } else {

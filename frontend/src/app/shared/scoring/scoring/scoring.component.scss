@@ -10,15 +10,16 @@ div {
   bottom: 0;
   left: 0;
   width: var(--barWidth);
-  @if (var(--endLine) == true) {
-    border-right: 1px #5d6974 solid;
-  }
 }
 
 .child {
   outline: 1px solid #5d6974;
   height: 21px;
   background-color: white;
+
+  &[data-end-line="endLine"]:after {
+    border-right: 1px #5d6974 solid;
+  }
 }
 
 .starIcon {
@@ -37,5 +38,21 @@ p {
 .metricLabel {
   font-weight: bold;
   font-size: 12px;
-  margin-left: var(--labelMargin);
+  white-space: nowrap;
+}
+
+.container {
+  margin-left: 100px;
+}
+
+.unitLabel {
+  container-type: inline-size;
+  width: var(--barWidth);
+  min-width: fit-content;
+  max-width: 294px;
+}
+
+.metricLabel {
+  text-align: right;
+  white-space: nowrap;
 }

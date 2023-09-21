@@ -1,15 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
-import { MatDrawerHarness } from '@angular/material/sidenav/testing';
+import { MatDrawerContainerHarness, MatDrawerHarness } from '@angular/material/sidenav/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // @ts-ignore
 import * as de from '../assets/i18n/de.json';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { By } from '@angular/platform-browser';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const oauthServiceMock = {
   configure(environment: AuthConfig): void {},
@@ -37,6 +40,8 @@ describe('AppComponent', () => {
           de: de,
         }),
         OAuthModule.forRoot(),
+        MatSidenavModule,
+        NoopAnimationsModule,
       ],
       providers: [{ provide: OAuthService, useValue: oauthServiceMock }],
       declarations: [AppComponent],
@@ -47,6 +52,8 @@ describe('AppComponent', () => {
     fixture.detectChanges();
 
     loader = TestbedHarnessEnvironment.loader(fixture);
+
+    fixture.detectChanges();
   });
 
   test('should create the app', () => {
@@ -99,8 +106,38 @@ describe('AppComponent', () => {
   });
 
   describe('Mat-drawer', () => {
-    test('should open and close mat-drawer', () => {
-      const drawer = loader.getHarness(MatDrawerHarness.with({ selector: '[data-testid="mat-drawer"]' }));
+    test('should open and close mat-drawer', async () => {
+      await loader.getHarness(MatDrawerContainerHarness).then(async (drawerContainer: MatDrawerContainerHarness) => {
+        drawerContainer.getDrawers().then(async (drawers: MatDrawerHarness[]) => {
+          const drawer: MatDrawerHarness = drawers[0];
+          component.openDrawer();
+          fixture.detectChanges();
+          expect(await drawer.isOpen()).toEqual(true);
+          component.closeDrawer();
+          fixture.detectChanges();
+          expect(await drawer.isOpen()).toEqual(false);
+        });
+      });
+    });
+
+    test.each([
+      ['keydown.enter', false],
+      ['keydown.space', false],
+      ['keydown.escape', false],
+      ['', true],
+    ])('close on keyPress', async (event: string, isOpen: boolean) => {
+      await loader.getHarness(MatDrawerContainerHarness).then(async (drawerContainer) => {
+        drawerContainer.getDrawers().then(async (drawers) => {
+          let drawer = drawers[0];
+          component.openDrawer();
+
+          expect(await drawer.isOpen()).toEqual(true);
+          fixture.debugElement.triggerEventHandler(event, { bubbles: true });
+          fixture.detectChanges();
+
+          expect(await drawer.isOpen()).toEqual(isOpen);
+        });
+      });
     });
   });
 });

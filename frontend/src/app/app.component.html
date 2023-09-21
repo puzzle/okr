@@ -1,29 +1,27 @@
-<div>
-  <app-application-header></app-application-header>
-  <div *ngIf="isEnvStaging$ | async" class="staging-banner">
-    <div class="staging-text">STAGING ENVIRONMENT!</div>
-  </div>
-
-  <mat-drawer-container id="drawer-container" hasBackdrop="true">
-    <mat-drawer
-      data-test-id="mat-drawer"
-      class="mt-5 position-fixed w-25 p-3"
-      mode="over"
-      (keydown.escape)="closeDrawer()"
-      (keydown.enter)="closeDrawer()"
-      (keydown.space)="closeDrawer()"
-      (closedStart)="closeDrawer()"
-      (closed)="enableScrolling()"
-      [(opened)]="drawerOpen"
-      position="end"
-    >
-      <app-drawer-content
-        *ngIf="sidenavContentInformation != undefined"
-        [drawerContent]="sidenavContentInformation"
-      ></app-drawer-content>
-    </mat-drawer>
-    <mat-drawer-content>
-      <router-outlet></router-outlet>
-    </mat-drawer-content>
-  </mat-drawer-container>
+<app-application-header></app-application-header>
+<div *ngIf="isEnvStaging$ | async" class="staging-banner">
+  <div class="staging-text">STAGING ENVIRONMENT!</div>
 </div>
+
+<mat-drawer-container hasBackdrop="true">
+  <mat-drawer
+    (closed)="enableScrolling()"
+    (closedStart)="closeDrawer()"
+    (keydown.enter)="closeDrawer()"
+    (keydown.escape)="closeDrawer()"
+    (keydown.space)="closeDrawer()"
+    [(opened)]="drawerOpen"
+    class="mt-5 position-fixed w-25 p-3"
+    data-test-id="mat-drawer"
+    mode="over"
+    position="end"
+  >
+    <app-drawer-content
+      *ngIf="sidenavContentInformation != undefined"
+      [drawerContent]="sidenavContentInformation"
+    ></app-drawer-content>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

@@ -1,16 +1,17 @@
 <div class="key-result rounded-2 p-3">
   <div class="lh-base">{{ keyResult.title }}</div>
   <div class="d-flex justify-content-between">
-    <div class="d-flex align-items-center">
-      <span *ngIf="keyResult.lastCheckIn != null" class="sub-title">
-        Letztes Check-in: {{ keyResult!.lastCheckIn!.createdOn | date: "dd.MM.yyyy" }}
+    <div class="d-flex justify-content-center">
+      <span *ngIf="keyResult.lastCheckIn != null" class="d-flex align-items-center sub-title flex-wrap sub-title">
+        <span class="me-1 text-nowrap">Letztes Check-in:</span>
+        <span>{{ keyResult!.lastCheckIn!.createdOn | date: "dd.MM.yyyy" }}</span>
       </span>
       <span *ngIf="keyResult.lastCheckIn == null" class="sub-title">Noch kein Check-in vorhanden</span>
     </div>
 
-    <div class="d-flex align-items-center flex-md-wrap justify-content-end">
-      <p class="sub-title me-2">Confidence</p>
-      <app-confidence [edit]="false" [keyResult]="keyResult"></app-confidence>
+    <div class="d-flex align-items-center flex-wrap justify-content-end">
+      <p class="sub-title">Confidence</p>
+      <app-confidence [edit]="false" [keyResult]="keyResult" class="ms-2"></app-confidence>
     </div>
   </div>
 </div>

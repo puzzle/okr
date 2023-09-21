@@ -176,7 +176,7 @@ public class Objective {
         private LocalDateTime createdOn;
         private User modifiedBy;
 
-        public Builder() {
+        private Builder() {
         }
 
         public static Builder builder() {

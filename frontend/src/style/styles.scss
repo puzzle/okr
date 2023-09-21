@@ -93,13 +93,13 @@ body {
 }
 
 .keyResult-attribute-show {
-  background-color: $keyResult-attribute-show-bg;
+  background-color: $keyResult-attribute-bg;
   padding: 0.25em 0.75rem;
   border-radius: 2px;
 }
 
 .keyResult-attribute-edit {
   border: solid $keyResult-attribute-edit-border 1px;
-  background-color: $keyResult-attribute-edit-bg;
+  background-color: $keyResult-attribute-bg;
   padding: 0.25em 0.75rem;
 }

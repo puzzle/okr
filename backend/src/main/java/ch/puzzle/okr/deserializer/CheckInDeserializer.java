@@ -1,8 +1,8 @@
 package ch.puzzle.okr.deserializer;
 
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
-import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
+import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import com.fasterxml.jackson.core.JacksonException;

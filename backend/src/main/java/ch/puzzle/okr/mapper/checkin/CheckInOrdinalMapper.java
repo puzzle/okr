@@ -1,8 +1,8 @@
-package ch.puzzle.okr.mapper.checkIn;
+package ch.puzzle.okr.mapper.checkin;
 
-import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
+import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
-package ch.puzzle.okr.dto.checkIn;
+package ch.puzzle.okr.dto.checkin;
 
-import ch.puzzle.okr.models.checkIn.Zone;
+import ch.puzzle.okr.models.checkin.Zone;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.LocalDateTime;

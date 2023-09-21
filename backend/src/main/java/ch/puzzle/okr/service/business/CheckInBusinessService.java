@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
 import org.springframework.security.oauth2.jwt.Jwt;

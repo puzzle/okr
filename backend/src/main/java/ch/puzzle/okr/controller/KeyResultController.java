@@ -1,11 +1,11 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.KeyResultMapper;
-import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
+import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import io.swagger.v3.oas.annotations.Operation;

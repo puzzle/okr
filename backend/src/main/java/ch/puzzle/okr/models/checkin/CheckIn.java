@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.checkIn;
+package ch.puzzle.okr.models.checkin;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;

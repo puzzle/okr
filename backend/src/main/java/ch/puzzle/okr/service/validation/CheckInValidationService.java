@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.checkIn;
+package ch.puzzle.okr.models.checkin;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

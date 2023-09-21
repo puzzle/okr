@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
+import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 
 const routes: Routes = [
-  { path: '', component: OverviewComponent, pathMatch: 'full' },
+  {
+    path: '',
+    component: OverviewComponent,
+    children: [{ path: 'objective/:id', component: ObjectiveDetailComponent, pathMatch: 'full' }],
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

@@ -2,4 +2,26 @@
 <div *ngIf="isEnvStaging$ | async" class="staging-banner">
   <div class="staging-text">STAGING ENVIRONMENT!</div>
 </div>
-<router-outlet></router-outlet>
+
+<mat-drawer-container hasBackdrop="true">
+  <mat-drawer
+    (closed)="enableScrolling()"
+    (closedStart)="closeDrawer()"
+    (keydown.enter)="closeDrawer()"
+    (keydown.escape)="closeDrawer()"
+    (keydown.space)="closeDrawer()"
+    [(opened)]="drawerOpen"
+    class="mt-5 position-fixed p-3 col-sm-12 col-md-5"
+    data-test-id="mat-drawer"
+    mode="over"
+    position="end"
+  >
+    <app-drawer-content
+      *ngIf="sidenavContentInformation != undefined"
+      [drawerContent]="sidenavContentInformation"
+    ></app-drawer-content>
+  </mat-drawer>
+  <mat-drawer-content>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

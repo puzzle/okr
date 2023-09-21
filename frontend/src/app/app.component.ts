@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { RouteService } from './shared/services/route.service';
+import { NotifierService } from './shared/services/notifier.service';
 
 @Component({
   selector: 'app-root',
@@ -15,13 +16,17 @@ import { RouteService } from './shared/services/route.service';
 export class AppComponent implements OnInit {
   currentUrl: string = '/';
   isEnvStaging$: Observable<boolean>;
+  drawerOpen: boolean = false;
+  sidenavContentInformation!: { id: string; type: string };
+  readonly allowedRoutes = ['objective'];
 
   constructor(
-    private router: Router,
+    public router: Router,
     private translate: TranslateService,
     private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
+    private notifierService: NotifierService,
   ) {
     translate.setDefaultLang('de');
     translate.use('de');
@@ -50,7 +55,18 @@ export class AppComponent implements OnInit {
       )
       .subscribe((event) => {
         this.currentUrl = event.url;
+        this.allowedRoutes.forEach((route) => {
+          if (this.currentUrl.startsWith(`/${route}/`)) {
+            this.openDrawer();
+            const objectiveId = this.currentUrl.split('/')[2];
+            this.sidenavContentInformation = { id: objectiveId, type: route };
+          }
+        });
       });
+
+    this.notifierService.closeDetailSubject.subscribe(() => {
+      this.closeDrawer();
+    });
   }
 
   isOverview(): null | true {
@@ -76,5 +92,20 @@ export class AppComponent implements OnInit {
     return false;
   }
 
-  login() {}
+  enableScrolling() {
+    document.body.setAttribute('style', 'overflow: visible;');
+  }
+
+  private disableScrolling() {
+    document.body.setAttribute('style', 'overflow: hidden;');
+  }
+
+  openDrawer() {
+    this.drawerOpen = true;
+    this.disableScrolling();
+  }
+  closeDrawer() {
+    this.drawerOpen = false;
+    this.router.navigate(['/']);
+  }
 }

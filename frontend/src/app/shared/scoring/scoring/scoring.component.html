@@ -1,45 +1,36 @@
-<div class="container">
+<div>
   <div class="d-flex flex-row">
     <div class="d-flex flex-column">
       <p class="text-center">Fail</p>
       <div
         class="child"
-        [style.width]="isOverview ? '63px' : '98px'"
-        [style.--barWidth]="failWidth"
-        [style.--barColor]="failColor"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="failWidth"
+        [style.--data-bar-color]="failColor"
         [attr.data-end-line]="endLineFail"
       ></div>
-      <div *ngIf="isFailZone">
-        <p>Hello</p>
-      </div>
     </div>
 
     <div class="d-flex flex-column">
       <p class="text-center">Commit</p>
       <div
         class="child"
-        [style.width]="isOverview ? '63px' : '98px'"
-        [style.--barWidth]="commitWidth"
-        [style.--barColor]="commitColor"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="commitWidth"
+        [style.--data-bar-color]="commitColor"
         [attr.data-end-line]="endLineCommit"
       ></div>
-      <div class="failLabel" *ngIf="isCommitZone" [style.--barWidth]="commitWidth">
-        <p>Hello</p>
-      </div>
     </div>
 
     <div class="d-flex flex-column">
       <p class="text-center">Target</p>
       <div
         class="child"
-        [style.width]="isOverview ? '63px' : '98px'"
-        [style.--barWidth]="targetWidth"
-        [style.--barColor]="targetColor"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="targetWidth"
+        [style.--data-bar-color]="targetColor"
         [attr.data-end-line]="endLineTarget"
       ></div>
-      <div *ngIf="isTargetZone">
-        <p>Hello</p>
-      </div>
     </div>
 
     <div class="d-flex flex-column mlLeft">
@@ -47,9 +38,9 @@
       <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
     </div>
   </div>
-  <div [style.width]="isOverview ? '189px' : '294px'">
-    <div class="unitLabel" [style.--barWidth]="labelWidth">
-      <p id="metricLabel" class="metricLabel">{{ metricLabel }}</p>
+  <div [style.width]="zoneWidth * 3 + 'px'">
+    <div class="unitLabel" [style.--data-bar-width]="labelWidth" [style.--data-max-width]="zoneWidth * 3 + 'px'">
+      <p class="metricLabel">{{ metricLabel }}</p>
     </div>
   </div>
 </div>

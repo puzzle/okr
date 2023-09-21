@@ -5,11 +5,11 @@ div {
 .child:after {
   content: "\A";
   position: absolute;
-  background: var(--barColor);
+  background: var(--data-bar-color);
   top: 0;
   bottom: 0;
   left: 0;
-  width: var(--barWidth);
+  width: var(--data-bar-width);
 }
 
 .child {
@@ -39,20 +39,12 @@ p {
   font-weight: bold;
   font-size: 12px;
   white-space: nowrap;
-}
-
-.container {
-  margin-left: 100px;
+  text-align: right;
 }
 
 .unitLabel {
   container-type: inline-size;
-  width: var(--barWidth);
+  width: var(--data-bar-width);
   min-width: fit-content;
-  max-width: 294px;
-}
-
-.metricLabel {
-  text-align: right;
-  white-space: nowrap;
+  max-width: var(--data-max-width);
 }

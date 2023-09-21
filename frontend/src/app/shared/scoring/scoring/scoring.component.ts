@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Router } from '@angular/router';
+import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
+import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
 
 @Component({
   selector: 'app-scoring',
@@ -8,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./scoring.component.scss'],
 })
 export class ScoringComponent implements OnInit {
-  @Input keyResult!: KeyresultMin;
+  @Input() keyResult!: KeyresultMin;
   failWidth: string = '50%';
   commitWidth: string = '0';
   targetWidth: string = '0';
@@ -23,6 +25,7 @@ export class ScoringComponent implements OnInit {
   endLineCommit: string = '';
   endLineTarget: string = '';
   zoneWidth: number = 0;
+  checkInValue: number | string = 0;
 
   constructor(private router: Router) {}
 
@@ -36,13 +39,15 @@ export class ScoringComponent implements OnInit {
       this.zoneWidth = 63;
     }
 
-    if (this.keyResult.lastCheckIn === undefined) {
+    if (this.keyResult.lastCheckIn === undefined || this.keyResult.lastCheckIn === null) {
       this.failWidth = this.commitWidth = this.targetWidth = '0';
     } else {
-      if (this.keyResult.type === 'metric') {
+      this.checkInValue = this.keyResult.lastCheckIn!.value;
+      if (this.keyResult.keyResultType === 'metric') {
         this.calculatePercentagesMetric();
         this.setBarColorsMetric();
       } else {
+        this.keyResult = this.keyResult as KeyResultOrdinalMin;
         this.setColorsOrdinal();
       }
     }
@@ -63,10 +68,16 @@ export class ScoringComponent implements OnInit {
   }
 
   calculatePercentagesMetric() {
-    let baseline: number = this.keyResult.baseLine;
-    let stretchGoal: number = this.keyResult.stretchGoal;
-    let checkInValue: number = this.keyResult.lastCheckin.value;
-    this.metricLabel = this.keyResult.unit + checkInValue;
+    let keyResult: KeyResultMetricMin = this.keyResult as KeyResultMetricMin;
+    let baseline: number = keyResult.baseLine;
+    let stretchGoal: number = keyResult.stretchGoal;
+    let checkInValue: number = this.checkInValue as number;
+    this.metricLabel = keyResult.unit + checkInValue;
+
+    if (baseline > stretchGoal) {
+      baseline = stretchGoal;
+      stretchGoal = keyResult.baseLine;
+    }
 
     let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);
 
@@ -99,15 +110,15 @@ export class ScoringComponent implements OnInit {
   }
 
   setColorsOrdinal() {
-    if (this.keyResult.lastCheckIn!.value === 'FAIL') {
+    if ((this.checkInValue as string) === 'FAIL') {
       this.failWidth = '100%';
       this.failColor = '#BA3838';
       this.commitColor = this.targetColor = '#ffffff';
-    } else if (this.keyResult.lastCheckIn!.value === 'COMMIT') {
+    } else if ((this.checkInValue as string) === 'COMMIT') {
       this.failWidth = this.commitWidth = '100%';
       this.failColor = this.commitColor = '#FFD600';
       this.targetColor = '#ffffff';
-    } else if (this.keyResult.lastCheckIn!.value === 'TARGET') {
+    } else if ((this.checkInValue as string) === 'TARGET') {
       this.failWidth = this.commitWidth = this.targetWidth = '100%';
       this.failColor = this.commitColor = this.targetColor = '#1E8A29';
     } else {

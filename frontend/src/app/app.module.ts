@@ -34,7 +34,7 @@ import { ApplicationHeaderComponent } from './application-header/application-hea
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
-import { NgOptimizedImage } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -83,6 +83,7 @@ export const MY_FORMATS = {
     DrawerContentComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

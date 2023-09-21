@@ -87,67 +87,13 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
-        validator.validateOnCreate(teamWithIdNull);
-
-        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
-        verify(validator, times(1)).validate(teamWithIdNull);
+    void validateOnCreate_ShouldThrowIllegalAccessError() {
+        assertThrows(IllegalAccessError.class, () -> validator.validateOnCreate(teamWithIdNull));
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(null));
-
-        assertEquals("Given model Team is null", exception.getReason());
-    }
-
-    @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(team1));
-
-        assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
-    }
-
-    @ParameterizedTest
-    @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenNameIsInvalid(String name, List<String> errors) {
-        Team team = Team.Builder.builder().withId(null).withName(name).build();
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(team));
-
-        assertThat(exception.getReason()).contains(errors);
-    }
-
-    @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, null));
-
-        assertEquals("Given model Team is null", exception.getReason());
-    }
-
-    @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(null, teamWithIdNull));
-
-        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
-    }
-
-    @ParameterizedTest
-    @MethodSource("nameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenNameIsInvalid(String name, List<String> errors) {
-        Team team = Team.Builder.builder().withId(5L).withName(name).build();
-        when(teamPersistenceService.findById(5L)).thenReturn(team);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(5L, team));
-        assertThat(exception.getReason()).contains(errors);
+    void validateOnUpdate_ShouldThrowIllegalAccessException() {
+        assertThrows(IllegalAccessError.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
     }
 
     @Test

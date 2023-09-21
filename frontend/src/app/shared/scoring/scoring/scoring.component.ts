@@ -25,13 +25,15 @@ export class ScoringComponent implements OnInit {
   isCommitZone: boolean = false;
   isTargetZone: boolean = false;
 
+  zonewith: number = '';
+
   constructor() {}
 
   ngOnInit(): void {
     // if (this.keyResult.lastCheckIn === undefined) {
     //   this.failWidth = this.commitWidth = this.targetWidth = '0';
     // } else {
-
+    this.isOverview;
     // if (keyResult.type === 'metric') {
     this.calculatePercentagesMetric();
 
@@ -67,7 +69,7 @@ export class ScoringComponent implements OnInit {
     // let stretchGoal: number = this.keyResult.stretchGoal;
     let stretchGoal: number = 10;
     // let checkInValue: number = this.keyResult.lastCheckin.value;
-    let checkInValue: number = 6;
+    let checkInValue: number = 7;
 
     let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);
 
@@ -76,10 +78,12 @@ export class ScoringComponent implements OnInit {
     // this.labelWidth = decimal * 100 + "%";
 
     if (decimal < 0.3) {
-      this.failWidth = ((decimal * 100) / 30) * 100 + '%';
+      let percent = (decimal * 100) / 30;
+      this.failWidth = percent * 100 + '%';
       if (this.failWidth != '100%' && this.failWidth != '0') {
         this.endLineFail = 'endLine';
       }
+      this.labelWidth = this.zonewith * percent + 'px';
       this.commitWidth = this.targetWidth = '0';
       this.isFailZone = true;
     } else if (decimal < 0.7) {
@@ -91,16 +95,17 @@ export class ScoringComponent implements OnInit {
       this.targetWidth = '0';
       this.isCommitZone = true;
 
-      let percent = ((decimal * 100 - 30) / 40) * 100 - 33;
+      let percent = (decimal * 100 - 30) / 40;
       console.log(percent);
-      this.labelWidth = 30 + percent + '%';
+      this.labelWidth = this.zonewith + this.zonewith * percent + 'px';
       console.log(this.labelWidth);
     } else {
-      this.targetWidth = decimal > 1.0 ? '100%' : ((decimal * 100 - 70) / 30) * 100 - 66 + '%';
+      this.targetWidth = decimal > 1.0 ? '100%' : ((decimal * 100 - 70) / 30) * 100 + '%';
 
       if (this.targetWidth != '100%' && this.targetWidth != '0') {
         this.endLineTarget = 'endLine';
       }
+      this.labelWidth = 98 + 98 + (98 * (decimal * 100 - 70)) / 30 + 'px';
       this.failWidth = this.commitWidth = '100%';
       this.isTargetZone = true;
     }

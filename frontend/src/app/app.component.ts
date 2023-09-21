@@ -69,11 +69,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  openDrawer() {
-    this.drawerOpen = true;
-    this.disableScrolling();
-  }
-
   isOverview(): null | true {
     return this.convertFalseToNull(!this.isTeam());
   }
@@ -101,14 +96,16 @@ export class AppComponent implements OnInit {
     document.body.setAttribute('style', 'overflow: visible;');
   }
 
+  private disableScrolling() {
+    document.body.setAttribute('style', 'overflow: hidden;');
+  }
+
+  openDrawer() {
+    this.drawerOpen = true;
+    this.disableScrolling();
+  }
   closeDrawer() {
     this.drawerOpen = false;
     this.router.navigate(['/']);
-  }
-
-  login() {}
-
-  private disableScrolling() {
-    document.body.setAttribute('style', 'overflow: hidden;');
   }
 }

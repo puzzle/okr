@@ -5,7 +5,7 @@
     </p>
   </div>
 
-  <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [discrete]="true" [showTickMarks]="true">
+  <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [showTickMarks]="true" color="accent">
     <input matSliderThumb [(ngModel)]="keyResult.lastCheckIn!.confidence" />
   </mat-slider>
 </div>

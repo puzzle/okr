@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DrawerContentComponent } from './drawer-content.component';
+import { By } from '@angular/platform-browser';
+import { ObjectiveDetailComponent } from '../objective-detail/objective-detail.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('DrawerContentComponent', () => {
   let component: DrawerContentComponent;
@@ -8,17 +11,28 @@ describe('DrawerContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DrawerContentComponent],
+      imports: [HttpClientTestingModule],
+      declarations: [DrawerContentComponent, ObjectiveDetailComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DrawerContentComponent);
     component = fixture.componentInstance;
-    //TODO: Set DrawerContent differently in other tests
     component.drawerContent = { id: '1', type: 'objective' };
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
+
+  it.each([['objective', 'app-objective-detail']])(
+    'should display right component',
+    (type: string, selector: string) => {
+      component.drawerContent = { id: '1', type: type };
+      fixture.detectChanges();
+      const contentComponent = fixture.debugElement.query(By.css(selector));
+
+      expect(contentComponent).toBeTruthy();
+    },
+  );
 });

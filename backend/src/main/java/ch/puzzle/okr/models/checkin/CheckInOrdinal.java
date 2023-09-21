@@ -36,9 +36,19 @@ public class CheckInOrdinal extends CheckIn {
     @Override
     public boolean equals(Object o) {
         if (o instanceof CheckInOrdinal) {
-            return super.equals(o) && Objects.equals(this.zone, ((CheckInOrdinal) o).zone);
+            return super.equals(o) && Objects.equals(zone, ((CheckInOrdinal) o).zone);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), zone);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CheckInOrdinal{" + "zone=" + zone + '}';
     }
 
     /* Builder */

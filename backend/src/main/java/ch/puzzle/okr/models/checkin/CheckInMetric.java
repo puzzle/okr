@@ -33,9 +33,19 @@ public class CheckInMetric extends CheckIn {
     @Override
     public boolean equals(Object o) {
         if (o instanceof CheckInMetric) {
-            return super.equals(o) && Objects.equals(this.valueMetric, ((CheckInMetric) o).valueMetric);
+            return super.equals(o) && Objects.equals(valueMetric, ((CheckInMetric) o).valueMetric);
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), valueMetric);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CheckInMetric{" + "valueMetric=" + valueMetric + '}';
     }
 
     /* Builder */

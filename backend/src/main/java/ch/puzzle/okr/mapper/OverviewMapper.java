@@ -14,9 +14,7 @@ public class OverviewMapper {
 
     public List<OverviewDto> toDto(List<Overview> overviews) {
         List<OverviewDto> overviewDtos = new ArrayList<>();
-        overviews.forEach(overview -> {
-            processTeams(overviewDtos, overview);
-        });
+        overviews.forEach(overview -> processTeams(overviewDtos, overview));
         return overviewDtos;
     }
 

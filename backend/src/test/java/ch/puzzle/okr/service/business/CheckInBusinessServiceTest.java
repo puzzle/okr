@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInBusinessServiceTest {
-    TestHelper testHelper = new TestHelper();
     @MockBean
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
     @MockBean
@@ -63,7 +62,7 @@ class CheckInBusinessServiceTest {
 
         this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
                 .build();
-        this.jwt = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
+        this.jwt = TestHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test

@@ -34,7 +34,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {
-    TestHelper testHelper = new TestHelper();
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
     @MockBean
@@ -83,7 +82,7 @@ class KeyResultBusinessServiceTest {
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
         this.checkIns = List.of(checkIn1, checkIn2, checkIn3);
 
-        this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
+        this.jwtToken = TestHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test

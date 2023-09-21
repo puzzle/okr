@@ -33,6 +33,7 @@ public class User {
 
     @Email(message = "Attribute email should be valid when saving user")
     @NotNull(message = "Attribute email can not be null when saving user")
+    @NotBlank(message = "Missing attribute email when saving user")
     @Size(min = 2, max = 250, message = "Attribute email must have size between 2 and 250 characters when saving user")
     private String email;
 

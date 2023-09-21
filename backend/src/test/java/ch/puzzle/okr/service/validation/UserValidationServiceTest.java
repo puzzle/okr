@@ -1,7 +1,8 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,62 +16,125 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserValidationServiceTest {
     @MockBean
-    ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
+    UserPersistenceService userPersistenceService = Mockito.mock(UserPersistenceService.class);
 
-    Objective objective1;
-    Objective objectiveMinimal;
+    User user1;
+    User userMinimal;
     User user;
-    Quarter quarter;
-    Team team;
+
+    Jwt mockJwt = TestHelper.mockJwtToken("username", "firstname", "lastname", "email@email.com");
 
     @BeforeEach
     void setUp() {
-        this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+        user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann")
+                .withEmail("kaufmann@puzzle.ch").build();
 
-        when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
-        when(objectivePersistenceService.getModelName()).thenReturn("Objective");
+        userMinimal = User.Builder.builder().withFirstname("Max").withLastname("Mustermann")
+                .withEmail("max@mustermann.com").withUsername("mustermann").build();
+
+        when(userPersistenceService.findById(1L)).thenReturn(user);
+        when(userPersistenceService.getModelName()).thenReturn("User");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("%s with id %s not found", objectivePersistenceService.getModelName(), 2L)))
-                        .when(objectivePersistenceService).findById(2L);
+                String.format("%s with id %s not found", userPersistenceService.getModelName(), 2L)))
+                        .when(userPersistenceService).findById(2L);
     }
 
     @Spy
     @InjectMocks
-    private ObjectiveValidationService validator;
+    private UserValidationService validator;
 
-    private static Stream<Arguments> nameValidationArguments() {
+    private static Stream<Arguments> userNameValidationArguments() {
         return Stream.of(
-                arguments(StringUtils.repeat('1', 251), List.of(
-                        "Attribute username must have a length between 2 and 250 characters when saving objective")),
-                arguments(StringUtils.repeat('1', 1), List.of(
-                        "Attribute username must have a length between 2 and 250 characters when saving objective")),
-                arguments("", List.of("Missing attribute title when saving objective",
-                        "Attribute username must have a length between 2 and 250 characters when saving objective")),
-                arguments(" ", List.of("Missing attribute username when saving objective",
-                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments("         ", List.of("Missing attribute title when saving objective")),
-                arguments(null, List.of("Missing attribute title when saving objective",
-                        "Attribute title can not be null when saving objective")));
+                arguments(StringUtils.repeat('1', 21),
+                        List.of("Attribute username must have size between 2 and 20 characters when saving user")),
+                arguments(StringUtils.repeat('1', 1),
+                        List.of("Attribute username must have size between 2 and 20 characters when saving user")),
+                arguments("",
+                        List.of("Missing attribute username when saving user",
+                                "Attribute username must have size between 2 and 20 characters when saving user")),
+                arguments(" ",
+                        List.of("Missing attribute username when saving user",
+                                "Attribute username must have size between 2 and 20 characters when saving user")),
+                arguments("         ", List.of("Missing attribute username when saving user")),
+                arguments(null, List.of("Missing attribute username when saving user",
+                        "Attribute username can not be null when saving user")));
+    }
+
+    private static Stream<Arguments> firstNameValidationArguments() {
+        return Stream.of(
+                arguments(StringUtils.repeat('1', 51),
+                        List.of("Attribute firstname must have size between 2 and 50 characters when saving user")),
+                arguments(StringUtils.repeat('1', 1),
+                        List.of("Attribute firstname must have size between 2 and 50 characters when saving user")),
+                arguments("",
+                        List.of("Missing attribute firstname when saving user",
+                                "Attribute firstname must have size between 2 and 50 characters when saving user")),
+                arguments(" ",
+                        List.of("Missing attribute firstname when saving user",
+                                "Attribute firstname must have size between 2 and 50 characters when saving user")),
+                arguments("         ", List.of("Missing attribute firstname when saving user")),
+                arguments(null, List.of("Missing attribute firstname when saving user",
+                        "Attribute firstname can not be null when saving user")));
+    }
+
+    private static Stream<Arguments> lastNameValidationArguments() {
+        return Stream.of(
+                arguments(StringUtils.repeat('1', 51),
+                        List.of("Attribute lastname must have size between 2 and 50 characters when saving user")),
+                arguments(StringUtils.repeat('1', 1),
+                        List.of("Attribute lastname must have size between 2 and 50 characters when saving user")),
+                arguments("",
+                        List.of("Missing attribute lastname when saving user",
+                                "Attribute lastname must have size between 2 and 50 characters when saving user")),
+                arguments(" ",
+                        List.of("Missing attribute lastname when saving user",
+                                "Attribute lastname must have size between 2 and 50 characters when saving user")),
+                arguments("         ", List.of("Missing attribute lastname when saving user")),
+                arguments(null, List.of("Missing attribute lastname when saving user",
+                        "Attribute lastname can not be null when saving user")));
+    }
+
+    private static Stream<Arguments> emailValidationArguments() {
+        return Stream.of(
+                arguments(("1".repeat(251)),
+                        List.of("Attribute email must have size between 2 and 250 characters when saving user",
+                                "Attribute email should be valid when saving user")),
+                arguments(("1"),
+                        List.of("Attribute email should be valid when saving user",
+                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                arguments((""),
+                        List.of("Missing attribute email when saving user",
+                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                arguments((" "),
+                        List.of("Missing attribute email when saving user",
+                                "Attribute email should be valid when saving user",
+                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                arguments(("       "),
+                        List.of("Missing attribute email when saving user",
+                                "Attribute email should be valid when saving user")),
+                arguments(null, List.of("Attribute email can not be null when saving user",
+                        "Missing attribute email when saving user")));
     }
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidObjectiveId() {
+    void validateOnGet_ShouldBeSuccessfulWhenValidUserId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -78,7 +142,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfObjectiveIdIsNull() {
+    void validateOnGet_ShouldThrowExceptionIfUserIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -87,11 +151,11 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
-        validator.validateOnCreate(objectiveMinimal);
+    void validateOnCreate_ShouldBeSuccessfulWhenUserIsValid() {
+        validator.validateOnCreate(userMinimal);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objectiveMinimal);
-        verify(validator, times(1)).validate(objectiveMinimal);
+        verify(validator, times(1)).throwExceptionIfModelIsNull(userMinimal);
+        verify(validator, times(1)).validate(userMinimal);
     }
 
     @Test
@@ -99,70 +163,113 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
-        assertEquals("Given model Objective is null", exception.getReason());
+        assertEquals("Given model User is null", exception.getReason());
     }
 
     @Test
     void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(objective1));
+                () -> validator.validateOnCreate(user));
 
-        assertEquals("Model Objective cannot have id while create. Found id 1", exception.getReason());
+        assertEquals("Model User cannot have id while create. Found id 1", exception.getReason());
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
-        Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
-                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
+    @MethodSource("userNameValidationArguments")
+    void validateOnCreate_ShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname")
+                .withLastname("lastname").withUsername(name).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(objective));
+                () -> validator.validateOnCreate(user2));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("firstNameValidationArguments")
+    void validateOnCreate_ShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname(name).withLastname("lastname")
+                .withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("lastNameValidationArguments")
+    void validateOnCreate_ShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname").withLastname(name)
+                .withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("emailValidationArguments")
+    void validateOnCreate_ShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+        User user2 = User.Builder.builder().withEmail(email).withFirstname("firstname").withLastname("lastname")
+                .withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        System.out.println(Arrays.toString(Arrays.stream(exceptionParts).toArray()));
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+            System.out.println(errorArray[i].strip());
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
         }
     }
 
     @Test
     void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
-        Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").build();
+        User userInvalid = User.Builder.builder().withId(null).withUsername("Username").withLastname("Lastname")
+                .withFirstname("firstname").withEmail("falseemail").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(objectiveInvalid));
+                () -> validator.validateOnCreate(userInvalid));
 
-        String errorCreatedOn = "CreatedOn must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorQuarter = "Quarter must not be null.";
-        String errorTeam = "Team must not be null.";
-        String errorState = "State must not be null.";
+        String errorInvalidEmail = "Attribute email should be valid when saving user";
 
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorQuarter);
-        assertThat(exception.getReason().strip()).contains(errorTeam);
-        assertThat(exception.getReason().strip()).contains(errorState);
-    }
-
-    @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrModifiedByIsSet() {
-        Objective objectiveInvalid = Objective.Builder.builder().withId(null)
-                .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
-                .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(user).build();
-
-        String expectedErrorMessage = String.format("Not allowed to set ModifiedBy %s on create", user);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(objectiveInvalid));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(expectedErrorMessage, exception.getReason());
+        assertThat(exception.getReason().strip()).contains(errorInvalidEmail);
     }
 
     @Test
@@ -170,74 +277,130 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
-        assertEquals("Given model Objective is null", exception.getReason());
+        assertEquals("Given model User is null", exception.getReason());
     }
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(null, objectiveMinimal));
+                () -> validator.validateOnUpdate(null, userMinimal));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objectiveMinimal);
+        verify(validator, times(1)).throwExceptionIfModelIsNull(userMinimal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
     @ParameterizedTest
-    @MethodSource("nameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
-        Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
-                .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
-                .withCreatedOn(LocalDateTime.MAX).build();
+    @MethodSource("userNameValidationArguments")
+    void validateOnUpdate_ShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
+                .withLastname("lastname").withUsername(name).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(5L, objective));
+                () -> validator.validateOnUpdate(3L, user2));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("firstNameValidationArguments")
+    void validateOnUpdate_ShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname(name)
+                .withLastname("lastname").withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(3L, user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("lastNameValidationArguments")
+    void validateOnUpdate_ShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+        User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
+                .withLastname(name).withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(3L, user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("emailValidationArguments")
+    void validateOnUpdate_ShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+        User user2 = User.Builder.builder().withId(3L).withEmail(email).withFirstname("firstname")
+                .withLastname("lastname").withUsername("username").build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(3L, user2));
+
+        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
+        System.out.println(Arrays.toString(Arrays.stream(exceptionParts).toArray()));
+        String[] errorArray = new String[errors.size()];
+
+        for (int i = 0; i < errors.size(); i++) {
+            errorArray[i] = exceptionParts[i].strip();
+            System.out.println(errorArray[i].strip());
+        }
+
+        for (int i = 0; i < exceptionParts.length; i++) {
+            assert (errors.contains(errorArray[i]));
         }
     }
 
     @Test
     void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
-        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withModifiedBy(user).build();
-
+        User userInvalid = User.Builder.builder().withId(3L).withUsername("Username").withLastname("Lastname")
+                .withFirstname("firstname").withEmail("falseemail").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(5L, objective));
+                () -> validator.validateOnUpdate(3L, userInvalid));
 
-        String errorCreatedOn = "CreatedOn must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorQuarter = "Quarter must not be null.";
-        String errorTeam = "Team must not be null.";
-        String errorState = "State must not be null.";
+        String errorInvalidEmail = "Attribute email should be valid when saving user";
 
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorQuarter);
-        assertThat(exception.getReason().strip()).contains(errorTeam);
-        assertThat(exception.getReason().strip()).contains(errorState);
+        assertThat(exception.getReason().strip()).contains(errorInvalidEmail);
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
-        Objective objectiveInvalid = Objective.Builder.builder().withId(1L)
-                .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
-                .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(null).build();
+    void validateAuthorisationToken_ShouldNotThrowError() {
+        assertDoesNotThrow(() -> validator.validateAuthorisationToken(mockJwt));
 
-        String expectedErrorMessage = String.format("Something went wrong. ModifiedBy  %s is not set.", null);
+        verify(validator).validateAuthorisationToken(mockJwt);
+    }
 
+    @Test
+    void validateAuthorisationToken_ShouldThrowErrorWhenNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(1L, objectiveInvalid));
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
-        assertEquals(expectedErrorMessage, exception.getReason());
+                () -> validator.validateAuthorisationToken(null));
+
+        assertEquals("Received token is null", exception.getReason());
     }
 
     @Test

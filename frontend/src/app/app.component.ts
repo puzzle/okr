@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
   sidenavContentInformation!: { id: string; type: string };
-  protected readonly close = close;
+  readonly allowedRoutes = ['objective'];
 
   constructor(
     public router: Router,
@@ -55,11 +55,13 @@ export class AppComponent implements OnInit {
       )
       .subscribe((event) => {
         this.currentUrl = event.url;
-        if (this.currentUrl.startsWith('/objective/')) {
-          this.openDrawer();
-          const objectiveId = this.currentUrl.split('/')[2];
-          this.sidenavContentInformation = { id: objectiveId, type: 'objective' };
-        }
+        this.allowedRoutes.forEach((route) => {
+          if (this.currentUrl.startsWith(`/${route}/`)) {
+            this.openDrawer();
+            const objectiveId = this.currentUrl.split('/')[2];
+            this.sidenavContentInformation = { id: objectiveId, type: route };
+          }
+        });
       });
 
     this.notifierService.closeDetailSubject.subscribe(() => {
@@ -95,9 +97,6 @@ export class AppComponent implements OnInit {
     return false;
   }
 
-  private disableScrolling() {
-    document.body.setAttribute('style', 'overflow: hidden;');
-  }
   enableScrolling() {
     document.body.setAttribute('style', 'overflow: visible;');
   }
@@ -108,4 +107,8 @@ export class AppComponent implements OnInit {
   }
 
   login() {}
+
+  private disableScrolling() {
+    document.body.setAttribute('style', 'overflow: hidden;');
+  }
 }

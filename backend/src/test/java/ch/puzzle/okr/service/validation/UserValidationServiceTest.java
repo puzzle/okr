@@ -47,7 +47,7 @@ class UserValidationServiceTest {
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", objectivePersistenceService.getModelName(), 2L)))
-                .when(objectivePersistenceService).findById(2L);
+                        .when(objectivePersistenceService).findById(2L);
     }
 
     @Spy
@@ -56,10 +56,10 @@ class UserValidationServiceTest {
 
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
-                arguments(StringUtils.repeat('1', 251), List
-                        .of("Attribute username must have a length between 2 and 250 characters when saving objective")),
-                arguments(StringUtils.repeat('1', 1), List
-                        .of("Attribute username must have a length between 2 and 250 characters when saving objective")),
+                arguments(StringUtils.repeat('1', 251), List.of(
+                        "Attribute username must have a length between 2 and 250 characters when saving objective")),
+                arguments(StringUtils.repeat('1', 1), List.of(
+                        "Attribute username must have a length between 2 and 250 characters when saving objective")),
                 arguments("", List.of("Missing attribute title when saving objective",
                         "Attribute username must have a length between 2 and 250 characters when saving objective")),
                 arguments(" ", List.of("Missing attribute username when saving objective",

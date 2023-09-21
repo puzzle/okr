@@ -25,14 +25,11 @@ public class ClientConfigControllerIT {
     @MockBean
     private ClientConfigService clientConfigService;
 
-    @Autowired
-    private org.springframework.core.env.Environment environment;
-
     @Test
     void shouldEmptyUsersCache() throws Exception {
         mvc.perform(get("/config").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv(environment);
+        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv();
     }
 
 }

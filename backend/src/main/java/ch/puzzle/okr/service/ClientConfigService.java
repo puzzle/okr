@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ClientConfigService {
@@ -14,10 +15,7 @@ public class ClientConfigService {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
-    // @Value("${oauth.scope}")
-    // private String oauthScopes;
-
-    public HashMap<String, String> getConfigBasedOnActiveEnv(org.springframework.core.env.Environment environment) {
+    public Map<String, String> getConfigBasedOnActiveEnv() {
         HashMap<String, String> env = new HashMap<>();
         env.put("activeProfile", activeProfile);
         env.put("issuer", issuer);

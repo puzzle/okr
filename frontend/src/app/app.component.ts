@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { NotifierService } from './shared/services/notifier.service';
-import { drawerRoutes } from './shared/constantLibary';
+import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
 
 @Component({
   selector: 'app-root',
@@ -48,8 +48,12 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event) => {
         drawerRoutes.forEach((route) => {
           if (event.url.startsWith(`/${route}/`)) {
-            this.sidenavContentInformation = { id: event.id, type: route };
-            this.openDrawer();
+            const match = event.url.match(ROUTE_PARAM_REGEX);
+            if (match) {
+              const id = parseInt(match[1]);
+              this.sidenavContentInformation = { id: id, type: route };
+              this.openDrawer();
+            }
           }
         });
       });

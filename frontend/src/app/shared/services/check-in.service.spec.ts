@@ -3,29 +3,10 @@ import { TestBed } from '@angular/core/testing';
 import { CheckInService } from './check-in.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CheckInMin } from '../types/model/CheckInMin';
+import { firstCheckIn, keyResultMetricWithIdEight, secondCheckIn } from '../testData';
 
 describe('CheckInService', () => {
   let service: CheckInService;
-
-  const testedKeyResultId: number = 8;
-  const firstCheckIn: CheckInMin = {
-    valueMetric: 77,
-    confidence: 5,
-    zone: undefined,
-    changeInfo: '',
-    initiatives: '',
-    id: 1,
-    createdOn: new Date(),
-  };
-  const secondCheckIn: CheckInMin = {
-    valueMetric: 89,
-    confidence: 5,
-    zone: undefined,
-    changeInfo: '',
-    initiatives: '',
-    id: 2,
-    createdOn: new Date(),
-  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,7 +20,7 @@ describe('CheckInService', () => {
   });
 
   it('should map correctly', () => {
-    service.getAllCheckInOfKeyResult(testedKeyResultId).subscribe((checkIns) => {
+    service.getAllCheckInOfKeyResult(keyResultMetricWithIdEight.id).subscribe((checkIns) => {
       /* Check first CheckIn of this KeyResult */
       expect(checkIns[0].confidence).toBe(firstCheckIn.confidence);
       expect(checkIns[0].valueMetric).toBe(firstCheckIn.valueMetric);

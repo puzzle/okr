@@ -39,6 +39,10 @@ import { KeyresultComponent } from './keyresult/keyresult.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
+import { ConfidenceComponent } from './confidence/confidence.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -46,10 +50,6 @@ function initOauthFactory(configService: ConfigService, oauthService: OAuthServi
     oauthService.configure({ ...environment.oauth, issuer: config.issuer });
   };
 }
-import { ConfidenceComponent } from './confidence/confidence.component';
-import { MatSliderModule } from '@angular/material/slider';
-import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
-import { MatDividerModule } from '@angular/material/divider';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -81,7 +81,6 @@ export const MY_FORMATS = {
     KeyresultComponent,
     ApplicationHeaderComponent,
     ConfidenceComponent,
-    CheckInHistoryDialogComponent,
     CheckInHistoryDialogComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,

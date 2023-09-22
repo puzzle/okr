@@ -82,3 +82,33 @@ export const objective: Objective = {
   description: 'description',
   modifiedOn: new Date(),
 };
+
+export const keyResultMetricWithIdEight: KeyResultMetricMin = {
+  id: 8,
+  title: 'KeyResult Title',
+  unit: 'CHF',
+  baseLine: 5.0,
+  stretchGoal: 15.0,
+  lastCheckIn: checkInMetric,
+  type: 'keyResult',
+} as KeyResultMetricMin;
+
+export const firstCheckIn: CheckInMin = {
+  id: 1,
+  valueMetric: 77,
+  confidence: 5,
+  zone: undefined,
+  changeInfo: '',
+  initiatives: '',
+  createdOn: new Date(),
+};
+
+export const secondCheckIn: CheckInMin = {
+  id: 2,
+  valueMetric: 89,
+  confidence: 5,
+  zone: undefined,
+  changeInfo: '',
+  initiatives: '',
+  createdOn: new Date(),
+};

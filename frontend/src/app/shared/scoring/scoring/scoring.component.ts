@@ -25,7 +25,7 @@ export class ScoringComponent implements OnInit, AfterViewInit {
   endLineCommit: string = '';
   endLineTarget: string = '';
   zoneWidth: number = 0;
-  checkInValue: number | string = 0;
+  checkInValue: number | string | undefined = 0;
 
   resizeObserver: ResizeObserver = new ResizeObserver(() => {
     this.resizeWidth();
@@ -44,6 +44,7 @@ export class ScoringComponent implements OnInit, AfterViewInit {
     this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 24 : (keyResultCardWidth / 100) * 33;
     this.checkInValue = this.keyResult.lastCheckIn!.value;
     if (this.keyResult.keyResultType === 'metric') {
+      console.log(this.keyResult.lastCheckIn);
       this.calculatePercentagesMetric();
       this.setBarColorsMetric();
     } else {
@@ -63,9 +64,9 @@ export class ScoringComponent implements OnInit, AfterViewInit {
     document.getElementById('fail-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
     document.getElementById('commit-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
     document.getElementById('target-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
-    document.getElementById('unit-label-div' + this.keyResult.id)!.style.width = this.zoneWidth * 3 + 'px';
-    document.getElementById('unit-label' + this.keyResult.id)!.style.width = this.labelWidth;
-    document.getElementById('unit-label' + this.keyResult.id)!.style.maxWidth = this.zoneWidth * 3 + 'px';
+    // document.getElementById('unit-label-div' + this.keyResult.id)!.style.width = this.zoneWidth * 3 + 'px';
+    // document.getElementById('unit-label' + this.keyResult.id)!.style.width = this.labelWidth;
+    // document.getElementById('unit-label' + this.keyResult.id)!.style.maxWidth = this.zoneWidth * 3 + 'px';
   }
 
   calculatePercentagesMetric() {

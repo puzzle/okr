@@ -1,7 +1,6 @@
 export interface CheckInMin {
   id: number;
-  valueMetric: number | undefined;
-  zone: string | undefined;
+  value: number | string | undefined;
   confidence: number;
   createdOn: Date;
   changeInfo: string;

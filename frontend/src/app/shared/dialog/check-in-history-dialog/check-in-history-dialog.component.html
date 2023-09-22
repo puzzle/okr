@@ -6,7 +6,7 @@
     </div>
   </div>
   <mat-dialog-content class="d-flex justify-content-start flex-column ms-3 mb-2 mt-3 gap-4">
-    <div *ngFor="let checkIn of checkInHistory | async; index as i">
+    <div *ngFor="let checkIn of checkInHistory; index as i">
       <div class="d-flex flex-row flex-wrap">
         <!--        TODO: Use constant of constant library as date format in this pipe-->
         <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
@@ -19,10 +19,7 @@
       </div>
       <p *ngIf="checkIn.changeInfo !== ''">Veränderungen: {{ checkIn.changeInfo }}</p>
       <p *ngIf="checkIn.initiatives !== ''">Massnahmen: {{ checkIn.initiatives }}</p>
-      <mat-divider
-        *ngIf="(checkInHistory | async)!.length > 1 && i != (checkInHistory | async)!.length - 1"
-        class="mt-4"
-      ></mat-divider>
+      <mat-divider *ngIf="checkInHistory.length > 1 && i != checkInHistory.length - 1" class="mt-4"></mat-divider>
     </div>
   </mat-dialog-content>
   <mat-dialog-actions class="d-flex justify-content-start">

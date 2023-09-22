@@ -11,14 +11,16 @@ import errorMessages from '../../../../assets/errors/error-messages.json';
   styleUrls: ['./check-in-history-dialog.component.scss'],
 })
 export class CheckInHistoryDialogComponent implements OnInit {
-  checkInHistory: Observable<CheckInMin[]> = new Observable<CheckInMin[]>();
+  checkInHistory: CheckInMin[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private checkInService: CheckInService,
   ) {}
   ngOnInit(): void {
-    this.checkInHistory = this.checkInService.getAllCheckInOfKeyResult(this.data.keyResultId);
+    this.checkInService.getAllCheckInOfKeyResult(this.data.keyResultId).subscribe((result) => {
+      this.checkInHistory = result;
+    });
   }
 
   protected readonly errorMessages = errorMessages;

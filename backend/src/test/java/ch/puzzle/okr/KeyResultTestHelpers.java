@@ -108,7 +108,7 @@ public class KeyResultTestHelpers {
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
             .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();
 
-    public static final String createBodyMetric = """
+    public static final String CREATE_BODY_METRIC = """
             {
                 "id":null,
                 "objectiveId":5,
@@ -124,7 +124,7 @@ public class KeyResultTestHelpers {
             }
             """;
 
-    public static final String createBodyOrdinal = """
+    public static final String CREATE_BODY_ORDINAL = """
             {
                 "id":null,
                 "objectiveId":5,
@@ -140,7 +140,7 @@ public class KeyResultTestHelpers {
             }
             """;
 
-    public static final String createBodyWithEnumKeys = """
+    public static final String CREATE_BODY_WITH_ENUM_KEYS = """
             {
                 "id":null,
                 "objectiveId":5,
@@ -160,7 +160,7 @@ public class KeyResultTestHelpers {
             }
             """;
 
-    public static final String putBodyMetric = """
+    public static final String PUT_BODY_METRIC = """
             {
                 "id":1,
                 "title":"Updated Keyresult",

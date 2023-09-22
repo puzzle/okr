@@ -147,7 +147,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
 
-        mvc.perform(post(URL_BASE).content(createBodyMetric).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
                 .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT)))
@@ -169,7 +169,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
-        mvc.perform(post(URL_BASE).content(createBodyOrdinal).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
                 .andExpect(jsonPath(JSON_PATH_COMMIT_ZONE, Is.is(COMMIT_ZONE)))
@@ -190,7 +190,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
-        mvc.perform(post(URL_BASE).content(createBodyWithEnumKeys).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_WITH_ENUM_KEYS).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_ID, Is.is(OBJECTIVE_ID)))
@@ -210,7 +210,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
-        mvc.perform(post(URL_BASE).content(createBodyOrdinal).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -260,7 +260,7 @@ class KeyResultControllerIT {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found")).when(keyResultBusinessService)
                 .updateKeyResult(any(), any());
 
-        mvc.perform(put(URL_TO_KEY_RESULT_1000).content(putBodyMetric).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put(URL_TO_KEY_RESULT_1000).content(PUT_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }

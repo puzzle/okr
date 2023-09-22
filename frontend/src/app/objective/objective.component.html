@@ -12,7 +12,7 @@
         alt="The state of this objective is: {{ objective.state.split('-')[0] }}"
         [src]="'../../assets/icons/' + objective.state"
       />
-      <header class="title col-10 ps-2 pt-1">{{ objective.title }}</header>
+      <header class="title col-10 ps-2">{{ objective.title }}</header>
       <img
         data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"

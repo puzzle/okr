@@ -33,10 +33,10 @@ export class ScoringComponent implements OnInit {
     let url = this.router.url;
     if (url.includes('keyresult')) {
       this.isOverview = false;
-      this.zoneWidth = 98;
+      this.zoneWidth = 98.7;
     } else {
       this.isOverview = true;
-      this.zoneWidth = 63;
+      this.zoneWidth = 63.7;
     }
 
     if (this.keyResult.lastCheckIn === undefined || this.keyResult.lastCheckIn === null) {

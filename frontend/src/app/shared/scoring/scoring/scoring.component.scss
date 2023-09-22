@@ -23,16 +23,12 @@ div {
 }
 
 .starIcon {
-  width: 22px;
-  height: 22px;
+  width: 22.24px;
+  height: 22.24px;
 }
 
 .mlLeft {
   margin-left: 16px;
-}
-
-p {
-  font-size: 8px;
 }
 
 .metricLabel {
@@ -47,4 +43,8 @@ p {
   width: var(--data-bar-width);
   min-width: fit-content;
   max-width: var(--data-max-width);
+}
+
+.scoring-container {
+  margin-bottom: 8px;
 }

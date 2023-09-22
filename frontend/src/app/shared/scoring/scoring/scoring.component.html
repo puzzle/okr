@@ -1,7 +1,7 @@
-<div>
+<div class="scoring-container">
   <div class="d-flex flex-row">
     <div class="d-flex flex-column">
-      <p class="text-center">Fail</p>
+      <p class="text-center sub-title">Fail</p>
       <div
         class="child"
         [style.width]="zoneWidth + 'px'"
@@ -12,7 +12,7 @@
     </div>
 
     <div class="d-flex flex-column">
-      <p class="text-center">Commit</p>
+      <p class="text-center sub-title">Commit</p>
       <div
         class="child"
         [style.width]="zoneWidth + 'px'"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="d-flex flex-column">
-      <p class="text-center">Target</p>
+      <p class="text-center sub-title">Target</p>
       <div
         class="child"
         [style.width]="zoneWidth + 'px'"
@@ -34,11 +34,11 @@
     </div>
 
     <div class="d-flex flex-column mlLeft">
-      <p class="text-center">Stretch</p>
+      <p class="text-center sub-title">Stretch</p>
       <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
     </div>
   </div>
-  <div [style.width]="zoneWidth * 3 + 'px'">
+  <div [style.width]="zoneWidth * 3 + 'px'" *ngIf="!isOverview">
     <div class="unitLabel" [style.--data-bar-width]="labelWidth" [style.--data-max-width]="zoneWidth * 3 + 'px'">
       <p class="metricLabel">{{ metricLabel }}</p>
     </div>

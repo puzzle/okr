@@ -21,7 +21,7 @@ public class CheckInOrdinalMapper {
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
-        return CheckInOrdinal.Builder.builder().withZone(checkInOrdinalDto.zone()).withId(checkInOrdinalDto.id())
+        return CheckInOrdinal.Builder.builder().withZone(checkInOrdinalDto.value()).withId(checkInOrdinalDto.id())
                 .withChangeInfo(checkInOrdinalDto.changeInfo()).withInitiatives(checkInOrdinalDto.initiatives())
                 .withConfidence(checkInOrdinalDto.confidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInOrdinalDto.keyResultId())).build();

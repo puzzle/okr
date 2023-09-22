@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 
 @JsonDeserialize(as = CheckInMetricDto.class)
 public record CheckInMetricDto(Long id, String changeInfo, String initiatives, Integer confidence, Long keyResultId,
-        LocalDateTime createdOn, LocalDateTime modifiedOn, Double valueMetric) implements CheckInDto {
+        LocalDateTime createdOn, LocalDateTime modifiedOn, Double value) implements CheckInDto {
 }

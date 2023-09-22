@@ -89,7 +89,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath("$.confidence", Is.is(6))).andExpect(jsonPath("$.keyResultId", Is.is(1)))
                 .andExpect(jsonPath("$.modifiedOn", Is.is(LocalDateTime.MAX.toString())))
                 .andExpect(jsonPath("$.createdOn", Is.is(LocalDateTime.MAX.toString())))
-                .andExpect(jsonPath("$.valueMetric", Is.is(46D)));
+                .andExpect(jsonPath("$.value", Is.is(46D)));
     }
 
     @Test
@@ -102,7 +102,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath("$.confidence", Is.is(5))).andExpect(jsonPath("$.keyResultId", Is.is(2)))
                 .andExpect(jsonPath("$.modifiedOn", Is.is(LocalDateTime.MAX.toString())))
                 .andExpect(jsonPath("$.createdOn", Is.is(LocalDateTime.MAX.toString())))
-                .andExpect(jsonPath("$.zone", Is.is(Zone.COMMIT.toString())));
+                .andExpect(jsonPath("$.value", Is.is(Zone.COMMIT.toString())));
     }
 
     @Test
@@ -157,7 +157,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath("$.changeInfo", Is.is("Changeinfo1")))
                 .andExpect(jsonPath("$.initiatives", Is.is("Initiatives1")))
                 .andExpect(jsonPath("$.confidence", Is.is(6))).andExpect(jsonPath("$.keyResultId", Is.is(1)))
-                .andExpect(jsonPath("$.valueMetric", Is.is(46D)));
+                .andExpect(jsonPath("$.value", Is.is(46D)));
     }
 
     @Test
@@ -173,6 +173,6 @@ class CheckInControllerIT {
                 .andExpect(jsonPath("$.changeInfo", Is.is("Changeinfo2")))
                 .andExpect(jsonPath("$.initiatives", Is.is("Initiatives2")))
                 .andExpect(jsonPath("$.confidence", Is.is(5))).andExpect(jsonPath("$.keyResultId", Is.is(2)))
-                .andExpect(jsonPath("$.zone", Is.is(Zone.COMMIT.toString())));
+                .andExpect(jsonPath("$.value", Is.is(Zone.COMMIT.toString())));
     }
 }

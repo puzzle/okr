@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
-import { CheckIn } from "../shared/types/model/CheckIn";
+import { CheckIn } from '../shared/types/model/CheckIn';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -17,11 +17,7 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkIfKeyresultIsMetric(keyresult: string) {
-    if (keyresult == 'metric') {
-      return true;
-    } else {
-      return false;
-    }
+    return keyresult == 'metric';
   }
 
   checkIfThereIsALastCheckIn(lastCheckin: CheckIn) {
@@ -32,6 +28,5 @@ export class KeyresultDetailComponent implements OnInit {
     // }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

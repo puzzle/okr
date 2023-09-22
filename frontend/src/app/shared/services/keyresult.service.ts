@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { KeyResult } from '../types/model/KeyResult'
+import { HttpClient } from '@angular/common/http';
+import { KeyResult } from '../types/model/KeyResult';
 
 @Injectable({
   providedIn: 'root',

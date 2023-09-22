@@ -21,7 +21,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class ObjectiveDetailComponent implements OnChanges {
   objective!: Objective;
-  @Input() objectiveId!: string;
+  @Input() objectiveId!: number;
   constructor(
     private objectiveService: ObjectiveService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -34,7 +34,7 @@ export class ObjectiveDetailComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.objectiveService.getFullObjective(parseInt(this.objectiveId)).subscribe({
+    this.objectiveService.getFullObjective(this.objectiveId).subscribe({
       next: (fullObjective) => {
         this.objective = fullObjective;
         this.changeDetectorRef.markForCheck();

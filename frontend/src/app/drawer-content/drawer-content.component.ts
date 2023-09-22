@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrawerContentComponent {
-  @Input() drawerContent!: { id: string; type: string };
+  @Input() drawerContent!: { id: number; type: string };
 }

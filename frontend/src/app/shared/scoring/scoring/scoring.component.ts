@@ -27,8 +27,6 @@ export class ScoringComponent implements OnInit, AfterViewInit {
   zoneWidth: number = 0;
   checkInValue: number | string = 0;
 
-  keyResultCard: HTMLElement | null = null;
-
   resizeObserver: ResizeObserver = new ResizeObserver(() => {
     this.resizeWidth();
   });
@@ -55,8 +53,7 @@ export class ScoringComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.keyResultCard = document.querySelector('.key-result');
-    this.resizeObserver.observe(this.keyResultCard!);
+    this.resizeObserver.observe(document.querySelector('.key-result')!);
   }
 
   resizeWidth() {

@@ -27,6 +27,8 @@ class CacheServiceIT {
     private User createdUser;
     private Cache cache;
 
+    private static final String USERNAME = "username";
+
     @BeforeEach
     void beforeEach() {
         cache = cacheManager.getCache(Constants.USER_CACHE);
@@ -41,18 +43,18 @@ class CacheServiceIT {
     }
 
     private static User createUser() {
-        return User.Builder.builder().withUsername("username").withFirstname("firstname").withLastname("lastname")
+        return User.Builder.builder().withUsername(USERNAME).withFirstname("firstname").withLastname("lastname")
                 .withEmail("username@puzzle.ch").build();
     }
 
     @Test
     void emptyUsersCache_ShouldClearUserCache() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cache.get("username", User.class);
+        User userBeforeClearCache = cache.get(USERNAME, User.class);
 
         cacheService.emptyUsersCache();
 
-        User userAfterClearCache = cache.get("username", User.class);
+        User userAfterClearCache = cache.get(USERNAME, User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }
@@ -60,11 +62,11 @@ class CacheServiceIT {
     @Test
     void emptyAllCaches_ShouldClearAllCaches() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
-        User userBeforeClearCache = cache.get("username", User.class);
+        User userBeforeClearCache = cache.get(USERNAME, User.class);
 
         cacheService.emptyAllCaches();
 
-        User userAfterClearCache = cache.get("username", User.class);
+        User userAfterClearCache = cache.get(USERNAME, User.class);
         assertNotNull(userBeforeClearCache);
         assertNull(userAfterClearCache);
     }

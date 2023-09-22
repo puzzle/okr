@@ -33,8 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(QuarterController.class)
 class QuarterControllerIT {
 
-    public static final String JSON_PATH_ID = "$[0].id";
-
     static Quarter quarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2")
             .withStartDate(LocalDate.of(2022, 9, 1)).withEndDate(LocalDate.of(2022, 12, 31)).build();
     static Quarter quarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ 22/23-Q3")

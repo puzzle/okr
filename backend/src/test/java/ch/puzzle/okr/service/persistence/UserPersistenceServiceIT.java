@@ -26,6 +26,8 @@ class UserPersistenceServiceIT {
     private CacheManager cacheManager;
     private Cache cache;
 
+    private static final String USERNAME_ALICE = "alice";
+
     @BeforeEach
     void beforeEach() {
         cache = cacheManager.getCache(Constants.USER_CACHE);
@@ -78,12 +80,12 @@ class UserPersistenceServiceIT {
 
     @Test
     void findUserByUsername_ShouldReturnExistingUser() {
-        User returnedUser = userPersistenceService.findUserByUsername("alice");
+        User returnedUser = userPersistenceService.findUserByUsername(USERNAME_ALICE);
 
         assertEquals(11L, returnedUser.getId());
         assertEquals("Alice", returnedUser.getFirstname());
         assertEquals("Wunderland", returnedUser.getLastname());
-        assertEquals("alice", returnedUser.getUsername());
+        assertEquals(USERNAME_ALICE, returnedUser.getUsername());
         assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
     }
 
@@ -98,22 +100,22 @@ class UserPersistenceServiceIT {
 
     @Test
     void findUserByUsername_ShouldAddUserToCache() {
-        userPersistenceService.findUserByUsername("alice");
+        userPersistenceService.findUserByUsername(USERNAME_ALICE);
 
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get("alice", User.class);
+        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
         assertNotNull(cachedUser);
     }
 
     @Test
     void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
-        User existingUser = User.Builder.builder().withUsername("alice").build();
+        User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
 
         User returnedUser = userPersistenceService.getOrCreateUser(existingUser);
 
         assertEquals(11L, returnedUser.getId());
         assertEquals("Alice", returnedUser.getFirstname());
         assertEquals("Wunderland", returnedUser.getLastname());
-        assertEquals("alice", returnedUser.getUsername());
+        assertEquals(USERNAME_ALICE, returnedUser.getUsername());
         assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
     }
 
@@ -133,10 +135,10 @@ class UserPersistenceServiceIT {
 
     @Test
     void getOrCreateUser_ShouldAddUserToCache() {
-        User existingUser = User.Builder.builder().withUsername("alice").build();
+        User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
         userPersistenceService.getOrCreateUser(existingUser);
 
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get("alice", User.class);
+        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
         assertNotNull(cachedUser);
     }
 }

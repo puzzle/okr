@@ -1,11 +1,11 @@
-package ch.puzzle.okr.mapper.checkIn;
+package ch.puzzle.okr.mapper.checkin;
 
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.dto.checkIn.CheckInMetricDto;
-import ch.puzzle.okr.dto.checkIn.CheckInOrdinalDto;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInMetric;
-import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
+import ch.puzzle.okr.dto.checkin.CheckInOrdinalDto;
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;

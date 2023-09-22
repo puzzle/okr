@@ -23,7 +23,8 @@ public abstract class KeyResult {
     private Objective objective;
 
     @NotBlank(message = "Title can not be blank")
-    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
+    @NotNull(message = "Title can not be null")
+    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving key result")
     private String title;
 
     @Size(max = 4096, message = "Attribute description has a max length of 4096 characters")
@@ -139,10 +140,10 @@ public abstract class KeyResult {
         return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn, keyResultType);
     }
 
-    public KeyResult() {
+    protected KeyResult() {
     }
 
-    public KeyResult(Builder builder) {
+    protected KeyResult(Builder builder) {
         id = builder.id;
         setObjective(builder.objective);
         setTitle(builder.title);

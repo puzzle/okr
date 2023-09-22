@@ -3,7 +3,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfidenceComponent } from './confidence.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatSliderHarness } from '@angular/material/slider/testing';
 import { keyResultMetricMin } from '../shared/testData';
 import { MatSliderModule } from '@angular/material/slider';
 import { CheckInMin } from '../shared/types/model/CheckInMin';

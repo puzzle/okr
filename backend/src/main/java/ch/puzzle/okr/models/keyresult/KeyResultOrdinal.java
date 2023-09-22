@@ -3,6 +3,7 @@ package ch.puzzle.okr.models.keyresult;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("ordinal")
@@ -42,6 +43,27 @@ public class KeyResultOrdinal extends KeyResult {
 
     public KeyResultOrdinal() {
         super();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof KeyResultOrdinal) {
+            return super.equals(o) && Objects.equals(commitZone, ((KeyResultOrdinal) o).commitZone)
+                    && Objects.equals(targetZone, ((KeyResultOrdinal) o).targetZone)
+                    && Objects.equals(stretchZone, ((KeyResultOrdinal) o).stretchZone);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), commitZone, targetZone, stretchZone);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "KeyResultOrdinal{" + "commitZone='" + commitZone + '\'' + ", targetZone='"
+                + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + '}';
     }
 
     public KeyResultOrdinal(Builder builder) {

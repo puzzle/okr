@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { CheckInMin } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';

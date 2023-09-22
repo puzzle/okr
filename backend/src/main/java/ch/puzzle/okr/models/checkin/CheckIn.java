@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models.checkIn;
+package ch.puzzle.okr.models.checkin;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -146,10 +146,10 @@ public abstract class CheckIn {
     }
 
     /* Constructor */
-    public CheckIn() {
+    protected CheckIn() {
     }
 
-    public CheckIn(Builder builder) {
+    protected CheckIn(Builder builder) {
         id = builder.id;
         setChangeInfo(builder.changeInfo);
         setInitiatives(builder.initiatives);

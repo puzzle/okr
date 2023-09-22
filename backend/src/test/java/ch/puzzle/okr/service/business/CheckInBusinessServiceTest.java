@@ -3,10 +3,10 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInMetric;
-import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
-import ch.puzzle.okr.models.checkIn.Zone;
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -19,17 +19,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInBusinessServiceTest {
-    TestHelper testHelper = new TestHelper();
     @MockBean
     CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
     @MockBean
@@ -65,7 +62,7 @@ class CheckInBusinessServiceTest {
 
         this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
                 .build();
-        this.jwt = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
+        this.jwt = TestHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;

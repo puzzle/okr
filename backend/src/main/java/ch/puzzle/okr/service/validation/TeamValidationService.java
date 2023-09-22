@@ -11,28 +11,19 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
         super(teamPersistenceService);
     }
 
-    @Override
-    @Deprecated
-    public void validateOnCreate(Team model) {
-        throwExceptionIfModelIsNull(model);
-        throwExceptionWhenIdIsNotNull(model.getId());
-
-        validate(model);
-    }
-
-    @Override
-    @Deprecated
-    public void validateOnUpdate(Long id, Team model) {
-        throwExceptionIfModelIsNull(model);
-        throwExceptionWhenIdIsNull(model.getId());
-
-        doesEntityExist(id);
-        validate(model);
-    }
-
     public void validateOnGetActiveObjectives(Team team) {
         throwExceptionIfModelIsNull(team);
         throwExceptionWhenIdIsNull(team.getId());
         doesEntityExist(team.getId());
+    }
+
+    @Override
+    public void validateOnCreate(Team model) {
+        throw new IllegalAccessError();
+    }
+
+    @Override
+    public void validateOnUpdate(Long id, Team model) {
+        throw new IllegalAccessError();
     }
 }

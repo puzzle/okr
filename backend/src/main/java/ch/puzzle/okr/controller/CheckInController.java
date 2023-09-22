@@ -1,8 +1,8 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.checkIn.CheckInDto;
-import ch.puzzle.okr.mapper.checkIn.CheckInMapper;
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.dto.checkin.CheckInDto;
+import ch.puzzle.okr.mapper.checkin.CheckInMapper;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

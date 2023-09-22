@@ -6,5 +6,4 @@ import { Subject } from 'rxjs';
 })
 export class NotifierService {
   closeDetailSubject: Subject<void> = new Subject();
-  constructor() {}
 }

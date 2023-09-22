@@ -11,60 +11,60 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
 
-public abstract class ValidationBase<Model, Id> {
+public abstract class ValidationBase<T, E> {
     private final Validator validator;
-    protected final PersistenceBase<Model, Id> persistenceService;
+    protected final PersistenceBase<T, E> persistenceService;
 
-    ValidationBase(PersistenceBase<Model, Id> persistenceService) {
+    ValidationBase(PersistenceBase<T, E> persistenceService) {
         this.persistenceService = persistenceService;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();
         }
     }
 
-    public void validateOnGet(Id id) {
+    public void validateOnGet(E id) {
         throwExceptionWhenIdIsNull(id);
     }
 
-    public abstract void validateOnCreate(Model model);
+    public abstract void validateOnCreate(T model);
 
-    public abstract void validateOnUpdate(Id id, Model model);
+    public abstract void validateOnUpdate(E id, T model);
 
-    public void validateOnDelete(Id id) {
+    public void validateOnDelete(E id) {
         throwExceptionWhenIdIsNull(id);
         doesEntityExist(id);
     }
 
-    public void doesEntityExist(Id id) {
+    public void doesEntityExist(E id) {
         persistenceService.findById(id);
     }
 
-    public void throwExceptionIfModelIsNull(Model model) {
+    public void throwExceptionIfModelIsNull(T model) {
         if (model == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Given model %s is null", persistenceService.getModelName()));
         }
     }
 
-    public void throwExceptionWhenIdIsNull(Id id) {
+    public void throwExceptionWhenIdIsNull(E id) {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
         }
     }
 
-    protected void throwExceptionWhenIdIsNotNull(Id id) {
+    protected void throwExceptionWhenIdIsNotNull(E id) {
         if (id != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
                     "Model %s cannot have id while create. Found id %s", persistenceService.getModelName(), id));
         }
     }
 
-    public void validate(Model model) {
-        Set<ConstraintViolation<Model>> violations = validator.validate(model);
+    public void validate(T model) {
+        Set<ConstraintViolation<T>> violations = validator.validate(model);
         processViolations(violations);
     }
 
-    private void processViolations(Set<ConstraintViolation<Model>> violations) {
+    private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
             List<String> reasons = violations.stream().map(ConstraintViolation::getMessage).toList();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(". ", reasons) + ".");

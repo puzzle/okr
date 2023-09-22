@@ -58,14 +58,10 @@ class QuarterControllerIT {
         mvc.perform(get("/api/v1/quarters").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(1))).andExpect(jsonPath("$[0].label", Is.is("GJ 22/23-Q2")))
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
                 .andExpect(jsonPath("$[0].startDate", Is.is(LocalDate.of(2022, 9, 1).toString())))
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
                 .andExpect(jsonPath("$[0].endDate", Is.is(LocalDate.of(2022, 12, 31).toString())))
                 .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].label", Is.is("GJ 22/23-Q3")))
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
                 .andExpect(jsonPath("$[1].startDate", Is.is(LocalDate.of(2023, 1, 1).toString())))
-                .andExpect(jsonPath("$[0].id", Is.is(1)))
                 .andExpect(jsonPath("$[1].endDate", Is.is(LocalDate.of(2023, 3, 31).toString())));
     }
 

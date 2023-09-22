@@ -4,7 +4,6 @@ import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.models.Overview;
 import ch.puzzle.okr.models.OverviewId;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -12,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OverviewMapperTest {
-    private final OverviewMapper overviewMapper = new OverviewMapper(Mockito.mock(ObjectiveMapper.class),
-            Mockito.mock(TeamMapper.class));
+    private final OverviewMapper overviewMapper = new OverviewMapper();
 
     @Test
     void toDto_ShouldReturnEmptyList_WhenNoTeamFound() {

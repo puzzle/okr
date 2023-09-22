@@ -1,6 +1,6 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 

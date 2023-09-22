@@ -13,7 +13,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { By } from '@angular/platform-browser';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationEnd, Router, Routes } from '@angular/router';
+import { NavigationEnd, Routes } from '@angular/router';
 import { of } from 'rxjs';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';

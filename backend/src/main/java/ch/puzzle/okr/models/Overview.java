@@ -160,7 +160,7 @@ public class Overview {
         private Integer confidence;
         private LocalDateTime createdOn;
 
-        public Builder() {
+        private Builder() {
         }
 
         public static Builder builder() {

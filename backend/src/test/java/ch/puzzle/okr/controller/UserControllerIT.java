@@ -33,14 +33,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerIT {
-
-    static User userAlice = User.Builder.builder().withId(2L).withUsername("awunderland").withFirstname("Alice")
-            .withLastname("Wunderland").withEmail("wunderland@puzzle.ch").build();
-    static User userBob = User.Builder.builder().withId(9L).withUsername("bbaumeister").withFirstname("Bob")
-            .withLastname("Baumeister").withEmail("baumeister@puzzle.ch").build();
+    private static final String USERNAME_1 = "awunderland";
+    private static final String FIRSTNAME_1 = "Alice";
+    private static final String LASTNAME_1 = "Wunderland";
+    private static final String EMAIL_1 = "wunderland@puzzle.ch";
+    private static final String USERNAME_2 = "bbaumeister";
+    private static final String FIRSTNAME_2 = "Bob";
+    private static final String LASTNAME_2 = "Baumeister";
+    private static final String EMAIL_2 = "baumeister@puzzle.ch";
+    static User userAlice = User.Builder.builder().withId(2L).withUsername(USERNAME_1).withFirstname(FIRSTNAME_1)
+            .withLastname(LASTNAME_1).withEmail(EMAIL_1).build();
+    static User userBob = User.Builder.builder().withId(9L).withUsername(USERNAME_2).withFirstname(FIRSTNAME_2)
+            .withLastname(LASTNAME_2).withEmail(EMAIL_2).build();
     static List<User> userList = Arrays.asList(userAlice, userBob);
-    static UserDto userAliceDto = new UserDto(2L, "awunderland", "Alice", "Wunderland", "wunderland@puzzle.ch");
-    static UserDto userBobDto = new UserDto(9L, "bbaumeister", "Bob", "Baumeister", "baumeister@puzzle.ch");
+    static UserDto userAliceDto = new UserDto(2L, USERNAME_1, FIRSTNAME_1, LASTNAME_1, EMAIL_1);
+    static UserDto userBobDto = new UserDto(9L, USERNAME_2, FIRSTNAME_2, LASTNAME_2, EMAIL_2);
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -63,14 +70,14 @@ class UserControllerIT {
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Is.is(2))).andExpect(jsonPath("$[0].username", Is.is("awunderland")))
-                .andExpect(jsonPath("$[0].firstname", Is.is("Alice")))
-                .andExpect(jsonPath("$[0].lastname", Is.is("Wunderland")))
-                .andExpect(jsonPath("$[0].email", Is.is("wunderland@puzzle.ch")))
-                .andExpect(jsonPath("$[1].id", Is.is(9))).andExpect(jsonPath("$[1].username", Is.is("bbaumeister")))
-                .andExpect(jsonPath("$[1].firstname", Is.is("Bob")))
-                .andExpect(jsonPath("$[1].lastname", Is.is("Baumeister")))
-                .andExpect(jsonPath("$[1].email", Is.is("baumeister@puzzle.ch")));
+                .andExpect(jsonPath("$[0].id", Is.is(2))).andExpect(jsonPath("$[0].username", Is.is(USERNAME_1)))
+                .andExpect(jsonPath("$[0].firstname", Is.is(FIRSTNAME_1)))
+                .andExpect(jsonPath("$[0].lastname", Is.is(LASTNAME_1)))
+                .andExpect(jsonPath("$[0].email", Is.is(EMAIL_1))).andExpect(jsonPath("$[1].id", Is.is(9)))
+                .andExpect(jsonPath("$[1].username", Is.is(USERNAME_2)))
+                .andExpect(jsonPath("$[1].firstname", Is.is(FIRSTNAME_2)))
+                .andExpect(jsonPath("$[1].lastname", Is.is(LASTNAME_2)))
+                .andExpect(jsonPath("$[1].email", Is.is(EMAIL_2)));
     }
 
     @Test

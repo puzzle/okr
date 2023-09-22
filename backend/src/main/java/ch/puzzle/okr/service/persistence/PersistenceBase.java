@@ -9,14 +9,14 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
 
-public abstract class PersistenceBase<Model, Id> {
-    protected final CrudRepository<Model, Id> repository;
+public abstract class PersistenceBase<T, E> {
+    protected final CrudRepository<T, E> repository;
 
-    protected PersistenceBase(CrudRepository<Model, Id> repository) {
+    protected PersistenceBase(CrudRepository<T, E> repository) {
         this.repository = repository;
     }
 
-    public Model findById(Id id) throws ResponseStatusException {
+    public T findById(E id) throws ResponseStatusException {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Missing identifier for %s", getModelName()));
@@ -25,21 +25,21 @@ public abstract class PersistenceBase<Model, Id> {
                 String.format("%s with id %s not found", getModelName(), id)));
     }
 
-    public Model save(Model model) {
+    public T save(T model) {
         return repository.save(model);
     }
 
-    public List<Model> findAll() {
+    public List<T> findAll() {
         return iteratorToList(repository.findAll());
     }
 
-    public void deleteById(Id id) {
+    public void deleteById(E id) {
         repository.deleteById(id);
     }
 
     public abstract String getModelName();
 
-    private List<Model> iteratorToList(Iterable<Model> iterable) {
+    private List<T> iteratorToList(Iterable<T> iterable) {
         return StreamSupport
                 .stream(Spliterators.spliteratorUnknownSize(iterable.iterator(), Spliterator.ORDERED), false).toList();
     }

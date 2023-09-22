@@ -74,7 +74,7 @@ public class OverviewId implements Serializable {
         private Long keyResultId;
         private Long checkInId;
 
-        public Builder() {
+        private Builder() {
         }
 
         public static Builder builder() {

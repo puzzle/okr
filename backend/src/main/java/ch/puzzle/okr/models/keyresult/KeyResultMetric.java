@@ -3,6 +3,7 @@ package ch.puzzle.okr.models.keyresult;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("metric")
@@ -42,6 +43,27 @@ public class KeyResultMetric extends KeyResult {
 
     public KeyResultMetric() {
         super();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof KeyResultMetric) {
+            return super.equals(o) && Objects.equals(baseline, ((KeyResultMetric) o).baseline)
+                    && Objects.equals(stretchGoal, ((KeyResultMetric) o).stretchGoal)
+                    && Objects.equals(unit, ((KeyResultMetric) o).unit);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), baseline, stretchGoal, unit);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "KeyResultMetric{" + "baseline=" + baseline + ", stretchGoal=" + stretchGoal
+                + ", unit='" + unit + '\'' + '}';
     }
 
     public KeyResultMetric(Builder builder) {

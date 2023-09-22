@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import { checkInMetric, checkInOrdinal, keyResultMetricMin, keyResultOrdinalMin } from '../../testData';
+import { keyResultMetricMin, keyResultOrdinalMin } from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';

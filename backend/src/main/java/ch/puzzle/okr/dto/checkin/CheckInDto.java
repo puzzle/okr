@@ -1,4 +1,4 @@
-package ch.puzzle.okr.dto.checkIn;
+package ch.puzzle.okr.dto.checkin;
 
 import ch.puzzle.okr.deserializer.CheckInDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

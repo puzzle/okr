@@ -1,10 +1,11 @@
-package ch.puzzle.okr.models.checkIn;
+package ch.puzzle.okr.models.checkin;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("ordinal")
@@ -30,6 +31,24 @@ public class CheckInOrdinal extends CheckIn {
     public CheckInOrdinal(Builder builder) {
         super(builder);
         setZone(builder.zone);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof CheckInOrdinal) {
+            return super.equals(o) && Objects.equals(zone, ((CheckInOrdinal) o).zone);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), zone);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "CheckInOrdinal{" + "zone=" + zone + '}';
     }
 
     /* Builder */

@@ -3,9 +3,9 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInMetric;
-import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -34,7 +34,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {
-    TestHelper testHelper = new TestHelper();
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
     @MockBean
@@ -83,7 +82,7 @@ class KeyResultBusinessServiceTest {
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
         this.checkIns = List.of(checkIn1, checkIn2, checkIn3);
 
-        this.jwtToken = testHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
+        this.jwtToken = TestHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test

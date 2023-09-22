@@ -12,19 +12,9 @@ import java.util.Optional;
 @Component
 public class OverviewMapper {
 
-    private final ObjectiveMapper objectiveMapper;
-    private final TeamMapper teamMapper;
-
-    public OverviewMapper(ObjectiveMapper objectiveMapper, TeamMapper teamMapper) {
-        this.objectiveMapper = objectiveMapper;
-        this.teamMapper = teamMapper;
-    }
-
     public List<OverviewDto> toDto(List<Overview> overviews) {
         List<OverviewDto> overviewDtos = new ArrayList<>();
-        overviews.forEach(overview -> {
-            processTeams(overviewDtos, overview);
-        });
+        overviews.forEach(overview -> processTeams(overviewDtos, overview));
         return overviewDtos;
     }
 

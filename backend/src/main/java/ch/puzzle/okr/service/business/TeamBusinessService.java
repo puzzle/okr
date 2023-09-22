@@ -17,7 +17,7 @@ public class TeamBusinessService {
 
     private final QuarterBusinessService quarterBusinessService;
 
-    private final TeamValidationService validator;;
+    private final TeamValidationService validator;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService,

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.checkIn.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.models.checkIn.CheckIn;
-import ch.puzzle.okr.models.checkIn.CheckInMetric;
-import ch.puzzle.okr.models.checkIn.CheckInOrdinal;
-import ch.puzzle.okr.models.checkIn.Zone;
+import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.CheckInOrdinal;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -54,7 +55,7 @@ public class CheckInValidationServiceTest {
 
     private static Stream<Arguments> confidenceValidationArguments() {
         return Stream.of(arguments(-1, List.of("Attribute confidence has a min value of 1")),
-                arguments(11, List.of("Missing attribute title when saving objective")),
+                arguments(11, List.of("Attribute confidence has a max value of 10")),
                 arguments(null, List.of("Confidence must not be null")));
     }
 
@@ -151,11 +152,10 @@ public class CheckInValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
         for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
     }
 
@@ -203,6 +203,7 @@ public class CheckInValidationServiceTest {
                 .withInitiatives("Initiatives").withConfidence(confidence).withCreatedBy(this.user)
                 .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
                 .build();
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(8L)).thenReturn(List.of(checkIn));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(2L, checkIn));
@@ -211,12 +212,28 @@ public class CheckInValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = errors.get(i);
+            errorArray[i] = exceptionParts[i].strip();
         }
         for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
-            assertThat(errors.contains(errorArray[i]));
+            assert (errors.contains(errorArray[i]));
         }
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenCheckInsOfKeyResultIsEmpty() {
+        CheckIn checkIn = CheckInMetric.Builder.builder().withValue(40.9).withId(2L).withChangeInfo("ChangeInfo")
+                .withInitiatives("Initiatives").withConfidence(2).withCreatedBy(this.user)
+                .withKeyResult(this.keyResultMetric).withCreatedOn(LocalDateTime.MAX).withModifiedOn(LocalDateTime.MAX)
+                .build();
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(8L))
+                .thenReturn(Collections.emptyList());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(3L, checkIn));
+        verify(validator, times(1)).throwExceptionIfModelIsNull(checkIn);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(3L);
+        assertEquals("Can not change key result id of check-in", exception.getReason());
+
     }
 
     @Test

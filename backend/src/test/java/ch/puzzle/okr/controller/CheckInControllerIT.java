@@ -61,7 +61,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(1)))
                 .andExpect(jsonPath(JSON_PATH_MODIFIED_ON, Is.is(LocalDateTime.MAX.toString())))
                 .andExpect(jsonPath(JSON_PATH_CREATED_ON, Is.is(LocalDateTime.MAX.toString())))
-                .andExpect(jsonPath(JSON_PATH_VALUE_METRIC, Is.is(46D)));
+                .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(46D)));
     }
 
     @Test
@@ -75,7 +75,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(2)))
                 .andExpect(jsonPath(JSON_PATH_MODIFIED_ON, Is.is(LocalDateTime.MAX.toString())))
                 .andExpect(jsonPath(JSON_PATH_CREATED_ON, Is.is(LocalDateTime.MAX.toString())))
-                .andExpect(jsonPath(JSON_PATH_ZONE, Is.is(Zone.COMMIT.toString())));
+                .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(Zone.COMMIT.toString())));
     }
 
     @Test
@@ -129,7 +129,7 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_1)))
                 .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(6)))
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(1)))
-                .andExpect(jsonPath(JSON_PATH_VALUE_METRIC, Is.is(46D)));
+                .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(46D)));
     }
 
     @Test
@@ -145,6 +145,6 @@ class CheckInControllerIT {
                 .andExpect(jsonPath(JSON_PATH_INITIATIVES, Is.is(INITIATIVES_2)))
                 .andExpect(jsonPath(JSON_PATH_CONFIDENCE, Is.is(5)))
                 .andExpect(jsonPath(JSON_PATH_KEY_RESULT_ID, Is.is(2)))
-                .andExpect(jsonPath(JSON_PATH_ZONE, Is.is(Zone.COMMIT.toString())));
+                .andExpect(jsonPath(JSON_PATH_VALUE, Is.is(Zone.COMMIT.toString())));
     }
 }

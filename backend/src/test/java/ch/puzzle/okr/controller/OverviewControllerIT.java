@@ -39,27 +39,28 @@ public class OverviewControllerIT {
     public static final String DESCRIPTION = "This is a description";
     public static final String TEAM_KUCHEN = "Kuchen";
     public static final String QUARTER_LABEL = "GJ 22/23-Q2";
-
+    public static final String KEY_RESULT_TYPE_METRIC = "metric";
+    public static final String CHF = "CHF";
     public static final String JSON_PATH_TEAM_NAME = "$[0].team.name";
     public static final String JSON_PATH_TEAM_ID = "$[0].team.id";
 
     static OverviewDto overviewDtoPuzzle = new OverviewDto(new OverviewTeamDto(1L, PUZZLE), List.of(
             new OverviewObjectiveDto(1L, "Objective 1", DRAFT, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, "CHF", 5.0, 20.0,
+                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
                             new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
             new OverviewObjectiveDto(2L, "Objective 2", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, "CHF", 5.0, 20.0,
+                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
                             new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
     static OverviewDto overviewDtoOKR = new OverviewDto(new OverviewTeamDto(2L, "OKR"), List.of(
             new OverviewObjectiveDto(5L, "Objective 5", DRAFT, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, "CHF", 5.0, 20.0,
+                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
                             new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
             new OverviewObjectiveDto(7L, "Objective 7", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, "CHF", 5.0, 20.0,
+                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
                             new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
     static OverviewDto overviewDtoKuchen = new OverviewDto(new OverviewTeamDto(3L, TEAM_KUCHEN),
             List.of(new OverviewObjectiveDto(8L, "Objective 8", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, "CHF", 5.0, 20.0,
+                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
                             new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now()))))));
     static OverviewDto overviewDtoFindus = new OverviewDto(new OverviewTeamDto(4L, "Findus"), Collections.emptyList());
 

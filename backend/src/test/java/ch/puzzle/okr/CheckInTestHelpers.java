@@ -39,8 +39,7 @@ public class CheckInTestHelpers {
     public static final String JSON_PATH_MODIFIED_ON = "$.modifiedOn";
     public static final String JSON_PATH_CREATED_ON = "$.createdOn";
 
-    public static final String JSON_PATH_VALUE_METRIC = "$.valueMetric";
-    public static final String JSON_PATH_ZONE = "$.zone";
+    public static final String JSON_PATH_VALUE = "$.value";
 
     public static final String KEY_RESULT_TYPE_METRIC = "metric";
     public static final String KEY_RESULT_TYPE_ORDINAL = "ordinal";

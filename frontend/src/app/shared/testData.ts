@@ -22,15 +22,17 @@ export const quarterMin: QuarterMin = {
 
 export const checkInMetric: CheckInMin = {
   id: 815,
-  value: 15,
+  valueMetric: 15,
   confidence: 5,
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+  zone: '',
 } as CheckInMin;
 export const checkInOrdinal: CheckInMin = {
   id: 816,
-  value: 'COMMIT',
+  zone: 'COMMIT',
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+  valueMetric: undefined,
 } as CheckInMin;
 export const keyResultMetric: KeyResultMetricMin = {
   id: 201,
@@ -79,4 +81,34 @@ export const objective: Objective = {
   quarter: quarter,
   description: 'description',
   modifiedOn: new Date(),
+};
+
+export const keyResultMetricWithIdEight: KeyResultMetricMin = {
+  id: 8,
+  title: 'KeyResult Title',
+  unit: 'CHF',
+  baseLine: 5.0,
+  stretchGoal: 15.0,
+  lastCheckIn: checkInMetric,
+  type: 'keyResult',
+} as KeyResultMetricMin;
+
+export const firstCheckIn: CheckInMin = {
+  id: 1,
+  valueMetric: 77,
+  confidence: 5,
+  zone: undefined,
+  changeInfo: '',
+  initiatives: '',
+  createdOn: new Date(),
+};
+
+export const secondCheckIn: CheckInMin = {
+  id: 2,
+  valueMetric: 89,
+  confidence: 5,
+  zone: undefined,
+  changeInfo: '',
+  initiatives: '',
+  createdOn: new Date(),
 };

@@ -14,4 +14,7 @@
       <app-confidence [edit]="false" [keyResult]="keyResult" class="ms-2"></app-confidence>
     </div>
   </div>
+  <div *ngIf="keyResult.lastCheckIn == null" class="sub-title">Noch kein Check-in vorhanden</div>
+
+  <button mat-stroked-button color="primary" (click)="checkInHistory()">Primary</button>
 </div>

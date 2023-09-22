@@ -1,0 +1,30 @@
+<div class="dialog">
+  <div mat-dialog-title class="d-flex flex-row justify-content-start mt-2">
+    <h1 class="d-flex justify-content-start title w-50 mt-2">Check-in History</h1>
+    <div class="d-flex justify-content-end w-50">
+      <mat-icon class="icon mt-2 me-0" mat-dialog-close>close</mat-icon>
+    </div>
+  </div>
+  <mat-dialog-content class="d-flex justify-content-start flex-column ms-3 mb-2 mt-3 gap-4">
+    <div *ngFor="let checkIn of checkInHistory; index as i">
+      <div class="d-flex flex-row flex-wrap">
+        <!--        TODO: Use constant of constant library as date format in this pipe-->
+        <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
+        <span>-</span>
+        <div class="ms-1 me-1" ngSwitch="{{ checkIn.valueMetric }}">
+          <span *ngSwitchCase="undefined">Zone: {{ checkIn.zone }};</span>
+          <span *ngSwitchDefault>ValueMetric: {{ checkIn.valueMetric }};</span>
+        </div>
+        <span>Confidence: {{ checkIn.confidence }} / 10;</span>
+      </div>
+      <p *ngIf="checkIn.changeInfo !== ''">Veränderungen: {{ checkIn.changeInfo }}</p>
+      <p *ngIf="checkIn.initiatives !== ''">Massnahmen: {{ checkIn.initiatives }}</p>
+      <mat-divider *ngIf="checkInHistory.length > 1 && i != checkInHistory.length - 1" class="mt-4"></mat-divider>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-flex justify-content-start">
+    <button mat-button mat-dialog-close class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">
+      Schliessen
+    </button>
+  </mat-dialog-actions>
+</div>

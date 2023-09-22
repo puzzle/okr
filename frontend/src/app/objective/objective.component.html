@@ -10,10 +10,11 @@
     <section class="d-flex justify-content-between mb-3">
       <img
         (click)="$event.stopPropagation()"
-        matTooltip="The state of this objective is: {{ objective.state.split('-')[0] }}"
+        matTooltip="The objective's state is {{ objective.state.split('-')[0] | uppercase }}"
+        matTooltipPosition="above"
         data-testid="objective-state"
         class="icon col-1 default-cursor"
-        alt="The state of this objective is: {{ objective.state.split('-')[0] }}"
+        alt="he objective's state is {{ objective.state.split('-')[0] }}"
         [src]="'../../assets/icons/' + objective.state"
       />
       <header class="title col-10 ps-2">{{ objective.title }}</header>

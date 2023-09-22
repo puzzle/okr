@@ -46,14 +46,14 @@ public class CheckInTestHelpers {
     public static final String KEY_RESULT_TYPE_ORDINAL = "ordinal";
 
     /* Test entities */
-    static Objective objective = Objective.Builder.builder().withId(1L).build();
-    public static CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withConfidence(5)
+    static final Objective objective = Objective.Builder.builder().withId(1L).build();
+    public static final CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withConfidence(5)
             .withChangeInfo(CHANGE_INFO).withInitiatives(INITIATIVES)
             .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
             .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(6.0).withId(8L)
                     .withObjective(objective).build())
             .build();
-    public static CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withId(4L)
+    public static final CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withId(4L)
             .withCreatedBy(User.Builder.builder().withId(2L).withFirstname("Robert").build())
             .withCreatedOn(LocalDateTime.MAX).withChangeInfo(CHANGE_INFO).withInitiatives(INITIATIVES)
             .withKeyResult(
@@ -61,9 +61,9 @@ public class CheckInTestHelpers {
             .build();
 
     /* Test DTOs */
-    public static CheckInDto checkInMetricDto = new CheckInMetricDto(5L, CHANGE_INFO_1, INITIATIVES_1, 6, 1L,
+    public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L, CHANGE_INFO_1, INITIATIVES_1, 6, 1L,
             LocalDateTime.MAX, LocalDateTime.MAX, 46D);
-    public static CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, CHANGE_INFO_2, INITIATIVES_2, 5, 2L,
+    public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, CHANGE_INFO_2, INITIATIVES_2, 5, 2L,
             LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT);
 
     private CheckInTestHelpers() {

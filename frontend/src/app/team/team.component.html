@@ -13,6 +13,7 @@
       ></app-objective-column>
 
       <button
+        *ngIf="overviewEntity.objectives.length < 3"
         class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 p-0"
         color="primary"
         mat-stroked-button
@@ -24,7 +25,7 @@
             class="text-pz-dark-blue"
             fontIcon="add"
           ></mat-icon>
-          <span *ngIf="overviewEntity.objectives.length < 3" class="add-button-text">Objective hinzufügen</span>
+          <span class="add-button-text">Objective hinzufügen</span>
         </span>
       </button>
     </div>

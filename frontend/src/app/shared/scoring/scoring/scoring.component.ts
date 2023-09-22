@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Router } from '@angular/router';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
@@ -9,7 +9,7 @@ import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.scss'],
 })
-export class ScoringComponent implements OnInit {
+export class ScoringComponent implements OnInit, AfterViewInit {
   @Input() keyResult!: KeyresultMin;
   failWidth: string = '50%';
   commitWidth: string = '0';
@@ -27,44 +27,48 @@ export class ScoringComponent implements OnInit {
   zoneWidth: number = 0;
   checkInValue: number | string = 0;
 
+  keyResultCard: HTMLElement | null = null;
+
+  resizeObserver: ResizeObserver = new ResizeObserver(() => {
+    this.resizeWidth();
+  });
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
     let url = this.router.url;
-    if (url.includes('keyresult')) {
-      this.isOverview = false;
-      this.zoneWidth = 98.7;
-    } else {
-      this.isOverview = true;
-      this.zoneWidth = 63.7;
-    }
-
+    this.isOverview = !url.includes('keyresult');
     if (this.keyResult.lastCheckIn === undefined || this.keyResult.lastCheckIn === null) {
       this.failWidth = this.commitWidth = this.targetWidth = '0';
+      return;
+    }
+    let keyResultCardWidth = document.querySelector('.key-result')!.clientWidth;
+    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 24 : (keyResultCardWidth / 100) * 33;
+    this.checkInValue = this.keyResult.lastCheckIn!.value;
+    if (this.keyResult.keyResultType === 'metric') {
+      this.calculatePercentagesMetric();
+      this.setBarColorsMetric();
     } else {
-      this.checkInValue = this.keyResult.lastCheckIn!.value;
-      if (this.keyResult.keyResultType === 'metric') {
-        this.calculatePercentagesMetric();
-        this.setBarColorsMetric();
-      } else {
-        this.keyResult = this.keyResult as KeyResultOrdinalMin;
-        this.setColorsOrdinal();
-      }
+      this.keyResult = this.keyResult as KeyResultOrdinalMin;
+      this.setColorsOrdinal();
     }
   }
 
-  setBarColorsMetric() {
-    if (this.failWidth !== '100%') {
-      this.failColor = '#BA3838';
-      this.commitColor = this.targetColor = '#ffffff';
-    } else if (this.commitWidth !== '100%') {
-      this.failColor = this.commitColor = '#FFD600';
-      this.targetColor = '#ffffff';
-    } else if (this.targetWidth !== '100%') {
-      this.failColor = this.commitColor = this.targetColor = '#1E8A29';
-    } else {
-      this.setStretchIcon();
-    }
+  ngAfterViewInit() {
+    this.keyResultCard = document.querySelector('.key-result');
+    this.resizeObserver.observe(this.keyResultCard!);
+  }
+
+  resizeWidth() {
+    let keyResultCardWidth = document.querySelector('.key-result')!.clientWidth;
+    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 24 : (keyResultCardWidth / 100) * 33;
+    this.calculatePercentagesMetric();
+    document.getElementById('fail-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
+    document.getElementById('commit-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
+    document.getElementById('target-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
+    document.getElementById('unit-label-div' + this.keyResult.id)!.style.width = this.zoneWidth * 3 + 'px';
+    document.getElementById('unit-label' + this.keyResult.id)!.style.width = this.labelWidth;
+    document.getElementById('unit-label' + this.keyResult.id)!.style.maxWidth = this.zoneWidth * 3 + 'px';
   }
 
   calculatePercentagesMetric() {
@@ -109,22 +113,53 @@ export class ScoringComponent implements OnInit {
     }
   }
 
-  setColorsOrdinal() {
-    if ((this.checkInValue as string) === 'FAIL') {
-      this.failWidth = '100%';
+  setBarColorsMetric() {
+    if (this.failWidth !== '100%') {
       this.failColor = '#BA3838';
       this.commitColor = this.targetColor = '#ffffff';
-    } else if ((this.checkInValue as string) === 'COMMIT') {
-      this.failWidth = this.commitWidth = '100%';
+    } else if (this.commitWidth !== '100%') {
       this.failColor = this.commitColor = '#FFD600';
       this.targetColor = '#ffffff';
-    } else if ((this.checkInValue as string) === 'TARGET') {
-      this.failWidth = this.commitWidth = this.targetWidth = '100%';
+    } else if (this.targetWidth !== '100%') {
       this.failColor = this.commitColor = this.targetColor = '#1E8A29';
     } else {
-      this.failWidth = this.commitWidth = this.targetWidth = '100%';
       this.setStretchIcon();
     }
+  }
+
+  setColorsOrdinal() {
+    let value = this.checkInValue as string;
+    switch (value) {
+      case 'FAIL':
+        this.setOnFailColor();
+        break;
+      case 'COMMIT':
+        this.setOnCommitColor();
+        break;
+      case 'TARGET':
+        this.setOnTargetColor();
+        break;
+      default:
+        this.failWidth = this.commitWidth = this.targetWidth = '100%';
+        this.setStretchIcon();
+    }
+  }
+
+  setOnFailColor() {
+    this.failWidth = '100%';
+    this.failColor = '#BA3838';
+    this.commitColor = this.targetColor = '#ffffff';
+  }
+
+  setOnCommitColor() {
+    this.failWidth = this.commitWidth = '100%';
+    this.failColor = this.commitColor = '#FFD600';
+    this.targetColor = '#ffffff';
+  }
+
+  setOnTargetColor() {
+    this.failWidth = this.commitWidth = this.targetWidth = '100%';
+    this.failColor = this.commitColor = this.targetColor = '#1E8A29';
   }
 
   setStretchIcon() {

@@ -6,7 +6,15 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { CheckInMin } from '../../types/model/CheckInMin';
 
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
 describe('ScoringComponent', () => {
+  //@ts-ignore
+  global.ResizeObserver = ResizeObserverMock;
   let component: ScoringComponent;
   let fixture: ComponentFixture<ScoringComponent>;
 

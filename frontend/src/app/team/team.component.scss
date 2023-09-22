@@ -7,6 +7,7 @@
 }
 
 .column-width {
-  width: 320px;
   min-width: 320px;
+  max-width: 750px;
+  flex-wrap: wrap;
 }

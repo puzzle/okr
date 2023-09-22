@@ -3,6 +3,7 @@
     <div class="d-flex flex-column">
       <p class="text-center sub-title">Fail</p>
       <div
+        id="{{ 'fail-card' + keyResult.id }}"
         class="child"
         [style.width]="zoneWidth + 'px'"
         [style.--data-bar-width]="failWidth"
@@ -14,6 +15,7 @@
     <div class="d-flex flex-column">
       <p class="text-center sub-title">Commit</p>
       <div
+        id="{{ 'commit-card' + keyResult.id }}"
         class="child"
         [style.width]="zoneWidth + 'px'"
         [style.--data-bar-width]="commitWidth"
@@ -25,6 +27,7 @@
     <div class="d-flex flex-column">
       <p class="text-center sub-title">Target</p>
       <div
+        id="{{ 'target-card' + keyResult.id }}"
         class="child"
         [style.width]="zoneWidth + 'px'"
         [style.--data-bar-width]="targetWidth"
@@ -38,8 +41,13 @@
       <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
     </div>
   </div>
-  <div [style.width]="zoneWidth * 3 + 'px'" *ngIf="!isOverview">
-    <div class="unitLabel" [style.--data-bar-width]="labelWidth" [style.--data-max-width]="zoneWidth * 3 + 'px'">
+  <div id="{{ 'unit-label-div' + keyResult.id }}" [style.width]="zoneWidth * 3 + 'px'" *ngIf="!isOverview">
+    <div
+      class="unitLabel"
+      id="{{ 'unit-label' + keyResult.id }}"
+      [style.--data-bar-width]="labelWidth"
+      [style.--data-max-width]="zoneWidth * 3 + 'px'"
+    >
       <p class="metricLabel">{{ metricLabel }}</p>
     </div>
   </div>

@@ -4,6 +4,7 @@ import { filter, map, Observable } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
 import { NotifierService } from './shared/services/notifier.service';
+import { drawerRoutes } from './shared/constantLibary';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,6 @@ export class AppComponent implements OnInit, OnDestroy {
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
   sidenavContentInformation!: { id: number; type: string };
-  readonly allowedRoutes = ['objective'];
 
   constructor(
     public router: Router,
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
         map((event) => event as NavigationEnd),
       )
       .subscribe((event) => {
-        this.allowedRoutes.forEach((route) => {
+        drawerRoutes.forEach((route) => {
           if (event.url.startsWith(`/${route}/`)) {
             this.openDrawer();
             this.sidenavContentInformation = { id: event.id, type: route };

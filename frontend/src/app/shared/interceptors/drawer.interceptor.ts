@@ -3,10 +3,10 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { catchError, filter, Observable, throwError } from 'rxjs';
 import { NotifierService } from '../services/notifier.service';
 import { Router } from '@angular/router';
+import { drawerRoutes } from '../constantLibary';
 
 @Injectable()
 export class DrawerInterceptor implements HttpInterceptor {
-  drawerRoutes = ['objectives', 'keyResults'];
   constructor(
     private notifierService: NotifierService,
     private router: Router,
@@ -16,7 +16,7 @@ export class DrawerInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
       catchError((error) => {
-        if (this.drawerRoutes.some((route) => request.url.includes(route))) {
+        if (drawerRoutes.some((route) => request.url.includes(route))) {
           this.notifierService.closeDetailSubject.next();
           this.router.navigate(['']);
         }

@@ -1,9 +1,13 @@
-.keyresult-content {
-  font-family: Roboto, serif;
-}
+@import "_variables";
 
 .keyresult-header {
   font-size: 0.75rem;
+}
+
+.keyResult-detail-attribute-show {
+  background-color: $keyResult-detail-attribute-bg;
+  border-radius: 30px;
+  padding: 0 10px 0 10px;
 }
 
 .sub-title-keyresult {

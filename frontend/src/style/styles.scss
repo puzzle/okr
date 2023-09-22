@@ -112,3 +112,7 @@ body {
 .bg-grey {
   background-color: $overview-bg;
 }
+
+pzsh-backdrop {
+  display: none !important;
+}

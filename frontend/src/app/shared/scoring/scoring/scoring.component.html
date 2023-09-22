@@ -1,0 +1,54 @@
+<div class="scoring-container">
+  <div class="d-flex flex-row">
+    <div class="d-flex flex-column">
+      <p class="text-center sub-title">Fail</p>
+      <div
+        id="{{ 'fail-card' + keyResult.id }}"
+        class="child"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="failWidth"
+        [style.--data-bar-color]="failColor"
+        [attr.data-end-line]="endLineFail"
+      ></div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <p class="text-center sub-title">Commit</p>
+      <div
+        id="{{ 'commit-card' + keyResult.id }}"
+        class="child"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="commitWidth"
+        [style.--data-bar-color]="commitColor"
+        [attr.data-end-line]="endLineCommit"
+      ></div>
+    </div>
+
+    <div class="d-flex flex-column">
+      <p class="text-center sub-title">Target</p>
+      <div
+        id="{{ 'target-card' + keyResult.id }}"
+        class="child"
+        [style.width]="zoneWidth + 'px'"
+        [style.--data-bar-width]="targetWidth"
+        [style.--data-bar-color]="targetColor"
+        [attr.data-end-line]="endLineTarget"
+      ></div>
+    </div>
+
+    <div class="d-flex flex-column mlLeft">
+      <p class="text-center sub-title">Stretch</p>
+      <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
+    </div>
+  </div>
+  <div id="{{ 'unit-label-div' + keyResult.id }}" [style.width]="zoneWidth * 3 + 'px'" *ngIf="!isOverview">
+    <div
+      class="unitLabel"
+      id="{{ 'unit-label' + keyResult.id }}"
+      [style.--data-bar-width]="labelWidth"
+      [style.--data-max-width]="zoneWidth * 3 + 'px'"
+    >
+      <p class="metricLabel">{{ metricLabel }}</p>
+    </div>
+  </div>
+</div>

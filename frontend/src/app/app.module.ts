@@ -39,6 +39,7 @@ import { KeyresultComponent } from './keyresult/keyresult.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
+import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
@@ -82,6 +83,7 @@ export const MY_FORMATS = {
     ApplicationHeaderComponent,
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
+    ScoringComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
   ],

@@ -1,0 +1,50 @@
+div {
+  position: relative;
+}
+
+.child:after {
+  content: "\A";
+  position: absolute;
+  background: var(--data-bar-color);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--data-bar-width);
+}
+
+.child {
+  outline: 1px solid #5d6974;
+  height: 21px;
+  background-color: white;
+
+  &[data-end-line="endLine"]:after {
+    border-right: 1px #5d6974 solid;
+  }
+}
+
+.starIcon {
+  width: 22.24px;
+  height: 22.24px;
+}
+
+.mlLeft {
+  margin-left: 16px;
+}
+
+.metricLabel {
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.unitLabel {
+  container-type: inline-size;
+  width: var(--data-bar-width);
+  min-width: fit-content;
+  max-width: var(--data-max-width);
+}
+
+.scoring-container {
+  margin-bottom: 8px;
+}

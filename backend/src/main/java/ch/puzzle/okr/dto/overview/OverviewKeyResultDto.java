@@ -6,5 +6,7 @@ public interface OverviewKeyResultDto {
 
     String title();
 
+    String keyResultType();
+
     OverviewLastCheckInDto lastCheckIn();
 }

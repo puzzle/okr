@@ -11,9 +11,8 @@
         <!--        TODO: Use constant of constant library as date format in this pipe-->
         <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
         <span>-</span>
-        <div class="ms-1 me-1" ngSwitch="{{ checkIn.valueMetric }}">
-          <span *ngSwitchCase="undefined">Zone: {{ checkIn.zone }};</span>
-          <span *ngSwitchDefault>ValueMetric: {{ checkIn.valueMetric }};</span>
+        <div class="ms-1 me-1">
+          <span>Wert: {{ checkIn.value }};</span>
         </div>
         <span>Confidence: {{ checkIn.confidence }} / 10;</span>
       </div>

@@ -21,6 +21,7 @@ public class Overview {
     private Long quarterId;
     private String quarterLabel;
     private String keyResultTitle;
+    private String keyResultType;
     private Double baseline;
     private Double stretchGoal;
     private String unit;
@@ -43,6 +44,7 @@ public class Overview {
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
         keyResultTitle = builder.keyResultTitle;
+        keyResultType = builder.keyResultType;
         baseline = builder.baseline;
         stretchGoal = builder.stretchGoal;
         unit = builder.unit;
@@ -81,6 +83,10 @@ public class Overview {
 
     public String getKeyResultTitle() {
         return keyResultTitle;
+    }
+
+    public String getKeyResultType() {
+        return keyResultType;
     }
 
     public Double getBaseline() {
@@ -128,10 +134,10 @@ public class Overview {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", objectiveTitle='"
                 + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", quarterId=" + quarterId
                 + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
-                + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
-                + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
-                + stretchZone + '\'' + ", checkInValueMetric=" + checkInValue + ", checkInValueOrdinal='" + checkInZone
-                + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
+                + ", keyResultType='" + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal
+                + ", unit='" + unit + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\''
+                + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='"
+                + checkInZone + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
     }
 
     public static final class Builder {
@@ -142,6 +148,7 @@ public class Overview {
         private Long quarterId;
         private String quarterLabel;
         private String keyResultTitle;
+        private String keyResultType;
         private Double baseline;
         private Double stretchGoal;
         private String unit;
@@ -192,6 +199,11 @@ public class Overview {
 
         public Builder withKeyResultTitle(String keyResultTitle) {
             this.keyResultTitle = keyResultTitle;
+            return this;
+        }
+
+        public Builder withKeyResultType(String keyResultType) {
+            this.keyResultType = keyResultType;
             return this;
         }
 

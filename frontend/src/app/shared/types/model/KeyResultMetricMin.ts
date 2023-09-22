@@ -1,6 +1,7 @@
 import { KeyresultMin } from './KeyresultMin';
 
 export interface KeyResultMetricMin extends KeyresultMin {
-  baseLine: number;
+  baseline: number;
   stretchGoal: number;
+  unit: string;
 }

@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { CheckInService } from './check-in.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { CheckInMin } from '../types/model/CheckInMin';
 import { firstCheckIn, keyResultMetricWithIdEight, secondCheckIn } from '../testData';
 
 describe('CheckInService', () => {
@@ -23,12 +22,10 @@ describe('CheckInService', () => {
     service.getAllCheckInOfKeyResult(keyResultMetricWithIdEight.id).subscribe((checkIns) => {
       /* Check first CheckIn of this KeyResult */
       expect(checkIns[0].confidence).toBe(firstCheckIn.confidence);
-      expect(checkIns[0].valueMetric).toBe(firstCheckIn.valueMetric);
-      expect(checkIns[0].zone).toBe(firstCheckIn.zone);
+      expect(checkIns[0].value).toBe(firstCheckIn.value);
 
       expect(checkIns[1].confidence).toBe(secondCheckIn.confidence);
-      expect(checkIns[1].valueMetric).toBe(secondCheckIn.valueMetric);
-      expect(checkIns[1].zone).toBe(secondCheckIn.zone);
+      expect(checkIns[1].value).toBe(secondCheckIn.value);
     });
   });
 });

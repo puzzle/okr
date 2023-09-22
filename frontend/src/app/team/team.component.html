@@ -1,5 +1,5 @@
 <div class="row w-auto bg-grey mt-4">
-  <header class="team-title">{{ overviewEntity.team.name }}</header>
+  <p class="team-title">{{ overviewEntity.team.name }}</p>
   <div class="d-flex justify-content-center">
     <div
       class="d-flex gap-3 row col-12 overflow-auto flex-wrap flex-md-nowrap justify-content-sm-between justify-content-md-start pb-2"
@@ -8,13 +8,12 @@
       <app-objective-column
         *ngFor="let objective of overviewEntity.objectives"
         [objective]="objective"
-        class="col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-3 p-0"
+        class="col-xs-12 col-md-4 col-lg-3 col-xl-3 p-0 column-width"
         data-testid="objective"
       ></app-objective-column>
 
       <button
-        *ngIf="overviewEntity.objectives.length < 3"
-        class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center col-xs-12 col-sm-5 col-md-4 col-lg-3 col-xl-2 p-0"
+        class="objective-new bg-white border border-1 border-pz-dark-blue d-flex justify-content-center align-items-center column-width col-xs-12 col-md-4 col-lg-3 col-xl-2 p-0"
         color="primary"
         mat-stroked-button
       >

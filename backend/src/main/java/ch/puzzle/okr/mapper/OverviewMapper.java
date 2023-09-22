@@ -85,6 +85,7 @@ public class OverviewMapper {
                     overview.getCheckInValue(), overview.getConfidence(), overview.getCreatedOn());
         }
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
-                overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(), lastCheckIn);
+                overview.getKeyResultType(), overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(),
+                lastCheckIn);
     }
 }

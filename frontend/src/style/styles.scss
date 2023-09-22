@@ -113,6 +113,6 @@ body {
   background-color: $overview-bg;
 }
 
-pzsh-backdrop {
-  display: none !important;
+body pzsh-backdrop {
+  display: none;
 }

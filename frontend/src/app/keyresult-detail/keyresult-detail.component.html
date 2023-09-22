@@ -8,28 +8,39 @@
     </div>
     <div class="d-flex align-items-center">
       <img src="assets/icons/person-icon.svg" width="10" height="10" class="me-1" alt="person icon" />
-      <p>Owner Owner</p>
+      <p>Owner {{ keyResult.owner.firstName }} {{ keyResult.owner.lastName }}</p>
     </div>
     <div class="d-flex flex-row">
       <p>{{ keyResult.objective.quarter.startDate | date: "dd.MM.yyy" }} -</p>
       <p>{{ keyResult.objective.quarter.endDate | date: "dd.MM.yyy" }}</p>
     </div>
   </div>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between mb-2">
     <p>Scoring component placeholder</p>
     <app-confidence [keyResult]="keyResult" [edit]="false" [backgroundColor]="'#F5F5F5'"></app-confidence>
   </div>
   <div class="d-flex gap-4 mb-3 flex-row">
     <ng-container *ngIf="keyResult.keyResultType == 'metric'">
-      <p class="keyResult-detail-attribute-show">Einheit: {{ castToMetric(keyResult).unit || "Keine" }}</p>
-      <p class="keyResult-detail-attribute-show">Baseline: {{ castToMetric(keyResult).baseline || "0" }}</p>
-      <p class="keyResult-detail-attribute-show">Stretch-Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}</p>
+      <p class="keyResult-detail-attribute-show rounded-2">Einheit: {{ castToMetric(keyResult).unit || "Keine" }}</p>
+      <p class="keyResult-detail-attribute-show rounded-2">Baseline: {{ castToMetric(keyResult).baseline || "0" }}</p>
+      <p class="keyResult-detail-attribute-show rounded-2">
+        Stretch-Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}
+      </p>
     </ng-container>
 
     <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
-      <p class="keyResult-detail-attribute-show">Commitzone: {{ castToOrdinal(keyResult).commitZone || "Keine" }}</p>
-      <p class="keyResult-detail-attribute-show">Targetzone: {{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
-      <p class="keyResult-detail-attribute-show">Stretchzone: {{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
+      <div class="col-4 h-auto">
+        <p class="ordinal-zone-title">Commitzone</p>
+        <div class="keyResult-detail-attribute-show">{{ castToOrdinal(keyResult).commitZone || "Keine" }}</div>
+      </div>
+      <div class="col-4 h-auto">
+        <p class="ordinal-zone-title">Targetzone</p>
+        <p class="keyResult-detail-attribute-show">{{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
+      </div>
+      <div class="col-4 h-auto">
+        <p class="ordinal-zone-title">Stretch-Goal</p>
+        <p class="keyResult-detail-attribute-show">{{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
+      </div>
     </ng-container>
   </div>
   <div *ngIf="keyResult.lastCheckIn?.createdOn" class="mb-3">

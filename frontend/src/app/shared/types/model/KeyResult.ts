@@ -1,5 +1,6 @@
 import { Objective } from './Objective';
 import { CheckIn } from './CheckIn';
+import { User } from './User';
 
 export interface KeyResult {
   id: number;
@@ -8,7 +9,7 @@ export interface KeyResult {
   description: string;
 
   // Datatype needs to be changed to user once it exists
-  owner: string;
+  owner: User;
   objective: Objective;
   lastCheckIn: CheckIn | null;
   createdOn: Date;

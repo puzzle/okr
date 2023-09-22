@@ -5,7 +5,7 @@
       <mat-icon class="icon btn-close" mat-dialog-close>close</mat-icon>
     </div>
   </div>
-  <mat-dialog-content class="d-flex justify-content-start flex-column ms-5 mb-2 mt-3 gap-4">
+  <mat-dialog-content class="d-flex justify-content-start flex-column ms-3 mb-2 mt-3 gap-4">
     <div *ngFor="let checkIn of checkInHistory | async">
       <div class="d-flex flex-row">
         <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>

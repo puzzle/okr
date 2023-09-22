@@ -188,12 +188,12 @@ public class KeyResultPersistenceServiceIT {
     @Test
     void deleteKeyResult_ShouldThrowExceptionWhenKeyResultNotFound() {
         KeyResult keyResult = createKeyResultMetric(35234L);
-        KeyResult createdKeyResult = keyResultPersistenceService.save(keyResult);
-        keyResultPersistenceService.deleteById(createdKeyResult.getId());
+        KeyResult newKeyResult = keyResultPersistenceService.save(keyResult);
+        keyResultPersistenceService.deleteById(newKeyResult.getId());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
+                () -> keyResultPersistenceService.findById(newKeyResult.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("KeyResult with id %d not found", createdKeyResult.getId()), exception.getReason());
+        assertEquals(String.format("KeyResult with id %d not found", newKeyResult.getId()), exception.getReason());
     }
 }

@@ -67,7 +67,6 @@ class TeamControllerIT {
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
                 .andExpect(jsonPath("$[0].activeObjectives", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(7)))
                 .andExpect(jsonPath("$[1].name", Is.is("OKR"))).andExpect(jsonPath("$[1].activeObjectives", Is.is(0)));
-        System.out.println(jsonPath("$"));
     }
 
     @Test

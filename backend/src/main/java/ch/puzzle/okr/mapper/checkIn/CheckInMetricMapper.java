@@ -21,7 +21,7 @@ public class CheckInMetricMapper {
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
-        return CheckInMetric.Builder.builder().withValue(checkInMetricDto.valueMetric()).withId(checkInMetricDto.id())
+        return CheckInMetric.Builder.builder().withValue(checkInMetricDto.value()).withId(checkInMetricDto.id())
                 .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
                 .withConfidence(checkInMetricDto.confidence())
                 .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId())).build();

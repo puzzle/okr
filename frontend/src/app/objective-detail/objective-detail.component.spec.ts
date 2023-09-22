@@ -34,23 +34,9 @@ describe('ObjectiveDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('close on close button clicked', () => {
-    fixture.detectChanges();
-
-    const spy = jest.spyOn(ObjectiveDetailComponent.prototype, 'closeDrawer');
-    const debugElement = fixture.debugElement.query(By.css('img[data-test-id="closeDrawer"]'));
-    debugElement.nativeElement.click();
-    fixture.detectChanges();
-    expect(spy).toBeCalledTimes(1);
-  });
-
   it('get data from backend', () => {
-    component.objectiveId = '2';
-    fixture.detectChanges();
-    const changesObj: SimpleChanges = {
-      prop1: new SimpleChange(null, '2', false),
-    };
-    component.ngOnChanges(changesObj);
+    component.objectiveId = 2;
+    component.ngOnChanges();
     fixture.detectChanges();
 
     const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;

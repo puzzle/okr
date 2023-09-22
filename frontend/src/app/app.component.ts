@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
-import { RouteService } from './shared/services/route.service';
 import { NotifierService } from './shared/services/notifier.service';
+import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
 
 @Component({
   selector: 'app-root',
@@ -13,24 +12,17 @@ import { NotifierService } from './shared/services/notifier.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  currentUrl: string = '/';
+export class AppComponent implements OnInit, OnDestroy {
   isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
-  sidenavContentInformation!: { id: string; type: string };
-  readonly allowedRoutes = ['objective'];
+  sidenavContentInformation!: { id: number; type: string };
 
   constructor(
     public router: Router,
-    private translate: TranslateService,
-    private routeService: RouteService,
     private oauthService: OAuthService,
     private configService: ConfigService,
     private notifierService: NotifierService,
   ) {
-    translate.setDefaultLang('de');
-    translate.use('de');
-
     // Try to login via url state
     oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       // if the login failed initialize code flow
@@ -54,12 +46,14 @@ export class AppComponent implements OnInit {
         map((event) => event as NavigationEnd),
       )
       .subscribe((event) => {
-        this.currentUrl = event.url;
-        this.allowedRoutes.forEach((route) => {
-          if (this.currentUrl.startsWith(`/${route}/`)) {
-            this.openDrawer();
-            const objectiveId = this.currentUrl.split('/')[2];
-            this.sidenavContentInformation = { id: objectiveId, type: route };
+        drawerRoutes.forEach((route) => {
+          if (event.url.startsWith(`/${route}/`)) {
+            const match = event.url.match(ROUTE_PARAM_REGEX);
+            if (match) {
+              const id = parseInt(match[1]);
+              this.sidenavContentInformation = { id: id, type: route };
+              this.openDrawer();
+            }
           }
         });
       });
@@ -69,27 +63,8 @@ export class AppComponent implements OnInit {
     });
   }
 
-  isOverview(): null | true {
-    return this.convertFalseToNull(!this.isTeam());
-  }
-
-  isTeam(): null | true {
-    return this.convertFalseToNull(this.currentUrl.startsWith('/team'));
-  }
-
-  /**
-   * Puzzle Shell use `active="null"` instead of `active="false"`!
-   */
-  convertFalseToNull(value: boolean): true | null {
-    return value ? true : null;
-  }
-
-  /**
-   * Disable Puzzle Shell link handling.
-   */
-  navigate(location: string): boolean {
-    this.routeService.navigate(location);
-    return false;
+  ngOnDestroy() {
+    this.notifierService.closeDetailSubject.unsubscribe();
   }
 
   enableScrolling() {
@@ -104,6 +79,7 @@ export class AppComponent implements OnInit {
     this.drawerOpen = true;
     this.disableScrolling();
   }
+
   closeDrawer() {
     this.drawerOpen = false;
     this.router.navigate(['/']);

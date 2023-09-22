@@ -1,13 +1,4 @@
-<img
-  (click)="closeDrawer()"
-  height="15"
-  width="15"
-  src="assets/icons/close.svg"
-  role="button"
-  alt="Close button"
-  data-test-id="closeDrawer"
-/>
-<div *ngIf="objective != undefined" cdkTrapFocus="true" cdkTrapFocusAutoCapture="true" id="objectiveDiv">
+<div *ngIf="objective != undefined" cdkTrapFocus="true" cdkTrapFocusAutoCapture="true">
   <div class="mb-2 d-flex justify-content-between">
     <div class="title">{{ objective.title }}</div>
   </div>

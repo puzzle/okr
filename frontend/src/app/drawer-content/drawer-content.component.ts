@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-drawer-content',
@@ -7,5 +8,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrawerContentComponent {
-  @Input() drawerContent!: { id: string; type: string };
+  @Input() drawerContent!: { id: number; type: string };
+
+  constructor(private notifierService: NotifierService) {}
+
+  closeDrawer() {
+    this.notifierService.closeDetailSubject.next();
+  }
 }

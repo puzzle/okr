@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import { checkInMetric, checkInOrdinal, keyResultMetric, keyResultOrdinal } from '../../testData';
+import { checkInMetric, checkInOrdinal, keyResultMetricMin, keyResultOrdinalMin } from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
@@ -37,7 +37,7 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.debugElement.componentInstance;
-      component.keyResult = keyResultMetric;
+      component.keyResult = keyResultMetricMin;
     });
 
     it('should set all width to 0 when no lastCheckIn', function () {
@@ -66,7 +66,7 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultMetric;
+      component.keyResult = keyResultMetricMin;
     });
 
     it('should create', () => {
@@ -91,7 +91,7 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultOrdinal;
+      component.keyResult = keyResultOrdinalMin;
     });
 
     it('should create', () => {
@@ -116,7 +116,7 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultMetric;
+      component.keyResult = keyResultMetricMin;
     });
 
     it('should create', () => {

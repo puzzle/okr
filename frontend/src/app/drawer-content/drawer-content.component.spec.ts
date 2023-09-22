@@ -17,7 +17,7 @@ describe('DrawerContentComponent', () => {
 
     fixture = TestBed.createComponent(DrawerContentComponent);
     component = fixture.componentInstance;
-    component.drawerContent = { id: '1', type: 'objective' };
+    component.drawerContent = { id: 1, type: 'objective' };
   });
 
   it('should create', () => {
@@ -28,11 +28,21 @@ describe('DrawerContentComponent', () => {
   it.each([['objective', 'app-objective-detail']])(
     'should display right component',
     (type: string, selector: string) => {
-      component.drawerContent = { id: '1', type: type };
+      component.drawerContent = { id: 1, type: type };
       fixture.detectChanges();
       const contentComponent = fixture.debugElement.query(By.css(selector));
 
       expect(contentComponent).toBeTruthy();
     },
   );
+
+  it('close on close button clicked', () => {
+    fixture.detectChanges();
+
+    const spy = jest.spyOn(DrawerContentComponent.prototype, 'closeDrawer');
+    const debugElement = fixture.debugElement.query(By.css('[data-test-id="closeDrawer"]'));
+    debugElement.nativeElement.click();
+    fixture.detectChanges();
+    expect(spy).toBeCalledTimes(1);
+  });
 });

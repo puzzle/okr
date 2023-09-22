@@ -1,0 +1,10 @@
+@import "_variables";
+
+.dialog {
+  max-width: 769px;
+}
+
+.cancel-button {
+  background-color: $pz-dark-blue;
+  border-radius: 8px;
+}

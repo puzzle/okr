@@ -58,7 +58,7 @@ export class ScoringComponent implements OnInit, AfterViewInit {
 
   resizeWidth() {
     let keyResultCardWidth = document.querySelector('.key-result')!.clientWidth;
-    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 24 : (keyResultCardWidth / 100) * 33;
+    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 26 : (keyResultCardWidth / 100) * 33;
     this.calculatePercentagesMetric();
     document.getElementById('fail-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
     document.getElementById('commit-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';

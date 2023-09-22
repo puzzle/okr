@@ -10,7 +10,7 @@
         alt="A status indicator that indicates the progress and state of this objective"
         [src]="'../../assets/icons/' + objective.state"
       />
-      <div class="title col-10 ps-2 pt-1">{{ objective.title }}</div>
+      <header class="title col-10 ps-2 pt-1">{{ objective.title }}</header>
       <img
         data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"

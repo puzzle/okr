@@ -24,7 +24,7 @@
             class="text-pz-dark-blue"
             fontIcon="add"
           ></mat-icon>
-          <span class="add-button-text">Objective hinzufügen</span>
+          <span *ngIf="overviewEntity.objectives.length < 3" class="add-button-text">Objective hinzufügen</span>
         </span>
       </button>
     </div>

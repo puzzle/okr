@@ -37,6 +37,7 @@ export const checkInOrdinal: CheckInMin = {
 export const keyResultMetric: KeyResultMetricMin = {
   id: 201,
   title: 'Achieve 20% Increase in Daily Active Users',
+  keyResultType: 'metric',
   unit: '%',
   baseline: 10.0,
   stretchGoal: 25.0,
@@ -47,6 +48,7 @@ export const keyResultMetric: KeyResultMetricMin = {
 export const keyResultOrdinal: KeyResultOrdinalMin = {
   id: 202,
   title: 'Reduce Bounce Rate',
+  keyResultType: 'ordinal',
   commitZone: '3 Birnen',
   targetZone: '2 Birnen und 2 Äpfel',
   stretchGoal: 'Alle Früchte',

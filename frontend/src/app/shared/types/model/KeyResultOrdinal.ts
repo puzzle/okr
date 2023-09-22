@@ -1,7 +1,7 @@
 import { KeyResult } from './KeyResult';
 
 export interface KeyResultOrdinal extends KeyResult {
-  commitZone: String;
-  targetZone: String;
-  stretchZone: String;
+  commitZone: string;
+  targetZone: string;
+  stretchZone: string;
 }

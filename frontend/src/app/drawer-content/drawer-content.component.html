@@ -1,7 +1,8 @@
-<div [ngSwitch]="drawerContent.type" class="pt-5">
+<div [ngSwitch]="drawerContent.type" class="d-flex flex-column align-items-end">
   <button mat-icon-button (click)="closeDrawer()" data-test-id="closeDrawer">
     <mat-icon>close</mat-icon>
   </button>
+
   <ng-container *ngSwitchCase="'objective'">
     <app-objective-detail [objectiveId]="drawerContent.id"></app-objective-detail>
   </ng-container>

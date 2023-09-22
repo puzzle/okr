@@ -14,16 +14,15 @@
   font-size: 1rem;
 }
 
-.save-keyresult {
+.create-checkin {
   height: 2rem;
   border-radius: 0.5rem;
-  border: 1px solid var(--Dark-Blue, #1e5a96);
-  background: var(--Dark-Blue, #1e5a96);
+  border: 1px solid $pz-dark-blue;
+  background: $pz-dark-blue;
   font-size: 0.75rem;
-  padding: 0.375rem 0.75rem;
 }
 
 .text-button-font {
-  color: var(--Green-Blue-Crayola, #238bca);
+  color: $pz-light-blue;
   font-size: 0.75rem;
 }

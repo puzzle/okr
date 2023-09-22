@@ -19,28 +19,36 @@
     <p>Scoring component placeholder</p>
     <app-confidence [keyResult]="keyResult" [edit]="false" [backgroundColor]="'#F5F5F5'"></app-confidence>
   </div>
-  <div class="d-flex gap-4 mb-3">
-    <p class="keyResult-detail-attribute-show">Einheit: CHF</p>
-    <p class="keyResult-detail-attribute-show">Einheit: CHF</p>
-    <p class="keyResult-detail-attribute-show">Einheit: CHF</p>
+  <div class="d-flex gap-4 mb-3 flex-row">
+    <ng-container *ngIf="keyResult.keyResultType == 'metric'">
+      <p class="keyResult-detail-attribute-show">Einheit: {{ castToMetric(keyResult).unit || "Keine" }}</p>
+      <p class="keyResult-detail-attribute-show">Baseline: {{ castToMetric(keyResult).baseline || "0" }}</p>
+      <p class="keyResult-detail-attribute-show">Strech-Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}</p>
+    </ng-container>
+
+    <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
+      <p class="keyResult-detail-attribute-show">Commitzone: {{ castToOrdinal(keyResult).commitZone || "Keine" }}</p>
+      <p class="keyResult-detail-attribute-show">Targetzone: {{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
+      <p class="keyResult-detail-attribute-show">Strechzone: {{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
+    </ng-container>
   </div>
   <div *ngIf="keyResult.lastCheckIn?.createdOn" class="mb-3">
     <h2 class="sub-title-keyresult fw-bold mb-2">
       Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})
     </h2>
-    <!-- Is not working yet. The service needs to be created -->
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
-    <p>This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo. This is a changeInfo.</p>
-    <p class="text-button-font fw-bold" role="button">Alle Check-ins anzeigen</p>
   </div>
+  <p class="text-button-font fw-bold mb-3" role="button">Alle Check-ins anzeigen</p>
   <div class="mb-3">
     <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
     <p>{{ keyResult.description }}</p>
   </div>
-  <div class="d-flex align-items-center">
-    <button class="save-keyresult fw-bold text-white d-flex justify-content-center align-items-center me-4">
+  <div class="d-flex align-items-center flex-row-reverse justify-content-end">
+    <button class="bg-white border-0">
+      <p class="text-button-font fw-bold" role="button">Key Result bearbeiten</p>
+    </button>
+    <button class="create-checkin fw-bold text-white d-flex justify-content-center align-items-center me-4 px-2">
       Check-in erfassen
     </button>
-    <p class="text-button-font fw-bold" role="button">Key Result bearbeiten</p>
   </div>
 </div>

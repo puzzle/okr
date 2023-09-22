@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import { checkInOrdinal, keyResultMetric, keyResultOrdinal } from '../../testData';
+import { checkInMetric, checkInOrdinal, keyResultMetric, keyResultOrdinal } from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
+import { CheckInMin } from '../../types/model/CheckInMin';
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;
@@ -24,12 +26,12 @@ describe('ScoringComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(ScoringComponent);
-      component = fixture.componentInstance;
+      component = fixture.debugElement.componentInstance;
       component.keyResult = keyResultMetric;
     });
 
     it('should set all width to 0 when no lastCheckIn', function () {
-      component.keyResult.lastCheckIn = null;
+      component.keyResult = createKeyResult(10, 20, null);
       fixture.detectChanges();
       expect(component.failWidth).toEqual('0');
       expect(component.commitWidth).toEqual('0');
@@ -37,8 +39,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should calculate the right values and colors fail zone', async function () {
-      keyResultMetric.baseline = 12.0;
-      component.keyResult = keyResultMetric;
+      component.keyResult = createKeyResult(12, 25, checkInMetric);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -56,8 +57,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should calculate the right values and colors commit zone', async function () {
-      keyResultMetric.baseline = 8.0;
-      component.keyResult = keyResultMetric;
+      component.keyResult = createKeyResult(8, 25, checkInMetric);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -75,8 +75,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should calculate the right values and colors target zone', async function () {
-      keyResultMetric.stretchGoal = 17.0;
-      component.keyResult = keyResultMetric;
+      component.keyResult = createKeyResult(10, 17, checkInMetric);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -94,8 +93,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should calculate the right values and colors stretch zone', async function () {
-      keyResultMetric.stretchGoal = 15.0;
-      component.keyResult = keyResultMetric;
+      component.keyResult = createKeyResult(10, 15, checkInMetric);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -114,9 +112,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should handle decreasing KeyResults', async function () {
-      keyResultMetric.stretchGoal = 10.0;
-      keyResultMetric.baseline = 20.0;
-      component.keyResult = keyResultMetric;
+      component.keyResult = createKeyResult(20, 10, checkInMetric);
       fixture.detectChanges();
       await fixture.whenStable();
 
@@ -271,3 +267,16 @@ describe('ScoringComponent', () => {
     });
   });
 });
+
+function createKeyResult(baseline: number, stretchGoal: number, lastCheckIn: CheckInMin | null) {
+  return {
+    id: 201,
+    title: 'Have more chocolate in office',
+    keyResultType: 'metric',
+    unit: '%',
+    baseline: baseline,
+    stretchGoal: stretchGoal,
+    lastCheckIn: lastCheckIn,
+    type: 'keyResult',
+  } as KeyResultMetricMin;
+}

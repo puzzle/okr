@@ -19,7 +19,7 @@ body {
   font-size: 100%;
   height: 100%;
   margin: 0;
-  background-color: $eggshell;
+  background-color: $overview-bg;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -107,4 +107,8 @@ body {
 
 .default-cursor {
   cursor: default;
+}
+
+.bg-grey {
+  background-color: $overview-bg;
 }

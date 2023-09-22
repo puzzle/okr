@@ -23,13 +23,13 @@
     <ng-container *ngIf="keyResult.keyResultType == 'metric'">
       <p class="keyResult-detail-attribute-show">Einheit: {{ castToMetric(keyResult).unit || "Keine" }}</p>
       <p class="keyResult-detail-attribute-show">Baseline: {{ castToMetric(keyResult).baseline || "0" }}</p>
-      <p class="keyResult-detail-attribute-show">Strech-Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}</p>
+      <p class="keyResult-detail-attribute-show">Stretch-Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}</p>
     </ng-container>
 
     <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
       <p class="keyResult-detail-attribute-show">Commitzone: {{ castToOrdinal(keyResult).commitZone || "Keine" }}</p>
       <p class="keyResult-detail-attribute-show">Targetzone: {{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
-      <p class="keyResult-detail-attribute-show">Strechzone: {{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
+      <p class="keyResult-detail-attribute-show">Stretchzone: {{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
     </ng-container>
   </div>
   <div *ngIf="keyResult.lastCheckIn?.createdOn" class="mb-3">

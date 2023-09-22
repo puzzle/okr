@@ -12,7 +12,19 @@ import { Router } from '@angular/router';
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
-  constructor(private router: Router) {}
+  constructor(
+    public dialog: MatDialog,
+    private router: Router,
+  ) {}
+  checkInHistory() {
+    const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
+      data: {
+        keyResultId: this.keyResult.id,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {});
+  }
 
   openDrawer() {
     this.router.navigate(['keyresult', this.keyResult.id]);

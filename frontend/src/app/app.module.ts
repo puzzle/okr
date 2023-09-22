@@ -43,6 +43,7 @@ import { DrawerContentComponent } from './drawer-content/drawer-content.componen
 import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 
@@ -136,6 +137,7 @@ export const MY_FORMATS = {
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: DrawerInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
   ],

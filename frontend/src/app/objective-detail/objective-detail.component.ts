@@ -1,17 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { Router } from '@angular/router';
-import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-objective-detail',
@@ -22,28 +11,16 @@ import { NotifierService } from '../shared/services/notifier.service';
 export class ObjectiveDetailComponent implements OnChanges {
   objective!: Objective;
   @Input() objectiveId!: number;
+
   constructor(
     private objectiveService: ObjectiveService,
     private changeDetectorRef: ChangeDetectorRef,
-    private router: Router,
-    private notifierService: NotifierService,
   ) {}
 
-  closeDrawer() {
-    this.notifierService.closeDetailSubject.next();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.objectiveService.getFullObjective(this.objectiveId).subscribe({
-      next: (fullObjective) => {
-        this.objective = fullObjective;
-        this.changeDetectorRef.markForCheck();
-      },
-      error: (error) => {
-        this.closeDrawer();
-        console.error(error);
-        this.router.navigate(['']);
-      },
+  ngOnChanges() {
+    this.objectiveService.getFullObjective(this.objectiveId).subscribe((fullObjective) => {
+      this.objective = fullObjective;
+      this.changeDetectorRef.markForCheck();
     });
   }
 }

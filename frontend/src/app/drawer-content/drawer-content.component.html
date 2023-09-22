@@ -1,4 +1,13 @@
 <div [ngSwitch]="drawerContent.type">
+  <img
+    (click)="closeDrawer()"
+    height="15"
+    width="15"
+    src="assets/icons/close.svg"
+    role="button"
+    alt="Close button"
+    data-test-id="closeDrawer"
+  />
   <ng-container *ngSwitchCase="'objective'">
     <app-objective-detail [objectiveId]="drawerContent.id"></app-objective-detail>
   </ng-container>

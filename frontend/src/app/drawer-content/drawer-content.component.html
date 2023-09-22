@@ -1,17 +1,11 @@
-<div [ngSwitch]="drawerContent.type">
-  <img
-    (click)="closeDrawer()"
-    height="15"
-    width="15"
-    src="assets/icons/close.svg"
-    role="button"
-    alt="Close button"
-    data-test-id="closeDrawer"
-  />
+<div [ngSwitch]="drawerContent.type" class="pt-5">
+  <button mat-icon-button (click)="closeDrawer()" data-test-id="closeDrawer">
+    <mat-icon>close</mat-icon>
+  </button>
   <ng-container *ngSwitchCase="'objective'">
     <app-objective-detail [objectiveId]="drawerContent.id"></app-objective-detail>
   </ng-container>
   <ng-container *ngSwitchCase="'keyresult'">
-    <app-keyresult-detail></app-keyresult-detail>
+    <app-keyresult-detail [keyResultId]="drawerContent.id"></app-keyresult-detail>
   </ng-container>
 </div>

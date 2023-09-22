@@ -9,8 +9,8 @@ import { ObjectiveService } from '../shared/services/objective.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveDetailComponent implements OnChanges {
-  objective!: Objective;
   @Input() objectiveId!: number;
+  objective!: Objective;
 
   constructor(
     private objectiveService: ObjectiveService,

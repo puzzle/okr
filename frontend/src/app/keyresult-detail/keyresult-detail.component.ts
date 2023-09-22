@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
-import { CheckIn } from '../shared/types/model/CheckIn';
+import { KeyresultService } from '../shared/services/keyresult.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -8,25 +8,23 @@ import { CheckIn } from '../shared/types/model/CheckIn';
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements OnInit {
-  @Input() keyResult!: KeyResult;
-  constructor() {}
-  @Output() close: EventEmitter<any> = new EventEmitter<any>();
-  closeDrawer() {
-    this.close.emit();
-  }
+export class KeyresultDetailComponent implements OnChanges {
+  @Input() keyResultId!: number;
+  keyResult!: KeyResult;
+
+  constructor(
+    private keyResultService: KeyresultService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {}
 
   checkIfKeyresultIsMetric(keyresult: string) {
     return keyresult == 'metric';
   }
 
-  checkIfThereIsALastCheckIn(lastCheckin: CheckIn) {
-    // if (lastCheckin === null) {
-    //   return false;
-    // } else {
-    //   return true;
-    // }
+  ngOnChanges() {
+    this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
+      this.keyResult = fullKeyResult;
+      this.changeDetectorRef.markForCheck();
+    });
   }
-
-  ngOnInit(): void {}
 }

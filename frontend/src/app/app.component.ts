@@ -48,8 +48,8 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((event) => {
         drawerRoutes.forEach((route) => {
           if (event.url.startsWith(`/${route}/`)) {
-            this.openDrawer();
             this.sidenavContentInformation = { id: event.id, type: route };
+            this.openDrawer();
           }
         });
       });

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { MatDialog } from '@angular/material/dialog';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
-import { NotifierService } from '../shared/services/notifier.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-keyresult',
@@ -12,7 +12,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
-  constructor(public dialog: MatDialog, private notifierService:NotifierService) {}
+  constructor(public dialog: MatDialog, private router:Router) {}
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
@@ -24,6 +24,6 @@ export class KeyresultComponent {
   }
 
   openDrawer() {
-    this.notifierService.closeDetailSubject.next();
+    this.router.navigate(['keyresult', this.keyResult.id]);
   }
 }

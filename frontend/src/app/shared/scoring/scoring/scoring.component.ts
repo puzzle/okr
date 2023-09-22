@@ -69,14 +69,14 @@ export class ScoringComponent implements OnInit {
 
   calculatePercentagesMetric() {
     let keyResult: KeyResultMetricMin = this.keyResult as KeyResultMetricMin;
-    let baseline: number = keyResult.baseLine;
+    let baseline: number = keyResult.baseline;
     let stretchGoal: number = keyResult.stretchGoal;
     let checkInValue: number = this.checkInValue as number;
-    this.metricLabel = keyResult.unit + checkInValue;
+    this.metricLabel = keyResult.unit + ' ' + checkInValue;
 
     if (baseline > stretchGoal) {
       baseline = stretchGoal;
-      stretchGoal = keyResult.baseLine;
+      stretchGoal = keyResult.baseline;
     }
 
     let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);

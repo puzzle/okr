@@ -38,7 +38,7 @@ export const keyResultMetric: KeyResultMetricMin = {
   id: 201,
   title: 'Achieve 20% Increase in Daily Active Users',
   unit: '%',
-  baseLine: 10.0,
+  baseline: 10.0,
   stretchGoal: 25.0,
   lastCheckIn: checkInMetric,
   type: 'keyResult',

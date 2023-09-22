@@ -4,7 +4,7 @@ import { ConfidenceComponent } from './confidence.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSliderHarness } from '@angular/material/slider/testing';
-import { keyResultMetric } from '../shared/testData';
+import { keyResultMetricMin } from '../shared/testData';
 import { MatSliderModule } from '@angular/material/slider';
 import { CheckInMin } from '../shared/types/model/CheckInMin';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +25,7 @@ describe('ConfidenceComponent', () => {
     fixture = TestBed.createComponent(ConfidenceComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
-    component.keyResult = keyResultMetric;
+    component.keyResult = keyResultMetricMin;
     component.edit = true;
   });
 

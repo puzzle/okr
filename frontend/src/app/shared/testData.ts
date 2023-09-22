@@ -9,6 +9,8 @@ import { ObjectiveMin } from './types/model/ObjectiveMin';
 import { OverviewEntity } from './types/model/OverviewEntity';
 import { Objective } from './types/model/Objective';
 import { Quarter } from './types/model/Quarter';
+import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
+import { CheckIn } from './types/model/CheckIn';
 
 export const team1: TeamMin = {
   id: 1,
@@ -32,7 +34,7 @@ export const checkInOrdinal: CheckInMin = {
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
 } as CheckInMin;
-export const keyResultMetric: KeyResultMetricMin = {
+export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
@@ -43,7 +45,7 @@ export const keyResultMetric: KeyResultMetricMin = {
   type: 'keyResult',
 } as KeyResultMetricMin;
 
-export const keyResultOrdinal: KeyResultOrdinalMin = {
+export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   id: 202,
   title: 'Reduce Bounce Rate',
   keyResultType: 'ordinal',
@@ -58,7 +60,7 @@ export const objectiveMin: ObjectiveMin = {
   title: 'Increase User Engagement',
   state: State.ONGOING,
   quarter: quarterMin,
-  keyResults: [keyResultMetric, keyResultOrdinal] as KeyresultMin[],
+  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
 } as ObjectiveMin;
 export const overViewEntity1: OverviewEntity = {
   team: team1,
@@ -109,4 +111,36 @@ export const secondCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+};
+
+export const keyResult: KeyResultOrdinal = {
+  id: 101,
+  title: 'Ausbauen des Früchtesortiments',
+  description: 'Dient zur Gesunderhaltung der Members',
+  commitZone: 'Äpfel',
+  targetZone: 'Äpfel und Birnen',
+  stretchZone: 'Äpfel, Birnen, Bananen und Erdberen',
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  keyResultType: 'ordinal',
+  objective: {
+    id: 301,
+    state: State.DRAFT,
+    quarter: {
+      id: 1,
+      label: 'GJ 23/24-Q1',
+      startDate: new Date(),
+      endDate: new Date(),
+    } as Quarter,
+  } as Objective,
+  lastCheckIn: {
+    id: 745,
+    value: 'FAIL',
+    confidence: 8,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'info',
+    initiatives: 'some',
+  } as CheckIn,
+  createdOn: new Date(),
+  modifiedOn: new Date(),
 };

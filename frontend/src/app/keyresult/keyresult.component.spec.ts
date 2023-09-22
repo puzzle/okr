@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeyresultComponent } from './keyresult.component';
-import { keyResultMetric } from '../shared/testData';
 import { MatDialogModule } from '@angular/material/dialog';
+import { keyResultMetricMin } from '../shared/testData';
 
 describe('KeyresultComponent', () => {
   let component: KeyresultComponent;
@@ -15,7 +15,7 @@ describe('KeyresultComponent', () => {
 
     fixture = TestBed.createComponent(KeyresultComponent);
     component = fixture.componentInstance;
-    component.keyResult = keyResultMetric;
+    component.keyResult = keyResultMetricMin;
     fixture.detectChanges();
   });
 

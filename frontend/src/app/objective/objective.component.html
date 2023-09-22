@@ -1,21 +1,28 @@
 <div (click)="openObjectiveDetail()" role="button" class="objective rounded-3 bg-white">
   <span class="col">
-    <img src="assets/icons/objective-indicator.svg" alt="An indicator that indicates, that this is an objective" />
+    <img
+      class="d-flex"
+      src="assets/icons/objective-indicator.svg"
+      alt="An indicator that indicates, that this is an objective"
+    />
   </span>
   <div class="row mx-1">
-    <section class="d-flex justify-content-between mb-2">
+    <section class="d-flex justify-content-between mb-3">
       <img
+        (click)="$event.stopPropagation()"
+        matTooltip="The objective's state is {{ objective.state.split('-')[0] | uppercase }}"
+        matTooltipPosition="above"
         data-testid="objective-state"
-        class="icon col-1"
-        alt="A status indicator that indicates the progress and state of this objective"
+        class="icon col-1 default-cursor"
+        alt="he objective's state is {{ objective.state.split('-')[0] }}"
         [src]="'../../assets/icons/' + objective.state"
       />
-      <div class="title col-10 ps-2 pt-1">{{ objective.title }}</div>
+      <header class="title col-10 ps-2">{{ objective.title }}</header>
       <img
         data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation()"
-        class="col-1 icon"
+        class="col-1 icon three-dot-menu"
         src="assets/icons/threedot.svg"
         alt="A three-dot-menu button"
       />
@@ -29,10 +36,10 @@
       ></app-keyresult>
     </section>
     <section class="py-3">
-      <a class="anchor d-flex" role="button" (click)="$event.stopPropagation()">
+      <button class="anchor d-flex bg-white border-0 p-0" (click)="$event.stopPropagation()">
         <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
         <p class="add-button-text">Key Result hinzufügen</p>
-      </a>
+      </button>
     </section>
   </div>
 </div>

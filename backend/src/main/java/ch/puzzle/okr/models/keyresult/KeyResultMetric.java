@@ -1,7 +1,5 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.checkin.CheckInOrdinal;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;

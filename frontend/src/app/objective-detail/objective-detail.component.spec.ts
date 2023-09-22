@@ -5,7 +5,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { objective } from '../shared/testData';
-import { SimpleChange, SimpleChanges } from '@angular/core';
 import { of } from 'rxjs';
 
 let objectiveService = {

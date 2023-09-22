@@ -1,7 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { KeyresultComponent } from './keyresult.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { keyResultMetricMin } from '../shared/testData';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {KeyresultComponent} from './keyresult.component';
 
 describe('KeyresultComponent', () => {
   let component: KeyresultComponent;
@@ -9,7 +7,6 @@ describe('KeyresultComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatDialogModule],
       declarations: [KeyresultComponent],
     }).compileComponents();
 
@@ -21,5 +18,4 @@ describe('KeyresultComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-});
+  })

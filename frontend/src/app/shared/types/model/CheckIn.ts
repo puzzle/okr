@@ -1,5 +1,3 @@
-import { KeyResult } from './KeyResult';
-
 export interface CheckIn {
   id: number;
   changeInfo: string;

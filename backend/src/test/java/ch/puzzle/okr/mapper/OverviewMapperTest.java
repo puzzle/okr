@@ -4,7 +4,6 @@ import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.models.Overview;
 import ch.puzzle.okr.models.OverviewId;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.List;
 

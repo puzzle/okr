@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.TestHelper;
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

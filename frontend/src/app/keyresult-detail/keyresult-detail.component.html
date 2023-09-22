@@ -22,7 +22,7 @@
       <app-confidence [keyResult]="keyResult" [edit]="false" [backgroundColor]="'#F5F5F5'"></app-confidence>
     </div>
   </div>
-  <div class="d-flex gap-4 mb-5 flex-row">
+  <div class="d-flex gap-4 mb-5 flex-row jus">
     <ng-container *ngIf="keyResult.keyResultType == 'metric'">
       <p class="keyResult-detail-attribute-show rounded-3 p-1">
         Einheit: {{ castToMetric(keyResult).unit || "Keine" }}
@@ -56,7 +56,12 @@
     </h2>
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
   </div>
-  <p class="add-button-text fw-bold mb-3" role="button">Alle Check-ins anzeigen</p>
+  <div class="w-100 d-flex justify-content-start">
+    <button class="bg-white border-0" (click)="checkInHistory()">
+      <p class="add-button-text fw-bold mb-3" role="button">Alle Check-ins anzeigen</p>
+    </button>
+  </div>
+
   <div class="mb-3">
     <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
     <p>{{ keyResult.description }}</p>

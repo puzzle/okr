@@ -1,1 +1,16 @@
-<div class="w-100">asdf</div>
+<h1 mat-dialog-title class="d-flex justify-content-center fw-bold title">Check-in History</h1>
+<mat-dialog-content class="d-flex justify-content-center flex-column">
+  <div class="mb-3" *ngFor="let checkIn of checkInHistory | async">
+    <div class="d-flex flex-row">
+      <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
+      <span>-</span>
+      <div class="ms-1 me-1" ngSwitch="{{ checkIn.valueMetric }}">
+        <span *ngSwitchCase="undefined">Zone: {{ checkIn.zone }};</span>
+        <span *ngSwitchDefault>ValueMetric: {{ checkIn.valueMetric }};</span>
+      </div>
+      <span>Confidence: {{ checkIn.confidence }} / 10;</span>
+    </div>
+    <p *ngIf="checkIn.changeInfo !== ''">Veränderungen:{{ checkIn.changeInfo }}</p>
+    <p *ngIf="checkIn.initiatives !== ''">Massnahmen:{{ checkIn.initiatives }}</p>
+  </div>
+</mat-dialog-content>

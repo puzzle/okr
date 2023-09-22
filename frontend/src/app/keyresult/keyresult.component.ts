@@ -11,7 +11,11 @@ export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
   constructor(public dialog: MatDialog) {}
   checkInHistory() {
-    const dialogRef = this.dialog.open(CheckInHistoryDialogComponent);
+    const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
+      data: {
+        keyResultId: this.keyResult.id,
+      },
+    });
 
     dialogRef.afterClosed().subscribe(() => {});
   }

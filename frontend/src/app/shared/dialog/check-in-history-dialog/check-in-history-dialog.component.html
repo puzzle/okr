@@ -1,7 +1,9 @@
 <div class="dialog">
   <div mat-dialog-title class="d-flex flex-row justify-content-start mt-3">
-    <h1 class="d-flex justify-content-start title w-50">Check-in History</h1>
-    <div class="d-flex justify-content-end w-50"><mat-icon>close</mat-icon></div>
+    <h1 class="d-flex justify-content-start title w-50 mt-2">Check-in History</h1>
+    <div class="d-flex justify-content-end w-50">
+      <mat-icon class="icon btn-close" mat-dialog-close>close</mat-icon>
+    </div>
   </div>
   <mat-dialog-content class="d-flex justify-content-start flex-column ms-5 mb-3">
     <div class="mt-3" *ngFor="let checkIn of checkInHistory | async">

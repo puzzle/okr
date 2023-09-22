@@ -8,7 +8,6 @@ export interface KeyResult {
   title: string;
   description: string;
 
-  // Datatype needs to be changed to user once it exists
   owner: User;
   objective: Objective;
   lastCheckIn: CheckIn | null;

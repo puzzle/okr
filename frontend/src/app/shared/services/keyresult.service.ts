@@ -12,14 +12,6 @@ export class KeyresultService {
   getFullKeyResult(keyresultId: number): Observable<KeyResult> {
     return this.httpClient.get<KeyResult>('/api/v2/keyresults/' + keyresultId).pipe(
       map((keyresult: any) => {
-        const quarter = keyresult.objective.keyResultQuarterDto;
-        keyresult.objective.quarter = {
-          id: quarter.id,
-          label: quarter.label,
-          startDate: quarter.startDate,
-          endDate: quarter.endDate,
-        };
-        console.log(keyresult);
         keyresult.objective.quarter = keyresult.objective.keyResultQuarterDto;
         return keyresult;
       }),

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
@@ -71,6 +71,10 @@ export class AppComponent implements OnInit, OnDestroy {
     document.body.setAttribute('style', 'overflow: visible;');
   }
 
+  private disableScrolling() {
+    document.body.setAttribute('style', 'overflow: hidden;');
+  }
+
   openDrawer() {
     this.drawerOpen = true;
     this.disableScrolling();
@@ -79,9 +83,5 @@ export class AppComponent implements OnInit, OnDestroy {
   closeDrawer() {
     this.drawerOpen = false;
     this.router.navigate(['/']);
-  }
-
-  private disableScrolling() {
-    document.body.setAttribute('style', 'overflow: hidden;');
   }
 }

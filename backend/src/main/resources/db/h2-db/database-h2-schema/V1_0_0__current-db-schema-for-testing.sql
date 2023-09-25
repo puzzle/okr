@@ -4,6 +4,7 @@ create sequence if not exists sequence_objective;
 create sequence if not exists sequence_person;
 create sequence if not exists sequence_quarter;
 create sequence if not exists sequence_team;
+create sequence if not exists sequence_alignment;
 create table if not exists flyway_schema_history
 (
     installed_rank integer                 not null,
@@ -157,3 +158,19 @@ FROM TEAM T
                                                                               FROM check_in CC
                                                                               WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID)
 ;
+
+create table if not exists alignment
+(
+    id bigint not null,
+    aligned_objective_id bigint not null,
+    alignment_type varchar(255) not null,
+    target_key_result_id bigint,
+    target_objective_id bigint,
+    primary key (id),
+    constraint fk_alignment_aligned_objective
+        foreign key (aligned_objective_id) references objective,
+    constraint fk_alignment_target_key_result
+        foreign key (target_key_result_id) references key_result,
+    constraint fk_alignment_target_objective
+        foreign key (target_objective_id) references objective
+);

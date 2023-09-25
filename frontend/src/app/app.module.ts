@@ -47,6 +47,7 @@ import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-
 import { MatDividerModule } from '@angular/material/divider';
 import { ObjectiveFormComponent } from './shared/dialog/objective-dialog/objective-form.component';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
@@ -153,6 +154,7 @@ export const MY_FORMATS = {
     FormsModule,
     MatDividerModule,
     MatSidenavModule,
+    MatCheckboxModule,
   ],
   providers: [
     {

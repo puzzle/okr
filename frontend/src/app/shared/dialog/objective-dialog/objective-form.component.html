@@ -1,30 +1,29 @@
 <div mat-dialog-content>
-  <div class="">
-    <span class="w-100 d-flex justify-content-end">
-      <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
-        <mat-icon>close</mat-icon>
-      </button>
-    </span>
-
+  <div class="w-100 d-flex justify-content-between align-items-center">
     <p class="title">Objective erfassen</p>
+    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
 
-    <form (ngSubmit)="onSubmit()" [formGroup]="objectiveForm" class="d-flex flex-column">
-      <div class="d-flex flex-column gap-2">
-        <label for="title">Titel</label>
-        <mat-form-field appearance="outline">
-          <input cdkFocusInitial formControlName="title" id="title" matInput placeholder="Objective title" />
-        </mat-form-field>
-      </div>
+  <form (ngSubmit)="onSubmit()" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Titel</label>
+      <mat-form-field appearance="outline">
+        <input cdkFocusInitial formControlName="title" id="title" matInput placeholder="Objective title" />
+      </mat-form-field>
+    </div>
 
-      <div class="d-flex flex-column gap-2">
-        <label for="title">Beschreibung (optional)</label>
-        <mat-form-field appearance="outline">
-          <input formControlName="description" matInput placeholder="Dies ist eine Beschreibung" />
-        </mat-form-field>
-      </div>
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Beschreibung (optional)</label>
+      <mat-form-field appearance="outline">
+        <input formControlName="description" matInput placeholder="Dies ist eine Beschreibung" />
+      </mat-form-field>
+    </div>
 
-      <div class="d-flex flex-column gap-2">
-        <label for="quarter">Quartal</label>
+    <div class="row">
+      <div class="d-flex flex-column gap-2 col-6">
+        <label for="quarter" class="text-black">Quartal</label>
         <mat-form-field>
           <mat-select formControlName="quarter" id="quarter">
             <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">
@@ -34,8 +33,8 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex flex-column gap-2">
-        <label for="quarter">Team</label>
+      <div class="d-flex flex-column gap-2 col-6">
+        <label for="quarter" class="text-black">Team</label>
         <mat-form-field>
           <mat-select formControlName="team" id="team">
             <mat-option *ngFor="let team of teams | async" [value]="team.id">
@@ -44,11 +43,27 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </form>
-  </div>
 
-  <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>No</button>
-    <button mat-button mat-dialog-close>Ok</button>
+      <div class="d-flex flex-column gap-2 col-6">
+        <label for="relation" class="text-black">Bezug (optional)</label>
+        <mat-form-field>
+          <mat-select formControlName="relation" id="relation">
+            <mat-option *ngFor="let team of teams | async" [value]="team.id">
+              {{ team.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-checkbox color="primary" class="d-flex align-items-center col-5" formControlName="createKeyresults">
+        Key Results im Anschluss erfassen</mat-checkbox
+      >
+    </div>
+  </form>
+
+  <div class="d-flex gap-2 p-0" mat-dialog-actions>
+    <button class="add-flat-primary-button" mat-button mat-dialog-close>Speichern</button>
+    <button class="add-flat-secondary-button" mat-button mat-dialog-close>Als Draft speichern</button>
+    <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
   </div>
 </div>

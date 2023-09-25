@@ -11,11 +11,12 @@ import { TeamMin } from '../../types/model/TeamMin';
 })
 export class ObjectiveFormComponent {
   objectiveForm = new FormGroup({
-    titel: new FormControl(''),
+    title: new FormControl(''),
     description: new FormControl(''),
-    quartal: new FormControl(''),
+    quarter: new FormControl(''),
     team: new FormControl(''),
-    createKeyresults: new FormControl(''),
+    relation: new FormControl(''),
+    createKeyresults: new FormControl(true),
   });
   quarters: Observable<Quarter[]> | undefined;
   teams: Observable<TeamMin[]> | undefined;

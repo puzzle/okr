@@ -42,8 +42,8 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
           : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
       setTimeout(() => {
         this.okrBanner!.style.position = 'fixed';
-      }, 200);
-    } else if (scrollTop == 0) {
+      }, 150);
+    } else if (scrollTop < 10) {
       this.okrBanner!.style.position = 'relative';
     }
   }

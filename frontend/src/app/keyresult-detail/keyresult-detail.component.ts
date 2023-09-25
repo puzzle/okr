@@ -47,12 +47,20 @@ export class KeyresultDetailComponent implements OnChanges {
   }
 
   openEditKeyResultDialog() {
-    const dialogRef = this.dialog.open(KeyResultDialogComponent, {
-      width: '45em',
-      height: '40em',
-      data: {
-        keyResult: this.keyResult,
-      },
-    });
+    this.dialog
+      .open(KeyResultDialogComponent, {
+        width: '45em',
+        height: '40em',
+        data: {
+          objective: null,
+          keyResult: this.keyResult,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result == 'openNewDialog') {
+          this.openEditKeyResultDialog();
+        }
+      });
   }
 }

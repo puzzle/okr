@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
 import { KeyResult } from '../shared/types/model/KeyResult';
@@ -25,18 +25,19 @@ export class KeyResultDialogComponent implements OnInit {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private objective: any,
-    @Inject(MAT_DIALOG_DATA) private keyResult: KeyResult,
+    @Inject(MAT_DIALOG_DATA) public data: { objective: any; keyResult: KeyResult },
+    public dialogRef: MatDialogRef<KeyResultDialogComponent>,
   ) {}
 
   ngOnInit(): void {
-    if (this.keyResult) {
+    if (this.data.keyResult) {
       // TODO set form values
     }
   }
 
   saveKeyResult() {
-    if (this.objective) {
+    const keyResult = this.keyResultForm.value as KeyResult;
+    if (this.data.objective) {
       // NEW
       // TODO set values from keyResultForm to new KeyResult
       //  and do keyResult.objective = this.objective;
@@ -45,5 +46,10 @@ export class KeyResultDialogComponent implements OnInit {
       // TODO set changed values from keyResultForm
     }
     // TODO call service with createdKR
+  }
+
+  openNew() {
+    this.saveKeyResult();
+    this.dialogRef.close('openNewDialog');
   }
 }

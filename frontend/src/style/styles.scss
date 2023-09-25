@@ -35,6 +35,7 @@ body {
   font-size: 1.25rem;
   font-weight: bold;
   word-wrap: break-word;
+  color: black;
 }
 
 .sub-title {
@@ -45,11 +46,31 @@ body {
   text-decoration: none;
 }
 
-.add-button-text {
-  font-size: 0.9rem;
+.add-button {
+  font-size: 1rem;
   font-weight: bold;
-  color: $pz-dark-blue;
+  color: $pz-dark-blue !important;
   letter-spacing: normal;
+
+  img {
+    width: 2rem;
+  }
+}
+
+.add-flat-primary-button {
+  @extend .add-button;
+  color: white !important;
+  background-color: $pz-dark-blue !important;
+  border-radius: 0.5rem !important;
+  border: transparent !important;
+}
+
+.add-flat-secondary-button {
+  @extend .add-flat-primary-button;
+  font-weight: normal;
+  color: black !important;
+  background-color: white !important;
+  border: solid #cccccc 1px !important;
 }
 
 .mat-mdc-menu-item {

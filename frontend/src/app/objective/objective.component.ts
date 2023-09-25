@@ -49,12 +49,20 @@ export class ObjectiveComponent {
   }
 
   openAddKeyResultDialog() {
-    const dialogRef = this.dialog.open(KeyResultDialogComponent, {
-      width: '45em',
-      height: '40em',
-      data: {
-        objective: this.objective,
-      },
-    });
+    this.dialog
+      .open(KeyResultDialogComponent, {
+        width: '45em',
+        height: '40em',
+        data: {
+          objective: this.objective,
+          keyResult: null,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result == 'openNewDialog') {
+          this.openAddKeyResultDialog();
+        }
+      });
   }
 }

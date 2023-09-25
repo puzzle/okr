@@ -1,26 +1,32 @@
-<div class="dialog">
-  <header class="d-flex justify-content-between mb-3">
-    <div class="title">Key Result erfassen</div>
-    <mat-icon mat-dialog-close class="close-icon" role="button">close</mat-icon>
-  </header>
-  <div>
-    <div><mat-label>Titel</mat-label></div>
-    <textarea matInput placeholder="KeyResult Titel" class="key-result-dialog-input w-100"></textarea>
-  </div>
-  <div>
-    <div><mat-label>Beschreibung (optional)</mat-label></div>
-    <textarea matInput placeholder="Beschreibung" class="key-result-dialog-input w-100"></textarea>
-  </div>
-  <footer class="d-flex">
-    <button
-      class="save-key-result-button border-0 rounded text-white fw-bold pt-1 pb-1 ps-2 pe-2"
-      (click)="saveKeyResult()"
-    >
-      Speichern
+<div mat-dialog-content class="dialog">
+  <div class="d-flex justify-content-between align-items-center">
+    <p class="title">Key Result {{ data.keyResult ? "bearbeiten" : "erfassen" }}</p>
+    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
+      <mat-icon>close</mat-icon>
     </button>
-    <button class="ms-2 border border-secondary border-1 rounded pt-1 pb-1 ps-2 pe-2 bg-white">Speichern & Neu</button>
-    <button mat-dialog-close class="cancel-key-result-button ms-2 fw-bold border-0 pt-1 pb-1 ps-2 pe-2 bg-white">
-      Abbrechen
+  </div>
+
+  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Titel</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Title"></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Beschreibung (optional)</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="description" placeholder="Key Result Beschreibung"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div class="d-flex" mat-dialog-actions>
+    <button class="add-flat-primary-button" type="submit" mat-button mat-dialog-close>Speichern</button>
+    <button *ngIf="!data.keyResult" class="add-flat-secondary-button" (click)="openNew()" mat-button mat-dialog-close>
+      Speichern & Neu
     </button>
-  </footer>
+    <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
+  </div>
 </div>

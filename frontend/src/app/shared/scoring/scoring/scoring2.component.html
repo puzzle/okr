@@ -1,0 +1,36 @@
+<div class="scoring-container d-flex flex-row">
+  <div class="flex-fill">
+    <div>
+      <span class="okr-score-lable">
+        <span class="text-center sub-title">Fail</span>
+      </span>
+      <span class="okr-score-lable okr-score-commit">
+        <span class="text-center sub-title">Commit</span>
+      </span>
+      <span class="okr-score-lable">
+        <span class="text-center sub-title">Target</span>
+      </span>
+    </div>
+
+    <div>
+      <span class="okr-score">
+        <span class="child" #fail></span>
+      </span>
+      <span class="okr-score okr-score-commit">
+        <span class="child" #commit></span>
+      </span>
+      <span class="okr-score">
+        <span class="child" #target></span>
+      </span>
+    </div>
+  </div>
+
+  <div class="okr-stretch">
+    <div class="okr-score-lable">
+      <span class="text-center sub-title">Stretch</span>
+    </div>
+    <div class="">
+      <img src="../../../../assets/icons/star-{{ iconPath }}-icon.svg" alt="Star-Icon" class="starIcon" />
+    </div>
+  </div>
+</div>

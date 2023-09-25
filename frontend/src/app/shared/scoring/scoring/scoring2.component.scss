@@ -1,0 +1,36 @@
+.okr-score-lable {
+  display: inline-grid;
+  width: 30%;
+}
+
+.okr-score {
+  display: inline-grid;
+  height: 21px;
+  width: 30%;
+  background-color: white;
+  outline: 1px solid #5d6974;
+}
+
+.okr-score-commit {
+  width: 40%;
+}
+
+.okr-stretch {
+  margin-left: 16px;
+}
+
+.starIcon {
+  display: block;
+  width: 21px;
+  height: 21px;
+}
+
+.score-yellow {
+  background-color: yellow;
+}
+
+.score-test {
+  background-image: url("http://i.imgur.com/9HMnxKs.png");
+  background-repeat: repeat-y;
+  //background-size: 10% auto;
+}

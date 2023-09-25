@@ -57,6 +57,7 @@ import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-d
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
 import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
+import { Scoring2Component } from './shared/scoring/scoring/scoring2.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -97,6 +98,7 @@ export const MY_FORMATS = {
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
     ScoringComponent,
+    Scoring2Component,
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,

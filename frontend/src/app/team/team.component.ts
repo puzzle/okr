@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { MatDialog } from '@angular/material/dialog';
+import { ObjectiveComponent } from '../objective/objective.component';
+import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 
 @Component({
   selector: 'app-team',
@@ -9,4 +12,10 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 })
 export class TeamComponent {
   @Input() overviewEntity!: OverviewEntity;
+
+  constructor(private dialog: MatDialog) {}
+
+  createObjective() {
+    this.dialog.open(ObjectiveFormComponent);
+  }
 }

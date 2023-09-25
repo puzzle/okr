@@ -10,14 +10,14 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <mat-form-field appearance="outline">
-        <input cdkFocusInitial formControlName="title" id="title" matInput placeholder="Objective title" />
+        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Objective Title"></textarea>
       </mat-form-field>
     </div>
 
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Beschreibung (optional)</label>
       <mat-form-field appearance="outline">
-        <input formControlName="description" matInput placeholder="Dies ist eine Beschreibung" />
+        <textarea matInput formControlName="description" placeholder="Objective Beschreibung"></textarea>
       </mat-form-field>
     </div>
 

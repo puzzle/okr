@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <form (ngSubmit)="onSubmit()" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
+  <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <mat-form-field appearance="outline">
@@ -26,19 +26,8 @@
         <label for="quarter" class="text-black">Quartal</label>
         <mat-form-field>
           <mat-select formControlName="quarter" id="quarter">
-            <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">
+            <mat-option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
               {{ quarter.label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column gap-2 col-6">
-        <label for="quarter" class="text-black">Team</label>
-        <mat-form-field>
-          <mat-select formControlName="team" id="team">
-            <mat-option *ngFor="let team of teams | async" [value]="team.id">
-              {{ team.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -48,7 +37,18 @@
         <label for="relation" class="text-black">Bezug (optional)</label>
         <mat-form-field>
           <mat-select formControlName="relation" id="relation">
-            <mat-option *ngFor="let team of teams | async" [value]="team.id">
+            <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
+              {{ team.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="d-flex flex-column gap-2 col-6">
+        <label for="quarter" class="text-black">Team</label>
+        <mat-form-field *ngIf="teams$ | async as teams">
+          <mat-select formControlName="team" id="team" [value]="teams[0].id">
+            <mat-option *ngFor="let team of teams" [value]="team.id">
               {{ team.name }}
             </mat-option>
           </mat-select>
@@ -59,11 +59,15 @@
         Key Results im Anschluss erfassen</mat-checkbox
       >
     </div>
-  </form>
 
-  <div class="d-flex gap-2 p-0" mat-dialog-actions>
-    <button class="add-flat-primary-button" mat-button mat-dialog-close>Speichern</button>
-    <button class="add-flat-secondary-button" mat-button mat-dialog-close>Als Draft speichern</button>
-    <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
-  </div>
+    <div class="d-flex gap-2 p-0" mat-dialog-actions>
+      <button class="add-flat-primary-button" type="submit" submitType="submit" mat-button mat-dialog-close>
+        Speichern
+      </button>
+      <button class="add-flat-secondary-button" mat-button submitType="button-draft" mat-dialog-close>
+        Als Draft speichern
+      </button>
+      <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+  </form>
 </div>

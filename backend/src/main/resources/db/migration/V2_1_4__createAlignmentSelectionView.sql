@@ -11,5 +11,4 @@ select o.id                as "objective_id",
 from objective o
          left join team t on o.team_id = t.id
          left join quarter q on o.quarter_id = q.id
-         left join key_result kr on o.id = kr.objective_id
-;
+         left join key_result kr on o.id = kr.objective_id;

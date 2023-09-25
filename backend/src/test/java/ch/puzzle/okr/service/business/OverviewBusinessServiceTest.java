@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -20,14 +19,13 @@ import static org.mockito.Mockito.*;
 public class OverviewBusinessServiceTest {
 
     @InjectMocks
-    @Spy
     OverviewBusinessService overviewBusinessService;
     @Mock
     OverviewPersistenceService overviewPersistenceService;
     @Mock
     QuarterBusinessService quarterBusinessService;
 
-    private static Overview createObjective() {
+    private static Overview createOverview() {
         return Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).build())
                 .withObjectiveTitle("Objective 1").build();
     }
@@ -35,7 +33,7 @@ public class OverviewBusinessServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L)))
-                .thenReturn(List.of(createObjective()));
+                .thenReturn(List.of(createOverview()));
 
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L));
 
@@ -47,7 +45,7 @@ public class OverviewBusinessServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L)))
-                .thenReturn(List.of(createObjective()));
+                .thenReturn(List.of(createOverview()));
         when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build());
 

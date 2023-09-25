@@ -4,8 +4,8 @@ import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { NotifierService } from '../shared/services/notifier.service';
 import { Router } from '@angular/router';
-import {KeyResultDialogComponent} from "../key-result-dialog/key-result-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-objective-column',
@@ -52,6 +52,9 @@ export class ObjectiveComponent {
     const dialogRef = this.dialog.open(KeyResultDialogComponent, {
       width: '45em',
       height: '40em',
+      data: {
+        objective: this.objective,
+      },
     });
   }
 }

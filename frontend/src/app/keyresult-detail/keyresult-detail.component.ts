@@ -5,6 +5,7 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -43,5 +44,15 @@ export class KeyresultDetailComponent implements OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(() => {});
+  }
+
+  openEditKeyResultDialog() {
+    const dialogRef = this.dialog.open(KeyResultDialogComponent, {
+      width: '45em',
+      height: '40em',
+      data: {
+        keyResult: this.keyResult,
+      },
+    });
   }
 }

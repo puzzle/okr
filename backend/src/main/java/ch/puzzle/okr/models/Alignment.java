@@ -16,10 +16,10 @@ public abstract class Alignment {
     @ManyToOne
     private Objective alignedObjective;
 
-    public Alignment() {
+    protected Alignment() {
     }
 
-    public Alignment(Alignment.Builder<?> builder) {
+    protected Alignment(Alignment.Builder<?> builder) {
         id = builder.id;
         setAlignedObjective(builder.alignedObjective);
     }
@@ -56,21 +56,21 @@ public abstract class Alignment {
         return Objects.hash(id, alignedObjective);
     }
 
-    public abstract static class Builder<Type> {
+    public abstract static class Builder<T> {
         private Long id;
         private Objective alignedObjective;
 
         Builder() {
         }
 
-        public Type withId(Long id) {
+        public T withId(Long id) {
             this.id = id;
-            return (Type) this;
+            return (T) this;
         }
 
-        public Type withAlignedObjective(Objective alignedObjective) {
+        public T withAlignedObjective(Objective alignedObjective) {
             this.alignedObjective = alignedObjective;
-            return (Type) this;
+            return (T) this;
         }
 
         public abstract Alignment build();

@@ -1,10 +1,10 @@
 package ch.puzzle.okr.models;
 
-public interface AlignmentInterface<TargetType> {
+public interface AlignmentInterface<T> {
 
-    TargetType getAlignmentTarget();
+    T getAlignmentTarget();
 
-    void setAlignmentTarget(TargetType alignmentTarget);
+    void setAlignmentTarget(T alignmentTarget);
 
     Objective getAlignedObjective();
 

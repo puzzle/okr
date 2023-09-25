@@ -58,7 +58,7 @@ public class AlignmentSelectionId implements Serializable {
         private Long objectiveId;
         private Long keyResultId;
 
-        public Builder() {
+        private Builder() {
         }
 
         public static Builder builder() {

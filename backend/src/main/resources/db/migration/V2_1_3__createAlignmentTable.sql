@@ -1,7 +1,5 @@
 create sequence if not exists sequence_alignment;
 
-alter sequence sequence_alginment owner to "user";
-
 create table if not exists alignment
 (
     id                   bigint       not null primary key,

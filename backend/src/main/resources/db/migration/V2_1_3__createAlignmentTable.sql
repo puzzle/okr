@@ -24,5 +24,3 @@ create index if not exists idx_alignment_target_key_result
 create index if not exists idx_alignment_target_objective
     on alignment (target_objective_id);
 
-alter table alignment
-    owner to "user";

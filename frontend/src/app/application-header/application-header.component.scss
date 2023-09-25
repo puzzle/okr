@@ -6,7 +6,8 @@
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 101;
+  z-index: 102;
+
   pzsh-topbar {
     --pzsh-page-padding-horizontal-desktop: 2rem;
   }
@@ -19,4 +20,14 @@
   height: 140px;
   z-index: 100;
   transition: 0.5s;
+}
+
+.backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: black;
+  opacity: 0.5;
 }

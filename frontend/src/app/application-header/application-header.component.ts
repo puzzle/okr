@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-application-header',
@@ -11,6 +11,9 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
+
+  @Input()
+  drawerOpen: boolean = false;
 
   resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
     this.updateScrollEventListeners(entries[0].contentRect.height);

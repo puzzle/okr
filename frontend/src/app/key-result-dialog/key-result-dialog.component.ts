@@ -6,6 +6,8 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { testUser } from '../shared/testData';
 import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
+import errorMessages from '../../assets/errors/error-messages.json';
+import { OverviewService } from '../shared/services/overview.service';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -13,6 +15,7 @@ import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
   styleUrls: ['./key-result-dialog.component.scss'],
 })
 export class KeyResultDialogComponent implements OnInit {
+  isMetricKeyResult: boolean = true;
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -31,9 +34,11 @@ export class KeyResultDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { objective: any; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
+    private overviewService: OverviewService,
   ) {}
 
   ngOnInit(): void {
+    // TODO set boolean if KeyResult is not metric
     if (this.data.keyResult) {
       // TODO set values for unit baseLine stretchGoal commit-, target-, stretchZone
       this.keyResultForm.setValue({
@@ -53,9 +58,11 @@ export class KeyResultDialogComponent implements OnInit {
   saveKeyResult() {
     const value = this.keyResultForm.value;
     let keyResult: KeyResultMetricDTO = {
+      id: this.data.keyResult.id,
       title: value.title,
       description: value.description,
-      objective: this.data.objective,
+      objective: this.data.objective ? this.data.objective : this.data.keyResult.objective,
+      keyResultType: this.isMetricKeyResult ? 'metric' : 'ordinal',
       owner: value.owner,
       unit: value.unit,
       baseline: value.baseline,
@@ -64,11 +71,23 @@ export class KeyResultDialogComponent implements OnInit {
     if (this.data.objective) {
       keyResult.objective = this.data.objective;
     }
-    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => console.log(returnValue));
+    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => this.overviewService.getOverview());
   }
 
   openNew() {
     this.saveKeyResult();
     this.dialogRef.close('openNewDialog');
   }
+
+  isTouchedOrDirty(name: string) {
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
+  }
+
+  //Check if any errors are present if not return empty array if yes return error keys
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.keyResultForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  protected readonly errorMessages: any = errorMessages;
 }

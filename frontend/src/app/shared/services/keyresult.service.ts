@@ -21,7 +21,7 @@ export class KeyresultService {
 
   saveKeyResult(keyResultDTO: KeyResultDTO) {
     if (keyResultDTO.id) {
-      return this.httpClient.put(`/api/v2/keyresults` + keyResultDTO.id, keyResultDTO);
+      return this.httpClient.put(`/api/v2/keyresults/` + keyResultDTO.id, keyResultDTO);
     } else {
       return this.httpClient.post('/api/v2/keyresults', keyResultDTO);
     }

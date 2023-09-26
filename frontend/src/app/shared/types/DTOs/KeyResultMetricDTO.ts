@@ -1,4 +1,4 @@
-import { KeyResultDTO } from "./KeyResultDTO";
+import { KeyResultDTO } from './KeyResultDTO';
 
 export interface KeyResultMetricDTO extends KeyResultDTO {
   unit: string | undefined;

@@ -1,11 +1,11 @@
 <div class="m-3">
-  <div class="w-100 d-flex justify-content-start">
-    <h1 class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
-  </div>
-  <p class="fs-6 mt-1">Key Result</p>
-  <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-1">{{ keyResult.lastCheckIn?.changeInfo }}</span>
   <mat-dialog-content class="d-flex justify-content-center flex-column">
-    <form class="d-flex flex-column">
+    <div class="w-100 d-flex justify-content-start">
+      <h1 class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
+    </div>
+    <p class="fs-6 mt-1">Key Result</p>
+    <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-1">{{ keyResult.lastCheckIn?.changeInfo }}</span>
+    <form class="d-flex flex-column mt-1">
       <mat-label>Veränderung seit letztem Check-in (optional)</mat-label>
       <mat-form-field>
         <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>

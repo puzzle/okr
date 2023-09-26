@@ -34,20 +34,31 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
+    //Check if further scrolled than bannerHeight
     if (scrollTop > bannerHeight) {
-      this.okrBanner!.style.top =
-        scrollTop > this.lastScrollPosition
-          ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
-          : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
-      setTimeout(() => {
-        this.okrBanner!.style.position = 'sticky';
-      }, 150);
+      //Check if scrolled up or down and hide or show banner according to this value
+      this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
+      this.setPositionOfBanner('sticky');
     } else if (scrollTop < 10) {
+      /*If User is at the top of the page set top to 0 pixels and make banner relative
+       * so it scrolls with the user */
       this.okrBanner!.style.top = '0px';
-      setTimeout(() => {
-        this.okrBanner!.style.position = 'relative';
-      }, 500);
+      this.setPositionOfBanner('relative');
     }
+  }
+
+  //Show or hide banner with setting top position to negative or to positive
+  showOrHideBanner(scrollTop: number, bannerHeight: number) {
+    return scrollTop > this.lastScrollPosition
+      ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
+      : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
+  }
+
+  //Set position of banner with timeout so banner doesn't 'float' in
+  setPositionOfBanner(position: string) {
+    setTimeout(() => {
+      this.okrBanner!.style.position = position;
+    }, 500);
   }
 
   updateScrollEventListeners(bannerHeight: number) {

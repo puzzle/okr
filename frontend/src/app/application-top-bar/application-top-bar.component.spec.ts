@@ -1,21 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicationHeaderComponent } from './application-header.component';
+import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ApplicationHeaderComponent', () => {
   //@ts-ignore
   global.ResizeObserver = ResizeObserverMock;
-  let component: ApplicationHeaderComponent;
-  let fixture: ComponentFixture<ApplicationHeaderComponent>;
+  let component: ApplicationTopBarComponent;
+  let fixture: ComponentFixture<ApplicationTopBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ApplicationHeaderComponent],
+      declarations: [ApplicationTopBarComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ApplicationHeaderComponent);
+    fixture = TestBed.createComponent(ApplicationTopBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

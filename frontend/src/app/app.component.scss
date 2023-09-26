@@ -10,3 +10,9 @@
 #drawer-container {
   z-index: 100;
 }
+
+.fixed-position {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+}

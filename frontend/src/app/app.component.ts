@@ -84,4 +84,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.drawerOpen = false;
     this.router.navigate(['/']);
   }
+
+  userIsAtTop() {
+    return (window.scrollY || document.documentElement.scrollTop) < 10;
+  }
 }

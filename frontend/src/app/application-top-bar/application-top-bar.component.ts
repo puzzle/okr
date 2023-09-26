@@ -6,4 +6,4 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationHeaderComponent {}
+export class ApplicationTopBarComponent {}

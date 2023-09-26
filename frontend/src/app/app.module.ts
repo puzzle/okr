@@ -30,7 +30,7 @@ import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
-import { ApplicationHeaderComponent } from './application-top-bar/application-header.component';
+import { ApplicationTopBarComponent } from './application-top-bar/application-top-bar.component';
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
@@ -83,7 +83,7 @@ export const MY_FORMATS = {
     OverviewComponent,
     ObjectiveComponent,
     KeyresultComponent,
-    ApplicationHeaderComponent,
+    ApplicationTopBarComponent,
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
     ScoringComponent,

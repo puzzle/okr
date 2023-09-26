@@ -4,11 +4,13 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
-import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
 import errorMessages from 'src/assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { State } from '../../types/enums/State';
+import { Objective } from '../../types/model/Objective';
 
 @Component({
   selector: 'app-objective-form',
@@ -52,23 +54,20 @@ export class ObjectiveFormComponent implements OnInit {
   ngOnInit(): void {
     this.teams$ = this.teamService.getAllTeams();
     this.quarters$ = this.quarterService.getAllQuarters();
-    if (this.data.objectiveId) {
-      this.objectiveService.getFullObjective(this.data.objectiveId).subscribe((objective) => {
-        this.objectiveForm.patchValue({
-          title: objective.title,
-          description: objective.description,
-          team: objective.teamId,
-          quarter: objective.quarterId,
-        });
+    const objective$ = this.objectiveService
+      .getFullObjective(this.data.objectiveId || -1)
+      .pipe(catchError(() => of(this.getDefaultObjective())));
+
+    forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
+      const teamId = this.data.objectiveId ? objective.teamId : this.data.teamId;
+      const quarterId = this.data.objectiveId ? objective.quarterId : quarters[0].id;
+      this.objectiveForm.patchValue({
+        title: objective.title,
+        description: objective.description,
+        team: teamId,
+        quarter: quarterId,
       });
-    } else {
-      this.quarters$.subscribe((quarters) => {
-        this.objectiveForm.patchValue({
-          quarter: quarters[0].id,
-          team: this.data.teamId,
-        });
-      });
-    }
+    });
   }
 
   isTouchedOrDirty(name: string) {
@@ -78,5 +77,16 @@ export class ObjectiveFormComponent implements OnInit {
   getErrorKeysOfFormField(name: string) {
     const errors = this.objectiveForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
+  }
+
+  getDefaultObjective() {
+    return {
+      id: 0,
+      title: '',
+      description: '',
+      state: State.DRAFT,
+      teamId: 0,
+      quarterId: 0,
+    } as Objective;
   }
 }

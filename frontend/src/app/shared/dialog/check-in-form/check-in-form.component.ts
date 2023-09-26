@@ -1,7 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../types/model/KeyResult';
-import { now } from 'moment';
+import { FormGroup } from '@angular/forms';
+import errorMessages from '../../../../assets/errors/error-messages.json';
 
 @Component({
   selector: 'app-check-in-form',
@@ -11,6 +12,9 @@ import { now } from 'moment';
 export class CheckInFormComponent implements OnInit {
   keyResult: KeyResult;
   currentDate: Date;
+
+  dialogForm = new FormGroup({});
+
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -20,9 +24,17 @@ export class CheckInFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.keyResult.createdOn);
+    console.log(this.keyResult.description);
   }
 
-  protected readonly now = now;
-  protected readonly Date = Date;
+  isTouchedOrDirty(name: string) {
+    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
+  }
+
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.dialogForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  protected readonly errorMessages: any = errorMessages;
 }

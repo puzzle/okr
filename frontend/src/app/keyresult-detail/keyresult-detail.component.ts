@@ -86,6 +86,7 @@ export class KeyresultDetailComponent implements OnChanges {
       data: {
         keyResult: this.keyResult,
       },
+      width: '719px',
     });
   }
 }

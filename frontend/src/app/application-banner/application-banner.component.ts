@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-application-banner',
   templateUrl: './application-banner.component.html',
   styleUrls: ['./application-banner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   lastScrollPosition: number = 0;

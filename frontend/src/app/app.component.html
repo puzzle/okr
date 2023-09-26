@@ -1,6 +1,6 @@
 <div>
   <app-application-top-bar></app-application-top-bar>
-  <app-application-banner [class.backdrop]="drawerOpen"></app-application-banner>
+  <app-application-banner id="bannerComponent"></app-application-banner>
   <div *ngIf="isEnvStaging$ | async" class="staging-banner">
     <div class="staging-text">STAGING ENVIRONMENT!</div>
   </div>

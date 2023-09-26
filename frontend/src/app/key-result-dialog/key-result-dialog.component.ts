@@ -3,6 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
 import { KeyResult } from '../shared/types/model/KeyResult';
+import { KeyresultService } from '../shared/services/keyresult.service';
+import { testUser } from '../shared/testData';
+import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -11,13 +14,13 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 })
 export class KeyResultDialogComponent implements OnInit {
   keyResultForm = new FormGroup({
-    title: new FormControl<string>('', [Validators.minLength(2), Validators.maxLength(250)]),
-    description: new FormControl<string>('', [Validators.minLength(2), Validators.maxLength(4096)]),
+    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
     // TODO add owner from Dropdown and [Validators.required, Validators.nullValidator]
-    owner: new FormControl<User | null>(null),
+    owner: new FormControl<User | null>(testUser),
     // TODO remove the preset values when adding metric ordinal component
     unit: new FormControl<string | null>('CHF'),
-    baseLine: new FormControl<number | null>(3),
+    baseline: new FormControl<number | null>(3),
     stretchGoal: new FormControl<number | null>(25),
     commitZone: new FormControl<string | null>(null),
     targetZone: new FormControl<string | null>(null),
@@ -27,25 +30,41 @@ export class KeyResultDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: any; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
+    private keyResultService: KeyresultService,
   ) {}
 
   ngOnInit(): void {
     if (this.data.keyResult) {
-      // TODO set form values
+      // TODO set values for unit baseLine stretchGoal commit-, target-, stretchZone
+      this.keyResultForm.setValue({
+        title: this.data.keyResult.title,
+        description: this.data.keyResult.description,
+        owner: this.data.keyResult.owner,
+        unit: 'CHF',
+        baseline: 3,
+        stretchGoal: 25,
+        commitZone: null,
+        targetZone: null,
+        stretchZone: null,
+      });
     }
   }
 
   saveKeyResult() {
-    const keyResult = this.keyResultForm.value as KeyResult;
+    const value = this.keyResultForm.value;
+    let keyResult: KeyResultMetricDTO = {
+      title: value.title,
+      description: value.description,
+      objective: this.data.objective,
+      owner: value.owner,
+      unit: value.unit,
+      baseline: value.baseline,
+      stretchGoal: value.stretchGoal,
+    } as unknown as KeyResultMetricDTO;
     if (this.data.objective) {
-      // NEW
-      // TODO set values from keyResultForm to new KeyResult
-      //  and do keyResult.objective = this.objective;
-    } else {
-      // EDIT
-      // TODO set changed values from keyResultForm
+      keyResult.objective = this.data.objective;
     }
-    // TODO call service with createdKR
+    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => console.log(returnValue));
   }
 
   openNew() {

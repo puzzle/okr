@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { KeyResult } from '../types/model/KeyResult';
 import { map, Observable } from 'rxjs';
+import { KeyResultDTO } from '../types/DTOs/KeyResultDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -16,5 +17,13 @@ export class KeyresultService {
         return keyresult;
       }),
     );
+  }
+
+  saveKeyResult(keyResultDTO: KeyResultDTO) {
+    if (keyResultDTO.id) {
+      return this.httpClient.put(`/api/v2/keyresults` + keyResultDTO.id, keyResultDTO);
+    } else {
+      return this.httpClient.post('/api/v2/keyresults', keyResultDTO);
+    }
   }
 }

@@ -10,7 +10,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <mat-form-field appearance="outline">
-        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Title"></textarea>
+        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Titel"></textarea>
       </mat-form-field>
     </div>
 
@@ -23,7 +23,9 @@
   </form>
 
   <div class="d-flex" mat-dialog-actions>
-    <button class="add-flat-primary-button" type="submit" mat-button mat-dialog-close>Speichern</button>
+    <button class="add-flat-primary-button" type="submit" (click)="saveKeyResult()" mat-button mat-dialog-close>
+      Speichern
+    </button>
     <button *ngIf="!data.keyResult" class="add-flat-secondary-button" (click)="openNew()" mat-button mat-dialog-close>
       Speichern & Neu
     </button>

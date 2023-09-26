@@ -52,7 +52,7 @@ export class ObjectiveComponent {
     this.dialog
       .open(KeyResultDialogComponent, {
         width: '45em',
-        height: '40em',
+        height: 'auto',
         data: {
           objective: this.objective,
           keyResult: null,

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
 import { KeyResult } from '../shared/types/model/KeyResult';
@@ -8,6 +8,7 @@ import { testUser } from '../shared/testData';
 import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { OverviewService } from '../shared/services/overview.service';
+import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -35,6 +36,7 @@ export class KeyResultDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
     private overviewService: OverviewService,
+    private matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +60,7 @@ export class KeyResultDialogComponent implements OnInit {
   saveKeyResult() {
     const value = this.keyResultForm.value;
     let keyResult: KeyResultMetricDTO = {
-      id: this.data.keyResult.id,
+      id: this.data.keyResult ? this.data.keyResult.id : null,
       title: value.title,
       description: value.description,
       objective: this.data.objective ? this.data.objective : this.data.keyResult.objective,
@@ -77,6 +79,27 @@ export class KeyResultDialogComponent implements OnInit {
   openNew() {
     this.saveKeyResult();
     this.dialogRef.close('openNewDialog');
+  }
+
+  deleteKeyResult() {
+    if (this.data.keyResult.lastCheckIn?.id == undefined) {
+      this.matDialog
+        .open(ConfirmDialogComponent, {
+          width: '15em',
+          height: 'auto',
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          if (result == 'deleteKeyResult') {
+            this.keyResultService
+              .deleteKeyResult(this.data.keyResult.id)
+              .subscribe((returnValue) => console.log(returnValue));
+            this.dialogRef.close();
+          }
+        });
+    } else {
+      // TODO show Error that it can not delete KR with CheckIns
+    }
   }
 
   isTouchedOrDirty(name: string) {

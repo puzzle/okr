@@ -48,6 +48,7 @@ import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -93,6 +94,7 @@ export const MY_FORMATS = {
     DrawerContentComponent,
     ApplicationBannerComponent,
     KeyResultDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,

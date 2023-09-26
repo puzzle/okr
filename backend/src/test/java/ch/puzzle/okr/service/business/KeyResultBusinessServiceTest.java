@@ -28,6 +28,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -67,11 +69,11 @@ class KeyResultBusinessServiceTest {
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
         this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withId(5L)
-                .withKeyResultType("metric").withTitle("Keyresult Metric").withObjective(this.objective)
+                .withKeyResultType(KEY_RESULT_TYPE_METRIC).withTitle("Keyresult Metric").withObjective(this.objective)
                 .withOwner(this.user).withCreatedBy(this.user).build();
         this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
-                .withKeyResultType("ordinal").withId(7L).withTitle("Keyresult Ordinal").withObjective(this.objective)
-                .withOwner(this.user).withCreatedBy(this.user).build();
+                .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withId(7L).withTitle("Keyresult Ordinal")
+                .withObjective(this.objective).withOwner(this.user).withCreatedBy(this.user).build();
 
         checkIn1 = CheckInMetric.Builder.builder().withId(1L).withKeyResult(this.metricKeyResult).withCreatedBy(user)
                 .build();

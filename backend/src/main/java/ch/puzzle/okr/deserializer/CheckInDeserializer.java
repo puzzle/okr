@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+
 @Component
 public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
 
@@ -30,7 +32,7 @@ public class CheckInDeserializer extends JsonDeserializer<CheckInDto> {
         ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
         ObjectNode root = mapper.readTree(jsonParser);
         KeyResult keyResultOfCheckIn = keyResultBusinessService.getKeyResultById(root.get("keyResultId").asLong());
-        if (keyResultOfCheckIn.getKeyResultType().equals("metric")) {
+        if (keyResultOfCheckIn.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
             return mapper.readValue(root.toString(), CheckInMetricDto.class);
         }
         return mapper.readValue(root.toString(), CheckInOrdinalDto.class);

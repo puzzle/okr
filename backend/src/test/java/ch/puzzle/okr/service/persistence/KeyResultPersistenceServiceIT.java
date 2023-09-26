@@ -15,6 +15,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -27,7 +29,8 @@ public class KeyResultPersistenceServiceIT {
 
     private static KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS").withId(id)
-                .withKeyResultType("metric").withTitle("Title").withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withKeyResultType(KEY_RESULT_TYPE_METRIC).withTitle("Title")
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
                 .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
                 .build();
@@ -35,8 +38,8 @@ public class KeyResultPersistenceServiceIT {
 
     private static KeyResult createKeyResultOrdinal(Long id) {
         return KeyResultOrdinal.Builder.builder().withCommitZone("Hamster").withTargetZone("Katze")
-                .withStretchZone("ZOO").withId(id).withKeyResultType("ordinal").withTitle("Ordinal KeyResult")
-                .withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withStretchZone("ZOO").withId(id).withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
+                .withTitle("Ordinal KeyResult").withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
                 .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
                 .build();
@@ -128,7 +131,7 @@ public class KeyResultPersistenceServiceIT {
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
                 .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(createdKeyResult.getId())
-                .withKeyResultType("ordinal").withTitle(keyResult.getTitle())
+                .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withTitle(keyResult.getTitle())
                 .withObjective(createdKeyResult.getObjective()).withOwner(createdKeyResult.getOwner())
                 .withCreatedBy(createdKeyResult.getCreatedBy()).withCreatedOn(createdKeyResult.getCreatedOn()).build();
 

@@ -25,6 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 
 import static ch.puzzle.okr.CheckInTestHelpers.*;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

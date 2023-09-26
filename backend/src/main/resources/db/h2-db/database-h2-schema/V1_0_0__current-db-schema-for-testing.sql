@@ -139,6 +139,7 @@ select t.id                as "team_id",
        q.label             as "quarter_label",
        coalesce(kr.id, -1) as "key_result_id",
        kr.title            as "key_result_title",
+       kr.key_result_type  as "key_result_type",
        kr.unit,
        kr.baseline,
        kr.stretch_goal,
@@ -161,11 +162,11 @@ FROM TEAM T
 
 create table if not exists alignment
 (
-    id bigint not null,
-    aligned_objective_id bigint not null,
-    alignment_type varchar(255) not null,
+    id                   bigint       not null,
+    aligned_objective_id bigint       not null,
+    alignment_type       varchar(255) not null,
     target_key_result_id bigint,
-    target_objective_id bigint,
+    target_objective_id  bigint,
     primary key (id),
     constraint fk_alignment_aligned_objective
         foreign key (aligned_objective_id) references objective,

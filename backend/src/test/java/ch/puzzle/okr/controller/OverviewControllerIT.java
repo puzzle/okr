@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static ch.puzzle.okr.models.State.ONGOING;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +40,6 @@ public class OverviewControllerIT {
     public static final String DESCRIPTION = "This is a description";
     public static final String TEAM_KUCHEN = "Kuchen";
     public static final String QUARTER_LABEL = "GJ 22/23-Q2";
-    public static final String KEY_RESULT_TYPE_METRIC = "metric";
     public static final String CHF = "CHF";
     public static final String JSON_PATH_TEAM_NAME = "$[0].team.name";
     public static final String JSON_PATH_TEAM_ID = "$[0].team.id";

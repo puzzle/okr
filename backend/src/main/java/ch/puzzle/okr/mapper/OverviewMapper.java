@@ -3,11 +3,16 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.overview.*;
 import ch.puzzle.okr.models.Overview;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class OverviewMapper {
@@ -59,7 +64,7 @@ public class OverviewMapper {
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {
         List<OverviewKeyResultDto> keyResults = new ArrayList<>();
-        if (overview.getOverviewId().getKeyResultId() != null && overview.getOverviewId().getKeyResultId() > -1) {
+        if (isValidId(overview.getOverviewId().getKeyResultId())) {
             keyResults.add(createKeyResultDto(overview));
         }
         return new OverviewObjectiveDto(overview.getOverviewId().getObjectiveId(), overview.getObjectiveTitle(),
@@ -68,14 +73,40 @@ public class OverviewMapper {
     }
 
     private OverviewKeyResultDto createKeyResultDto(Overview overview) {
-        // TODO enhance for OverviewKeyResultOrdinalDto and OverviewLastCheckInOrdinalDto
+        if (Objects.equals(overview.getKeyResultType(), KEY_RESULT_TYPE_METRIC)) {
+            return createKeyResultMetricDto(overview);
+        } else if (Objects.equals(overview.getKeyResultType(), KEY_RESULT_TYPE_ORDINAL)) {
+            return createKeyResultOrdinalDto(overview);
+        } else {
+            throw new ResponseStatusException(BAD_REQUEST,
+                    String.format("The key result type %s can not be converted to a metric or ordinal DTO",
+                            overview.getKeyResultType()));
+        }
+    }
+
+    private OverviewKeyResultMetricDto createKeyResultMetricDto(Overview overview) {
         OverviewLastCheckInMetricDto lastCheckIn = null;
-        if (overview.getOverviewId().getCheckInId() != null && overview.getOverviewId().getCheckInId() > -1) {
+        if (isValidId(overview.getOverviewId().getCheckInId())) {
             lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),
                     overview.getCheckInValue(), overview.getConfidence(), overview.getCreatedOn());
         }
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
                 overview.getKeyResultType(), overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(),
                 lastCheckIn);
+    }
+
+    private OverviewKeyResultOrdinalDto createKeyResultOrdinalDto(Overview overview) {
+        OverviewLastCheckInOrdinalDto lastCheckIn = null;
+        if (isValidId(overview.getOverviewId().getCheckInId())) {
+            lastCheckIn = new OverviewLastCheckInOrdinalDto(overview.getOverviewId().getCheckInId(),
+                    overview.getCheckInZone(), overview.getConfidence(), overview.getCreatedOn());
+        }
+        return new OverviewKeyResultOrdinalDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
+                overview.getKeyResultType(), overview.getCommitZone(), overview.getTargetZone(),
+                overview.getStretchZone(), lastCheckIn);
+    }
+
+    private boolean isValidId(Long id) {
+        return id != null && id > -1;
     }
 }

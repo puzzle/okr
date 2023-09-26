@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+
 @Entity
-@DiscriminatorValue("metric")
+@DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
 public class KeyResultMetric extends KeyResult {
     @NotNull(message = "Baseline must not be null")
     private Double baseline;

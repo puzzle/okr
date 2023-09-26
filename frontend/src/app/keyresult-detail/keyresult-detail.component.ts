@@ -50,7 +50,7 @@ export class KeyresultDetailComponent implements OnChanges {
     this.dialog
       .open(KeyResultDialogComponent, {
         width: '45em',
-        height: '40em',
+        height: 'auto',
         data: {
           objective: null,
           keyResult: this.keyResult,

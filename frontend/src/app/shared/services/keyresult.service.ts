@@ -26,4 +26,8 @@ export class KeyresultService {
       return this.httpClient.post('/api/v2/keyresults', keyResultDTO);
     }
   }
+
+  deleteKeyResult(keyResultId: number) {
+    return this.httpClient.delete(`/api/v2/keyresults/` + keyResultId);
+  }
 }

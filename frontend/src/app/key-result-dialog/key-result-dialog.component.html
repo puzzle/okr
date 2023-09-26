@@ -33,12 +33,38 @@
   </form>
 
   <div class="d-flex" mat-dialog-actions>
-    <button class="add-flat-primary-button" type="submit" (click)="saveKeyResult()" mat-button mat-dialog-close>
-      Speichern
-    </button>
-    <button *ngIf="!data.keyResult" class="add-flat-secondary-button" (click)="openNew()" mat-button mat-dialog-close>
-      Speichern & Neu
-    </button>
-    <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
+    <div [ngClass]="{ 'd-flex w-75': data.keyResult }">
+      <button
+        class="add-flat-primary-button"
+        type="submit"
+        (click)="saveKeyResult()"
+        mat-button
+        mat-dialog-close
+        [disabled]="keyResultForm.invalid"
+      >
+        Speichern
+      </button>
+      <button
+        *ngIf="!data.keyResult"
+        class="add-flat-secondary-button"
+        (click)="openNew()"
+        mat-button
+        mat-dialog-close
+        [disabled]="keyResultForm.invalid"
+      >
+        Speichern & Neu
+      </button>
+      <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+    <div [ngClass]="{ 'd-flex w-25 justify-content-end': data.keyResult }">
+      <button
+        *ngIf="data.keyResult && this.data.keyResult.lastCheckIn?.id == undefined"
+        class="add-button float-end"
+        mat-button
+        (click)="deleteKeyResult()"
+      >
+        Key Result löschen
+      </button>
+    </div>
   </div>
 </div>

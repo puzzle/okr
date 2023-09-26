@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckInFormComponent } from './check-in-form.component';
-import {MatDialogModule} from "@angular/material/dialog";
 
 describe('CheckInFormComponent', () => {
   let component: CheckInFormComponent;
@@ -9,7 +8,7 @@ describe('CheckInFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInFormComponent]
+      declarations: [CheckInFormComponent],
     });
     fixture = TestBed.createComponent(CheckInFormComponent);
     component = fixture.componentInstance;

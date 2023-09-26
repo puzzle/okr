@@ -6,9 +6,9 @@
   <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-1">{{ keyResult.lastCheckIn?.changeInfo }}</span>
   <mat-dialog-content class="d-flex justify-content-center flex-column">
     <form class="d-flex flex-column">
+      <mat-label>Veränderung seit letztem Check-in (optional)</mat-label>
       <mat-form-field>
-        <mat-label>Veränderung seit letztem Check-in (optional)</mat-label>
-        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"></textarea>
+        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
         <div *ngIf="isTouchedOrDirty('name')">
           <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
             {{ errorMessages[errorKey.toUpperCase()] }}

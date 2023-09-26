@@ -4,8 +4,6 @@ import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ApplicationHeaderComponent', () => {
-  //@ts-ignore
-  global.ResizeObserver = ResizeObserverMock;
   let component: ApplicationTopBarComponent;
   let fixture: ComponentFixture<ApplicationTopBarComponent>;
 

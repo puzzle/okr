@@ -10,6 +10,8 @@ class ResizeObserverMock {
 }
 
 describe('ApplicationBannerComponent', () => {
+  //@ts-ignore
+  global.ResizeObserver = ResizeObserverMock;
   let component: ApplicationBannerComponent;
   let fixture: ComponentFixture<ApplicationBannerComponent>;
 
@@ -34,11 +36,11 @@ describe('ApplicationBannerComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that position was changed
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: fixed');
+    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: sticky');
   }));
 
   it('should set banner position to relative if user is at top of page', fakeAsync(() => {
@@ -49,7 +51,7 @@ describe('ApplicationBannerComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that position was changed
     fixture.detectChanges();
@@ -66,7 +68,7 @@ describe('ApplicationBannerComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that banner is hidden was changed
     fixture.detectChanges();
@@ -85,7 +87,7 @@ describe('ApplicationBannerComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that banner is visible
     fixture.detectChanges();

@@ -17,8 +17,5 @@ $pz-theme: mat.define-light-theme(
   )
 );
 
-.mdc-button {
-  border-radius: 0.5rem !important;
-}
-
+@import "custom_angular.components";
 @include mat.all-component-themes($pz-theme);

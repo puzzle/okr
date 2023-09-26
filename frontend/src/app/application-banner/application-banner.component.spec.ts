@@ -8,7 +8,7 @@ describe('ApplicationBannerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ApplicationBannerComponent]
+      declarations: [ApplicationBannerComponent],
     });
     fixture = TestBed.createComponent(ApplicationBannerComponent);
     component = fixture.componentInstance;

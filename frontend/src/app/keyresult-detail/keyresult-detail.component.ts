@@ -7,6 +7,7 @@ import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { NotifierService } from '../shared/services/notifier.service';
+import { CheckInFormComponent } from '../shared/dialog/check-in-form/check-in-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -78,5 +79,13 @@ export class KeyresultDetailComponent implements OnChanges {
         };
         this.changeDetectorRef.markForCheck();
       });
+  }
+
+  openCheckInForm() {
+    const dialogRef = this.dialog.open(CheckInFormComponent, {
+      data: {
+        keyResultId: this.keyResult.id,
+      },
+    });
   }
 }

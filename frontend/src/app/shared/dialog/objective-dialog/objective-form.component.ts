@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
@@ -15,11 +15,11 @@ import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
 })
 export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({
-    title: new FormControl(''),
-    description: new FormControl(''),
-    quarter: new FormControl(),
-    team: new FormControl(),
-    relation: new FormControl(''),
+    title: new FormControl('', [Validators.required, Validators.min(2), Validators.max(250)]),
+    description: new FormControl('', [Validators.max(4096)]),
+    quarter: new FormControl(0, [Validators.required]),
+    team: new FormControl(0, [Validators.required]),
+    relation: new FormControl({ value: 0, disabled: true }),
     createKeyresults: new FormControl(true),
   });
 

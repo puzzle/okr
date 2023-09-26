@@ -61,8 +61,17 @@
     </div>
 
     <div class="d-flex gap-2 p-0" mat-dialog-actions>
-      <button mat-button mat-dialog-close class="add-flat-primary-button" submitType="ONGOING">Speichern</button>
-      <button mat-button mat-dialog-close class="add-flat-secondary-button" type="submit" submitType="DRAFT">
+      <button mat-flat-button mat-dialog-close color="primary" submitType="ONGOING" [disabled]="objectiveForm.invalid">
+        Speichern
+      </button>
+      <button
+        mat-stroked-button
+        mat-dialog-close
+        color="dark"
+        type="submit"
+        submitType="DRAFT"
+        [disabled]="objectiveForm.invalid"
+      >
         Als Draft speichern
       </button>
       <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>

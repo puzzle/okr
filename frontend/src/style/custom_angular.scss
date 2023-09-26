@@ -12,8 +12,13 @@ $pz-theme: mat.define-light-theme(
       primary: $my-primary,
       accent: $my-accent,
       warn: $my-warn,
+      dark: $my-accent,
     ),
   )
 );
+
+.mdc-button {
+  border-radius: 0.5rem !important;
+}
 
 @include mat.all-component-themes($pz-theme);

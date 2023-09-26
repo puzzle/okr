@@ -46,9 +46,9 @@
 
       <div class="d-flex flex-column gap-2 col-6">
         <label for="quarter" class="text-black">Team</label>
-        <mat-form-field *ngIf="teams$ | async as teams">
-          <mat-select formControlName="team" id="team" [value]="teams[0].id">
-            <mat-option *ngFor="let team of teams" [value]="team.id">
+        <mat-form-field>
+          <mat-select formControlName="team" id="team">
+            <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
               {{ team.name }}
             </mat-option>
           </mat-select>

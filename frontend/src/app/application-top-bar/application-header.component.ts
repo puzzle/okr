@@ -1,9 +1,9 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'app-application-header',
-  templateUrl: './application-header.component.html',
-  styleUrls: ['./application-header.component.scss'],
+  selector: 'app-application-top-bar',
+  templateUrl: './application-top-bar.component.html',
+  styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
@@ -11,9 +11,6 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
-
-  @Input()
-  drawerOpen: boolean = false;
 
   resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
     this.updateScrollEventListeners(entries[0].contentRect.height);
@@ -44,10 +41,13 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
           ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
           : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
       setTimeout(() => {
-        this.okrBanner!.style.position = 'fixed';
+        this.okrBanner!.style.position = 'sticky';
       }, 150);
     } else if (scrollTop < 10) {
-      this.okrBanner!.style.position = 'relative';
+      this.okrBanner!.style.top = '0px';
+      setTimeout(() => {
+        this.okrBanner!.style.position = 'relative';
+      }, 500);
     }
   }
 

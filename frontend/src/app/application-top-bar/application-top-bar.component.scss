@@ -1,5 +1,5 @@
 #applicationHeader {
-  height: 185px;
+  height: 48px;
 }
 
 #okrTopbar {
@@ -11,13 +11,4 @@
   pzsh-topbar {
     --pzsh-page-padding-horizontal-desktop: 2rem;
   }
-}
-
-#okrBanner {
-  position: relative;
-  top: 48px;
-  width: 100%;
-  height: 140px;
-  z-index: 100;
-  transition: 0.5s;
 }

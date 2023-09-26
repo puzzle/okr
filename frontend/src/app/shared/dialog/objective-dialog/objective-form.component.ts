@@ -42,6 +42,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       teamId: value.team,
       state: state,
     } as unknown as ObjectiveDTO;
+    console.log(objective);
     this.objectiveService.createObjective(objective).subscribe((returnValue) => console.log(returnValue));
   }
 

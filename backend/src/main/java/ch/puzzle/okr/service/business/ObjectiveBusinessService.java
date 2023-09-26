@@ -45,7 +45,6 @@ public class ObjectiveBusinessService {
     @Transactional
     public Objective createObjective(Objective objective, Jwt token) {
         objective.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
-        objective.setState(State.DRAFT);
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);

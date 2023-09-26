@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
@@ -7,29 +7,33 @@ import { QuarterService } from '../../services/quarter.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
+import errorMessages from 'src/assets/errors/error-messages.json';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   styleUrls: ['./objective-form.component.scss'],
 })
-export class ObjectiveFormComponent implements OnInit, OnDestroy {
+export class ObjectiveFormComponent implements OnInit {
   objectiveForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.min(2), Validators.max(250)]),
-    description: new FormControl('', [Validators.max(4096)]),
+    title: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    description: new FormControl('', [Validators.maxLength(4096)]),
     quarter: new FormControl(0, [Validators.required]),
     team: new FormControl(0, [Validators.required]),
     relation: new FormControl({ value: 0, disabled: true }),
     createKeyresults: new FormControl(true),
   });
-
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
+  protected readonly errorMessages: any = errorMessages;
 
   constructor(
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
+    public dialogRef: MatDialogRef<ObjectiveFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { objectiveId?: number; teamId?: number },
   ) {}
 
   onSubmit(event: any): void {
@@ -42,20 +46,37 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       teamId: value.team,
       state: state,
     } as unknown as ObjectiveDTO;
-    console.log(objective);
     this.objectiveService.createObjective(objective).subscribe((returnValue) => console.log(returnValue));
   }
 
   ngOnInit(): void {
     this.teams$ = this.teamService.getAllTeams();
     this.quarters$ = this.quarterService.getAllQuarters();
-    forkJoin([this.teams$, this.quarters$]).subscribe(([teams, quarters]) =>
-      this.objectiveForm.patchValue({ team: teams[0].id, quarter: quarters[0].id }),
-    );
+    if (this.data.objectiveId) {
+      this.objectiveService.getFullObjective(this.data.objectiveId).subscribe((objective) => {
+        this.objectiveForm.patchValue({
+          title: objective.title,
+          description: objective.description,
+          team: objective.teamId,
+          quarter: objective.quarterId,
+        });
+      });
+    } else {
+      this.quarters$.subscribe((quarters) => {
+        this.objectiveForm.patchValue({
+          quarter: quarters[0].id,
+          team: this.data.teamId,
+        });
+      });
+    }
   }
 
-  ngOnDestroy(): void {
-    // this.teams$.unsubscribe();
-    // this.quarters$.unsubscribe();
+  isTouchedOrDirty(name: string) {
+    return this.objectiveForm.get(name)?.dirty || this.objectiveForm.get(name)?.touched;
+  }
+
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.objectiveForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
   }
 }

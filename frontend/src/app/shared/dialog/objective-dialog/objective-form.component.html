@@ -11,6 +11,11 @@
       <label for="title" class="text-black">Titel</label>
       <mat-form-field appearance="outline">
         <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Objective Title"></textarea>
+        <span *ngIf="isTouchedOrDirty('title')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+            {{ errorMessages[errorKey.toUpperCase()] }}
+          </mat-error>
+        </span>
       </mat-form-field>
     </div>
 
@@ -18,6 +23,11 @@
       <label for="title" class="text-black">Beschreibung (optional)</label>
       <mat-form-field appearance="outline">
         <textarea matInput formControlName="description" placeholder="Objective Beschreibung"></textarea>
+        <span *ngIf="isTouchedOrDirty('description')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
+            {{ errorMessages[errorKey.toUpperCase()] }}
+          </mat-error>
+        </span>
       </mat-form-field>
     </div>
 

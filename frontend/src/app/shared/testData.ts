@@ -7,7 +7,7 @@ import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from './types/model/KeyresultMin';
 import { ObjectiveMin } from './types/model/ObjectiveMin';
 import { OverviewEntity } from './types/model/OverviewEntity';
-import { Objective } from './types/model/Objective';
+import { KeyResultObjective } from './types/model/KeyResultObjective';
 import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
 import { CheckIn } from './types/model/CheckIn';
@@ -136,7 +136,7 @@ export const quarter: Quarter = {
   startDate: new Date(),
 };
 
-export const objective: Objective = {
+export const objective: KeyResultObjective = {
   team: team1,
   createdOn: new Date(),
   title: 'title',
@@ -199,7 +199,7 @@ export const keyResult: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
-  } as Objective,
+  } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
     value: 'FAIL',

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Objective } from '../types/model/Objective';
+import { KeyResultObjective } from '../types/model/KeyResultObjective';
 import { ObjectiveDTO } from '../types/DTOs/ObjectiveDTO';
+import { Objective } from '../types/model/Objective';
 
 @Injectable({
   providedIn: 'root',

@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { MenuEntry } from '../shared/types/menu-entry';
-import { RouteService } from '../shared/services/route.service';
-import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { NotifierService } from '../shared/services/notifier.service';
-import { Router } from '@angular/router';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject } from 'rxjs';
+import {AfterViewInit, ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {MenuEntry} from '../shared/types/menu-entry';
+import {RouteService} from '../shared/services/route.service';
+import {ObjectiveMin} from '../shared/types/model/ObjectiveMin';
+import {Router} from '@angular/router';
+import {KeyResultDialogComponent} from '../key-result-dialog/key-result-dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {ObjectiveFormComponent} from '../shared/dialog/objective-dialog/objective-form.component';
+import {NotifierService} from "../shared/services/notifier.service";
 
 @Component({
   selector: 'app-objective-column',
@@ -14,60 +14,59 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent {
-  @Input()
-  get objective(): BehaviorSubject<ObjectiveMin> {
-    return this._objective;
-  }
-  set objective(objective: ObjectiveMin) {
-    this._objective.next(objective);
-  }
-  private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
-
-  @Input() objectiveMin!: ObjectiveMin;
-  menuEntries: MenuEntry[] = [
-    { displayName: 'Objective bearbeiten', showDialog: false },
-    { displayName: 'Objective duplizieren', showDialog: false },
-    { displayName: 'Objective abschliessen', showDialog: false },
-    { displayName: 'Objective freigeben', showDialog: false },
-  ];
+export class ObjectiveComponent implements AfterViewInit {
+  @Input() objective!: ObjectiveMin;
+  menuEntries: MenuEntry[] = [];
 
   constructor(
     private dialog: MatDialog,
     private routeService: RouteService,
     private notifierService: NotifierService,
+    private matDialog: MatDialog,
     private router: Router,
   ) {
-    this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-      const keyResults = this.objective.value.keyResults;
-      if (keyResultChange.delete) {
-        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
-        keyResults.splice(existingKRIndex, 1);
-        this.objective = { ...this.objective.value, keyResults: keyResults };
-      } else {
-        if (keyResultChange.objective.id != this.objective.value.id) {
-          return;
-        }
-        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
-        if (existingKRIndex !== -1) {
-          keyResults[existingKRIndex] = {
-            ...keyResults[existingKRIndex],
-            id: keyResultChange.keyResult.id,
-            title: keyResultChange.keyResult.title,
-          };
-        } else {
-          keyResults.push(keyResultChange.keyResult);
-        }
-        this.objective = { ...this.objective.value, keyResults: keyResults };
-      }
-    });
+      this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
+          const keyResults = this.objective.keyResults;
+          if (keyResultChange.delete) {
+              const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
+              keyResults.splice(existingKRIndex, 1);
+              this.objective = { ...this.objective, keyResults: keyResults };
+          } else {
+              if (keyResultChange.objective.id != this.objective.id) {
+                  return;
+              }
+              const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
+              if (existingKRIndex !== -1) {
+                  keyResults[existingKRIndex] = {
+                      ...keyResults[existingKRIndex],
+                      id: keyResultChange.keyResult.id,
+                      title: keyResultChange.keyResult.title,
+                  };
+              } else {
+                  keyResults.push(keyResultChange.keyResult);
+              }
+              this.objective = { ...this.objective, keyResults: keyResults };
+          }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    this.menuEntries = [
+      {
+        displayName: 'Objective bearbeiten',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.id } },
+      },
+      { displayName: 'Objective duplizieren' },
+      { displayName: 'Objective abschliessen' },
+      { displayName: 'Objective freigeben' },
+    ];
   }
 
   redirect(menuEntry: MenuEntry) {
-    if (menuEntry.showDialog) {
-      this.openDialog();
+    if (menuEntry.dialog) {
+      this.matDialog.open(menuEntry.dialog.dialog, { data: menuEntry.dialog.data });
     } else {
-      this.routeService.navigate(menuEntry.routeLine!);
+      this.routeService.navigate(menuEntry.route!);
     }
   }
 
@@ -78,7 +77,7 @@ export class ObjectiveComponent {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective.value.id]);
+    this.router.navigate(['objective', this.objective.id]);
   }
 
   openAddKeyResultDialog() {
@@ -87,7 +86,7 @@ export class ObjectiveComponent {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective.value,
+          objective: this.objective,
           keyResult: null,
         },
       })

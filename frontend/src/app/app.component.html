@@ -1,6 +1,6 @@
 <div>
   <app-application-top-bar></app-application-top-bar>
-  <app-application-banner *ngIf="!drawerOpen"></app-application-banner>
+  <app-application-banner [class.backdrop]="drawerOpen"></app-application-banner>
   <div *ngIf="isEnvStaging$ | async" class="staging-banner">
     <div class="staging-text">STAGING ENVIRONMENT!</div>
   </div>
@@ -24,7 +24,6 @@
       ></app-drawer-content>
     </mat-drawer>
     <mat-drawer-content>
-      <app-application-banner *ngIf="drawerOpen" [class.fixed-position]="!userIsAtTop()"></app-application-banner>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>

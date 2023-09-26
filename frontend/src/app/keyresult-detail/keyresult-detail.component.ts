@@ -84,7 +84,7 @@ export class KeyresultDetailComponent implements OnChanges {
   openCheckInForm() {
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
-        keyResultId: this.keyResult.id,
+        keyResult: this.keyResult,
       },
     });
   }

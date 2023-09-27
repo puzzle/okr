@@ -41,22 +41,28 @@ export class ObjectiveFormComponent implements OnInit {
   onSubmit(event: any): void {
     const value = this.objectiveForm.value;
     const state = event.submitter.getAttribute('submitType');
-    let objective: ObjectiveDTO = {
+    let objectiveDTO: ObjectiveDTO = {
+      id: this.data.objectiveId,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
       teamId: value.team,
       state: state,
     } as unknown as ObjectiveDTO;
-    this.objectiveService.createObjective(objective).subscribe((returnValue) => console.log(returnValue));
+    if (objectiveDTO.id) {
+      this.objectiveService.updateObjective(objectiveDTO).subscribe();
+    } else {
+      this.objectiveService.createObjective(objectiveDTO).subscribe();
+    }
+    this.dialogRef.close({ refresh: true });
   }
 
   ngOnInit(): void {
     this.teams$ = this.teamService.getAllTeams();
     this.quarters$ = this.quarterService.getAllQuarters();
-    const objective$ = this.objectiveService
-      .getFullObjective(this.data.objectiveId || -1)
-      .pipe(catchError(() => of(this.getDefaultObjective())));
+    const objective$ = this.data.objectiveId
+      ? this.objectiveService.getFullObjective(this.data.objectiveId)
+      : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       const teamId = this.data.objectiveId ? objective.teamId : this.data.teamId;

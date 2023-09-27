@@ -17,4 +17,8 @@ export class ObjectiveService {
   createObjective(objectiveDTO: ObjectiveDTO) {
     return this.httpClient.post('/api/v2/objectives', objectiveDTO);
   }
+
+  updateObjective(objectiveDTO: ObjectiveDTO) {
+    return this.httpClient.put(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
+  }
 }

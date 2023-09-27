@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +37,9 @@ public class ObjectiveBusinessService {
 
     @Transactional
     public Objective updateObjective(Long id, Objective objective, Jwt token) {
+        Objective savedObjective = objectivePersistenceService.findById(id);
+        objective.setCreatedBy(savedObjective.getCreatedBy());
+        objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(userBusinessService.getUserByAuthorisationToken(token));
         objective.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, objective);

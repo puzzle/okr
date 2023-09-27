@@ -36,6 +36,7 @@
     <div [ngClass]="{ 'd-flex w-75': data.keyResult }">
       <button
         class="add-flat-primary-button"
+        [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
         mat-button
@@ -47,6 +48,7 @@
       <button
         *ngIf="!data.keyResult"
         class="add-flat-secondary-button"
+        [attr.data-testId]="'saveAndNew'"
         (click)="openNew()"
         mat-button
         mat-dialog-close
@@ -60,6 +62,7 @@
       <button
         *ngIf="data.keyResult && this.data.keyResult.lastCheckIn?.id == undefined"
         class="add-button float-end"
+        [attr.data-testId]="'delete'"
         mat-button
         (click)="deleteKeyResult()"
       >

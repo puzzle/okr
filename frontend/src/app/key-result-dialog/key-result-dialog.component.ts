@@ -36,11 +36,11 @@ export class KeyResultDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
     private overviewService: OverviewService,
-    private matDialog: MatDialog,
+    public matDialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    // TODO set boolean if KeyResult is not metric
+    // TODO set isMetricKeyResult boolean if KeyResult is not metric
     if (this.data.keyResult) {
       // TODO set values for unit baseLine stretchGoal commit-, target-, stretchZone
       this.keyResultForm.setValue({
@@ -97,8 +97,6 @@ export class KeyResultDialogComponent implements OnInit {
             this.dialogRef.close();
           }
         });
-    } else {
-      // TODO show Error that it can not delete KR with CheckIns
     }
   }
 

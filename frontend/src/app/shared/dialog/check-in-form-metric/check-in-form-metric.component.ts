@@ -33,9 +33,7 @@ export class CheckInFormMetricComponent implements OnInit {
     this.formatValue();
   }
 
-  ngOnInit(): void {
-    console.log(this.keyResult);
-  }
+  ngOnInit(): void {}
 
   setDefaultValues() {
     if (this.keyResult.lastCheckIn?.value != null) {
@@ -55,7 +53,7 @@ export class CheckInFormMetricComponent implements OnInit {
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
     let checkIn = { ...this.dialogForm.value, value: this.parseValue() };
-    console.log(checkIn);
+    this.dialogRef.close({ data: checkIn });
   }
 
   isTouchedOrDirty(name: string) {

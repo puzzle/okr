@@ -9,6 +9,7 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { NotifierService } from '../shared/services/notifier.service';
 import { CheckInFormComponent } from '../shared/dialog/check-in-form/check-in-form.component';
 import { CheckInFormMetricComponent } from '../shared/dialog/check-in-form-metric/check-in-form-metric.component';
+import { CheckInService } from '../shared/services/check-in.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -22,6 +23,7 @@ export class KeyresultDetailComponent implements OnChanges {
 
   constructor(
     private keyResultService: KeyresultService,
+    private checkInService: CheckInService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private notifierService: NotifierService,
@@ -88,6 +90,10 @@ export class KeyresultDetailComponent implements OnChanges {
         keyResult: this.keyResult,
       },
       width: '719px',
+    });
+    dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
+      this.checkInService.createKeyResult(data).subscribe();
     });
   }
 }

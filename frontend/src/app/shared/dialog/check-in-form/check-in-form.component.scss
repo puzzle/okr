@@ -1,0 +1,15 @@
+@import "_variables";
+
+.submit {
+  background-color: $pz-dark-blue;
+  border-radius: 8px;
+}
+
+.cancel {
+  background-color: white;
+  color: $pz-dark-blue;
+}
+
+mat-dialog-content {
+  padding-bottom: 0 !important;
+}

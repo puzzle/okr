@@ -1,20 +1,34 @@
-<div class="m-3">
-  <mat-dialog-content class="d-flex justify-content-center flex-column">
-    <div class="w-100 d-flex justify-content-start">
-      <h1 class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
-    </div>
-    <p class="fs-6 mt-1">Key Result</p>
-    <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-1">{{ keyResult.lastCheckIn?.changeInfo }}</span>
-    <form class="d-flex flex-column mt-1">
-      <mat-label>Veränderung seit letztem Check-in (optional)</mat-label>
-      <mat-form-field>
-        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
-        <div *ngIf="isTouchedOrDirty('name')">
-          <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
-            {{ errorMessages[errorKey.toUpperCase()] }}
-          </mat-error>
-        </div>
-      </mat-form-field>
-    </form>
-  </mat-dialog-content>
-</div>
+<mat-dialog-content class="d-flex justify-content-center flex-column mb-2">
+  <div class="w-100 d-flex justify-content-start">
+    <h1 class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
+  </div>
+  <p class="fs-6 mt-1">Key Result</p>
+  <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-3 ms-3">{{ keyResult.lastCheckIn?.changeInfo }}</span>
+  <form class="d-flex flex-column mt-2">
+    <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
+    <mat-form-field>
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
+      <div *ngIf="isTouchedOrDirty('name')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
+        </mat-error>
+      </div>
+    </mat-form-field>
+
+    <mat-label class="mb-2">Massnahmen (optional)</mat-label>
+    <mat-form-field>
+      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
+      <div *ngIf="isTouchedOrDirty('name')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
+        </mat-error>
+      </div>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="d-flex justify-content-start">
+  <button mat-button mat-dialog-close class="submit ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold text-white">
+    Check-in erfassen
+  </button>
+  <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
+</mat-dialog-actions>

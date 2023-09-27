@@ -151,6 +151,7 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: DrawerInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    UnitTransformationPipe,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

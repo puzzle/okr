@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { UnitTransformationPipe } from '../../pipes/unit-transformation.pipe';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -14,33 +15,43 @@ export class CheckInFormMetricComponent implements OnInit {
   currentDate: Date;
 
   dialogForm = new FormGroup({
-    value: new FormControl<number>(0, [Validators.required]),
+    value: new FormControl<string>('', [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
+  protected readonly errorMessages: any = errorMessages;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormMetricComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private pipe: UnitTransformationPipe,
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
-    this.setFormValues();
+    this.setDefaultValues();
+    this.formatValue();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.keyResult);
+  }
 
-  setFormValues() {
-    if (this.keyResult.lastCheckIn != null) {
-      this.dialogForm.controls.value.setValue(+this.keyResult.lastCheckIn.value);
+  setDefaultValues() {
+    if (this.keyResult.lastCheckIn?.value != null) {
+      this.dialogForm.controls.value.setValue(this.keyResult.lastCheckIn.value.toString());
       this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn.confidence);
     }
   }
 
+  formatValue() {
+    this.dialogForm.controls.value.setValue(
+      this.pipe.transform(+this.dialogForm.controls.value.value!, this.keyResult.unit),
+    );
+  }
+
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
-    console.log(this.keyResult.id);
     console.log(this.dialogForm.value);
   }
 
@@ -52,6 +63,4 @@ export class CheckInFormMetricComponent implements OnInit {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  protected readonly errorMessages: any = errorMessages;
 }

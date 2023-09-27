@@ -5,7 +5,7 @@ import { formatCurrency } from '@angular/common';
   name: 'unitTransformation',
 })
 export class UnitTransformationPipe implements PipeTransform {
-  transform(unit: string, value: number): string {
+  transform(value: number, unit: String): string {
     switch (unit) {
       case 'CHF':
         return value % 1 != 0 ? formatCurrency(value, 'en', '') : value + '.-';

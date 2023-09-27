@@ -13,14 +13,7 @@
         </mat-label>
         <div class="d-flex flex-row">
           <mat-form-field>
-            <input
-              type="number"
-              *ngIf="keyResult.lastCheckIn"
-              matInput
-              formControlName="value"
-              [value]="keyResult.unit.toString() | unitTransformation: dialogForm.controls['value'].value!"
-            />
-            <input type="number" formControlName="value" *ngIf="!keyResult.lastCheckIn" matInput />
+            <input type="text" (focusout)="formatValue()" matInput formControlName="value" />
             <div *ngIf="isTouchedOrDirty('value')">
               <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('value')">
                 {{ errorMessages[errorKey.toUpperCase()] }}

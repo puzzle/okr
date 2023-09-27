@@ -8,10 +8,17 @@
     <!--    Confidence and Value   -->
     <div class="d-flex flex-row w-100">
       <div class="d-flex flex-column w-25">
-        <mat-label class="mb-2">Aktueller Wert ({{ keyResult.unit }})</mat-label>
+        <mat-label class="mb-2"
+          >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit }})</span>:</mat-label
+        >
         <div class="d-flex flex-row">
           <mat-form-field>
-            <input matInput placeholder="Ex. Tom" [value]="keyResult.lastCheckIn!.value.toString()" />
+            <input
+              *ngIf="keyResult.lastCheckIn"
+              matInput
+              [value]="keyResult.unit.toString() | unitTransformation: +keyResult.lastCheckIn.value"
+            />
+            <input *ngIf="!keyResult.lastCheckIn" matInput />
             <div *ngIf="isTouchedOrDirty('name')">
               <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
                 {{ errorMessages[errorKey.toUpperCase()] }}

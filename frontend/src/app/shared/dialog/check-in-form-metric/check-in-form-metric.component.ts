@@ -52,7 +52,7 @@ export class CheckInFormMetricComponent implements OnInit {
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
-    let checkIn = { ...this.dialogForm.value, value: this.parseValue() };
+    let checkIn = { ...this.dialogForm.value, value: this.parseValue(), keyResultId: this.keyResult.id };
     this.dialogRef.close({ data: checkIn });
   }
 

@@ -91,9 +91,8 @@ export class KeyresultDetailComponent implements OnChanges {
       },
       width: '719px',
     });
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
-      this.checkInService.createKeyResult(data).subscribe();
+    dialogRef.afterClosed().subscribe((result) => {
+      this.checkInService.createKeyResult(result.data).subscribe();
     });
   }
 }

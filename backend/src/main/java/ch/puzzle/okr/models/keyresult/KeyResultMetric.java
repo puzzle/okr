@@ -68,7 +68,7 @@ public class KeyResultMetric extends KeyResult {
                 + ", unit='" + unit + '\'' + '}';
     }
 
-    public KeyResultMetric(Builder builder) {
+    private KeyResultMetric(Builder builder) {
         super(builder);
         setBaseline(builder.baseline);
         setStretchGoal(builder.stretchGoal);

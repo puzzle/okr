@@ -19,11 +19,11 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
 
     @Override
     public void validateOnCreate(Team model) {
-        throw new IllegalAccessError();
+        throw new IllegalCallerException("This method must not be called");
     }
 
     @Override
     public void validateOnUpdate(Long id, Team model) {
-        throw new IllegalAccessError();
+        throw new IllegalCallerException("This method must not be called because there is no update of quarters");
     }
 }

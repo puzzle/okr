@@ -26,6 +26,7 @@ public class CheckInValidationService extends ValidationBase<CheckIn, Long> {
     public void validateOnUpdate(Long id, CheckIn model) {
         throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNull(id);
+        throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(id);
 
         List<CheckIn> checkInsOfKeyResult = ((CheckInPersistenceService) this.persistenceService)

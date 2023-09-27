@@ -18,7 +18,7 @@ public class KeyResultAlignment extends Alignment implements AlignmentInterface<
         super();
     }
 
-    public KeyResultAlignment(Builder builder) {
+    private KeyResultAlignment(Builder builder) {
         super(builder);
         setAlignmentTarget(builder.targetKeyResult);
     }

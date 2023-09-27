@@ -68,7 +68,7 @@ public class KeyResultOrdinal extends KeyResult {
                 + targetZone + '\'' + ", stretchZone='" + stretchZone + '\'' + '}';
     }
 
-    public KeyResultOrdinal(Builder builder) {
+    private KeyResultOrdinal(Builder builder) {
         super(builder);
         setCommitZone(builder.commitZone);
         setTargetZone(builder.targetZone);

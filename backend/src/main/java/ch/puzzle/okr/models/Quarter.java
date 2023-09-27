@@ -24,7 +24,7 @@ public class Quarter {
     public Quarter() {
     }
 
-    public Quarter(Builder builder) {
+    private Quarter(Builder builder) {
         this.id = builder.id;
         setLabel(builder.label);
         setStartDate(builder.startDate);

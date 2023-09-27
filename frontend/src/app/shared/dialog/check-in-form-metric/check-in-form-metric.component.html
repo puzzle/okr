@@ -4,7 +4,29 @@
   </div>
   <p class="fs-6 mt-1">Key Result</p>
   <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-3 ms-3">{{ keyResult.lastCheckIn?.changeInfo }}</span>
-  <form class="d-flex flex-column mt-2">
+  <form class="d-flex flex-column mt-4">
+    <!--    Confidence and Value   -->
+    <div class="d-flex flex-row w-100">
+      <div class="d-flex flex-column w-25">
+        <mat-label>Aktueller Wert ({{ keyResult.unit }})</mat-label>
+        <div class="d-flex flex-row">
+          <mat-form-field>
+            <input matInput placeholder="Ex. Tom" [value]="keyResult.lastCheckIn!.value.toString()" />
+            <div *ngIf="isTouchedOrDirty('name')">
+              <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+                {{ errorMessages[errorKey.toUpperCase()] }}
+              </mat-error>
+            </div>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="d-flex flex-column w-75 justify-content-start align-items-start ms-5">
+        <mat-label class="mb-3">Confidence um Target zu erreichen</mat-label>
+        <app-confidence [edit]="true" [keyResult]="keyResult"></app-confidence>
+      </div>
+    </div>
+
+    <!--    Changeinfo   -->
     <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
     <mat-form-field>
       <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
@@ -15,6 +37,7 @@
       </div>
     </mat-form-field>
 
+    <!--    Initiatives   -->
     <mat-label class="mb-2">Massnahmen (optional)</mat-label>
     <mat-form-field>
       <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>

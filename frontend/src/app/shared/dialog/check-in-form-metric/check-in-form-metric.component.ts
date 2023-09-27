@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../types/model/KeyResult';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -10,7 +11,7 @@ import errorMessages from '../../../../assets/errors/error-messages.json';
   styleUrls: ['./check-in-form-metric.component.scss'],
 })
 export class CheckInFormMetricComponent implements OnInit {
-  keyResult: KeyResult;
+  keyResult: KeyResultMetric;
   currentDate: Date;
 
   dialogForm = new FormGroup({});
@@ -24,7 +25,7 @@ export class CheckInFormMetricComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.keyResult.description);
+    console.log(this.keyResult);
   }
 
   isTouchedOrDirty(name: string) {

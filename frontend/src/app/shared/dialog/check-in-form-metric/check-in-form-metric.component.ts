@@ -45,14 +45,17 @@ export class CheckInFormMetricComponent implements OnInit {
   }
 
   formatValue() {
-    this.dialogForm.controls.value.setValue(
-      this.pipe.transform(+this.dialogForm.controls.value.value!, this.keyResult.unit),
-    );
+    this.dialogForm.controls.value.setValue(this.pipe.transform(this.parseValue(), this.keyResult.unit));
+  }
+
+  parseValue(): number {
+    return +this.dialogForm.controls.value.value?.replaceAll('%', '').replaceAll('.-', '')!;
   }
 
   saveCheckIn() {
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
-    console.log(this.dialogForm.value);
+    let checkIn = { ...this.dialogForm.value, value: this.parseValue() };
+    console.log(checkIn);
   }
 
   isTouchedOrDirty(name: string) {

@@ -8,7 +8,7 @@
     <!--    Confidence and Value   -->
     <div class="d-flex flex-row w-100">
       <div class="d-flex flex-column w-25">
-        <mat-label>Aktueller Wert ({{ keyResult.unit }})</mat-label>
+        <mat-label class="mb-2">Aktueller Wert ({{ keyResult.unit }})</mat-label>
         <div class="d-flex flex-row">
           <mat-form-field>
             <input matInput placeholder="Ex. Tom" [value]="keyResult.lastCheckIn!.value.toString()" />

@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { objective } from '../shared/testData';
 import { of } from 'rxjs';
+import { MatDialogModule } from "@angular/material/dialog";
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -17,7 +18,7 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatDialogModule],
       providers: [{ provide: ObjectiveService, useValue: objectiveService }],
       declarations: [ObjectiveDetailComponent],
     }).compileComponents();

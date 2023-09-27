@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { objective } from '../shared/testData';
 import { of } from 'rxjs';
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 
 let objectiveService = {
   getFullObjective: jest.fn(),

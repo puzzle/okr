@@ -4,23 +4,25 @@
   </div>
   <p class="fs-6 mt-1">Key Result</p>
   <span *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-3 ms-3">{{ keyResult.lastCheckIn?.changeInfo }}</span>
-  <form class="d-flex flex-column mt-4">
+  <form [formGroup]="dialogForm" class="d-flex flex-column mt-4" (ngSubmit)="this.saveCheckIn()">
     <!--    Confidence and Value   -->
     <div class="d-flex flex-row w-100">
       <div class="d-flex flex-column w-25">
         <mat-label class="mb-2"
-          >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit }})</span>:</mat-label
-        >
+          >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit }})</span>:
+        </mat-label>
         <div class="d-flex flex-row">
           <mat-form-field>
             <input
+              type="number"
               *ngIf="keyResult.lastCheckIn"
               matInput
-              [value]="keyResult.unit.toString() | unitTransformation: +keyResult.lastCheckIn.value"
+              formControlName="value"
+              [value]="keyResult.unit.toString() | unitTransformation: dialogForm.controls['value'].value!"
             />
-            <input *ngIf="!keyResult.lastCheckIn" matInput />
-            <div *ngIf="isTouchedOrDirty('name')">
-              <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+            <input type="number" formControlName="value" *ngIf="!keyResult.lastCheckIn" matInput />
+            <div *ngIf="isTouchedOrDirty('value')">
+              <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('value')">
                 {{ errorMessages[errorKey.toUpperCase()] }}
               </mat-error>
             </div>
@@ -36,9 +38,15 @@
     <!--    Changeinfo   -->
     <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
     <mat-form-field>
-      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
-      <div *ngIf="isTouchedOrDirty('name')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+      <textarea
+        formControlName="changeInfo"
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+        cdkAutosizeMaxRows="2"
+      ></textarea>
+      <div *ngIf="isTouchedOrDirty('changeInfo')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
           {{ errorMessages[errorKey.toUpperCase()] }}
         </mat-error>
       </div>
@@ -47,18 +55,26 @@
     <!--    Initiatives   -->
     <mat-label class="mb-2">Massnahmen (optional)</mat-label>
     <mat-form-field>
-      <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="2"></textarea>
-      <div *ngIf="isTouchedOrDirty('name')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+      <textarea
+        formControlName="initiatives"
+        matInput
+        cdkTextareaAutosize
+        cdkAutosizeMinRows="2"
+        cdkAutosizeMaxRows="2"
+      ></textarea>
+      <div *ngIf="isTouchedOrDirty('initiatives')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
           {{ errorMessages[errorKey.toUpperCase()] }}
         </mat-error>
       </div>
     </mat-form-field>
+
+    <!--    Buttons to submit the check-in-->
+    <mat-dialog-actions class="d-flex justify-content-start">
+      <button type="submit" mat-button mat-dialog-close class="submit ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold text-white">
+        Check-in erfassen
+      </button>
+      <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
+    </mat-dialog-actions>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions class="d-flex justify-content-start">
-  <button mat-button mat-dialog-close class="submit ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold text-white">
-    Check-in erfassen
-  </button>
-  <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
-</mat-dialog-actions>

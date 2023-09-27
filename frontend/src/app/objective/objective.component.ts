@@ -1,12 +1,12 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {MenuEntry} from '../shared/types/menu-entry';
-import {RouteService} from '../shared/services/route.service';
-import {ObjectiveMin} from '../shared/types/model/ObjectiveMin';
-import {Router} from '@angular/router';
-import {KeyResultDialogComponent} from '../key-result-dialog/key-result-dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {ObjectiveFormComponent} from '../shared/dialog/objective-dialog/objective-form.component';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { MenuEntry } from '../shared/types/menu-entry';
+import { RouteService } from '../shared/services/route.service';
+import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
+import { Router } from '@angular/router';
+import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
+import { MatDialog } from '@angular/material/dialog';
 import {NotifierService} from "../shared/services/notifier.service";
+import {KeyResultDialogComponent} from "../key-result-dialog/key-result-dialog.component";
 
 @Component({
   selector: 'app-objective-column',
@@ -64,7 +64,12 @@ export class ObjectiveComponent implements AfterViewInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
-      this.matDialog.open(menuEntry.dialog.dialog, { data: menuEntry.dialog.data });
+      const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, { data: menuEntry.dialog.data });
+      matDialogRef.afterClosed().subscribe((result) => {
+        if (result.objective) {
+          this.notifierService.objectivesChanges.next(result.objective);
+        }
+      });
     } else {
       this.routeService.navigate(menuEntry.route!);
     }

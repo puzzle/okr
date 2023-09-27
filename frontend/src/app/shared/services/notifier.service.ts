@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { CheckIn } from '../types/model/CheckIn';
 import { KeyResult } from '../types/model/KeyResult';
 import { Objective } from '../types/model/Objective';
+import { ObjectiveMin } from '../types/model/ObjectiveMin';
 
 @Injectable({
   providedIn: 'root',
@@ -21,4 +22,6 @@ export class NotifierService {
       objective: Objective;
       delete: boolean;
     }>();
+
+  objectivesChanges: Subject<ObjectiveMin> = new Subject<ObjectiveMin>();
 }

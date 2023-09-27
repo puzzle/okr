@@ -4,13 +4,14 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
-import { catchError, forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
 import errorMessages from 'src/assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { Objective } from '../../types/model/Objective';
+import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 
 @Component({
   selector: 'app-objective-form',
@@ -49,12 +50,15 @@ export class ObjectiveFormComponent implements OnInit {
       teamId: value.team,
       state: state,
     } as unknown as ObjectiveDTO;
-    if (objectiveDTO.id) {
-      this.objectiveService.updateObjective(objectiveDTO).subscribe();
-    } else {
-      this.objectiveService.createObjective(objectiveDTO).subscribe();
-    }
-    this.dialogRef.close({ refresh: true });
+
+    const saveFunction = objectiveDTO.id
+      ? this.objectiveService.updateObjective(objectiveDTO)
+      : this.objectiveService.createObjective(objectiveDTO);
+
+    saveFunction.subscribe((savedObjective: ObjectiveDTO) => {
+      const objectiveMin: ObjectiveMin = { ...savedObjective } as unknown as ObjectiveMin;
+      this.dialogRef.close({ objective: objectiveMin });
+    });
   }
 
   ngOnInit(): void {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { KeyResultObjective } from '../types/model/KeyResultObjective';
 import { ObjectiveDTO } from '../types/DTOs/ObjectiveDTO';
 import { Objective } from '../types/model/Objective';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +14,11 @@ export class ObjectiveService {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
   }
 
-  createObjective(objectiveDTO: ObjectiveDTO) {
-    return this.httpClient.post('/api/v2/objectives', objectiveDTO);
+  createObjective(objectiveDTO: ObjectiveDTO): Observable<ObjectiveDTO> {
+    return this.httpClient.post<ObjectiveDTO>('/api/v2/objectives', objectiveDTO);
   }
 
-  updateObjective(objectiveDTO: ObjectiveDTO) {
-    return this.httpClient.put(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
+  updateObjective(objectiveDTO: ObjectiveDTO): Observable<ObjectiveDTO> {
+    return this.httpClient.put<ObjectiveDTO>(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
   }
 }

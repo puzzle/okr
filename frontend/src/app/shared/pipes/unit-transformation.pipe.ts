@@ -1,11 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {formatCurrency} from "@angular/common";
+import { formatCurrency } from '@angular/common';
 
 @Pipe({
-  name: 'unitTransformation'
+  name: 'unitTransformation',
 })
 export class UnitTransformationPipe implements PipeTransform {
-
   transform(unit: string, value: number): string {
     switch (unit) {
       case 'CHF':

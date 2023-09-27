@@ -24,9 +24,7 @@ export class CheckInFormMetricComponent implements OnInit {
     this.currentDate = new Date();
   }
 
-  ngOnInit(): void {
-    console.log(this.keyResult);
-  }
+  ngOnInit(): void {}
 
   isTouchedOrDirty(name: string) {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;

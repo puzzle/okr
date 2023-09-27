@@ -5,18 +5,18 @@ import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 
 @Component({
-  selector: 'app-check-in-form',
-  templateUrl: './check-in-form.component.html',
-  styleUrls: ['./check-in-form.component.scss'],
+  selector: 'app-check-in-form-metric',
+  templateUrl: './check-in-form-metric.component.html',
+  styleUrls: ['./check-in-form-metric.component.scss'],
 })
-export class CheckInFormComponent implements OnInit {
+export class CheckInFormMetricComponent implements OnInit {
   keyResult: KeyResult;
   currentDate: Date;
 
   dialogForm = new FormGroup({});
 
   constructor(
-    public dialogRef: MatDialogRef<CheckInFormComponent>,
+    public dialogRef: MatDialogRef<CheckInFormMetricComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.keyResult = data.keyResult;

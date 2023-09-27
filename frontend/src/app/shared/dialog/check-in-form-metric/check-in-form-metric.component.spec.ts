@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckInFormComponent } from './check-in-form.component';
+import { CheckInFormMetricComponent } from './check-in-form-metric.component';
 
 describe('CheckInFormComponent', () => {
-  let component: CheckInFormComponent;
-  let fixture: ComponentFixture<CheckInFormComponent>;
+  let component: CheckInFormMetricComponent;
+  let fixture: ComponentFixture<CheckInFormMetricComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInFormComponent],
+      declarations: [CheckInFormMetricComponent],
     });
-    fixture = TestBed.createComponent(CheckInFormComponent);
+    fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

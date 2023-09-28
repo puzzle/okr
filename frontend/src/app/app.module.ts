@@ -50,6 +50,7 @@ import { ApplicationBannerComponent } from './application-banner/application-ban
 import { CheckInFormComponent } from './shared/dialog/check-in-form/check-in-form.component';
 import { CheckInFormMetricComponent } from './shared/dialog/check-in-form-metric/check-in-form-metric.component';
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation.pipe';
+import { CheckInFormOrdinalComponent } from './shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
@@ -101,6 +102,7 @@ export const MY_FORMATS = {
     CheckInFormComponent,
     CheckInFormMetricComponent,
     UnitTransformationPipe,
+    CheckInFormOrdinalComponent,
   ],
   imports: [
     CommonModule,

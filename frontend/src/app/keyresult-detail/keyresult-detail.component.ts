@@ -10,6 +10,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 import { CheckInFormComponent } from '../shared/dialog/check-in-form/check-in-form.component';
 import { CheckInFormMetricComponent } from '../shared/dialog/check-in-form-metric/check-in-form-metric.component';
 import { CheckInService } from '../shared/services/check-in.service';
+import { CheckInFormOrdinalComponent } from '../shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -87,7 +88,8 @@ export class KeyresultDetailComponent implements OnChanges {
   }
 
   openCheckInForm() {
-    let component = this.keyResult.keyResultType === 'metric' ? CheckInFormMetricComponent : CheckInFormMetricComponent;
+    let component =
+      this.keyResult.keyResultType === 'metric' ? CheckInFormMetricComponent : CheckInFormOrdinalComponent;
     const dialogRef = this.dialog.open(component, {
       data: {
         keyResult: this.keyResult,

@@ -6,6 +6,7 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -21,6 +22,7 @@ export class KeyresultDetailComponent implements OnChanges {
     private keyResultService: KeyresultService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    private notifierService: NotifierService,
   ) {}
 
   ngOnChanges() {
@@ -57,9 +59,19 @@ export class KeyresultDetailComponent implements OnChanges {
         },
       })
       .afterClosed()
-      .subscribe((result) => {
-        if (result == 'openNewDialog') {
+      .subscribe(async (result) => {
+        if (result.openNew) {
           this.openEditKeyResultDialog();
+        } else {
+          if (result.delete) {
+            await this.notifierService.deleteKeyResult.next(result.keyResult);
+          } else {
+            await this.notifierService.keyResultsChanges.next({
+              keyResult: result.keyResult,
+              changeId: result.changeId,
+              objective: result.objective,
+            });
+          }
         }
       });
   }

@@ -7,7 +7,6 @@ import { KeyresultService } from '../shared/services/keyresult.service';
 import { testUser } from '../shared/testData';
 import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
-import { OverviewService } from '../shared/services/overview.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -35,7 +34,6 @@ export class KeyResultDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { objective: any; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
-    private overviewService: OverviewService,
     public matDialog: MatDialog,
   ) {}
 
@@ -73,12 +71,20 @@ export class KeyResultDialogComponent implements OnInit {
     if (this.data.objective) {
       keyResult.objective = this.data.objective;
     }
-    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => this.overviewService.getOverview());
+    this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
+      this.dialogRef.close({
+        keyResult: returnValue,
+        changeId: keyResult.id,
+        objective: keyResult.objective,
+        delete: false,
+        openNew: false,
+      });
+    });
   }
 
   openNew() {
     this.saveKeyResult();
-    this.dialogRef.close('openNewDialog');
+    this.dialogRef.close({ keyResult: null, delete: null, openNew: true });
   }
 
   deleteKeyResult() {
@@ -93,8 +99,7 @@ export class KeyResultDialogComponent implements OnInit {
           if (result == 'deleteKeyResult') {
             this.keyResultService
               .deleteKeyResult(this.data.keyResult.id)
-              .subscribe((returnValue) => console.log(returnValue));
-            this.dialogRef.close();
+              .subscribe(() => this.dialogRef.close({ keyResult: this.data.keyResult, delete: true, openNew: false }));
           }
         });
     }

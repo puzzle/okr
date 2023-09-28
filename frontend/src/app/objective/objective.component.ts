@@ -6,6 +6,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 import { Router } from '@angular/router';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-objective-column',
@@ -14,7 +15,15 @@ import { MatDialog } from '@angular/material/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent {
-  @Input() objective!: ObjectiveMin;
+  @Input()
+  get objective(): BehaviorSubject<ObjectiveMin> {
+    return this._objective;
+  }
+  set objective(objective: ObjectiveMin) {
+    this._objective.next(objective);
+  }
+  private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
+
   @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [
     { displayName: 'Objective bearbeiten', showDialog: false },
@@ -28,7 +37,32 @@ export class ObjectiveComponent {
     private routeService: RouteService,
     private notifierService: NotifierService,
     private router: Router,
-  ) {}
+  ) {
+    this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
+      if (keyResultChange.objective.id != this.objective.value.id) {
+        return;
+      }
+      const keyResults = this.objective.value.keyResults;
+      const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
+      if (existingKRIndex !== -1) {
+        keyResults[existingKRIndex] = {
+          ...keyResults[existingKRIndex],
+          id: keyResultChange.keyResult.id,
+          title: keyResultChange.keyResult.title,
+        };
+      } else {
+        keyResults.push(keyResultChange.keyResult);
+      }
+      this.objective = { ...this.objective.value, keyResults: keyResults };
+    });
+
+    this.notifierService.deleteKeyResult.subscribe((keyResultToDelete) => {
+      const keyResults = this.objective.value.keyResults;
+      const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultToDelete.id);
+      keyResults.splice(existingKRIndex, 1);
+      this.objective = { ...this.objective.value, keyResults: keyResults };
+    });
+  }
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.showDialog) {
@@ -45,7 +79,7 @@ export class ObjectiveComponent {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective.id]);
+    this.router.navigate(['objective', this.objective.value.id]);
   }
 
   openAddKeyResultDialog() {
@@ -54,14 +88,20 @@ export class ObjectiveComponent {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective,
+          objective: this.objective.value,
           keyResult: null,
         },
       })
       .afterClosed()
-      .subscribe((result) => {
-        if (result == 'openNewDialog') {
+      .subscribe(async (result) => {
+        if (result.openNew) {
           this.openAddKeyResultDialog();
+        } else {
+          await this.notifierService.keyResultsChanges.next({
+            keyResult: result.keyResult,
+            changeId: null,
+            objective: result.objective,
+          });
         }
       });
   }

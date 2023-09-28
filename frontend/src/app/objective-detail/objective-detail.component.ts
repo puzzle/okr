@@ -3,6 +3,7 @@ import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-objective-detail',
@@ -18,6 +19,7 @@ export class ObjectiveDetailComponent implements OnChanges {
     private objectiveService: ObjectiveService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    private notifierService: NotifierService,
   ) {}
 
   ngOnChanges() {
@@ -38,9 +40,15 @@ export class ObjectiveDetailComponent implements OnChanges {
         },
       })
       .afterClosed()
-      .subscribe((result) => {
-        if (result == 'openNewDialog') {
+      .subscribe(async (result) => {
+        if (result.openNew) {
           this.openAddKeyResultDialog();
+        } else {
+          await this.notifierService.keyResultsChanges.next({
+            keyResult: result.keyResult,
+            changeId: null,
+            objective: result.objective,
+          });
         }
       });
   }

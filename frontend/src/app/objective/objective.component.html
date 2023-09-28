@@ -10,14 +10,14 @@
     <section class="d-flex justify-content-between mb-3">
       <img
         (click)="$event.stopPropagation()"
-        matTooltip="The objective's state is {{ objective.state.split('-')[0] | uppercase }}"
+        matTooltip="The objective's state is {{ objective.value.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         data-testid="objective-state"
         class="icon col-1 default-cursor"
         alt="The objective's state"
-        [src]="'../../assets/icons/' + objective.state"
+        [src]="'../../assets/icons/' + objective.value.state"
       />
-      <header class="title col-10 ps-2">{{ objective.title }}</header>
+      <header class="title col-10 ps-2">{{ objective.value.title }}</header>
       <img
         data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"
@@ -29,7 +29,7 @@
     </section>
     <section class="d-flex gap-3 pe-0 row">
       <app-keyresult
-        *ngFor="let keyResult of objective.keyResults"
+        *ngFor="let keyResult of (objective | async)?.keyResults"
         (click)="$event.stopPropagation()"
         [keyResult]="keyResult"
         class="pe-0"

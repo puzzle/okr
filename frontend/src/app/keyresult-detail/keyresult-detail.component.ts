@@ -88,7 +88,7 @@ export class KeyresultDetailComponent implements OnChanges {
   }
 
   openCheckInForm() {
-    let component =
+    let component: any =
       this.keyResult.keyResultType === 'metric' ? CheckInFormMetricComponent : CheckInFormOrdinalComponent;
     const dialogRef = this.dialog.open(component, {
       data: {

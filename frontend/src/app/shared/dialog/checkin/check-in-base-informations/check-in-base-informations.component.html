@@ -11,7 +11,7 @@
     ></textarea>
     <div *ngIf="isTouchedOrDirty('changeInfo')">
       <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-        <!--        {{ errorMessages[errorKey.toUpperCase()] }}-->
+        {{ getErrorMessage(errorKey) }}
       </mat-error>
     </div>
   </mat-form-field>
@@ -28,7 +28,7 @@
     ></textarea>
     <div *ngIf="isTouchedOrDirty('initiatives')">
       <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-        <!--        {{errorMessages[errorKey.toUpperCase()]}}-->
+        {{ getErrorMessage(errorKey) }}
       </mat-error>
     </div>
   </mat-form-field>

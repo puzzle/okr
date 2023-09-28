@@ -15,9 +15,13 @@ export class CheckInBaseInformationsComponent {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
   }
 
-  getErrorKeysOfFormField(name: string) {
+  getErrorKeysOfFormField(name: string): string[] {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
+  }
+
+  getErrorMessage(key: string) {
+    return errorMessages[key.toUpperCase() as keyof typeof errorMessages];
   }
 
   protected readonly errorMessages = errorMessages;

@@ -86,8 +86,4 @@ export class AppComponent implements OnInit, OnDestroy {
     document.getElementById('bannerComponent')!.classList.remove('backdrop');
     this.router.navigate(['/']);
   }
-
-  userIsAtTop() {
-    return (window.scrollY || document.documentElement.scrollTop) < 10;
-  }
 }

@@ -8,7 +8,7 @@ describe('CustomInputComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CustomInputComponent]
+      declarations: [CustomInputComponent],
     });
     fixture = TestBed.createComponent(CustomInputComponent);
     component = fixture.componentInstance;

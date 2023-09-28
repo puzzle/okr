@@ -51,7 +51,7 @@ import { ApplicationBannerComponent } from './application-banner/application-ban
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
     const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer });
+    oauthService.configure({ ...environment.oauth, issuer: config.issuer, scope: config.scope });
   };
 }
 

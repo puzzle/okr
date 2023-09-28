@@ -8,7 +8,7 @@ describe('CheckInFormOrdinalComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInFormOrdinalComponent]
+      declarations: [CheckInFormOrdinalComponent],
     });
     fixture = TestBed.createComponent(CheckInFormOrdinalComponent);
     component = fixture.componentInstance;

@@ -13,6 +13,7 @@ import { UnitTransformationPipe } from '../../../pipes/unit-transformation.pipe'
 export class CheckInFormMetricComponent implements OnInit {
   keyResult: KeyResultMetric;
   currentDate: Date;
+  continued: boolean = false;
 
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),

@@ -30,7 +30,7 @@ import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { OauthInterceptor } from './shared/interceptors/oauth.interceptor';
-import { ApplicationHeaderComponent } from './application-header/application-header.component';
+import { ApplicationTopBarComponent } from './application-top-bar/application-top-bar.component';
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
@@ -46,6 +46,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -82,13 +83,14 @@ export const MY_FORMATS = {
     OverviewComponent,
     ObjectiveComponent,
     KeyresultComponent,
-    ApplicationHeaderComponent,
+    ApplicationTopBarComponent,
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
     ScoringComponent,
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,
+    ApplicationBannerComponent,
   ],
   imports: [
     CommonModule,

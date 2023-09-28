@@ -1,0 +1,14 @@
+#topBarHeight {
+  height: 48px;
+}
+
+#okrTopbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 102;
+
+  pzsh-topbar {
+    --pzsh-page-padding-horizontal-desktop: 2rem;
+  }
+}

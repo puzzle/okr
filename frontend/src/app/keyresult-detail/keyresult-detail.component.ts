@@ -39,9 +39,11 @@ export class KeyresultDetailComponent implements OnChanges {
   castToMetric(keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
+
   castToOrdinal(keyResult: KeyResult) {
     return keyResult as KeyResultOrdinal;
   }
+
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
@@ -85,7 +87,8 @@ export class KeyresultDetailComponent implements OnChanges {
   }
 
   openCheckInForm() {
-    const dialogRef = this.dialog.open(CheckInFormMetricComponent, {
+    let component = this.keyResult.keyResultType === 'metric' ? CheckInFormMetricComponent : CheckInFormMetricComponent;
+    const dialogRef = this.dialog.open(component, {
       data: {
         keyResult: this.keyResult,
       },

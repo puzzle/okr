@@ -15,6 +15,11 @@
         [keyResult]="getKeyResultMetric()"
         [dialogForm]="dialogForm"
       ></app-check-in-form-metric>
+      <app-check-in-form-ordinal
+        *ngIf="keyResult.keyResultType === 'ordinal'"
+        [keyResult]="getKeyResultOrdinal()"
+        [dialogForm]="dialogForm"
+      ></app-check-in-form-ordinal>
     </form>
   </div>
   <!--  Second part of dialog-->

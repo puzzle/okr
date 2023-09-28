@@ -14,10 +14,13 @@
           <mat-label class="mb-2"
             >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit }})</span>:
           </mat-label>
-          <div class="d-flex flex-column">
-            <mat-form-field>
-              <input type="text" (focusout)="formatValue()" matInput formControlName="value" />
-            </mat-form-field>
+          <div class="d-flex flex-column mb-3">
+            <app-custom-input
+              class="custom-input"
+              [formGroup]="dialogForm"
+              [formControlNameGiven]="'value'"
+              (focusout)="formatValue()"
+            ></app-custom-input>
             <div *ngIf="isTouchedOrDirty('value')">
               <mat-error class="fw-bold error-font" *ngFor="let errorKey of getErrorKeysOfFormField('value')">
                 {{ errorMessages[errorKey.toUpperCase()] }}

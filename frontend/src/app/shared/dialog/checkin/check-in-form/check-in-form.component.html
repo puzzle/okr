@@ -10,8 +10,11 @@
     </div>
     <form [formGroup]="dialogForm" class="d-flex flex-column mt-4">
       <!--      Custom input which depends on type of keyResult-->
-      <app-check-in-form-metric *ngIf="keyResult.keyResultType === 'metric'" [keyResult]="getKeyResultMetric()"
-                                [dialogForm]="dialogForm"></app-check-in-form-metric>
+      <app-check-in-form-metric
+        *ngIf="keyResult.keyResultType === 'metric'"
+        [keyResult]="getKeyResultMetric()"
+        [dialogForm]="dialogForm"
+      ></app-check-in-form-metric>
     </form>
   </div>
   <!--  Second part of dialog-->

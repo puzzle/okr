@@ -8,7 +8,7 @@ describe('CheckInFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CheckInFormComponent]
+      declarations: [CheckInFormComponent],
     });
     fixture = TestBed.createComponent(CheckInFormComponent);
     component = fixture.componentInstance;

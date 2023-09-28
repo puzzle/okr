@@ -1,14 +1,14 @@
-import {Component, Inject} from '@angular/core';
-import {KeyResultMetric} from "../../../types/model/KeyResultMetric";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {KeyResult} from "../../../types/model/KeyResult";
-import {KeyResultOrdinal} from "../../../types/model/KeyResultOrdinal";
+import { Component, Inject } from '@angular/core';
+import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { KeyResult } from '../../../types/model/KeyResult';
+import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 
 @Component({
   selector: 'app-check-in-form',
   templateUrl: './check-in-form.component.html',
-  styleUrls: ['./check-in-form.component.scss']
+  styleUrls: ['./check-in-form.component.scss'],
 })
 export class CheckInFormComponent {
   keyResult: KeyResult;
@@ -24,7 +24,8 @@ export class CheckInFormComponent {
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
@@ -39,7 +40,7 @@ export class CheckInFormComponent {
 
   saveCheckIn() {
     let checkIn: any = { ...this.dialogForm.value, keyResultId: this.keyResult.id };
-    if(this.keyResult.keyResultType === 'metric') {
+    if (this.keyResult.keyResultType === 'metric') {
       checkIn = { ...this.dialogForm.value, value: this.parseValue(), keyResultId: this.keyResult.id };
     }
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);

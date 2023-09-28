@@ -10,8 +10,8 @@ import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
 import errorMessages from 'src/assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
-import { Objective } from '../../types/model/Objective';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
+import { Objective } from '../../types/model/Objective';
 
 @Component({
   selector: 'app-objective-form',
@@ -52,17 +52,11 @@ export class ObjectiveFormComponent implements OnInit {
       state: this.data.objectiveId ? value.state : state,
     } as unknown as ObjectiveDTO;
 
-    const saveFunction = objectiveDTO.id
+    const submitFunction = objectiveDTO.id
       ? this.objectiveService.updateObjective(objectiveDTO)
       : this.objectiveService.createObjective(objectiveDTO);
 
-    saveFunction.subscribe((savedObjective: ObjectiveDTO) => {
-      const objectiveMin: ObjectiveMin = {
-        ...savedObjective,
-        state: State[objectiveDTO.state],
-      } as unknown as ObjectiveMin;
-      this.dialogRef.close({ objective: objectiveMin });
-    });
+    submitFunction.subscribe((savedObjective: ObjectiveDTO) => this.closeDialog(savedObjective));
   }
 
   ngOnInit(): void {
@@ -103,5 +97,25 @@ export class ObjectiveFormComponent implements OnInit {
       teamId: 0,
       quarterId: 0,
     } as Objective;
+  }
+
+  deleteObjective() {
+    this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe(() => {
+      let objectiveDTO: ObjectiveDTO = { id: this.data.objectiveId! } as unknown as ObjectiveDTO;
+      this.closeDialog(objectiveDTO, true);
+    });
+  }
+
+  objectiveDtoToObjectiveMin(objectiveDto: ObjectiveDTO): ObjectiveMin {
+    return {
+      ...objectiveDto,
+      state: State[objectiveDto.state],
+    } as unknown as ObjectiveMin;
+  }
+
+  closeDialog(objectiveDTO: ObjectiveDTO, willDelete: boolean = false) {
+    const value = this.objectiveForm.value;
+    const objectiveMin: ObjectiveMin = this.objectiveDtoToObjectiveMin(objectiveDTO);
+    this.dialogRef.close({ objective: objectiveMin, teamId: value.team, delete: willDelete });
   }
 }

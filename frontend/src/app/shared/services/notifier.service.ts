@@ -23,5 +23,9 @@ export class NotifierService {
       delete: boolean;
     }>();
 
-  objectivesChanges: Subject<ObjectiveMin> = new Subject<ObjectiveMin>();
+  objectivesChanges: Subject<{ objective: ObjectiveMin; teamId: number; delete: boolean }> = new Subject<{
+    objective: ObjectiveMin;
+    teamId: number;
+    delete: boolean;
+  }>();
 }

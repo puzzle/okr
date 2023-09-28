@@ -67,7 +67,11 @@ export class ObjectiveComponent implements AfterViewInit {
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, { data: menuEntry.dialog.data });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result.objective) {
-          this.notifierService.objectivesChanges.next(result.objective);
+          this.notifierService.objectivesChanges.next({
+            objective: result.objective,
+            teamId: result.teamId,
+            delete: result.delete,
+          });
         }
       });
     } else {

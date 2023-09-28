@@ -86,7 +86,7 @@
         </button>
         <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
       </div>
-      <button color="primary" mat-button>Objective Löschen</button>
+      <button color="primary" *ngIf="data.objectiveId" mat-button (click)="deleteObjective()">Objective Löschen</button>
     </div>
   </form>
 </div>

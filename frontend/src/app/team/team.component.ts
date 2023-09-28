@@ -13,33 +13,46 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent {
-  @Input()
-  get overviewEntity(): BehaviorSubject<OverviewEntity> {
-    return this._overviewEntity;
-  }
-  set overviewEntity(overviewEntity: OverviewEntity) {
-    this._overviewEntity.next(overviewEntity);
-  }
-  private _overviewEntity = new BehaviorSubject<OverviewEntity>({} as unknown as OverviewEntity);
-
   constructor(
     private dialog: MatDialog,
     private notifierService: NotifierService,
   ) {
-    this.notifierService.objectivesChanges.subscribe((objective) => {
-      const objectives = this.overviewEntity.value.objectives;
-      const existingObjIndex = objectives.findIndex((obj) => obj.id === objective.id);
-      if (existingObjIndex !== -1) {
+    this.notifierService.objectivesChanges.subscribe((objectiveChange) => {
+      if (objectiveChange.teamId != this.overviewEntity.value.team.id) {
+        return;
+      }
+
+      let objectives = this.overviewEntity.value.objectives;
+      const existingObjIndex = objectives.findIndex((obj) => obj.id === objectiveChange.objective.id);
+
+      if (existingObjIndex == -1) {
+        //Add
+        objectives.push(objectiveChange.objective);
+        return;
+      }
+      if (objectiveChange.delete) {
+        //delete
+        objectives = objectives.filter((e, i) => existingObjIndex != i);
+      } else {
+        //update
         objectives[existingObjIndex] = {
           ...objectives[existingObjIndex],
-          title: objective.title,
-          state: objective.state,
+          title: objectiveChange.objective.title,
+          state: objectiveChange.objective.state,
         };
-      } else {
-        objectives.push(objective);
       }
       this.overviewEntity = { ...this.overviewEntity.value, objectives: objectives };
     });
+  }
+
+  private _overviewEntity = new BehaviorSubject<OverviewEntity>({} as unknown as OverviewEntity);
+
+  @Input() get overviewEntity(): BehaviorSubject<OverviewEntity> {
+    return this._overviewEntity;
+  }
+
+  set overviewEntity(overviewEntity: OverviewEntity) {
+    this._overviewEntity.next(overviewEntity);
   }
 
   createObjective() {
@@ -48,7 +61,11 @@ export class TeamComponent {
     });
     matDialogRef.afterClosed().subscribe((result) => {
       if (result.objective) {
-        this.notifierService.objectivesChanges.next(result.objective);
+        this.notifierService.objectivesChanges.next({
+          objective: result.objective,
+          teamId: result.teamId,
+          delete: result.delete,
+        });
       }
     });
   }

@@ -21,4 +21,8 @@ export class ObjectiveService {
   updateObjective(objectiveDTO: ObjectiveDTO): Observable<ObjectiveDTO> {
     return this.httpClient.put<ObjectiveDTO>(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
   }
+
+  deleteObjective(objectiveId: number): Observable<ObjectiveDTO> {
+    return this.httpClient.delete<ObjectiveDTO>(`/api/v2/objectives/${objectiveId}`);
+  }
 }

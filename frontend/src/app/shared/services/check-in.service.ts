@@ -14,7 +14,7 @@ export class CheckInService {
     return this.httpclient.get<CheckInMin[]>(`/api/v2/keyresults/${keyResultId}/checkins`);
   }
 
-  createKeyResult(checkIn: any): Observable<CheckIn> {
+  createCheckIn(checkIn: any): Observable<CheckIn> {
     return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
   }
 }

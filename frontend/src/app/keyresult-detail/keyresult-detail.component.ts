@@ -92,7 +92,10 @@ export class KeyresultDetailComponent implements OnChanges {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.checkInService.createKeyResult(result.data).subscribe();
+      this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
+        this.keyResult.lastCheckIn = createdCheckIn;
+        this.changeDetectorRef.detectChanges();
+      });
     });
   }
 }

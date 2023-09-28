@@ -47,7 +47,6 @@ import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
-import { CheckInFormComponent } from './shared/dialog/check-in-form/check-in-form.component';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation.pipe';
 import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
@@ -55,6 +54,7 @@ import { CustomInputComponent } from './shared/custom/custom-input/custom-input.
 import { CheckInFormOrdinalComponent } from './shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -107,6 +107,7 @@ export const MY_FORMATS = {
     CheckInFormOrdinalComponent,
     CheckInBaseInformationsComponent,
     CustomInputComponent,
+    CheckInFormComponent,
   ],
   imports: [
     CommonModule,

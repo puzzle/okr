@@ -8,9 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CheckInFormMetricComponent } from '../shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { NotifierService } from '../shared/services/notifier.service';
-import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { CheckInService } from '../shared/services/check-in.service';
-import { CheckInFormOrdinalComponent } from '../shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
+import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -88,9 +87,7 @@ export class KeyresultDetailComponent implements OnChanges {
   }
 
   openCheckInForm() {
-    let component: any =
-      this.keyResult.keyResultType === 'metric' ? CheckInFormMetricComponent : CheckInFormOrdinalComponent;
-    const dialogRef = this.dialog.open(component, {
+    const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,
       },

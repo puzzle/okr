@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface QuarterRepository extends CrudRepository<Quarter, Long> {
-    Optional<Quarter> findByLabel(@Param("label") String label);
+    Optional<Quarter> findByLabel(String label);
 
     List<Quarter> getTop6ByOrderByStartDateDesc();
 

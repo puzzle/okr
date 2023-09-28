@@ -51,10 +51,6 @@ public abstract class CheckIn {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getChangeInfo() {
         return changeInfo;
     }

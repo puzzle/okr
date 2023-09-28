@@ -22,6 +22,7 @@ public class KeyResultValidationService extends ValidationBase<KeyResult, Long> 
     public void validateOnUpdate(Long id, KeyResult model) {
         throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
+        throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(id);
 
         validate(model);

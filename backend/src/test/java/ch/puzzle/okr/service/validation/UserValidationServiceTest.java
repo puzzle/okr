@@ -266,9 +266,17 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(userInvalid));
 
-        String errorInvalidEmail = "Attribute email should be valid when saving user";
+        assertThat(exception.getReason().strip()).contains("Attribute email should be valid when saving user");
+    }
 
-        assertThat(exception.getReason().strip()).contains(errorInvalidEmail);
+    @Test
+    void validateOnUpdate_ShouldBeSuccessfulWhenUserIsValid() {
+        validator.validateOnUpdate(user.getId(), user);
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(user);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(user.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(user.getId(), user.getId());
+        verify(validator, times(1)).validate(user);
     }
 
     @Test
@@ -287,6 +295,17 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionIfModelIsNull(userMinimal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(7L, user));
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(user);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(user.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, user.getId());
+        assertEquals("Id 7 has changed to 1 during update", exception.getReason());
     }
 
     @ParameterizedTest
@@ -382,9 +401,7 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, userInvalid));
 
-        String errorInvalidEmail = "Attribute email should be valid when saving user";
-
-        assertThat(exception.getReason().strip()).contains(errorInvalidEmail);
+        assertThat(exception.getReason().strip()).contains("Attribute email should be valid when saving user");
     }
 
     @Test

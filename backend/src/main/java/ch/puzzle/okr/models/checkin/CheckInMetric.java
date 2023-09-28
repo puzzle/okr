@@ -27,7 +27,7 @@ public class CheckInMetric extends CheckIn {
         super();
     }
 
-    public CheckInMetric(Builder builder) {
+    private CheckInMetric(Builder builder) {
         super(builder);
         setValue(builder.value);
     }

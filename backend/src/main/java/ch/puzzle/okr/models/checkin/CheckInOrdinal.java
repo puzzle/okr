@@ -30,7 +30,7 @@ public class CheckInOrdinal extends CheckIn {
         super();
     }
 
-    public CheckInOrdinal(Builder builder) {
+    private CheckInOrdinal(Builder builder) {
         super(builder);
         setZone(builder.zone);
     }

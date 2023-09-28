@@ -20,7 +20,7 @@ public class AlignmentSelection {
     private String quarterLabel;
     private String keyResultTitle;
 
-    private AlignmentSelection() {
+    public AlignmentSelection() {
     }
 
     private AlignmentSelection(Builder builder) {

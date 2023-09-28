@@ -16,7 +16,7 @@ public class ObjectiveAlignment extends Alignment implements AlignmentInterface<
         super();
     }
 
-    public ObjectiveAlignment(Builder builder) {
+    private ObjectiveAlignment(Builder builder) {
         super(builder);
         setAlignmentTarget(builder.targetObjective);
     }

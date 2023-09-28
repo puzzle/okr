@@ -59,7 +59,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.zone";
     public static final String JSON_PATH_QUARTER_LABEL = "$.objective.keyResultQuarterDto.label";
     public static final String JSON_PATH_QUARTER_START_DATE = "$.objective.keyResultQuarterDto.startDate";
-    public static final String JSON = "{\"title\":  \"Keyresult 1\"}";
+    public static final String JSON = "{\"title\":  \"Keyresult 1\",\"keyResultType\":  \"metric\"}";
     public static final String URL_BASE = "/api/v2/keyresults";
     public static final String URL_TO_KEY_RESULT_1 = "/api/v2/keyresults/1";
     public static final String URL_TO_KEY_RESULT_10 = "/api/v2/keyresults/10";
@@ -75,7 +75,7 @@ public class KeyResultTestHelpers {
     static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
-            .build();
+            .withKeyResultType(KEY_RESULT_TYPE_METRIC).build();
     public static final CheckIn checkIn1 = CheckInMetric.Builder.builder().withValue(23D).withId(1L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO_1).withInitiatives(INITIATIVES_1).build();
@@ -107,7 +107,8 @@ public class KeyResultTestHelpers {
             keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX);
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
-            .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();
+            .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withTitle("Keyresult 2").withOwner(user)
+            .withObjective(objective).build();
 
     public static final String CREATE_BODY_METRIC = """
             {
@@ -116,6 +117,7 @@ public class KeyResultTestHelpers {
                 "title":"",
                 "description":"",
                 "ownerId":5,
+               "keyResultType":"metric",
                "createdById":5,
                "createdOn":null,
                "modifiedOn":null,
@@ -132,6 +134,7 @@ public class KeyResultTestHelpers {
                 "title":"",
                 "description":"",
                 "ownerId":5,
+               "keyResultType":"ordinal",
                "createdById":5,
                "createdOn":null,
                "modifiedOn":null,
@@ -141,9 +144,33 @@ public class KeyResultTestHelpers {
             }
             """;
 
+    public static final String CREATE_BODY_KEY_RESULT_TYPE_MISSING = """
+            {
+               "objectiveId":5,
+               "ownerId":5,
+               "createdById":5,
+               "commitZone":"Eine Pflanze",
+               "targetZone":"Ein Baum",
+               "stretchZone":"Ein Wald"
+            }
+            """;
+
+    public static final String CREATE_BODY_KEY_RESULT_TYPE_UNKNOWN = """
+            {
+               "objectiveId":5,
+               "ownerId":5,
+               "keyResultType":"unknown",
+               "createdById":5,
+               "commitZone":"Eine Pflanze",
+               "targetZone":"Ein Baum",
+               "stretchZone":"Ein Wald"
+            }
+            """;
+
     public static final String CREATE_BODY_WITH_ENUM_KEYS = """
             {
                 "id":null,
+                "keyResultType":"metric",
                 "objectiveId":5,
                 "title":"",
                 "description":"",
@@ -164,6 +191,7 @@ public class KeyResultTestHelpers {
     public static final String PUT_BODY_METRIC = """
             {
                 "id":1,
+                "keyResultType":"metric",
                 "title":"Updated Keyresult",
                 "description":"",
                 "baseline":2.0,

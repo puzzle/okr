@@ -1,7 +1,7 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.mapper.KeyResultMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
+import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
@@ -184,6 +184,20 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_STATE, Is.is(OBJECTIVE_STATE_ONGOING)))
                 .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
+    }
+
+    @Test
+    void shouldThrowException_WhenKeyResultTypeMissing() throws Exception {
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_MISSING).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+    }
+
+    @Test
+    void shouldThrowException_WhenKeyResultTypeUnknown() throws Exception {
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_UNKNOWN).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test

@@ -5,12 +5,12 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CheckInFormMetricComponent } from '../shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { NotifierService } from '../shared/services/notifier.service';
-import { CheckInFormComponent } from '../shared/dialog/check-in-form/check-in-form.component';
-import { CheckInFormMetricComponent } from '../shared/dialog/check-in-form-metric/check-in-form-metric.component';
+import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { CheckInService } from '../shared/services/check-in.service';
-import { CheckInFormOrdinalComponent } from '../shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
+import { CheckInFormOrdinalComponent } from '../shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 
 @Component({
   selector: 'app-keyresult-detail',

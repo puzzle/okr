@@ -48,8 +48,9 @@ import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 import { CheckInFormComponent } from './shared/dialog/check-in-form/check-in-form.component';
-import { CheckInFormMetricComponent } from './shared/dialog/check-in-form-metric/check-in-form-metric.component';
+import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { UnitTransformationPipe } from './shared/pipes/unit-transformation.pipe';
+import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CheckInFormOrdinalComponent } from './shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
@@ -103,6 +104,7 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     UnitTransformationPipe,
     CheckInFormOrdinalComponent,
+    CheckInBaseInformationsComponent,
   ],
   imports: [
     CommonModule,

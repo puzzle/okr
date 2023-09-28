@@ -1,8 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import errorMessages from '../../../../../assets/errors/error-messages.json';
 
 @Component({
   selector: 'app-check-in-base-informations',
   templateUrl: './check-in-base-informations.component.html',
   styleUrls: ['./check-in-base-informations.component.scss'],
 })
-export class CheckInBaseInformationsComponent {}
+export class CheckInBaseInformationsComponent {
+  @Input()
+  dialogForm!: FormGroup;
+
+  isTouchedOrDirty(name: string) {
+    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
+  }
+
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.dialogForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  protected readonly errorMessages = errorMessages;
+}

@@ -27,41 +27,7 @@
         <app-confidence [edit]="true" [keyResult]="keyResult"></app-confidence>
       </div>
     </div>
-
-    <!--    Changeinfo   -->
-    <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
-    <mat-form-field>
-      <textarea
-        formControlName="changeInfo"
-        matInput
-        cdkTextareaAutosize
-        cdkAutosizeMinRows="2"
-        cdkAutosizeMaxRows="2"
-      ></textarea>
-      <div *ngIf="isTouchedOrDirty('changeInfo')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
-        </mat-error>
-      </div>
-    </mat-form-field>
-
-    <!--    Initiatives   -->
-    <mat-label class="mb-2">Massnahmen (optional)</mat-label>
-    <mat-form-field>
-      <textarea
-        formControlName="initiatives"
-        matInput
-        cdkTextareaAutosize
-        cdkAutosizeMinRows="2"
-        cdkAutosizeMaxRows="2"
-      ></textarea>
-      <div *ngIf="isTouchedOrDirty('initiatives')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
-        </mat-error>
-      </div>
-    </mat-form-field>
-
+    <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
     <!--    Buttons to submit the check-in-->
     <div class="d-flex flex-row">
       <button type="submit" mat-button mat-dialog-close class="submit mb-3 pe-3 pt-1 pb-1 fw-bold text-white">

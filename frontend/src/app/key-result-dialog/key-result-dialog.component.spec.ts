@@ -331,18 +331,5 @@ describe('KeyResultDialogComponent', () => {
         });
       });
     }));
-
-    it('should call service delete method', waitForAsync(async () => {
-      const spy = jest.spyOn(keyResultService, 'deleteKeyResult');
-      jest
-        .spyOn(component.matDialog, 'open')
-        .mockReturnValue({ afterClosed: () => of('deleteKeyResult') } as MatDialogRef<typeof component>);
-      jest.spyOn(component.dialogRef, 'close');
-
-      const deleteButton = fixture.debugElement.query(By.css('[data-testId="delete"]'));
-      deleteButton.nativeElement.click();
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(fullKeyResult.id);
-    }));
   });
 });

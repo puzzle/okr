@@ -1,12 +1,12 @@
-<div class="row w-auto bg-grey mt-4">
-  <p class="team-title">{{ overviewEntity.team.name }}</p>
+<div class="row w-auto bg-grey mt-4" *ngIf="overviewEntity | async as OVEntity">
+  <p class="team-title">{{ OVEntity.team.name }}</p>
   <div class="d-flex justify-content-center">
     <div
       class="d-flex gap-3 row col-12 overflow-auto flex-wrap flex-md-nowrap justify-content-sm-between justify-content-md-start pb-2"
       data-testid="objective-container"
     >
       <app-objective-column
-        *ngFor="let objective of overviewEntity.objectives"
+        *ngFor="let objective of OVEntity.objectives"
         [objective]="objective"
         class="col-xs-12 col-md-4 col-lg-3 col-xl-3 p-0 column-width"
         data-testid="objective"

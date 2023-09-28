@@ -25,6 +25,7 @@ export class ObjectiveFormComponent implements OnInit {
     quarter: new FormControl(0, [Validators.required]),
     team: new FormControl(0, [Validators.required]),
     relation: new FormControl({ value: 0, disabled: true }),
+    state: new FormControl(''),
     createKeyresults: new FormControl(true),
   });
   quarters$: Observable<Quarter[]> = of([]);
@@ -48,7 +49,7 @@ export class ObjectiveFormComponent implements OnInit {
       description: value.description,
       title: value.title,
       teamId: value.team,
-      state: state,
+      state: this.data.objectiveId ? value.state : state,
     } as unknown as ObjectiveDTO;
 
     const saveFunction = objectiveDTO.id
@@ -56,7 +57,10 @@ export class ObjectiveFormComponent implements OnInit {
       : this.objectiveService.createObjective(objectiveDTO);
 
     saveFunction.subscribe((savedObjective: ObjectiveDTO) => {
-      const objectiveMin: ObjectiveMin = { ...savedObjective } as unknown as ObjectiveMin;
+      const objectiveMin: ObjectiveMin = {
+        ...savedObjective,
+        state: State[objectiveDTO.state],
+      } as unknown as ObjectiveMin;
       this.dialogRef.close({ objective: objectiveMin });
     });
   }
@@ -76,6 +80,7 @@ export class ObjectiveFormComponent implements OnInit {
         description: objective.description,
         team: teamId,
         quarter: quarterId,
+        state: objective.state,
       });
     });
   }

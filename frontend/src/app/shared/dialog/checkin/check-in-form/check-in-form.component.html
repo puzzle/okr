@@ -1,6 +1,8 @@
 <mat-dialog-content class="d-flex justify-content-center flex-column">
-  <div class="w-100 d-flex justify-content-start">
+  <div class="w-100 d-flex flex-row justify-content-start">
     <h1 class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
+    <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
+    <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
   </div>
   <!--  First part of dialog-->
   <div *ngIf="!continued">

@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 public class KeyResultTestHelpers {
 
     public static final String DESCRIPTION = "Description";
@@ -33,8 +36,6 @@ public class KeyResultTestHelpers {
     public static final String FIRSTNAME = "Johnny";
     public static final String LASTNAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
-    public static final String KEY_RESULT_TYPE_ORDINAL = "ordinal";
-    public static final String KEY_RESULT_TYPE_METRIC = "metric";
     public static final String KEY_RESULT_UNIT = "ECTS";
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
     public static final String OBJECTIVE_STATE_ONGOING = "ONGOING";

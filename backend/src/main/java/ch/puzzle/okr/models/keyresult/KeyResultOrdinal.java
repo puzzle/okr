@@ -5,8 +5,10 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+
 @Entity
-@DiscriminatorValue("ordinal")
+@DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
 public class KeyResultOrdinal extends KeyResult {
     @NotNull(message = "CommitZone must not be null")
     private String commitZone;

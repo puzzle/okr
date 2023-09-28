@@ -41,9 +41,6 @@ public class CheckInTestHelpers {
 
     public static final String JSON_PATH_VALUE = "$.value";
 
-    public static final String KEY_RESULT_TYPE_METRIC = "metric";
-    public static final String KEY_RESULT_TYPE_ORDINAL = "ordinal";
-
     /* Test entities */
     static final Objective objective = Objective.Builder.builder().withId(1L).build();
     public static final CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withConfidence(5)

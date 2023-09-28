@@ -163,17 +163,26 @@ class KeyResultValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultInvalid));
 
-        String errorBaseline = "Baseline must not be null.";
-        String errorStretchGoal = "StretchGoal must not be null.";
-        String errorUnit = "Unit must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorOwner = "Owner must not be null.";
+        assertThat(exception.getReason().strip()).contains("Baseline must not be null.");
+        assertThat(exception.getReason().strip()).contains("StretchGoal must not be null.");
+        assertThat(exception.getReason().strip()).contains("Unit must not be null.");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
+        assertThat(exception.getReason().strip()).contains("Owner must not be null.");
+    }
 
-        assertThat(exception.getReason().strip()).contains(errorBaseline);
-        assertThat(exception.getReason().strip()).contains(errorStretchGoal);
-        assertThat(exception.getReason().strip()).contains(errorUnit);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorOwner);
+    @Test
+    void validateOnUpdate_ShouldBeSuccessfulWhenKeyResultIsValid() {
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit("ECTS")
+                .withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+                .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
+                .withCreatedBy(user).build();
+
+        validator.validateOnUpdate(keyResult.getId(), keyResult);
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(keyResult);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResult.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(keyResult.getId(), keyResult.getId());
+        verify(validator, times(1)).validate(keyResult);
     }
 
     @Test
@@ -192,6 +201,17 @@ class KeyResultValidationServiceTest {
         verify(validator, times(1)).throwExceptionIfModelIsNull(this.keyResultOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, keyResultMetric));
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(keyResultMetric);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResultMetric.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, keyResultMetric.getId());
+        assertEquals("Id 1 has changed to 5 during update", exception.getReason());
     }
 
     @ParameterizedTest
@@ -220,19 +240,13 @@ class KeyResultValidationServiceTest {
     void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
         KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(11L).withTitle("Title").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(5L, keyResultInvalid));
+                () -> validator.validateOnUpdate(11L, keyResultInvalid));
 
-        String errorBaseline = "Baseline must not be null.";
-        String errorStretchGoal = "StretchGoal must not be null.";
-        String errorUnit = "Unit must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorOwner = "Owner must not be null.";
-
-        assertThat(exception.getReason().strip()).contains(errorBaseline);
-        assertThat(exception.getReason().strip()).contains(errorStretchGoal);
-        assertThat(exception.getReason().strip()).contains(errorUnit);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorOwner);
+        assertThat(exception.getReason().strip()).contains("Baseline must not be null.");
+        assertThat(exception.getReason().strip()).contains("StretchGoal must not be null.");
+        assertThat(exception.getReason().strip()).contains("Unit must not be null.");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
+        assertThat(exception.getReason().strip()).contains("Owner must not be null.");
     }
 
     @Test

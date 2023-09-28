@@ -9,6 +9,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public abstract class ValidationBase<T, E> {
@@ -56,6 +57,13 @@ public abstract class ValidationBase<T, E> {
         if (id != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
                     "Model %s cannot have id while create. Found id %s", persistenceService.getModelName(), id));
+        }
+    }
+
+    protected void throwExceptionWhenIdHasChanged(E id, E modelId) {
+        if (!Objects.equals(id, modelId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    String.format("Id %s has changed to %s during update", id, modelId));
         }
     }
 

@@ -28,9 +28,10 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
     public void validateOnUpdate(Long id, Objective model) {
         throwExceptionIfModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
+        throwExceptionWhenIdHasChanged(id, model.getId());
         if (model.getModifiedBy() == null) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    String.format("Something went wrong. ModifiedBy  %s is not set.", model.getModifiedBy()));
+                    String.format("Something went wrong. ModifiedBy %s is not set.", model.getModifiedBy()));
         }
         doesEntityExist(id);
         validate(model);

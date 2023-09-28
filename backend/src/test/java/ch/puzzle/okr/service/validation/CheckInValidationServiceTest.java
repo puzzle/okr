@@ -165,17 +165,24 @@ public class CheckInValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(checkInInvalid));
 
-        String errorConfidence = "Confidence must not be null";
-        String errorKeyResult = "KeyResult must not be null";
-        String errorCreatedBy = "CreatedBy must not be null";
-        String errorCreatedOn = "CreatedOn must not be null";
-        String errorValue = "Value must not be null";
+        assertThat(exception.getReason().strip()).contains("Confidence must not be null");
+        assertThat(exception.getReason().strip()).contains("KeyResult must not be null");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null");
+        assertThat(exception.getReason().strip()).contains("CreatedOn must not be null");
+        assertThat(exception.getReason().strip()).contains("Value must not be null");
+    }
 
-        assertThat(exception.getReason().strip()).contains(errorConfidence);
-        assertThat(exception.getReason().strip()).contains(errorKeyResult);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorValue);
+    @Test
+    void validateOnUpdate_ShouldBeSuccessfulWhenCheckInIsValid() {
+        when(checkInPersistenceService.getCheckInsByKeyResultIdOrderByCheckInDateDesc(8L))
+                .thenReturn(List.of(checkInOrdinal));
+
+        validator.validateOnUpdate(checkInOrdinal.getId(), checkInOrdinal);
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(checkInOrdinal);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(checkInOrdinal.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(checkInOrdinal.getId(), checkInOrdinal.getId());
+        verify(validator, times(1)).validate(checkInOrdinal);
     }
 
     @Test
@@ -194,6 +201,17 @@ public class CheckInValidationServiceTest {
         verify(validator, times(1)).throwExceptionIfModelIsNull(this.checkInOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
+    }
+
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenIdIsHasChanged() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(2L, this.checkInOrdinal));
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(this.checkInOrdinal);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(2L);
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(2L, checkInOrdinal.getId());
+        assertEquals("Id 2 has changed to 1 during update", exception.getReason());
     }
 
     @ParameterizedTest
@@ -229,9 +247,10 @@ public class CheckInValidationServiceTest {
                 .thenReturn(Collections.emptyList());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(3L, checkIn));
+                () -> validator.validateOnUpdate(2L, checkIn));
         verify(validator, times(1)).throwExceptionIfModelIsNull(checkIn);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(3L);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(checkIn.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(checkIn.getId(), checkIn.getId());
         assertEquals("Can not change key result id of check-in", exception.getReason());
 
     }
@@ -245,15 +264,10 @@ public class CheckInValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(11L, checkInInvalid));
 
-        String errorConfidence = "Confidence must not be null";
-        String errorCreatedBy = "CreatedBy must not be null";
-        String errorCreatedOn = "CreatedOn must not be null";
-        String errorValue = "Value must not be null";
-
-        assertThat(exception.getReason().strip()).contains(errorConfidence);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorValue);
+        assertThat(exception.getReason().strip()).contains("Confidence must not be null");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null");
+        assertThat(exception.getReason().strip()).contains("CreatedOn must not be null");
+        assertThat(exception.getReason().strip()).contains("Value must not be null");
     }
 
     @Test

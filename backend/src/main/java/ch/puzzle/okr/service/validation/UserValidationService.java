@@ -15,18 +15,19 @@ public class UserValidationService extends ValidationBase<User, Long> {
     }
 
     @Override
-    public void validateOnCreate(User user) {
-        throwExceptionIfModelIsNull(user);
-        throwExceptionWhenIdIsNotNull(user.getId());
-        validate(user);
+    public void validateOnCreate(User model) {
+        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenIdIsNotNull(model.getId());
+        validate(model);
     }
 
     @Override
-    public void validateOnUpdate(Long id, User user) {
-        throwExceptionIfModelIsNull(user);
-        throwExceptionWhenIdIsNull(user.getId());
+    public void validateOnUpdate(Long id, User model) {
+        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenIdIsNull(model.getId());
+        throwExceptionWhenIdHasChanged(id, model.getId());
 
-        validate(user);
+        validate(model);
     }
 
     public void validateAuthorisationToken(Jwt token) {

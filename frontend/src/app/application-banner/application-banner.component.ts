@@ -1,12 +1,12 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'app-application-header',
-  templateUrl: './application-header.component.html',
-  styleUrls: ['./application-header.component.scss'],
+  selector: 'app-application-banner',
+  templateUrl: './application-banner.component.html',
+  styleUrls: ['./application-banner.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
+export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   lastScrollPosition: number = 0;
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
@@ -17,7 +17,6 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
   });
 
   ngAfterViewInit(): void {
-    //Define puzzleBanner reference and add resizeObserver
     this.okrBanner = document.getElementById('okrBanner')!;
     this.resizeObserver.observe(this.okrBanner);
   }
@@ -28,7 +27,6 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
   }
 
   changeHeaderAppearance(bannerHeight: number) {
-    //Move Banner to negative Top if scrolled down, move to visible top if scrolled up
     let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
     this.setOKRBannerStyle(bannerHeight, scrollTop);
     this.lastScrollPosition = scrollTop;
@@ -36,16 +34,24 @@ export class ApplicationHeaderComponent implements AfterViewInit, OnDestroy {
 
   setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
     if (scrollTop > bannerHeight) {
-      this.okrBanner!.style.top =
-        scrollTop > this.lastScrollPosition
-          ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
-          : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
-      setTimeout(() => {
-        this.okrBanner!.style.position = 'fixed';
-      }, 200);
-    } else if (scrollTop == 0) {
-      this.okrBanner!.style.position = 'relative';
+      this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
+      this.setPositionOfBanner('sticky');
+    } else if (scrollTop < 10) {
+      this.okrBanner!.style.top = '0px';
+      this.setPositionOfBanner('relative');
     }
+  }
+
+  showOrHideBanner(scrollTop: number, bannerHeight: number) {
+    return scrollTop > this.lastScrollPosition
+      ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
+      : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
+  }
+
+  setPositionOfBanner(position: string) {
+    setTimeout(() => {
+      this.okrBanner!.style.position = position;
+    }, 500);
   }
 
   updateScrollEventListeners(bannerHeight: number) {

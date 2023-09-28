@@ -1,8 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
-import { ApplicationHeaderComponent } from './application-header.component';
+import { ApplicationBannerComponent } from './application-banner.component';
 import { By } from '@angular/platform-browser';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 class ResizeObserverMock {
   observe() {}
@@ -10,19 +9,17 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
-describe('ApplicationHeaderComponent', () => {
+describe('ApplicationBannerComponent', () => {
   //@ts-ignore
   global.ResizeObserver = ResizeObserverMock;
-  let component: ApplicationHeaderComponent;
-  let fixture: ComponentFixture<ApplicationHeaderComponent>;
+  let component: ApplicationBannerComponent;
+  let fixture: ComponentFixture<ApplicationBannerComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ApplicationHeaderComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(ApplicationHeaderComponent);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ApplicationBannerComponent],
+    });
+    fixture = TestBed.createComponent(ApplicationBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -39,11 +36,11 @@ describe('ApplicationHeaderComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that position was changed
     fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: fixed');
+    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: sticky');
   }));
 
   it('should set banner position to relative if user is at top of page', fakeAsync(() => {
@@ -54,7 +51,7 @@ describe('ApplicationHeaderComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that position was changed
     fixture.detectChanges();
@@ -71,7 +68,7 @@ describe('ApplicationHeaderComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that banner is hidden was changed
     fixture.detectChanges();
@@ -90,7 +87,7 @@ describe('ApplicationHeaderComponent', () => {
 
     //Set banner style
     component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(200);
+    tick(600);
 
     //Assert that banner is visible
     fixture.detectChanges();

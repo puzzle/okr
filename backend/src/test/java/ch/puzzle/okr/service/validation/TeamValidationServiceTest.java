@@ -61,13 +61,13 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowIllegalAccessError() {
-        assertThrows(IllegalAccessError.class, () -> validator.validateOnCreate(teamWithIdNull));
+    void validateOnCreate_ShouldThrowIllegalCallerException() {
+        assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(teamWithIdNull));
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowIllegalAccessException() {
-        assertThrows(IllegalAccessError.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
+    void validateOnUpdate_ShouldThrowIllegalCallerException() {
+        assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
     }
 
     @Test

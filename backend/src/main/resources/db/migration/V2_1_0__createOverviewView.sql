@@ -1,29 +1,30 @@
-drop view if exists overview;
-create view overview as
-select t.id                as "team_id",
-       t.name              as "team_name",
-       coalesce(o.id, -1)  as "objective_id",
-       o.title             as "objective_title",
-       o.state             as "objective_state",
-       q.id                as "quarter_id",
-       q.label             as "quarter_label",
-       coalesce(kr.id, -1) as "key_result_id",
-       kr.title            as "key_result_title",
+DROP VIEW IF EXISTS OVERVIEW;
+CREATE VIEW OVERVIEW AS
+SELECT t.id                AS "team_id",
+       t.name              AS "team_name",
+       coalesce(o.id, -1)  AS "objective_id",
+       o.title             AS "objective_title",
+       o.state             AS "objective_state",
+       q.id                AS "quarter_id",
+       q.label             AS "quarter_label",
+       coalesce(kr.id, -1) AS "key_result_id",
+       kr.title            AS "key_result_title",
+       kr.key_result_type  AS "key_result_type",
        kr.unit,
        kr.baseline,
        kr.stretch_goal,
        kr.commit_zone,
        kr.target_zone,
        kr.stretch_zone,
-       coalesce(m.id, -1)  as "measure_id",
-       m."value"           as "measure_value",
-       m.measure_date,
-       m.created_on
-from team t
-         left join objective o on t.id = o.team_id
-         left join quarter q on o.quarter_id = q.id
-         left join key_result kr on o.id = kr.objective_id
-         left join measure m on kr.id = m.key_result_id and m.measure_date = (select max(mm.measure_date)
-                                                                              from measure mm
-                                                                              where mm.key_result_id = m.key_result_id)
-;
+       coalesce(c.id, -1)  AS "check_in_id",
+       c.value_metric      AS "check_in_value",
+       c.zone              AS "check_in_zone",
+       c.confidence,
+       c.created_on
+FROM TEAM T
+         LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
+         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
+         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
+         LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
+                                                                              FROM CHECK_IN CC
+                                                                              WHERE CC.KEY_RESULT_ID = C.KEY_RESULT_ID);

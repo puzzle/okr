@@ -13,7 +13,7 @@ public class AlignmentSelectionId implements Serializable {
     public AlignmentSelectionId() {
     }
 
-    public AlignmentSelectionId(Long objectiveId, Long keyResultId) {
+    private AlignmentSelectionId(Long objectiveId, Long keyResultId) {
         this.objectiveId = objectiveId;
         this.keyResultId = keyResultId;
     }

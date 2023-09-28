@@ -148,17 +148,11 @@ class ObjectiveValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
 
-        String errorCreatedOn = "CreatedOn must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorQuarter = "Quarter must not be null.";
-        String errorTeam = "Team must not be null.";
-        String errorState = "State must not be null.";
-
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorQuarter);
-        assertThat(exception.getReason().strip()).contains(errorTeam);
-        assertThat(exception.getReason().strip()).contains(errorState);
+        assertThat(exception.getReason().strip()).contains("CreatedOn must not be null.");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
+        assertThat(exception.getReason().strip()).contains("Quarter must not be null.");
+        assertThat(exception.getReason().strip()).contains("Team must not be null.");
+        assertThat(exception.getReason().strip()).contains("State must not be null.");
     }
 
     @Test
@@ -167,12 +161,20 @@ class ObjectiveValidationServiceTest {
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(user).build();
 
-        String expectedErrorMessage = String.format("Not allowed to set ModifiedBy %s on create", user);
-
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(expectedErrorMessage, exception.getReason());
+        assertEquals(String.format("Not allowed to set ModifiedBy %s on create", user), exception.getReason());
+    }
+
+    @Test
+    void validateOnUpdate_ShouldBeSuccessfulWhenObjectiveIsValid() {
+        validator.validateOnUpdate(objective1.getId(), objective1);
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(objective1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(objective1.getId(), objective1.getId());
+        verify(validator, times(1)).validate(objective1);
     }
 
     @Test
@@ -193,6 +195,17 @@ class ObjectiveValidationServiceTest {
         assertEquals("Id is null", exception.getReason());
     }
 
+    @Test
+    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(7L, objective1));
+
+        verify(validator, times(1)).throwExceptionIfModelIsNull(objective1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
+        verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, objective1.getId());
+        assertEquals("Id 7 has changed to 1 during update", exception.getReason());
+    }
+
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
@@ -202,7 +215,7 @@ class ObjectiveValidationServiceTest {
                 .withCreatedOn(LocalDateTime.MAX).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(5L, objective));
+                () -> validator.validateOnUpdate(3L, objective));
 
         String[] exceptionParts = exception.getReason().split("\\.");
         String[] errorArray = new String[errors.size()];
@@ -223,17 +236,11 @@ class ObjectiveValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
 
-        String errorCreatedOn = "CreatedOn must not be null.";
-        String errorCreatedBy = "CreatedBy must not be null.";
-        String errorQuarter = "Quarter must not be null.";
-        String errorTeam = "Team must not be null.";
-        String errorState = "State must not be null.";
-
-        assertThat(exception.getReason().strip()).contains(errorCreatedOn);
-        assertThat(exception.getReason().strip()).contains(errorCreatedBy);
-        assertThat(exception.getReason().strip()).contains(errorQuarter);
-        assertThat(exception.getReason().strip()).contains(errorTeam);
-        assertThat(exception.getReason().strip()).contains(errorState);
+        assertThat(exception.getReason().strip()).contains("CreatedOn must not be null.");
+        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
+        assertThat(exception.getReason().strip()).contains("Quarter must not be null.");
+        assertThat(exception.getReason().strip()).contains("Team must not be null.");
+        assertThat(exception.getReason().strip()).contains("State must not be null.");
     }
 
     @Test
@@ -242,12 +249,10 @@ class ObjectiveValidationServiceTest {
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(null).build();
 
-        String expectedErrorMessage = String.format("Something went wrong. ModifiedBy  %s is not set.", null);
-
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, objectiveInvalid));
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
-        assertEquals(expectedErrorMessage, exception.getReason());
+        assertEquals(String.format("Something went wrong. ModifiedBy %s is not set.", null), exception.getReason());
     }
 
     @Test

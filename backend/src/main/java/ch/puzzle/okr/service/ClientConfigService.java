@@ -15,11 +15,14 @@ public class ClientConfigService {
     @Value("${spring.profiles.active}")
     private String activeProfile;
 
+    @Value("${oauth.scope}")
+    private String scope;
+
     public Map<String, String> getConfigBasedOnActiveEnv() {
         HashMap<String, String> env = new HashMap<>();
         env.put("activeProfile", activeProfile);
         env.put("issuer", issuer);
-        // TODO: implement correct scopes
+        env.put("scope", scope);
         return env;
     }
 

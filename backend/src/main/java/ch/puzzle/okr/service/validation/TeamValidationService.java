@@ -24,6 +24,6 @@ public class TeamValidationService extends ValidationBase<Team, Long> {
 
     @Override
     public void validateOnUpdate(Long id, Team model) {
-        throw new IllegalCallerException("This method must not be called because there is no update of quarters");
+        throw new IllegalCallerException("This method must not be called because there is no update of teams");
     }
 }

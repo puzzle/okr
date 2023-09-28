@@ -97,7 +97,7 @@ export class KeyresultDetailComponent implements OnChanges {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined) {
+      if (result != undefined && result != '') {
         this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
           this.keyResult.lastCheckIn = createdCheckIn;
           this.changeDetectorRef.detectChanges();

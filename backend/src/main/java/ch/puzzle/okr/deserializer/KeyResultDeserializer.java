@@ -9,10 +9,13 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
     @Override
@@ -22,7 +25,9 @@ public class KeyResultDeserializer extends JsonDeserializer<KeyResultDto> {
         ObjectNode root = mapper.readTree(jsonParser);
         if (root.has("keyResultType") && root.get("keyResultType").asText().equals(KEY_RESULT_TYPE_METRIC)) {
             return mapper.readValue(root.toString(), KeyResultMetricDto.class);
+        } else if (root.has("keyResultType") && root.get("keyResultType").asText().equals(KEY_RESULT_TYPE_ORDINAL)) {
+            return mapper.readValue(root.toString(), KeyResultOrdinalDto.class);
         }
-        return mapper.readValue(root.toString(), KeyResultOrdinalDto.class);
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "unsupported keyResult DTO to deserialize");
     }
 }

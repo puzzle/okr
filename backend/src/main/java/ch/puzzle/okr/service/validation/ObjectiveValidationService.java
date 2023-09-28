@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,12 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ObjectiveValidationService extends ValidationBase<Objective, Long> {
 
-    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService) {
+    private final CheckInBusinessService checkInBusinessService;
+
+    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService,
+            CheckInBusinessService checkInBusinessService) {
         super(objectivePersistenceService);
+        this.checkInBusinessService = checkInBusinessService;
     }
 
     @Override
@@ -35,5 +40,14 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
         }
         doesEntityExist(id);
         validate(model);
+    }
+
+    @Override
+    public void validateOnDelete(Long id) {
+        throwExceptionWhenIdIsNull(id);
+        doesEntityExist(id);
+        if (checkInBusinessService.getCheckinAmountByObjectiveId(id) != 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Objective already has check-ins");
+        }
     }
 }

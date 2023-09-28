@@ -60,4 +60,9 @@ public class CheckInBusinessService {
     public CheckIn getLastCheckInByKeyResultId(Long keyResultId) {
         return checkInPersistenceService.getLastCheckInOfKeyResult(keyResultId);
     }
+
+    public Integer getCheckinAmountByObjectiveId(Long objectiveId) {
+        return checkInPersistenceService.getCheckinAmountByObjectiveId(objectiveId);
+    }
+
 }

@@ -63,7 +63,7 @@ export class TeamComponent {
       data: { teamId: this.overviewEntity.value.team.id },
     });
     matDialogRef.afterClosed().subscribe((result) => {
-      if (result.objective) {
+      if (result?.objective) {
         this.notifierService.objectivesChanges.next({
           objective: result.objective,
           teamId: result.teamId,

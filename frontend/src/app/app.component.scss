@@ -7,17 +7,27 @@
   margin-left: 50px;
 }
 
-#drawer-container {
-  z-index: 100;
+//#drawer-container {
+//  z-index: auto;
+//}
+
+//.fixed-position {
+//  position: fixed;
+//  width: 100%;
+//  z-index: 101;
+//}
+
+mat-drawer {
+  position: relative;
+  z-index: 101;
 }
 
-.fixed-position {
-  position: fixed;
-  width: 100%;
-  z-index: 100;
+mat-drawer-container {
+  position: relative;
+  z-index: auto;
 }
 
 .backdrop {
-  background-color: gray;
+  position: fixed !important;
   filter: brightness(68%);
 }

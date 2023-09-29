@@ -2,9 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;

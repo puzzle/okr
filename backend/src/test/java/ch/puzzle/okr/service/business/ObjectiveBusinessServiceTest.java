@@ -43,6 +43,8 @@ class ObjectiveBusinessServiceTest {
     @MockBean
     UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
 
+    @MockBean
+    CheckInBusinessService checkInBusinessService = Mockito.mock(CheckInBusinessService.class);
     Objective objective;
     Objective fullObjective1;
     KeyResult ordinalKeyResult;
@@ -151,7 +153,6 @@ class ObjectiveBusinessServiceTest {
     @Test
     void verifyActiveObjectivesAmountOfTeam() {
         this.objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
-
         verify(this.objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
     }
 }

@@ -12,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
+import { ToasterService } from '../../services/toaster.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -36,8 +37,13 @@ export class ObjectiveFormComponent implements OnInit {
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
+    private toasterService: ToasterService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { objectiveId?: number; teamId?: number },
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      objectiveId?: number;
+      teamId?: number;
+    },
   ) {}
 
   onSubmit(event: any): void {
@@ -100,9 +106,14 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   deleteObjective() {
-    this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe(() => {
-      let objectiveDTO: ObjectiveDTO = { id: this.data.objectiveId! } as unknown as ObjectiveDTO;
-      this.closeDialog(objectiveDTO, true);
+    this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe({
+      next: () => {
+        let objectiveDTO: ObjectiveDTO = { id: this.data.objectiveId! } as unknown as ObjectiveDTO;
+        this.closeDialog(objectiveDTO, true);
+      },
+      error: () => {
+        this.dialogRef.close();
+      },
     });
   }
 

@@ -4,23 +4,26 @@ import { catchError, filter, Observable, throwError } from 'rxjs';
 import { NotifierService } from '../services/notifier.service';
 import { Router } from '@angular/router';
 import { drawerRoutes } from '../constantLibary';
+import { ToasterService } from '../services/toaster.service';
 
 @Injectable()
-export class DrawerInterceptor implements HttpInterceptor {
+export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private notifierService: NotifierService,
     private router: Router,
+    private toasterService: ToasterService,
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
-      catchError((error) => {
+      catchError((response) => {
+        this.toasterService.showError(response.error.message);
         if (drawerRoutes.some((route) => request.url.includes(route))) {
           this.notifierService.closeDetailSubject.next();
           this.router.navigate(['']);
         }
-        return throwError(() => new Error(error));
+        return throwError(() => new Error(response));
       }),
     );
   }

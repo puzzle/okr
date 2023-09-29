@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DrawerInterceptor } from './drawer.interceptor';
+import { ErrorInterceptor } from './error-interceptor.service';
 
 describe('DrawerInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [DrawerInterceptor],
+      providers: [ErrorInterceptor],
     }),
   );
 
   it('should be created', () => {
-    const interceptor: DrawerInterceptor = TestBed.inject(DrawerInterceptor);
+    const interceptor: ErrorInterceptor = TestBed.inject(ErrorInterceptor);
     expect(interceptor).toBeTruthy();
   });
 });

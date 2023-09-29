@@ -45,6 +45,7 @@ export class ObjectiveDetailComponent implements OnChanges {
           keyResult: result.keyResult,
           changeId: null,
           objective: result.objective,
+          delete: false,
         });
 
         if (result.openNew) {

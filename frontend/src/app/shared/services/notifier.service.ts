@@ -9,10 +9,11 @@ import { Objective } from '../types/model/Objective';
 export class NotifierService {
   closeDetailSubject: Subject<void> = new Subject();
 
-  keyResultsChanges: Subject<{ keyResult: KeyResult; changeId: number | null; objective: Objective }> = new Subject<{
-    keyResult: KeyResult;
-    changeId: number | null;
-    objective: Objective;
-  }>();
-  deleteKeyResult: Subject<KeyResult> = new Subject<KeyResult>();
+  keyResultsChanges: Subject<{ keyResult: KeyResult; changeId: number | null; objective: Objective; delete: boolean }> =
+    new Subject<{
+      keyResult: KeyResult;
+      changeId: number | null;
+      objective: Objective;
+      delete: boolean;
+    }>();
 }

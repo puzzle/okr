@@ -108,7 +108,6 @@ export class KeyResultDialogComponent implements OnInit {
     return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
-  //Check if any errors are present if not return empty array if yes return error keys
   getErrorKeysOfFormField(name: string) {
     const errors = this.keyResultForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);

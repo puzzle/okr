@@ -14,7 +14,7 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements AfterViewInit {
+export class KeyresultDetailComponent implements OnChanges {
   @Input() keyResultId!: number;
   keyResult!: KeyResult;
 
@@ -25,7 +25,7 @@ export class KeyresultDetailComponent implements AfterViewInit {
     private notifierService: NotifierService,
   ) {}
 
-  ngAfterViewInit() {
+  ngOnChanges() {
     this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
       this.keyResult = fullKeyResult;
       this.changeDetectorRef.markForCheck();
@@ -60,25 +60,22 @@ export class KeyresultDetailComponent implements AfterViewInit {
       })
       .afterClosed()
       .subscribe(async (result) => {
-        if (result.delete) {
-          await this.notifierService.deleteKeyResult.next(result.keyResult);
-        } else {
-          await this.notifierService.keyResultsChanges.next({
-            keyResult: result.keyResult,
-            changeId: result.changeId,
-            objective: result.objective,
-          });
-          if (result.openNew) {
-            this.openEditKeyResultDialog();
-          }
-
-          this.keyResult = {
-            ...this.keyResult,
-            title: result.keyResult.title,
-            description: result.keyResult.description,
-          };
-          this.changeDetectorRef.markForCheck();
+        await this.notifierService.keyResultsChanges.next({
+          keyResult: result.keyResult,
+          changeId: result.changeId,
+          objective: result.objective,
+          delete: result.delete,
+        });
+        if (result.openNew) {
+          this.openEditKeyResultDialog();
         }
+
+        this.keyResult = {
+          ...this.keyResult,
+          title: result.keyResult.title,
+          description: result.keyResult.description,
+        };
+        this.changeDetectorRef.markForCheck();
       });
   }
 }

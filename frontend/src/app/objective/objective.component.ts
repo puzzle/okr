@@ -39,28 +39,27 @@ export class ObjectiveComponent {
     private router: Router,
   ) {
     this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-      if (keyResultChange.objective.id != this.objective.value.id) {
-        return;
-      }
       const keyResults = this.objective.value.keyResults;
-      const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
-      if (existingKRIndex !== -1) {
-        keyResults[existingKRIndex] = {
-          ...keyResults[existingKRIndex],
-          id: keyResultChange.keyResult.id,
-          title: keyResultChange.keyResult.title,
-        };
+      if (keyResultChange.delete) {
+        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
+        keyResults.splice(existingKRIndex, 1);
+        this.objective = { ...this.objective.value, keyResults: keyResults };
       } else {
-        keyResults.push(keyResultChange.keyResult);
+        if (keyResultChange.objective.id != this.objective.value.id) {
+          return;
+        }
+        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
+        if (existingKRIndex !== -1) {
+          keyResults[existingKRIndex] = {
+            ...keyResults[existingKRIndex],
+            id: keyResultChange.keyResult.id,
+            title: keyResultChange.keyResult.title,
+          };
+        } else {
+          keyResults.push(keyResultChange.keyResult);
+        }
+        this.objective = { ...this.objective.value, keyResults: keyResults };
       }
-      this.objective = { ...this.objective.value, keyResults: keyResults };
-    });
-
-    this.notifierService.deleteKeyResult.subscribe((keyResultToDelete) => {
-      const keyResults = this.objective.value.keyResults;
-      const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultToDelete.id);
-      keyResults.splice(existingKRIndex, 1);
-      this.objective = { ...this.objective.value, keyResults: keyResults };
     });
   }
 
@@ -98,6 +97,7 @@ export class ObjectiveComponent {
           keyResult: result.keyResult,
           changeId: null,
           objective: result.objective,
+          delete: false,
         });
         if (result.openNew) {
           this.openAddKeyResultDialog();

@@ -55,7 +55,7 @@ export class KeyResultDialogComponent implements OnInit {
     }
   }
 
-  saveKeyResult() {
+  saveKeyResult(openNewDialog = false) {
     const value = this.keyResultForm.value;
     let keyResult: KeyResultMetricDTO = {
       id: this.data.keyResult ? this.data.keyResult.id : null,
@@ -77,14 +77,13 @@ export class KeyResultDialogComponent implements OnInit {
         changeId: keyResult.id,
         objective: keyResult.objective,
         delete: false,
-        openNew: false,
+        openNew: openNewDialog,
       });
     });
   }
 
   openNew() {
-    this.saveKeyResult();
-    this.dialogRef.close({ keyResult: null, delete: null, openNew: true });
+    this.saveKeyResult(true);
   }
 
   deleteKeyResult() {

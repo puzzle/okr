@@ -94,14 +94,13 @@ export class ObjectiveComponent {
       })
       .afterClosed()
       .subscribe(async (result) => {
+        await this.notifierService.keyResultsChanges.next({
+          keyResult: result.keyResult,
+          changeId: null,
+          objective: result.objective,
+        });
         if (result.openNew) {
           this.openAddKeyResultDialog();
-        } else {
-          await this.notifierService.keyResultsChanges.next({
-            keyResult: result.keyResult,
-            changeId: null,
-            objective: result.objective,
-          });
         }
       });
   }

@@ -60,17 +60,16 @@ export class KeyresultDetailComponent implements OnChanges {
       })
       .afterClosed()
       .subscribe(async (result) => {
-        if (result.openNew) {
-          this.openEditKeyResultDialog();
+        if (result.delete) {
+          await this.notifierService.deleteKeyResult.next(result.keyResult);
         } else {
-          if (result.delete) {
-            await this.notifierService.deleteKeyResult.next(result.keyResult);
-          } else {
-            await this.notifierService.keyResultsChanges.next({
-              keyResult: result.keyResult,
-              changeId: result.changeId,
-              objective: result.objective,
-            });
+          await this.notifierService.keyResultsChanges.next({
+            keyResult: result.keyResult,
+            changeId: result.changeId,
+            objective: result.objective,
+          });
+          if (result.openNew) {
+            this.openEditKeyResultDialog();
           }
         }
       });

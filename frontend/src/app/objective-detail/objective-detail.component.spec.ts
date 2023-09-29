@@ -4,7 +4,7 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { objective } from '../shared/testData';
+import { keyResultObjective, objective } from '../shared/testData';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -36,7 +36,6 @@ describe('ObjectiveDetailComponent', () => {
 
   it('get data from backend', () => {
     component.objectiveId = 2;
-    component.ngOnChanges();
     fixture.detectChanges();
 
     const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;

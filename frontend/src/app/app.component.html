@@ -15,7 +15,7 @@
       position="end"
     >
       <app-drawer-content
-        *ngIf="sidenavContentInformation != undefined"
+        *ngIf="sidenavContentInformation != undefined && drawerOpen"
         [drawerContent]="sidenavContentInformation"
       ></app-drawer-content>
     </mat-drawer>

@@ -17,30 +17,29 @@ export class TeamComponent {
     private notifierService: NotifierService,
   ) {
     this.notifierService.objectivesChanges.subscribe((objectiveChange) => {
-      if (objectiveChange.teamId != this.overviewEntity.value.team.id) {
+      if (objectiveChange.teamId !== this.overviewEntity.value.team.id) {
         return;
       }
 
-      let objectives = this.overviewEntity.value.objectives;
+      const objectives = [...this.overviewEntity.value.objectives];
       const existingObjIndex = objectives.findIndex((obj) => obj.id === objectiveChange.objective.id);
 
-      if (existingObjIndex == -1) {
-        //Add
+      if (existingObjIndex === -1 && !objectiveChange.delete) {
+        // Add
         objectives.push(objectiveChange.objective);
-        return;
-      }
-      if (objectiveChange.delete) {
-        //delete
-        objectives = objectives.filter((e, i) => existingObjIndex != i);
-      } else {
-        //update
+      } else if (existingObjIndex !== -1 && objectiveChange.delete) {
+        // Delete
+        objectives.splice(existingObjIndex, 1);
+      } else if (existingObjIndex !== -1) {
+        // Update
         objectives[existingObjIndex] = {
           ...objectives[existingObjIndex],
           title: objectiveChange.objective.title,
           state: objectiveChange.objective.state,
         };
       }
-      this.overviewEntity = { ...this.overviewEntity.value, objectives: objectives };
+
+      this.overviewEntity = { ...this.overviewEntity.value, objectives };
 
       if (objectiveChange.addKeyResult) {
         //TODO Open Keyresult dialog

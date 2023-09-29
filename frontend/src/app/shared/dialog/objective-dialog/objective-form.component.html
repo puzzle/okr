@@ -57,7 +57,7 @@
       <div class="d-flex flex-column gap-2 col-6">
         <label class="text-black" for="quarter">Team</label>
         <mat-form-field>
-          <mat-select formControlName="team" id="team" [disabled]="true">
+          <mat-select formControlName="team" id="team">
             <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
               {{ team.name }}
             </mat-option>

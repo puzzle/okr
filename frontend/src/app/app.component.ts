@@ -13,8 +13,8 @@ import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
+  sidenavContentInformation?: { id: number; type: string };
   drawerOpen: boolean = false;
-  sidenavContentInformation!: { id: number; type: string };
 
   constructor(
     public router: Router,
@@ -80,11 +80,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openDrawer() {
     this.drawerOpen = true;
+    document.getElementById('bannerComponent')!.classList.add('backdrop');
     this.disableScrolling();
   }
 
   closeDrawer() {
     this.drawerOpen = false;
+    this.sidenavContentInformation = undefined;
+    document.getElementById('bannerComponent')!.classList.remove('backdrop');
     this.router.navigate(['/']);
   }
 }

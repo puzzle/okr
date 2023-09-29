@@ -8,15 +8,15 @@
       (keydown.enter)="closeDrawer()"
       (keydown.escape)="closeDrawer()"
       (keydown.space)="closeDrawer()"
-      [(opened)]="drawerOpen"
+      [opened]="!!sidenavContentInformation"
       class="mt-5 position-fixed p-3 col-sm-12 col-md-5"
       data-test-id="mat-drawer"
       mode="over"
       position="end"
     >
       <app-drawer-content
-        *ngIf="sidenavContentInformation != undefined && drawerOpen"
-        [drawerContent]="sidenavContentInformation"
+        *ngIf="sidenavContentInformation"
+        [drawerContent]="sidenavContentInformation!"
       ></app-drawer-content>
     </mat-drawer>
     <mat-drawer-content>

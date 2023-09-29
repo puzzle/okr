@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
+import { Zone } from '../../../types/enums/Zone';
 
 @Component({
   selector: 'app-check-in-form-ordinal',
@@ -12,4 +13,5 @@ export class CheckInFormOrdinalComponent {
   keyResult!: KeyResultOrdinal;
   @Input()
   dialogForm!: FormGroup;
+  protected readonly Zone = Zone;
 }

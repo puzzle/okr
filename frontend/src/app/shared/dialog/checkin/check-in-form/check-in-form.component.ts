@@ -44,6 +44,7 @@ export class CheckInFormComponent {
     if (this.keyResult.keyResultType === 'metric') {
       checkIn = { ...this.dialogForm.value, value: this.parseValue(), keyResultId: this.keyResult.id };
     }
+    console.log(checkIn);
     this.dialogRef.close({ data: checkIn });
   }
 

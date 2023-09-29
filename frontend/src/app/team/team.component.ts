@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
-import { KeyResultObjective } from '../shared/types/model/KeyResultObjective';
 import { NotifierService } from '../shared/services/notifier.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -62,7 +61,7 @@ export class TeamComponent {
 
   createObjective() {
     const matDialogRef = this.dialog.open(ObjectiveFormComponent, {
-      data: { teamId: this.overviewEntity.value.team.id } as unknown as KeyResultObjective,
+      data: { teamId: this.overviewEntity.value.team.id },
     });
     matDialogRef.afterClosed().subscribe((result) => {
       if (result.objective) {

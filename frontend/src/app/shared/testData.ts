@@ -137,14 +137,9 @@ export const quarter: Quarter = {
 };
 
 export const objective: KeyResultObjective = {
-  team: team1,
-  createdOn: new Date(),
-  title: 'title',
-  state: State.NOTSUCCESSFUL,
   id: 1,
+  state: State.NOTSUCCESSFUL,
   quarter: quarter,
-  description: 'description',
-  modifiedOn: new Date(),
 };
 
 export const keyResultMetricWithIdEight: KeyResultMetricMin = {

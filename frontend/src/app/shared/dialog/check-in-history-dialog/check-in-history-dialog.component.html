@@ -8,8 +8,7 @@
   <mat-dialog-content class="d-flex justify-content-start flex-column ms-3 mb-2 mt-3 gap-4">
     <div *ngFor="let checkIn of checkInHistory; index as i">
       <div class="d-flex flex-row flex-wrap">
-        <!--        TODO: Use constant of constant library as date format in this pipe-->
-        <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
+        <span class="me-1">{{ checkIn.createdOn | date: DATE_FORMAT }}</span>
         <span>-</span>
         <div class="ms-1 me-1">
           <span>Wert: {{ checkIn.value }};</span>

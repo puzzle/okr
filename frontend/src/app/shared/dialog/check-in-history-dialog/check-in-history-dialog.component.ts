@@ -3,6 +3,7 @@ import { CheckInMin } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import errorMessages from '../../../../assets/errors/error-messages.json';
+import { DATE_FORMAT } from '../../constantLibary';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -23,4 +24,5 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   protected readonly errorMessages = errorMessages;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

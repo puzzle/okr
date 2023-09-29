@@ -24,7 +24,6 @@ export class ObjectiveFormComponent implements OnInit {
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     relation: new FormControl<number>({ value: 0, disabled: true }),
-    state: new FormControl<string>(''),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
@@ -46,14 +45,13 @@ export class ObjectiveFormComponent implements OnInit {
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = event.submitter.getAttribute('submitType');
-    console.log(state);
     let objectiveDTO: Objective = {
       id: this.data.objectiveId,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
       teamId: value.team,
-      state: this.data.objectiveId ? value.state : state,
+      state: state,
     } as unknown as Objective;
 
     const submitFunction = objectiveDTO.id
@@ -80,7 +78,6 @@ export class ObjectiveFormComponent implements OnInit {
         description: objective.description,
         team: teamId,
         quarter: quarterId,
-        state: objective.state,
       });
     });
   }

@@ -6,11 +6,11 @@ import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
-import errorMessages from 'src/assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
+import errorMessages from '../../../../assets/errors/error-messages.json';
 
 @Component({
   selector: 'app-objective-form',
@@ -25,7 +25,7 @@ export class ObjectiveFormComponent implements OnInit {
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
     relation: new FormControl<number>({ value: 0, disabled: true }),
     state: new FormControl<string>(''),
-    createKeyresults: new FormControl<boolean>(false),
+    createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
@@ -46,6 +46,7 @@ export class ObjectiveFormComponent implements OnInit {
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = event.submitter.getAttribute('submitType');
+    console.log(state);
     let objectiveDTO: Objective = {
       id: this.data.objectiveId,
       quarterId: value.quarter,
@@ -60,7 +61,7 @@ export class ObjectiveFormComponent implements OnInit {
       : this.objectiveService.createObjective(objectiveDTO);
 
     submitFunction.subscribe((savedObjective: Objective) =>
-      this.closeDialog(savedObjective, false, value.createKeyresults!),
+      this.closeDialog(savedObjective, false, value.createKeyResults!),
     );
   }
 

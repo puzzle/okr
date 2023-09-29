@@ -48,8 +48,8 @@ export class CheckInFormComponent {
   }
 
   saveCheckIn() {
+    console.log(this.checkIn);
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
-    this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
     let checkIn: any = { ...this.dialogForm.value, keyResultId: this.keyResult.id };
     if (this.keyResult.keyResultType === 'metric') {
       checkIn = { ...this.dialogForm.value, value: this.parseValue(), keyResultId: this.keyResult.id };

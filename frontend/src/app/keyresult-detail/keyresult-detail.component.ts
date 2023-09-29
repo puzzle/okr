@@ -24,10 +24,18 @@ export class KeyresultDetailComponent implements OnChanges {
   constructor(
     private keyResultService: KeyresultService,
     private checkInService: CheckInService,
+    private notifierService: NotifierService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private notifierService: NotifierService,
-  ) {}
+  ) {
+    this.notifierService.reopenCheckInDialog.subscribe((result) => {
+      if (this.keyResult.lastCheckIn?.id === result.id) {
+        this.keyResult = { ...this.keyResult, lastCheckIn: result };
+        this.changeDetectorRef.detectChanges();
+      }
+      this.checkInHistory();
+    });
+  }
 
   ngOnChanges() {
     this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {

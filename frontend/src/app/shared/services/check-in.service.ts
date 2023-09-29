@@ -17,4 +17,8 @@ export class CheckInService {
   createCheckIn(checkIn: any): Observable<CheckIn> {
     return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
   }
+
+  updateCheckIn(checkIn: any, id: number): Observable<CheckIn> {
+    return this.httpclient.put<any>('/api/v2/checkIns/' + id, checkIn);
+  }
 }

@@ -6,6 +6,7 @@ import errorMessages from '../../../../assets/errors/error-messages.json';
 import { DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
+import { NotifierService } from '../../services/notifier.service';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -21,6 +22,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
     private checkInService: CheckInService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CheckInHistoryDialogComponent>,
+    public notifierService: NotifierService,
   ) {}
   ngOnInit(): void {
     this.keyResult = this.data.keyResult;
@@ -39,7 +41,10 @@ export class CheckInHistoryDialogComponent implements OnInit {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      let updatedCheckIn = { ...result.data, id: checkIn.id };
+      this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
+        this.notifierService.reopenCheckInDialog.next(updatedCheckIn);
+      });
     });
   }
 

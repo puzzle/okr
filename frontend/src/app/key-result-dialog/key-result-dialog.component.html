@@ -40,7 +40,6 @@
         type="submit"
         (click)="saveKeyResult()"
         mat-button
-        mat-dialog-close
         [disabled]="keyResultForm.invalid"
       >
         Speichern
@@ -51,7 +50,6 @@
         [attr.data-testId]="'saveAndNew'"
         (click)="openNew()"
         mat-button
-        mat-dialog-close
         [disabled]="keyResultForm.invalid"
       >
         Speichern & Neu

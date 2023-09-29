@@ -93,6 +93,9 @@ export class ObjectiveComponent {
       })
       .afterClosed()
       .subscribe(async (result) => {
+        if (result == undefined || result.keyResult == null) {
+          return;
+        }
         await this.notifierService.keyResultsChanges.next({
           keyResult: result.keyResult,
           changeId: null,

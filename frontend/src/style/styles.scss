@@ -73,18 +73,6 @@ body {
   border: solid #cccccc 1px !important;
 }
 
-.mat-mdc-menu-item {
-  line-height: normal !important;
-  font-size: 1rem;
-  height: 2rem !important;
-  min-height: 0 !important;
-  &:hover {
-    padding-left: 0.75rem;
-    border-left: 0.25rem solid darkblue;
-    background-color: #eff7ff !important;
-  }
-}
-
 .icon {
   margin-top: 0.25rem;
   width: 1.25rem;

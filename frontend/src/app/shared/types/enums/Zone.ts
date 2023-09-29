@@ -1,6 +1,6 @@
 export enum Zone {
-  FAIL='FAIL',
-  COMMIT='COMMIT',
-  TARGET='TARGET',
-  STRETCH='STRETCH',
+  FAIL = 'FAIL',
+  COMMIT = 'COMMIT',
+  TARGET = 'TARGET',
+  STRETCH = 'STRETCH',
 }

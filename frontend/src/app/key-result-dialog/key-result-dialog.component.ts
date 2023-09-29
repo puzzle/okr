@@ -8,6 +8,7 @@ import { testUser } from '../shared/testData';
 import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { Objective } from '../shared/types/model/Objective';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -31,10 +32,10 @@ export class KeyResultDialogComponent implements OnInit {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: any; keyResult: KeyResult },
+    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
-    public matDialog: MatDialog,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +89,7 @@ export class KeyResultDialogComponent implements OnInit {
 
   deleteKeyResult() {
     if (this.data.keyResult.lastCheckIn?.id == undefined) {
-      this.matDialog
+      this.dialog
         .open(ConfirmDialogComponent, {
           width: '15em',
           height: 'auto',

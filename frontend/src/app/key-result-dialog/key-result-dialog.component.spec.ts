@@ -18,12 +18,17 @@ import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { of } from 'rxjs';
 
+class matDialogRefMock {
+  close() {}
+}
+
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
   let fixture: ComponentFixture<KeyResultDialogComponent>;
   let loader: HarnessLoader;
   let errors = errorData;
   let keyResultService: KeyresultService;
+  let matDialogRef: MatDialogRef<KeyResultDialogComponent>;
 
   let fullObjective = {
     id: 1,
@@ -56,10 +61,6 @@ describe('KeyResultDialogComponent', () => {
     unit: 'CHF',
   };
 
-  const dialogMock = {
-    close: jest.fn(),
-  };
-
   describe('New KeyResult', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -75,7 +76,7 @@ describe('KeyResultDialogComponent', () => {
           KeyresultService,
           {
             provide: MatDialogRef,
-            useValue: {},
+            useValue: { close: (dialogResult: any) => {} },
           },
           {
             provide: MAT_DIALOG_DATA,
@@ -85,6 +86,7 @@ describe('KeyResultDialogComponent', () => {
         declarations: [KeyResultDialogComponent],
       }).compileComponents();
 
+      matDialogRef = TestBed.inject(MatDialogRef);
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -229,10 +231,9 @@ describe('KeyResultDialogComponent', () => {
         ],
         providers: [
           KeyresultService,
-          { provide: MatDialogRef, useValue: dialogMock },
           {
             provide: MatDialogRef,
-            useValue: {},
+            useValue: { close: (dialogResult: any) => {} },
           },
           {
             provide: MAT_DIALOG_DATA,

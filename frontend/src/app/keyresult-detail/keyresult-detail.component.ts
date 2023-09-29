@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';

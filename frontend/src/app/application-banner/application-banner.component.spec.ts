@@ -28,36 +28,6 @@ describe('ApplicationBannerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set banner position to fixed when scrolled more than the height of the banner', fakeAsync(() => {
-    //Set bannerHeight bigger than the default banner
-    let bannerHeight: number = 200;
-    //Scroll more than the banner height
-    let scrollTop: number = bannerHeight + 20;
-
-    //Set banner style
-    component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(600);
-
-    //Assert that position was changed
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: sticky');
-  }));
-
-  it('should set banner position to relative if user is at top of page', fakeAsync(() => {
-    //Set bannerHeight to default height
-    let bannerHeight: number = 160;
-    //Set user to top of page
-    let scrollTop: number = 0;
-
-    //Set banner style
-    component.setOKRBannerStyle(bannerHeight, scrollTop);
-    tick(600);
-
-    //Assert that position was changed
-    fixture.detectChanges();
-    expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain('position: relative');
-  }));
-
   it('should should hide banner if scrolled down', fakeAsync(() => {
     //Set bannerHeight to default
     let bannerHeight: number = 160;

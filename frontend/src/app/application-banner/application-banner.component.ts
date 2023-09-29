@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-application-banner',
@@ -33,13 +34,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
-    if (scrollTop > bannerHeight) {
-      this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
-      this.setPositionOfBanner('sticky');
-    } else if (scrollTop < 10) {
-      this.okrBanner!.style.top = '0px';
-      this.setPositionOfBanner('relative');
-    }
+    this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
   }
 
   showOrHideBanner(scrollTop: number, bannerHeight: number) {

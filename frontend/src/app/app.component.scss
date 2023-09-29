@@ -1,3 +1,5 @@
+@import "_variables";
+
 .okr-label {
   margin-left: 35px;
 }
@@ -7,27 +9,7 @@
   margin-left: 50px;
 }
 
-//#drawer-container {
-//  z-index: auto;
-//}
-
-//.fixed-position {
-//  position: fixed;
-//  width: 100%;
-//  z-index: 101;
-//}
-
-mat-drawer {
-  position: relative;
-  z-index: 101;
-}
-
-mat-drawer-container {
-  position: relative;
-  z-index: auto;
-}
-
-.backdrop {
-  position: fixed !important;
-  filter: brightness(68%);
+.mt-140 {
+  padding-top: 140px;
+  background-color: $overview-bg;
 }

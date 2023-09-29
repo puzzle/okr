@@ -72,6 +72,7 @@ export class KeyresultDetailComponent implements OnChanges {
 
         this.keyResult = {
           ...this.keyResult,
+          id: result.keyResult.id,
           title: result.keyResult.title,
           description: result.keyResult.description,
         };

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
+import { CheckInMin } from '../../../types/model/CheckInMin';
 
 @Component({
   selector: 'app-check-in-form',
@@ -12,6 +13,7 @@ import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 })
 export class CheckInFormComponent {
   keyResult: KeyResult;
+  checkIn: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
 
@@ -28,10 +30,18 @@ export class CheckInFormComponent {
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
+    this.checkIn = data.checkIn;
     this.setDefaultValues();
   }
 
   setDefaultValues() {
+    if (this.data.checkIn != null) {
+      this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
+      this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
+      this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
+      this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
+      return;
+    }
     if (this.keyResult.lastCheckIn?.value != null) {
       this.dialogForm.controls.value.setValue(this.keyResult.lastCheckIn.value.toString());
       this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn.confidence);

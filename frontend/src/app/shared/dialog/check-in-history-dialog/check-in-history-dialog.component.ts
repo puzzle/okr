@@ -33,8 +33,8 @@ export class CheckInHistoryDialogComponent implements OnInit {
     this.dialogRef.close();
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
-        keyResultId: this.keyResult.id,
         keyResult: this.keyResult,
+        checkIn: checkIn,
       },
       width: '719px',
     });

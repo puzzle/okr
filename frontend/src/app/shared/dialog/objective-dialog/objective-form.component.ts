@@ -82,28 +82,7 @@ export class ObjectiveFormComponent implements OnInit {
         quarter: quarterId,
         state: objective.state,
       });
-      console.log(this.objectiveForm.getRawValue());
     });
-  }
-
-  isTouchedOrDirty(name: string) {
-    return this.objectiveForm.get(name)?.dirty || this.objectiveForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.objectiveForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
-  }
-
-  getDefaultObjective() {
-    return {
-      id: 0,
-      title: '',
-      description: '',
-      state: State.DRAFT,
-      teamId: 0,
-      quarterId: 0,
-    } as Objective;
   }
 
   deleteObjective() {
@@ -134,5 +113,24 @@ export class ObjectiveFormComponent implements OnInit {
       delete: willDelete,
       addKeyResult: addKeyResult,
     });
+  }
+
+  isTouchedOrDirty(name: string) {
+    return this.objectiveForm.get(name)?.dirty || this.objectiveForm.get(name)?.touched;
+  }
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.objectiveForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  getDefaultObjective() {
+    return {
+      id: 0,
+      title: '',
+      description: '',
+      state: State.DRAFT,
+      teamId: 0,
+      quarterId: 0,
+    } as Objective;
   }
 }

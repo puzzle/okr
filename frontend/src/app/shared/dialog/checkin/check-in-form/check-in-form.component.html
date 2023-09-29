@@ -18,11 +18,13 @@
       <app-check-in-form-metric
         *ngIf="keyResult.keyResultType === 'metric'"
         [keyResult]="getKeyResultMetric()"
+        [checkIn]="checkIn"
         [dialogForm]="dialogForm"
       ></app-check-in-form-metric>
       <app-check-in-form-ordinal
         *ngIf="keyResult.keyResultType === 'ordinal'"
         [keyResult]="getKeyResultOrdinal()"
+        [checkIn]="checkIn"
         [dialogForm]="dialogForm"
       ></app-check-in-form-ordinal>
     </form>

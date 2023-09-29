@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { UnitTransformationPipe } from '../../../pipes/unit-transformation/unit-transformation.pipe';
+import { CheckInMin } from '../../../types/model/CheckInMin';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -12,6 +13,8 @@ import { UnitTransformationPipe } from '../../../pipes/unit-transformation/unit-
 export class CheckInFormMetricComponent implements AfterViewInit {
   @Input()
   keyResult!: KeyResultMetric;
+  @Input()
+  checkIn!: CheckInMin;
   @Input()
   dialogForm!: FormGroup;
   protected readonly errorMessages: any = errorMessages;

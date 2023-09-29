@@ -1,14 +1,12 @@
-<div class="d-flex align-items-center gap-1 confidence-container" *ngIf="keyResult?.lastCheckIn?.confidence">
+<div class="d-flex align-items-center gap-1 confidence-container" *ngIf="checkIn.confidence">
   <div
     [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'"
     [ngStyle]="{ 'background-color': backgroundColor }"
   >
-    <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" data-testid="confidence">
-      {{ keyResult.lastCheckIn?.confidence }}/{{ max }}
-    </p>
+    <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" data-testid="confidence">{{ checkIn.confidence }}/{{ max }}</p>
   </div>
 
   <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [showTickMarks]="true" color="accent">
-    <input matSliderThumb [(ngModel)]="keyResult.lastCheckIn!.confidence" />
+    <input matSliderThumb [(ngModel)]="checkIn.confidence" />
   </mat-slider>
 </div>

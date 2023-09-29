@@ -13,12 +13,12 @@ export class ConfidenceComponent implements OnChanges {
   min: number = 1;
   max: number = 10;
   @Input() edit: boolean = true;
-  @Input() keyResult!: KeyresultMin | KeyResult;
+  @Input() checkIn!: CheckInMin;
   @Input() backgroundColor!: string;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['keyResult']?.currentValue?.lastCheckIn === null) {
-      this.keyResult.lastCheckIn = { confidence: 5 } as CheckInMin;
+    if (changes['checkIn']?.currentValue === undefined || changes['checkIn']?.currentValue === null) {
+      this.checkIn = { confidence: 5 } as CheckInMin;
     }
   }
 }

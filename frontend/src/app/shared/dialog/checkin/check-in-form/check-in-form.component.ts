@@ -30,7 +30,7 @@ export class CheckInFormComponent {
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
-    this.checkIn = data.checkIn;
+    this.checkIn = data.checkIn === undefined ? this.keyResult.lastCheckIn : data.checkIn;
     this.setDefaultValues();
   }
 
@@ -44,11 +44,11 @@ export class CheckInFormComponent {
     }
     if (this.keyResult.lastCheckIn?.value != null) {
       this.dialogForm.controls.value.setValue(this.keyResult.lastCheckIn.value.toString());
-      this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn.confidence);
     }
   }
 
   saveCheckIn() {
+    this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
     this.dialogForm.controls.confidence.setValue(this.keyResult.lastCheckIn!.confidence);
     let checkIn: any = { ...this.dialogForm.value, keyResultId: this.keyResult.id };
     if (this.keyResult.keyResultType === 'metric') {

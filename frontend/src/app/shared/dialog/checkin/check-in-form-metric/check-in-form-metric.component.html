@@ -2,7 +2,7 @@
 <div class="d-flex flex-row w-100">
   <div class="d-flex flex-column w-25">
     <mat-label class="mb-2"
-      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit }})</span>:
+      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit | unitLabelTransformation }})</span>:
     </mat-label>
     <div class="d-flex flex-column mb-3">
       <app-custom-input

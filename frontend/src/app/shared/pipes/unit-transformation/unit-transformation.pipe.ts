@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatCurrency } from '@angular/common';
-import { Unit } from '../types/enums/Unit';
+import { Unit } from '../../types/enums/Unit';
 
 @Pipe({
   name: 'unitTransformation',

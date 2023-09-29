@@ -48,13 +48,14 @@ import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
-import { UnitTransformationPipe } from './shared/pipes/unit-transformation.pipe';
+import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
+import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
-import { CheckInFormOrdinalComponent } from './shared/dialog/check-in-form-ordinal/check-in-form-ordinal.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
+import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -108,6 +109,7 @@ export const MY_FORMATS = {
     CheckInBaseInformationsComponent,
     CustomInputComponent,
     CheckInFormComponent,
+    UnitLabelTransformationPipe,
   ],
   imports: [
     CommonModule,

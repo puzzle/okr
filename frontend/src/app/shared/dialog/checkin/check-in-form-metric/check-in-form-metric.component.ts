@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
-import { UnitTransformationPipe } from '../../../pipes/unit-transformation.pipe';
+import { UnitTransformationPipe } from '../../../pipes/unit-transformation/unit-transformation.pipe';
 
 @Component({
   selector: 'app-check-in-form-metric',

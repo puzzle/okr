@@ -16,6 +16,6 @@ export class ToasterService {
   }
 
   showInfo() {
-    this.toastr.info('Hello world!', 'Toastr fun!');
+    this.toastr.info('Hello world!', 'Information');
   }
 }

@@ -12,7 +12,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import { ToasterService } from '../../services/toaster.service';
 
 @Component({
   selector: 'app-objective-form',
@@ -21,13 +20,13 @@ import { ToasterService } from '../../services/toaster.service';
 })
 export class ObjectiveFormComponent implements OnInit {
   objectiveForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
-    description: new FormControl('', [Validators.maxLength(4096)]),
-    quarter: new FormControl(0, [Validators.required]),
-    team: new FormControl(0, [Validators.required]),
-    relation: new FormControl({ value: 0, disabled: true }),
-    state: new FormControl(''),
-    createKeyresults: new FormControl(true),
+    title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
+    description: new FormControl<string>('', [Validators.maxLength(4096)]),
+    quarter: new FormControl<number>(0, [Validators.required]),
+    team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
+    relation: new FormControl<number>({ value: 0, disabled: true }),
+    state: new FormControl<string>(''),
+    createKeyresults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
@@ -37,7 +36,6 @@ export class ObjectiveFormComponent implements OnInit {
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
-    private toasterService: ToasterService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -47,7 +45,7 @@ export class ObjectiveFormComponent implements OnInit {
   ) {}
 
   onSubmit(event: any): void {
-    const value = this.objectiveForm.value;
+    const value = this.objectiveForm.getRawValue();
     const state = event.submitter.getAttribute('submitType');
     let objectiveDTO: ObjectiveDTO = {
       id: this.data.objectiveId,
@@ -62,7 +60,9 @@ export class ObjectiveFormComponent implements OnInit {
       ? this.objectiveService.updateObjective(objectiveDTO)
       : this.objectiveService.createObjective(objectiveDTO);
 
-    submitFunction.subscribe((savedObjective: ObjectiveDTO) => this.closeDialog(savedObjective));
+    submitFunction.subscribe((savedObjective: ObjectiveDTO) =>
+      this.closeDialog(savedObjective, false, value.createKeyresults!),
+    );
   }
 
   ngOnInit(): void {
@@ -82,6 +82,7 @@ export class ObjectiveFormComponent implements OnInit {
         quarter: quarterId,
         state: objective.state,
       });
+      console.log(this.objectiveForm.getRawValue());
     });
   }
 
@@ -124,9 +125,14 @@ export class ObjectiveFormComponent implements OnInit {
     } as unknown as ObjectiveMin;
   }
 
-  closeDialog(objectiveDTO: ObjectiveDTO, willDelete: boolean = false) {
-    const value = this.objectiveForm.value;
+  closeDialog(objectiveDTO: ObjectiveDTO, willDelete: boolean = false, addKeyResult: boolean = false) {
+    const value = this.objectiveForm.getRawValue();
     const objectiveMin: ObjectiveMin = this.objectiveDtoToObjectiveMin(objectiveDTO);
-    this.dialogRef.close({ objective: objectiveMin, teamId: value.team, delete: willDelete });
+    this.dialogRef.close({
+      objective: objectiveMin,
+      teamId: value.team,
+      delete: willDelete,
+      addKeyResult: addKeyResult,
+    });
   }
 }

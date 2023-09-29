@@ -42,6 +42,11 @@ export class TeamComponent {
         };
       }
       this.overviewEntity = { ...this.overviewEntity.value, objectives: objectives };
+
+      if (objectiveChange.addKeyResult) {
+        //TODO Open Keyresult dialog
+        console.log('Open new keyResult dialog');
+      }
     });
   }
 
@@ -65,6 +70,7 @@ export class TeamComponent {
           objective: result.objective,
           teamId: result.teamId,
           delete: result.delete,
+          addKeyResult: result.addKeyResult,
         });
       }
     });

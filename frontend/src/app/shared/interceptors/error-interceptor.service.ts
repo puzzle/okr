@@ -8,6 +8,7 @@ import { ToasterService } from '../services/toaster.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
+  NO_ERROR_TOASTER_ROUTES = ['/token'];
   constructor(
     private notifierService: NotifierService,
     private router: Router,
@@ -18,13 +19,23 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
       catchError((response) => {
-        this.toasterService.showError(response.error.message);
-        if (drawerRoutes.some((route) => request.url.includes(route))) {
-          this.notifierService.closeDetailSubject.next();
-          this.router.navigate(['']);
-        }
+        this.handleErrorToaster(response);
+        this.handleDrawerError(request);
         return throwError(() => new Error(response));
       }),
     );
+  }
+
+  handleErrorToaster(response: any) {
+    if (!this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+      this.toasterService.showError(response.error.message);
+    }
+  }
+
+  handleDrawerError(request: HttpRequest<unknown>) {
+    if (drawerRoutes.some((route) => request.url.includes(route))) {
+      this.notifierService.closeDetailSubject.next();
+      this.router.navigate(['']);
+    }
   }
 }

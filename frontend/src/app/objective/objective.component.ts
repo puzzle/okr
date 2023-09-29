@@ -71,6 +71,7 @@ export class ObjectiveComponent implements AfterViewInit {
             objective: result.objective,
             teamId: result.teamId,
             delete: result.delete,
+            addKeyResult: result.addKeyResult,
           });
         }
       });

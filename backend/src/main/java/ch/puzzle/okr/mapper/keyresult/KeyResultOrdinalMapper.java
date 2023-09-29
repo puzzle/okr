@@ -57,8 +57,8 @@ public class KeyResultOrdinalMapper {
             lastCheckInDto = null;
         } else {
             lastCheckInDto = new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(),
-                    ((CheckInOrdinal) lastCheckIn).getZone().toString(), lastCheckIn.getConfidence(),
-                    lastCheckIn.getCreatedOn(), lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
+                    ((CheckInOrdinal) lastCheckIn).getZone(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
+                    lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }
         return lastCheckInDto;
     }

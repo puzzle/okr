@@ -1,4 +1,5 @@
 import { State } from '../enums/State';
+import { User } from './User';
 
 export interface Objective {
   id: number;
@@ -7,6 +8,7 @@ export interface Objective {
   state: State;
   teamId: number;
   quarterId: number;
-  createdOn: Date;
-  modifiedOn: Date;
+  createdOn?: Date;
+  modifiedOn?: Date;
+  createdBy?: User;
 }

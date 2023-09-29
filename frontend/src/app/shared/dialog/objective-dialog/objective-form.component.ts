@@ -6,7 +6,6 @@ import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
-import { ObjectiveDTO } from '../../types/DTOs/ObjectiveDTO';
 import errorMessages from 'src/assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -47,20 +46,20 @@ export class ObjectiveFormComponent implements OnInit {
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
     const state = event.submitter.getAttribute('submitType');
-    let objectiveDTO: ObjectiveDTO = {
+    let objectiveDTO: Objective = {
       id: this.data.objectiveId,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
       teamId: value.team,
       state: this.data.objectiveId ? value.state : state,
-    } as unknown as ObjectiveDTO;
+    } as unknown as Objective;
 
     const submitFunction = objectiveDTO.id
       ? this.objectiveService.updateObjective(objectiveDTO)
       : this.objectiveService.createObjective(objectiveDTO);
 
-    submitFunction.subscribe((savedObjective: ObjectiveDTO) =>
+    submitFunction.subscribe((savedObjective: Objective) =>
       this.closeDialog(savedObjective, false, value.createKeyresults!),
     );
   }
@@ -88,7 +87,7 @@ export class ObjectiveFormComponent implements OnInit {
   deleteObjective() {
     this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe({
       next: () => {
-        let objectiveDTO: ObjectiveDTO = { id: this.data.objectiveId! } as unknown as ObjectiveDTO;
+        let objectiveDTO: Objective = { id: this.data.objectiveId! } as unknown as Objective;
         this.closeDialog(objectiveDTO, true);
       },
       error: () => {
@@ -97,16 +96,16 @@ export class ObjectiveFormComponent implements OnInit {
     });
   }
 
-  objectiveDtoToObjectiveMin(objectiveDto: ObjectiveDTO): ObjectiveMin {
+  objectiveToObjectiveMin(objectiveDto: Objective): ObjectiveMin {
     return {
       ...objectiveDto,
-      state: State[objectiveDto.state],
+      state: State[objectiveDto.state as string as keyof typeof State],
     } as unknown as ObjectiveMin;
   }
 
-  closeDialog(objectiveDTO: ObjectiveDTO, willDelete: boolean = false, addKeyResult: boolean = false) {
+  closeDialog(objectiveDTO: Objective, willDelete: boolean = false, addKeyResult: boolean = false) {
     const value = this.objectiveForm.getRawValue();
-    const objectiveMin: ObjectiveMin = this.objectiveDtoToObjectiveMin(objectiveDTO);
+    const objectiveMin: ObjectiveMin = this.objectiveToObjectiveMin(objectiveDTO);
     this.dialogRef.close({
       objective: objectiveMin,
       teamId: value.team,

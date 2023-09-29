@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ObjectiveDTO } from '../types/DTOs/ObjectiveDTO';
 import { Objective } from '../types/model/Objective';
 import { Observable } from 'rxjs';
 
@@ -14,15 +13,15 @@ export class ObjectiveService {
     return this.httpClient.get<Objective>('/api/v2/objectives/' + id);
   }
 
-  createObjective(objectiveDTO: ObjectiveDTO): Observable<ObjectiveDTO> {
-    return this.httpClient.post<ObjectiveDTO>('/api/v2/objectives', objectiveDTO);
+  createObjective(objectiveDTO: Objective): Observable<Objective> {
+    return this.httpClient.post<Objective>('/api/v2/objectives', objectiveDTO);
   }
 
-  updateObjective(objectiveDTO: ObjectiveDTO): Observable<ObjectiveDTO> {
-    return this.httpClient.put<ObjectiveDTO>(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
+  updateObjective(objectiveDTO: Objective): Observable<Objective> {
+    return this.httpClient.put<Objective>(`/api/v2/objectives/${objectiveDTO.id}`, objectiveDTO);
   }
 
-  deleteObjective(objectiveId: number): Observable<ObjectiveDTO> {
-    return this.httpClient.delete<ObjectiveDTO>(`/api/v2/objectives/${objectiveId}`);
+  deleteObjective(objectiveId: number): Observable<Objective> {
+    return this.httpClient.delete<Objective>(`/api/v2/objectives/${objectiveId}`);
   }
 }

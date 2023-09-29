@@ -10,7 +10,6 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { NotifierService } from '../shared/services/notifier.service';
 import { CheckInService } from '../shared/services/check-in.service';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
-import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -49,6 +48,7 @@ export class KeyresultDetailComponent implements OnChanges {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResultId: this.keyResult.id,
+        keyResult: this.keyResult,
       },
     });
 

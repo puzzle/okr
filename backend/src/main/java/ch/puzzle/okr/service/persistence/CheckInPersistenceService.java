@@ -26,7 +26,7 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long> {
         return getCheckInRepository().findFirstByKeyResultIdOrderByCreatedOnDesc(keyResultId);
     }
 
-    public Integer getCheckinAmountByObjectiveId(Long objectiveId) {
+    public Integer getCheckInAmountByObjectiveId(Long objectiveId) {
         return getCheckInRepository().countByKeyResultObjectiveId(objectiveId);
     }
 

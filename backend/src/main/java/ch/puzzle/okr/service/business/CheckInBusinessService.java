@@ -61,8 +61,7 @@ public class CheckInBusinessService {
         return checkInPersistenceService.getLastCheckInOfKeyResult(keyResultId);
     }
 
-    public Integer getCheckinAmountByObjectiveId(Long objectiveId) {
-        return checkInPersistenceService.getCheckinAmountByObjectiveId(objectiveId);
+    public Integer getCheckInAmountByObjectiveId(Long objectiveId) {
+        return checkInPersistenceService.getCheckInAmountByObjectiveId(objectiveId);
     }
-
 }

@@ -10,6 +10,7 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { NotifierService } from '../shared/services/notifier.service';
 import { CheckInService } from '../shared/services/check-in.service';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
+import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -96,7 +97,7 @@ export class KeyresultDetailComponent implements OnChanges {
     dialogRef.afterClosed().subscribe((result) => {
       if (result != undefined && result != '') {
         this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-          this.keyResult.lastCheckIn = createdCheckIn;
+          this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
           this.changeDetectorRef.detectChanges();
         });
       }

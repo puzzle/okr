@@ -33,25 +33,13 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   }
 
   setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
-    if (scrollTop > bannerHeight) {
-      this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
-      this.setPositionOfBanner('sticky');
-    } else if (scrollTop < 10) {
-      this.okrBanner!.style.top = '0px';
-      this.setPositionOfBanner('relative');
-    }
+    this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
   }
 
   showOrHideBanner(scrollTop: number, bannerHeight: number) {
     return scrollTop > this.lastScrollPosition
       ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
       : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
-  }
-
-  setPositionOfBanner(position: string) {
-    setTimeout(() => {
-      this.okrBanner!.style.position = position;
-    }, 500);
   }
 
   updateScrollEventListeners(bannerHeight: number) {

@@ -77,13 +77,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openDrawer() {
     this.drawerOpen = true;
-    document.getElementById('bannerComponent')!.classList.add('backdrop');
     this.disableScrolling();
   }
 
   closeDrawer() {
     this.drawerOpen = false;
-    document.getElementById('bannerComponent')!.classList.remove('backdrop');
     this.router.navigate(['/']);
   }
 }

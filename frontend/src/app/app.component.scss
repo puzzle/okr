@@ -1,3 +1,5 @@
+@import "_variables";
+
 .okr-label {
   margin-left: 35px;
 }
@@ -7,17 +9,7 @@
   margin-left: 50px;
 }
 
-#drawer-container {
-  z-index: 100;
-}
-
-.fixed-position {
-  position: fixed;
-  width: 100%;
-  z-index: 100;
-}
-
-.backdrop {
-  background-color: gray;
-  filter: brightness(68%);
+.mt-header-height {
+  padding-top: $header-height;
+  background-color: $overview-bg;
 }

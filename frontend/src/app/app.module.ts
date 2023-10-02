@@ -56,6 +56,7 @@ import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -110,6 +111,7 @@ export const MY_FORMATS = {
     CustomInputComponent,
     CheckInFormComponent,
     UnitLabelTransformationPipe,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,

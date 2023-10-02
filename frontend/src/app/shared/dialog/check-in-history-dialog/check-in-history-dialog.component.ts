@@ -7,6 +7,7 @@ import { DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { NotifierService } from '../../services/notifier.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -44,9 +45,24 @@ export class CheckInHistoryDialogComponent implements OnInit {
       if (result.data !== undefined && result.data !== null) {
         let updatedCheckIn = { ...result.data, id: checkIn.id };
         this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
-          this.notifierService.reopenCheckInDialog.next(updatedCheckIn);
+          this.notifierService.reopenCheckInHistoryDialog.next(updatedCheckIn);
         });
       }
+    });
+  }
+
+  deleteCheckIn(checkIn: CheckInMin) {
+    this.dialogRef.close();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Check-in',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.checkInService.deleteCheckIn(checkIn.id).subscribe();
+      }
+      this.notifierService.reopenCheckInHistoryDialog.next(null);
     });
   }
 

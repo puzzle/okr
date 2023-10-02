@@ -28,8 +28,8 @@ export class KeyresultDetailComponent implements OnChanges {
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
   ) {
-    this.notifierService.reopenCheckInDialog.subscribe((result) => {
-      if (this.keyResult.lastCheckIn?.id === result.id) {
+    this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
+      if (this.keyResult.lastCheckIn?.id === result?.id) {
         this.keyResult = { ...this.keyResult, lastCheckIn: result };
         this.changeDetectorRef.detectChanges();
       }

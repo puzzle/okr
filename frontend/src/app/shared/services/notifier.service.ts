@@ -9,6 +9,7 @@ import { Objective } from '../types/model/Objective';
 })
 export class NotifierService {
   closeDetailSubject: Subject<void> = new Subject();
+  reopenCheckInHistoryDialog: Subject<CheckIn | null> = new Subject<CheckIn | null>();
   reopenCheckInDialog: Subject<CheckIn> = new Subject<CheckIn>();
 
   keyResultsChanges: Subject<{ keyResult: KeyResult; changeId: number | null; objective: Objective; delete: boolean }> =

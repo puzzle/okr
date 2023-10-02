@@ -21,4 +21,8 @@ export class CheckInService {
   updateCheckIn(checkIn: any, id: number): Observable<CheckIn> {
     return this.httpclient.put<any>('/api/v2/checkIns/' + id, checkIn);
   }
+
+  deleteCheckIn(id: number) {
+    return this.httpclient.delete<any>('/api/v2/checkIns/' + id);
+  }
 }

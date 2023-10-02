@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configService.config$
       .pipe(
         map((config) => {
-          if (config.activeProfile === 'dev') {
+          if (config.activeProfile === 'staging') {
             document.getElementById('pzsh-topbar')!.style.backgroundColor = '#ab31ad';
           }
         }),

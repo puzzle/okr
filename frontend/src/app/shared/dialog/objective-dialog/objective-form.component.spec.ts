@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -13,6 +13,13 @@ import { ObjectiveService } from '../../services/objective.service';
 import { objective } from '../../testData';
 import { of, throwError } from 'rxjs';
 import { State } from '../../types/enums/State';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { MatInputHarness } from '@angular/material/input/testing';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { load } from '@angular-devkit/build-angular/src/utils/server-rendering/esm-in-memory-file-loader';
+import { MatRadioButtonHarness } from '@angular/material/radio/testing';
 
 const submitEvent = {
   submitter: {
@@ -41,6 +48,7 @@ const matDataMock: { objectiveId: number | undefined; teamId: number | undefined
 describe('ObjectiveDialogComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
+  let loader: HarnessLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -64,21 +72,47 @@ describe('ObjectiveDialogComponent', () => {
     fixture = TestBed.createComponent(ObjectiveFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it.each([['DRAFT'], ['ONGOING']])('onSubmit create', (state: string) => {
-    component.objectiveForm.setValue({
-      title: 'title',
-      description: 'description',
-      createKeyResults: false,
-      team: 1,
-      quarter: 1,
-      relation: 1,
-    });
+  it.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
+    const inputs = loader.getAllHarnesses(MatInputHarness);
+    const selects = loader.getAllHarnesses(MatSelectHarness);
+    const checkbox = loader.getHarness(MatCheckboxHarness);
+
+    await Promise.all([inputs, selects, checkbox]).then(
+      fakeAsync(([inputs, selects, checkbox]: [MatInputHarness[], MatSelectHarness[], MatCheckboxHarness]) => {
+        inputs[0].setValue('title');
+        advance();
+        inputs[1].setValue('description');
+        advance();
+        checkbox.check();
+        advance();
+        const quarterSelect = selects[0];
+        const relationSelect = selects[1];
+        const teamSelect = selects[2];
+        advance();
+        quarterSelect.open();
+        advance();
+        quarterSelect.getOptions().then((selectOptions) => {
+          selectOptions[0].click();
+        });
+        relationSelect.open();
+        advance();
+        relationSelect.getOptions().then((selectOptions) => {
+          selectOptions[0].click();
+        });
+        teamSelect.open();
+        advance();
+        teamSelect.getOptions().then((selectOptions) => {
+          selectOptions[0].click();
+        });
+      }),
+    );
 
     submitEvent.submitter.status = state;
     objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
@@ -140,4 +174,10 @@ describe('ObjectiveDialogComponent', () => {
       title: '',
     });
   });
+
+  function advance(duration = 100) {
+    tick(duration);
+    fixture.detectChanges();
+    tick(duration);
+  }
 });

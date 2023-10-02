@@ -1,5 +1,4 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-application-banner',
@@ -41,12 +40,6 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
     return scrollTop > this.lastScrollPosition
       ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
       : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
-  }
-
-  setPositionOfBanner(position: string) {
-    setTimeout(() => {
-      this.okrBanner!.style.position = position;
-    }, 500);
   }
 
   updateScrollEventListeners(bannerHeight: number) {

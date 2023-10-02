@@ -22,27 +22,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.staging-banner {
-  display: flex;
-  margin-top: 1rem;
-  background-color: cadetblue;
-  margin-left: 3rem;
-  margin-right: 3rem;
-  height: 10rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.staging-text {
-  color: black;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-weight: bold;
-  font-size: 5rem;
-}
-
 //Applied since all menus have the same styling
 .mat-mdc-menu-panel {
   border-radius: 0.5rem !important;

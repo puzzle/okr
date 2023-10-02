@@ -99,7 +99,7 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('should delete ', () => {
+  it('should delete', () => {
     matDataMock.objectiveId = 1;
     objectiveService.deleteObjective.mockReturnValue(of({}));
     component.deleteObjective();
@@ -115,7 +115,7 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('delete fails because objective has checkin ', () => {
+  it('delete fails because objective has checkin', () => {
     matDataMock.objectiveId = 1;
     objectiveService.deleteObjective.mockReturnValue(throwError(() => {}));
     component.deleteObjective();

@@ -18,7 +18,12 @@
   <div class="d-flex justify-content-between mb-2 align-items-center">
     <div>
       <p class="text-small">Confidence</p>
-      <app-confidence [checkIn]="keyResult.lastCheckIn!" [edit]="false" [backgroundColor]="'#F5F5F5'"></app-confidence>
+      <app-confidence
+        *ngIf="keyResult.lastCheckIn"
+        [checkIn]="keyResult.lastCheckIn!"
+        [edit]="false"
+        [backgroundColor]="'#F5F5F5'"
+      ></app-confidence>
     </div>
   </div>
   <div class="d-flex gap-4 mb-5 flex-row jus">
@@ -62,7 +67,7 @@
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
   </div>
   <span class="d-flex justify-content-start mb-3">
-    <button class="add-button" mat-button (click)="checkInHistory()">Alle Check-ins anzeigen</button>
+    <button *ngIf="keyResult.lastCheckIn" class="add-button" mat-button (click)="checkInHistory()">Alle Check-ins anzeigen</button>
   </span>
 
   <div class="mb-3">

@@ -45,7 +45,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
       if (result.data !== undefined && result.data !== null) {
         let updatedCheckIn = { ...result.data, id: checkIn.id };
         this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
-          this.notifierService.reopenCheckInHistoryDialog.next(updatedCheckIn);
+          this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: updatedCheckIn, deleted: false });
         });
       }
     });
@@ -60,9 +60,12 @@ export class CheckInHistoryDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.checkInService.deleteCheckIn(checkIn.id).subscribe();
+        this.checkInService.deleteCheckIn(checkIn.id).subscribe(() => {
+          this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: null, deleted: true });
+        });
+      } else {
+        this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: null, deleted: false });
       }
-      this.notifierService.reopenCheckInHistoryDialog.next(null);
     });
   }
 

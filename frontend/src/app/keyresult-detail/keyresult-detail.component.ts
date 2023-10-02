@@ -29,15 +29,24 @@ export class KeyresultDetailComponent implements OnChanges {
     private dialog: MatDialog,
   ) {
     this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
-      if (this.keyResult.lastCheckIn?.id === result?.id) {
-        this.keyResult = { ...this.keyResult, lastCheckIn: result };
+      /* LastCheckIn has been updated */
+      if (this.keyResult.lastCheckIn?.id === result?.checkIn?.id) {
+        this.keyResult = { ...this.keyResult, lastCheckIn: result.checkIn };
         this.changeDetectorRef.detectChanges();
+      }
+      /* CheckIn was deleted */
+      if (result.deleted) {
+        this.fetchKeyResult();
       }
       this.checkInHistory();
     });
   }
 
   ngOnChanges() {
+    this.fetchKeyResult();
+  }
+
+  fetchKeyResult() {
     this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
       this.keyResult = fullKeyResult;
       this.changeDetectorRef.markForCheck();
@@ -59,7 +68,6 @@ export class KeyresultDetailComponent implements OnChanges {
         keyResult: this.keyResult,
       },
     });
-
     dialogRef.afterClosed().subscribe(() => {});
   }
 

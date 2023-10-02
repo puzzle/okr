@@ -36,17 +36,22 @@ export class KeyresultDetailComponent implements OnChanges {
       }
       /* CheckIn was deleted */
       if (result.deleted) {
-        this.fetchKeyResult();
+        if (result.checkIn?.id == this.keyResult.lastCheckIn?.id) {
+          this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
+            this.keyResult = fullKeyResult;
+            this.changeDetectorRef.markForCheck();
+            if (this.keyResult.lastCheckIn != null) {
+              this.checkInHistory();
+            }
+          });
+        }
+        return;
       }
       this.checkInHistory();
     });
   }
 
   ngOnChanges() {
-    this.fetchKeyResult();
-  }
-
-  fetchKeyResult() {
     this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
       this.keyResult = fullKeyResult;
       this.changeDetectorRef.markForCheck();

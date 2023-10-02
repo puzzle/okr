@@ -8,6 +8,7 @@ import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { NotifierService } from '../../services/notifier.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CheckIn } from '../../types/model/CheckIn';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -61,7 +62,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.checkInService.deleteCheckIn(checkIn.id).subscribe(() => {
-          this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: null, deleted: true });
+          this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: checkIn as CheckIn, deleted: true });
         });
       } else {
         this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: null, deleted: false });

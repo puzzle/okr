@@ -89,6 +89,7 @@ export class KeyResultDialogComponent implements OnInit {
 
   deleteKeyResult() {
     if (this.data.keyResult.lastCheckIn?.id == undefined) {
+      //ToDo: Make ConfirmDialogComponent generic since its also used in other cases
       this.dialog
         .open(ConfirmDialogComponent, {
           width: '15em',

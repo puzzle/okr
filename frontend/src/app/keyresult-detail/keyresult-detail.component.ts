@@ -29,12 +29,12 @@ export class KeyresultDetailComponent implements OnChanges {
     private dialog: MatDialog,
   ) {
     this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
-      /* LastCheckIn has been updated */
+      /* Update lastCheckIn if it was changed in history dialog */
       if (this.keyResult.lastCheckIn?.id === result?.checkIn?.id) {
         this.keyResult = { ...this.keyResult, lastCheckIn: result.checkIn };
         this.changeDetectorRef.detectChanges();
       }
-      /* CheckIn was deleted */
+      /* Update lastCheckIn to null if it was deleted in history dialog */
       if (result.deleted) {
         if (result.checkIn?.id == this.keyResult.lastCheckIn?.id) {
           this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {

@@ -35,7 +35,7 @@ describe('ConfirmDialogComponent', () => {
   it('should have two buttons', fakeAsync(() => {
     const buttons = document.querySelectorAll('button');
     expect(buttons.length).toEqual(2);
-    expect(buttons[0].innerHTML).toEqual(' Ja ');
+    expect(buttons[0].innerHTML).toEqual('Ja');
     expect(buttons[1].innerHTML).toEqual('Nein');
   }));
 });

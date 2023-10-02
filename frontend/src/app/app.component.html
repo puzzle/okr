@@ -1,8 +1,5 @@
 <div>
   <app-application-top-bar></app-application-top-bar>
-  <div *ngIf="isEnvStaging$ | async" class="staging-banner">
-    <div class="staging-text">STAGING ENVIRONMENT!</div>
-  </div>
 
   <mat-drawer-container hasBackdrop="true">
     <mat-drawer
@@ -25,6 +22,9 @@
     <mat-drawer-content>
       <app-application-banner id="bannerComponent"></app-application-banner>
       <div class="mt-header-height"></div>
+      <div *ngIf="isEnvStaging$ | async" class="staging-banner">
+        <div class="staging-text">STAGING ENVIRONMENT!</div>
+      </div>
       <router-outlet></router-outlet>
     </mat-drawer-content>
   </mat-drawer-container>

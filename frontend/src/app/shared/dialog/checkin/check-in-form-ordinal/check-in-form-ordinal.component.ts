@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { Zone } from '../../../types/enums/Zone';
@@ -9,7 +9,7 @@ import { CheckInMin } from '../../../types/model/CheckInMin';
   templateUrl: './check-in-form-ordinal.component.html',
   styleUrls: ['./check-in-form-ordinal.component.scss'],
 })
-export class CheckInFormOrdinalComponent {
+export class CheckInFormOrdinalComponent implements OnInit {
   @Input()
   keyResult!: KeyResultOrdinal;
   @Input()
@@ -17,4 +17,10 @@ export class CheckInFormOrdinalComponent {
   @Input()
   dialogForm!: FormGroup;
   protected readonly Zone = Zone;
+
+  ngOnInit(): void {
+    if (this.dialogForm.controls['value'].value == '') {
+      this.dialogForm.controls['value'].setValue(Zone.FAIL);
+    }
+  }
 }

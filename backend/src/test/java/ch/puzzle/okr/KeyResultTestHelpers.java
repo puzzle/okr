@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -32,7 +33,7 @@ public class KeyResultTestHelpers {
     public static final String TARGET_ZONE = "Ein Baum";
     public static final String STRETCH_ZONE = "Ein Wald";
     public static final String QUARTER_LABEL = "GJ 22/23-Q4";
-    public static final String LAST_CHECK_IN_ZONE = "Baum";
+    public static final Zone LAST_CHECK_IN_ZONE = Zone.COMMIT;
     public static final String FIRSTNAME = "Johnny";
     public static final String LASTNAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
@@ -56,7 +57,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_TARGET_ZONE = "$.targetZone";
     public static final String JSON_PATH_STRETCH_ZONE = "$.stretchZone";
     public static final String JSON_PATH_LAST_CHECK_IN_ID = "$.lastCheckIn.id";
-    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.zone";
+    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.value";
     public static final String JSON_PATH_QUARTER_LABEL = "$.objective.keyResultQuarterDto.label";
     public static final String JSON_PATH_QUARTER_START_DATE = "$.objective.keyResultQuarterDto.startDate";
     public static final String JSON = "{\"title\":  \"Keyresult 1\",\"keyResultType\":  \"metric\"}";

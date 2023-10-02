@@ -1,11 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ErrorInterceptor } from './error-interceptor.service';
+import { ToasterService } from '../services/toaster.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('DrawerInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      providers: [ErrorInterceptor],
+      providers: [
+        ErrorInterceptor,
+        {
+          provide: ToasterService,
+          useValue: {},
+        },
+      ],
     }),
   );
 

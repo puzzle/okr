@@ -41,10 +41,12 @@ export class CheckInHistoryDialogComponent implements OnInit {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      let updatedCheckIn = { ...result.data, id: checkIn.id };
-      this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
-        this.notifierService.reopenCheckInDialog.next(updatedCheckIn);
-      });
+      if (result.data !== undefined && result.data !== null) {
+        let updatedCheckIn = { ...result.data, id: checkIn.id };
+        this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
+          this.notifierService.reopenCheckInDialog.next(updatedCheckIn);
+        });
+      }
     });
   }
 

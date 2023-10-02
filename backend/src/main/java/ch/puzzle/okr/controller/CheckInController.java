@@ -67,4 +67,13 @@ public class CheckInController {
         CheckInDto updatedCheckIn = this.checkInMapper.toDto(this.checkInBusinessService.updateCheckIn(id, checkIn));
         return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);
     }
+
+    @Operation(summary = "Delete Check-in by ID", description = "Delete Check-in by ID")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Check-in by ID"),
+            @ApiResponse(responseCode = "404", description = "Did not find the Check-in with requested ID") })
+    @DeleteMapping("/{id}")
+    public void deleteCheckIn(
+            @Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id) {
+        this.checkInBusinessService.deleteCheckIn(id);
+    }
 }

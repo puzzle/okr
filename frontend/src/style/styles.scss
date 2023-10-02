@@ -57,22 +57,6 @@ body {
   }
 }
 
-.add-flat-primary-button {
-  @extend .add-button;
-  color: white !important;
-  background-color: $pz-dark-blue !important;
-  border-radius: 0.5rem !important;
-  border: transparent !important;
-}
-
-.add-flat-secondary-button {
-  @extend .add-flat-primary-button;
-  font-weight: normal;
-  color: black !important;
-  background-color: white !important;
-  border: solid #cccccc 1px !important;
-}
-
 .icon {
   margin-top: 0.25rem;
   width: 1.25rem;

@@ -35,21 +35,20 @@
   <div class="d-flex" mat-dialog-actions>
     <div [ngClass]="{ 'd-flex w-75': data.keyResult }">
       <button
-        class="add-flat-primary-button"
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        mat-button
         [disabled]="keyResultForm.invalid"
+        color="primary"
+        mat-flat-button
       >
         Speichern
       </button>
       <button
         *ngIf="!data.keyResult"
-        class="add-flat-secondary-button"
         [attr.data-testId]="'saveAndNew'"
         (click)="openNew()"
-        mat-button
+        mat-stroked-button
         [disabled]="keyResultForm.invalid"
       >
         Speichern & Neu

@@ -15,4 +15,5 @@ $pz-theme: mat.define-light-theme(
   )
 );
 
+@import "custom_angular.components";
 @include mat.all-component-themes($pz-theme);

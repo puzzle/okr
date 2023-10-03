@@ -3,9 +3,9 @@ import { formatCurrency } from '@angular/common';
 import { Unit } from '../../types/enums/Unit';
 
 @Pipe({
-  name: 'unitTransformation',
+  name: 'unitValueTransformation',
 })
-export class UnitTransformationPipe implements PipeTransform {
+export class UnitValueTransformationPipe implements PipeTransform {
   transform(value: number, unit: String): string {
     if (Number.isNaN(value)) {
       value = 0;

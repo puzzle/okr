@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
-import { UnitTransformationPipe } from '../../../pipes/unit-transformation/unit-transformation.pipe';
+import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInMin } from '../../../types/model/CheckInMin';
 
 @Component({
@@ -19,7 +19,7 @@ export class CheckInFormMetricComponent implements AfterViewInit {
   dialogForm!: FormGroup;
   protected readonly errorMessages: any = errorMessages;
 
-  constructor(private pipe: UnitTransformationPipe) {}
+  constructor(private pipe: UnitValueTransformationPipe) {}
 
   formatValue() {
     this.dialogForm?.controls['value'].setValue(this.pipe.transform(this.parseValue(), this.keyResult.unit));

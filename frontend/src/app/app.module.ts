@@ -48,7 +48,7 @@ import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
-import { UnitTransformationPipe } from './shared/pipes/unit-transformation/unit-transformation.pipe';
+import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
@@ -105,7 +105,7 @@ export const MY_FORMATS = {
     ConfirmDialogComponent,
     CheckInFormComponent,
     CheckInFormMetricComponent,
-    UnitTransformationPipe,
+    UnitValueTransformationPipe,
     CheckInFormOrdinalComponent,
     CheckInBaseInformationsComponent,
     CustomInputComponent,
@@ -162,7 +162,7 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: DrawerInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
-    UnitTransformationPipe,
+    UnitValueTransformationPipe,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

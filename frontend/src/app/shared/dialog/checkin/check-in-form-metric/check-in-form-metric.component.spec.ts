@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckInFormMetricComponent } from './check-in-form-metric.component';
-import { UnitTransformationPipe } from '../../../pipes/unit-transformation/unit-transformation.pipe';
+import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { keyResultMetricMin } from '../../../testData';
 import { UnitLabelTransformationPipe } from '../../../pipes/unit-label-transformation/unit-label-transformation.pipe';
@@ -14,7 +14,7 @@ describe('CheckInFormComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CheckInFormMetricComponent, UnitLabelTransformationPipe],
-      providers: [UnitTransformationPipe],
+      providers: [UnitValueTransformationPipe],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;

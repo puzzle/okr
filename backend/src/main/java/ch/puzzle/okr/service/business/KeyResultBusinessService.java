@@ -6,12 +6,15 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class KeyResultBusinessService {
@@ -21,6 +24,8 @@ public class KeyResultBusinessService {
     private final CheckInBusinessService checkInBusinessService;
     private final UserBusinessService userBusinessService;
     private final KeyResultValidationService validator;
+
+    private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             ObjectivePersistenceService objectivePersistenceService, UserBusinessService userBusinessService,
@@ -52,16 +57,24 @@ public class KeyResultBusinessService {
         keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
         keyResult.setObjective(savedKeyResult.getObjective());
         keyResult.setModifiedOn(LocalDateTime.now());
-        if (isKeyResultTypeChangeable(id)) {
+        if (Objects.equals(keyResult.getKeyResultType(), savedKeyResult.getKeyResultType())) {
+            logger.debug("keyResultType is identically, {}", keyResult);
             validator.validateOnUpdate(id, keyResult);
-            return keyResultPersistenceService.updateEntity(id, keyResult);
+            return keyResultPersistenceService.updateEntity(keyResult);
         } else {
-            savedKeyResult.setTitle(keyResult.getTitle());
-            savedKeyResult.setDescription(keyResult.getDescription());
-            savedKeyResult.setOwner(keyResult.getOwner());
-            savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
-            validator.validateOnUpdate(id, keyResult);
-            return keyResultPersistenceService.updateAbstractEntity(savedKeyResult);
+            if (isKeyResultTypeChangeable(id)) {
+                logger.debug("keyResultType has changed and is changeable, {}", keyResult);
+                validator.validateOnUpdate(id, keyResult);
+                return keyResultPersistenceService.recreateEntity(id, keyResult);
+            } else {
+                savedKeyResult.setTitle(keyResult.getTitle());
+                savedKeyResult.setDescription(keyResult.getDescription());
+                savedKeyResult.setOwner(keyResult.getOwner());
+                savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
+                logger.debug("keyResultType has changed and is NOT changeable, {}", savedKeyResult);
+                validator.validateOnUpdate(id, keyResult);
+                return keyResultPersistenceService.updateEntity(savedKeyResult);
+            }
         }
     }
 

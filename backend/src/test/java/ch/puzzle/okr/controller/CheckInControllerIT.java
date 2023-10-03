@@ -25,8 +25,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 
 import static ch.puzzle.okr.CheckInTestHelpers.*;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -91,8 +89,8 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnUpdatedCheckIn() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong())).willReturn(
-                KeyResultMetric.Builder.builder().withId(1L).withKeyResultType(KEY_RESULT_TYPE_ORDINAL).build());
+        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
+                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any())).willReturn(checkInMetric);
         BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
 
@@ -107,8 +105,8 @@ class CheckInControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong())).willReturn(
-                KeyResultMetric.Builder.builder().withId(1L).withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
+        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
+                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
         BDDMockito.given(checkInBusinessService.updateCheckIn(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
@@ -120,8 +118,8 @@ class CheckInControllerIT {
 
     @Test
     void shouldCreateCheckInMetric() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong())).willReturn(
-                KeyResultMetric.Builder.builder().withId(1L).withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
+        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
+                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInMetric);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
@@ -136,8 +134,8 @@ class CheckInControllerIT {
 
     @Test
     void shouldCreateCheckInOrdinal() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong())).willReturn(
-                KeyResultMetric.Builder.builder().withId(1L).withKeyResultType(KEY_RESULT_TYPE_ORDINAL).build());
+        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
+                .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInOrdinal);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)

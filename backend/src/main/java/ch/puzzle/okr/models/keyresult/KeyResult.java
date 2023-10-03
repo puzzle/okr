@@ -166,6 +166,10 @@ public abstract class KeyResult {
         private LocalDateTime modifiedOn;
         private String keyResultType;
 
+        public Builder(String keyResultType) {
+            this.keyResultType = keyResultType;
+        }
+
         public Builder withId(Long id) {
             this.id = id;
             return this;

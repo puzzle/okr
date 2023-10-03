@@ -12,6 +12,8 @@ import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
 import { CheckIn } from './types/model/CheckIn';
 import { User } from './types/model/User';
+import { KeyResultMetric } from './types/model/KeyResultMetric';
+import { Unit } from './types/enums/Unit';
 
 export const team1: TeamMin = {
   id: 1,
@@ -28,12 +30,16 @@ export const checkInMetric: CheckInMin = {
   value: 15,
   confidence: 5,
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+  initiatives: 'Initiatives metric',
+  changeInfo: 'Changeinfo metric',
 } as CheckInMin;
 export const checkInOrdinal: CheckInMin = {
   id: 816,
   value: 'COMMIT',
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+  initiatives: 'Initiatives ordinal',
+  changeInfo: 'Changeinfo ordinal',
 } as CheckInMin;
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
@@ -147,6 +153,70 @@ export const keyResult: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'info',
     initiatives: 'some',
+  } as CheckIn,
+  createdOn: new Date(),
+  modifiedOn: new Date(),
+};
+
+export const keyResultOrdinal: KeyResultOrdinal = {
+  id: 101,
+  title: 'Bauen eines Hauses',
+  description: 'Ein neues Haus für die Puzzle Members',
+  commitZone: 'Grundriss steht',
+  targetZone: 'Gebäude gebaut',
+  stretchZone: 'Inneneinrichtung gestaltet',
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  keyResultType: 'ordinal',
+  objective: {
+    id: 301,
+    state: State.DRAFT,
+    quarter: {
+      id: 1,
+      label: 'GJ 23/24-Q1',
+      startDate: new Date(),
+      endDate: new Date(),
+    } as Quarter,
+  } as Objective,
+  lastCheckIn: {
+    id: 746,
+    value: 'FAIL',
+    confidence: 3,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'Does not look good',
+    initiatives: 'We have to be faster',
+  } as CheckIn,
+  createdOn: new Date(),
+  modifiedOn: new Date(),
+};
+
+export const keyResultMetric: KeyResultMetric = {
+  id: 102,
+  title: '100% aller Schweizer Kunden betreuen',
+  description: 'Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.',
+  baseline: 30,
+  stretchGoal: 100,
+  unit: Unit.PERCENT,
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  keyResultType: 'metric',
+  objective: {
+    id: 302,
+    state: State.DRAFT,
+    quarter: {
+      id: 1,
+      label: 'GJ 23/24-Q1',
+      startDate: new Date(),
+      endDate: new Date(),
+    } as Quarter,
+  } as Objective,
+  lastCheckIn: {
+    id: 746,
+    value: 45,
+    confidence: 7,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'So far so good',
+    initiatives: 'Work a bit harder',
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),

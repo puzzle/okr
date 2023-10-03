@@ -13,7 +13,7 @@ import { CheckInMin } from '../../../types/model/CheckInMin';
 })
 export class CheckInFormComponent {
   keyResult: KeyResult;
-  checkIn: CheckInMin = { confidence: 5 } as CheckInMin;
+  checkIn!: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
 
@@ -30,21 +30,29 @@ export class CheckInFormComponent {
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
-    this.setCheckIn();
     this.setDefaultValues();
+    if (this.checkIn == null) {
+    }
   }
 
   setDefaultValues() {
     if (this.data.checkIn != null) {
+      this.checkIn = this.data.checkIn;
       this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       this.dialogForm.controls.changeInfo.setValue(this.checkIn.changeInfo);
       this.dialogForm.controls.initiatives.setValue(this.checkIn.initiatives);
       return;
     }
-    if (this.keyResult.lastCheckIn?.value != null) {
-      this.dialogForm.controls.value.setValue(this.keyResult.lastCheckIn.value.toString());
+    /* If KeyResult has lastCheckIn set checkIn to this value */
+    if (this.keyResult.lastCheckIn != null) {
+      this.checkIn = this.keyResult.lastCheckIn;
+      this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
+      this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
+      return;
     }
+    /* If Check-in is null set as object with confidence 5 default value */
+    this.checkIn = { confidence: 5 } as CheckInMin;
   }
 
   saveCheckIn() {
@@ -66,13 +74,5 @@ export class CheckInFormComponent {
 
   getKeyResultOrdinal(): KeyResultOrdinal {
     return this.keyResult as KeyResultOrdinal;
-  }
-
-  setCheckIn() {
-    if (this.data.checkIn != null) {
-      this.checkIn = this.data.checkIn;
-    } else if (this.keyResult.lastCheckIn != null) {
-      this.checkIn = this.keyResult.lastCheckIn;
-    }
   }
 }

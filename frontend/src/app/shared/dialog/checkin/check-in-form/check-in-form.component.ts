@@ -31,8 +31,6 @@ export class CheckInFormComponent {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
-    if (this.checkIn == null) {
-    }
   }
 
   setDefaultValues() {

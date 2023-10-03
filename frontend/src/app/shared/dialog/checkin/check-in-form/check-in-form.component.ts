@@ -72,7 +72,7 @@ export class CheckInFormComponent {
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
     } else if (this.keyResult.lastCheckIn != null) {
-      this.checkIn = this.keyResult.lastCheckIn!;
+      this.checkIn = this.keyResult.lastCheckIn;
     }
   }
 }

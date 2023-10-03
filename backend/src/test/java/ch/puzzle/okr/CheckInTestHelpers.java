@@ -30,6 +30,8 @@ public class CheckInTestHelpers {
     public static final String JSON_INITIATIVES = "initiatives";
     public static final String JSON = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1 + "\""
             + ", \"keyResultId\":  1}";
+    public static final String JSON_WITHOUT_KEY_RESULT_ID = "{\"" + JSON_CHANGE_INFO + "\":" + "\"" + CHANGE_INFO_1
+            + "\"}";
 
     public static final String JSON_PATH_ID = "$.id";
     public static final String JSON_PATH_CHANGE_INFO = "$.changeInfo";

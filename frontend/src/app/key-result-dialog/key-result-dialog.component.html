@@ -1,0 +1,70 @@
+<div mat-dialog-content class="dialog">
+  <div class="d-flex justify-content-between align-items-center">
+    <p class="title">Key Result {{ data.keyResult ? "bearbeiten" : "erfassen" }}</p>
+    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Titel</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Titel"></textarea>
+        <div *ngIf="isTouchedOrDirty('title')">
+          <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+            {{ errorMessages[errorKey.toUpperCase()] }}
+          </mat-error>
+        </div>
+      </mat-form-field>
+    </div>
+
+    <div class="d-flex flex-column gap-2 col-12">
+      <label for="title" class="text-black">Beschreibung (optional)</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="description" placeholder="Key Result Beschreibung"></textarea>
+      </mat-form-field>
+      <div *ngIf="isTouchedOrDirty('description')">
+        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('description')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
+        </mat-error>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex" mat-dialog-actions>
+    <div [ngClass]="{ 'd-flex w-75': data.keyResult }">
+      <button
+        [attr.data-testId]="'submit'"
+        type="submit"
+        (click)="saveKeyResult()"
+        [disabled]="keyResultForm.invalid"
+        color="primary"
+        mat-flat-button
+      >
+        Speichern
+      </button>
+      <button
+        *ngIf="!data.keyResult"
+        [attr.data-testId]="'saveAndNew'"
+        (click)="openNew()"
+        mat-stroked-button
+        [disabled]="keyResultForm.invalid"
+      >
+        Speichern & Neu
+      </button>
+      <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+    <div [ngClass]="{ 'd-flex w-25 justify-content-end': data.keyResult }">
+      <button
+        *ngIf="data.keyResult && this.data.keyResult.lastCheckIn?.id == undefined"
+        class="add-button float-end"
+        [attr.data-testId]="'delete'"
+        mat-button
+        (click)="deleteKeyResult()"
+      >
+        Key Result löschen
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+//Applied since all menus have the same styling
+.mat-mdc-menu-panel {
+  border-radius: 0.5rem !important;
+}
+
+.mat-mdc-menu-content {
+  padding: 0 !important;
+}
+
+.mdc-button {
+  border-radius: 0.5rem !important;
+  letter-spacing: normal;
+  &.mat-mdc-unelevated-button {
+    font-weight: bold !important;
+  }
+
+  img {
+    width: 2rem;
+  }
+}
+
+.mat-mdc-menu-item {
+  line-height: normal !important;
+  font-size: 1rem;
+  height: 2rem !important;
+  min-height: 0 !important;
+  &:hover {
+    padding-left: 0.75rem;
+    border-left: 0.25rem solid darkblue;
+    background-color: #eff7ff !important;
+  }
+}
+
+.mat-icon {
+  transform: scale(1.2);
+}

@@ -4,6 +4,7 @@ import { DrawerContentComponent } from './drawer-content.component';
 import { By } from '@angular/platform-browser';
 import { ObjectiveDetailComponent } from '../objective-detail/objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatDialogModule } from '@angular/material/dialog';
 
 describe('DrawerContentComponent', () => {
   let component: DrawerContentComponent;
@@ -11,7 +12,7 @@ describe('DrawerContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatDialogModule],
       declarations: [DrawerContentComponent, ObjectiveDetailComponent],
     }).compileComponents();
 

@@ -5,6 +5,8 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -20,6 +22,7 @@ export class KeyresultDetailComponent implements OnChanges {
     private keyResultService: KeyresultService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    private notifierService: NotifierService,
   ) {}
 
   ngOnChanges() {
@@ -43,5 +46,37 @@ export class KeyresultDetailComponent implements OnChanges {
     });
 
     dialogRef.afterClosed().subscribe(() => {});
+  }
+
+  openEditKeyResultDialog() {
+    this.dialog
+      .open(KeyResultDialogComponent, {
+        width: '45em',
+        height: 'auto',
+        data: {
+          objective: null,
+          keyResult: this.keyResult,
+        },
+      })
+      .afterClosed()
+      .subscribe(async (result) => {
+        await this.notifierService.keyResultsChanges.next({
+          keyResult: result.keyResult,
+          changeId: result.changeId,
+          objective: result.objective,
+          delete: result.delete,
+        });
+        if (result.openNew) {
+          this.openEditKeyResultDialog();
+        }
+
+        this.keyResult = {
+          ...this.keyResult,
+          id: result.keyResult.id,
+          title: result.keyResult.title,
+          description: result.keyResult.description,
+        };
+        this.changeDetectorRef.markForCheck();
+      });
   }
 }

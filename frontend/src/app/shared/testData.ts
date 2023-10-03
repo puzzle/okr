@@ -11,6 +11,7 @@ import { Objective } from './types/model/Objective';
 import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
 import { CheckIn } from './types/model/CheckIn';
+import { User } from './types/model/User';
 
 export const team1: TeamMin = {
   id: 1,
@@ -111,6 +112,12 @@ export const secondCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+};
+
+export const testUser: User = {
+  id: 1,
+  firstname: 'Bob',
+  lastname: 'Baumeister',
 };
 
 export const keyResult: KeyResultOrdinal = {

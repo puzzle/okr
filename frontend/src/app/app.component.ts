@@ -13,7 +13,6 @@ import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
-  isEnvStaging$: Observable<boolean>;
   drawerOpen: boolean = false;
   sidenavContentInformation!: { id: number; type: string };
 
@@ -32,14 +31,18 @@ export class AppComponent implements OnInit, OnDestroy {
       oauthService.setupAutomaticSilentRefresh();
       location.hash = '';
     });
-    this.isEnvStaging$ = this.configService.config$.pipe(
-      map((config) => {
-        return config.activeProfile === 'staging';
-      }),
-    );
   }
 
   ngOnInit(): void {
+    this.configService.config$
+      .pipe(
+        map((config) => {
+          if (config.activeProfile === 'staging') {
+            document.getElementById('pzsh-topbar')!.style.backgroundColor = '#ab31ad';
+          }
+        }),
+      )
+      .subscribe();
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -77,13 +80,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openDrawer() {
     this.drawerOpen = true;
-    document.getElementById('bannerComponent')!.classList.add('backdrop');
     this.disableScrolling();
   }
 
   closeDrawer() {
     this.drawerOpen = false;
-    document.getElementById('bannerComponent')!.classList.remove('backdrop');
     this.router.navigate(['/']);
   }
 }

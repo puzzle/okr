@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @import "_variables";
+@import "custom_angular.components";
 
 $my-primary: mat.define-palette($pz-dark-blue-palette, 500);
 $my-accent: mat.define-palette(mat.$grey-palette);

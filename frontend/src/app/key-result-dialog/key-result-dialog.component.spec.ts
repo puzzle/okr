@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KeyResultDialogComponent } from './key-result-dialog.component';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -94,9 +94,9 @@ describe('KeyResultDialogComponent', () => {
       keyResultService = TestBed.inject(KeyresultService);
     });
 
-    it('should create', fakeAsync(() => {
+    it('should create', () => {
       expect(component).toBeTruthy();
-    }));
+    });
 
     it('should have all items in dialog', waitForAsync(async () => {
       const inputs = await loader.getAllHarnesses(MatInputHarness);
@@ -128,7 +128,7 @@ describe('KeyResultDialogComponent', () => {
       const inputs = await loader.getAllHarnesses(MatInputHarness);
       const titleInput = inputs[0];
       const descriptionInput = inputs[1];
-      titleInput.setValue('Title').then(async () => {
+      titleInput.setValue('Title').then(() => {
         descriptionInput.setValue('New Description').then(async () => {
           submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
           expect(await submitButton.nativeElement.disabled).toBeFalsy();
@@ -175,15 +175,15 @@ describe('KeyResultDialogComponent', () => {
       expect(component.keyResultForm.invalid).toBeTruthy();
     }));
 
-    it('should call service save method', waitForAsync(async () => {
+    it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       loader.getAllHarnesses(MatInputHarness).then(async (inputs) => {
         const titleInput = inputs[0];
         const descriptionInput = inputs[1];
-        await titleInput.setValue('Neuer Titel').then(async () => {
-          descriptionInput.setValue('Description').then(async () => {
+        await titleInput.setValue('Neuer Titel').then(() => {
+          descriptionInput.setValue('Description').then(() => {
             initKeyResult.title = 'Neuer Titel';
             initKeyResult.description = 'Description';
 
@@ -196,15 +196,15 @@ describe('KeyResultDialogComponent', () => {
       });
     }));
 
-    it('should call service save method when creating new', waitForAsync(async () => {
+    it('should call service save method when creating new', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       loader.getAllHarnesses(MatInputHarness).then(async (inputs) => {
         const titleInput = inputs[0];
         const descriptionInput = inputs[1];
-        await titleInput.setValue('Neuer Titel').then(async () => {
-          descriptionInput.setValue('Description').then(async () => {
+        await titleInput.setValue('Neuer Titel').then(() => {
+          descriptionInput.setValue('Description').then(() => {
             initKeyResult.title = 'Neuer Titel';
             initKeyResult.description = 'Description';
 
@@ -251,10 +251,6 @@ describe('KeyResultDialogComponent', () => {
       fullKeyResult.id = 3;
     });
 
-    it('should create', fakeAsync(() => {
-      expect(component).toBeTruthy();
-    }));
-
     it('should have all items in dialog', waitForAsync(async () => {
       const inputs = await loader.getAllHarnesses(MatInputHarness);
       const buttons = document.querySelectorAll('button');
@@ -262,7 +258,7 @@ describe('KeyResultDialogComponent', () => {
       expect(buttons.length).toEqual(4);
     }));
 
-    it('should use KeyResult value from data input', waitForAsync(async () => {
+    it('should use KeyResult value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
       expect(formObject.title).toBe('Der Titel ist hier');
       expect(formObject.description).toBe('Die Beschreibung');
@@ -312,15 +308,15 @@ describe('KeyResultDialogComponent', () => {
       expect(component.keyResultForm.invalid).toBeTruthy();
     }));
 
-    it('should call service save method', waitForAsync(async () => {
+    it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       loader.getAllHarnesses(MatInputHarness).then(async (inputs) => {
         const titleInput = inputs[0];
         const descriptionInput = inputs[1];
-        await titleInput.setValue('Neuer Titel').then(async () => {
-          descriptionInput.setValue('Description').then(async () => {
+        await titleInput.setValue('Neuer Titel').then(() => {
+          descriptionInput.setValue('Description').then(() => {
             fullKeyResult.title = 'Neuer Titel';
             fullKeyResult.description = 'Description';
 

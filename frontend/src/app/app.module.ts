@@ -47,6 +47,8 @@ import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
+import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
+import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -91,6 +93,8 @@ export const MY_FORMATS = {
     ObjectiveDetailComponent,
     DrawerContentComponent,
     ApplicationBannerComponent,
+    KeyResultDialogComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,

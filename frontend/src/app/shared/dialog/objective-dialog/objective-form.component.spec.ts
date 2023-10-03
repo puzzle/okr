@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -7,18 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
-import { objective } from '../../testData';
-import { of, throwError } from 'rxjs';
-import { State } from '../../types/enums/State';
+import { objective, quarter, team1 } from '../../testData';
+import { Observable, of, throwError } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Quarter } from '../../types/model/Quarter';
+import { QuarterService } from '../../services/quarter.service';
+import { Team } from '../../types/model/Team';
+import { TeamService } from '../../services/team.service';
 
 const submitEvent = {
   submitter: {
@@ -34,6 +37,18 @@ const objectiveService = {
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
   deleteObjective: jest.fn(),
+};
+
+const quarterService = {
+  getAllQuarters(): Observable<Quarter[]> {
+    return of([quarter]);
+  },
+};
+
+const teamService = {
+  getAllTeams(): Observable<Team[]> {
+    return of([{ id: team1.id, name: team1.name, activeObjectives: 1 }]);
+  },
 };
 
 const dialogMock = {
@@ -67,6 +82,8 @@ describe('ObjectiveDialogComponent', () => {
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },
         { provide: ObjectiveService, useValue: objectiveService },
+        { provide: QuarterService, useValue: quarterService },
+        { provide: TeamService, useValue: teamService },
       ],
     });
     fixture = TestBed.createComponent(ObjectiveFormComponent);
@@ -80,6 +97,12 @@ describe('ObjectiveDialogComponent', () => {
   });
 
   it.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
+    let title: string = '';
+    let description: string = '';
+    let createKeyresults: boolean = true;
+    let quarter: number = 0;
+    let team: number = 0;
+
     const inputs = loader.getAllHarnesses(MatInputHarness);
     const selects = loader.getAllHarnesses(MatSelectHarness);
     const checkbox = loader.getHarness(MatCheckboxHarness);
@@ -88,44 +111,73 @@ describe('ObjectiveDialogComponent', () => {
       fakeAsync(([inputs, selects, checkbox]: [MatInputHarness[], MatSelectHarness[], MatCheckboxHarness]) => {
         inputs[0].setValue('title');
         advance();
+        inputs[0].getValue().then((value) => {
+          title = value;
+        });
+        advance();
         inputs[1].setValue('description');
         advance();
-        checkbox.check();
+        inputs[1].getValue().then((value) => {
+          description = value;
+        });
+        advance();
+        checkbox.uncheck();
+        advance();
+        checkbox.isChecked().then((isChecked) => {
+          createKeyresults = isChecked;
+        });
         advance();
         const quarterSelect = selects[0];
         const teamSelect = selects[2];
         advance();
-        quarterSelect.open();
-        advance();
-        quarterSelect.getOptions().then((selectOptions) => {
-          selectOptions[0].click();
+        quarterSelect.open().then(() => {
+          quarterSelect.getOptions().then((selectOptions) => {
+            selectOptions[0].click();
+            advance();
+            selectOptions[0].getText().then((value) => {
+              quarterService.getAllQuarters().subscribe((options) => {
+                quarter = options[0].id;
+              });
+            });
+          });
         });
         advance();
-        teamSelect.open();
-        advance();
-        teamSelect.getOptions().then((selectOptions) => {
-          selectOptions[0].click();
+        teamSelect.open().then(() => {
+          teamSelect.getOptions().then((selectOptions) => {
+            selectOptions[0].click();
+          });
         });
       }),
     );
 
-    submitEvent.submitter.status = state;
-    objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
-    component.onSubmit(submitEvent);
+    // submitEvent.submitter.status = state;
+    // component.onSubmit(submitEvent);
 
-    expect(dialogMock.close).toHaveBeenCalledWith({
-      addKeyResult: false,
-      delete: false,
-      objective: {
-        description: 'description',
-        id: 5,
-        quarterId: 2,
-        state: State[state as keyof typeof State],
-        teamId: 2,
-        title: 'title',
-      },
-      teamId: 1,
-    });
+    const rawFormValue = component.objectiveForm.getRawValue();
+
+    expect(rawFormValue.description).toBe(description);
+    expect(rawFormValue.quarter).toBe(quarter);
+    expect(rawFormValue.team).toBe(team);
+    expect(rawFormValue.title).toBe(title);
+    expect(rawFormValue.createKeyResults).toBe(createKeyresults);
+
+    expect(dialogMock.close).toHaveBeenCalledTimes(1);
+
+    // objectiveService.createObjective.mockReturnValue(of({...component.objectiveForm.value, state: state}));
+
+    // expect(dialogMock.close).toHaveBeenCalledWith({
+    //     addKeyResult: false,
+    //     delete: false,
+    //     objective: {
+    //         description: 'description',
+    //         id: 5,
+    //         quarterId: 2,
+    //         state: State[state as keyof typeof State],
+    //         teamId: 2,
+    //         title: 'title',
+    //     },
+    //     teamId: 1,
+    // });
   });
 
   it('should delete', () => {

@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
 import { objective } from '../../testData';
@@ -18,8 +18,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
-import { load } from '@angular-devkit/build-angular/src/utils/server-rendering/esm-in-memory-file-loader';
-import { MatRadioButtonHarness } from '@angular/material/radio/testing';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const submitEvent = {
   submitter: {
@@ -61,6 +60,7 @@ describe('ObjectiveDialogComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         NoopAnimationsModule,
+        MatCheckboxModule,
       ],
       declarations: [ObjectiveFormComponent],
       providers: [
@@ -93,7 +93,6 @@ describe('ObjectiveDialogComponent', () => {
         checkbox.check();
         advance();
         const quarterSelect = selects[0];
-        const relationSelect = selects[1];
         const teamSelect = selects[2];
         advance();
         quarterSelect.open();
@@ -101,11 +100,7 @@ describe('ObjectiveDialogComponent', () => {
         quarterSelect.getOptions().then((selectOptions) => {
           selectOptions[0].click();
         });
-        relationSelect.open();
         advance();
-        relationSelect.getOptions().then((selectOptions) => {
-          selectOptions[0].click();
-        });
         teamSelect.open();
         advance();
         teamSelect.getOptions().then((selectOptions) => {

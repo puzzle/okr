@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
@@ -9,6 +9,7 @@ import { CheckInMin } from '../../../types/model/CheckInMin';
   selector: 'app-check-in-form-metric',
   templateUrl: './check-in-form-metric.component.html',
   styleUrls: ['./check-in-form-metric.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckInFormMetricComponent implements AfterViewInit {
   @Input()

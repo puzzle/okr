@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
@@ -14,6 +14,7 @@ import { Objective } from '../shared/types/model/Objective';
   selector: 'app-key-result-dialog',
   templateUrl: './key-result-dialog.component.html',
   styleUrls: ['./key-result-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyResultDialogComponent implements OnInit {
   isMetricKeyResult: boolean = true;

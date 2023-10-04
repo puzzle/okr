@@ -67,7 +67,9 @@
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
   </div>
   <span class="d-flex justify-content-start mb-3">
-    <button *ngIf="keyResult.lastCheckIn" class="add-button" mat-button (click)="checkInHistory()">Alle Check-ins anzeigen</button>
+    <button *ngIf="keyResult.lastCheckIn" class="add-button" mat-button (click)="checkInHistory()">
+      Alle Check-ins anzeigen
+    </button>
   </span>
 
   <div class="mb-3">

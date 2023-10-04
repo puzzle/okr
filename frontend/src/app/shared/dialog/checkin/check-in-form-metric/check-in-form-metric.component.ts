@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ValidationErrors } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';
@@ -36,7 +36,7 @@ export class CheckInFormMetricComponent implements AfterViewInit {
 
   getErrorKeysOfFormField(name: string) {
     const errors = this.dialogForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+    return errors === null ? [] : Object.keys(errors!);
   }
 
   ngAfterViewInit(): void {

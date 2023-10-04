@@ -19,7 +19,7 @@ export class CheckInFormOrdinalComponent implements OnInit {
   protected readonly Zone = Zone;
 
   ngOnInit(): void {
-    if (this.dialogForm.controls['value'].value == '') {
+    if (this.dialogForm.controls['value'].value === '') {
       this.dialogForm.controls['value'].setValue(Zone.FAIL);
     }
   }

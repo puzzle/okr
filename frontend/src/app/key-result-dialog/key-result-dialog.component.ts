@@ -90,15 +90,17 @@ export class KeyResultDialogComponent implements OnInit {
 
   deleteKeyResult() {
     if (this.data.keyResult.lastCheckIn?.id == undefined) {
-      //ToDo: Make ConfirmDialogComponent generic since its also used in other cases
       this.dialog
         .open(ConfirmDialogComponent, {
+          data: {
+            title: 'Key Result',
+          },
           width: '15em',
           height: 'auto',
         })
         .afterClosed()
         .subscribe((result) => {
-          if (result == 'deleteKeyResult') {
+          if (result) {
             this.keyResultService
               .deleteKeyResult(this.data.keyResult.id)
               .subscribe(() => this.dialogRef.close({ keyResult: this.data.keyResult, delete: true, openNew: false }));

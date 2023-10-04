@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Unit } from '../../../types/enums/Unit';
+import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 
 describe('CheckInFormComponent', () => {
   let component: CheckInFormMetricComponent;
@@ -26,7 +27,7 @@ describe('CheckInFormComponent', () => {
         ReactiveFormsModule,
       ],
       declarations: [CheckInFormMetricComponent],
-      providers: [UnitValueTransformationPipe],
+      providers: [UnitValueTransformationPipe, ParseUnitValuePipe],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
     component = fixture.componentInstance;

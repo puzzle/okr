@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 
 const dialogMock = {
   close: jest.fn(),
@@ -36,6 +37,7 @@ describe('CheckInFormComponent', () => {
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { keyResult: {} } },
         { provide: MatDialogRef, useValue: dialogMock },
+        ParseUnitValuePipe,
       ],
       declarations: [CheckInFormComponent],
     });

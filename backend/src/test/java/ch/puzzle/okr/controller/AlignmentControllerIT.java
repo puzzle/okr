@@ -1,8 +1,9 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.alignment.AlignmentKeyResultDto;
-import ch.puzzle.okr.dto.alignment.AlignmentObjectiveDto;
-import ch.puzzle.okr.service.AlignmentSelectionService;
+import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
+import ch.puzzle.okr.models.AlignmentSelection;
+import ch.puzzle.okr.models.AlignmentSelectionId;
+import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -12,11 +13,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,20 +34,35 @@ public class AlignmentControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private AlignmentSelectionService alignmentSelectionService;
+    private AlignmentSelectionBusinessService alignmentSelectionBusinessService;
+    @SpyBean
+    private AlignmentSelectionMapper alignmentSelectionMapper;
 
-    static AlignmentObjectiveDto alignmentObjectiveDtoPuzzle = new AlignmentObjectiveDto(1L, "Objective 1",
-            List.of(new AlignmentKeyResultDto(20L, "KeyResult 20"), new AlignmentKeyResultDto(40L, "KeyResult 40")));
-    static AlignmentObjectiveDto alignmentObjectiveDtoOKR = new AlignmentObjectiveDto(5L, "Objective 5",
-            List.of(new AlignmentKeyResultDto(21L, "KeyResult 21"), new AlignmentKeyResultDto(41L, "KeyResult 41"),
-                    new AlignmentKeyResultDto(61L, "KeyResult 61"), new AlignmentKeyResultDto(81L, "KeyResult 81")));
-    static AlignmentObjectiveDto alignmentObjectiveDtoEmptyKeyResults = new AlignmentObjectiveDto(8L, "Objective 8",
-            Collections.emptyList());
+    static List<AlignmentSelection> alignmentSelectionPuzzle = List.of(
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(1L, 20L))
+                    .withObjectiveTitle("Objective 1").withKeyResultTitle("KeyResult 20").build(),
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(1L, 40L))
+                    .withObjectiveTitle("Objective 1").withKeyResultTitle("KeyResult 40").build());
+    static List<AlignmentSelection> alignmentSelectionOKR = List.of(
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 21L))
+                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 21").build(),
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 41L))
+                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 41").build(),
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 61L))
+                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 61").build(),
+            AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 81L))
+                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 81").build());
+    static AlignmentSelection alignmentSelectionEmptyKeyResults = AlignmentSelection.Builder.builder()
+            .withAlignmentSelectionId(AlignmentSelectionId.of(8L, null)).withObjectiveTitle("Objective 8").build();
 
     @Test
     void shouldGetAllObjectivesWithKeyResults() throws Exception {
-        BDDMockito.given(alignmentSelectionService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L)).willReturn(
-                List.of(alignmentObjectiveDtoPuzzle, alignmentObjectiveDtoOKR, alignmentObjectiveDtoEmptyKeyResults));
+        List<AlignmentSelection> alignmentSelections = new ArrayList<>();
+        alignmentSelections.addAll(alignmentSelectionPuzzle);
+        alignmentSelections.addAll(alignmentSelectionOKR);
+        alignmentSelections.add(alignmentSelectionEmptyKeyResults);
+        BDDMockito.given(alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
+                .willReturn(alignmentSelections);
 
         mvc.perform(get("/api/v2/alignments/selections?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
@@ -59,7 +77,7 @@ public class AlignmentControllerIT {
 
     @Test
     void shouldGetAllObjectivesWithKeyResultsIfAllObjectivesFiltered() throws Exception {
-        BDDMockito.given(alignmentSelectionService.getAlignmentSelectionByQuarterIdAndTeamIdNot(any(), any()))
+        BDDMockito.given(alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(any(), any()))
                 .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/alignments/selections").contentType(MediaType.APPLICATION_JSON))
@@ -68,8 +86,8 @@ public class AlignmentControllerIT {
 
     @Test
     void shouldReturnObjectiveWithEmptyKeyResultListWhenNoKeyResultsInFilteredQuarter() throws Exception {
-        BDDMockito.given(alignmentSelectionService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
-                .willReturn(List.of(alignmentObjectiveDtoEmptyKeyResults));
+        BDDMockito.given(alignmentSelectionBusinessService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
+                .willReturn(List.of(alignmentSelectionEmptyKeyResults));
 
         mvc.perform(get("/api/v2/alignments/selections?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))

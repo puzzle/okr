@@ -1,7 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.overview.OverviewDto;
-import ch.puzzle.okr.service.OverviewService;
+import ch.puzzle.okr.mapper.OverviewMapper;
+import ch.puzzle.okr.service.business.OverviewBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,10 +20,12 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/overview")
 public class OverviewController {
-    private final OverviewService overviewService;
+    private final OverviewMapper overviewMapper;
+    private final OverviewBusinessService overviewBusinessService;
 
-    public OverviewController(OverviewService overviewService) {
-        this.overviewService = overviewService;
+    public OverviewController(OverviewMapper overviewMapper, OverviewBusinessService overviewBusinessService) {
+        this.overviewMapper = overviewMapper;
+        this.overviewBusinessService = overviewBusinessService;
     }
 
     @Operation(summary = "Get all teams and their objectives", description = "Get a List of teams with their objectives")
@@ -34,7 +37,7 @@ public class OverviewController {
     public ResponseEntity<List<OverviewDto>> getOverview(
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(overviewService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter));
+        return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
+                .toDto(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter)));
     }
 }

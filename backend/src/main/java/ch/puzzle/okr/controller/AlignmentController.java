@@ -1,7 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.alignment.AlignmentObjectiveDto;
-import ch.puzzle.okr.service.AlignmentSelectionService;
+import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
+import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,10 +20,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/alignments")
 public class AlignmentController {
-    private final AlignmentSelectionService alignmentSelectionService;
+    private final AlignmentSelectionMapper alignmentSelectionMapper;
+    private final AlignmentSelectionBusinessService alignmentSelectionBusinessService;
 
-    public AlignmentController(AlignmentSelectionService alignmentSelectionService) {
-        this.alignmentSelectionService = alignmentSelectionService;
+    public AlignmentController(AlignmentSelectionMapper alignmentSelectionMapper,
+            AlignmentSelectionBusinessService alignmentSelectionBusinessService) {
+        this.alignmentSelectionMapper = alignmentSelectionMapper;
+        this.alignmentSelectionBusinessService = alignmentSelectionBusinessService;
     }
 
     @Operation(summary = "Get all objectives and their key results to select the alignment", description = "Get a list of objectives with their key results to select the alignment")
@@ -34,7 +38,8 @@ public class AlignmentController {
     public ResponseEntity<List<AlignmentObjectiveDto>> getAlignmentSelections(
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
             @RequestParam(required = false, defaultValue = "", name = "team") Long teamFilter) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                alignmentSelectionService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(alignmentSelectionMapper.toDto(alignmentSelectionBusinessService
+                        .getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter)));
     }
 }

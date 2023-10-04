@@ -28,6 +28,17 @@ public class OverviewMapperTest {
     }
 
     @Test
+    void toDto_ShouldReturnEmptyList_WhenTeamFound() {
+        List<Overview> overviews = List
+                .of(Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build())
+                        .withTeamName("Puzzle ITC").build());
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+
+        assertEquals(1, overviewDtos.size());
+        assertEquals(0, overviewDtos.get(0).objectives().size());
+    }
+
+    @Test
     void toDto_ShouldReturnOneElement_WhenObjectiveFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())

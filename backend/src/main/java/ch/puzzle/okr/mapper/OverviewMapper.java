@@ -57,7 +57,9 @@ public class OverviewMapper {
 
     private OverviewDto createOverviewDto(Overview overview) {
         List<OverviewObjectiveDto> objectives = new ArrayList<>();
-        objectives.add(createObjectiveDto(overview));
+        if (isValidId(overview.getOverviewId().getObjectiveId())) {
+            objectives.add(createObjectiveDto(overview));
+        }
         return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
                 objectives);
     }

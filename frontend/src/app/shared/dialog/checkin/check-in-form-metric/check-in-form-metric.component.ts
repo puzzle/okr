@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormGroup, ValidationErrors } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';

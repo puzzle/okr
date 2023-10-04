@@ -50,7 +50,6 @@ describe('CheckInBaseInformationsComponent', () => {
   });
 
   it('should save given text in input to form-group in typescript', waitForAsync(async () => {
-    //Insert values into name input which don't match length validator
     const inputs = await loader.getAllHarnesses(MatInputHarness);
     const changeInfoTextbox = inputs[0];
     const initiativesTextbox = inputs[1];
@@ -58,7 +57,6 @@ describe('CheckInBaseInformationsComponent', () => {
     await changeInfoTextbox.setValue(changeInfoText);
     await initiativesTextbox.setValue(initiativesText);
 
-    //Check if submit button is disabled
     expect(component.dialogForm.controls['changeInfo'].value).toBe(changeInfoText);
     expect(component.dialogForm.controls['initiatives'].value).toBe(initiativesText);
   }));

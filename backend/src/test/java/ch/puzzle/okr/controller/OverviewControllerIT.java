@@ -1,8 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.mapper.OverviewMapper;
-import ch.puzzle.okr.models.Overview;
-import ch.puzzle.okr.models.OverviewId;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;

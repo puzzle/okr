@@ -4,8 +4,8 @@ import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultMetricDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
-import ch.puzzle.okr.models.Overview;
-import ch.puzzle.okr.models.OverviewId;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.models.overview.OverviewId;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
 

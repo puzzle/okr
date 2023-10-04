@@ -1,8 +1,8 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.Alignment;
-import ch.puzzle.okr.models.KeyResultAlignment;
-import ch.puzzle.okr.models.ObjectiveAlignment;
+import ch.puzzle.okr.models.alignment.Alignment;
+import ch.puzzle.okr.models.alignment.KeyResultAlignment;
+import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

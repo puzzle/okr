@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.overview.*;
-import ch.puzzle.okr.models.Overview;
+import ch.puzzle.okr.models.overview.Overview;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 

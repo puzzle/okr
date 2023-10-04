@@ -51,7 +51,7 @@ public class CheckInMetric extends CheckIn {
     }
 
     /* Builder */
-    public static final class Builder extends CheckIn.Builder {
+    public static final class Builder extends CheckIn.Builder<Builder> {
         private Double value;
 
         private Builder() {

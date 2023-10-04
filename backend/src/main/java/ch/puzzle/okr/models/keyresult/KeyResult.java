@@ -155,7 +155,7 @@ public abstract class KeyResult {
         setKeyResultType(builder.keyResultType);
     }
 
-    public abstract static class Builder {
+    public abstract static class Builder<T> {
         private Long id;
         private Objective objective;
         private String title;
@@ -170,44 +170,44 @@ public abstract class KeyResult {
             this.keyResultType = keyResultType;
         }
 
-        public Builder withId(Long id) {
+        public T withId(Long id) {
             this.id = id;
-            return this;
+            return (T) this;
         }
 
-        public Builder withObjective(Objective objective) {
+        public T withObjective(Objective objective) {
             this.objective = objective;
-            return this;
+            return (T) this;
         }
 
-        public Builder withTitle(String title) {
+        public T withTitle(String title) {
             this.title = title;
-            return this;
+            return (T) this;
         }
 
-        public Builder withDescription(String description) {
+        public T withDescription(String description) {
             this.description = description;
-            return this;
+            return (T) this;
         }
 
-        public Builder withOwner(User owner) {
+        public T withOwner(User owner) {
             this.owner = owner;
-            return this;
+            return (T) this;
         }
 
-        public Builder withCreatedBy(User createdBy) {
+        public T withCreatedBy(User createdBy) {
             this.createdBy = createdBy;
-            return this;
+            return (T) this;
         }
 
-        public Builder withCreatedOn(LocalDateTime createdOn) {
+        public T withCreatedOn(LocalDateTime createdOn) {
             this.createdOn = createdOn;
-            return this;
+            return (T) this;
         }
 
-        public Builder withModifiedOn(LocalDateTime modifiedOn) {
+        public T withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
-            return this;
+            return (T) this;
         }
 
         public abstract KeyResult build();

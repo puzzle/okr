@@ -25,13 +25,13 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
     }
 
     @Transactional
-    public KeyResult updateEntity(Long id, KeyResult keyResult) {
-        // Delete Entity in order to prevent duplicates
+    public KeyResult recreateEntity(Long id, KeyResult keyResult) {
+        // delete entity in order to prevent duplicates in case of changed keyResultType
         deleteById(id);
         return save(keyResult);
     }
 
-    public KeyResult updateAbstractEntity(KeyResult keyResult) {
+    public KeyResult updateEntity(KeyResult keyResult) {
         return save(keyResult);
     }
 }

@@ -15,8 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -29,8 +27,7 @@ public class KeyResultPersistenceServiceIT {
 
     private static KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS").withId(id)
-                .withKeyResultType(KEY_RESULT_TYPE_METRIC).withTitle("Title")
-                .withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withTitle("Title").withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
                 .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
                 .build();
@@ -38,8 +35,8 @@ public class KeyResultPersistenceServiceIT {
 
     private static KeyResult createKeyResultOrdinal(Long id) {
         return KeyResultOrdinal.Builder.builder().withCommitZone("Hamster").withTargetZone("Katze")
-                .withStretchZone("ZOO").withId(id).withKeyResultType(KEY_RESULT_TYPE_ORDINAL)
-                .withTitle("Ordinal KeyResult").withCreatedBy(User.Builder.builder().withId(1L).build())
+                .withStretchZone("ZOO").withId(id).withTitle("Ordinal KeyResult")
+                .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
                 .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
                 .build();
@@ -102,12 +99,12 @@ public class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void updateKeyResult_ShouldUpdateKeyResultNoTypeChange() {
+    void recreateEntity_ShouldUpdateKeyResultNoTypeChange() {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult.getId(),
+        KeyResult updatedKeyResult = keyResultPersistenceService.recreateEntity(createdKeyResult.getId(),
                 createdKeyResult);
 
         assertNotNull(createdKeyResult.getId());
@@ -124,18 +121,17 @@ public class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void updateKeyResult_ShouldUpdateKeyResultWithTypeChange() {
+    void recreateEntity_ShouldUpdateKeyResultWithTypeChange() {
         KeyResult keyResult = createKeyResultMetric(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
 
-        createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
                 .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(createdKeyResult.getId())
-                .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withTitle(keyResult.getTitle())
-                .withObjective(createdKeyResult.getObjective()).withOwner(createdKeyResult.getOwner())
-                .withCreatedBy(createdKeyResult.getCreatedBy()).withCreatedOn(createdKeyResult.getCreatedOn()).build();
+                .withTitle(KEY_RESULT_UPDATED).withObjective(createdKeyResult.getObjective())
+                .withOwner(createdKeyResult.getOwner()).withCreatedBy(createdKeyResult.getCreatedBy())
+                .withCreatedOn(createdKeyResult.getCreatedOn()).build();
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult.getId(),
+        KeyResult updatedKeyResult = keyResultPersistenceService.recreateEntity(keyResultOrdinal.getId(),
                 keyResultOrdinal);
 
         assertNotNull(createdKeyResult.getId());
@@ -152,13 +148,13 @@ public class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void updateAbstractKeyResult_ShouldUpdateKeyResult() {
+    void updateEntity_ShouldUpdateKeyResult() {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
         createdKeyResult.setDescription("This is a new description");
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.updateAbstractEntity(createdKeyResult);
+        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult);
 
         assertEquals(createdKeyResult.getId(), updatedKeyResult.getId());
         assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());

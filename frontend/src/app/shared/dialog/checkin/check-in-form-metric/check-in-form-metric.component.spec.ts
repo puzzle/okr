@@ -4,8 +4,6 @@ import { CheckInFormMetricComponent } from './check-in-form-metric.component';
 import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { checkInMetric, keyResultMetric } from '../../../testData';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
@@ -16,7 +14,6 @@ import { Unit } from '../../../types/enums/Unit';
 describe('CheckInFormComponent', () => {
   let component: CheckInFormMetricComponent;
   let fixture: ComponentFixture<CheckInFormMetricComponent>;
-  let loader: HarnessLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -40,7 +37,6 @@ describe('CheckInFormComponent', () => {
       confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
     });
     fixture.detectChanges();
-    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should create', () => {

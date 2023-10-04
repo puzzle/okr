@@ -8,13 +8,21 @@
   <mat-dialog-content class="d-flex justify-content-start flex-column ms-3 mb-2 mt-3 gap-4">
     <div *ngFor="let checkIn of checkInHistory; index as i">
       <div class="d-flex flex-row flex-wrap">
-        <!--        TODO: Use constant of constant library as date format in this pipe-->
-        <span class="me-1">{{ checkIn.createdOn | date: "dd.MM.yyyy" }}</span>
-        <span>-</span>
-        <div class="ms-1 me-1">
-          <span>Wert: {{ checkIn.value }};</span>
+        <div class="d-flex flex-row flex-wrap align-items-center w-50">
+          <span class="me-1">{{ checkIn.createdOn | date: DATE_FORMAT }}</span>
+          <span>-</span>
+          <div class="ms-1 me-1">
+            <span>Wert: {{ checkIn.value }};</span>
+          </div>
+          <span>Confidence: {{ checkIn.confidence }} / 10;</span>
         </div>
-        <span>Confidence: {{ checkIn.confidence }} / 10;</span>
+        <div class="d-flex flex-row justify-content-end align-items-center w-50">
+          <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openCheckInDialog(checkIn)">Check-in bearbeiten</button>
+            <button mat-menu-item (click)="deleteCheckIn(checkIn)">Check-in löschen</button>
+          </mat-menu>
+        </div>
       </div>
       <p *ngIf="checkIn.changeInfo !== ''">Veränderungen: {{ checkIn.changeInfo }}</p>
       <p *ngIf="checkIn.initiatives !== ''">Massnahmen: {{ checkIn.initiatives }}</p>

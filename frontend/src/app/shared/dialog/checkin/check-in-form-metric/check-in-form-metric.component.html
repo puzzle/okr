@@ -1,0 +1,25 @@
+<!--    Confidence and Value   -->
+<div class="d-flex flex-row w-100">
+  <div class="d-flex flex-column w-25">
+    <mat-label class="mb-2"
+      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit | unitLabelTransformation }})</span>:
+    </mat-label>
+    <div class="d-flex flex-column mb-3">
+      <app-custom-input
+        class="custom-input"
+        [formGroup]="dialogForm"
+        [formControlNameGiven]="'value'"
+        (focusout)="formatValue()"
+      ></app-custom-input>
+      <div *ngIf="isTouchedOrDirty('value')">
+        <mat-error class="fw-bold error-font" *ngFor="let errorKey of getErrorKeysOfFormField('value')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
+        </mat-error>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column w-75 justify-content-start align-items-start ms-5">
+    <mat-label class="mb-3">Confidence um Target zu erreichen</mat-label>
+    <app-confidence [edit]="true" [checkIn]="checkIn"></app-confidence>
+  </div>
+</div>

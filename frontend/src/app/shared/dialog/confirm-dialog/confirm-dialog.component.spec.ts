@@ -1,41 +1,64 @@
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
+
+const dialogMock = {
+  close: jest.fn(),
+};
 
 describe('ConfirmDialogComponent', () => {
   let component: ConfirmDialogComponent;
   let fixture: ComponentFixture<ConfirmDialogComponent>;
+  let loader: HarnessLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule, ReactiveFormsModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-          useValue: {},
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-          useValue: {},
-        },
+      imports: [
+        MatDialogModule,
+        NoopAnimationsModule,
+        MatSelectModule,
+        MatInputModule,
+        MatRadioModule,
+        ReactiveFormsModule,
       ],
       declarations: [ConfirmDialogComponent],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: dialogMock },
+      ],
     });
     fixture = TestBed.createComponent(ConfirmDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
-  it('should create', fakeAsync(() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
-  }));
+  });
 
-  it('should have two buttons', fakeAsync(() => {
-    const buttons = document.querySelectorAll('button');
-    expect(buttons.length).toEqual(2);
-    expect(buttons[0].innerHTML).toEqual('Ja');
-    expect(buttons[1].innerHTML).toEqual('Nein');
-  }));
+  it('should call close method with parameter: true if clicked to submit button', async () => {
+    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const submitButton = buttons[0];
+    await submitButton.click();
+
+    expect(dialogMock.close).toHaveBeenCalledWith(true);
+  });
+
+  it('should call close method with parameter: "" if clicked to cancel button', async () => {
+    let buttons = await loader.getAllHarnesses(MatButtonHarness);
+    const cancelButton = buttons[1];
+    await cancelButton.click();
+
+    expect(dialogMock.close).toHaveBeenCalledWith('');
+  });
 });

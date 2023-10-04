@@ -47,8 +47,16 @@ import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
+import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
+import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
+import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
+import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
+import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
+import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
+import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -95,6 +103,16 @@ export const MY_FORMATS = {
     ApplicationBannerComponent,
     KeyResultDialogComponent,
     ConfirmDialogComponent,
+    CheckInFormComponent,
+    CheckInFormMetricComponent,
+    UnitValueTransformationPipe,
+    CheckInFormOrdinalComponent,
+    CheckInBaseInformationsComponent,
+    CustomInputComponent,
+    CheckInFormComponent,
+    UnitLabelTransformationPipe,
+    ConfirmDialogComponent,
+    ParseUnitValuePipe,
   ],
   imports: [
     CommonModule,
@@ -145,6 +163,8 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: DrawerInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    UnitValueTransformationPipe,
+    ParseUnitValuePipe,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

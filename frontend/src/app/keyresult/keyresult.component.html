@@ -12,7 +12,7 @@
 
     <div class="d-flex align-items-center flex-wrap justify-content-end">
       <p class="sub-title">Confidence</p>
-      <app-confidence [edit]="false" [keyResult]="keyResult" class="ms-2"></app-confidence>
+      <app-confidence [edit]="false" [checkIn]="keyResult.lastCheckIn!" class="ms-2"></app-confidence>
     </div>
   </div>
   <div *ngIf="keyResult.lastCheckIn == null" class="sub-title">Noch kein Check-in vorhanden</div>

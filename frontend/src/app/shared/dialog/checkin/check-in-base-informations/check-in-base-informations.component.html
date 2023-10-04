@@ -1,0 +1,35 @@
+<form [formGroup]="dialogForm" class="d-flex flex-column mt-4">
+  <!--    Changeinfo   -->
+  <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
+  <mat-form-field>
+    <textarea
+      formControlName="changeInfo"
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="2"
+    ></textarea>
+    <div *ngIf="isTouchedOrDirty('changeInfo')">
+      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+        {{ getErrorMessage(errorKey) }}
+      </mat-error>
+    </div>
+  </mat-form-field>
+
+  <!--    Initiatives   -->
+  <mat-label class="mb-2">Massnahmen (optional)</mat-label>
+  <mat-form-field>
+    <textarea
+      formControlName="initiatives"
+      matInput
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="2"
+      cdkAutosizeMaxRows="2"
+    ></textarea>
+    <div *ngIf="isTouchedOrDirty('initiatives')">
+      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+        {{ getErrorMessage(errorKey) }}
+      </mat-error>
+    </div>
+  </mat-form-field>
+</form>

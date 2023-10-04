@@ -1,0 +1,57 @@
+<mat-dialog-content class="d-flex justify-content-center flex-column">
+  <div class="w-100 d-flex flex-row justify-content-start">
+    <h1 *ngIf="this.checkIn.value == undefined" class="title">
+      Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})
+    </h1>
+    <h1 *ngIf="this.checkIn.value != undefined" class="title">
+      Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})
+    </h1>
+    <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
+    <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
+  </div>
+  <!--  First part of dialog-->
+  <div *ngIf="!continued">
+    <p class="fs-6 mt-1 mb-3">Key Result</p>
+    <div *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-3 ms-2">
+      {{ keyResult.lastCheckIn?.changeInfo }}
+    </div>
+    <form [formGroup]="dialogForm" class="d-flex flex-column mt-4">
+      <!--      Custom input which depends on type of keyResult-->
+      <app-check-in-form-metric
+        *ngIf="keyResult.keyResultType === 'metric'"
+        [keyResult]="getKeyResultMetric()"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+      ></app-check-in-form-metric>
+      <app-check-in-form-ordinal
+        *ngIf="keyResult.keyResultType === 'ordinal'"
+        [keyResult]="getKeyResultOrdinal()"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+      ></app-check-in-form-ordinal>
+    </form>
+  </div>
+  <!--  Second part of dialog-->
+  <div *ngIf="continued">
+    <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
+  </div>
+</mat-dialog-content>
+<!--    Buttons to submit the check-in-->
+<div class="d-flex flex-row ms-4">
+  <button *ngIf="!continued" (click)="continued = true" class="ps-3 submit mb-3 pe-3 pt-1 pb-1 fw-bold text-white">
+    Weiter
+  </button>
+  <button
+    [disabled]="!this.dialogForm.valid"
+    (click)="saveCheckIn()"
+    *ngIf="continued"
+    type="submit"
+    mat-button
+    mat-dialog-close
+    [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
+    class="mb-3 pe-3 pt-1 pb-1 fw-bold text-white"
+  >
+    Check-in erfassen
+  </button>
+  <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
+</div>

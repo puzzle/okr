@@ -42,12 +42,14 @@
     Weiter
   </button>
   <button
+    [disabled]="!this.dialogForm.valid"
     (click)="saveCheckIn()"
     *ngIf="continued"
     type="submit"
     mat-button
     mat-dialog-close
-    class="submit mb-3 pe-3 pt-1 pb-1 fw-bold text-white"
+    [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
+    class="mb-3 pe-3 pt-1 pb-1 fw-bold text-white"
   >
     Check-in erfassen
   </button>

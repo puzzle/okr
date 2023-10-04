@@ -110,7 +110,7 @@ public abstract class KeyResult {
         return keyResultType;
     }
 
-    public void setKeyResultType(String keyResultType) {
+    private void setKeyResultType(String keyResultType) {
         this.keyResultType = keyResultType;
     }
 
@@ -155,7 +155,7 @@ public abstract class KeyResult {
         setKeyResultType(builder.keyResultType);
     }
 
-    public abstract static class Builder {
+    public abstract static class Builder<T> {
         private Long id;
         private Objective objective;
         private String title;
@@ -166,49 +166,48 @@ public abstract class KeyResult {
         private LocalDateTime modifiedOn;
         private String keyResultType;
 
-        public Builder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder withObjective(Objective objective) {
-            this.objective = objective;
-            return this;
-        }
-
-        public Builder withTitle(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder withDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder withOwner(User owner) {
-            this.owner = owner;
-            return this;
-        }
-
-        public Builder withCreatedBy(User createdBy) {
-            this.createdBy = createdBy;
-            return this;
-        }
-
-        public Builder withCreatedOn(LocalDateTime createdOn) {
-            this.createdOn = createdOn;
-            return this;
-        }
-
-        public Builder withModifiedOn(LocalDateTime modifiedOn) {
-            this.modifiedOn = modifiedOn;
-            return this;
-        }
-
-        public Builder withKeyResultType(String keyResultType) {
+        public Builder(String keyResultType) {
             this.keyResultType = keyResultType;
-            return this;
+        }
+
+        public T withId(Long id) {
+            this.id = id;
+            return (T) this;
+        }
+
+        public T withObjective(Objective objective) {
+            this.objective = objective;
+            return (T) this;
+        }
+
+        public T withTitle(String title) {
+            this.title = title;
+            return (T) this;
+        }
+
+        public T withDescription(String description) {
+            this.description = description;
+            return (T) this;
+        }
+
+        public T withOwner(User owner) {
+            this.owner = owner;
+            return (T) this;
+        }
+
+        public T withCreatedBy(User createdBy) {
+            this.createdBy = createdBy;
+            return (T) this;
+        }
+
+        public T withCreatedOn(LocalDateTime createdOn) {
+            this.createdOn = createdOn;
+            return (T) this;
+        }
+
+        public T withModifiedOn(LocalDateTime modifiedOn) {
+            this.modifiedOn = modifiedOn;
+            return (T) this;
         }
 
         public abstract KeyResult build();

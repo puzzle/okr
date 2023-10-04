@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -6,7 +6,10 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { NotifierService } from '../shared/services/notifier.service';
+import { catchError, EMPTY, Observable, Subject, switchAll, tap } from 'rxjs';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -14,22 +17,37 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements OnChanges {
-  @Input() keyResultId!: number;
-  keyResult!: KeyResult;
+export class KeyresultDetailComponent implements OnInit {
+  @Input()
+  keyResultId$!: Observable<number>;
+
+  keyResult$: Subject<KeyResult> = new Subject<KeyResult>();
 
   constructor(
     private keyResultService: KeyresultService,
-    private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private notifierService: NotifierService,
+    private refreshDataService: RefreshDataService,
   ) {}
 
-  ngOnChanges() {
-    this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
-      this.keyResult = fullKeyResult;
-      this.changeDetectorRef.markForCheck();
+  ngOnInit(): void {
+    this.keyResultId$.subscribe((id) => {
+      this.loadKeyResult(id);
     });
+  }
+
+  loadKeyResult(id: number): void {
+    console.log('loadKeyResult with id', id);
+
+    this.keyResultService
+      .getFullKeyResult(id)
+      .pipe(
+        catchError((err, caught) => {
+          console.error(err);
+          // TODO: maybe return a EMPTY or NEVER
+          return caught;
+        }),
+      )
+      .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
 
   castToMetric(keyResult: KeyResult) {
@@ -38,45 +56,29 @@ export class KeyresultDetailComponent implements OnChanges {
   castToOrdinal(keyResult: KeyResult) {
     return keyResult as KeyResultOrdinal;
   }
-  checkInHistory() {
+  checkInHistory(keyResultId: number) {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
-        keyResultId: this.keyResult.id,
+        keyResultId: keyResultId,
       },
     });
-
     dialogRef.afterClosed().subscribe(() => {});
   }
 
-  openEditKeyResultDialog() {
+  openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialog
       .open(KeyResultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {
           objective: null,
-          keyResult: this.keyResult,
+          keyResult: keyResult,
         },
       })
       .afterClosed()
-      .subscribe(async (result) => {
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: result.changeId,
-          objective: result.objective,
-          delete: result.delete,
-        });
-        if (result.openNew) {
-          this.openEditKeyResultDialog();
-        }
-
-        this.keyResult = {
-          ...this.keyResult,
-          id: result.keyResult.id,
-          title: result.keyResult.title,
-          description: result.keyResult.description,
-        };
-        this.changeDetectorRef.markForCheck();
+      .subscribe((result) => {
+        this.loadKeyResult(result.id);
+        this.refreshDataService.dataRefresh.set(Date.now());
       });
   }
 }

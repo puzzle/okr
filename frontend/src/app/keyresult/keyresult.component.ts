@@ -27,6 +27,7 @@ export class KeyresultComponent {
   }
 
   openDrawer() {
+    console.log('KeyResult.openDrawer()');
     this.router.navigate(['keyresult', this.keyResult.id]);
   }
 }

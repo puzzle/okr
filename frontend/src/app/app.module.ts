@@ -49,6 +49,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
 import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
+import { DirectivesModule } from './shared/directives/directives.module';
+import { TestComponent } from './test/test.component';
+import { SidepanelComponent } from './shared/sidepanel/sidepanel.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -95,6 +98,8 @@ export const MY_FORMATS = {
     ApplicationBannerComponent,
     KeyResultDialogComponent,
     ConfirmDialogComponent,
+    TestComponent,
+    SidepanelComponent,
   ],
   imports: [
     CommonModule,
@@ -133,6 +138,7 @@ export const MY_FORMATS = {
     FormsModule,
     MatDividerModule,
     MatSidenavModule,
+    DirectivesModule,
   ],
   providers: [
     {

@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, Input, signal } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { NotifierService } from '../shared/services/notifier.service';
 import { Router } from '@angular/router';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,6 +21,7 @@ export class ObjectiveComponent {
   set objective(objective: ObjectiveMin) {
     this._objective.next(objective);
   }
+
   private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
 
   @Input() objectiveMin!: ObjectiveMin;
@@ -35,40 +35,39 @@ export class ObjectiveComponent {
   constructor(
     private dialog: MatDialog,
     private routeService: RouteService,
-    private notifierService: NotifierService,
     private router: Router,
   ) {
-    this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-      const keyResults = this.objective.value.keyResults;
-      if (keyResultChange.delete) {
-        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
-        keyResults.splice(existingKRIndex, 1);
-        this.objective = { ...this.objective.value, keyResults: keyResults };
-      } else {
-        if (keyResultChange.objective.id != this.objective.value.id) {
-          return;
-        }
-        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
-        if (existingKRIndex !== -1) {
-          keyResults[existingKRIndex] = {
-            ...keyResults[existingKRIndex],
-            id: keyResultChange.keyResult.id,
-            title: keyResultChange.keyResult.title,
-          };
-        } else {
-          keyResults.push(keyResultChange.keyResult);
-        }
-        this.objective = { ...this.objective.value, keyResults: keyResults };
-      }
-    });
+    // this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
+    //   const keyResults = this.objective.value.keyResults;
+    //   if (keyResultChange.delete) {
+    //     const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
+    //     keyResults.splice(existingKRIndex, 1);
+    //     this.objective = { ...this.objective.value, keyResults: keyResults };
+    //   } else {
+    //     if (keyResultChange.objective.id != this.objective.value.id) {
+    //       return;
+    //     }
+    //     const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
+    //     if (existingKRIndex !== -1) {
+    //       keyResults[existingKRIndex] = {
+    //         ...keyResults[existingKRIndex],
+    //         id: keyResultChange.keyResult.id,
+    //         title: keyResultChange.keyResult.title,
+    //       };
+    //     } else {
+    //       keyResults.push(keyResultChange.keyResult);
+    //     }
+    //     this.objective = { ...this.objective.value, keyResults: keyResults };
+    //   }
+    // });
   }
 
   redirect(menuEntry: MenuEntry) {
-    if (menuEntry.showDialog) {
-      this.openDialog();
-    } else {
-      this.routeService.navigate(menuEntry.routeLine!);
-    }
+    // if (menuEntry.showDialog) {
+    //   this.openDialog();
+    // } else {
+    //   this.routeService.navigate(menuEntry.routeLine!);
+    // }
   }
 
   openDialog() {
@@ -78,6 +77,7 @@ export class ObjectiveComponent {
   }
 
   openObjectiveDetail() {
+    console.log('navigate to /objective with id:', this.objective.value.id);
     this.router.navigate(['objective', this.objective.value.id]);
   }
 
@@ -96,12 +96,12 @@ export class ObjectiveComponent {
         if (result == undefined || result.keyResult == null) {
           return;
         }
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: null,
-          objective: result.objective,
-          delete: false,
-        });
+        // await this.notifierService.keyResultsChanges.next({
+        //   keyResult: result.keyResult,
+        //   changeId: null,
+        //   objective: result.objective,
+        //   delete: false,
+        // });
         if (result.openNew) {
           this.openAddKeyResultDialog();
         }

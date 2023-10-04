@@ -74,13 +74,7 @@ export class KeyResultDialogComponent implements OnInit {
       keyResult.objective = this.data.objective;
     }
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
-      this.dialogRef.close({
-        keyResult: returnValue,
-        changeId: keyResult.id,
-        objective: keyResult.objective,
-        delete: false,
-        openNew: openNewDialog,
-      });
+      this.dialogRef.close({ id: keyResult.id });
     });
   }
 

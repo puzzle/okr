@@ -1,8 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
-import ch.puzzle.okr.models.AlignmentSelection;
-import ch.puzzle.okr.models.AlignmentSelectionId;
+import ch.puzzle.okr.models.alignment.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
 import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;

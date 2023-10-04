@@ -1,8 +1,8 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Alignment;
-import ch.puzzle.okr.models.KeyResultAlignment;
-import ch.puzzle.okr.models.ObjectiveAlignment;
+import ch.puzzle.okr.models.alignment.Alignment;
+import ch.puzzle.okr.models.alignment.KeyResultAlignment;
+import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.repository.AlignmentRepository;
 import org.springframework.stereotype.Service;
 

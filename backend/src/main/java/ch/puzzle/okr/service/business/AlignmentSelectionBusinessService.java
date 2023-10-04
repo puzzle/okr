@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import ch.puzzle.okr.service.persistence.AlignmentSelectionPersistenceService;
 import org.springframework.stereotype.Service;
 

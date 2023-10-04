@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Overview;
+import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

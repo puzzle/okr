@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.models.alignment;
 
 import org.hibernate.annotations.Immutable;
 

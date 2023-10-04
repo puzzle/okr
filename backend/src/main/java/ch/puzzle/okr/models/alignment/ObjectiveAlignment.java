@@ -1,4 +1,6 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.models.alignment;
+
+import ch.puzzle.okr.models.Objective;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

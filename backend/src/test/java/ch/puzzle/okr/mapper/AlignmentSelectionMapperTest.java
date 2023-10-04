@@ -1,8 +1,8 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.alignment.AlignmentObjectiveDto;
-import ch.puzzle.okr.models.AlignmentSelection;
-import ch.puzzle.okr.models.AlignmentSelectionId;
+import ch.puzzle.okr.models.alignment.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

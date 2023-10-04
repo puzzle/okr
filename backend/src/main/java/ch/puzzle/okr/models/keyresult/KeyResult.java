@@ -110,7 +110,7 @@ public abstract class KeyResult {
         return keyResultType;
     }
 
-    public void setKeyResultType(String keyResultType) {
+    private void setKeyResultType(String keyResultType) {
         this.keyResultType = keyResultType;
     }
 
@@ -207,11 +207,6 @@ public abstract class KeyResult {
 
         public Builder withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
-            return this;
-        }
-
-        public Builder withKeyResultType(String keyResultType) {
-            this.keyResultType = keyResultType;
             return this;
         }
 

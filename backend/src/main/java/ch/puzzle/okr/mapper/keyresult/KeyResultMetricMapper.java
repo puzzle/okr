@@ -47,8 +47,7 @@ public class KeyResultMetricMapper {
                 .withObjective(objectiveBusinessService.getObjectiveById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
                 .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
-                .withModifiedOn(keyResultMetricDto.modifiedOn()).withKeyResultType(keyResultMetricDto.keyResultType())
-                .build();
+                .withModifiedOn(keyResultMetricDto.modifiedOn()).build();
     }
 
     public KeyResultLastCheckInMetricDto getLastCheckInDto(Long keyResultId) {

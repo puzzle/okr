@@ -158,15 +158,4 @@ class CheckInControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
-
-    @Test
-    void shouldThrowException_WhenCheckInTypeUnnown() throws Exception {
-        BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
-                .willReturn(KeyResultMetric.Builder.builder().withId(1L).withKeyResultType("unknown").build());
-        BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInOrdinal);
-
-        mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
-    }
 }

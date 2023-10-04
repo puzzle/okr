@@ -124,7 +124,6 @@ public class KeyResultPersistenceServiceIT {
     void recreateEntity_ShouldUpdateKeyResultWithTypeChange() {
         KeyResult keyResult = createKeyResultMetric(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
-        createdKeyResult.setKeyResultType("ordinal");
 
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Hund")
                 .withTargetZone("Hund + Katze").withStretchZone("Zoo").withId(createdKeyResult.getId())

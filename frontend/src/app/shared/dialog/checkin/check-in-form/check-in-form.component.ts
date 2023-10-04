@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KeyResult } from '../../../types/model/KeyResult';
 import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../types/model/CheckInMin';
+import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 
 @Component({
   selector: 'app-check-in-form',
@@ -27,6 +28,7 @@ export class CheckInFormComponent {
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public parserPipe: ParseUnitValuePipe,
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
@@ -57,13 +59,13 @@ export class CheckInFormComponent {
     this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
     let checkIn: any = { ...this.dialogForm.value, keyResultId: this.keyResult.id };
     if (this.keyResult.keyResultType === 'metric') {
-      checkIn = { ...this.dialogForm.value, value: this.parseValue(), keyResultId: this.keyResult.id };
+      checkIn = {
+        ...this.dialogForm.value,
+        value: this.parserPipe.transform(this.dialogForm?.controls['value'].value!),
+        keyResultId: this.keyResult.id,
+      };
     }
     this.dialogRef.close({ data: checkIn });
-  }
-
-  parseValue(): number {
-    return +this.dialogForm?.controls['value'].value?.replaceAll('%', '').replaceAll('.-', '')!;
   }
 
   getKeyResultMetric(): KeyResultMetric {

@@ -4,6 +4,7 @@ import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { UnitValueTransformationPipe } from '../../../pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInMin } from '../../../types/model/CheckInMin';
+import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -20,14 +21,15 @@ export class CheckInFormMetricComponent implements AfterViewInit {
   dialogForm!: FormGroup;
   protected readonly errorMessages: any = errorMessages;
 
-  constructor(private pipe: UnitValueTransformationPipe) {}
+  constructor(
+    private pipe: UnitValueTransformationPipe,
+    private parserPipe: ParseUnitValuePipe,
+  ) {}
 
   formatValue() {
-    this.dialogForm?.controls['value'].setValue(this.pipe.transform(this.parseValue(), this.keyResult.unit));
-  }
-
-  parseValue(): number {
-    return +this.dialogForm?.controls['value'].value?.replaceAll('%', '').replaceAll('.-', '')!;
+    this.dialogForm?.controls['value'].setValue(
+      this.pipe.transform(this.parserPipe.transform(this.dialogForm?.controls['value'].value), this.keyResult.unit),
+    );
   }
 
   isTouchedOrDirty(name: string) {

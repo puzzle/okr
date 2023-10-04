@@ -63,10 +63,4 @@ describe('CheckInFormComponent', () => {
     component.formatValue();
     expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value!.toString());
   }));
-
-  it('should parse value correctly', waitForAsync(async () => {
-    component.keyResult = { ...keyResultMetric, unit: Unit.CHF };
-    component.dialogForm.controls['value'].setValue(checkInMetric.value + '.-');
-    expect(component.parseValue()).toBe(checkInMetric.value);
-  }));
 });

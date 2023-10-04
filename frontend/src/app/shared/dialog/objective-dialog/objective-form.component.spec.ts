@@ -83,8 +83,6 @@ describe('ObjectiveDialogComponent', () => {
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },
         { provide: ObjectiveService, useValue: objectiveService },
-        { provide: QuarterService, useValue: quarterService },
-        { provide: TeamService, useValue: teamService },
       ],
     });
     fixture = TestBed.createComponent(ObjectiveFormComponent);
@@ -95,6 +93,82 @@ describe('ObjectiveDialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should delete', () => {
+    matDataMock.objectiveId = 1;
+    objectiveService.deleteObjective.mockReturnValue(of({}));
+    component.deleteObjective();
+
+    expect(dialogMock.close).toHaveBeenCalledWith({
+      addKeyResult: false,
+      delete: true,
+      objective: {
+        id: 1,
+        state: undefined,
+      },
+      teamId: 0,
+    });
+  });
+
+  it('delete fails because objective has checkin', () => {
+    matDataMock.objectiveId = 1;
+    objectiveService.deleteObjective.mockReturnValue(throwError(() => {}));
+    component.deleteObjective();
+
+    expect(dialogMock.close).toHaveBeenCalledWith();
+  });
+
+  it.each([
+    [undefined, 'createObjective'],
+    [1, 'updateObjective'],
+  ])('create or update', (id: number | undefined, funcName: string) => {
+    matDataMock.objectiveId = id;
+    objectiveService[funcName as keyof typeof objectiveService].mockReturnValue(of({ ...objective, state: 'DRAFT' }));
+    component.onSubmit(submitEvent);
+
+    expect(objectiveService[funcName as keyof typeof objectiveService]).toHaveBeenCalledWith({
+      description: '',
+      id: id,
+      quarterId: 0,
+      state: 'DRAFT',
+      teamId: 0,
+      title: '',
+    });
+  });
+});
+
+describe('ObjectiveDialogComponentOnSubmit', () => {
+  let component: ObjectiveFormComponent;
+  let fixture: ComponentFixture<ObjectiveFormComponent>;
+  let loader: HarnessLoader;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        MatDialogModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        NoopAnimationsModule,
+        MatCheckboxModule,
+      ],
+      declarations: [ObjectiveFormComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: dialogMock },
+        { provide: MAT_DIALOG_DATA, useValue: matDataMock },
+        { provide: ObjectiveService, useValue: objectiveService },
+        { provide: QuarterService, useValue: quarterService },
+        { provide: TeamService, useValue: teamService },
+      ],
+    });
+    fixture = TestBed.createComponent(ObjectiveFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
@@ -174,49 +248,6 @@ describe('ObjectiveDialogComponent', () => {
       teamId: 1,
     });
   });
-
-  it('should delete', () => {
-    matDataMock.objectiveId = 1;
-    objectiveService.deleteObjective.mockReturnValue(of({}));
-    component.deleteObjective();
-
-    expect(dialogMock.close).toHaveBeenCalledWith({
-      addKeyResult: false,
-      delete: true,
-      objective: {
-        id: 1,
-        state: undefined,
-      },
-      teamId: 1,
-    });
-  });
-
-  it('delete fails because objective has checkin', () => {
-    matDataMock.objectiveId = 1;
-    objectiveService.deleteObjective.mockReturnValue(throwError(() => {}));
-    component.deleteObjective();
-
-    expect(dialogMock.close).toHaveBeenCalledWith();
-  });
-
-  it.each([
-    [undefined, 'createObjective'],
-    [1, 'updateObjective'],
-  ])('delete or update', (id: number | undefined, funcName: string) => {
-    matDataMock.objectiveId = id;
-    objectiveService[funcName as keyof typeof objectiveService].mockReturnValue(of({ ...objective, state: 'DRAFT' }));
-    component.onSubmit(submitEvent);
-
-    expect(objectiveService[funcName as keyof typeof objectiveService]).toHaveBeenCalledWith({
-      description: '',
-      id: id,
-      quarterId: 1,
-      state: 'DRAFT',
-      teamId: 1,
-      title: '',
-    });
-  });
-
   function advance(duration = 100) {
     tick(duration);
     fixture.detectChanges();

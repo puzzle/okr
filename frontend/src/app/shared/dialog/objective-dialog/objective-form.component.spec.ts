@@ -22,6 +22,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { QuarterService } from '../../services/quarter.service';
 import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
+import { State } from '../../types/enums/State';
 
 const submitEvent = {
   submitter: {
@@ -41,13 +42,13 @@ const objectiveService = {
 
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
-    return of([quarter]);
+    return of([{ id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label }]);
   },
 };
 
 const teamService = {
   getAllTeams(): Observable<Team[]> {
-    return of([{ id: team1.id, name: team1.name, activeObjectives: 1 }]);
+    return of([{ id: 1, name: team1.name, activeObjectives: 10 }]);
   },
 };
 
@@ -57,7 +58,7 @@ const dialogMock = {
 
 const matDataMock: { objectiveId: number | undefined; teamId: number | undefined } = {
   objectiveId: undefined,
-  teamId: undefined,
+  teamId: 1,
 };
 describe('ObjectiveDialogComponent', () => {
   let component: ObjectiveFormComponent;
@@ -141,43 +142,37 @@ describe('ObjectiveDialogComponent', () => {
             });
           });
         });
-        advance();
-        teamSelect.open().then(() => {
-          teamSelect.getOptions().then((selectOptions) => {
-            selectOptions[0].click();
-          });
+        teamService.getAllTeams().subscribe((teams) => {
+          team = teams[0].id;
         });
+        advance();
       }),
     );
 
-    // submitEvent.submitter.status = state;
-    // component.onSubmit(submitEvent);
-
     const rawFormValue = component.objectiveForm.getRawValue();
-
     expect(rawFormValue.description).toBe(description);
     expect(rawFormValue.quarter).toBe(quarter);
     expect(rawFormValue.team).toBe(team);
     expect(rawFormValue.title).toBe(title);
     expect(rawFormValue.createKeyResults).toBe(createKeyresults);
 
-    expect(dialogMock.close).toHaveBeenCalledTimes(1);
+    submitEvent.submitter.status = state;
+    objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
+    component.onSubmit(submitEvent);
 
-    // objectiveService.createObjective.mockReturnValue(of({...component.objectiveForm.value, state: state}));
-
-    // expect(dialogMock.close).toHaveBeenCalledWith({
-    //     addKeyResult: false,
-    //     delete: false,
-    //     objective: {
-    //         description: 'description',
-    //         id: 5,
-    //         quarterId: 2,
-    //         state: State[state as keyof typeof State],
-    //         teamId: 2,
-    //         title: 'title',
-    //     },
-    //     teamId: 1,
-    // });
+    expect(dialogMock.close).toHaveBeenCalledWith({
+      addKeyResult: createKeyresults,
+      delete: false,
+      objective: {
+        description: description,
+        id: 5,
+        quarterId: 2,
+        state: State[state as keyof typeof State],
+        teamId: 2,
+        title: title,
+      },
+      teamId: 1,
+    });
   });
 
   it('should delete', () => {
@@ -192,7 +187,7 @@ describe('ObjectiveDialogComponent', () => {
         id: 1,
         state: undefined,
       },
-      teamId: 0,
+      teamId: 1,
     });
   });
 
@@ -215,9 +210,9 @@ describe('ObjectiveDialogComponent', () => {
     expect(objectiveService[funcName as keyof typeof objectiveService]).toHaveBeenCalledWith({
       description: '',
       id: id,
-      quarterId: 0,
+      quarterId: 1,
       state: 'DRAFT',
-      teamId: 0,
+      teamId: 1,
       title: '',
     });
   });

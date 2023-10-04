@@ -54,10 +54,9 @@ export class ObjectiveFormComponent implements OnInit {
       state: state,
     } as unknown as Objective;
 
-    const submitFunction =
-      objectiveDTO.id !== null
-        ? this.objectiveService.updateObjective(objectiveDTO)
-        : this.objectiveService.createObjective(objectiveDTO);
+    const submitFunction = objectiveDTO.id
+      ? this.objectiveService.updateObjective(objectiveDTO)
+      : this.objectiveService.createObjective(objectiveDTO);
 
     submitFunction.subscribe((savedObjective: Objective) =>
       this.closeDialog(savedObjective, false, value.createKeyResults!),

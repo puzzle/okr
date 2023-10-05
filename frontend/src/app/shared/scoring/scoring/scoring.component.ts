@@ -65,12 +65,8 @@ export class ScoringComponent implements OnInit, AfterViewInit {
   }
 
   calculatePercentageMetric() {
-    let castedKeyResult = this.keyResult as KeyResultMetricMin;
     if (this.keyResult.lastCheckIn !== null) {
-      let percentage: number =
-        ((+castedKeyResult.lastCheckIn!.value! - castedKeyResult.baseline) /
-          (castedKeyResult.stretchGoal - castedKeyResult.baseline)) *
-        100;
+      let percentage: number = this.calculateCurrentPercentage();
       switch (true) {
         case percentage >= 100:
           this.failPercent = 100;
@@ -90,6 +86,16 @@ export class ScoringComponent implements OnInit, AfterViewInit {
           this.failPercent = (100 / 30) * percentage;
       }
     }
+  }
+
+  calculateCurrentPercentage(): number {
+    let castedKeyResult: KeyResultMetricMin = this.keyResult as KeyResultMetricMin;
+    let value: number = +castedKeyResult.lastCheckIn?.value!;
+    let baseline: number = +castedKeyResult.baseline;
+    let stretchGoal: number = +castedKeyResult.stretchGoal;
+    return baseline < stretchGoal
+      ? ((value - baseline) / (stretchGoal - baseline)) * 100
+      : ((value - stretchGoal) / (baseline - stretchGoal)) * 100;
   }
 
   getScoringColorClassAndSetBorder(): string | null {

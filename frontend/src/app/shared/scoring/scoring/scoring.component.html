@@ -14,13 +14,13 @@
 
     <div>
       <span class="okr-score">
-        <span class="child" #fail></span>
+        <span class="child" #fail [attr.data-testId]="'fail'"></span>
       </span>
       <span class="okr-score okr-score-commit">
-        <span class="child" #commit></span>
+        <span class="child" #commit [attr.data-testId]="'commit'"></span>
       </span>
       <span class="okr-score">
-        <span class="child" #target></span>
+        <span class="child" #target [attr.data-testId]="'target'"></span>
       </span>
     </div>
   </div>

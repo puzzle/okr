@@ -83,14 +83,17 @@ export class Scoring2Component implements OnInit, AfterViewInit {
     }
   }
 
-  getScoringColorClass(): string | null {
+  getScoringColorClassAndSetBorder(): string | null {
     if (this.targetPercent > 100) {
       return 'score-stretch';
     } else if (this.targetPercent > 0) {
+      this.targetElement!.nativeElement.classList.add('border-right');
       return 'score-green';
-    } else if (this.commitPercent == 100) {
+    } else if (this.commitPercent > 0) {
+      this.commitElement!.nativeElement.classList.add('border-right');
       return 'score-yellow';
-    } else if (this.failPercent == 100) {
+    } else if (this.failPercent > 0) {
+      this.failElement!.nativeElement.classList.add('border-right');
       return 'score-red';
     } else {
       return null;
@@ -104,7 +107,7 @@ export class Scoring2Component implements OnInit, AfterViewInit {
     this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
 
     // Set color of scoring component
-    let scoringClass = this.getScoringColorClass();
+    let scoringClass = this.getScoringColorClassAndSetBorder();
     if (scoringClass !== null) {
       this.targetElement!.nativeElement.classList.add(scoringClass);
       this.commitElement!.nativeElement.classList.add(scoringClass);

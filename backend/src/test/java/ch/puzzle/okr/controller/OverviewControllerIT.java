@@ -3,12 +3,15 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
+import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,6 +42,8 @@ public class OverviewControllerIT {
     private MockMvc mvc;
     @MockBean
     private OverviewBusinessService overviewBusinessService;
+    @MockBean
+    private RegisterNewUserService registerNewUserService;
     @SpyBean
     private OverviewMapper overviewMapper;
 
@@ -81,6 +86,11 @@ public class OverviewControllerIT {
 
     static Overview overviewFindus = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
             .withTeamName("Findus").build();
+
+    @BeforeEach
+    void setUp() {
+        Mockito.doNothing().when(registerNewUserService).registerNewUser(any());
+    }
 
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {

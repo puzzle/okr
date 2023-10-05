@@ -43,60 +43,70 @@ export class ScoringComponent implements OnInit, AfterViewInit {
   }
 
   calculatePercentageOrdinal() {
-    if (this.keyResult.lastCheckIn?.value === Zone.STRETCH) {
-      this.failPercent = 100;
-      this.commitPercent = 100;
-      this.targetPercent = 101;
-    } else if (this.keyResult.lastCheckIn?.value === Zone.TARGET) {
-      this.failPercent = 100;
-      this.commitPercent = 100;
-      this.targetPercent = 100;
-    } else if (this.keyResult.lastCheckIn?.value === Zone.COMMIT) {
-      this.failPercent = 100;
-      this.commitPercent = 100;
-    } else if (this.keyResult.lastCheckIn?.value === Zone.FAIL) {
-      this.failPercent = 100;
+    switch (this.keyResult.lastCheckIn?.value) {
+      case Zone.STRETCH:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.targetPercent = 101;
+        break;
+      case Zone.TARGET:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.targetPercent = 100;
+        break;
+      case Zone.COMMIT:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        break;
+      case Zone.FAIL:
+        this.failPercent = 100;
+        break;
     }
   }
 
   calculatePercentageMetric() {
     let castedKeyResult = this.keyResult as KeyResultMetricMin;
     if (this.keyResult.lastCheckIn !== null) {
-      let percentage =
+      let percentage: number =
         ((+castedKeyResult.lastCheckIn!.value! - castedKeyResult.baseline) /
           (castedKeyResult.stretchGoal - castedKeyResult.baseline)) *
         100;
-      if (percentage >= 100) {
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = 101;
-      } else if (percentage > 70) {
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = (100 / 30) * (percentage - 70);
-      } else if (percentage > 30) {
-        this.failPercent = 100;
-        this.commitPercent = (100 / 40) * (percentage - 30);
-      } else {
-        this.failPercent = (100 / 30) * percentage;
+      switch (true) {
+        case percentage >= 100:
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = 101;
+          break;
+        case percentage > 70:
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = (100 / 30) * (percentage - 70);
+          break;
+        case percentage > 30:
+          this.failPercent = 100;
+          this.commitPercent = (100 / 40) * (percentage - 30);
+          break;
+        default:
+          this.failPercent = (100 / 30) * percentage;
       }
     }
   }
 
   getScoringColorClassAndSetBorder(): string | null {
-    if (this.targetPercent > 100) {
-      return 'score-stretch';
-    } else if (this.targetPercent > 0) {
-      this.targetElement!.nativeElement.classList.add('border-right');
-      return 'score-green';
-    } else if (this.commitPercent > 0) {
-      this.commitElement!.nativeElement.classList.add('border-right');
-      return 'score-yellow';
-    } else if (this.failPercent > 0) {
-      this.failElement!.nativeElement.classList.add('border-right');
-      return 'score-red';
-    } else {
-      return null;
+    switch (true) {
+      case this.targetPercent > 100:
+        return 'score-stretch';
+      case this.targetPercent > 0:
+        this.targetElement!.nativeElement.classList.add('border-right');
+        return 'score-green';
+      case this.commitPercent > 0:
+        this.commitElement!.nativeElement.classList.add('border-right');
+        return 'score-yellow';
+      case this.failPercent > 0:
+        this.failElement!.nativeElement.classList.add('border-right');
+        return 'score-red';
+      default:
+        return null;
     }
   }
 

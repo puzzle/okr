@@ -52,6 +52,25 @@ export const keyResultMetricMin: KeyResultMetricMin = {
   type: 'keyResult',
 } as KeyResultMetricMin;
 
+export const keyResultMetricMinScoring: KeyResultMetricMin = {
+  id: 201,
+  title: 'Achieve 20% Increase in Daily Active Users',
+  keyResultType: 'metric',
+  unit: '%',
+  baseline: 25.0,
+  stretchGoal: 75.0,
+  lastCheckIn: {
+    id: 800,
+    value: 50,
+    confidence: 4,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'Half way through',
+    initiatives: 'Quality before quantity',
+  },
+  type: 'keyResult',
+} as KeyResultMetricMin;
+
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   id: 202,
   title: 'Reduce Bounce Rate',

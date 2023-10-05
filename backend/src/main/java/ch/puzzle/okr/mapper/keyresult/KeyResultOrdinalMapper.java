@@ -47,8 +47,7 @@ public class KeyResultOrdinalMapper {
                 .withObjective(objectiveBusinessService.getObjectiveById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
                 .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
-                .withModifiedOn(keyResultOrdinalDto.modifiedOn()).withKeyResultType(keyResultOrdinalDto.keyResultType())
-                .build();
+                .withModifiedOn(keyResultOrdinalDto.modifiedOn()).build();
     }
 
     public KeyResultLastCheckInOrdinalDto getLastCheckInDto(Long keyResultId) {
@@ -58,8 +57,8 @@ public class KeyResultOrdinalMapper {
             lastCheckInDto = null;
         } else {
             lastCheckInDto = new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(),
-                    ((CheckInOrdinal) lastCheckIn).getZone().toString(), lastCheckIn.getConfidence(),
-                    lastCheckIn.getCreatedOn(), lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
+                    ((CheckInOrdinal) lastCheckIn).getZone(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
+                    lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }
         return lastCheckInDto;
     }

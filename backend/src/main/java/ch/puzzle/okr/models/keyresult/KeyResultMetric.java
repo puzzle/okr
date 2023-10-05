@@ -81,6 +81,7 @@ public class KeyResultMetric extends KeyResult {
         private String unit;
 
         private Builder() {
+            super(KEY_RESULT_TYPE_METRIC);
         }
 
         public static Builder builder() {

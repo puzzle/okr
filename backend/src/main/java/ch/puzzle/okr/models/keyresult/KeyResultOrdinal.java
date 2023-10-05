@@ -81,6 +81,7 @@ public class KeyResultOrdinal extends KeyResult {
         private String stretchZone;
 
         private Builder() {
+            super(KEY_RESULT_TYPE_ORDINAL);
         }
 
         public static Builder builder() {

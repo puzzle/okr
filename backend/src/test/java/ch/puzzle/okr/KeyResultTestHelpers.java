@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
+import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
@@ -32,7 +33,7 @@ public class KeyResultTestHelpers {
     public static final String TARGET_ZONE = "Ein Baum";
     public static final String STRETCH_ZONE = "Ein Wald";
     public static final String QUARTER_LABEL = "GJ 22/23-Q4";
-    public static final String LAST_CHECK_IN_ZONE = "Baum";
+    public static final Zone LAST_CHECK_IN_ZONE = Zone.COMMIT;
     public static final String FIRSTNAME = "Johnny";
     public static final String LASTNAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
@@ -56,7 +57,7 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_TARGET_ZONE = "$.targetZone";
     public static final String JSON_PATH_STRETCH_ZONE = "$.stretchZone";
     public static final String JSON_PATH_LAST_CHECK_IN_ID = "$.lastCheckIn.id";
-    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.zone";
+    public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.value";
     public static final String JSON_PATH_QUARTER_LABEL = "$.objective.keyResultQuarterDto.label";
     public static final String JSON_PATH_QUARTER_START_DATE = "$.objective.keyResultQuarterDto.startDate";
     public static final String JSON = "{\"title\":  \"Keyresult 1\",\"keyResultType\":  \"metric\"}";
@@ -75,7 +76,7 @@ public class KeyResultTestHelpers {
     static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
     public static final KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withId(5L).withTitle(TITLE)
-            .withKeyResultType(KEY_RESULT_TYPE_METRIC).build();
+            .build();
     public static final CheckIn checkIn1 = CheckInMetric.Builder.builder().withValue(23D).withId(1L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO_1).withInitiatives(INITIATIVES_1).build();
@@ -107,8 +108,7 @@ public class KeyResultTestHelpers {
             keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX);
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
-            .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withTitle("Keyresult 2").withOwner(user)
-            .withObjective(objective).build();
+            .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();
 
     public static final String CREATE_BODY_METRIC = """
             {

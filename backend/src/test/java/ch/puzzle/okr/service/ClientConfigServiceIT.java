@@ -19,7 +19,7 @@ public class ClientConfigServiceIT {
         Map<String, String> configMap = clientConfigService.getConfigBasedOnActiveEnv();
 
         assertEquals("prod", configMap.get("activeProfile"));
-        assertEquals("http://localhost:8000", configMap.get("issuer"));
+        assertEquals("https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch/realms/pitc", configMap.get("issuer"));
     }
 
 }

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.Overview;
-import ch.puzzle.okr.models.OverviewId;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.models.overview.OverviewId;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 

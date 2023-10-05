@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.alignment.Alignment;
+import ch.puzzle.okr.models.alignment.KeyResultAlignment;
+import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;

@@ -75,7 +75,7 @@ public class KeyResultOrdinal extends KeyResult {
         setStretchZone(builder.stretchZone);
     }
 
-    public static class Builder extends KeyResult.Builder {
+    public static class Builder extends KeyResult.Builder<Builder> {
         private String commitZone;
         private String targetZone;
         private String stretchZone;

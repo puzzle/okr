@@ -157,7 +157,7 @@ public abstract class CheckIn {
     }
 
     /* Builder */
-    public abstract static class Builder {
+    public abstract static class Builder<T> {
         private Long id;
         private String changeInfo;
         private String initiatives;
@@ -167,44 +167,44 @@ public abstract class CheckIn {
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
 
-        public Builder withId(Long id) {
+        public T withId(Long id) {
             this.id = id;
-            return this;
+            return (T) this;
         }
 
-        public Builder withChangeInfo(String changeInfo) {
+        public T withChangeInfo(String changeInfo) {
             this.changeInfo = changeInfo;
-            return this;
+            return (T) this;
         }
 
-        public Builder withInitiatives(String initiatives) {
+        public T withInitiatives(String initiatives) {
             this.initiatives = initiatives;
-            return this;
+            return (T) this;
         }
 
-        public Builder withConfidence(Integer confidence) {
+        public T withConfidence(Integer confidence) {
             this.confidence = confidence;
-            return this;
+            return (T) this;
         }
 
-        public Builder withKeyResult(KeyResult keyResult) {
+        public T withKeyResult(KeyResult keyResult) {
             this.keyResult = keyResult;
-            return this;
+            return (T) this;
         }
 
-        public Builder withCreatedBy(User createdBy) {
+        public T withCreatedBy(User createdBy) {
             this.createdBy = createdBy;
-            return this;
+            return (T) this;
         }
 
-        public Builder withCreatedOn(LocalDateTime createdOn) {
+        public T withCreatedOn(LocalDateTime createdOn) {
             this.createdOn = createdOn;
-            return this;
+            return (T) this;
         }
 
-        public Builder withModifiedOn(LocalDateTime modifiedOn) {
+        public T withModifiedOn(LocalDateTime modifiedOn) {
             this.modifiedOn = modifiedOn;
-            return this;
+            return (T) this;
         }
 
         public abstract CheckIn build();

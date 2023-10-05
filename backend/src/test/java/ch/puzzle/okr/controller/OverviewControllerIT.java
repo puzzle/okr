@@ -1,7 +1,9 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.overview.*;
-import ch.puzzle.okr.service.OverviewService;
+import ch.puzzle.okr.mapper.OverviewMapper;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.models.overview.OverviewId;
+import ch.puzzle.okr.service.business.OverviewBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -11,12 +13,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,7 +38,9 @@ public class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private OverviewService overviewService;
+    private OverviewBusinessService overviewBusinessService;
+    @SpyBean
+    private OverviewMapper overviewMapper;
 
     public static final String PUZZLE = "Puzzle";
     public static final String DESCRIPTION = "This is a description";
@@ -44,30 +50,46 @@ public class OverviewControllerIT {
     public static final String JSON_PATH_TEAM_NAME = "$[0].team.name";
     public static final String JSON_PATH_TEAM_ID = "$[0].team.id";
 
-    static OverviewDto overviewDtoPuzzle = new OverviewDto(new OverviewTeamDto(1L, PUZZLE), List.of(
-            new OverviewObjectiveDto(1L, "Objective 1", DRAFT, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
-                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
-            new OverviewObjectiveDto(2L, "Objective 2", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
-                            new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
-    static OverviewDto overviewDtoOKR = new OverviewDto(new OverviewTeamDto(2L, "OKR"), List.of(
-            new OverviewObjectiveDto(5L, "Objective 5", DRAFT, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
-                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now())))),
-            new OverviewObjectiveDto(7L, "Objective 7", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(21L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
-                            new OverviewLastCheckInMetricDto(41L, 15.0, 5, LocalDateTime.now()))))));
-    static OverviewDto overviewDtoKuchen = new OverviewDto(new OverviewTeamDto(3L, TEAM_KUCHEN),
-            List.of(new OverviewObjectiveDto(8L, "Objective 8", ONGOING, new OverviewQuarterDto(1L, QUARTER_LABEL),
-                    List.of(new OverviewKeyResultMetricDto(20L, DESCRIPTION, KEY_RESULT_TYPE_METRIC, CHF, 5.0, 20.0,
-                            new OverviewLastCheckInMetricDto(40L, 15.0, 5, LocalDateTime.now()))))));
-    static OverviewDto overviewDtoFindus = new OverviewDto(new OverviewTeamDto(4L, "Findus"), Collections.emptyList());
+    static List<Overview> overviewPuzzle = List.of(
+            Overview.Builder.builder().withOverviewId(OverviewId.of(1L, 1L, 20L, 20L)).withTeamName(PUZZLE)
+                    .withObjectiveTitle("Objective 1").withObjectiveState(DRAFT).withQuarterId(1L)
+                    .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build(),
+            Overview.Builder.builder().withOverviewId(OverviewId.of(1L, 2L, 21L, 41L)).withTeamName(PUZZLE)
+                    .withObjectiveTitle("Objective 1").withObjectiveState(DRAFT).withQuarterId(1L)
+                    .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
+    static List<Overview> overviewOKR = List.of(
+            Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 5L, 20L, 40L)).withTeamName("OKR")
+                    .withObjectiveTitle("Objective 5").withObjectiveState(DRAFT).withQuarterId(1L)
+                    .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build(),
+            Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 7L, 21L, 41L)).withTeamName("OKR")
+                    .withObjectiveTitle("Objective 7").withObjectiveState(ONGOING).withQuarterId(1L)
+                    .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
+
+    static Overview overviewKuchen = Overview.Builder.builder().withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))
+            .withTeamName("Kuchen").withObjectiveTitle("Objective 8").withObjectiveState(ONGOING).withQuarterId(1L)
+            .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION).withKeyResultType(KEY_RESULT_TYPE_METRIC)
+            .withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0).withCheckInValue(15.0).withConfidence(5)
+            .withCreatedOn(LocalDateTime.now()).build();
+
+    static Overview overviewFindus = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
+            .withTeamName("Findus").build();
 
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
-        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 2L, 3L, 4L)))
-                .willReturn(List.of(overviewDtoPuzzle, overviewDtoOKR, overviewDtoKuchen));
+        List<Overview> overviews = new ArrayList<>();
+        overviews.addAll(overviewPuzzle);
+        overviews.addAll(overviewOKR);
+        overviews.add(overviewKuchen);
+        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 2L, 3L, 4L)))
+                .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
@@ -84,7 +106,7 @@ public class OverviewControllerIT {
 
     @Test
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
-        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(any(), any()))
+        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(any(), any()))
                 .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
@@ -93,8 +115,11 @@ public class OverviewControllerIT {
 
     @Test
     void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
-        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 3L)))
-                .willReturn(List.of(overviewDtoPuzzle, overviewDtoKuchen));
+        List<Overview> overviews = new ArrayList<>();
+        overviews.addAll(overviewPuzzle);
+        overviews.add(overviewKuchen);
+        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 3L)))
+                .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -108,8 +133,8 @@ public class OverviewControllerIT {
 
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewService.getOverviewByQuarterIdAndTeamIds(2L, List.of(4L)))
-                .willReturn(List.of(overviewDtoFindus));
+        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(4L)))
+                .willReturn(List.of(overviewFindus));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))

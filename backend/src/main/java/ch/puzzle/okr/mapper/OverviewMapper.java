@@ -1,7 +1,7 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.overview.*;
-import ch.puzzle.okr.models.Overview;
+import ch.puzzle.okr.models.overview.Overview;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,7 +57,9 @@ public class OverviewMapper {
 
     private OverviewDto createOverviewDto(Overview overview) {
         List<OverviewObjectiveDto> objectives = new ArrayList<>();
-        objectives.add(createObjectiveDto(overview));
+        if (isValidId(overview.getOverviewId().getObjectiveId())) {
+            objectives.add(createObjectiveDto(overview));
+        }
         return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
                 objectives);
     }

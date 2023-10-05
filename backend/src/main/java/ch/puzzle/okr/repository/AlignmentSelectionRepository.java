@@ -1,7 +1,7 @@
 package ch.puzzle.okr.repository;
 
-import ch.puzzle.okr.models.AlignmentSelection;
-import ch.puzzle.okr.models.AlignmentSelectionId;
+import ch.puzzle.okr.models.alignment.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 

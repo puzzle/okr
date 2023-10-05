@@ -4,8 +4,8 @@ import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultMetricDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
-import ch.puzzle.okr.models.Overview;
-import ch.puzzle.okr.models.OverviewId;
+import ch.puzzle.okr.models.overview.Overview;
+import ch.puzzle.okr.models.overview.OverviewId;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,6 +25,17 @@ public class OverviewMapperTest {
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
         assertTrue(overviewDtos.isEmpty());
+    }
+
+    @Test
+    void toDto_ShouldReturnEmptyList_WhenTeamFound() {
+        List<Overview> overviews = List
+                .of(Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build())
+                        .withTeamName("Puzzle ITC").build());
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+
+        assertEquals(1, overviewDtos.size());
+        assertEquals(0, overviewDtos.get(0).objectives().size());
     }
 
     @Test

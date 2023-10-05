@@ -54,7 +54,7 @@ public class CheckInOrdinal extends CheckIn {
     }
 
     /* Builder */
-    public static final class Builder extends CheckIn.Builder {
+    public static final class Builder extends CheckIn.Builder<Builder> {
         private Zone zone;
 
         private Builder() {

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Overview;
+import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.repository.OverviewRepository;
 import org.springframework.stereotype.Service;
 

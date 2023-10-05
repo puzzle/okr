@@ -1,5 +1,6 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.models.overview;
 
+import ch.puzzle.okr.models.State;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.EmbeddedId;

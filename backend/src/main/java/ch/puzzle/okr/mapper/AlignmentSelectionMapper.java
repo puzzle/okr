@@ -2,7 +2,7 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.alignment.AlignmentKeyResultDto;
 import ch.puzzle.okr.dto.alignment.AlignmentObjectiveDto;
-import ch.puzzle.okr.models.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

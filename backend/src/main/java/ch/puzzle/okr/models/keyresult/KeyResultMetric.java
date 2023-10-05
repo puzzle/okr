@@ -75,7 +75,7 @@ public class KeyResultMetric extends KeyResult {
         setUnit(builder.unit);
     }
 
-    public static class Builder extends KeyResult.Builder {
+    public static class Builder extends KeyResult.Builder<Builder> {
         private Double baseline;
         private Double stretchGoal;
         private String unit;

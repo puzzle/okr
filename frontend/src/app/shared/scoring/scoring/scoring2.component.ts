@@ -46,6 +46,10 @@ export class Scoring2Component implements OnInit, AfterViewInit {
     if (this.keyResult.lastCheckIn?.value === Zone.STRETCH) {
       this.failPercent = 100;
       this.commitPercent = 100;
+      this.targetPercent = 101;
+    } else if (this.keyResult.lastCheckIn?.value === Zone.TARGET) {
+      this.failPercent = 100;
+      this.commitPercent = 100;
       this.targetPercent = 100;
     } else if (this.keyResult.lastCheckIn?.value === Zone.COMMIT) {
       this.failPercent = 100;
@@ -62,10 +66,10 @@ export class Scoring2Component implements OnInit, AfterViewInit {
         ((+castedKeyResult.lastCheckIn!.value! - castedKeyResult.baseline) /
           (castedKeyResult.stretchGoal - castedKeyResult.baseline)) *
         100;
-      if (percentage > 100) {
+      if (percentage >= 100) {
         this.failPercent = 100;
         this.commitPercent = 100;
-        this.targetPercent = 100;
+        this.targetPercent = 101;
       } else if (percentage > 70) {
         this.failPercent = 100;
         this.commitPercent = 100;
@@ -79,27 +83,38 @@ export class Scoring2Component implements OnInit, AfterViewInit {
     }
   }
 
+  getScoringColorClass(): string | null {
+    if (this.targetPercent > 100) {
+      return 'score-stretch';
+    } else if (this.targetPercent > 0) {
+      return 'score-green';
+    } else if (this.commitPercent == 100) {
+      return 'score-yellow';
+    } else if (this.failPercent == 100) {
+      return 'score-red';
+    } else {
+      return null;
+    }
+  }
+
   ngAfterViewInit(): void {
-    // use failPercent, commitPercent and targetPercent for set the backgrounds
-    if (this.targetPercent >= 100) {
-      this.failElement!.nativeElement.classList.add('score-stretch');
-      this.commitElement!.nativeElement.classList.add('score-stretch');
-      this.targetElement!.nativeElement.classList.add('score-stretch');
+    //Define width of scoring elements
+    this.failElement!.nativeElement.style.width = this.failPercent + '%';
+    this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
+    this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
+
+    // Set color of scoring component
+    let scoringClass = this.getScoringColorClass();
+    if (scoringClass !== null) {
+      this.targetElement!.nativeElement.classList.add(scoringClass);
+      this.commitElement!.nativeElement.classList.add(scoringClass);
+      this.failElement!.nativeElement.classList.add(scoringClass);
+    }
+
+    //Fill out icon if target percent has reached 100 percent or more
+    if (this.targetPercent > 100) {
       this.iconPath = 'filled';
       this.changeDetectionRef.detectChanges();
-      return;
-    }
-    if (this.failElement) {
-      this.failElement.nativeElement.classList.add('score-red');
-      this.failElement.nativeElement.style.width = this.failPercent + '%';
-    }
-    if (this.commitElement) {
-      this.commitElement.nativeElement.classList.add('score-yellow');
-      this.commitElement.nativeElement.style.width = this.commitPercent + '%';
-    }
-    if (this.targetElement) {
-      this.targetElement.nativeElement.classList.add('score-green');
-      this.targetElement.nativeElement.style.width = this.targetPercent + '%';
     }
   }
 }

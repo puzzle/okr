@@ -39,6 +39,12 @@ describe('ScoringComponent', () => {
       expect(component).toBeTruthy();
     });
 
+    it('should fill out star if target percentage is over 100', () => {
+      component.targetPercent = 101;
+      component.ngAfterViewInit();
+      expect(component.iconPath).toBe('filled');
+    });
+
     it.each([
       [{ fail: 0, commit: 0, target: 0, className: null, borderClass: 'none' }],
       [{ fail: 100, commit: 0, target: 0, className: 'score-red', borderClass: 'fail' }],

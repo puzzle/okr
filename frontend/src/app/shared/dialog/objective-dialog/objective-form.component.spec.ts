@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
 import { objective, quarter, team1 } from '../../testData';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
@@ -24,6 +24,9 @@ import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
 import mock = jest.mock;
+import { NotifierService } from '../../services/notifier.service';
+import { ObjectiveMin } from '../../types/model/ObjectiveMin';
+import { ObjectiveComponent } from '../../../objective/objective.component';
 
 const submitEvent = {
   submitter: {
@@ -51,6 +54,10 @@ const teamService = {
   getAllTeams(): Observable<Team[]> {
     return of([{ id: 1, name: team1.name, activeObjectives: 10 }]);
   },
+};
+
+const objectiveComponent = {
+  openAddKeyResultDialog: jest.fn(),
 };
 
 const dialogMock = {
@@ -86,6 +93,7 @@ describe('ObjectiveDialogComponent', () => {
         { provide: ObjectiveService, useValue: objectiveService },
         { provide: QuarterService, useValue: quarterService },
         { provide: TeamService, useValue: teamService },
+        { provide: ObjectiveComponent, useValue: objectiveComponent },
       ],
     });
     fixture = TestBed.createComponent(ObjectiveFormComponent);
@@ -251,6 +259,26 @@ describe('ObjectiveDialogComponent', () => {
       quarterId: 1,
       teamId: 1,
     });
+  });
+
+  it('should open keyresult creation dialog after checking checkbox', () => {
+    matDataMock.objectiveId = undefined;
+    component.objectiveForm.setValue({
+      title: 'Test title',
+      description: 'Test description',
+      quarter: 0,
+      team: 0,
+      relation: 0,
+      createKeyResults: true,
+    });
+
+    submitEvent.submitter.status = 'DRAFT';
+    objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
+    component.onSubmit(submitEvent);
+
+    fixture.detectChanges();
+
+    expect(objectiveComponent.openAddKeyResultDialog).toHaveBeenCalled();
   });
 
   function advance(duration = 100) {

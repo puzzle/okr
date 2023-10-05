@@ -1,4 +1,13 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
@@ -23,6 +32,8 @@ export class Scoring2Component implements OnInit, AfterViewInit {
   @ViewChild('target')
   private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
 
+  constructor(private changeDetectionRef: ChangeDetectorRef) {}
+
   ngOnInit() {
     if (this.keyResult.keyResultType === 'metric') {
       this.calculatePercentageMetric();
@@ -32,7 +43,6 @@ export class Scoring2Component implements OnInit, AfterViewInit {
   }
 
   calculatePercentageOrdinal() {
-    //TODO: Check why the lastCheckIn value is null
     if (this.keyResult.lastCheckIn?.value === Zone.STRETCH) {
       this.failPercent = 100;
       this.commitPercent = 100;
@@ -71,6 +81,14 @@ export class Scoring2Component implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     // use failPercent, commitPercent and targetPercent for set the backgrounds
+    if (this.targetPercent >= 100) {
+      this.failElement!.nativeElement.classList.add('score-stretch');
+      this.commitElement!.nativeElement.classList.add('score-stretch');
+      this.targetElement!.nativeElement.classList.add('score-stretch');
+      this.iconPath = 'filled';
+      this.changeDetectionRef.detectChanges();
+      return;
+    }
     if (this.failElement) {
       this.failElement.nativeElement.classList.add('score-red');
       this.failElement.nativeElement.style.width = this.failPercent + '%';

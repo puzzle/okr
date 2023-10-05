@@ -1,0 +1,29 @@
+<form [formGroup]="dialogForm">
+  <p class="mt-3">Erreichten Bereich wählen</p>
+  <mat-radio-group formControlName="value" class="d-flex flex-column mt-3 gap-2">
+    <mat-radio-button value="{{ Zone.FAIL }}">
+      <div class="radio-text-container d-flex align-items-center p-3">
+        Meilenstein (Commit / Target / Stretch) noch nicht erreicht
+      </div>
+    </mat-radio-button>
+    <mat-radio-button value="{{ Zone.COMMIT }}">
+      <div class="radio-text-container d-flex align-items-center p-3">
+        {{ keyResult.commitZone }}
+      </div>
+    </mat-radio-button>
+    <mat-radio-button value="{{ Zone.TARGET }}">
+      <div class="radio-text-container d-flex align-items-center p-3">
+        {{ keyResult.targetZone }}
+      </div>
+    </mat-radio-button>
+    <mat-radio-button value="{{ Zone.STRETCH }}">
+      <div class="radio-text-container d-flex align-items-center p-3">
+        {{ keyResult.stretchZone }}
+      </div>
+    </mat-radio-button>
+  </mat-radio-group>
+  <div class="d-flex flex-column w-75 justify-content-start align-items-start mt-3 mb-4">
+    <mat-label class="mb-3">Confidence um Target zu erreichen</mat-label>
+    <app-confidence [edit]="true" [checkIn]="checkIn"></app-confidence>
+  </div>
+</form>

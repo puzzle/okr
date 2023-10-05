@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Key Result löschen</h1>
-<div mat-dialog-content>Soll dieses Key Result gelöscht werden?</div>
+<h1 mat-dialog-title>{{ this.data.title }} löschen</h1>
+<div mat-dialog-content>Soll dieses {{ this.data.title }} gelöscht werden?</div>
 <div mat-dialog-actions>
   <button color="primary" type="submit" mat-flat-button cdkFocusInitial (click)="closeAndDelete()">Ja</button>
   <button mat-button mat-dialog-close>Nein</button>

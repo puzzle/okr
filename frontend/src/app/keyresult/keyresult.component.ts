@@ -12,10 +12,12 @@ import { Router } from '@angular/router';
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
+
   constructor(
     public dialog: MatDialog,
     private router: Router,
   ) {}
+
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {

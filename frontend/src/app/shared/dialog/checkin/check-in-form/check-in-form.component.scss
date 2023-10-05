@@ -1,0 +1,15 @@
+@import "../style/variables";
+
+.submit {
+  background-color: $pz-dark-blue;
+  border-radius: 8px;
+}
+
+.cancel {
+  background-color: white;
+  color: $pz-dark-blue;
+}
+
+.disabled {
+  background-color: gray;
+}

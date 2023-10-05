@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConfidenceComponent } from './confidence.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { keyResultMetricMin } from '../shared/testData';
+import { checkInMetric } from '../shared/testData';
 import { MatSliderModule } from '@angular/material/slider';
 import { CheckInMin } from '../shared/types/model/CheckInMin';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +24,7 @@ describe('ConfidenceComponent', () => {
     fixture = TestBed.createComponent(ConfidenceComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
-    component.keyResult = keyResultMetricMin;
+    component.checkIn = checkInMetric;
     component.edit = true;
   });
 
@@ -36,9 +36,9 @@ describe('ConfidenceComponent', () => {
     [{ confidence: 8 } as CheckInMin, '8'],
     [null, '5'],
   ])('should set confidence of component with right value', async (checkIn: CheckInMin | null, expected: string) => {
-    component.keyResult.lastCheckIn = checkIn;
+    component.checkIn = checkIn!;
     component.ngOnChanges({
-      keyResult: new SimpleChange(null, component.keyResult, true),
+      checkIn: new SimpleChange(null, component.checkIn, true),
     });
     fixture.detectChanges();
     await fixture.whenStable();

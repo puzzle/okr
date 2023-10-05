@@ -5,8 +5,11 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CheckInFormMetricComponent } from '../shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { NotifierService } from '../shared/services/notifier.service';
+import { CheckInService } from '../shared/services/check-in.service';
+import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -20,10 +23,33 @@ export class KeyresultDetailComponent implements OnChanges {
 
   constructor(
     private keyResultService: KeyresultService,
+    private checkInService: CheckInService,
+    private notifierService: NotifierService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private notifierService: NotifierService,
-  ) {}
+  ) {
+    this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
+      /* Update lastCheckIn if it was changed in history dialog */
+      if (this.keyResult.lastCheckIn?.id === result?.checkIn?.id) {
+        this.keyResult = { ...this.keyResult, lastCheckIn: result.checkIn };
+        this.changeDetectorRef.detectChanges();
+      }
+      /* Update lastCheckIn to null if it was deleted in history dialog */
+      if (result.deleted) {
+        if (result.checkIn?.id == this.keyResult.lastCheckIn?.id) {
+          this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
+            this.keyResult = fullKeyResult;
+            this.changeDetectorRef.markForCheck();
+            if (this.keyResult.lastCheckIn != null) {
+              this.checkInHistory();
+            }
+          });
+        }
+        return;
+      }
+      this.checkInHistory();
+    });
+  }
 
   ngOnChanges() {
     this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
@@ -35,16 +61,18 @@ export class KeyresultDetailComponent implements OnChanges {
   castToMetric(keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
+
   castToOrdinal(keyResult: KeyResult) {
     return keyResult as KeyResultOrdinal;
   }
+
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResultId: this.keyResult.id,
+        keyResult: this.keyResult,
       },
     });
-
     dialogRef.afterClosed().subscribe(() => {});
   }
 
@@ -78,5 +106,22 @@ export class KeyresultDetailComponent implements OnChanges {
         };
         this.changeDetectorRef.markForCheck();
       });
+  }
+
+  openCheckInForm() {
+    const dialogRef = this.dialog.open(CheckInFormComponent, {
+      data: {
+        keyResult: this.keyResult,
+      },
+      width: '719px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result != undefined && result != '') {
+        this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
+          this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
+          this.changeDetectorRef.detectChanges();
+        });
+      }
+    });
   }
 }

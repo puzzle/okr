@@ -13,7 +13,7 @@ import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 
 @Component({
-  selector: 'app-scoring2',
+  selector: 'app-scoring',
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

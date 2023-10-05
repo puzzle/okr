@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -6,4 +7,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./application-top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApplicationTopBarComponent {}
+export class ApplicationTopBarComponent {
+  constructor(private oauthService: OAuthService) {}
+  logOut() {
+    this.oauthService.logOut();
+  }
+}

@@ -23,6 +23,7 @@ import { QuarterService } from '../../services/quarter.service';
 import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
+import mock = jest.mock;
 
 const submitEvent = {
   submitter: {
@@ -33,7 +34,7 @@ const submitEvent = {
   },
 };
 
-const objectiveService = {
+let objectiveService = {
   getFullObjective: jest.fn(),
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
@@ -56,7 +57,7 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-const matDataMock: { objectiveId: number | undefined; teamId: number | undefined } = {
+let matDataMock: { objectiveId: number | undefined; teamId: number | undefined } = {
   objectiveId: undefined,
   teamId: 1,
 };
@@ -89,8 +90,6 @@ describe('ObjectiveDialogComponent', () => {
     });
     fixture = TestBed.createComponent(ObjectiveFormComponent);
     component = fixture.componentInstance;
-    // component.objectiveForm.reset({createKeyResults: false, description: '', title: '', quarter: 0, team: 0});
-    objectiveService.createObjective.mockClear();
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
   });
@@ -200,42 +199,59 @@ describe('ObjectiveDialogComponent', () => {
     expect(dialogMock.close).toHaveBeenCalledWith();
   });
 
-  it.each([
-    [undefined, 'createObjective'],
-    [1, 'updateObjective'],
-  ])('create or update', (id: number | undefined, funcName: string) => {
-    matDataMock.objectiveId = id;
-    objectiveService[funcName as keyof typeof objectiveService].mockReturnValue(of({ ...objective, state: 'DRAFT' }));
+  it('should create objective', () => {
+    matDataMock.objectiveId = undefined;
+    component.objectiveForm.setValue({
+      title: 'Test title',
+      description: 'Test description',
+      quarter: 0,
+      team: 0,
+      relation: 0,
+      createKeyResults: false,
+    });
+
+    submitEvent.submitter.status = 'DRAFT';
+    objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
     component.onSubmit(submitEvent);
 
     fixture.detectChanges();
 
-    expect(objectiveService[funcName as keyof typeof objectiveService]).toHaveBeenCalledWith({
-      description: '',
-      id: id,
-      quarterId: 1,
+    expect(objectiveService.createObjective).toHaveBeenCalledWith({
+      description: 'Test description',
+      id: undefined,
       state: 'DRAFT',
-      teamId: 1,
-      title: '',
+      title: 'Test title',
+      quarterId: 0,
+      teamId: 0,
     });
   });
 
-  // it('should create Objective', () => {
-  //   matDataMock.objectiveId = 1;
-  //   objectiveService.updateObjective.mockReturnValue(of({...objective, state: 'DRAFT'}));
-  //   component.onSubmit(submitEvent);
-  //
-  //   fixture.detectChanges();
-  //
-  //   expect(objectiveService.updateObjective).toHaveBeenCalledWith({
-  //     description: '',
-  //     id: 1,
-  //     quarterId: 1,
-  //     state: 'DRAFT',
-  //     teamId: 1,
-  //     title: '',
-  //   });
-  // });
+  it('should update objective', () => {
+    matDataMock.objectiveId = 1;
+    component.objectiveForm.setValue({
+      title: 'Test title',
+      description: 'Test description',
+      quarter: 1,
+      team: 1,
+      relation: 0,
+      createKeyResults: false,
+    });
+
+    submitEvent.submitter.status = 'DRAFT';
+    objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));
+    component.onSubmit(submitEvent);
+
+    fixture.detectChanges();
+
+    expect(objectiveService.updateObjective).toHaveBeenCalledWith({
+      description: 'Test description',
+      id: 1,
+      state: 'DRAFT',
+      title: 'Test title',
+      quarterId: 1,
+      teamId: 1,
+    });
+  });
 
   function advance(duration = 100) {
     tick(duration);

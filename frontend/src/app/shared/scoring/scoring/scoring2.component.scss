@@ -25,12 +25,14 @@
   height: 21px;
 }
 
+.score-red {
+  background-color: red;
+}
+
 .score-yellow {
   background-color: yellow;
 }
 
-.score-test {
-  background-image: url("http://i.imgur.com/9HMnxKs.png");
-  background-repeat: repeat-y;
-  //background-size: 10% auto;
+.score-green {
+  background-color: green;
 }

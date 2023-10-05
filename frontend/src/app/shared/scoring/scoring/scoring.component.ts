@@ -95,7 +95,7 @@ export class ScoringComponent implements OnInit, AfterViewInit {
     let stretchGoal: number = +castedKeyResult.stretchGoal;
     return baseline < stretchGoal
       ? ((value - baseline) / (stretchGoal - baseline)) * 100
-      : ((value - stretchGoal) / (baseline - stretchGoal)) * 100;
+      : (1 - value / baseline) * 100;
   }
 
   getScoringColorClassAndSetBorder(): string | null {

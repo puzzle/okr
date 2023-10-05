@@ -90,6 +90,23 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
   type: 'keyResult',
 } as KeyResultMetricMin;
 
+export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
+  id: 202,
+  title: 'We want to bake 10 cakes',
+  keyResultType: 'ordinal',
+  commitZone: '5 cakes',
+  targetZone: '10 cakes',
+  stretchGoal: '13 cakes',
+  lastCheckIn: {
+    id: 830,
+    value: 'COMMIT',
+    confidence: 8,
+    createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+    initiatives: 'Initiatives of ordinal',
+    changeInfo: 'Changeinfo ordinal',
+  } as CheckInMin,
+} as KeyResultOrdinalMin;
+
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   id: 202,
   title: 'Reduce Bounce Rate',

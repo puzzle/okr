@@ -1,9 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import { keyResultMetricMinScoring, keyResultMetricMinScoringInversion, keyResultOrdinalMin } from '../../testData';
+import {
+  keyResultMetricMinScoring,
+  keyResultMetricMinScoringInversion,
+  keyResultOrdinalMinScoring,
+} from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
+import { Zone } from '../../types/enums/Zone';
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;
@@ -111,11 +116,33 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultOrdinalMin;
+      component.keyResult = keyResultOrdinalMinScoring;
+      fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it.each([
+      [{ zoneValue: Zone.FAIL, fail: 100, commit: 0, target: 0 }],
+      [{ zoneValue: Zone.COMMIT, fail: 100, commit: 100, target: 0 }],
+      [{ zoneValue: Zone.TARGET, fail: 100, commit: 100, target: 100 }],
+      [{ zoneValue: Zone.STRETCH, fail: 100, commit: 100, target: 101 }],
+    ])('should set percentages correctly', (object: any) => {
+      //Reset component
+      component.targetPercent = 0;
+      component.commitPercent = 0;
+      component.failPercent = 0;
+
+      //Set zone
+      component.keyResult.lastCheckIn!.value! = object.zoneValue;
+      component.calculatePercentageOrdinal();
+
+      //Verify if percentage was set correctly
+      expect(component.failPercent).toBe(object.fail);
+      expect(component.commitPercent).toBe(object.commit);
+      expect(component.targetPercent).toBe(object.target);
     });
   });
 });

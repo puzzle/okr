@@ -5,8 +5,8 @@ import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import {NotifierService} from "../shared/services/notifier.service";
-import {KeyResultDialogComponent} from "../key-result-dialog/key-result-dialog.component";
+import { NotifierService } from '../shared/services/notifier.service';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 
 @Component({
   selector: 'app-objective-column',
@@ -25,29 +25,29 @@ export class ObjectiveComponent implements AfterViewInit {
     private matDialog: MatDialog,
     private router: Router,
   ) {
-      this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-          const keyResults = this.objective.keyResults;
-          if (keyResultChange.delete) {
-              const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
-              keyResults.splice(existingKRIndex, 1);
-              this.objective = { ...this.objective, keyResults: keyResults };
-          } else {
-              if (keyResultChange.objective.id != this.objective.id) {
-                  return;
-              }
-              const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
-              if (existingKRIndex !== -1) {
-                  keyResults[existingKRIndex] = {
-                      ...keyResults[existingKRIndex],
-                      id: keyResultChange.keyResult.id,
-                      title: keyResultChange.keyResult.title,
-                  };
-              } else {
-                  keyResults.push(keyResultChange.keyResult);
-              }
-              this.objective = { ...this.objective, keyResults: keyResults };
-          }
-      });
+    this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
+      const keyResults = this.objective.keyResults;
+      if (keyResultChange.delete) {
+        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
+        keyResults.splice(existingKRIndex, 1);
+        this.objective = { ...this.objective, keyResults: keyResults };
+      } else {
+        if (keyResultChange.objective.id != this.objective.id) {
+          return;
+        }
+        const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
+        if (existingKRIndex !== -1) {
+          keyResults[existingKRIndex] = {
+            ...keyResults[existingKRIndex],
+            id: keyResultChange.keyResult.id,
+            title: keyResultChange.keyResult.title,
+          };
+        } else {
+          keyResults.push(keyResultChange.keyResult);
+        }
+        this.objective = { ...this.objective, keyResults: keyResults };
+      }
+    });
   }
 
   ngAfterViewInit(): void {

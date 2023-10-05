@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { NotifierService } from '../shared/services/notifier.service';
 import { BehaviorSubject } from 'rxjs';
+import { ObjectiveService } from '../shared/services/objective.service';
+import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-team',
@@ -15,6 +17,7 @@ export class TeamComponent {
   constructor(
     private dialog: MatDialog,
     private notifierService: NotifierService,
+    private changeDetectionRef: ChangeDetectorRef,
   ) {
     this.notifierService.objectivesChanges.subscribe((objectiveChange) => {
       if (objectiveChange.teamId !== this.overviewEntity.value.team.id) {
@@ -42,8 +45,8 @@ export class TeamComponent {
       this.overviewEntity = { ...this.overviewEntity.value, objectives };
 
       if (objectiveChange.addKeyResult) {
-        //TODO Open Keyresult dialog
-        console.log('Open new keyResult dialog');
+        this.changeDetectionRef.detectChanges();
+        this.notifierService.openKeyresultCreation.next(objectiveChange.objective);
       }
     });
   }

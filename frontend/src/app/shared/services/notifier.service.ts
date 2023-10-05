@@ -30,4 +30,6 @@ export class NotifierService {
       delete: boolean;
       addKeyResult: boolean;
     }>();
+
+  openKeyresultCreation: Subject<ObjectiveMin> = new Subject<ObjectiveMin>();
 }

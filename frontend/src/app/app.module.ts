@@ -61,7 +61,7 @@ import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-v
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
     const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer, scope: config.scope });
+    oauthService.configure({ ...environment.oauth, issuer: config.issuer, clientId: config.clientId });
   };
 }
 

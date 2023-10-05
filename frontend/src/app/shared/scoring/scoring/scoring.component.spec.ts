@@ -43,9 +43,9 @@ describe('ScoringComponent', () => {
     it('should set all width to 0 when no lastCheckIn', function () {
       component.keyResult = createKeyResult(10, 20, null);
       fixture.detectChanges();
-      expect(component.failWidth).toEqual('0');
-      expect(component.commitWidth).toEqual('0');
-      expect(component.targetWidth).toEqual('0');
+      expect(component.failPercent).toEqual('0');
+      expect(component.commitPercent).toEqual('0');
+      expect(component.targetPercent).toEqual('0');
     });
   });
 

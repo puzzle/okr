@@ -40,7 +40,6 @@ import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.co
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
-import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
@@ -57,7 +56,7 @@ import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-d
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
 import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
-import { Scoring2Component } from './shared/scoring/scoring/scoring2.component';
+import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -98,7 +97,6 @@ export const MY_FORMATS = {
     ConfidenceComponent,
     CheckInHistoryDialogComponent,
     ScoringComponent,
-    Scoring2Component,
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
     DrawerContentComponent,

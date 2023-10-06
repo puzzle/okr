@@ -3,16 +3,13 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -53,15 +50,12 @@ class UserControllerIT {
     @MockBean
     private UserBusinessService userBusinessService;
     @MockBean
-    private RegisterNewUserService registerNewUserService;
-    @MockBean
     private UserMapper userMapper;
 
     @BeforeEach
     void setUp() {
         BDDMockito.given(userMapper.toDto(userAlice)).willReturn(userAliceDto);
         BDDMockito.given(userMapper.toDto(userBob)).willReturn(userBobDto);
-        Mockito.doNothing().when(registerNewUserService).registerNewUser(ArgumentMatchers.any());
     }
 
     @Test

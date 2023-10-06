@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.RegisterNewUserService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,7 +23,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -46,14 +43,11 @@ class TeamControllerIT {
     private TeamBusinessService teamBusinessService;
     @MockBean
     private TeamMapper teamMapper;
-    @MockBean
-    private RegisterNewUserService registerNewUserService;
 
     @BeforeEach
     void setUp() {
         BDDMockito.given(teamMapper.toDto(teamPuzzle, 1L)).willReturn(teamPuzzleDto);
         BDDMockito.given(teamMapper.toDto(teamOKR, 1L)).willReturn(teamOkrDto);
-        Mockito.doNothing().when(registerNewUserService).registerNewUser(any());
     }
 
     @Test

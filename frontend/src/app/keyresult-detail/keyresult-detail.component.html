@@ -49,15 +49,15 @@
     </ng-container>
 
     <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
-      <div class="ordinal-scoring-boxes h-auto">
+      <div class="ordinal-scoring-boxes h-auto mb-4">
         <p class="mb-2">Commit</p>
         <div class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).commitZone || "Keine" }}</div>
       </div>
-      <div class="ordinal-scoring-boxes h-auto">
+      <div class="ordinal-scoring-boxes h-auto mb-4">
         <p class="mb-2">Target</p>
         <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
       </div>
-      <div class="ordinal-scoring-boxes h-auto">
+      <div class="ordinal-scoring-boxes h-auto mb-4">
         <p class="mb-2">Stretch</p>
         <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
       </div>

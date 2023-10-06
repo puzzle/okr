@@ -7,6 +7,7 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { MatDialog } from '@angular/material/dialog';
 import { NotifierService } from '../shared/services/notifier.service';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-objective-column',
@@ -15,9 +16,16 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent implements AfterViewInit {
-  @Input() objective!: ObjectiveMin;
+  @Input()
+  get objective(): BehaviorSubject<ObjectiveMin> {
+    return this._objective;
+  }
+  set objective(objective: ObjectiveMin) {
+    this._objective.next(objective);
+  }
+  private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
+  @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [];
-
   constructor(
     private dialog: MatDialog,
     private routeService: RouteService,
@@ -26,13 +34,16 @@ export class ObjectiveComponent implements AfterViewInit {
     private router: Router,
   ) {
     this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-      const keyResults = this.objective.keyResults ? this.objective.keyResults : [];
+      const keyResults = this.objective.value.keyResults;
+      if (!keyResults) {
+        return;
+      }
       if (keyResultChange.delete) {
         const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
         keyResults.splice(existingKRIndex, 1);
-        this.objective = { ...this.objective, keyResults: keyResults };
+        this.objective = { ...this.objective.value, keyResults: keyResults };
       } else {
-        if (keyResultChange.objective.id != this.objective.id) {
+        if (keyResultChange.objective.id != this.objective.value.id) {
           return;
         }
         const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.changeId);
@@ -45,12 +56,12 @@ export class ObjectiveComponent implements AfterViewInit {
         } else {
           keyResults.push(keyResultChange.keyResult);
         }
-        this.objective = { ...this.objective, keyResults: keyResults };
+        this.objective = { ...this.objective.value, keyResults: keyResults };
       }
     });
 
     this.notifierService.openKeyresultCreation.subscribe((objective) => {
-      if (objective.id === this.objective.id) {
+      if (objective.id === this.objective.value.id) {
         this.objective = objective;
         this.openAddKeyResultDialog();
       }
@@ -61,7 +72,7 @@ export class ObjectiveComponent implements AfterViewInit {
     this.menuEntries = [
       {
         displayName: 'Objective bearbeiten',
-        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.id } },
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
       },
       { displayName: 'Objective duplizieren' },
       { displayName: 'Objective abschliessen' },
@@ -94,7 +105,7 @@ export class ObjectiveComponent implements AfterViewInit {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective.id]);
+    this.router.navigate(['objective', this.objective.value.id]);
   }
 
   openAddKeyResultDialog() {
@@ -103,7 +114,7 @@ export class ObjectiveComponent implements AfterViewInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective,
+          objective: this.objective.value,
           keyResult: null,
         },
       })

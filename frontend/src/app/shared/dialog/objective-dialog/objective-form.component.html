@@ -46,26 +46,9 @@
         </mat-form-field>
       </div>
 
-      <div class="d-flex flex-column gap-2 col-6">
-        <label class="text-black" for="relation">Bezug (optional)</label>
-        <mat-form-field>
-          <mat-select formControlName="relation" id="relation">
-            <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
-              {{ team.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <div class="d-flex flex-column gap-2 col-6">
-        <label class="text-black" for="quarter">Team</label>
-        <mat-form-field>
-          <mat-select formControlName="team" id="team">
-            <mat-option *ngFor="let team of teams$ | async" [value]="team.id">
-              {{ team.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <div class="d-flex flex-column justify-content-center gap-2 col-6">
+        <label class="text-black" for="team">Team</label>
+        <span id="team">{{ this.currentTeam.name }}</span>
       </div>
 
       <mat-checkbox

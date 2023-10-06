@@ -79,7 +79,10 @@ export class ObjectiveComponent implements AfterViewInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
-      const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, { data: menuEntry.dialog.data });
+      const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
+        data: menuEntry.dialog.data,
+        width: '719px',
+      });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result?.objective) {
           this.notifierService.objectivesChanges.next({

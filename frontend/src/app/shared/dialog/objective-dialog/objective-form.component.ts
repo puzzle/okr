@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
@@ -16,6 +16,7 @@ import errorMessages from '../../../../assets/errors/error-messages.json';
   selector: 'app-objective-form',
   templateUrl: './objective-form.component.html',
   styleUrls: ['./objective-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFormComponent implements OnInit {
   objectiveForm = new FormGroup({
@@ -28,6 +29,7 @@ export class ObjectiveFormComponent implements OnInit {
   });
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
+  currentTeam: Team = {} as Team;
   protected readonly errorMessages: any = errorMessages;
 
   constructor(
@@ -72,6 +74,9 @@ export class ObjectiveFormComponent implements OnInit {
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       const teamId = this.data.objectiveId ? objective.teamId : this.data.teamId;
+      this.teams$.subscribe((value) => {
+        this.currentTeam = value.filter((team) => team.id == teamId)[0];
+      });
       const quarterId = this.data.objectiveId ? objective.quarterId : quarters[0].id;
       this.objectiveForm.patchValue({
         title: objective.title,

@@ -18,17 +18,14 @@
         [src]="'../../assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
-      <button
-        mat-icon-button
+      <img
+        alt="objective options"
         data-testid="objective-menu"
         (click)="$event.stopPropagation()"
         class="col-1 icon three-dot-menu"
         src="assets/icons/threedot.svg"
         [matMenuTriggerFor]="objectiveMenu"
-        [disableRipple]="true"
-      >
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="more_vert" color="primary"></mat-icon>
-      </button>
+      />
     </section>
     <section class="d-flex gap-3 pe-0 row">
       <app-keyresult

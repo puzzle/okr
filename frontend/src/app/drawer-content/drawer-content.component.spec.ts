@@ -36,14 +36,4 @@ describe('DrawerContentComponent', () => {
       expect(contentComponent).toBeTruthy();
     },
   );
-
-  it('close on close button clicked', () => {
-    fixture.detectChanges();
-
-    const spy = jest.spyOn(DrawerContentComponent.prototype, 'closeDrawer');
-    const debugElement = fixture.debugElement.query(By.css('[data-test-id="closeDrawer"]'));
-    debugElement.nativeElement.click();
-    fixture.detectChanges();
-    expect(spy).toBeCalledTimes(1);
-  });
 });

@@ -23,8 +23,6 @@ import { QuarterService } from '../../services/quarter.service';
 import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
-import { ObjectiveComponent } from '../../../objective/objective.component';
-import { By } from '@angular/platform-browser';
 
 const submitEvent = {
   submitter: {
@@ -258,19 +256,9 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('should load default values into form onInit with defined objectiveId', () => {
-    matDataMock.objectiveId = 1;
-    objectiveService.getFullObjective.mockReturnValue(of(objective));
-    component.ngOnInit();
-    const rawFormValue = component.objectiveForm.getRawValue();
-    expect(rawFormValue.title).toBe(objective.title);
-    expect(rawFormValue.description).toBe(objective.description);
-    expect(rawFormValue.team).toBe(objective.teamId);
-    expect(rawFormValue.quarter).toBe(objective.quarterId);
-  });
-
   it('should load default values into form onInit with undefined objectiveId', () => {
     matDataMock.objectiveId = undefined;
+    matDataMock.teamId = 1;
     component.ngOnInit();
     const rawFormValue = component.objectiveForm.getRawValue();
     const defaultComponent = component.getDefaultObjective();
@@ -280,6 +268,17 @@ describe('ObjectiveDialogComponent', () => {
     quarterService.getAllQuarters().subscribe((quarters) => {
       expect(rawFormValue.quarter).toBe([quarters[0].id]);
     });
+  });
+
+  it('should load default values into form onInit with defined objectiveId', () => {
+    matDataMock.objectiveId = 1;
+    objectiveService.getFullObjective.mockReturnValue(of(objective));
+    component.ngOnInit();
+    const rawFormValue = component.objectiveForm.getRawValue();
+    expect(rawFormValue.title).toBe(objective.title);
+    expect(rawFormValue.description).toBe(objective.description);
+    expect(rawFormValue.team).toBe(objective.teamId);
+    expect(rawFormValue.quarter).toBe(objective.quarterId);
   });
 
   function advance(duration = 100) {

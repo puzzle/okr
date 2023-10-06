@@ -41,13 +41,4 @@ public class ObjectiveValidationService extends ValidationBase<Objective, Long> 
         doesEntityExist(id);
         validate(model);
     }
-
-    @Override
-    public void validateOnDelete(Long id) {
-        throwExceptionWhenIdIsNull(id);
-        doesEntityExist(id);
-        if (checkInBusinessService.getCheckInAmountByObjectiveId(id) != 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Objective already has check-ins");
-        }
-    }
 }

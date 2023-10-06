@@ -9,6 +9,7 @@ import { ObjectiveMin } from '../types/model/ObjectiveMin';
   providedIn: 'root',
 })
 export class NotifierService {
+  reloadOverview: Subject<any> = new Subject<any>();
   closeDetailSubject: Subject<void> = new Subject();
   reopenCheckInHistoryDialog: Subject<{ checkIn: CheckIn | null; deleted: boolean }> = new Subject<{
     checkIn: CheckIn | null;

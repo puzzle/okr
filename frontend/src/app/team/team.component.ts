@@ -4,8 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { NotifierService } from '../shared/services/notifier.service';
 import { BehaviorSubject } from 'rxjs';
-import { ObjectiveService } from '../shared/services/objective.service';
-import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-team',
@@ -29,7 +27,7 @@ export class TeamComponent {
 
       if (existingObjIndex === -1 && !objectiveChange.delete) {
         // Add
-        objectives.push(objectiveChange.objective);
+        this.notifierService.reloadOverview.next(null);
       } else if (existingObjIndex !== -1 && objectiveChange.delete) {
         // Delete
         objectives.splice(existingObjIndex, 1);

@@ -27,6 +27,9 @@ export class ObjectiveComponent implements AfterViewInit {
   ) {
     this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
       const keyResults = this.objective.keyResults;
+      if (!keyResults) {
+        return;
+      }
       if (keyResultChange.delete) {
         const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
         keyResults.splice(existingKRIndex, 1);

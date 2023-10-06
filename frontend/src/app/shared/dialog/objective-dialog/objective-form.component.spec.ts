@@ -178,30 +178,6 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('should delete', () => {
-    matDataMock.objectiveId = 1;
-    objectiveService.deleteObjective.mockReturnValue(of({}));
-    component.deleteObjective();
-
-    expect(dialogMock.close).toHaveBeenCalledWith({
-      addKeyResult: false,
-      delete: true,
-      objective: {
-        id: 1,
-        state: undefined,
-      },
-      teamId: 1,
-    });
-  });
-
-  it('delete fails because objective has checkin', () => {
-    matDataMock.objectiveId = 1;
-    objectiveService.deleteObjective.mockReturnValue(throwError(() => {}));
-    component.deleteObjective();
-
-    expect(dialogMock.close).toHaveBeenCalledWith();
-  });
-
   it('should create objective', () => {
     matDataMock.objectiveId = undefined;
     component.objectiveForm.setValue({

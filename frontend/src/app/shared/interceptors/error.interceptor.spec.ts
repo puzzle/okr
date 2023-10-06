@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ErrorInterceptor } from './error-interceptor.service';
 import { ToasterService } from '../services/toaster.service';
 
-describe('DrawerInterceptor', () => {
+describe('ErrorInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       providers: [

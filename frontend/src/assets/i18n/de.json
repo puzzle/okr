@@ -9,8 +9,9 @@
   },
   "UNIT": {
     "PERCENT": "%",
-    "CHF": "CHF",
-    "NUMBER": "Zahl"
+    "CHF": " CHF",
+    "FTE": " FTE",
+    "NUMBER": " Zahl"
   },
   "KEY_RESULT_DESCRIPTION": {
     "BASIC_VALUE": "Startwert",

@@ -24,7 +24,7 @@ describe('UnitLabelTransformationPipe', () => {
 
   it('Format Number label', () => {
     const pipe = new UnitLabelTransformationPipe();
-    expect(pipe.transform(Unit.NUMBER)).toBe('Zahl');
+    expect(pipe.transform(Unit.NUMBER)).toBe(' Zahl');
   });
 
   it('Format non-default label', () => {

@@ -6,11 +6,12 @@ import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
 import { forkJoin, Observable, of } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
 import errorMessages from '../../../../assets/errors/error-messages.json';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-objective-form',
@@ -37,6 +38,7 @@ export class ObjectiveFormComponent implements OnInit {
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
     public dialogRef: MatDialogRef<ObjectiveFormComponent>,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       objectiveId?: number;
@@ -88,14 +90,23 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   deleteObjective() {
-    this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe({
-      next: () => {
-        let objectiveDTO: Objective = { id: this.data.objectiveId! } as unknown as Objective;
-        this.closeDialog(objectiveDTO, true);
+    const dialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Objective',
       },
-      error: () => {
-        this.dialogRef.close();
-      },
+    });
+    dialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe({
+          next: () => {
+            let objectiveDTO: Objective = { id: this.data.objectiveId! } as unknown as Objective;
+            this.closeDialog(objectiveDTO, true);
+          },
+          error: () => {
+            this.dialogRef.close();
+          },
+        });
+      }
     });
   }
 

@@ -1,8 +1,11 @@
 <div class="d-flex flex-column" cdkTrapFocus="true" *ngIf="keyResult">
   <div class="d-flex justify-content-between">
     <h1 class="mb-2 title">{{ keyResult.title }}</h1>
+    <mat-icon (click)="closeDrawer()" data-test-id="closeDrawer" class="pointer-cursor justify-content-start me-1"
+      >close</mat-icon
+    >
   </div>
-  <div class="keyresult-header d-flex justify-content-between mb-3">
+  <div class="d-flex justify-content-between mb-3">
     <div>
       {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
     </div>
@@ -16,8 +19,8 @@
     </div>
   </div>
   <div class="d-flex w-100 flex-row mb-4">
-    <app-scoring class="scoring-detail" [keyResult]="keyResult"></app-scoring>
-    <div class="d-flex flex-column mt-2 confidence-container align-items-end">
+    <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
+    <div class="d-flex flex-column mt-1 confidence-container align-items-end">
       <p class="text-small">Confidence</p>
       <app-confidence
         *ngIf="keyResult.lastCheckIn"
@@ -27,52 +30,59 @@
       ></app-confidence>
     </div>
   </div>
-  <div class="d-flex gap-4 mb-5 flex-row jus">
+  <div class="d-flex gap-4 mb-4 flex-row">
     <ng-container *ngIf="keyResult.keyResultType == 'metric'">
-      <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ castToMetric(keyResult).unit }}</p>
-      <p *ngIf="castToMetric(keyResult).baseline != null" class="keyResult-detail-attribute-show rounded-3 p-1">
-        Baseline: {{ castToMetric(keyResult).baseline }}
+      <p class="keyResult-detail-attribute-show rounded-3 p-1 sub-title-keyresult">
+        Einheit: {{ "UNIT." + castToMetric(keyResult).unit | translate }}
       </p>
-      <p class="keyResult-detail-attribute-show rounded-3 p-1">
-        Stretch Goal: {{ castToMetric(keyResult).stretchGoal }}
+      <p
+        *ngIf="castToMetric(keyResult).baseline != null"
+        class="keyResult-detail-attribute-show rounded-3 p-1 sub-title-keyresult"
+      >
+        Baseline: {{ castToMetric(keyResult).baseline
+        }}{{ "UNIT." + castToMetric(keyResult).unit.toString() | translate }}
+      </p>
+      <p class="keyResult-detail-attribute-show rounded-3 p-1 sub-title-keyresult">
+        Stretch Goal: {{ castToMetric(keyResult).stretchGoal
+        }}{{ "UNIT." + castToMetric(keyResult).unit.toString() | translate }}
       </p>
     </ng-container>
 
     <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
-      <div class="col-4 h-auto">
-        <p class="ordinal-zone-title">Commit</p>
+      <div class="ordinal-scoring-boxes h-auto">
+        <p class="mb-2">Commit</p>
         <div class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).commitZone || "Keine" }}</div>
       </div>
-      <div class="col-4 h-auto">
-        <p class="ordinal-zone-title">Target</p>
+      <div class="ordinal-scoring-boxes h-auto">
+        <p class="mb-2">Target</p>
         <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
       </div>
-      <div class="col-4 h-auto">
-        <p class="ordinal-zone-title">Stretch</p>
+      <div class="ordinal-scoring-boxes h-auto">
+        <p class="mb-2">Stretch</p>
         <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
       </div>
     </ng-container>
   </div>
   <div *ngIf="keyResult.lastCheckIn?.modifiedOn" class="mb-3">
-    <h2 class="sub-title-keyresult fw-bold mb-2">
+    <h2 class="detail-view-subtitle fw-bold mb-2">
       Letztes Check-in ({{ keyResult.lastCheckIn?.modifiedOn | date: "dd.MM.yyy" }})
     </h2>
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
   </div>
   <div *ngIf="!keyResult.lastCheckIn?.modifiedOn && keyResult.lastCheckIn?.createdOn" class="mb-3">
-    <h2 class="sub-title-keyresult fw-bold mb-2">
+    <h2 class="detail-view-subtitle fw-bold mb-2">
       Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})
     </h2>
     <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
   </div>
-  <span class="d-flex justify-content-start mb-3">
-    <button *ngIf="keyResult.lastCheckIn" class="add-button" mat-button (click)="checkInHistory()">
+  <span class="mb-3">
+    <span *ngIf="keyResult.lastCheckIn" class="add-button pointer-cursor" (click)="checkInHistory()">
       Alle Check-ins anzeigen
-    </button>
+    </span>
   </span>
 
   <div class="mb-3">
-    <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
+    <h2 class="detail-view-subtitle fw-bold">Beschrieb</h2>
     <p>{{ keyResult.description }}</p>
   </div>
   <div class="d-flex align-items-center flex-row-reverse justify-content-end gap-3">

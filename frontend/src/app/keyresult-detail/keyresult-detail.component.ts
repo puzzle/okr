@@ -123,4 +123,8 @@ export class KeyresultDetailComponent implements OnChanges {
       }
     });
   }
+
+  closeDrawer() {
+    this.notifierService.closeDetailSubject.next();
+  }
 }

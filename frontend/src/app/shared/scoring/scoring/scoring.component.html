@@ -1,34 +1,42 @@
-<div class="scoring-container d-flex flex-row">
-  <div class="flex-fill">
-    <div>
-      <span class="okr-score-lable">
-        <span class="text-center sub-title">Fail</span>
-      </span>
-      <span class="okr-score-lable okr-score-commit">
-        <span class="text-center sub-title">Commit</span>
-      </span>
-      <span class="okr-score-lable">
-        <span class="text-center sub-title">Target</span>
+<div class="d-flex flex-column">
+  <div class="scoring-container d-flex flex-row">
+    <div class="flex-fill">
+      <div>
+        <span class="okr-score-lable">
+          <span class="text-center text-small">Fail</span>
+        </span>
+        <span class="okr-score-lable okr-score-commit">
+          <span class="text-center text-small">Commit</span>
+        </span>
+        <span class="okr-score-lable">
+          <span class="text-center text-small">Target</span>
+        </span>
+      </div>
+
+      <div>
+        <span class="okr-score">
+          <span class="child" #fail [attr.data-testId]="'fail'"></span>
+        </span>
+        <span class="okr-score okr-score-commit">
+          <span class="child" #commit [attr.data-testId]="'commit'"></span>
+        </span>
+        <span class="okr-score">
+          <span class="child" #target [attr.data-testId]="'target'"></span>
+        </span>
+      </div>
+      <span
+        *ngIf="keyResult.keyResultType == 'metric' && isDetail && keyResult.lastCheckIn"
+        #valueLabel
+        class="value-label detail-view-subtitle fw-bold"
+        id="valueLabel"
+      >
+        {{ keyResult.lastCheckIn!.value }}{{ "UNIT." + castToMetric().unit | translate }}
       </span>
     </div>
 
-    <div>
-      <span class="okr-score">
-        <span class="child" #fail [attr.data-testId]="'fail'"></span>
-      </span>
-      <span class="okr-score okr-score-commit">
-        <span class="child" #commit [attr.data-testId]="'commit'"></span>
-      </span>
-      <span class="okr-score">
-        <span class="child" #target [attr.data-testId]="'target'"></span>
-      </span>
+    <div class="okr-stretch d-flex flex-column align-items-center mt-1">
+      <span class="text-center text-small">Stretch</span>
+      <img [src]="'../../../../assets/icons/star-' + iconPath + '-icon.svg'" alt="Star-Icon" class="starIcon" />
     </div>
-  </div>
-
-  <div class="okr-stretch">
-    <div class="okr-score-lable">
-      <span class="text-center sub-title">Stretch</span>
-    </div>
-    <img [src]="'../../../../assets/icons/star-' + iconPath + '-icon.svg'" alt="Star-Icon" class="starIcon" />
   </div>
 </div>

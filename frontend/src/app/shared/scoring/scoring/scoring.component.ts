@@ -13,6 +13,7 @@ import {
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-scoring',
@@ -22,10 +23,12 @@ import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 })
 export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() keyResult!: KeyresultMin;
+  @Input() isDetail!: boolean;
   iconPath: string = 'empty';
   failPercent: number = 0;
   commitPercent: number = 0;
   targetPercent: number = 0;
+  labelPercentage: Observable<number>;
 
   @ViewChild('fail')
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
@@ -33,8 +36,12 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   private commitElement: ElementRef<HTMLSpanElement> | undefined = undefined;
   @ViewChild('target')
   private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
+  @ViewChild('valueLabel')
+  private valueLabel: ElementRef<HTMLSpanElement> | undefined = undefined;
 
-  constructor(private changeDetectionRef: ChangeDetectorRef) {}
+  constructor(private changeDetectionRef: ChangeDetectorRef) {
+    this.labelPercentage = new Observable<number>();
+  }
 
   ngOnInit() {
     if (this.keyResult.keyResultType === 'metric') {
@@ -68,7 +75,8 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
-      let percentage: number = this.calculateCurrentPercentage();
+      let percentage = this.calculateCurrentPercentage();
+      this.labelPercentage = of(percentage);
       switch (true) {
         case percentage >= 100:
           this.failPercent = 100;
@@ -91,7 +99,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculateCurrentPercentage(): number {
-    let castedKeyResult: KeyResultMetricMin = this.keyResult as KeyResultMetricMin;
+    let castedKeyResult: KeyResultMetricMin = this.castToMetric();
     let value: number = +castedKeyResult.lastCheckIn?.value!;
     let baseline: number = +castedKeyResult.baseline;
     let stretchGoal: number = +castedKeyResult.stretchGoal;
@@ -121,6 +129,14 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     this.failElement!.nativeElement.style.width = this.failPercent + '%';
     this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
     this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
+
+    if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
+      // this.labelPercentage.pipe(map((value) => this.valueLabel!.nativeElement.style.width! = value + '%'));
+      this.labelPercentage.subscribe((value) => {
+        this.valueLabel!.nativeElement.style.width = value + '%';
+        this.changeDetectionRef.detectChanges();
+      });
+    }
 
     // Set color of scoring component
     let scoringClass = this.getScoringColorClassAndSetBorder();
@@ -162,5 +178,9 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       this.targetElement?.nativeElement.classList.remove(classToRemove);
       this.failElement?.nativeElement.classList.remove(classToRemove);
     }
+  }
+
+  castToMetric(): KeyResultMetricMin {
+    return this.keyResult as KeyResultMetricMin;
   }
 }

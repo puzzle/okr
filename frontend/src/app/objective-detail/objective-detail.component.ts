@@ -53,4 +53,7 @@ export class ObjectiveDetailComponent implements OnChanges {
         }
       });
   }
+  closeDrawer() {
+    this.notifierService.closeDetailSubject.next();
+  }
 }

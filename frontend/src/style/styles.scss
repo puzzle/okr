@@ -34,12 +34,16 @@ body {
 .title {
   font-size: 1.25rem;
   font-weight: bold;
-  word-wrap: break-word;
+  word-wrap: anywhere;
   color: black;
 }
 
 .sub-title {
-  font-size: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.detail-view-subtitle {
+  font-size: 1rem;
 }
 
 .anchor {
@@ -80,6 +84,10 @@ body {
   cursor: default;
 }
 
+.pointer-cursor {
+  cursor: pointer;
+}
+
 .bg-grey {
   background-color: $overview-bg;
 }
@@ -89,7 +97,7 @@ body pzsh-backdrop {
 }
 
 .text-small {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .dialog {

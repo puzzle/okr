@@ -13,7 +13,7 @@ import {
 import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
-import { map, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-scoring',
@@ -131,7 +131,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
 
     if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
-      // this.labelPercentage.pipe(map((value) => this.valueLabel!.nativeElement.style.width! = value + '%'));
       this.labelPercentage.subscribe((value) => {
         this.valueLabel!.nativeElement.style.width = value + '%';
         this.changeDetectionRef.detectChanges();

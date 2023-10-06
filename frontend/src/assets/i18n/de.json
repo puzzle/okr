@@ -9,8 +9,8 @@
   },
   "UNIT": {
     "PERCENT": "%",
-    "CHF": "CHF",
-    "NUMBER": "Zahl"
+    "CHF": " CHF",
+    "NUMBER": " Zahl"
   },
   "KEY_RESULT_DESCRIPTION": {
     "BASIC_VALUE": "Startwert",

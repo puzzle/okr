@@ -9,10 +9,4 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class DrawerContentComponent {
   @Input() drawerContent!: { id: number; type: string };
-
-  constructor(private notifierService: NotifierService) {}
-
-  closeDrawer() {
-    this.notifierService.closeDetailSubject.next();
-  }
 }

@@ -9,22 +9,22 @@
   <div class="row mx-1">
     <section class="d-flex justify-content-between mb-3">
       <img
+        alt="The objectives state"
         (click)="$event.stopPropagation()"
-        matTooltip="The objective's state is {{ objective.value.state.split('-')[0] | uppercase }}"
+        matTooltip="The objectives state is {{ objective.value.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         data-testid="objective-state"
         class="icon col-1 default-cursor"
-        alt="The objective's state"
         [src]="'../../assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
       <img
+        alt="A three-dot-menu button"
         data-testid="objective-menu"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation()"
         class="col-1 icon three-dot-menu"
         src="assets/icons/threedot.svg"
-        alt="A three-dot-menu button"
       />
     </section>
     <section class="d-flex gap-3 pe-0 row">

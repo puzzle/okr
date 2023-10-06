@@ -1,12 +1,9 @@
 @import "_variables";
 
-.keyresult-header {
-  font-size: 0.75rem;
-}
-
 .keyResult-detail-attribute-show {
   background-color: $keyResult-detail-attribute-bg;
   height: 100%;
+  font-size: 0.85rem;
 }
 
 .sub-title-keyresult {
@@ -15,4 +12,16 @@
 
 .ordinal-zone-title {
   font-size: 1.25rem;
+}
+
+.scoring-detail {
+  width: 82%;
+}
+
+.confidence-container {
+  width: 18%;
+}
+
+.ordinal-scoring-boxes {
+  width: 31%;
 }

@@ -1,26 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import { keyResultMetricMin, keyResultOrdinalMin } from '../../testData';
+import {
+  keyResultMetricMinScoring,
+  keyResultMetricMinScoringInversion,
+  keyResultOrdinalMinScoring,
+} from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
-import { CheckInMin } from '../../types/model/CheckInMin';
-
-class ResizeObserverMock {
-  observe() {}
-
-  unobserve() {}
-
-  disconnect() {}
-}
+import { By } from '@angular/platform-browser';
+import { Zone } from '../../types/enums/Zone';
 
 describe('ScoringComponent', () => {
-  //@ts-ignore
-  global.ResizeObserver = ResizeObserverMock;
   let component: ScoringComponent;
   let fixture: ComponentFixture<ScoringComponent>;
 
-  describe('Color and width calculation metric', () => {
+  describe('Basic function tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ScoringComponent],
@@ -36,20 +30,44 @@ describe('ScoringComponent', () => {
       }).compileComponents();
 
       fixture = TestBed.createComponent(ScoringComponent);
-      component = fixture.debugElement.componentInstance;
-      component.keyResult = keyResultMetricMin;
-    });
-
-    it('should set all width to 0 when no lastCheckIn', function () {
-      component.keyResult = createKeyResult(10, 20, null);
+      component = fixture.componentInstance;
+      component.keyResult = keyResultMetricMinScoring;
       fixture.detectChanges();
-      expect(component.failWidth).toEqual('0');
-      expect(component.commitWidth).toEqual('0');
-      expect(component.targetWidth).toEqual('0');
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should fill out star if target percentage is over 100', () => {
+      component.targetPercent = 101;
+      component.ngAfterViewInit();
+      expect(component.iconPath).toBe('filled');
+    });
+
+    it.each([
+      [{ fail: 0, commit: 0, target: 0, className: null, borderClass: 'none' }],
+      [{ fail: 100, commit: 0, target: 0, className: 'score-red', borderClass: 'fail' }],
+      [{ fail: 100, commit: 100, target: 0, className: 'score-yellow', borderClass: 'commit' }],
+      [{ fail: 100, commit: 100, target: 100, className: 'score-green', borderClass: 'target' }],
+      [{ fail: 100, commit: 100, target: 101, className: 'score-stretch', borderClass: 'none' }],
+    ])('should set styles correctly', async (object: any) => {
+      component.targetPercent = object.target;
+      component.commitPercent = object.commit;
+      component.failPercent = object.fail;
+
+      let color: string | null = component.getScoringColorClassAndSetBorder();
+      expect(color).toBe(object.className);
+
+      if (object.borderClass !== 'none') {
+        expect(
+          fixture.debugElement.query(By.css('[data-testId="' + object.borderClass + '"]')).nativeElement.classList,
+        ).toContain('border-right');
+      }
     });
   });
 
-  describe('Overview metric', () => {
+  describe('KeyResult metric', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ScoringComponent],
@@ -66,15 +84,28 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultMetricMin;
+      component.keyResult = keyResultMetricMinScoring;
+      fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
     });
+
+    it('should calculate progress correctly', async () => {
+      component.keyResult = keyResultMetricMinScoring;
+      let percentage = component.calculateCurrentPercentage();
+      expect(percentage).toBe(50);
+    });
+
+    it('should calculate progress correctly if key result is inversive', async () => {
+      component.keyResult = keyResultMetricMinScoringInversion;
+      let percentage = component.calculateCurrentPercentage();
+      expect(percentage).toBe(75);
+    });
   });
 
-  describe('Color and width calculation ordinal', () => {
+  describe('KeyResult ordinal', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [ScoringComponent],
@@ -91,49 +122,33 @@ describe('ScoringComponent', () => {
 
       fixture = TestBed.createComponent(ScoringComponent);
       component = fixture.componentInstance;
-      component.keyResult = keyResultOrdinalMin;
+      component.keyResult = keyResultOrdinalMinScoring;
+      fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-  });
 
-  describe('KeyResultDetail', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [ScoringComponent],
-        providers: [
-          {
-            provide: Router,
-            useValue: {
-              url: '/okr/keyresult/3',
-            },
-          },
-        ],
-        imports: [HttpClientTestingModule],
-      }).compileComponents();
+    it.each([
+      [{ zoneValue: Zone.FAIL, fail: 100, commit: 0, target: 0 }],
+      [{ zoneValue: Zone.COMMIT, fail: 100, commit: 100, target: 0 }],
+      [{ zoneValue: Zone.TARGET, fail: 100, commit: 100, target: 100 }],
+      [{ zoneValue: Zone.STRETCH, fail: 100, commit: 100, target: 101 }],
+    ])('should set percentages correctly', (object: any) => {
+      //Reset component
+      component.targetPercent = 0;
+      component.commitPercent = 0;
+      component.failPercent = 0;
 
-      fixture = TestBed.createComponent(ScoringComponent);
-      component = fixture.componentInstance;
-      component.keyResult = keyResultMetricMin;
-    });
+      //Set zone
+      component.keyResult.lastCheckIn!.value! = object.zoneValue;
+      component.calculatePercentageOrdinal();
 
-    it('should create', () => {
-      expect(component).toBeTruthy();
+      //Verify if percentage was set correctly
+      expect(component.failPercent).toBe(object.fail);
+      expect(component.commitPercent).toBe(object.commit);
+      expect(component.targetPercent).toBe(object.target);
     });
   });
 });
-
-function createKeyResult(baseline: number, stretchGoal: number, lastCheckIn: CheckInMin | null) {
-  return {
-    id: 201,
-    title: 'Have more chocolate in office',
-    keyResultType: 'metric',
-    unit: '%',
-    baseline: baseline,
-    stretchGoal: stretchGoal,
-    lastCheckIn: lastCheckIn,
-    type: 'keyResult',
-  } as KeyResultMetricMin;
-}

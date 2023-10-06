@@ -1,168 +1,186 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
-import { Router } from '@angular/router';
+import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
-import { KeyResultOrdinalMin } from '../../types/model/KeyResultOrdinalMin';
+import { map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-scoring',
   templateUrl: './scoring.component.html',
   styleUrls: ['./scoring.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoringComponent implements OnInit, AfterViewInit {
+export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() keyResult!: KeyresultMin;
-  failWidth: string = '50%';
-  commitWidth: string = '0';
-  targetWidth: string = '0';
-  failColor: string = '#ffffff';
-  commitColor: string = '#ffffff';
-  targetColor: string = '#ffffff';
+  @Input() isDetail!: boolean;
   iconPath: string = 'empty';
-  metricLabel: string = '';
-  isOverview: boolean = false;
-  labelWidth: string = '0';
-  endLineFail: string = '';
-  endLineCommit: string = '';
-  endLineTarget: string = '';
-  zoneWidth: number = 0;
-  checkInValue: number | string | undefined = 0;
+  failPercent: number = 0;
+  commitPercent: number = 0;
+  targetPercent: number = 0;
+  labelPercentage: Observable<number>;
 
-  resizeObserver: ResizeObserver = new ResizeObserver(() => {
-    this.resizeWidth();
-  });
+  @ViewChild('fail')
+  private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
+  @ViewChild('commit')
+  private commitElement: ElementRef<HTMLSpanElement> | undefined = undefined;
+  @ViewChild('target')
+  private targetElement: ElementRef<HTMLSpanElement> | undefined = undefined;
+  @ViewChild('valueLabel')
+  private valueLabel: ElementRef<HTMLSpanElement> | undefined = undefined;
 
-  constructor(private router: Router) {}
+  constructor(private changeDetectionRef: ChangeDetectorRef) {
+    this.labelPercentage = new Observable<number>();
+  }
 
-  ngOnInit(): void {
-    let url = this.router.url;
-    this.isOverview = !url.includes('keyresult');
-    if (this.keyResult.lastCheckIn === undefined || this.keyResult.lastCheckIn === null) {
-      this.failWidth = this.commitWidth = this.targetWidth = '0';
-      return;
-    }
-    let keyResultCardWidth = document.querySelector('.key-result')!.clientWidth;
-    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 24 : (keyResultCardWidth / 100) * 33;
-    this.checkInValue = this.keyResult.lastCheckIn!.value;
+  ngOnInit() {
     if (this.keyResult.keyResultType === 'metric') {
-      this.calculatePercentagesMetric();
-      this.setBarColorsMetric();
+      this.calculatePercentageMetric();
     } else {
-      this.keyResult = this.keyResult as KeyResultOrdinalMin;
-      this.setColorsOrdinal();
+      this.calculatePercentageOrdinal();
     }
   }
 
-  ngAfterViewInit() {
-    this.resizeObserver.observe(document.querySelector('.key-result')!);
-  }
-
-  resizeWidth() {
-    let keyResultCardWidth = document.querySelector('.key-result')!.clientWidth;
-    this.zoneWidth = this.isOverview ? (keyResultCardWidth / 100) * 26 : (keyResultCardWidth / 100) * 33;
-    this.calculatePercentagesMetric();
-    document.getElementById('fail-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
-    document.getElementById('commit-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
-    document.getElementById('target-card' + this.keyResult.id)!.style.width = this.zoneWidth + 'px';
-    if (!this.isOverview) {
-      document.getElementById('unit-label-div' + this.keyResult.id)!.style.width = this.zoneWidth * 3 + 'px';
-      document.getElementById('unit-label' + this.keyResult.id)!.style.width = this.labelWidth;
-      document.getElementById('unit-label' + this.keyResult.id)!.style.maxWidth = this.zoneWidth * 3 + 'px';
+  calculatePercentageOrdinal() {
+    switch (this.keyResult.lastCheckIn?.value) {
+      case Zone.STRETCH:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.targetPercent = 101;
+        break;
+      case Zone.TARGET:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.targetPercent = 100;
+        break;
+      case Zone.COMMIT:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        break;
+      case Zone.FAIL:
+        this.failPercent = 100;
+        break;
     }
   }
 
-  calculatePercentagesMetric() {
-    let keyResult: KeyResultMetricMin = this.keyResult as KeyResultMetricMin;
-    let baseline: number = keyResult.baseline;
-    let stretchGoal: number = keyResult.stretchGoal;
-    let checkInValue: number = this.checkInValue as number;
-    this.metricLabel = keyResult.unit + ' ' + checkInValue;
-
-    if (baseline > stretchGoal) {
-      baseline = stretchGoal;
-      stretchGoal = keyResult.baseline;
-    }
-
-    let decimal: number = (checkInValue - baseline) / (stretchGoal - baseline);
-
-    if (decimal < 0.3) {
-      let percent = (decimal * 100) / 30;
-      this.failWidth = percent * 100 + '%';
-      this.labelWidth = this.zoneWidth * percent + 'px';
-      this.commitWidth = this.targetWidth = '0';
-      if (this.failWidth != '100%' && this.failWidth != '0') {
-        this.endLineFail = 'endLine';
-      }
-    } else if (decimal < 0.7) {
-      let percent = (decimal * 100 - 30) / 40;
-      this.failWidth = '100%';
-      this.commitWidth = percent * 100 + '%';
-      this.targetWidth = '0';
-      this.labelWidth = this.zoneWidth + this.zoneWidth * percent + 'px';
-      if (this.commitWidth != '100%' && this.commitWidth != '0') {
-        this.endLineCommit = 'endLine';
-      }
-    } else {
-      let percent = (decimal * 100 - 70) / 30;
-      this.targetWidth = decimal > 1.0 ? '100%' : percent * 100 + '%';
-      this.labelWidth = this.zoneWidth + this.zoneWidth + this.zoneWidth * percent + 'px';
-      this.failWidth = this.commitWidth = '100%';
-      if (this.targetWidth != '100%' && this.targetWidth != '0') {
-        this.endLineTarget = 'endLine';
+  calculatePercentageMetric() {
+    if (this.keyResult.lastCheckIn !== null) {
+      let percentage = this.calculateCurrentPercentage();
+      this.labelPercentage = of(percentage);
+      switch (true) {
+        case percentage >= 100:
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = 101;
+          break;
+        case percentage > 70:
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = (100 / 30) * (percentage - 70);
+          break;
+        case percentage > 30:
+          this.failPercent = 100;
+          this.commitPercent = (100 / 40) * (percentage - 30);
+          break;
+        default:
+          this.failPercent = (100 / 30) * percentage;
       }
     }
   }
 
-  setBarColorsMetric() {
-    if (this.failWidth !== '100%') {
-      this.failColor = '#BA3838';
-      this.commitColor = this.targetColor = '#ffffff';
-    } else if (this.commitWidth !== '100%') {
-      this.failColor = this.commitColor = '#FFD600';
-      this.targetColor = '#ffffff';
-    } else if (this.targetWidth !== '100%') {
-      this.failColor = this.commitColor = this.targetColor = '#1E8A29';
-    } else {
-      this.setStretchIcon();
-    }
+  calculateCurrentPercentage(): number {
+    let castedKeyResult: KeyResultMetricMin = this.castToMetric();
+    let value: number = +castedKeyResult.lastCheckIn?.value!;
+    let baseline: number = +castedKeyResult.baseline;
+    let stretchGoal: number = +castedKeyResult.stretchGoal;
+    return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
   }
 
-  setColorsOrdinal() {
-    let value = this.checkInValue as string;
-    switch (value) {
-      case 'FAIL':
-        this.setOnFailColor();
-        break;
-      case 'COMMIT':
-        this.setOnCommitColor();
-        break;
-      case 'TARGET':
-        this.setOnTargetColor();
-        break;
+  getScoringColorClassAndSetBorder(): string | null {
+    switch (true) {
+      case this.targetPercent > 100:
+        return 'score-stretch';
+      case this.targetPercent > 0:
+        this.targetElement!.nativeElement.classList.add('border-right');
+        return 'score-green';
+      case this.commitPercent > 0:
+        this.commitElement!.nativeElement.classList.add('border-right');
+        return 'score-yellow';
+      case this.failPercent > 0:
+        this.failElement!.nativeElement.classList.add('border-right');
+        return 'score-red';
       default:
-        this.failWidth = this.commitWidth = this.targetWidth = '100%';
-        this.setStretchIcon();
+        return null;
     }
   }
 
-  setOnFailColor() {
-    this.failWidth = '100%';
-    this.failColor = '#BA3838';
-    this.commitColor = this.targetColor = '#ffffff';
+  ngAfterViewInit(): void {
+    //Define width of scoring elements
+    this.failElement!.nativeElement.style.width = this.failPercent + '%';
+    this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
+    this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
+
+    if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
+      // this.labelPercentage.pipe(map((value) => this.valueLabel!.nativeElement.style.width! = value + '%'));
+      this.labelPercentage.subscribe((value) => {
+        this.valueLabel!.nativeElement.style.width = value + '%';
+        this.changeDetectionRef.detectChanges();
+      });
+    }
+
+    // Set color of scoring component
+    let scoringClass = this.getScoringColorClassAndSetBorder();
+    if (scoringClass !== null) {
+      this.targetElement!.nativeElement.classList.add(scoringClass);
+      this.commitElement!.nativeElement.classList.add(scoringClass);
+      this.failElement!.nativeElement.classList.add(scoringClass);
+    }
+
+    //Fill out icon if target percent has reached 100 percent or more
+    if (this.targetPercent > 100) {
+      this.iconPath = 'filled';
+      this.changeDetectionRef.detectChanges();
+    }
   }
 
-  setOnCommitColor() {
-    this.failWidth = this.commitWidth = '100%';
-    this.failColor = this.commitColor = '#FFD600';
-    this.targetColor = '#ffffff';
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['keyResult']?.currentValue !== undefined || changes['keyResult']?.currentValue !== null) {
+      if (this.commitElement != undefined) {
+        this.resetPercentagesToZero();
+        this.removeStyleClass();
+        this.iconPath = 'empty';
+        this.ngOnInit();
+        this.ngAfterViewInit();
+      }
+    }
   }
 
-  setOnTargetColor() {
-    this.failWidth = this.commitWidth = this.targetWidth = '100%';
-    this.failColor = this.commitColor = this.targetColor = '#1E8A29';
+  resetPercentagesToZero() {
+    this.commitPercent = 0;
+    this.targetPercent = 0;
+    this.failPercent = 0;
   }
 
-  setStretchIcon() {
-    this.iconPath = 'filled';
-    this.failColor = this.commitColor = this.targetColor = 'url("../../../../assets/images/scoring-stars.svg")';
+  removeStyleClass() {
+    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch'];
+    for (let classToRemove of classArray) {
+      this.commitElement?.nativeElement.classList.remove(classToRemove);
+      this.targetElement?.nativeElement.classList.remove(classToRemove);
+      this.failElement?.nativeElement.classList.remove(classToRemove);
+    }
+  }
+
+  castToMetric(): KeyResultMetricMin {
+    return this.keyResult as KeyResultMetricMin;
   }
 }

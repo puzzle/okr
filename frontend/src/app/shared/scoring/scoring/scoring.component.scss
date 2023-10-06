@@ -1,50 +1,53 @@
-div {
-  position: relative;
+.okr-score-lable {
+  display: inline-grid;
+  width: 30%;
 }
 
-.child:after {
-  content: "\A";
-  position: absolute;
-  background: var(--data-bar-color);
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: var(--data-bar-width);
-}
-
-.child {
-  outline: 1px solid #5d6974;
+.okr-score {
+  display: inline-grid;
   height: 21px;
+  width: 30%;
   background-color: white;
-
-  &[data-end-line="endLine"]:after {
-    border-right: 1px #5d6974 solid;
-  }
+  outline: 1px solid #5d6974;
 }
 
-.starIcon {
-  width: 22.24px;
-  height: 22.24px;
+.okr-score-commit {
+  width: 40%;
 }
 
-.mlLeft {
+.okr-stretch {
   margin-left: 16px;
 }
 
-.metricLabel {
-  font-weight: bold;
-  font-size: 12px;
-  white-space: nowrap;
-  text-align: right;
+.starIcon {
+  display: block;
+  width: 21px;
+  height: 21px;
 }
 
-.unitLabel {
-  container-type: inline-size;
-  width: var(--data-bar-width);
+.score-red {
+  background-color: #ba3838;
+}
+
+.score-yellow {
+  background-color: #ffd600;
+}
+
+.score-green {
+  background-color: #1e8a29;
+}
+
+.border-right {
+  border-right: 1px solid gray;
+}
+
+.score-stretch {
+  background-image: url("../../../../assets/images/scoring-stars.svg");
+}
+
+.value-label {
+  max-width: 100%;
   min-width: fit-content;
-  max-width: var(--data-max-width);
-}
-
-.scoring-container {
-  margin-bottom: 8px;
+  display: inline-block;
+  text-align: end;
 }

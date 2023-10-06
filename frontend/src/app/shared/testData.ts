@@ -52,6 +52,61 @@ export const keyResultMetricMin: KeyResultMetricMin = {
   type: 'keyResult',
 } as KeyResultMetricMin;
 
+export const keyResultMetricMinScoring: KeyResultMetricMin = {
+  id: 201,
+  title: 'Achieve 20% Increase in Daily Active Users',
+  keyResultType: 'metric',
+  unit: '%',
+  baseline: 25.0,
+  stretchGoal: 75.0,
+  lastCheckIn: {
+    id: 800,
+    value: 50,
+    confidence: 4,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'Half way through',
+    initiatives: 'Quality before quantity',
+  },
+  type: 'keyResult',
+} as KeyResultMetricMin;
+
+export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
+  id: 306,
+  title: 'Achieve 20% Increase in Daily Active Users',
+  keyResultType: 'metric',
+  unit: '%',
+  baseline: 50.0,
+  stretchGoal: 0.0,
+  lastCheckIn: {
+    id: 800,
+    value: 12.5,
+    confidence: 4,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'More Changes',
+    initiatives: 'Some initatives',
+  },
+  type: 'keyResult',
+} as KeyResultMetricMin;
+
+export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
+  id: 202,
+  title: 'We want to bake 10 cakes',
+  keyResultType: 'ordinal',
+  commitZone: '5 cakes',
+  targetZone: '10 cakes',
+  stretchGoal: '13 cakes',
+  lastCheckIn: {
+    id: 830,
+    value: 'COMMIT',
+    confidence: 8,
+    createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
+    initiatives: 'Initiatives of ordinal',
+    changeInfo: 'Changeinfo ordinal',
+  } as CheckInMin,
+} as KeyResultOrdinalMin;
+
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   id: 202,
   title: 'Reduce Bounce Rate',

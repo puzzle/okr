@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';

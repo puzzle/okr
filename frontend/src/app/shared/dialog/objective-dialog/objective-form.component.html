@@ -48,7 +48,9 @@
 
       <div class="d-flex flex-column justify-content-center gap-2 col-6">
         <label class="text-black" for="team">Team</label>
-        <span id="team">{{ this.currentTeam.name }}</span>
+        <div class="team-container mb-4 d-flex align-items-center">
+          <span id="team" class="ps-3">{{ this.currentTeam.name }}</span>
+        </div>
       </div>
 
       <mat-checkbox

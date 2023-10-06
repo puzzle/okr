@@ -81,7 +81,7 @@ export class ObjectiveComponent implements AfterViewInit {
     if (menuEntry.dialog) {
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
         data: menuEntry.dialog.data,
-        width: '719px',
+        width: '850px',
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result?.objective) {

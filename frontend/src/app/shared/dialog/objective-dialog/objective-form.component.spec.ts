@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
 import { objective, quarter, team1 } from '../../testData';
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
@@ -23,10 +23,8 @@ import { QuarterService } from '../../services/quarter.service';
 import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
-import mock = jest.mock;
-import { NotifierService } from '../../services/notifier.service';
-import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { ObjectiveComponent } from '../../../objective/objective.component';
+import { By } from '@angular/platform-browser';
 
 const submitEvent = {
   submitter: {
@@ -46,18 +44,20 @@ let objectiveService = {
 
 const quarterService = {
   getAllQuarters(): Observable<Quarter[]> {
-    return of([{ id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label }]);
+    return of([
+      { id: 1, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
+      { id: 2, startDate: quarter.startDate, endDate: quarter.endDate, label: quarter.label },
+    ]);
   },
 };
 
 const teamService = {
   getAllTeams(): Observable<Team[]> {
-    return of([{ id: 1, name: team1.name, activeObjectives: 10 }]);
+    return of([
+      { id: 1, name: team1.name, activeObjectives: 10 },
+      { id: 4, name: 'team2', activeObjectives: 4 },
+    ]);
   },
-};
-
-const objectiveComponent = {
-  openAddKeyResultDialog: jest.fn(),
 };
 
 const dialogMock = {
@@ -93,7 +93,6 @@ describe('ObjectiveDialogComponent', () => {
         { provide: ObjectiveService, useValue: objectiveService },
         { provide: QuarterService, useValue: quarterService },
         { provide: TeamService, useValue: teamService },
-        { provide: ObjectiveComponent, useValue: objectiveComponent },
       ],
     });
     fixture = TestBed.createComponent(ObjectiveFormComponent);
@@ -143,10 +142,8 @@ describe('ObjectiveDialogComponent', () => {
           quarterSelect.getOptions().then((selectOptions) => {
             selectOptions[0].click();
             advance();
-            selectOptions[0].getText().then((value) => {
-              quarterService.getAllQuarters().subscribe((options) => {
-                quarter = options[0].id;
-              });
+            quarterService.getAllQuarters().subscribe((options) => {
+              quarter = options[0].id;
             });
           });
         });
@@ -261,24 +258,28 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('should open keyresult creation dialog after checking checkbox', () => {
+  it('should load default values into form onInit with defined objectiveId', () => {
+    matDataMock.objectiveId = 1;
+    objectiveService.getFullObjective.mockReturnValue(of(objective));
+    component.ngOnInit();
+    const rawFormValue = component.objectiveForm.getRawValue();
+    expect(rawFormValue.title).toBe(objective.title);
+    expect(rawFormValue.description).toBe(objective.description);
+    expect(rawFormValue.team).toBe(objective.teamId);
+    expect(rawFormValue.quarter).toBe(objective.quarterId);
+  });
+
+  it('should load default values into form onInit with undefined objectiveId', () => {
     matDataMock.objectiveId = undefined;
-    component.objectiveForm.setValue({
-      title: 'Test title',
-      description: 'Test description',
-      quarter: 0,
-      team: 0,
-      relation: 0,
-      createKeyResults: true,
+    component.ngOnInit();
+    const rawFormValue = component.objectiveForm.getRawValue();
+    const defaultComponent = component.getDefaultObjective();
+    expect(rawFormValue.title).toBe(defaultComponent.title);
+    expect(rawFormValue.description).toBe(defaultComponent.description);
+    expect(rawFormValue.team).toBe(matDataMock.teamId);
+    quarterService.getAllQuarters().subscribe((quarters) => {
+      expect(rawFormValue.quarter).toBe([quarters[0].id]);
     });
-
-    submitEvent.submitter.status = 'DRAFT';
-    objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
-    component.onSubmit(submitEvent);
-
-    fixture.detectChanges();
-
-    expect(objectiveComponent.openAddKeyResultDialog).toHaveBeenCalled();
   });
 
   function advance(duration = 100) {

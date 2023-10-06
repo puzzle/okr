@@ -11,13 +11,3 @@ services:
       POSTGRES_DB: okr
     ports:
       - 5432:5432
-
-  oidc:
-    image: registry.puzzle.ch/puzzle/oidc-provider-mock:ff157478
-    command: sh -c "yarn install && yarn dev"
-    volumes:
-      - ./config.yaml:/config.yaml
-    ports:
-      - 8000:8080
-    environment:
-      CONFIG_FILE_PATH: /config.yaml

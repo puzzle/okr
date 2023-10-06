@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringIntegrationTest
 public class CheckInPersistenceServiceIT {
@@ -109,12 +107,5 @@ public class CheckInPersistenceServiceIT {
                 assertTrue(checkIn.getCreatedOn().isAfter(checkInLoop.getCreatedOn()));
             }
         }
-    }
-
-    @Test
-    void shouldCallGetCheckInAmountByObjectiveId() {
-        Integer checkInAmountByObjectiveId = checkInPersistenceService.getCheckInAmountByObjectiveId(8L);
-
-        assertEquals(2, checkInAmountByObjectiveId);
     }
 }

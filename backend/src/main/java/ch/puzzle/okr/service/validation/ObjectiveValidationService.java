@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -10,12 +9,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ObjectiveValidationService extends ValidationBase<Objective, Long> {
 
-    private final CheckInBusinessService checkInBusinessService;
-
-    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService,
-            CheckInBusinessService checkInBusinessService) {
+    public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService) {
         super(objectivePersistenceService);
-        this.checkInBusinessService = checkInBusinessService;
     }
 
     @Override

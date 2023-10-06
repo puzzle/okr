@@ -154,10 +154,4 @@ class CheckInBusinessServiceTest {
         checkInBusinessService.getLastCheckInByKeyResultId(this.ordinalKeyResult.getId());
         verify(checkInPersistenceService, times(1)).getLastCheckInOfKeyResult(this.ordinalKeyResult.getId());
     }
-
-    @Test
-    void shouldCallGetCheckInAmountByObjectiveId() {
-        checkInBusinessService.getCheckInAmountByObjectiveId(1L);
-        verify(checkInPersistenceService, times(1)).getCheckInAmountByObjectiveId(1L);
-    }
 }

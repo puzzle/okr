@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,9 +37,6 @@ class ObjectiveValidationServiceTest {
     User user;
     Quarter quarter;
     Team team;
-
-    @MockBean
-    CheckInBusinessService checkInBusinessService = Mockito.mock(CheckInBusinessService.class);
 
     @BeforeEach
     void setUp() {
@@ -274,14 +270,5 @@ class ObjectiveValidationServiceTest {
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
-    }
-
-    @Test
-    void validateOnDelete_ShouldThrowExceptionIfObjectiveHasCheckIns() {
-        when(checkInBusinessService.getCheckInAmountByObjectiveId(any())).thenReturn(2);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnDelete(1L));
-
-        assertEquals("Objective already has check-ins", exception.getReason());
     }
 }

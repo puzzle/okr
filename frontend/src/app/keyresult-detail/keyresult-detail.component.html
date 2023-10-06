@@ -29,14 +29,12 @@
   </div>
   <div class="d-flex gap-4 mb-5 flex-row jus">
     <ng-container *ngIf="keyResult.keyResultType == 'metric'">
-      <p class="keyResult-detail-attribute-show rounded-3 p-1">
-        Einheit: {{ castToMetric(keyResult).unit || "Keine" }}
+      <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ castToMetric(keyResult).unit }}</p>
+      <p *ngIf="castToMetric(keyResult).baseline != null" class="keyResult-detail-attribute-show rounded-3 p-1">
+        Baseline: {{ castToMetric(keyResult).baseline }}
       </p>
       <p class="keyResult-detail-attribute-show rounded-3 p-1">
-        Baseline: {{ castToMetric(keyResult).baseline || "0" }}
-      </p>
-      <p class="keyResult-detail-attribute-show rounded-3 p-1">
-        Stretch Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}
+        Stretch Goal: {{ castToMetric(keyResult).stretchGoal }}
       </p>
     </ng-container>
 

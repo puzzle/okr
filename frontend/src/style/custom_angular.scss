@@ -12,8 +12,10 @@ $pz-theme: mat.define-light-theme(
       primary: $my-primary,
       accent: $my-accent,
       warn: $my-warn,
+      dark: $my-accent,
     ),
   )
 );
 
+@import "custom_angular.components";
 @include mat.all-component-themes($pz-theme);

@@ -1,4 +1,4 @@
-import { Objective } from './Objective';
+import { KeyResultObjective } from './KeyResultObjective';
 import { CheckIn } from './CheckIn';
 import { User } from './User';
 
@@ -9,7 +9,7 @@ export interface KeyResult {
   description: string;
 
   owner: User;
-  objective: Objective;
+  objective: KeyResultObjective;
   lastCheckIn: CheckIn | null;
   createdOn: Date;
   modifiedOn: Date;

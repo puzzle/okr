@@ -3,11 +3,13 @@ import { Subject } from 'rxjs';
 import { CheckIn } from '../types/model/CheckIn';
 import { KeyResult } from '../types/model/KeyResult';
 import { Objective } from '../types/model/Objective';
+import { ObjectiveMin } from '../types/model/ObjectiveMin';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotifierService {
+  reloadOverview: Subject<any> = new Subject<any>();
   closeDetailSubject: Subject<void> = new Subject();
   reopenCheckInHistoryDialog: Subject<{ checkIn: CheckIn | null; deleted: boolean }> = new Subject<{
     checkIn: CheckIn | null;
@@ -21,4 +23,14 @@ export class NotifierService {
       objective: Objective;
       delete: boolean;
     }>();
+
+  objectivesChanges: Subject<{ objective: ObjectiveMin; teamId: number; delete: boolean; addKeyResult: boolean }> =
+    new Subject<{
+      objective: ObjectiveMin;
+      teamId: number;
+      delete: boolean;
+      addKeyResult: boolean;
+    }>();
+
+  openKeyresultCreation: Subject<ObjectiveMin> = new Subject<ObjectiveMin>();
 }

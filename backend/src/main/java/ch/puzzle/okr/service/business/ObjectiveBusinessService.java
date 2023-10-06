@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
@@ -36,6 +35,10 @@ public class ObjectiveBusinessService {
 
     @Transactional
     public Objective updateObjective(Long id, Objective objective, Jwt token) {
+        Objective savedObjective = objectivePersistenceService.findById(id);
+        objective.setState(savedObjective.getState());
+        objective.setCreatedBy(savedObjective.getCreatedBy());
+        objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(userBusinessService.getUserByAuthorisationToken(token));
         objective.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, objective);
@@ -45,7 +48,6 @@ public class ObjectiveBusinessService {
     @Transactional
     public Objective createObjective(Objective objective, Jwt token) {
         objective.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
-        objective.setState(State.DRAFT);
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);

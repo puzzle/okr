@@ -7,10 +7,11 @@ import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
 import { KeyresultMin } from './types/model/KeyresultMin';
 import { ObjectiveMin } from './types/model/ObjectiveMin';
 import { OverviewEntity } from './types/model/OverviewEntity';
-import { Objective } from './types/model/Objective';
+import { KeyResultObjective } from './types/model/KeyResultObjective';
 import { Quarter } from './types/model/Quarter';
 import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
 import { CheckIn } from './types/model/CheckIn';
+import { Objective } from './types/model/Objective';
 import { User } from './types/model/User';
 import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
@@ -136,15 +137,10 @@ export const quarter: Quarter = {
   startDate: new Date(),
 };
 
-export const objective: Objective = {
-  team: team1,
-  createdOn: new Date(),
-  title: 'title',
-  state: State.NOTSUCCESSFUL,
+export const keyResultObjective: KeyResultObjective = {
   id: 1,
+  state: State.NOTSUCCESSFUL,
   quarter: quarter,
-  description: 'description',
-  modifiedOn: new Date(),
 };
 
 export const keyResultMetricWithIdEight: KeyResultMetricMin = {
@@ -156,6 +152,15 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   lastCheckIn: checkInMetric,
   keyResultType: 'keyResult',
 } as KeyResultMetricMin;
+
+export const objective: Objective = {
+  id: 5,
+  title: 'title',
+  description: 'description',
+  teamId: 2,
+  quarterId: 2,
+  state: State.SUCCESSFUL,
+};
 
 export const firstCheckIn: CheckInMin = {
   id: 1,
@@ -199,7 +204,7 @@ export const keyResult: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
-  } as Objective,
+  } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
     value: 'FAIL',
@@ -231,7 +236,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
-  } as Objective,
+  } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
     value: 'FAIL',
@@ -263,7 +268,7 @@ export const keyResultMetric: KeyResultMetric = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
-  } as Objective,
+  } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
     value: 45,

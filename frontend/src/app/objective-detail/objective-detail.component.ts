@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, AfterViewInit } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
@@ -11,7 +11,7 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveDetailComponent implements OnChanges {
+export class ObjectiveDetailComponent implements AfterViewInit {
   @Input() objectiveId!: number;
   objective!: Objective;
 
@@ -22,7 +22,7 @@ export class ObjectiveDetailComponent implements OnChanges {
     private notifierService: NotifierService,
   ) {}
 
-  ngOnChanges() {
+  ngAfterViewInit(): void {
     this.objectiveService.getFullObjective(this.objectiveId).subscribe((fullObjective) => {
       this.objective = fullObjective;
       this.changeDetectorRef.markForCheck();

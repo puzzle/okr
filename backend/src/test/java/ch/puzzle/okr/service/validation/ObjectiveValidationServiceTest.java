@@ -271,5 +271,4 @@ class ObjectiveValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
-
 }

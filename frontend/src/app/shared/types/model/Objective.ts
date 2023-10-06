@@ -1,14 +1,14 @@
 import { State } from '../enums/State';
-import { TeamMin } from './TeamMin';
-import { Quarter } from './Quarter';
+import { User } from './User';
 
 export interface Objective {
   id: number;
   title: string;
   description: string;
   state: State;
-  team: TeamMin;
-  quarter: Quarter;
-  createdOn: Date;
-  modifiedOn: Date;
+  teamId: number;
+  quarterId: number;
+  createdOn?: Date;
+  modifiedOn?: Date;
+  createdBy?: User;
 }

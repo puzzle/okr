@@ -9,4 +9,6 @@ public interface CheckInRepository extends CrudRepository<CheckIn, Long> {
     List<CheckIn> findCheckInsByKeyResultIdOrderByCreatedOnDesc(Long keyResultId);
 
     CheckIn findFirstByKeyResultIdOrderByCreatedOnDesc(Long keyResultId);
+
+    Integer countByKeyResultObjectiveId(Long objectiveId);
 }

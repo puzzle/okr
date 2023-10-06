@@ -168,3 +168,6 @@ values (21,
        (32, 'Lorem ipsum dolor sit amet, richi rogsi brokilon', '2023-10-02 08:50:44.059000',
         ' sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat', '2023-10-02 22:00:00.000000',
         13, 1, 31, 3, 'metric', null);
+
+insert into public.quarter (id, label, start_date, end_date)
+values  (200, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');

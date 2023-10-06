@@ -29,16 +29,13 @@ describe('ObjectiveDetailComponent', () => {
   });
 
   it('should create', () => {
-    fixture.detectChanges();
-
     expect(component).toBeTruthy();
   });
 
   it('get data from backend', () => {
-    component.objectiveId = 2;
-    component.ngOnChanges();
+    component.ngAfterViewInit();
     fixture.detectChanges();
-
+    component.objectiveId = 2;
     const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;
     const description = fixture.debugElement.query(By.css('[data-test-id="description"]')).nativeElement.innerHTML;
     expect(title).toContain(objective.title);

@@ -13,8 +13,8 @@ import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit, OnDestroy {
+  sidenavContentInformation?: { id: number; type: string };
   drawerOpen: boolean = false;
-  sidenavContentInformation!: { id: number; type: string };
 
   constructor(
     public router: Router,
@@ -85,6 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   closeDrawer() {
     this.drawerOpen = false;
+    this.sidenavContentInformation = undefined;
     this.router.navigate(['/']);
   }
 }

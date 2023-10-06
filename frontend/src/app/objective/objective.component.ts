@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
-import { NotifierService } from '../shared/services/notifier.service';
 import { Router } from '@angular/router';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotifierService } from '../shared/services/notifier.service';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -14,7 +15,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent {
+export class ObjectiveComponent implements AfterViewInit {
   @Input()
   get objective(): BehaviorSubject<ObjectiveMin> {
     return this._objective;
@@ -23,23 +24,17 @@ export class ObjectiveComponent {
     this._objective.next(objective);
   }
   private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
-
   @Input() objectiveMin!: ObjectiveMin;
-  menuEntries: MenuEntry[] = [
-    { displayName: 'Objective bearbeiten', showDialog: false },
-    { displayName: 'Objective duplizieren', showDialog: false },
-    { displayName: 'Objective abschliessen', showDialog: false },
-    { displayName: 'Objective freigeben', showDialog: false },
-  ];
-
+  menuEntries: MenuEntry[] = [];
   constructor(
     private dialog: MatDialog,
     private routeService: RouteService,
     private notifierService: NotifierService,
+    private matDialog: MatDialog,
     private router: Router,
   ) {
     this.notifierService.keyResultsChanges.subscribe((keyResultChange) => {
-      const keyResults = this.objective.value.keyResults;
+      const keyResults = this.objective.value.keyResults ? this.objective.value.keyResults : [];
       if (keyResultChange.delete) {
         const existingKRIndex = keyResults.findIndex((kr) => kr.id === keyResultChange.keyResult.id);
         keyResults.splice(existingKRIndex, 1);
@@ -61,13 +56,45 @@ export class ObjectiveComponent {
         this.objective = { ...this.objective.value, keyResults: keyResults };
       }
     });
+
+    this.notifierService.openKeyresultCreation.subscribe((objective) => {
+      if (objective.id === this.objective.value.id) {
+        this.objective = objective;
+        this.openAddKeyResultDialog();
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.menuEntries = [
+      {
+        displayName: 'Objective bearbeiten',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
+      },
+      { displayName: 'Objective duplizieren' },
+      { displayName: 'Objective abschliessen' },
+      { displayName: 'Objective freigeben' },
+    ];
   }
 
   redirect(menuEntry: MenuEntry) {
-    if (menuEntry.showDialog) {
-      this.openDialog();
+    if (menuEntry.dialog) {
+      const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
+        data: menuEntry.dialog.data,
+        width: '850px',
+      });
+      matDialogRef.afterClosed().subscribe((result) => {
+        if (result?.objective) {
+          this.notifierService.objectivesChanges.next({
+            objective: result.objective,
+            teamId: result.teamId,
+            delete: result.delete,
+            addKeyResult: result.addKeyResult,
+          });
+        }
+      });
     } else {
-      this.routeService.navigate(menuEntry.routeLine!);
+      this.routeService.navigate(menuEntry.route!);
     }
   }
 
@@ -96,7 +123,7 @@ export class ObjectiveComponent {
         if (result == undefined || result.keyResult == null) {
           return;
         }
-        await this.notifierService.keyResultsChanges.next({
+        this.notifierService.keyResultsChanges.next({
           keyResult: result.keyResult,
           changeId: null,
           objective: result.objective,

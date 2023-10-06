@@ -43,6 +43,8 @@ class ObjectiveBusinessServiceTest {
     @MockBean
     UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
 
+    @MockBean
+    CheckInBusinessService checkInBusinessService = Mockito.mock(CheckInBusinessService.class);
     Objective objective;
     Objective fullObjective1;
     KeyResult ordinalKeyResult;
@@ -91,9 +93,9 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldSaveANewObjective() {
-        Objective objective = spy(
-                Objective.Builder.builder().withTitle("Received Objective").withTeam(team1).withQuarter(quarter)
-                        .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
+        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(State.DRAFT).build());
 
         doNothing().when(objective).setCreatedOn(any());
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
@@ -126,6 +128,7 @@ class ObjectiveBusinessServiceTest {
                         .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
 
         doNothing().when(objective).setModifiedOn(any());
+        Mockito.when(objectivePersistenceService.findById(any())).thenReturn(objective);
         Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
 
         objectiveBusinessService.updateObjective(objective.getId(), objective, jwtToken);
@@ -150,7 +153,6 @@ class ObjectiveBusinessServiceTest {
     @Test
     void verifyActiveObjectivesAmountOfTeam() {
         this.objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
-
         verify(this.objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
     }
 }

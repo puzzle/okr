@@ -1,5 +1,10 @@
+import { ComponentType } from '@angular/cdk/overlay';
+
 export interface MenuEntry {
   displayName: string;
-  showDialog: boolean;
-  routeLine?: string;
+  dialog?: {
+    dialog: ComponentType<any>;
+    data: any;
+  };
+  route?: string;
 }

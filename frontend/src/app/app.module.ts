@@ -42,10 +42,12 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { DrawerContentComponent } from './drawer-content/drawer-content.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
-import { DrawerInterceptor } from './shared/interceptors/drawer.interceptor';
+import { ErrorInterceptor } from './shared/interceptors/error-interceptor.service';
 import { CheckInHistoryDialogComponent } from './shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { ObjectiveFormComponent } from './shared/dialog/objective-dialog/objective-form.component';
 import { ApplicationBannerComponent } from './application-banner/application-banner.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
@@ -113,6 +115,7 @@ export const MY_FORMATS = {
     UnitLabelTransformationPipe,
     ConfirmDialogComponent,
     ParseUnitValuePipe,
+    ObjectiveFormComponent,
   ],
   imports: [
     CommonModule,
@@ -151,6 +154,7 @@ export const MY_FORMATS = {
     FormsModule,
     MatDividerModule,
     MatSidenavModule,
+    MatCheckboxModule,
   ],
   providers: [
     {
@@ -160,7 +164,7 @@ export const MY_FORMATS = {
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: DrawerInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
     UnitValueTransformationPipe,

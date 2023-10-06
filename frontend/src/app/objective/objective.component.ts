@@ -115,7 +115,7 @@ export class ObjectiveComponent implements AfterViewInit {
         if (result == undefined || result.keyResult == null) {
           return;
         }
-        await this.notifierService.keyResultsChanges.next({
+        this.notifierService.keyResultsChanges.next({
           keyResult: result.keyResult,
           changeId: null,
           objective: result.objective,

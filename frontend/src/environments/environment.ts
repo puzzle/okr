@@ -12,7 +12,7 @@ export const environment = {
     clearHashAfterLogin: true,
     issuer: '',
     strictDiscoveryDocumentValidation: false,
-    redirectUri: 'http://localhost:4200/auth/keycloakopenid/callback',
+    redirectUri: 'http://localhost:4200',
     scope: 'openid profile',
     clientId: '',
     responseType: 'code',

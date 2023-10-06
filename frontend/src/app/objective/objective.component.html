@@ -10,7 +10,7 @@
     <section class="d-flex justify-content-between mb-3">
       <img
         (click)="$event.stopPropagation()"
-        matTooltip="The objective's state is {{ objective.value.state.split('-')[0] | uppercase }}"
+        matTooltip="The objectives state is {{ objective.value.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         data-testid="objective-state"
         class="icon col-1 default-cursor"

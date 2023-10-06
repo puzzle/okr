@@ -5,7 +5,9 @@ import {
   Component,
   ElementRef,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { KeyresultMin } from '../../types/model/KeyresultMin';
@@ -18,7 +20,7 @@ import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
   styleUrls: ['./scoring.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScoringComponent implements OnInit, AfterViewInit {
+export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() keyResult!: KeyresultMin;
   iconPath: string = 'empty';
   failPercent: number = 0;
@@ -132,6 +134,33 @@ export class ScoringComponent implements OnInit, AfterViewInit {
     if (this.targetPercent > 100) {
       this.iconPath = 'filled';
       this.changeDetectionRef.detectChanges();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['keyResult']?.currentValue !== undefined || changes['keyResult']?.currentValue !== null) {
+      if (this.commitElement != undefined) {
+        this.resetPercentagesToZero();
+        this.removeStyleClass();
+        this.iconPath = 'empty';
+        this.ngOnInit();
+        this.ngAfterViewInit();
+      }
+    }
+  }
+
+  resetPercentagesToZero() {
+    this.commitPercent = 0;
+    this.targetPercent = 0;
+    this.failPercent = 0;
+  }
+
+  removeStyleClass() {
+    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch'];
+    for (let classToRemove of classArray) {
+      this.commitElement?.nativeElement.classList.remove(classToRemove);
+      this.targetElement?.nativeElement.classList.remove(classToRemove);
+      this.failElement?.nativeElement.classList.remove(classToRemove);
     }
   }
 }

@@ -61,6 +61,8 @@ import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.componen
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
+import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -119,6 +121,7 @@ export const MY_FORMATS = {
     ObjectiveFormComponent,
     QuarterFilterComponent,
     SidepanelComponent,
+    KeyresultTypeComponent,
   ],
   imports: [
     CommonModule,
@@ -162,6 +165,7 @@ export const MY_FORMATS = {
     CdkOverlayOrigin,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
+    MatTabsModule,
   ],
   providers: [
     {

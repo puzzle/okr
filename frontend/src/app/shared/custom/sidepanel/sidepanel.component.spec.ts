@@ -8,7 +8,7 @@ describe('SidepanelComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SidepanelComponent]
+      declarations: [SidepanelComponent],
     });
     fixture = TestBed.createComponent(SidepanelComponent);
     component = fixture.componentInstance;

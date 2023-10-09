@@ -1,16 +1,39 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
-import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
-import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
+import { EMPTY, of } from 'rxjs';
+import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
+
+/**
+ * Resolver for get the id from url like `/objective/42` or `/keyresult/42`.
+ */
+export const getIdFromPathResolver: ResolveFn<number> = (route: ActivatedRouteSnapshot) => {
+  try {
+    let id = Number.parseInt(route.url[1].path);
+    return of(id);
+  } catch (error) {
+    console.error('Can not get id from URL:', error);
+    return EMPTY;
+  }
+};
 
 const routes: Routes = [
   {
     path: '',
     component: OverviewComponent,
     children: [
-      { path: 'objective/:id', component: ObjectiveDetailComponent, pathMatch: 'full' },
-      { path: 'keyresult/:id', component: KeyresultDetailComponent, pathMatch: 'full' },
+      {
+        path: 'objective/:id',
+        component: SidepanelComponent,
+        resolve: { id: getIdFromPathResolver },
+        data: { type: 'Objective' },
+      },
+      {
+        path: 'keyresult/:id',
+        component: SidepanelComponent,
+        resolve: { id: getIdFromPathResolver },
+        data: { type: 'KeyResult' },
+      },
     ],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

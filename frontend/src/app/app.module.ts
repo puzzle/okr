@@ -59,6 +59,7 @@ import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/chec
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
 import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
+import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -116,6 +117,7 @@ export const MY_FORMATS = {
     ConfirmDialogComponent,
     ParseUnitValuePipe,
     ObjectiveFormComponent,
+    SidepanelComponent,
   ],
   imports: [
     CommonModule,

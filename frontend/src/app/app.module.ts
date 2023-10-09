@@ -62,7 +62,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/c
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
 import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
-import {MatTabsModule} from "@angular/material/tabs";
+import { MatTabsModule } from '@angular/material/tabs';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {

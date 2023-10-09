@@ -49,16 +49,16 @@ export class AppComponent implements OnInit, OnDestroy {
         map((event) => event as NavigationEnd),
       )
       .subscribe((event) => {
-        drawerRoutes.forEach((route) => {
-          if (event.url.startsWith(`/${route}/`)) {
-            const match = event.url.match(ROUTE_PARAM_REGEX);
-            if (match) {
-              const id = parseInt(match[1]);
-              this.sidenavContentInformation = { id: id, type: route };
-              this.openDrawer();
-            }
-          }
-        });
+        // drawerRoutes.forEach((route) => {
+        //   if (event.url.startsWith(`/${route}/`)) {
+        //     const match = event.url.match(ROUTE_PARAM_REGEX);
+        //     if (match) {
+        //       const id = parseInt(match[1]);
+        //       this.sidenavContentInformation = { id: id, type: route };
+        //       this.openDrawer();
+        //     }
+        //   }
+        // });
       });
 
     this.notifierService.closeDetailSubject.subscribe(() => {

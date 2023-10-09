@@ -39,7 +39,6 @@ import { KeyresultComponent } from './keyresult/keyresult.component';
 import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { DrawerContentComponent } from './drawer-content/drawer-content.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { ErrorInterceptor } from './shared/interceptors/error-interceptor.service';
@@ -103,7 +102,6 @@ export const MY_FORMATS = {
     ScoringComponent,
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
-    DrawerContentComponent,
     ApplicationBannerComponent,
     KeyResultDialogComponent,
     ConfirmDialogComponent,

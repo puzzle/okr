@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, AfterViewInit } from '@angular/core';
-import { Objective } from '../shared/types/model/Objective';
-import { ObjectiveService } from '../shared/services/objective.service';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { NotifierService } from '../shared/services/notifier.service';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {Objective} from '../shared/types/model/Objective';
+import {ObjectiveService} from '../shared/services/objective.service';
+import {NotifierService} from '../shared/services/notifier.service';
+import {catchError, Observable, Subject} from "rxjs";
 
 @Component({
   selector: 'app-objective-detail',
@@ -11,47 +10,59 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveDetailComponent implements AfterViewInit {
-  @Input() objectiveId!: number;
-  objective!: Objective;
+export class ObjectiveDetailComponent {
+  @Input()
+  objectiveId$!: Observable<number>;
+  objective$: Subject<Objective> = new Subject<Objective>();
 
   constructor(
     private objectiveService: ObjectiveService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog,
     private notifierService: NotifierService,
   ) {}
 
-  ngAfterViewInit(): void {
-    this.objectiveService.getFullObjective(this.objectiveId).subscribe((fullObjective) => {
-      this.objective = fullObjective;
-      this.changeDetectorRef.markForCheck();
+
+  ngOnInit(): void {
+    this.objectiveId$.subscribe((id) => {
+      this.loadObjective(id);
     });
   }
 
-  openAddKeyResultDialog() {
-    this.dialog
-      .open(KeyResultDialogComponent, {
-        width: '45em',
-        height: 'auto',
-        data: {
-          objective: this.objective,
-          keyResult: null,
-        },
-      })
-      .afterClosed()
-      .subscribe(async (result) => {
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: null,
-          objective: result.objective,
-          delete: false,
-        });
+  loadObjective(id: number): void {
+    this.objectiveService
+      .getFullObjective(id)
+      .pipe(
+        catchError((err, caught) => {
+          console.error(err);
+          // TODO: maybe return a EMPTY or NEVER
+          return caught;
+        }),
+      )
+      .subscribe((objective) => this.objective$.next(objective));
+  }
 
-        if (result.openNew) {
-          this.openAddKeyResultDialog();
-        }
-      });
+  openAddKeyResultDialog() {
+    // this.dialog
+    //   .open(KeyResultDialogComponent, {
+    //     width: '45em',
+    //     height: 'auto',
+    //     data: {
+    //       objective: this.objective,
+    //       keyResult: null,
+    //     },
+    //   })
+    //   .afterClosed()
+    //   .subscribe(async (result) => {
+    //     await this.notifierService.keyResultsChanges.next({
+    //       keyResult: result.keyResult,
+    //       changeId: null,
+    //       objective: result.objective,
+    //       delete: false,
+    //     });
+    //
+    //     if (result.openNew) {
+    //       this.openAddKeyResultDialog();
+    //     }
+    //   });
   }
   closeDrawer() {
     this.notifierService.closeDetailSubject.next();

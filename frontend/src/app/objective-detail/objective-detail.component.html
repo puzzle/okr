@@ -1,15 +1,16 @@
-<div *ngIf="objective != undefined" cdkTrapFocus="true" cdkTrapFocusAutoCapture="true">
-  <div class="mb-2 d-flex justify-content-between">
-    <div class="title">{{ objective.title }}</div>
-    <mat-icon (click)="closeDrawer()" data-test-id="closeDrawer" class="pointer-cursor">close</mat-icon>
+<ng-container *ngIf="objective$ | async as objective">
+  <div class="mb-2 d-flex justify-content-between flex-column">
+    <div class="mb-2 d-flex justify-content-between">
+      <div class="title">{{ objective.title }}</div>
+      <mat-icon (click)="closeDrawer()" data-test-id="closeDrawer" class="pointer-cursor">close</mat-icon>
+    </div>
+    <div class="title fs-6">Beschrieb</div>
+    <p data-test-id="description">{{ objective.description }}</p>
+    <section class="py-3">
+      <button class="anchor d-flex bg-white border-0 p-0 flex-nowrap" (click)="openAddKeyResultDialog()">
+        <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
+        <p class="add-button">Key Result hinzufügen</p>
+      </button>
+    </section>
   </div>
-  <div class="title fs-6">Beschrieb</div>
-  <p data-test-id="description">{{ objective.description }}</p>
-
-  <section class="py-3">
-    <button class="anchor d-flex bg-white border-0 p-0 flex-nowrap" (click)="openAddKeyResultDialog()">
-      <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
-      <p class="add-button">Key Result hinzufügen</p>
-    </button>
-  </section>
-</div>
+</ng-container>

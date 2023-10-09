@@ -10,6 +10,13 @@ import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
 
+export enum CloseState {
+  SAVED,
+  DELETED,
+  CANCELED,
+  UNKNOWN,
+}
+
 @Component({
   selector: 'app-key-result-dialog',
   templateUrl: './key-result-dialog.component.html',
@@ -74,7 +81,7 @@ export class KeyResultDialogComponent implements OnInit {
       keyResult.objective = this.data.objective;
     }
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
-      this.dialogRef.close({ id: keyResult.id });
+      this.dialogRef.close({ closeState: CloseState.SAVED, id: keyResult.id });
     });
   }
 
@@ -93,9 +100,14 @@ export class KeyResultDialogComponent implements OnInit {
         .afterClosed()
         .subscribe((result) => {
           if (result == 'deleteKeyResult') {
-            this.keyResultService
-              .deleteKeyResult(this.data.keyResult.id)
-              .subscribe(() => this.dialogRef.close({ keyResult: this.data.keyResult, delete: true, openNew: false }));
+            this.keyResultService.deleteKeyResult(this.data.keyResult.id).subscribe(() =>
+              this.dialogRef.close({
+                closeState: CloseState.DELETED,
+                keyResult: this.data.keyResult,
+                delete: true,
+                openNew: false,
+              }),
+            );
           }
         });
     }

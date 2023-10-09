@@ -5,11 +5,10 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { catchError, EMPTY, Observable, Subject, switchAll, tap } from 'rxjs';
+import { CloseState, KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { catchError, Observable, Subject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { keyResult } from '../shared/testData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -27,6 +26,7 @@ export class KeyresultDetailComponent implements OnInit {
     private keyResultService: KeyresultService,
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -36,8 +36,6 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   loadKeyResult(id: number): void {
-    console.log('loadKeyResult with id', id);
-
     this.keyResultService
       .getFullKeyResult(id)
       .pipe(
@@ -77,8 +75,16 @@ export class KeyresultDetailComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        this.loadKeyResult(result.id);
-        this.refreshDataService.dataRefresh.set(Date.now());
+        console.log('result.id', result.id);
+        console.log('result.closeState', result.closeState);
+        if (result.closeState === CloseState.SAVED) {
+          this.loadKeyResult(result.id);
+          this.refreshDataService.markDataRefresh();
+        }
+        if (result.closeState === CloseState.DELETED) {
+          this.refreshDataService.markDataRefresh();
+          this.router.navigate(['/']);
+        }
       });
   }
 }

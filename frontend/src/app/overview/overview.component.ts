@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, effect, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
@@ -10,27 +10,27 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities!: Observable<OverviewEntity[]>;
+
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
   ) {
-    console.log('OverviewComponent.constructor');
+    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverview());
   }
 
   ngOnInit(): void {
-    this.loadKeyResult();
-
-    effect(() => {
-      console.log(`The current count is: ${this.refreshDataService.dataRefresh()}`);
-      this.loadKeyResult();
-    });
+    this.loadOverview();
   }
 
-  loadKeyResult() {
-    this.refreshDataService.dataRefresh.set(Date.now());
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+  loadOverview() {
     this.overviewEntities = this.overviewService.getOverview();
   }
 }

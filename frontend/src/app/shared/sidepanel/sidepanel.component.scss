@@ -1,0 +1,22 @@
+.sidebar {
+  display: block;
+  opacity: 1;
+  background-color: #f1f1f1;
+  height: 100vh;
+  position: fixed;
+  overflow-y: auto;
+  z-index: 101;
+  top: 48px;
+  right: -600px;
+  min-width: 300px;
+  max-width: 600px;
+}
+
+.sidebar-show {
+  transition: right 200ms;
+  right: 0;
+}
+
+.sidebar__content {
+  padding: 8px;
+}

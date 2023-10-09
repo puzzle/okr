@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {Objective} from '../shared/types/model/Objective';
-import {ObjectiveService} from '../shared/services/objective.service';
-import {NotifierService} from '../shared/services/notifier.service';
-import {catchError, Observable, Subject} from "rxjs";
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Objective } from '../shared/types/model/Objective';
+import { ObjectiveService } from '../shared/services/objective.service';
+import { NotifierService } from '../shared/services/notifier.service';
+import { catchError, Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-objective-detail',
@@ -19,7 +19,6 @@ export class ObjectiveDetailComponent {
     private objectiveService: ObjectiveService,
     private notifierService: NotifierService,
   ) {}
-
 
   ngOnInit(): void {
     this.objectiveId$.subscribe((id) => {

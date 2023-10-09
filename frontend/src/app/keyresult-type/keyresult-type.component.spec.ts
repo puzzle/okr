@@ -8,7 +8,7 @@ describe('KeyresultTypeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [KeyresultTypeComponent]
+      declarations: [KeyresultTypeComponent],
     });
     fixture = TestBed.createComponent(KeyresultTypeComponent);
     component = fixture.componentInstance;

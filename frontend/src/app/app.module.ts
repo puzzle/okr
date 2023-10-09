@@ -60,6 +60,7 @@ import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transform
 import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
 import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
+import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -118,6 +119,7 @@ export const MY_FORMATS = {
     ParseUnitValuePipe,
     ObjectiveFormComponent,
     QuarterFilterComponent,
+    SidepanelComponent,
   ],
   imports: [
     CommonModule,

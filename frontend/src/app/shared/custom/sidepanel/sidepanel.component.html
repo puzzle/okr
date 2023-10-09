@@ -11,8 +11,8 @@
     <div [ngSwitch]="modelType">
       <div *ngSwitchDefault>Kein passender switch case!</div>
       <!--      TODO: Update keyresult detail-->
-            <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="getId()"></app-objective-detail>
-<!--            <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId$]="getId()"></app-keyresult-detail>-->
+      <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="getId()"></app-objective-detail>
+      <!--            <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId$]="getId()"></app-keyresult-detail>-->
     </div>
   </div>
 </div>

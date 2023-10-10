@@ -1,81 +1,77 @@
-<div>
-  <div class="d-flex">
-    <div class="active metric tab-title" (click)="switchKeyResultType()">Metrisch</div>
-    <div class="non-active ordinal tab-title" (click)="switchKeyResultType()">Ordinal</div>
-    <div class="buffer tab-title flex-fill"></div>
-  </div>
-</div>
-
-<div *ngIf="isMetric; else ordinalBlock">
-  <form [formGroup]="typeForm">
-    <div class="d-flex flex-column">
-      <div class="d-flex flex-row">
-        <div class="flex-fill">
-          <div class="d-flex justify-content-between">
-            <span class="keyresult-type-label">
-              <span class="text-small">Einheit</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Baseline</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Stretch Goal</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Owner</span>
-            </span>
-          </div>
-
-          <div class="d-flex">
-            <div>
-              <mat-form-field appearance="outline">
-                <mat-label>Einheit wählen</mat-label>
-                <mat-select [(value)]="typeForm.value.unit">
-                  <mat-option value="CHF">{{ "UNIT.CHF" | translate }}</mat-option>
-                  <mat-option value="FTE">{{ "UNIT.FTE" | translate }}</mat-option>
-                  <mat-option value="NUMBER">{{ "UNIT.NUMBER" | translate }}</mat-option>
-                  <mat-option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isTouchedOrDirty('unit')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
-              </div>
+<mat-tab-group
+  animationDuration="0ms"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+  (selectedTabChange)="switchKeyResultType()"
+>
+  <mat-tab label="Metrisch">
+    <form [formGroup]="typeForm">
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-row">
+          <div class="flex-fill">
+            <div class="d-flex justify-content-between">
+              <span class="keyresult-type-label">
+                <span class="text-small">Einheit</span>
+              </span>
+              <span class="keyresult-type-label">
+                <span class="text-small">Baseline</span>
+              </span>
+              <span class="keyresult-type-label">
+                <span class="text-small">Stretch Goal</span>
+              </span>
+              <span class="keyresult-type-label">
+                <span class="text-small">Owner</span>
+              </span>
             </div>
 
-            <div>
-              <mat-form-field appearance="outline"
-                ><input matInput formControlName="baseline" placeholder="Baseline" />
-              </mat-form-field>
-              <div *ngIf="isTouchedOrDirty('baseline')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
+            <div class="d-flex">
+              <div>
+                <mat-form-field appearance="outline">
+                  <mat-label>Einheit wählen</mat-label>
+                  <mat-select [(value)]="typeForm.value.unit">
+                    <mat-option value="CHF">{{ "UNIT.CHF" | translate }}</mat-option>
+                    <mat-option value="FTE">{{ "UNIT.FTE" | translate }}</mat-option>
+                    <mat-option value="NUMBER">{{ "UNIT.NUMBER" | translate }}</mat-option>
+                    <mat-option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="isTouchedOrDirty('unit')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
               </div>
-            </div>
-            <div>
-              <mat-form-field appearance="outline"
-                ><input matInput formControlName="stretchGoal" placeholder="Stretch Goal"
-              /></mat-form-field>
-              <div *ngIf="isTouchedOrDirty('stretchGoal')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
+
+              <div>
+                <mat-form-field appearance="outline"
+                  ><input matInput formControlName="baseline" placeholder="Baseline"
+                /></mat-form-field>
+                <div *ngIf="isTouchedOrDirty('baseline')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
               </div>
-            </div>
-            <div>
-              <mat-form-field appearance="outline"
-                ><input matInput formControlName="owner" placeholder="Owner" />
-              </mat-form-field>
+              <div>
+                <mat-form-field appearance="outline"
+                  ><input matInput formControlName="stretchGoal" placeholder="Stretch Goal"
+                /></mat-form-field>
+                <div *ngIf="isTouchedOrDirty('stretchGoal')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
+              </div>
+              <div>
+                <mat-form-field appearance="outline"
+                  ><input matInput formControlName="owner" placeholder="Owner"
+                /></mat-form-field>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </form>
-</div>
-
-<ng-template #ordinalBlock>
-  <div>Oridnal</div>
-</ng-template>
+    </form>
+  </mat-tab>
+  <mat-tab label="Ordinal">Content 2</mat-tab>
+</mat-tab-group>

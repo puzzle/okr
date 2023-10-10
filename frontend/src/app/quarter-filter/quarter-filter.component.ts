@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotifierService } from '../shared/services/notifier.service';
 
@@ -12,7 +12,8 @@ import { NotifierService } from '../shared/services/notifier.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuarterFilterComponent implements OnInit {
-  quarters$: Observable<Quarter[]> = of([]);
+  quarters: Subject<Quarter[]> = new Subject<Quarter[]>();
+  quarterId: number = -1;
 
   constructor(
     private quarterService: QuarterService,
@@ -21,7 +22,15 @@ export class QuarterFilterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.quarters$ = this.quarterService.getAllQuarters();
+    this.quarterService.getAllQuarters().subscribe((quarters) => {
+      this.quarters.next(quarters);
+      const urlSearchParam = new URLSearchParams(window.location.search);
+      const quarterId = urlSearchParam.get('quarter');
+      if (quarterId) {
+        this.quarterId = Number(quarterId);
+        console.log(this.quarterId);
+      }
+    });
   }
 
   changeDisplayedQuarter(id: number) {

@@ -10,8 +10,8 @@ import { State } from '../types/enums/State';
 export class OverviewService {
   constructor(private http: HttpClient) {}
 
-  getOverview(): Observable<OverviewEntity[]> {
-    return this.http.get<OverviewEntity[]>('/api/v2/overview').pipe(
+  getOverview(id?: number): Observable<OverviewEntity[]> {
+    return this.http.get<OverviewEntity[]>(id ? '/api/v2/overview?quarter=' + id : '/api/v2/overview').pipe(
       //Map state from string to enum
       map((overviews) => {
         overviews.forEach((overview) => {

@@ -3,6 +3,7 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Observable } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { NotifierService } from '../shared/services/notifier.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -18,11 +19,20 @@ export class OverviewComponent implements OnInit {
     private notifierService: NotifierService,
   ) {
     this.notifierService.reloadOverview.subscribe(() => {
-      this.overviewEntities = this.overviewService.getOverview();
+      this.loadOverview();
     });
   }
 
   ngOnInit(): void {
-    this.overviewEntities = this.overviewService.getOverview();
+    this.loadOverview();
+  }
+
+  loadOverview() {
+    const urlSearchParam = new URLSearchParams(window.location.search);
+    const quarter = urlSearchParam.get('quarter');
+
+    quarter
+      ? (this.overviewEntities = this.overviewService.getOverview(Number(quarter)))
+      : (this.overviewEntities = this.overviewService.getOverview());
   }
 }

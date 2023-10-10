@@ -1,4 +1,12 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { ConnectedPosition, ScrollStrategyOptions } from '@angular/cdk/overlay'; // ESM
@@ -9,7 +17,7 @@ import { ConnectedPosition, ScrollStrategyOptions } from '@angular/cdk/overlay';
   styleUrls: ['./sidepanel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidepanelComponent implements OnInit, AfterViewInit {
+export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidebar')
   sidebar!: ElementRef<HTMLDivElement>;
   position: ConnectedPosition[] = [
@@ -25,17 +33,23 @@ export class SidepanelComponent implements OnInit, AfterViewInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    readonly sso: ScrollStrategyOptions,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data) => (this.modelType = data['type']));
+    this.activatedRoute.data.subscribe((data) => {
+      this.modelType = data['type'];
+    });
     this.id$ = this.activatedRoute.data.pipe(map((data) => data['id']));
   }
 
   ngAfterViewInit(): void {
+    document.body.classList.add('disable-scrolling');
     this.sidebar.nativeElement.classList.add('sidebar-show');
+  }
+
+  ngOnDestroy() {
+    document.body.classList.remove('disable-scrolling');
   }
 
   close() {

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -6,9 +6,11 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { NotifierService } from '../shared/services/notifier.service';
 import { CheckInService } from '../shared/services/check-in.service';
-import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
+import { catchError, Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { CloseState } from '../shared/types/enums/CloseState';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -16,46 +18,39 @@ import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/che
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements AfterViewInit {
-  @Input() keyResultId!: number;
-  keyResult!: KeyResult;
+export class KeyresultDetailComponent implements OnInit {
+  @Input()
+  keyResultId$!: Observable<number>;
+
+  keyResult$: Subject<KeyResult> = new Subject<KeyResult>();
 
   constructor(
     private keyResultService: KeyresultService,
     private checkInService: CheckInService,
-    private notifierService: NotifierService,
-    private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-  ) {
-    this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
-      /* Update lastCheckIn if it was changed in history dialog */
-      if (this.keyResult.lastCheckIn?.id === result?.checkIn?.id) {
-        this.keyResult = { ...this.keyResult, lastCheckIn: result.checkIn };
-        this.changeDetectorRef.detectChanges();
-      }
-      /* Update lastCheckIn to null if it was deleted in history dialog */
-      if (result.deleted) {
-        if (result.checkIn?.id == this.keyResult.lastCheckIn?.id) {
-          this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
-            this.keyResult = fullKeyResult;
-            this.changeDetectorRef.markForCheck();
-            if (this.keyResult.lastCheckIn != null) {
-              this.checkInHistory();
-            }
-          });
-        }
-        return;
-      }
-      this.checkInHistory();
+    private refreshDataService: RefreshDataService,
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.keyResultId$.subscribe((id) => {
+      this.loadKeyResult(id);
     });
   }
 
-  ngAfterViewInit(): void {
-    this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
-      this.keyResult = fullKeyResult;
-      this.changeDetectorRef.markForCheck();
-    });
+  loadKeyResult(id: number): void {
+    this.keyResultService
+      .getFullKeyResult(id)
+      .pipe(
+        catchError((err, caught) => {
+          console.error(err);
+          // TODO: maybe return a EMPTY or NEVER
+          return caught;
+        }),
+      )
+      .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
+
   castToMetric(keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
@@ -64,66 +59,54 @@ export class KeyresultDetailComponent implements AfterViewInit {
     return keyResult as KeyResultOrdinal;
   }
 
-  checkInHistory() {
+  checkInHistory(keyResultId: number) {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
-        keyResultId: this.keyResult.id,
-        keyResult: this.keyResult,
+        keyResultId: keyResultId,
       },
     });
     dialogRef.afterClosed().subscribe(() => {});
   }
 
-  openEditKeyResultDialog() {
+  openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialog
       .open(KeyResultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {
           objective: null,
-          keyResult: this.keyResult,
+          keyResult: keyResult,
         },
       })
       .afterClosed()
-      .subscribe(async (result) => {
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: result.changeId,
-          objective: result.objective,
-          delete: result.delete,
-        });
-        if (result.openNew) {
-          this.openEditKeyResultDialog();
+      .subscribe((result) => {
+        console.log('result.id', result.id);
+        console.log('result.closeState', result.closeState);
+        if (result.closeState === CloseState.SAVED) {
+          this.loadKeyResult(result.id);
+          this.refreshDataService.markDataRefresh();
         }
-
-        this.keyResult = {
-          ...this.keyResult,
-          id: result.keyResult.id,
-          title: result.keyResult.title,
-          description: result.keyResult.description,
-        };
-        this.changeDetectorRef.markForCheck();
+        if (result.closeState === CloseState.DELETED) {
+          this.refreshDataService.markDataRefresh();
+          this.router.navigate(['/']);
+        }
       });
   }
 
   openCheckInForm() {
-    const dialogRef = this.dialog.open(CheckInFormComponent, {
-      data: {
-        keyResult: this.keyResult,
-      },
-      width: '719px',
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined && result != '') {
-        this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-          this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
-          this.changeDetectorRef.detectChanges();
-        });
-      }
-    });
-  }
-
-  closeDrawer() {
-    this.notifierService.closeDetailSubject.next();
+    // const dialogRef = this.dialog.open(CheckInFormComponent, {
+    //   data: {
+    //     keyResult: this.keyResult,
+    //   },
+    //   width: '719px',
+    // });
+    // dialogRef.afterClosed().subscribe((result) => {
+    //   if (result != undefined && result != '') {
+    //     this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
+    //       this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
+    //       this.changeDetectorRef.detectChanges();
+    //     });
+    //   }
+    // });
   }
 }

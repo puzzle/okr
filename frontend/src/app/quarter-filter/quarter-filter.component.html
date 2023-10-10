@@ -1,4 +1,4 @@
-<select class="quarter-select" [(ngModel)]="quarterId">
+<select class="quarter-select bg-white" [(ngModel)]="quarterId">
   <option
     *ngFor="let quarter of quarters | async"
     (click)="changeDisplayedQuarter(quarter.id)"

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { NotifierService } from '../shared/services/notifier.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -12,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit {
-  overviewEntities!: Observable<OverviewEntity[]>;
+  overviewEntities: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
 
   constructor(
     private overviewService: OverviewService,
@@ -31,8 +30,14 @@ export class OverviewComponent implements OnInit {
     const urlSearchParam = new URLSearchParams(window.location.search);
     const quarter = urlSearchParam.get('quarter');
 
-    quarter
-      ? (this.overviewEntities = this.overviewService.getOverview(Number(quarter)))
-      : (this.overviewEntities = this.overviewService.getOverview());
+    if (quarter) {
+      this.overviewService.getOverview(Number(quarter)).subscribe((overviews) => {
+        this.overviewEntities.next(overviews);
+      });
+    } else {
+      this.overviewService.getOverview().subscribe((overviews) => {
+        this.overviewEntities.next(overviews);
+      });
+    }
   }
 }

@@ -1,3 +1,9 @@
-<select>
-  <option *ngFor="let quarter of quarters$ | async" value="{{ quarter.id }}">{{ quarter.label }}</option>
+<select class="quarter-select">
+  <option
+    *ngFor="let quarter of quarters$ | async"
+    value="{{ quarter.id }}"
+    (click)="changeDisplayedQuarter(quarter.id)"
+  >
+    {{ quarter.label }}
+  </option>
 </select>

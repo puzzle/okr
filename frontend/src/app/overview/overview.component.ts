@@ -29,15 +29,22 @@ export class OverviewComponent implements OnInit {
   loadOverview() {
     const urlSearchParam = new URLSearchParams(window.location.search);
     const quarter = urlSearchParam.get('quarter');
-
     if (quarter) {
       this.overviewService.getOverview(Number(quarter)).subscribe((overviews) => {
-        this.overviewEntities.next(overviews);
+        if (overviews.length > 0) {
+          this.overviewEntities.next(overviews);
+        } else {
+          this.loadDefaultOverview();
+        }
       });
     } else {
-      this.overviewService.getOverview().subscribe((overviews) => {
-        this.overviewEntities.next(overviews);
-      });
+      this.loadDefaultOverview();
     }
+  }
+
+  loadDefaultOverview() {
+    this.overviewService.getOverview().subscribe((overviews) => {
+      this.overviewEntities.next(overviews);
+    });
   }
 }

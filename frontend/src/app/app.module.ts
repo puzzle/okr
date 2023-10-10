@@ -60,6 +60,7 @@ import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-v
 import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
+import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -137,6 +138,7 @@ export const MY_FORMATS = {
     MatInputModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    OverlayModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     TranslateModule.forRoot({
@@ -157,6 +159,7 @@ export const MY_FORMATS = {
     MatDividerModule,
     MatSidenavModule,
     MatCheckboxModule,
+    CdkOverlayOrigin,
   ],
   providers: [
     {

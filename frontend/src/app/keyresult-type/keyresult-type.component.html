@@ -1,44 +1,67 @@
-<mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" mat-align-tabs="start">
+<mat-tab-group animationDuration="0ms" mat-stretch-tabs="false" mat-align-tabs="start"
+               (selectedTabChange)="switchKeyResultType()">
   <mat-tab label="Metrisch">
-    <div class="d-flex flex-column">
-      <div class="d-flex flex-row">
-        <div class="flex-fill">
-          <div>
+    <form [formGroup]="typeForm">
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-row">
+          <div class="flex-fill">
+            <div class="d-flex justify-content-between">
             <span class="keyresult-type-label">
-              <span class="text-center text-small">Einheit</span>
+              <span class="text-small">Einheit</span>
             </span>
-            <span class="keyresult-type-label">
-              <span class="text-center text-small">Baseline</span>
+              <span class="keyresult-type-label">
+              <span class=" text-small">Baseline</span>
             </span>
-            <span class="keyresult-type-label">
-              <span class="text-center text-small">Stretch Goal</span>
+              <span class="keyresult-type-label">
+              <span class=" text-small">Stretch Goal</span>
             </span>
-            <span class="keyresult-type-label">
-              <span class="text-center text-small">Owner</span>
+              <span class="keyresult-type-label">
+              <span class=" text-small">Owner</span>
             </span>
-          </div>
+            </div>
 
-          <div>
-            <mat-form-field>
-              <mat-label>Choose an option</mat-label>
-              <mat-select>
-                <mat-option value="option1">Option 1</mat-option>
-                <mat-option value="option3">Option 3</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div>
-            <mat-form-field><input matInput /></mat-form-field>
-          </div>
-          <div>
-            <mat-form-field><input matInput /></mat-form-field>
-          </div>
-          <div>
-            <mat-form-field><input matInput /></mat-form-field>
+            <div class="d-flex">
+              <div>
+                <mat-form-field  appearance="outline">
+                  <mat-label>Einheit wählen</mat-label>
+                  <mat-select [(value)]="typeForm.value.unit">
+                    <mat-option value="CHF">{{"UNIT.CHF" | translate}}</mat-option>
+                    <mat-option value="FTE">{{"UNIT.FTE" | translate}}</mat-option>
+                    <mat-option value="NUMBER">{{"UNIT.NUMBER" | translate}}</mat-option>
+                    <mat-option value="PERCENT">{{"UNIT.PERCENT" | translate}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <div *ngIf="isTouchedOrDirty('unit')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
+              </div>
+
+              <div>
+                <mat-form-field appearance="outline"><input matInput formControlName="baseline" placeholder="Baseline"/></mat-form-field>
+                <div *ngIf="isTouchedOrDirty('baseline')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
+              </div>
+              <div>
+                <mat-form-field appearance="outline"><input matInput formControlName="stretchGoal" placeholder="Stretch Goal"/></mat-form-field>
+                <div *ngIf="isTouchedOrDirty('stretchGoal')">
+                  <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
+                    {{ errorMessages[errorKey.toUpperCase()] }}
+                  </mat-error>
+                </div>
+              </div>
+              <div>
+                <mat-form-field appearance="outline"><input matInput formControlName="owner" placeholder="Owner"/></mat-form-field>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
   </mat-tab>
   <mat-tab label="Ordinal">Content 2</mat-tab>
 </mat-tab-group>

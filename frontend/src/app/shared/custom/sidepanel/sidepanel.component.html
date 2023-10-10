@@ -1,28 +1,29 @@
-<div
-  id="sidebar"
-  #sidebar
-  class="sidebar sidebar-hidden"
-  aria-label="Main sidebar containing navigation links and some information"
->
-  <div class="sidebar__content">
-    <h1>Sidepanel</h1>
-    <ng-template
-      #originOverlay
-      cdkConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
-      [cdkConnectedOverlayScrollStrategy]="this.sso.block()"
-      [cdkConnectedOverlayOrigin]="originOverlay"
-      [cdkConnectedOverlayOpen]="true"
-      cdkScrollable="false"
-      [cdkTrapFocus]="true"
-      (backdropClick)="closeBackdrop()"
-    >
-    </ng-template>
-
-    <div [ngSwitch]="modelType">
-      <div *ngSwitchDefault>Kein passender switch case!</div>
-      <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="getId()"></app-objective-detail>
-      <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId$]="getId()"></app-keyresult-detail>
+<!--TODO: scroll when starting with shown sidepanel-->
+<div #container class="vw-100 vh-100 position-absolute">
+  <ng-template
+    (backdropClick)="close()"
+    [cdkConnectedOverlayHasBackdrop]="true"
+    [cdkConnectedOverlayHeight]="'100vh'"
+    [cdkConnectedOverlayOffsetY]="48"
+    [cdkConnectedOverlayOpen]="true"
+    [cdkConnectedOverlayOrigin]="container"
+    [cdkConnectedOverlayPositions]="position"
+    [cdkConnectedOverlayPush]="true"
+    [cdkConnectedOverlayScrollStrategy]="sso.block()"
+    [cdkConnectedOverlayMinWidth]="300"
+    cdkConnectedOverlay
+    cdkScrollable="false"
+  >
+    <div #sidebar cdkTrapFocus="true" class="sidebar bg-white w-100" cdkScrollable="false">
+      <button (click)="close()">close</button>
+      <div class="sidebar__content">
+        <h1>Sidepanel</h1>
+        <div [ngSwitch]="modelType">
+          <div *ngSwitchDefault>Kein passender switch case!</div>
+          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="id$"></app-objective-detail>
+          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId$]="id$"></app-keyresult-detail>
+        </div>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>

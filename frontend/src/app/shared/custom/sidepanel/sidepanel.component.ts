@@ -1,8 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
-import { Objective } from '../../types/model/Objective';
-import { ScrollStrategyOptions } from '@angular/cdk/overlay';
+import { ConnectedPosition, ScrollStrategyOptions } from '@angular/cdk/overlay'; // ESM
 
 @Component({
   selector: 'app-sidepanel',
@@ -13,19 +12,22 @@ import { ScrollStrategyOptions } from '@angular/cdk/overlay';
 export class SidepanelComponent implements OnInit, AfterViewInit {
   @ViewChild('sidebar')
   sidebar!: ElementRef<HTMLDivElement>;
-
+  position: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+    },
+  ];
   modelType = '';
-  id$!: Observable<number | Objective>;
+  id$!: Observable<number>;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    public sso: ScrollStrategyOptions,
+    readonly sso: ScrollStrategyOptions,
     private router: Router,
   ) {}
-
-  closeBackdrop() {
-    this.router.navigate(['/']);
-  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data) => (this.modelType = data['type']));
@@ -33,14 +35,10 @@ export class SidepanelComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(this.displaySidebar, 0, this.sidebar);
+    this.sidebar.nativeElement.classList.add('sidebar-show');
   }
 
-  displaySidebar(sidebar: ElementRef<HTMLDivElement>) {
-    sidebar.nativeElement.classList.add('sidebar-show');
-  }
-
-  getId(): Observable<number> {
-    return this.id$ as Observable<number>;
+  close() {
+    this.router.navigate(['/']);
   }
 }

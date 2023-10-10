@@ -18,6 +18,7 @@ export class KeyresultTypeComponent implements OnInit {
   @Input() keyresult!: KeyResult;
   @Output() newKeyresultEvent = new EventEmitter<KeyResultEmitDTO>();
   isMetric: boolean = true;
+  typeChangeAllowed: boolean = true;
 
   typeForm = new FormGroup({
     owner: new FormControl<User | null>(null),
@@ -31,6 +32,7 @@ export class KeyresultTypeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.keyresult) {
+      this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
       if (this.keyresult.keyResultType == 'metric') {
         this.isMetric = true;
         let keyresultMetric: KeyResultMetric = this.castToMetric(this.keyresult);
@@ -68,7 +70,7 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   switchKeyResultType(type: String) {
-    if ((type == "metric" && this.isMetric) || (type == "ordinal" && !this.isMetric)) {
+    if ((type == "metric" && this.isMetric) || (type == "ordinal" && !this.isMetric) || (!this.typeChangeAllowed)) {
       return
     } else {
       this.isMetric = !this.isMetric;

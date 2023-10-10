@@ -1,7 +1,3 @@
-.keyresult-type-label {
-  display: inline-grid;
-}
-
 .active {
   border-left: #ddd 1px solid;
   border-top: #ddd 1px solid;
@@ -9,12 +5,12 @@
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   background: white;
-  color: black;
 }
 
 .non-active {
   color: #9c9c9c;
   border-bottom: #ddd 1px solid;
+  padding-left: 12px;
 }
 
 .tab-title {
@@ -26,14 +22,13 @@
 
 .metric {
   width: 87px;
-  cursor: pointer;
 }
 
 .ordinal {
   width: 75px;
-  cursor: pointer;
 }
 
 .buffer {
+  width: 50px;
   border-bottom: #ddd 1px solid;
 }

@@ -40,6 +40,7 @@ export class ObjectiveDetailComponent {
   }
 
   openAddKeyResultDialog() {
+    console.log('Open Dialog');
     // this.dialog
     //   .open(KeyResultDialogComponent, {
     //     width: '45em',

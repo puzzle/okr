@@ -5,11 +5,12 @@
   height: 100vh;
   position: fixed;
   overflow-y: auto;
-  z-index: 101;
+  z-index: 1001;
   top: 48px;
-  right: -600px;
-  min-width: 300px;
-  max-width: 600px;
+  right: -700px;
+  //min-width: 300px;
+  width: 700px;
+  //max-width: 600px;
 }
 
 .sidebar-show {

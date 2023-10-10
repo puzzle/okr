@@ -6,7 +6,18 @@
 >
   <div class="sidebar__content">
     <h1>Sidepanel</h1>
-    <button routerLink="/">close</button>
+    <ng-template
+      #originOverlay
+      cdkConnectedOverlay
+      cdkConnectedOverlayHasBackdrop
+      [cdkConnectedOverlayScrollStrategy]="this.sso.block()"
+      [cdkConnectedOverlayOrigin]="originOverlay"
+      [cdkConnectedOverlayOpen]="true"
+      cdkScrollable="false"
+      [cdkTrapFocus]="true"
+      (backdropClick)="closeBackdrop()"
+    >
+    </ng-template>
 
     <div [ngSwitch]="modelType">
       <div *ngSwitchDefault>Kein passender switch case!</div>

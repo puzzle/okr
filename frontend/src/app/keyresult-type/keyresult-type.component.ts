@@ -106,6 +106,7 @@ export class KeyresultTypeComponent implements OnInit {
       }
       this.newKeyresultEvent.emit(keyresultEmit);
     }
+
   }
 
   protected readonly errorMessages: any = errorMessages;

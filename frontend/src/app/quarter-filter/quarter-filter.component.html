@@ -1,1 +1,3 @@
-<p>quarter-filter works!</p>
+<select>
+  <option *ngFor="let quarter of quarters$ | async" value="{{ quarter.id }}">{{ quarter.label }}</option>
+</select>

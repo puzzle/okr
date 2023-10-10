@@ -31,11 +31,7 @@ export class OverviewComponent implements OnInit {
     const quarter = urlSearchParam.get('quarter');
     if (quarter) {
       this.overviewService.getOverview(Number(quarter)).subscribe((overviews) => {
-        if (overviews.length > 0) {
-          this.overviewEntities.next(overviews);
-        } else {
-          this.loadDefaultOverview();
-        }
+        this.overviewEntities.next(overviews);
       });
     } else {
       this.loadDefaultOverview();

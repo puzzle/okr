@@ -25,9 +25,9 @@ export class KeyresultTypeComponent implements OnInit {
     unit: new FormControl<string | null>(null, [Validators.required]),
     baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
     stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
+    commitZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
+    targetZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
+    stretchZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
   });
 
   ngOnInit(): void {

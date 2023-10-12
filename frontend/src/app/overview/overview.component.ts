@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {OverviewEntity} from '../shared/types/model/OverviewEntity';
-import {catchError, EMPTY, ReplaySubject, Subject, takeUntil} from 'rxjs';
+import {catchError, EMPTY, ReplaySubject, takeUntil} from 'rxjs';
 import {OverviewService} from '../shared/services/overview.service';
 import {ActivatedRoute} from '@angular/router';
 import {RefreshDataService} from '../shared/services/refresh-data.service';
@@ -12,7 +12,7 @@ import {RefreshDataService} from '../shared/services/refresh-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  overviewEntities: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>()
+  overviewEntities$: ReplaySubject<OverviewEntity[]> = new ReplaySubject<OverviewEntity[]>(1);
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
@@ -38,7 +38,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
           }),
         )
         .subscribe((overviews) => {
-          this.overviewEntities.next(overviews);
+          this.overviewEntities$.next(overviews);
         });
     } else {
       this.loadDefaultOverview();
@@ -47,7 +47,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   loadDefaultOverview() {
     this.overviewService.getOverview().subscribe((overviews) => {
-      this.overviewEntities.next(overviews);
+      this.overviewEntities$.next(overviews);
     });
   }
 

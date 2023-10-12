@@ -7,10 +7,11 @@ import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { CheckInService } from '../shared/services/check-in.service';
-import { catchError, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
+import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -22,7 +23,7 @@ export class KeyresultDetailComponent implements OnInit {
   @Input()
   keyResultId!: number;
 
-  keyResult$: Subject<KeyResult> = new Subject<KeyResult>();
+  keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
 
   constructor(
     private keyResultService: KeyresultService,
@@ -39,13 +40,7 @@ export class KeyresultDetailComponent implements OnInit {
   loadKeyResult(id: number): void {
     this.keyResultService
       .getFullKeyResult(id)
-      .pipe(
-        catchError((err, caught) => {
-          console.error(err);
-          // TODO: maybe return a EMPTY or NEVER
-          return caught;
-        }),
-      )
+      .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
 
@@ -92,19 +87,18 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openCheckInForm() {
-    // const dialogRef = this.dialog.open(CheckInFormComponent, {
-    //   data: {
-    //     keyResult: this.keyResult,
-    //   },
-    //   width: '719px',
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result != undefined && result != '') {
-    //     this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-    //       this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
-    //       this.changeDetectorRef.detectChanges();
-    //     });
-    //   }
-    // });
+    const dialogRef = this.dialog.open(CheckInFormComponent, {
+      data: {
+        keyResult: this.keyResult$.getValue(),
+      },
+      width: '719px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result != undefined && result != '') {
+        this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
+          this.keyResult$.next({ ...this.keyResult$.getValue(), lastCheckIn: createdCheckIn });
+        });
+      }
+    });
   }
 }

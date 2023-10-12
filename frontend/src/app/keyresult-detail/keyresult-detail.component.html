@@ -9,11 +9,12 @@
       </div>
       <div class="d-flex align-items-center">
         <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
-        <p>{{ keyResult.owner.firstname }} {{ keyResult.owner.lastname }}</p>
+        <p *ngIf="keyResult.owner as owner; else noOwner">{{ owner.firstname }} {{ owner.lastname }}</p>
+        <ng-template #noOwner>Kein Besitzer</ng-template>
       </div>
-      <div class="d-flex flex-row">
-        <p>{{ keyResult.objective.quarter.startDate | date: "dd.MM.yyy" }} -</p>
-        <p>{{ keyResult.objective.quarter.endDate | date: "dd.MM.yyy" }}</p>
+      <div class="d-flex flex-row" *ngIf="keyResult?.objective?.quarter as quarter">
+        <p>{{ quarter.startDate | date: "dd.MM.yyy" }} -</p>
+        <p>{{ quarter.endDate | date: "dd.MM.yyy" }}</p>
       </div>
     </div>
     <div class="d-flex justify-content-between mb-2 align-items-center">

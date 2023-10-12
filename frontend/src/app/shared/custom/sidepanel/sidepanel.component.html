@@ -1,5 +1,4 @@
-<!--TODO: scroll when starting with shown sidepanel-->
-<div #container class="vw-100 vh-100 position-absolute">
+<div #container class="container-fluid">
   <ng-template
     (backdropClick)="close()"
     [cdkConnectedOverlayHasBackdrop]="true"
@@ -9,11 +8,11 @@
     [cdkConnectedOverlayOrigin]="container"
     [cdkConnectedOverlayPositions]="position"
     [cdkConnectedOverlayPush]="true"
-    [cdkConnectedOverlayMinWidth]="300"
+    [cdkConnectedOverlayPanelClass]="'panel'"
     cdkConnectedOverlay
     cdkScrollable="false"
   >
-    <div #sidebar cdkTrapFocus="true" class="sidebar bg-white w-100" cdkScrollable="false">
+    <div #sidebar cdkTrapFocus="true" class="sidebar bg-white" cdkScrollable="false">
       <div class="sidebar__content">
         <div [ngSwitch]="modelType">
           <div *ngSwitchDefault>Kein passender switch case!</div>

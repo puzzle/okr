@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Subject } from 'rxjs';
+import { catchError, EMPTY, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { NotifierService } from '../shared/services/notifier.service';
 
@@ -30,9 +30,17 @@ export class OverviewComponent implements OnInit {
     const urlSearchParam = new URLSearchParams(window.location.search);
     const quarter = urlSearchParam.get('quarter');
     if (quarter) {
-      this.overviewService.getOverview(Number(quarter)).subscribe((overviews) => {
-        this.overviewEntities.next(overviews);
-      });
+      this.overviewService
+        .getOverview(+quarter)
+        .pipe(
+          catchError(() => {
+            this.loadDefaultOverview();
+            return EMPTY;
+          }),
+        )
+        .subscribe((overviews) => {
+          this.overviewEntities.next(overviews);
+        });
     } else {
       this.loadDefaultOverview();
     }

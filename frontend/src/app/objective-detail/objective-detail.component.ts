@@ -49,8 +49,8 @@ export class ObjectiveDetailComponent {
         },
       })
       .afterClosed()
-      .subscribe(async (result) => {
-        if (result && result.openNew) {
+      .subscribe((result) => {
+        if (result?.openNew) {
           this.openAddKeyResultDialog();
         }
         this.refreshDataService.markDataRefresh();

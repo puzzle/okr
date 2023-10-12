@@ -9,14 +9,13 @@ import {KeyResultMetricDTO} from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import {ConfirmDialogComponent} from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import {Objective} from '../shared/types/model/Objective';
-import {CloseState} from '../shared/types/enums/CloseState';
-import {KeyResultEmitOrdinalDTO} from "../shared/types/DTOs/KeyResultEmitOrdinalDTO";
-import {KeyResultEmitDTO} from "../shared/types/DTOs/KeyResultEmitDTO";
-import {KeyResultEmitMetricDTO} from "../shared/types/DTOs/KeyResultEmitMetricDTO";
-import {KeyResultDTO} from "../shared/types/DTOs/KeyResultDTO";
-import {KeyResultOrdinalDTO} from "../shared/types/DTOs/KeyResultOrdinalDTO";
-import {KeyResultMetric} from "../shared/types/model/KeyResultMetric";
-import {KeyResultOrdinal} from "../shared/types/model/KeyResultOrdinal";
+import {KeyResultEmitOrdinalDTO} from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
+import {KeyResultEmitDTO} from '../shared/types/DTOs/KeyResultEmitDTO';
+import {KeyResultEmitMetricDTO} from '../shared/types/DTOs/KeyResultEmitMetricDTO';
+import {KeyResultDTO} from '../shared/types/DTOs/KeyResultDTO';
+import {KeyResultOrdinalDTO} from '../shared/types/DTOs/KeyResultOrdinalDTO';
+import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
+import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -50,7 +49,7 @@ export class KeyResultDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.keyResult) {
-      this.isMetricKeyResult = this.data.keyResult.keyResultType == "metric";
+      this.isMetricKeyResult = this.data.keyResult.keyResultType == 'metric';
       if (this.isMetricKeyResult) {
         let keyResultMetric = this.data.keyResult as KeyResultMetric;
         this.keyResultForm.setValue({
@@ -155,8 +154,8 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   saveEmittedData(keyResult: KeyResultEmitDTO) {
-    this.isMetricKeyResult = keyResult.keyresultType == "metric";
-    if (keyResult.keyresultType == "metric") {
+    this.isMetricKeyResult = keyResult.keyresultType == 'metric';
+    if (keyResult.keyresultType == 'metric') {
       let metricKeyResult = keyResult as KeyResultEmitMetricDTO;
       this.keyResultForm.patchValue({
         baseline: metricKeyResult.baseline,

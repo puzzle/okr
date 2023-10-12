@@ -1,4 +1,4 @@
-import {KeyResultEmitDTO} from "./KeyResultEmitDTO";
+import { KeyResultEmitDTO } from './KeyResultEmitDTO';
 
 export interface KeyResultEmitMetricDTO extends KeyResultEmitDTO {
   baseline: number | null | undefined;

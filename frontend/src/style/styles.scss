@@ -114,3 +114,9 @@ body pzsh-backdrop {
 .disable-scrolling {
   overflow-y: hidden;
 }
+
+.panel {
+  @extend .col-sm-12;
+  @extend .col-lg-6;
+  @extend .col-xl-4;
+}

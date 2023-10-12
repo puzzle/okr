@@ -51,22 +51,25 @@
         </div>
       </ng-container>
     </div>
-    <div *ngIf="keyResult.lastCheckIn?.createdOn" class="mb-3">
-      <h2 class="sub-title-keyresult fw-bold mb-2">
-        Letztes Check-in ({{ keyResult.lastCheckIn?.createdOn | date: "dd.MM.yyy" }})
-      </h2>
-      <p>{{ keyResult.lastCheckIn?.changeInfo }}</p>
+    <div *ngIf="keyResult.lastCheckIn as checkIn; else noCheckIn">
+      <p class="sub-title-keyresult fw-bold mb-2">Letztes Check-in ({{ checkIn.createdOn | date: "dd.MM.yyy" }})</p>
+
+      <p *ngIf="checkIn.changeInfo; else noChangeInfo">{{ checkIn.changeInfo }}</p>
+      <ng-template #noChangeInfo> Keine Änderungsinformation </ng-template>
+      <span class="d-flex justify-content-start mb-3">
+        <button mat-button color="primary" (click)="checkInHistory(keyResult.id)" class="px-0" disableRipple="true">
+          Alle Check-ins anzeigen
+        </button>
+      </span>
     </div>
-    <span class="d-flex justify-content-start mb-3">
-      <button class="add-button" mat-button (click)="checkInHistory(keyResult.id)">Alle Check-ins anzeigen</button>
-    </span>
+    <ng-template #noCheckIn> Kein Check-in vorhanden </ng-template>
 
     <div class="mb-3">
       <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
       <p>{{ keyResult.description }}</p>
     </div>
     <div class="d-flex align-items-center flex-row-reverse justify-content-end gap-3">
-      <button class="add-button" mat-button (click)="openEditKeyResultDialog(keyResult)">Key Result bearbeiten</button>
+      <button color="primary" mat-button (click)="openEditKeyResultDialog(keyResult)">Key Result bearbeiten</button>
       <button mat-flat-button color="primary">Check-in erfassen</button>
     </div>
   </div>

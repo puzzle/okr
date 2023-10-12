@@ -17,8 +17,8 @@
       <div class="sidebar__content">
         <div [ngSwitch]="modelType">
           <div *ngSwitchDefault>Kein passender switch case!</div>
-          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="id$"></app-objective-detail>
-          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId$]="id$"></app-keyresult-detail>
+          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
+          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -34,7 +34,7 @@ export class KeyResultDialogComponent implements OnInit {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: Subject<Objective>; keyResult: KeyResult },
+    @Inject(MAT_DIALOG_DATA) public data: { objective: ReplaySubject<Objective>; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
@@ -72,11 +72,12 @@ export class KeyResultDialogComponent implements OnInit {
       stretchGoal: value.stretchGoal,
     } as unknown as KeyResultMetricDTO;
 
-    this.data.objective.subscribe((objective: Objective) => {
+    this.data.objective.subscribe((objective) => {
       if (objective) {
         keyResult.objective = objective;
       }
     });
+
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         keyResult: returnValue,

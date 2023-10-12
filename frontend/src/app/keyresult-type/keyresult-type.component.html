@@ -39,7 +39,6 @@
                 <option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</option>
               </select>
             </div>
-
             <div>
               <label>Baseline</label>
               <input class="input-fields metric-fields" (change)="emitData()" formControlName="baseline" />
@@ -79,19 +78,28 @@
               <label>Commit Zone</label>
               <textarea class="input-fields" (change)="emitData()" formControlName="commitZone"></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
+                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
             </div>
-
             <div>
               <label>Target Zone</label>
               <textarea class="input-fields" (change)="emitData()" formControlName="targetZone"></textarea>
+              <div *ngIf="isTouchedOrDirty('targetZone')">
+                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
             </div>
             <div>
               <label>Stretch Zone</label>
               <textarea class="input-fields" (change)="emitData()" formControlName="stretchZone"></textarea>
+              <div *ngIf="isTouchedOrDirty('stretchZone')">
+                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
             </div>
             <div>
               <label>Owner</label>

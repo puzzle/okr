@@ -1,7 +1,8 @@
 package ch.puzzle.okr.service.validation;
-
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class OverviewValidationService {
     private final TeamValidationService teamValidator;
     private final QuarterValidationService quarterValidator;

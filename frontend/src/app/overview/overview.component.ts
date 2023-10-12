@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
-import { NotifierService } from '../shared/services/notifier.service';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-overview',
@@ -10,19 +10,29 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit {
+export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities!: Observable<OverviewEntity[]>;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
     private overviewService: OverviewService,
-    private notifierService: NotifierService,
+    private refreshDataService: RefreshDataService,
   ) {
-    this.notifierService.reloadOverview.subscribe(() => {
-      this.overviewEntities = this.overviewService.getOverview();
+    refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.loadOverview();
     });
   }
 
   ngOnInit(): void {
+    this.overviewEntities = this.overviewService.getOverview();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
+  loadOverview() {
     this.overviewEntities = this.overviewService.getOverview();
   }
 }

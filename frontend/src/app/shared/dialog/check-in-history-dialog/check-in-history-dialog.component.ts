@@ -43,7 +43,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.data !== undefined && result.data !== null) {
+      if (!result?.data) {
         let updatedCheckIn = { ...result.data, id: checkIn.id };
         this.checkInService.updateCheckIn(updatedCheckIn, updatedCheckIn.id).subscribe((updatedCheckIn) => {
           this.notifierService.reopenCheckInHistoryDialog.next({ checkIn: updatedCheckIn, deleted: false });

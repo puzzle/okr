@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, EMPTY, Subject } from 'rxjs';
-import { OverviewService } from '../shared/services/overview.service';
-import { NotifierService } from '../shared/services/notifier.service';
-import { ActivatedRoute } from '@angular/router';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {OverviewEntity} from '../shared/types/model/OverviewEntity';
+import {catchError, EMPTY, ReplaySubject, Subject, takeUntil} from 'rxjs';
+import {OverviewService} from '../shared/services/overview.service';
+import {ActivatedRoute} from '@angular/router';
+import {RefreshDataService} from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-overview',
@@ -11,15 +11,16 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit {
-  overviewEntities: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
+export class OverviewComponent implements OnInit, OnDestroy {
+  overviewEntities: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>()
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
     private overviewService: OverviewService,
-    private notifierService: NotifierService,
+    private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.notifierService.reloadOverview.subscribe(() => {
+    refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.loadOverview();
     });
   }
@@ -50,5 +51,10 @@ export class OverviewComponent implements OnInit {
     this.overviewService.getOverview().subscribe((overviews) => {
       this.overviewEntities.next(overviews);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

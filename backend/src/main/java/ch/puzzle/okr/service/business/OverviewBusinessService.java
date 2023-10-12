@@ -15,7 +15,8 @@ public class OverviewBusinessService {
     private final QuarterBusinessService quarterBusinessService;
     private final OverviewValidationService validator;
 
-    public OverviewBusinessService(OverviewPersistenceService overviewPersistenceService, QuarterBusinessService quarterBusinessService, OverviewValidationService validator) {
+    public OverviewBusinessService(OverviewPersistenceService overviewPersistenceService,
+            QuarterBusinessService quarterBusinessService, OverviewValidationService validator) {
         this.overviewPersistenceService = overviewPersistenceService;
         this.quarterBusinessService = quarterBusinessService;
         this.validator = validator;

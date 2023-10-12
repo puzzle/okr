@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { catchError, EMPTY, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, ReplaySubject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -15,7 +15,7 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 export class ObjectiveDetailComponent {
   @Input()
   objectiveId!: number;
-  objective$: ReplaySubject<Objective> = new ReplaySubject<Objective>();
+  objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
   constructor(
     private objectiveService: ObjectiveService,
@@ -44,7 +44,7 @@ export class ObjectiveDetailComponent {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective$,
+          objective: this.objective$.getValue(),
           keyResult: null,
         },
       })

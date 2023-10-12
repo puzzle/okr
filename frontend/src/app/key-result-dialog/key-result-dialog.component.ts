@@ -34,7 +34,7 @@ export class KeyResultDialogComponent implements OnInit {
   });
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { objective: ReplaySubject<Objective>; keyResult: KeyResult },
+    @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
@@ -72,11 +72,9 @@ export class KeyResultDialogComponent implements OnInit {
       stretchGoal: value.stretchGoal,
     } as unknown as KeyResultMetricDTO;
 
-    this.data.objective.subscribe((objective) => {
-      if (objective) {
-        keyResult.objective = objective;
-      }
-    });
+    if (this.data.objective) {
+      keyResult.objective = this.data.objective;
+    }
 
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({

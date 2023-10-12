@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { BehaviorSubject, catchError, EMPTY, Observable, ReplaySubject, Subject } from 'rxjs';
+import { catchError, EMPTY, ReplaySubject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { RefreshDataService } from '../shared/services/refresh-data.service';

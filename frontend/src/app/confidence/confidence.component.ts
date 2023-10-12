@@ -15,7 +15,7 @@ export class ConfidenceComponent implements OnChanges {
   @Input() backgroundColor!: string;
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['checkIn']?.currentValue === undefined || changes['checkIn']?.currentValue === null) {
+    if (!changes['checkIn']?.currentValue) {
       this.checkIn = { confidence: 5 } as CheckInMin;
     }
   }

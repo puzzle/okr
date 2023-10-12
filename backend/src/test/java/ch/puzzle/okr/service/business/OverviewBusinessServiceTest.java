@@ -71,8 +71,7 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenTeamIdsAreNull() {
-        when(overviewPersistenceService.getOverviewByQuarterId(quarterId))
-                .thenReturn(List.of(createOverview()));
+        when(overviewPersistenceService.getOverviewByQuarterId(quarterId)).thenReturn(List.of(createOverview()));
 
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
 

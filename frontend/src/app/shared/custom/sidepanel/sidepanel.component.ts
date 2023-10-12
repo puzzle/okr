@@ -8,8 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { ConnectedPosition, ScrollStrategyOptions } from '@angular/cdk/overlay'; // ESM
+import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
 
 @Component({
   selector: 'app-sidepanel',
@@ -29,7 +28,7 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
     },
   ];
   modelType = '';
-  id$!: Observable<number>;
+  id: number = 0;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,8 +38,8 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data) => {
       this.modelType = data['type'];
+      this.id = data['id'];
     });
-    this.id$ = this.activatedRoute.data.pipe(map((data) => data['id']));
   }
 
   ngAfterViewInit(): void {

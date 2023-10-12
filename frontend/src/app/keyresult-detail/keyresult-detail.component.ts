@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -7,7 +7,7 @@ import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { CheckInService } from '../shared/services/check-in.service';
-import { catchError, Observable, Subject } from 'rxjs';
+import { catchError, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
@@ -20,7 +20,7 @@ import { CloseState } from '../shared/types/enums/CloseState';
 })
 export class KeyresultDetailComponent implements OnInit {
   @Input()
-  keyResultId$!: Observable<number>;
+  keyResultId!: number;
 
   keyResult$: Subject<KeyResult> = new Subject<KeyResult>();
 
@@ -33,9 +33,7 @@ export class KeyresultDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.keyResultId$.subscribe((id) => {
-      this.loadKeyResult(id);
-    });
+    this.loadKeyResult(this.keyResultId);
   }
 
   loadKeyResult(id: number): void {

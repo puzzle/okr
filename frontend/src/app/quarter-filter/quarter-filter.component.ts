@@ -26,19 +26,7 @@ export class QuarterFilterComponent implements OnInit {
       this.quarters.next(quarters);
       const urlSearchParam = new URLSearchParams(window.location.search);
       const quarterId = urlSearchParam.get('quarter');
-      if (
-        quarterId &&
-        quarters
-          .map((quarter) => {
-            return quarter.id;
-          })
-          .includes(Number(quarterId))
-      ) {
-        this.quarterId = Number(quarterId);
-      } else {
-        this.quarterId = quarters[0].id;
-        this.changeDisplayedQuarter();
-      }
+      this.quarterId = Number(quarterId);
     });
   }
 

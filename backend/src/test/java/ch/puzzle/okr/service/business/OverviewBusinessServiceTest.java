@@ -46,8 +46,10 @@ class OverviewBusinessServiceTest {
 
         assertEquals(1, overviews.size());
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
-        verify(quarterBusinessService, times(0)).getCurrentQuarter();
         verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewValidationService, never()).validateQuarter(quarterId);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
     }
 
     @Test
@@ -62,5 +64,23 @@ class OverviewBusinessServiceTest {
         assertEquals(1, overviews.size());
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
         verify(quarterBusinessService, times(1)).getCurrentQuarter();
+        verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
+        verify(overviewValidationService, never()).validateQuarter(quarterId);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
+    }
+
+    @Test
+    void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenTeamIdsAreNull() {
+        when(overviewPersistenceService.getOverviewByQuarterId(quarterId))
+                .thenReturn(List.of(createOverview()));
+
+        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
+
+        assertEquals(1, overviews.size());
+        verify(overviewValidationService, times(1)).validateQuarter(quarterId);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterId(quarterId);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewValidationService, never()).validateOnGet(quarterId, teamIds);
     }
 }

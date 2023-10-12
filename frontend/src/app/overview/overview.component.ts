@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
@@ -11,7 +11,7 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit, OnDestroy {
-  overviewEntities!: Observable<OverviewEntity[]>;
+  overviewEntities$: ReplaySubject<OverviewEntity[]> = new ReplaySubject<OverviewEntity[]>(1);
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
@@ -22,7 +22,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.overviewEntities = this.overviewService.getOverview();
+    this.loadOverview();
   }
 
   ngOnDestroy(): void {
@@ -31,6 +31,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   loadOverview() {
-    this.overviewEntities = this.overviewService.getOverview();
+    this.overviewService.getOverview().subscribe((value) => {
+      this.overviewEntities$.next(value);
+    });
   }
 }

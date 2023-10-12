@@ -3,6 +3,7 @@ package ch.puzzle.okr.models.keyresult;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -11,12 +12,15 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 @DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
 public class KeyResultOrdinal extends KeyResult {
     @NotNull(message = "CommitZone must not be null")
+    @Size(max = 400, message = "Attribute commitZone has a max length of 400 characters")
     private String commitZone;
 
     @NotNull(message = "TargetZone must not be null")
+    @Size(max = 400, message = "Attribute targetZone has a max length of 400 characters")
     private String targetZone;
 
     @NotNull(message = "StretchZone must not be null")
+    @Size(max = 400, message = "Attribute stretchZone has a max length of 400 characters")
     private String stretchZone;
 
     public String getCommitZone() {

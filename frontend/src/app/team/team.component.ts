@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
-import { NotifierService } from '../shared/services/notifier.service';
 import { BehaviorSubject } from 'rxjs';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-team',
@@ -12,46 +12,15 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent {
+  private _overviewEntity = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
+
   constructor(
     private dialog: MatDialog,
-    private notifierService: NotifierService,
-    private changeDetectionRef: ChangeDetectorRef,
-  ) {
-    this.notifierService.objectivesChanges.subscribe((objectiveChange) => {
-      if (objectiveChange.teamId !== this.overviewEntity.value.team.id) {
-        return;
-      }
+    private refreshDataService: RefreshDataService,
+  ) {}
 
-      const objectives = [...this.overviewEntity.value.objectives];
-      const existingObjIndex = objectives.findIndex((obj) => obj.id === objectiveChange.objective.id);
-
-      if (existingObjIndex === -1 && !objectiveChange.delete) {
-        // Add
-        this.notifierService.reloadOverview.next(null);
-      } else if (existingObjIndex !== -1 && objectiveChange.delete) {
-        // Delete
-        objectives.splice(existingObjIndex, 1);
-      } else if (existingObjIndex !== -1) {
-        // Update
-        objectives[existingObjIndex] = {
-          ...objectives[existingObjIndex],
-          title: objectiveChange.objective.title,
-          state: objectiveChange.objective.state,
-        };
-      }
-
-      this.overviewEntity = { ...this.overviewEntity.value, objectives };
-
-      if (objectiveChange.addKeyResult) {
-        this.changeDetectionRef.detectChanges();
-        this.notifierService.openKeyresultCreation.next(objectiveChange.objective);
-      }
-    });
-  }
-
-  private _overviewEntity = new BehaviorSubject<OverviewEntity>({} as unknown as OverviewEntity);
-
-  @Input() get overviewEntity(): BehaviorSubject<OverviewEntity> {
+  @Input()
+  get overviewEntity(): BehaviorSubject<OverviewEntity> {
     return this._overviewEntity;
   }
 
@@ -64,15 +33,8 @@ export class TeamComponent {
       data: { teamId: this.overviewEntity.value.team.id },
       width: '850px',
     });
-    matDialogRef.afterClosed().subscribe((result) => {
-      if (result?.objective) {
-        this.notifierService.objectivesChanges.next({
-          objective: result.objective,
-          teamId: result.teamId,
-          delete: result.delete,
-          addKeyResult: result.addKeyResult,
-        });
-      }
+    matDialogRef.afterClosed().subscribe(() => {
+      this.refreshDataService.markDataRefresh();
     });
   }
 }

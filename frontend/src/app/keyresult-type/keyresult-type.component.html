@@ -28,49 +28,39 @@
           <div class="d-flex gap-1">
             <div>
               <label>Einheit</label>
-              <mat-form-field appearance="outline" class="input-fields">
-                <mat-label>Einheit</mat-label>
-                <mat-select [(value)]="typeForm.value.unit" (focusout)="emitData()">
-                  <mat-option value="CHF">{{ "UNIT.CHF" | translate }}</mat-option>
-                  <mat-option value="FTE">{{ "UNIT.FTE" | translate }}</mat-option>
-                  <mat-option value="NUMBER">{{ "UNIT.NUMBER" | translate }}</mat-option>
-                  <mat-option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div *ngIf="isTouchedOrDirty('unit')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
-              </div>
+              <select
+                class="unit-dropdown bg-white input-fields menu-option"
+                (change)="emitData()"
+                formControlName="unit"
+              >
+                <option value="CHF">{{ "UNIT.CHF" | translate }}</option>
+                <option value="FTE">{{ "UNIT.FTE" | translate }}</option>
+                <option value="NUMBER">{{ "UNIT.NUMBER" | translate }}</option>
+                <option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</option>
+              </select>
             </div>
 
             <div>
               <label>Baseline</label>
-              <mat-form-field appearance="outline" class="input-fields"
-                ><input matInput formControlName="baseline" placeholder="Baseline" (focusout)="emitData()" />
-              </mat-form-field>
+              <input class="input-fields metric-fields" (change)="emitData()" formControlName="baseline" />
               <div *ngIf="isTouchedOrDirty('baseline')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
+                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
             </div>
             <div>
               <label>Stretch Goal</label>
-              <mat-form-field appearance="outline" class="input-fields"
-                ><input matInput formControlName="stretchGoal" placeholder="Stretch Goal" (focusout)="emitData()"
-              /></mat-form-field>
+              <input class="input-fields metric-fields" (change)="emitData()" formControlName="stretchGoal" />
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
+                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
             </div>
             <div>
               <label>Owner</label>
-              <mat-form-field appearance="outline" class="input-fields"
-                ><input matInput formControlName="owner" placeholder="Owner" />
-              </mat-form-field>
+              <input class="input-fields metric-fields" (change)="emitData()" formControlName="owner" />
             </div>
           </div>
         </div>
@@ -87,14 +77,7 @@
           <div class="d-flex gap-1">
             <div>
               <label>Commit Zone</label>
-              <mat-form-field appearance="outline" class="input-fields">
-                <textarea
-                  matInput
-                  formControlName="commitZone"
-                  placeholder="Commit Zone"
-                  (focusout)="emitData()"
-                ></textarea>
-              </mat-form-field>
+              <textarea class="input-fields" (change)="emitData()" formControlName="commitZone"></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
@@ -104,41 +87,15 @@
 
             <div>
               <label>Target Zone</label>
-              <mat-form-field appearance="outline" class="input-fields">
-                <textarea
-                  matInput
-                  formControlName="targetZone"
-                  placeholder="Target Zone"
-                  (focusout)="emitData()"
-                ></textarea>
-              </mat-form-field>
-              <div *ngIf="isTouchedOrDirty('targetZone')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
-              </div>
+              <textarea class="input-fields" (change)="emitData()" formControlName="targetZone"></textarea>
             </div>
             <div>
               <label>Stretch Zone</label>
-              <mat-form-field appearance="outline" class="input-fields">
-                <textarea
-                  matInput
-                  formControlName="stretchZone"
-                  placeholder="Stretch Zone"
-                  (focusout)="emitData()"
-                ></textarea>
-              </mat-form-field>
-              <div *ngIf="isTouchedOrDirty('stretchZone')">
-                <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
-                </mat-error>
-              </div>
+              <textarea class="input-fields" (change)="emitData()" formControlName="stretchZone"></textarea>
             </div>
             <div>
               <label>Owner</label>
-              <mat-form-field appearance="outline" class="input-fields">
-                <input matInput formControlName="owner" placeholder="Owner" />
-              </mat-form-field>
+              <input class="input-fields metric-fields" (change)="emitData()" formControlName="owner" />
             </div>
           </div>
         </div>

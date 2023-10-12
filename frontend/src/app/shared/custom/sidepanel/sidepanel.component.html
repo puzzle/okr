@@ -14,9 +14,7 @@
     cdkScrollable="false"
   >
     <div #sidebar cdkTrapFocus="true" class="sidebar bg-white w-100" cdkScrollable="false">
-      <button (click)="close()">close</button>
       <div class="sidebar__content">
-        <h1>Sidepanel</h1>
         <div [ngSwitch]="modelType">
           <div *ngSwitchDefault>Kein passender switch case!</div>
           <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId$]="id$"></app-objective-detail>

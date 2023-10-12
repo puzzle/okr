@@ -23,8 +23,8 @@ export class KeyresultTypeComponent implements OnInit {
   typeForm = new FormGroup({
     owner: new FormControl<User | null>(null),
     unit: new FormControl<string | null>(null, [Validators.required]),
-    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
-    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
+    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
+    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
     commitZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
     targetZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
     stretchZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),

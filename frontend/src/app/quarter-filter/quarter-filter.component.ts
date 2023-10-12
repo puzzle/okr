@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
-import { Observable, of, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NotifierService } from '../shared/services/notifier.service';
 
@@ -37,12 +37,13 @@ export class QuarterFilterComponent implements OnInit {
         this.quarterId = Number(quarterId);
       } else {
         this.quarterId = quarters[0].id;
-        this.changeDisplayedQuarter(quarters[0].id);
+        this.changeDisplayedQuarter();
       }
     });
   }
 
-  changeDisplayedQuarter(id: number) {
+  changeDisplayedQuarter() {
+    const id = this.quarterId;
     this.router.navigate([], { queryParams: { quarter: id } }).then(() => {
       this.notifierService.reloadOverview.next(null);
     });

@@ -1,9 +1,5 @@
-<select class="quarter-select bg-white" [(ngModel)]="quarterId">
-  <option
-    *ngFor="let quarter of quarters | async"
-    (click)="changeDisplayedQuarter(quarter.id)"
-    value="{{ quarter.id }}"
-  >
+<select class="quarter-select bg-white" [(ngModel)]="quarterId" (change)="changeDisplayedQuarter()">
+  <option *ngFor="let quarter of quarters | async" value="{{ quarter.id }}">
     {{ quarter.label }}
   </option>
 </select>

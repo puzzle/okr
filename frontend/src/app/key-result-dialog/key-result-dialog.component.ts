@@ -9,7 +9,6 @@ import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-key-result-dialog',

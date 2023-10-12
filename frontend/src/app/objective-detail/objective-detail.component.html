@@ -2,7 +2,7 @@
   <div class="mb-2 d-flex justify-content-between flex-column">
     <div class="mb-2 d-flex justify-content-between">
       <div class="title">{{ objective.title }}</div>
-      <mat-icon data-test-id="closeDrawer" class="pointer-cursor">close</mat-icon>
+      <mat-icon data-test-id="closeDrawer" class="pointer-cursor" [routerLink]="'/'">close</mat-icon>
     </div>
     <div class="title fs-6">Beschrieb</div>
     <p data-test-id="description">{{ objective.description }}</p>

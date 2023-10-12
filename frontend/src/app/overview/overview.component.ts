@@ -20,9 +20,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
   ) {
-    refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      this.loadOverview();
-    });
+    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverview());
   }
 
   ngOnInit(): void {

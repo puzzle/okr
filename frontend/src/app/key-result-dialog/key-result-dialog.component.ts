@@ -72,10 +72,6 @@ export class KeyResultDialogComponent implements OnInit {
       stretchGoal: value.stretchGoal,
     } as unknown as KeyResultMetricDTO;
 
-    if (this.data.objective) {
-      keyResult.objective = this.data.objective;
-    }
-
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         keyResult: returnValue,

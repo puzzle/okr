@@ -117,6 +117,5 @@ body pzsh-backdrop {
 
 .panel {
   @extend .col-sm-12;
-  @extend .col-lg-6;
-  @extend .col-xl-4;
+  @extend .col-md-5;
 }

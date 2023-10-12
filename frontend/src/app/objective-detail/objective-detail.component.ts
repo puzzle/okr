@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { catchError, EMPTY, Observable, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY, Observable, ReplaySubject, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -14,8 +14,8 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 })
 export class ObjectiveDetailComponent {
   @Input()
-  objectiveId$!: Observable<number>;
-  objective$: Subject<Objective> = new ReplaySubject<Objective>(1);
+  objectiveId!: number;
+  objective$: ReplaySubject<Objective> = new ReplaySubject<Objective>();
 
   constructor(
     private objectiveService: ObjectiveService,
@@ -24,9 +24,7 @@ export class ObjectiveDetailComponent {
   ) {}
 
   ngOnInit(): void {
-    this.objectiveId$.subscribe((id) => {
-      this.loadObjective(id);
-    });
+    this.loadObjective(this.objectiveId);
   }
 
   loadObjective(id: number): void {

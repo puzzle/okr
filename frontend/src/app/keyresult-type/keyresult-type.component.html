@@ -1,39 +1,35 @@
 <div>
   <div class="d-flex">
-    <div [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'" [ngClass]="{'active': isMetric, 'non-active': !isMetric}" class="metric tab-title"
-         (click)="switchKeyResultType('metric')">Metrisch
+    <div
+      [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
+      [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
+      class="metric tab-title"
+      (click)="switchKeyResultType('metric')"
+    >
+      Metrisch
     </div>
-    <div [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'" [ngClass]="{'active': !isMetric, 'non-active': isMetric}" class="ordinal tab-title"
-         (click)="switchKeyResultType('ordinal')">Ordinal
+    <div
+      [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
+      [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
+      class="ordinal tab-title"
+      (click)="switchKeyResultType('ordinal')"
+    >
+      Ordinal
     </div>
     <div class="buffer tab-title flex-fill"></div>
   </div>
 </div>
 
 <div *ngIf="isMetric; else ordinalBlock">
-  <form [formGroup]="typeForm">
+  <form [formGroup]="typeForm" class="gap-1">
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex justify-content-between">
-            <span class="keyresult-type-label">
-              <span class="text-small">Einheit</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Baseline</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Stretch Goal</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Owner</span>
-            </span>
-          </div>
-
-          <div class="d-flex">
+          <div class="d-flex gap-1">
             <div>
-              <mat-form-field appearance="outline">
-                <mat-label>Einheit wählen</mat-label>
+              <label>Einheit</label>
+              <mat-form-field appearance="outline" class="input-fields">
+                <mat-label>Einheit</mat-label>
                 <mat-select [(value)]="typeForm.value.unit" (focusout)="emitData()">
                   <mat-option value="CHF">{{ "UNIT.CHF" | translate }}</mat-option>
                   <mat-option value="FTE">{{ "UNIT.FTE" | translate }}</mat-option>
@@ -49,8 +45,9 @@
             </div>
 
             <div>
-              <mat-form-field appearance="outline"
-              ><input matInput formControlName="baseline" placeholder="Baseline" (focusout)="emitData()"/>
+              <label>Baseline</label>
+              <mat-form-field appearance="outline" class="input-fields"
+                ><input matInput formControlName="baseline" placeholder="Baseline" (focusout)="emitData()" />
               </mat-form-field>
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
@@ -59,8 +56,9 @@
               </div>
             </div>
             <div>
-              <mat-form-field appearance="outline"
-              ><input matInput formControlName="stretchGoal" placeholder="Stretch Goal" (focusout)="emitData()"
+              <label>Stretch Goal</label>
+              <mat-form-field appearance="outline" class="input-fields"
+                ><input matInput formControlName="stretchGoal" placeholder="Stretch Goal" (focusout)="emitData()"
               /></mat-form-field>
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
@@ -69,8 +67,9 @@
               </div>
             </div>
             <div>
-              <mat-form-field appearance="outline"
-              ><input matInput formControlName="owner" placeholder="Owner"/>
+              <label>Owner</label>
+              <mat-form-field appearance="outline" class="input-fields"
+                ><input matInput formControlName="owner" placeholder="Owner" />
               </mat-form-field>
             </div>
           </div>
@@ -81,29 +80,20 @@
 </div>
 
 <ng-template #ordinalBlock>
-  <form [formGroup]="typeForm">
+  <form [formGroup]="typeForm" class="gap-1">
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex justify-content-between">
-            <span class="keyresult-type-label">
-              <span class="text-small">Commit Zone</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Target Zone</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Stretch Zone</span>
-            </span>
-            <span class="keyresult-type-label">
-              <span class="text-small">Owner</span>
-            </span>
-          </div>
-
-          <div class="d-flex">
+          <div class="d-flex gap-1">
             <div>
-              <mat-form-field appearance="outline">
-                <textarea matInput formControlName="commitZone" placeholder="Commit Zone" (focusout)="emitData()"></textarea>
+              <label>Commit Zone</label>
+              <mat-form-field appearance="outline" class="input-fields">
+                <textarea
+                  matInput
+                  formControlName="commitZone"
+                  placeholder="Commit Zone"
+                  (focusout)="emitData()"
+                ></textarea>
               </mat-form-field>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
@@ -113,8 +103,14 @@
             </div>
 
             <div>
-              <mat-form-field appearance="outline">
-                <textarea matInput formControlName="targetZone" placeholder="Target Zone" (focusout)="emitData()"></textarea>
+              <label>Target Zone</label>
+              <mat-form-field appearance="outline" class="input-fields">
+                <textarea
+                  matInput
+                  formControlName="targetZone"
+                  placeholder="Target Zone"
+                  (focusout)="emitData()"
+                ></textarea>
               </mat-form-field>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
@@ -123,8 +119,14 @@
               </div>
             </div>
             <div>
-              <mat-form-field appearance="outline">
-                <textarea matInput formControlName="stretchZone" placeholder="Stretch Zone" (focusout)="emitData()"></textarea>
+              <label>Stretch Zone</label>
+              <mat-form-field appearance="outline" class="input-fields">
+                <textarea
+                  matInput
+                  formControlName="stretchZone"
+                  placeholder="Stretch Zone"
+                  (focusout)="emitData()"
+                ></textarea>
               </mat-form-field>
               <div *ngIf="isTouchedOrDirty('stretchZone')">
                 <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
@@ -133,8 +135,9 @@
               </div>
             </div>
             <div>
-              <mat-form-field appearance="outline">
-                <input matInput formControlName="owner" placeholder="Owner">
+              <label>Owner</label>
+              <mat-form-field appearance="outline" class="input-fields">
+                <input matInput formControlName="owner" placeholder="Owner" />
               </mat-form-field>
             </div>
           </div>

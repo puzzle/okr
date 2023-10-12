@@ -20,7 +20,10 @@
     </div>
 
     <div>
-      <app-keyresult-type [keyresult]="data.keyResult" (newKeyresultEvent)="saveEmittedData($event)"></app-keyresult-type>
+      <app-keyresult-type
+        [keyresult]="data.keyResult"
+        (newKeyresultEvent)="saveEmittedData($event)"
+      ></app-keyresult-type>
     </div>
 
     <div class="d-flex flex-column gap-2 col-12">

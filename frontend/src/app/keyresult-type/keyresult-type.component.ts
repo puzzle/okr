@@ -1,13 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {KeyResult} from '../shared/types/model/KeyResult';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {User} from '../shared/types/model/User';
-import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
-import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { KeyResult } from '../shared/types/model/KeyResult';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../shared/types/model/User';
+import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
-import {KeyResultEmitMetricDTO} from "../shared/types/DTOs/KeyResultEmitMetricDTO";
-import {KeyResultEmitOrdinalDTO} from "../shared/types/DTOs/KeyResultEmitOrdinalDTO";
-import {KeyResultEmitDTO} from "../shared/types/DTOs/KeyResultEmitDTO";
+import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
+import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
+import { KeyResultEmitDTO } from '../shared/types/DTOs/KeyResultEmitDTO';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -70,8 +70,8 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   switchKeyResultType(type: String) {
-    if ((type == "metric" && this.isMetric) || (type == "ordinal" && !this.isMetric) || (!this.typeChangeAllowed)) {
-      return
+    if ((type == 'metric' && this.isMetric) || (type == 'ordinal' && !this.isMetric) || !this.typeChangeAllowed) {
+      return;
     } else {
       this.isMetric = !this.isMetric;
     }
@@ -89,24 +89,23 @@ export class KeyresultTypeComponent implements OnInit {
   emitData() {
     if (this.isMetric) {
       let keyresultEmit: KeyResultEmitMetricDTO = {
-        keyresultType: "metric",
+        keyresultType: 'metric',
         owner: this.typeForm.value.owner,
         unit: this.typeForm.value.unit,
         baseline: this.typeForm.value.baseline,
-        stretchGoal: this.typeForm.value.stretchGoal
-      }
+        stretchGoal: this.typeForm.value.stretchGoal,
+      };
       this.newKeyresultEvent.emit(keyresultEmit);
     } else {
       let keyresultEmit: KeyResultEmitOrdinalDTO = {
-        keyresultType: "ordinal",
+        keyresultType: 'ordinal',
         owner: this.typeForm.value.owner,
         commitZone: this.typeForm.value.commitZone,
         targetZone: this.typeForm.value.targetZone,
-        stretchZone: this.typeForm.value.stretchZone
-      }
+        stretchZone: this.typeForm.value.stretchZone,
+      };
       this.newKeyresultEvent.emit(keyresultEmit);
     }
-
   }
 
   protected readonly errorMessages: any = errorMessages;

@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { User, UserService } from './user.service';
-import * as userData from '../testing/mock-data/users.json';
+import { users } from '../testData';
 
-const response = userData.users;
+const response = users;
 describe('UserService', () => {
   let service: UserService;
   let httpTestingController: HttpTestingController;

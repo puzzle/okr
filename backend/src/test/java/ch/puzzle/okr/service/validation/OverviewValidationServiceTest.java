@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.validation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,11 +14,11 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class OverviewValidationServiceTest {
-    @MockBean
-    TeamValidationService teamValidationService = Mockito.mock(TeamValidationService.class);
+    @Mock
+    TeamValidationService teamValidationService;
 
-    @MockBean
-    QuarterValidationService quarterValidationService = Mockito.mock(QuarterValidationService.class);
+    @Mock
+    QuarterValidationService quarterValidationService;
 
     @InjectMocks
     OverviewValidationService validator;

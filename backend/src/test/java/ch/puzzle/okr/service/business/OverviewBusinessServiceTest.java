@@ -30,7 +30,7 @@ class OverviewBusinessServiceTest {
     QuarterBusinessService quarterBusinessService;
 
     @Mock
-    OverviewValidationService overviewValidationService = Mockito.mock(OverviewValidationService.class);
+    OverviewValidationService overviewValidationService;
 
     private static Overview createOverview() {
         return Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).build())

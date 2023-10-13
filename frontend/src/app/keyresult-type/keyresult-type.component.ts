@@ -22,8 +22,8 @@ export class KeyresultTypeComponent implements OnInit {
 
   typeForm = new FormGroup({
     unit: new FormControl<string | null>(null, [Validators.required]),
-    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
-    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
+    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
+    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
     commitZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
     targetZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
     stretchZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),

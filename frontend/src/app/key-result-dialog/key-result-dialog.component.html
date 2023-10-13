@@ -9,14 +9,12 @@
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
-      <mat-form-field appearance="outline">
-        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Titel"></textarea>
-        <div *ngIf="isTouchedOrDirty('title')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-            {{ errorMessages[errorKey.toUpperCase()] }}
-          </mat-error>
-        </div>
-      </mat-form-field>
+      <textarea [attr.data-testId]="'titleInput'" class="input-fields" formControlName="title" id="title"></textarea>
+      <div *ngIf="isTouchedOrDirty('title')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+          {{ errorMessages[errorKey.toUpperCase()] }}
+        </mat-error>
+      </div>
     </div>
 
     <div class="mt-2">
@@ -29,6 +27,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
+        [attr.data-testId]="'ownerInput'"
         [matAutocomplete]="auto"
         formControlName="owner"
         class="input-fields owner-input"
@@ -46,7 +45,7 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Beschreibung (optional)</label>
-      <textarea class="input-fields" formControlName="description"></textarea>
+      <textarea [attr.data-testId]="'descriptionInput'" class="input-fields" formControlName="description"></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
           {{ errorMessages[errorKey.toUpperCase()] }}

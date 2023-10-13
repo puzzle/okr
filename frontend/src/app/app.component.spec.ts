@@ -1,21 +1,21 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {RouterTestingModule} from '@angular/router/testing';
-import {AppComponent} from './app.component';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import {AuthConfig, OAuthModule, OAuthService} from 'angular-oauth2-oidc';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppComponent } from './app.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 // @ts-ignore
 import * as de from '../assets/i18n/de.json';
-import {HarnessLoader} from '@angular/cdk/testing';
-import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {NavigationEnd, Routes} from '@angular/router';
-import {of} from 'rxjs';
-import {OverviewComponent} from './overview/overview.component';
-import {ObjectiveDetailComponent} from './objective-detail/objective-detail.component';
-import {CommonModule} from '@angular/common';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NavigationEnd, Routes } from '@angular/router';
+import { of } from 'rxjs';
+import { OverviewComponent } from './overview/overview.component';
+import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
+import { CommonModule } from '@angular/common';
 
 const oauthServiceMock = {
   configure(environment: AuthConfig): void {},

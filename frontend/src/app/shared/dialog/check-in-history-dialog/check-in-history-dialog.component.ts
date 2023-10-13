@@ -6,7 +6,7 @@ import { DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -57,12 +57,11 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   loadCheckInHistory() {
-    this.checkInHistory$ = this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id).pipe(
-      tap((result) => {
-        if (result.length == 0) {
-          this.dialogRef.close();
-        }
-      }),
-    );
+    this.checkInHistory$ = this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id);
+    this.checkInHistory$.subscribe((result) => {
+      if (result.length == 0) {
+        this.dialogRef.close();
+      }
+    });
   }
 }

@@ -1,10 +1,10 @@
 <!--    Confidence and Value   -->
 <div class="d-flex flex-row w-100">
   <div class="d-flex flex-column w-25">
-    <mat-label class="mb-2"
-      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit | unitLabelTransformation }})</span>:
+    <mat-label class="mb-3">
+      Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT'"> ({{ keyResult.unit | unitLabelTransformation }})</span>:
     </mat-label>
-    <div class="d-flex flex-column mb-3">
+    <div class="d-flex flex-column mb-3 pt-1">
       <app-custom-input
         class="custom-input"
         [formGroup]="dialogForm"

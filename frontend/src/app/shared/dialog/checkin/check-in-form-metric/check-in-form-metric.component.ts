@@ -33,7 +33,7 @@ export class CheckInFormMetricComponent implements AfterViewInit {
   }
 
   resetValue() {
-    this.dialogForm.controls['value'].setValue('');
+    this.dialogForm.controls['value'].setValue(this.parserPipe.transform(this.dialogForm?.controls['value'].value));
   }
 
   isTouchedOrDirty(name: string) {

@@ -6,6 +6,6 @@ import { CHAR_REGEX } from '../../regexLibrary';
 })
 export class ParseUnitValuePipe implements PipeTransform {
   transform(value: string): number {
-    return +value.replace(CHAR_REGEX, '');
+    return +value.toString().replace(CHAR_REGEX, '');
   }
 }

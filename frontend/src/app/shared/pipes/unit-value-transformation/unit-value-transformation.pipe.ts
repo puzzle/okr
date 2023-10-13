@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatCurrency } from '@angular/common';
 import { Unit } from '../../types/enums/Unit';
+import { THOUSAND_SEPERATOR } from '../../regexLibrary';
 
 @Pipe({
   name: 'unitValueTransformation',
@@ -12,7 +12,7 @@ export class UnitValueTransformationPipe implements PipeTransform {
     }
     switch (unit) {
       case Unit.CHF:
-        return value % 1 != 0 ? formatCurrency(value, 'en', '') : value + '.-';
+        return this.addCHFSign(value.toFixed(2).toString().replace(THOUSAND_SEPERATOR, "'"));
       case Unit.PERCENT:
         return value + '%';
       case Unit.FTE:
@@ -22,5 +22,9 @@ export class UnitValueTransformationPipe implements PipeTransform {
       default:
         return value.toString();
     }
+  }
+
+  addCHFSign(value: string): string {
+    return !+value.split('.')[1] ? value.split('.')[0] + '.-' : value;
   }
 }

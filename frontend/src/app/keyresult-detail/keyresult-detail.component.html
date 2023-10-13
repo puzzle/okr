@@ -1,10 +1,7 @@
 <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
-  <div *ngIf="keyResult" cdkTrapFocus="true" class="d-flex flex-column">
+  <div *ngIf="keyResult" class="d-flex flex-column">
     <div class="d-flex justify-content-between">
       <h1 class="mb-2 title">{{ keyResult.title }}</h1>
-      <button mat-button [routerLink]="'/'" data-test-id="closeDrawer">
-        <mat-icon>close</mat-icon>
-      </button>
     </div>
     <div class="keyresult-header d-flex justify-content-between mb-3">
       <div>
@@ -74,9 +71,9 @@
       <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
       <p>{{ keyResult.description }}</p>
     </div>
-    <div class="d-flex align-items-center flex-row-reverse justify-content-end gap-3">
-      <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
+    <div class="d-flex align-items-center flex-row justify-content-start gap-3">
       <button color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
+      <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
     </div>
   </div>
 </ng-container>

@@ -6,19 +6,22 @@
     [cdkConnectedOverlayOffsetY]="48"
     [cdkConnectedOverlayOpen]="true"
     [cdkConnectedOverlayOrigin]="container"
+    [cdkConnectedOverlayPanelClass]="'panel'"
     [cdkConnectedOverlayPositions]="position"
     [cdkConnectedOverlayPush]="true"
-    [cdkConnectedOverlayPanelClass]="'panel'"
     cdkConnectedOverlay
     cdkScrollable="false"
   >
-    <div #sidebar cdkTrapFocus="true" class="sidebar bg-white w-100" cdkScrollable="false">
-      <div class="sidebar__content">
-        <div [ngSwitch]="modelType">
-          <div *ngSwitchDefault>Kein passender switch case!</div>
+    <div #sidebar [cdkTrapFocusAutoCapture]="true" cdkScrollable="false" cdkTrapFocus class="sidebar bg-white w-100">
+      <div class="sidebar__content d-flex">
+        <div [ngSwitch]="modelType" class="col-11">
+          <div *ngSwitchDefault>Es ist eine Fehler aufgetreten!</div>
           <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
           <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
         </div>
+        <button [routerLink]="'/'" cdkFocusInitial data-test-id="closeDrawer" mat-button class="col-1">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
     </div>
   </ng-template>

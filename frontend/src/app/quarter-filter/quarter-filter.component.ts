@@ -26,7 +26,7 @@ export class QuarterFilterComponent implements OnInit {
     this.quarterService.getAllQuarters().subscribe((quarters) => {
       this.quarters.next(quarters);
       const quarterId = this.route.snapshot.queryParams['quarter'];
-      if (quarterId !== null && quarters.map((quarter) => quarter.id).includes(+quarterId)) {
+      if (quarterId !== undefined && quarters.map((quarter) => quarter.id).includes(+quarterId)) {
         this.quarterId = +quarterId;
       } else {
         this.quarterId = quarters[0].id;

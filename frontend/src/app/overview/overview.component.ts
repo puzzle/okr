@@ -30,7 +30,7 @@ export class OverviewComponent implements OnInit {
 
   loadOverview() {
     const quarterId = this.route.snapshot.queryParams['quarter'];
-    if (quarterId) {
+    if (quarterId !== undefined) {
       this.overviewService
         .getOverview(+quarterId)
         .pipe(

@@ -12,7 +12,7 @@ export class OverviewService {
 
   getOverview(quarterId?: number): Observable<OverviewEntity[]> {
     return this.http
-      .get<OverviewEntity[]>(quarterId ? '/api/v2/overview?quarter=' + quarterId : '/api/v2/overview')
+      .get<OverviewEntity[]>(quarterId !== undefined ? '/api/v2/overview?quarter=' + quarterId : '/api/v2/overview')
       .pipe(
         //Map state from string to enum
         map((overviews) => {

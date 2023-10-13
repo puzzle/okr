@@ -5,6 +5,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
 import { of } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
+import { ActivatedRoute } from '@angular/router';
+import { AppRoutingModule } from '../app-routing.module';
 
 const overviewService = {
   getOverview() {
@@ -15,10 +17,9 @@ const overviewService = {
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, AppRoutingModule],
       declarations: [OverviewComponent],
       providers: [{ provide: OverviewService, useValue: overviewService }],
     }).compileComponents();

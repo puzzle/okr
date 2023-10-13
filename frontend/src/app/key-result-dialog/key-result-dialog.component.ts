@@ -10,6 +10,7 @@ import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
 import { CloseState } from '../shared/types/enums/CloseState';
+import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -92,7 +93,7 @@ export class KeyResultDialogComponent implements OnInit {
         data: {
           title: 'Key Result',
         },
-        width: '15em',
+        width: CONFIRM_DIALOG_WIDTH,
         height: 'auto',
       })
       .afterClosed()

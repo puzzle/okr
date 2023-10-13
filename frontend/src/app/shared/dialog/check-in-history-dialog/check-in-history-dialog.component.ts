@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CheckInMin } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DATE_FORMAT } from '../../constantLibary';
+import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
@@ -48,6 +48,8 @@ export class CheckInHistoryDialogComponent implements OnInit {
       data: {
         title: 'Check-in',
       },
+      width: CONFIRM_DIALOG_WIDTH,
+      height: 'auto',
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

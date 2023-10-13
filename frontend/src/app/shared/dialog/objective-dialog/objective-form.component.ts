@@ -12,6 +12,7 @@ import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 
 @Component({
   selector: 'app-objective-form',
@@ -94,6 +95,8 @@ export class ObjectiveFormComponent implements OnInit {
       data: {
         title: 'Objective',
       },
+      width: CONFIRM_DIALOG_WIDTH,
+      height: 'auto',
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {

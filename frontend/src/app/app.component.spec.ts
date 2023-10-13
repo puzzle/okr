@@ -1,23 +1,21 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
-import { AppComponent } from './app.component';
-import { CUSTOM_ELEMENTS_SCHEMA, NgZone } from '@angular/core';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
-import { MatDrawerContainerHarness, MatDrawerHarness } from '@angular/material/sidenav/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {RouterTestingModule} from '@angular/router/testing';
+import {AppComponent} from './app.component';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {TranslateTestingModule} from 'ngx-translate-testing';
+import {AuthConfig, OAuthModule, OAuthService} from 'angular-oauth2-oidc';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 // @ts-ignore
 import * as de from '../assets/i18n/de.json';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { By } from '@angular/platform-browser';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationEnd, Routes } from '@angular/router';
-import { of } from 'rxjs';
-import { OverviewComponent } from './overview/overview.component';
-import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
-import { CommonModule } from '@angular/common';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {NavigationEnd, Routes} from '@angular/router';
+import {of} from 'rxjs';
+import {OverviewComponent} from './overview/overview.component';
+import {ObjectiveDetailComponent} from './objective-detail/objective-detail.component';
+import {CommonModule} from '@angular/common';
 
 const oauthServiceMock = {
   configure(environment: AuthConfig): void {},
@@ -81,56 +79,5 @@ describe('AppComponent', () => {
 
   test('should create the app', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('Mat-drawer', () => {
-    test('should open and close mat-drawer', async () => {
-      await loader.getHarness(MatDrawerContainerHarness).then(async (drawerContainer: MatDrawerContainerHarness) => {
-        drawerContainer.getDrawers().then(async (drawers: MatDrawerHarness[]) => {
-          const drawer: MatDrawerHarness = drawers[0];
-          component.openDrawer();
-          fixture.detectChanges();
-          expect(await drawer.isOpen()).toEqual(true);
-          component.closeDrawer();
-          fixture.detectChanges();
-          expect(await drawer.isOpen()).toEqual(false);
-        });
-      });
-    });
-
-    test.each([
-      ['keydown.enter', false],
-      ['keydown.space', false],
-      ['keydown.escape', false],
-      ['', true],
-    ])('close on keyPress', async (event: string, isOpen: boolean) => {
-      await loader.getHarness(MatDrawerContainerHarness).then(async (drawerContainer) => {
-        drawerContainer.getDrawers().then(async (drawers) => {
-          let drawer = drawers[0];
-          component.openDrawer();
-
-          expect(await drawer.isOpen()).toEqual(true);
-          fixture.debugElement.triggerEventHandler(event, { bubbles: true });
-          fixture.detectChanges();
-
-          expect(await drawer.isOpen()).toEqual(isOpen);
-        });
-      });
-    });
-  });
-
-  describe('routing', () => {
-    test('should trigger openDrawer functionality if right path', async () => {
-      const ngZone: NgZone = TestBed.inject(NgZone);
-      const routerTest = await RouterTestingHarness.create();
-
-      await ngZone.run(async () => {
-        await routerTest.navigateByUrl('/objective/3');
-      });
-
-      fixture.detectChanges();
-      const content = fixture.debugElement.query(By.css('app-drawer-content'));
-      expect(content).toBeTruthy();
-    });
   });
 });

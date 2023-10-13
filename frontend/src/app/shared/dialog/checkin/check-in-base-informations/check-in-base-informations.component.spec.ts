@@ -61,17 +61,17 @@ describe('CheckInBaseInformationsComponent', () => {
     expect(component.dialogForm.controls['initiatives'].value).toBe(initiativesText);
   }));
 
-  it('should display error message if text input too long', waitForAsync(async () => {
+  it('should display error message if text input too long', () => {
     //Insert values into name input which don't match length validator
-    const inputs = await loader.getAllHarnesses(MatInputHarness);
-    const changeInfoTextbox = inputs[0];
-    const initiativesTextbox = inputs[1];
+    loader.getAllHarnesses(MatInputHarness).then(async (inputs) => {
+      const changeInfoTextbox = inputs[0];
+      const initiativesTextbox = inputs[1];
+      await changeInfoTextbox.setValue('x'.repeat(4097));
+      await initiativesTextbox.setValue('x'.repeat(4097));
 
-    await changeInfoTextbox.setValue('x'.repeat(4097));
-    await initiativesTextbox.setValue('x'.repeat(4097));
-
-    //Verify error message
-    const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-    expect(errorMessage.nativeElement.textContent).toContain(errors.MAXLENGTH);
-  }));
+      //Verify error message
+      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
+      expect(errorMessage.nativeElement.textContent).toContain(errors.MAXLENGTH);
+    });
+  });
 });

@@ -21,41 +21,37 @@
     <div class="d-flex justify-content-between mb-2 align-items-center">
       <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
 
-      <div>
-        <p class="text-small">Confidence</p>
+      <span class="text-small">
+        Confidence
         <app-confidence
           [backgroundColor]="'#F5F5F5'"
           [checkIn]="keyResult.lastCheckIn!"
           [edit]="false"
         ></app-confidence>
-      </div>
+      </span>
     </div>
     <div class="d-flex gap-4 flex-row">
-      <ng-container *ngIf="keyResult.keyResultType == 'metric'">
+      <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
+        <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ keyResultMetric.unit || "Keine" }}</p>
+        <p class="keyResult-detail-attribute-show rounded-3 p-1">Baseline: {{ keyResultMetric.baseline || "0" }}</p>
         <p class="keyResult-detail-attribute-show rounded-3 p-1">
-          Einheit: {{ castToMetric(keyResult).unit || "Keine" }}
-        </p>
-        <p class="keyResult-detail-attribute-show rounded-3 p-1">
-          Baseline: {{ castToMetric(keyResult).baseline || "0" }}
-        </p>
-        <p class="keyResult-detail-attribute-show rounded-3 p-1">
-          Stretch Goal: {{ castToMetric(keyResult).stretchGoal || "100" }}
+          Stretch Goal: {{ keyResultMetric.stretchGoal || "100" }}
         </p>
       </ng-container>
 
-      <ng-container *ngIf="keyResult.keyResultType == 'ordinal'">
+      <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
         <div class="d-flex justify-content-between mb-4">
           <div class="zone-col h-auto">
             <p class="ordinal-zone-title">Commit</p>
-            <div class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).commitZone || "Keine" }}</div>
+            <div class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.commitZone || "Keine" }}</div>
           </div>
           <div class="zone-col h-auto">
             <p class="ordinal-zone-title">Target</p>
-            <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).targetZone || "Keine" }}</p>
+            <p class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.targetZone || "Keine" }}</p>
           </div>
           <div class="zone-col h-auto">
             <p class="ordinal-zone-title">Stretch</p>
-            <p class="keyResult-detail-attribute-show p-3">{{ castToOrdinal(keyResult).stretchZone || "Keine" }}</p>
+            <p class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.stretchZone || "Keine" }}</p>
           </div>
         </div>
       </ng-container>

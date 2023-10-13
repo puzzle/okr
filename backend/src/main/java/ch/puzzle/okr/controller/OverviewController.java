@@ -37,7 +37,9 @@ public class OverviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned a List of teams and their objectives", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = OverviewDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't return list of teams with their objectives", content = @Content) })
+            @ApiResponse(responseCode = "400", description = "Can't return list of teams with their objectives", content = @Content),
+            @ApiResponse(responseCode = "404", description = "The quarter or one of the teams were not found", content = @Content)
+    })
     @GetMapping("")
     public ResponseEntity<List<OverviewDto>> getOverview(
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,

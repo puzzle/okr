@@ -14,12 +14,12 @@ export class CheckInService {
     return this.httpclient.get<CheckInMin[]>(`/api/v2/keyresults/${keyResultId}/checkins`);
   }
 
-  createCheckIn(checkIn: any): Observable<CheckIn> {
-    return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
-  }
-
-  updateCheckIn(checkIn: any, id: number): Observable<CheckIn> {
-    return this.httpclient.put<any>('/api/v2/checkIns/' + id, checkIn);
+  saveCheckIn(checkIn: CheckIn) {
+    if (checkIn.id) {
+      return this.httpclient.put<any>('/api/v2/checkIns/' + checkIn.id, checkIn);
+    } else {
+      return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
+    }
   }
 
   deleteCheckIn(id: number) {

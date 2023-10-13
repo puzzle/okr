@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
-import { RouteService } from '../shared/services/route.service';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
@@ -20,8 +19,6 @@ export class ObjectiveComponent implements AfterViewInit {
   private _objective = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   constructor(
-    private dialog: MatDialog,
-    private routeService: RouteService,
     private matDialog: MatDialog,
     private router: Router,
     private refreshDataService: RefreshDataService,
@@ -57,8 +54,6 @@ export class ObjectiveComponent implements AfterViewInit {
       matDialogRef.afterClosed().subscribe((result) => {
         this.refreshDataService.markDataRefresh();
       });
-    } else {
-      this.routeService.navigate(menuEntry.route!);
     }
   }
 
@@ -67,7 +62,7 @@ export class ObjectiveComponent implements AfterViewInit {
   }
 
   openAddKeyResultDialog() {
-    this.dialog
+    this.matDialog
       .open(KeyResultDialogComponent, {
         width: '45em',
         height: 'auto',

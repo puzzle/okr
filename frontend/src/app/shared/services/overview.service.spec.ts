@@ -5,11 +5,12 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { State } from '../types/enums/State';
-import { overViewEntity1 } from '../testData';
+import { overViewEntity1, quarter } from '../testData';
 
 const httpClient = {
   get: jest.fn(),
 };
+
 describe('OverviewService', () => {
   let service: OverviewService;
 
@@ -32,5 +33,15 @@ describe('OverviewService', () => {
     service.getOverview().subscribe((overviews) => {
       expect(overviews[0].objectives[0].state).toBe(State.DRAFT);
     });
+  });
+
+  it('should make call to overview endpoint when quarterId is undefined', () => {
+    service.getOverview();
+    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview');
+  });
+
+  it('should make call to overview endpoint with overview url param when quarterId is defined', () => {
+    service.getOverview(quarter.id);
+    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview?quarter=' + quarter.id);
   });
 });

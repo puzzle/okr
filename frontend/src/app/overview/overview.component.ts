@@ -3,6 +3,7 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { catchError, EMPTY, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { NotifierService } from '../shared/services/notifier.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -16,6 +17,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private overviewService: OverviewService,
     private notifierService: NotifierService,
+    private route: ActivatedRoute,
   ) {
     this.notifierService.reloadOverview.subscribe(() => {
       this.loadOverview();
@@ -27,11 +29,10 @@ export class OverviewComponent implements OnInit {
   }
 
   loadOverview() {
-    const urlSearchParam = new URLSearchParams(window.location.search);
-    const quarter = urlSearchParam.get('quarter');
-    if (quarter) {
+    const quarterId = this.route.snapshot.queryParams['quarter'];
+    if (quarterId) {
       this.overviewService
-        .getOverview(+quarter)
+        .getOverview(+quarterId)
         .pipe(
           catchError(() => {
             this.loadDefaultOverview();

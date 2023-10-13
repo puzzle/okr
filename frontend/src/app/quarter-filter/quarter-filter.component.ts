@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
 import { Subject } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from '../shared/services/notifier.service';
 
 @Component({
@@ -19,13 +19,13 @@ export class QuarterFilterComponent implements OnInit {
     private quarterService: QuarterService,
     private router: Router,
     private notifierService: NotifierService,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.quarterService.getAllQuarters().subscribe((quarters) => {
       this.quarters.next(quarters);
-      const urlSearchParam = new URLSearchParams(window.location.search);
-      const quarterId = urlSearchParam.get('quarter');
+      const quarterId = this.route.snapshot.queryParams['quarter'];
       if (quarterId !== null && quarters.map((quarter) => quarter.id).includes(+quarterId)) {
         this.quarterId = +quarterId;
       } else {

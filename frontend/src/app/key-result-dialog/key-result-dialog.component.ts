@@ -9,6 +9,7 @@ import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
+import { CloseState } from '../shared/types/enums/CloseState';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -73,10 +74,8 @@ export class KeyResultDialogComponent implements OnInit {
 
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
-        keyResult: returnValue,
-        changeId: keyResult.id,
-        objective: keyResult.objective,
-        delete: false,
+        id: keyResult.id,
+        closeState: CloseState.SAVED,
         openNew: openNewDialog,
       });
     });
@@ -101,7 +100,7 @@ export class KeyResultDialogComponent implements OnInit {
           if (result) {
             this.keyResultService
               .deleteKeyResult(this.data.keyResult.id)
-              .subscribe(() => this.dialogRef.close({ keyResult: this.data.keyResult, delete: true, openNew: false }));
+              .subscribe(() => this.dialogRef.close({ closeState: CloseState.DELETED }));
           }
         });
     }

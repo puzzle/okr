@@ -2,11 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CheckInMin } from '../../types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import errorMessages from '../../../../assets/errors/error-messages.json';
 import { DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Observable, of, tap } from 'rxjs';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -15,8 +15,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 })
 export class CheckInHistoryDialogComponent implements OnInit {
   keyResult!: KeyResult;
-  checkInHistory: CheckInMin[] = [];
-  protected readonly errorMessages = errorMessages;
+  checkInHistory$: Observable<CheckInMin[]> = of([]);
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
@@ -58,11 +57,12 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   loadCheckInHistory() {
-    this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id).subscribe((result) => {
-      this.checkInHistory = result;
-      if (this.checkInHistory.length == 0) {
-        this.dialogRef.close();
-      }
-    });
+    this.checkInHistory$ = this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id).pipe(
+      tap((result) => {
+        if (result.length == 0) {
+          this.dialogRef.close();
+        }
+      }),
+    );
   }
 }

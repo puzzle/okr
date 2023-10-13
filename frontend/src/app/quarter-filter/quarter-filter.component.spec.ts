@@ -4,9 +4,16 @@ import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../shared/services/overview.service';
 import { By } from '@angular/platform-browser';
+import { quarter } from '../shared/testData';
 
 const overviewService = {
-  getOverview(id?: number) {},
+  getOverview: jest.fn(),
+};
+
+const quarterService = {
+  getAllQuarters() {
+    return [quarter];
+  },
 };
 
 describe('QuarterFilterComponent', () => {
@@ -17,7 +24,10 @@ describe('QuarterFilterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [QuarterFilterComponent],
       imports: [HttpClientTestingModule],
-      providers: [{ provide: OverviewService, useValue: overviewService }],
+      providers: [
+        { provide: OverviewService, useValue: overviewService },
+        { provide: quarterService, useValue: quarterService },
+      ],
     });
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
@@ -28,5 +38,10 @@ describe('QuarterFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get overview according to id set in quarter-filter', () => {});
+  it('should get overview according to id set in quarter-filter', () => {
+    const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
+    expect(quarterSelect).toBeTruthy();
+    component.ngOnInit();
+    fixture.detectChanges();
+  });
 });

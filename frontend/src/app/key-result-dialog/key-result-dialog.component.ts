@@ -32,6 +32,7 @@ export class KeyResultDialogComponent implements OnInit {
     targetZone: new FormControl<string | null>(null),
     stretchZone: new FormControl<string | null>(null),
   });
+  protected readonly errorMessages: any = errorMessages;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
@@ -86,24 +87,22 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   deleteKeyResult() {
-    if (this.data.keyResult.lastCheckIn?.id == undefined) {
-      this.dialog
-        .open(ConfirmDialogComponent, {
-          data: {
-            title: 'Key Result',
-          },
-          width: '15em',
-          height: 'auto',
-        })
-        .afterClosed()
-        .subscribe((result) => {
-          if (result) {
-            this.keyResultService
-              .deleteKeyResult(this.data.keyResult.id)
-              .subscribe(() => this.dialogRef.close({ closeState: CloseState.DELETED }));
-          }
-        });
-    }
+    this.dialog
+      .open(ConfirmDialogComponent, {
+        data: {
+          title: 'Key Result',
+        },
+        width: '15em',
+        height: 'auto',
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.keyResultService
+            .deleteKeyResult(this.data.keyResult.id)
+            .subscribe(() => this.dialogRef.close({ closeState: CloseState.DELETED }));
+        }
+      });
   }
 
   isTouchedOrDirty(name: string) {
@@ -114,6 +113,4 @@ export class KeyResultDialogComponent implements OnInit {
     const errors = this.keyResultForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  protected readonly errorMessages: any = errorMessages;
 }

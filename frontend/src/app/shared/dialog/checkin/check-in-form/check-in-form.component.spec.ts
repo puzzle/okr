@@ -57,7 +57,7 @@ describe('CheckInFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should save of check-in correctly if key result is metric', waitForAsync(async () => {
+  it('should save check-in correctly if key result is metric', waitForAsync(async () => {
     component.checkIn = checkInMetric;
     component.keyResult = keyResultMetric;
     component.dialogForm.controls['value'].setValue(checkInMetric?.value!.toString());

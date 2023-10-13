@@ -9,12 +9,14 @@
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
-      <textarea class="input-fields" formControlName="title" id="title"></textarea>
-      <div *ngIf="isTouchedOrDirty('title')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
-        </mat-error>
-      </div>
+      <mat-form-field appearance="outline">
+        <textarea matInput formControlName="title" cdkFocusInitial id="title" placeholder="Key Result Titel"></textarea>
+        <div *ngIf="isTouchedOrDirty('title')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+            {{ errorMessages[errorKey.toUpperCase()] }}
+          </mat-error>
+        </div>
+      </mat-form-field>
     </div>
 
     <div class="mt-2">
@@ -38,7 +40,7 @@
         </mat-option>
       </mat-autocomplete>
       <div *ngIf="validOwner()">
-        <mat-error class="fw-bold"> Du musst einen Owner auswählen </mat-error>
+        <mat-error> Du musst einen Owner auswählen </mat-error>
       </div>
     </div>
 
@@ -46,7 +48,7 @@
       <label for="title" class="text-black">Beschreibung (optional)</label>
       <textarea class="input-fields" formControlName="description"></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
-        <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('description')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
           {{ errorMessages[errorKey.toUpperCase()] }}
         </mat-error>
       </div>

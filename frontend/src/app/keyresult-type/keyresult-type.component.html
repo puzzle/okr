@@ -48,7 +48,7 @@
                 [attr.data-testId]="'baseline'"
               />
               <div *ngIf="isTouchedOrDirty('baseline')">
-                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
@@ -62,7 +62,7 @@
                 [attr.data-testId]="'stretchGoal'"
               />
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
-                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
@@ -89,7 +89,7 @@
                 [attr.data-testId]="'commitZone'"
               ></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
-                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
@@ -103,7 +103,7 @@
                 [attr.data-testId]="'targetZone'"
               ></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
-                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>
@@ -117,7 +117,7 @@
                 [attr.data-testId]="'stretchZone'"
               ></textarea>
               <div *ngIf="isTouchedOrDirty('stretchZone')">
-                <mat-error class="fw-bold mb-2" *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
                 </mat-error>
               </div>

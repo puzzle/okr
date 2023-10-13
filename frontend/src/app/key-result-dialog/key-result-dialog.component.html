@@ -28,8 +28,15 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
-      <!-- TODO add formControlName="owner" when updating owner -->
-      <input class="owner-input" />
+      <input [matAutocomplete]="auto" formControlName="owner" class="owner-input" (focusout)="validOwner()" />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
+        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
+          {{ user.firstname + " " + user.lastname }}
+        </mat-option>
+      </mat-autocomplete>
+      <div *ngIf="validOwner()">
+        <mat-error class="fw-bold"> Du musst einen Owner auswählen </mat-error>
+      </div>
     </div>
 
     <div class="d-flex flex-column gap-2 col-12">

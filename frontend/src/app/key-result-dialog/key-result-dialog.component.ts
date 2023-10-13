@@ -4,8 +4,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../shared/types/model/User';
 import {KeyResult} from '../shared/types/model/KeyResult';
 import {KeyresultService} from '../shared/services/keyresult.service';
-import {testUser} from '../shared/testData';
 import {KeyResultMetricDTO} from '../shared/types/DTOs/KeyResultMetricDTO';
+import {testUser} from '../shared/testData';
 import errorMessages from '../../assets/errors/error-messages.json';
 import {ConfirmDialogComponent} from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import {Objective} from '../shared/types/model/Objective';
@@ -16,6 +16,8 @@ import {KeyResultDTO} from '../shared/types/DTOs/KeyResultDTO';
 import {KeyResultOrdinalDTO} from '../shared/types/DTOs/KeyResultOrdinalDTO';
 import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
 import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
+import {filter, map, Observable, of, share, startWith, switchMap} from "rxjs";
+import {UserService} from "../shared/services/user.service";
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -25,11 +27,13 @@ import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
 })
 export class KeyResultDialogComponent implements OnInit {
   isMetricKeyResult: boolean = true;
+  users$!: Observable<User[]>;
+  filteredUsers$: Observable<User[]> | undefined = of([]);
+
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    // TODO add owner from Dropdown and [Validators.required, Validators.nullValidator]
-    owner: new FormControl<User | null>(testUser),
+    owner: new FormControl<User | null>(null, [Validators.required, Validators.nullValidator]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),
@@ -44,9 +48,17 @@ export class KeyResultDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
+    public userService: UserService,
   ) {}
 
   ngOnInit(): void {
+    this.users$ = this.userService.getUsers().pipe(share());
+    this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(
+      startWith(''),
+      filter((value) => typeof value === 'string'),
+      switchMap((value) => this.filter(value as string)),
+    );
+
     if (this.data.keyResult) {
       this.isMetricKeyResult = this.data.keyResult.keyResultType == 'metric';
       if (this.isMetricKeyResult) {
@@ -169,5 +181,31 @@ export class KeyResultDialogComponent implements OnInit {
         stretchZone: ordinalKeyResult.stretchZone,
       });
     }
+  }
+
+  filter(value: string): Observable<User[]> {
+    const filterValue = value.toLowerCase();
+    return this.users$.pipe(
+      map((users) =>
+        users.filter(
+          (user) =>
+            user.firstname.toLowerCase().includes(filterValue) ||
+            user.lastname.toLowerCase().includes(filterValue) ||
+            user.username.toLowerCase().includes(filterValue),
+        ),
+      ),
+    );
+  }
+
+  getUserNameById(user: User): string {
+    if (user === null || user === undefined) {
+      return '';
+    }
+
+    return user.firstname + ' ' + user.lastname;
+  }
+
+  validOwner() {
+    return typeof this.keyResultForm.value.owner === 'string';
   }
 }

@@ -17,7 +17,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private overviewService: OverviewService,
     private notifierService: NotifierService,
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.notifierService.reloadOverview.subscribe(() => {
       this.loadOverview();
@@ -29,7 +29,7 @@ export class OverviewComponent implements OnInit {
   }
 
   loadOverview() {
-    const quarterId = this.route.snapshot.queryParams['quarter'];
+    const quarterId = this.activatedRoute.snapshot.queryParams['quarter'];
     if (quarterId !== undefined) {
       this.overviewService
         .getOverview(+quarterId)

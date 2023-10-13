@@ -124,7 +124,7 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PT"
+               "unit":"FTE"
             }
             """;
 
@@ -185,7 +185,7 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":""
+               "unit":"PERCENT"
             }
             """;
 
@@ -197,7 +197,7 @@ public class KeyResultTestHelpers {
                 "description":"",
                 "baseline":2.0,
                 "stretchGoal":5.0,
-                "unit":"ECTS",
+                "unit":"NUMBER",
                 "ownerId":5,
                 "ownerFirstname":"",
                 "ownerLastname":"",

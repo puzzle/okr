@@ -73,13 +73,11 @@ export class KeyresultDetailComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        console.log('result.id', result.id);
-        console.log('result.closeState', result.closeState);
-        if (result.closeState === CloseState.SAVED) {
+        if (result?.closeState === CloseState.SAVED) {
           this.loadKeyResult(result.id);
           this.refreshDataService.markDataRefresh();
         }
-        if (result.closeState === CloseState.DELETED) {
+        if (result?.closeState === CloseState.DELETED) {
           this.refreshDataService.markDataRefresh();
           this.router.navigate(['/']);
         }

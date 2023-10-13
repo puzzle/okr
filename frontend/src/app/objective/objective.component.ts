@@ -6,6 +6,7 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject } from 'rxjs';
+import { CloseState } from '../shared/types/enums/CloseState';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({

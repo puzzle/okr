@@ -184,6 +184,7 @@ export const testUser: User = {
   id: 1,
   firstname: 'Bob',
   lastname: 'Baumeister',
+  username: 'username',
 };
 
 export const keyResult: KeyResultOrdinal = {
@@ -193,7 +194,7 @@ export const keyResult: KeyResultOrdinal = {
   commitZone: 'Äpfel',
   targetZone: 'Äpfel und Birnen',
   stretchZone: 'Äpfel, Birnen, Bananen und Erdberen',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -225,7 +226,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   commitZone: 'Grundriss steht',
   targetZone: 'Gebäude gebaut',
   stretchZone: 'Inneneinrichtung gestaltet',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -257,7 +258,7 @@ export const keyResultMetric: KeyResultMetric = {
   baseline: 30,
   stretchGoal: 100,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'metric',
   objective: {
     id: 302,

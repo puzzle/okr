@@ -187,6 +187,22 @@ export const testUser: User = {
   username: 'username',
 };
 
+export const users: User[] = [
+  testUser,
+  {
+    id: 2,
+    username: 'pacoegiman',
+    firstname: 'Paco',
+    lastname: 'Egiman',
+  },
+  {
+    id: 3,
+    username: 'robinpapier',
+    firstname: 'Robin',
+    lastname: 'Papier',
+  },
+];
+
 export const keyResult: KeyResultOrdinal = {
   id: 101,
   title: 'Ausbauen des Früchtesortiments',

@@ -6,11 +6,11 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { CheckInService } from '../shared/services/check-in.service';
-import { catchError, Subject } from 'rxjs';
+import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
+import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -22,30 +22,23 @@ export class KeyresultDetailComponent implements OnInit {
   @Input()
   keyResultId!: number;
 
-  keyResult$: Subject<KeyResult> = new Subject<KeyResult>();
+  keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
 
   constructor(
     private keyResultService: KeyresultService,
-    private checkInService: CheckInService,
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.loadKeyResult(this.keyResultId);
+    this.loadKeyResult();
   }
 
-  loadKeyResult(id: number): void {
+  loadKeyResult(): void {
     this.keyResultService
-      .getFullKeyResult(id)
-      .pipe(
-        catchError((err, caught) => {
-          console.error(err);
-          // TODO: maybe return a EMPTY or NEVER
-          return caught;
-        }),
-      )
+      .getFullKeyResult(this.keyResultId)
+      .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
 
@@ -57,13 +50,16 @@ export class KeyresultDetailComponent implements OnInit {
     return keyResult as KeyResultOrdinal;
   }
 
-  checkInHistory(keyResultId: number) {
+  checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
-        keyResultId: keyResultId,
+        keyResult: this.keyResult$.getValue(),
       },
     });
-    dialogRef.afterClosed().subscribe(() => {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
+    });
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
@@ -78,13 +74,11 @@ export class KeyresultDetailComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        console.log('result.id', result.id);
-        console.log('result.closeState', result.closeState);
-        if (result.closeState === CloseState.SAVED) {
-          this.loadKeyResult(result.id);
+        if (result?.closeState === CloseState.SAVED) {
+          this.loadKeyResult();
           this.refreshDataService.markDataRefresh();
         }
-        if (result.closeState === CloseState.DELETED) {
+        if (result?.closeState === CloseState.DELETED) {
           this.refreshDataService.markDataRefresh();
           this.router.navigate(['/']);
         }
@@ -92,19 +86,15 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openCheckInForm() {
-    // const dialogRef = this.dialog.open(CheckInFormComponent, {
-    //   data: {
-    //     keyResult: this.keyResult,
-    //   },
-    //   width: '719px',
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   if (result != undefined && result != '') {
-    //     this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-    //       this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
-    //       this.changeDetectorRef.detectChanges();
-    //     });
-    //   }
-    // });
+    const dialogRef = this.dialog.open(CheckInFormComponent, {
+      data: {
+        keyResult: this.keyResult$.getValue(),
+      },
+      width: '719px',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
+    });
   }
 }

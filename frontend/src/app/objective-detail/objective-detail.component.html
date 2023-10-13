@@ -7,9 +7,9 @@
     <div class="title fs-6">Beschrieb</div>
     <p data-test-id="description">{{ objective.description }}</p>
     <section class="py-3">
-      <button class="anchor d-flex bg-white border-0 p-0 flex-nowrap" (click)="openAddKeyResultDialog()">
-        <img src="../../assets/icons/new-icon.svg" alt="Add key-result button" />
-        <p class="add-button">Key Result hinzufügen</p>
+      <button (click)="openAddKeyResultDialog()" mat-button color="primary">
+        <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+        Key Result hinzufügen
       </button>
     </section>
   </div>

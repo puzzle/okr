@@ -19,7 +19,7 @@
         <div class="d-flex flex-row justify-content-end align-items-center w-50">
           <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openCheckInDialog(checkIn)">Check-in bearbeiten</button>
+            <button mat-menu-item (click)="openCheckInDialogForm(checkIn)">Check-in bearbeiten</button>
             <button mat-menu-item (click)="deleteCheckIn(checkIn)">Check-in löschen</button>
           </mat-menu>
         </div>

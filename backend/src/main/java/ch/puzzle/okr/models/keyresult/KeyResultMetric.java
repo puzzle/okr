@@ -1,7 +1,11 @@
 package ch.puzzle.okr.models.keyresult;
 
+import ch.puzzle.okr.models.Unit;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -17,7 +21,8 @@ public class KeyResultMetric extends KeyResult {
     private Double stretchGoal;
 
     @NotNull(message = "Unit must not be null")
-    private String unit;
+    @Enumerated(EnumType.STRING)
+    private Unit unit;
 
     public Double getBaseline() {
         return baseline;
@@ -35,11 +40,11 @@ public class KeyResultMetric extends KeyResult {
         this.stretchGoal = stretchGoal;
     }
 
-    public String getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
 
@@ -78,7 +83,7 @@ public class KeyResultMetric extends KeyResult {
     public static class Builder extends KeyResult.Builder<Builder> {
         private Double baseline;
         private Double stretchGoal;
-        private String unit;
+        private Unit unit;
 
         private Builder() {
             super(KEY_RESULT_TYPE_METRIC);
@@ -98,7 +103,7 @@ public class KeyResultMetric extends KeyResult {
             return this;
         }
 
-        public Builder withUnit(String unit) {
+        public Builder withUnit(Unit unit) {
             this.unit = unit;
             return this;
         }

@@ -72,7 +72,7 @@ public class CheckInValidationServiceTest {
                 .withCreatedOn(LocalDateTime.MAX).build();
 
         this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(13D).withStretchGoal(25D)
-                .withUnit("MEMBERS").withId(8L).withTitle("Keyresult Metric").withObjective(this.objective)
+                .withUnit(Unit.NUMBER).withId(8L).withTitle("Keyresult Metric").withObjective(this.objective)
                 .withOwner(this.user).build();
 
         this.keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Commit Zone")

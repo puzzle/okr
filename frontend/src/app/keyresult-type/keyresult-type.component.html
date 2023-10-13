@@ -3,6 +3,7 @@
     <div
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
+      [attr.data-testId]="'metricTab'"
       class="metric tab-title"
       (click)="switchKeyResultType('metric')"
     >
@@ -11,6 +12,7 @@
     <div
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
+      [attr.data-testId]="'ordinalTab'"
       class="ordinal tab-title"
       (click)="switchKeyResultType('ordinal')"
     >

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -19,15 +19,14 @@ import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/che
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KeyresultDetailComponent implements OnInit {
-  @Input()
-  keyResultId!: number;
+  @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
 
   constructor(
     private keyResultService: KeyresultService,
-    private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
+    private dialog: MatDialog,
     private router: Router,
   ) {}
 

@@ -1,4 +1,4 @@
-<ng-container *ngIf="keyResult$ | async as keyResult">
+<ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
   <div *ngIf="keyResult" cdkTrapFocus="true" class="d-flex flex-column">
     <div class="d-flex justify-content-between">
       <h1 class="mb-2 title">{{ keyResult.title }}</h1>
@@ -82,3 +82,10 @@
     </div>
   </div>
 </ng-container>
+
+<ng-template #spinner>
+  <div class="spinner-container">
+    Keyresult wird geladen...
+    <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
+  </div>
+</ng-template>

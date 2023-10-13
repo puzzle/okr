@@ -108,3 +108,13 @@ body pzsh-backdrop {
   @extend .col-sm-12;
   @extend .col-md-5;
 }
+
+.spinner-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @extend .mt-5;
+  @extend .display-6;
+  //w-100 d-flex align-items-center mt-5 flex-column display-6
+}

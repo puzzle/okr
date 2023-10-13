@@ -105,7 +105,7 @@ export class KeyResultDialogComponent implements OnInit {
         unit: value.unit,
         baseline: value.baseline,
         stretchGoal: value.stretchGoal,
-      } as unknown as KeyResultMetricDTO;
+      } as KeyResultMetricDTO;
     } else {
       keyResult = {
         id: this.data.keyResult ? this.data.keyResult.id : null,
@@ -117,7 +117,7 @@ export class KeyResultDialogComponent implements OnInit {
         commitZone: value.commitZone,
         targetZone: value.targetZone,
         stretchZone: value.stretchZone,
-      } as unknown as KeyResultOrdinalDTO;
+      } as KeyResultOrdinalDTO;
     }
 
     if (this.data.objective) {

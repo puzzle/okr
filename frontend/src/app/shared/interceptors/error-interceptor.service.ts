@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { catchError, filter, Observable, throwError } from 'rxjs';
-import { NotifierService } from '../services/notifier.service';
 import { Router } from '@angular/router';
 import { drawerRoutes } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
@@ -10,7 +9,6 @@ import { ToasterService } from '../services/toaster.service';
 export class ErrorInterceptor implements HttpInterceptor {
   NO_ERROR_TOASTER_ROUTES = ['/token'];
   constructor(
-    private notifierService: NotifierService,
     private router: Router,
     private toasterService: ToasterService,
   ) {}
@@ -34,7 +32,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   handleDrawerError(request: HttpRequest<unknown>) {
     if (drawerRoutes.some((route) => request.url.includes(route))) {
-      this.notifierService.closeDetailSubject.next();
       this.router.navigate(['']);
     }
   }

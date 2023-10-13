@@ -33,10 +33,9 @@
                 (change)="emitData()"
                 formControlName="unit"
               >
-                <option value="CHF">{{ "UNIT.CHF" | translate }}</option>
-                <option value="FTE">{{ "UNIT.FTE" | translate }}</option>
-                <option value="NUMBER">{{ "UNIT.NUMBER" | translate }}</option>
-                <option value="PERCENT">{{ "UNIT.PERCENT" | translate }}</option>
+                <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
+                  {{ "UNIT." + unit.value | translate }}
+                </option>
               </select>
             </div>
             <div>

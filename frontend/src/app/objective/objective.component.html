@@ -14,26 +14,25 @@
         matTooltip="The objectives state is {{ objective.value.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         data-testid="objective-state"
-        class="icon col-1 default-cursor"
-        [src]="'../../assets/icons/' + objective.value.state"
+        class="icon col-1 mt-2"
+        [src]="'assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
-      <img
-        alt="objective options"
-        data-testid="objective-menu"
-        (click)="$event.stopPropagation()"
-        class="col-1 icon three-dot-menu"
-        src="assets/icons/threedot.svg"
+
+      <button
         [matMenuTriggerFor]="objectiveMenu"
-      />
-    </section>
-    <section class="d-flex gap-3 pe-0 row">
-      <app-keyresult
-        *ngFor="let keyResult of (objective | async)?.keyResults"
+        mat-icon-button
+        class="p-0"
         (click)="$event.stopPropagation()"
-        [keyResult]="keyResult"
-        class="pe-0"
-      ></app-keyresult>
+        data-testid="objective-menu"
+      >
+        <img alt="objective options" class="col-1 icon" src="assets/icons/threedot.svg" />
+      </button>
+    </section>
+    <section class="d-flex gap-3 px-3 flex-column">
+      <button *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0">
+        <app-keyresult (click)="$event.stopPropagation()" [keyResult]="keyResult"></app-keyresult>
+      </button>
     </section>
     <section class="py-3">
       <button mat-button color="primary" class="fw-bold" (click)="$event.stopPropagation(); openAddKeyResultDialog()">
@@ -44,12 +43,7 @@
   </div>
 </div>
 <mat-menu class="pt-2 pb-2" #objectiveMenu="matMenu" xPosition="before" yPosition="below">
-  <button
-    mat-menu-item
-    class="menu-option"
-    (click)="redirect(menuEntry); $event.stopPropagation()"
-    *ngFor="let menuEntry of menuEntries"
-  >
+  <button mat-menu-item class="menu-option" (click)="redirect(menuEntry)" *ngFor="let menuEntry of menuEntries">
     {{ menuEntry.displayName }}
   </button>
 </mat-menu>

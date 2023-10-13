@@ -2,7 +2,9 @@
   <div *ngIf="keyResult" cdkTrapFocus="true" class="d-flex flex-column">
     <div class="d-flex justify-content-between">
       <h1 class="mb-2 title">{{ keyResult.title }}</h1>
-      <mat-icon data-test-id="closeDrawer" class="pointer-cursor" [routerLink]="'/'">close</mat-icon>
+      <button mat-button [routerLink]="'/'" data-test-id="closeDrawer">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
     <div class="keyresult-header d-flex justify-content-between mb-3">
       <div>

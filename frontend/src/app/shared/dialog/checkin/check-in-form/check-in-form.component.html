@@ -12,9 +12,7 @@
   <!--  First part of dialog-->
   <div *ngIf="!continued">
     <p class="fs-6 mt-1 mb-3">Key Result</p>
-    <div *ngIf="keyResult.lastCheckIn?.changeInfo != ''" class="mt-3 ms-2">
-      {{ keyResult.lastCheckIn?.changeInfo }}
-    </div>
+    <p class="mt-3 ms-2">{{ keyResult.title }}</p>
     <form [formGroup]="dialogForm" class="d-flex flex-column mt-4">
       <!--      Custom input which depends on type of keyResult-->
       <app-check-in-form-metric

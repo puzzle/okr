@@ -21,7 +21,6 @@ export class KeyresultTypeComponent implements OnInit {
   typeChangeAllowed: boolean = true;
 
   typeForm = new FormGroup({
-    owner: new FormControl<User | null>(null),
     unit: new FormControl<string | null>(null, [Validators.required]),
     baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
     stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^\\d*\\.?\\d*$')]),
@@ -37,7 +36,6 @@ export class KeyresultTypeComponent implements OnInit {
         this.isMetric = true;
         let keyresultMetric: KeyResultMetric = this.castToMetric(this.keyresult);
         this.typeForm.setValue({
-          owner: keyresultMetric.owner,
           unit: keyresultMetric.unit,
           baseline: keyresultMetric.baseline,
           stretchGoal: keyresultMetric.stretchGoal,
@@ -49,7 +47,6 @@ export class KeyresultTypeComponent implements OnInit {
         this.isMetric = false;
         let keyresultOrdinal: KeyResultOrdinal = this.castToOrdinal(this.keyresult);
         this.typeForm.setValue({
-          owner: keyresultOrdinal.owner,
           unit: null,
           baseline: null,
           stretchGoal: null,
@@ -90,7 +87,6 @@ export class KeyresultTypeComponent implements OnInit {
     if (this.isMetric) {
       let keyresultEmit: KeyResultEmitMetricDTO = {
         keyresultType: 'metric',
-        owner: this.typeForm.value.owner,
         unit: this.typeForm.value.unit,
         baseline: this.typeForm.value.baseline,
         stretchGoal: this.typeForm.value.stretchGoal,
@@ -99,7 +95,6 @@ export class KeyresultTypeComponent implements OnInit {
     } else {
       let keyresultEmit: KeyResultEmitOrdinalDTO = {
         keyresultType: 'ordinal',
-        owner: this.typeForm.value.owner,
         commitZone: this.typeForm.value.commitZone,
         targetZone: this.typeForm.value.targetZone,
         stretchZone: this.typeForm.value.stretchZone,

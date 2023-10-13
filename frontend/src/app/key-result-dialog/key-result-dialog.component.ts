@@ -30,7 +30,6 @@ export class KeyResultDialogComponent implements OnInit {
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     // TODO add owner from Dropdown and [Validators.required, Validators.nullValidator]
     owner: new FormControl<User | null>(testUser),
-    // TODO remove the preset values when adding metric ordinal component
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),

@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../shared/types/model/User';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
 import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
 import { KeyResultEmitDTO } from '../shared/types/DTOs/KeyResultEmitDTO';
+import { Unit } from '../shared/types/enums/Unit';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -104,4 +104,5 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   protected readonly errorMessages: any = errorMessages;
+  protected readonly Unit = Unit;
 }

@@ -10,6 +10,7 @@
         [formGroup]="dialogForm"
         [formControlNameGiven]="'value'"
         (focusout)="formatValue()"
+        (focusin)="resetValue()"
       ></app-custom-input>
       <div *ngIf="isTouchedOrDirty('value')">
         <mat-error class="fw-bold error-font" *ngFor="let errorKey of getErrorKeysOfFormField('value')">

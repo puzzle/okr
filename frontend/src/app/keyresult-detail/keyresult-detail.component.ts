@@ -6,7 +6,6 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { CheckInService } from '../shared/services/check-in.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -27,19 +26,18 @@ export class KeyresultDetailComponent implements OnInit {
 
   constructor(
     private keyResultService: KeyresultService,
-    private checkInService: CheckInService,
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.loadKeyResult(this.keyResultId);
+    this.loadKeyResult();
   }
 
-  loadKeyResult(id: number): void {
+  loadKeyResult(): void {
     this.keyResultService
-      .getFullKeyResult(id)
+      .getFullKeyResult(this.keyResultId)
       .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
@@ -52,13 +50,16 @@ export class KeyresultDetailComponent implements OnInit {
     return keyResult as KeyResultOrdinal;
   }
 
-  checkInHistory(keyResultId: number) {
+  checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
-        keyResultId: keyResultId,
+        keyResult: this.keyResult$.getValue(),
       },
     });
-    dialogRef.afterClosed().subscribe(() => {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
+    });
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
@@ -74,7 +75,7 @@ export class KeyresultDetailComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         if (result?.closeState === CloseState.SAVED) {
-          this.loadKeyResult(result.id);
+          this.loadKeyResult();
           this.refreshDataService.markDataRefresh();
         }
         if (result?.closeState === CloseState.DELETED) {
@@ -92,11 +93,8 @@ export class KeyresultDetailComponent implements OnInit {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined && result != '') {
-        this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-          this.keyResult$.next({ ...this.keyResult$.getValue(), lastCheckIn: createdCheckIn });
-        });
-      }
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
     });
   }
 }

@@ -7,4 +7,5 @@ export interface MenuEntry {
     data: any;
   };
   route?: string;
+  action?: string;
 }

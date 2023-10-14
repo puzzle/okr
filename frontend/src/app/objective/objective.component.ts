@@ -8,6 +8,8 @@ import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog
 import { BehaviorSubject } from 'rxjs';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { State } from '../shared/types/enums/State';
+import { ObjectiveService } from '../shared/services/objective.service';
 
 @Component({
   selector: 'app-objective-column',
@@ -22,6 +24,7 @@ export class ObjectiveComponent implements AfterViewInit {
     private matDialog: MatDialog,
     private router: Router,
     private refreshDataService: RefreshDataService,
+    private objectiveService: ObjectiveService,
   ) {}
 
   get objective(): BehaviorSubject<ObjectiveMin> {
@@ -34,15 +37,23 @@ export class ObjectiveComponent implements AfterViewInit {
   private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngAfterViewInit(): void {
-    this.menuEntries = [
-      {
-        displayName: 'Objective bearbeiten',
-        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
-      },
-      { displayName: 'Objective duplizieren' },
-      { displayName: 'Objective abschliessen' },
-      { displayName: 'Objective freigeben' },
-    ];
+    console.log(this.objective.value.state);
+    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
+      this.menuEntries = [
+        { displayName: 'Objective wiedereröffnen', action: 'reopen' },
+        { displayName: 'Objective duplizieren', action: 'duplicate' },
+      ];
+    } else {
+      this.menuEntries = [
+        {
+          displayName: 'Objective bearbeiten',
+          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
+        },
+        { displayName: 'Objective duplizieren', action: 'duplicate' },
+        { displayName: 'Objective abschliessen', action: 'complete' },
+        { displayName: 'Objective freigeben', action: 'release' },
+      ];
+    }
   }
 
   redirect(menuEntry: MenuEntry) {
@@ -54,6 +65,30 @@ export class ObjectiveComponent implements AfterViewInit {
       matDialogRef.afterClosed().subscribe((result) => {
         this.refreshDataService.markDataRefresh();
       });
+    } else {
+      if (menuEntry.action) {
+        this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+          let fullObjective = objective;
+          switch (menuEntry.action) {
+            case 'reopen':
+              fullObjective.state = State.ONGOING;
+              break;
+            case 'duplicate':
+              // TODO Duplicate Objective
+              break;
+            case 'complete':
+              // TODO Open Complete dialog for successful or not successful
+              // TODO this.objective.value.state = State.SUCCESSFUL
+              // TODO Update Objective with service
+              break;
+            case 'release':
+              fullObjective.state = State.ONGOING;
+          }
+          this.objectiveService.updateObjective(fullObjective);
+        });
+      } else {
+        this.router.navigate([menuEntry.route!]);
+      }
     }
   }
 

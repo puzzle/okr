@@ -22,14 +22,7 @@ describe('OverviewComponent', () => {
   let zone: NgZone;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        AppRoutingModule,
-        RouterTestingModule.withRoutes([
-          { path: '', component: OverviewComponent },
-          { path: '**', redirectTo: '' },
-        ]),
-      ],
+      imports: [HttpClientTestingModule, AppRoutingModule],
       declarations: [OverviewComponent],
       providers: [{ provide: OverviewService, useValue: overviewService }],
     }).compileComponents();

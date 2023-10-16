@@ -42,7 +42,7 @@ describe('QuarterFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set correct default value in form and set quarterId variable according to value in component', () => {
+  it('should set correct value in form according to route param', () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
     const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
     expect(quarterSelect).toBeTruthy();

@@ -19,7 +19,6 @@ const overviewService = {
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
-  let zone: NgZone;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppRoutingModule],

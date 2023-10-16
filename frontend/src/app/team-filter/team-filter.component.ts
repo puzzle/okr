@@ -23,9 +23,8 @@ export class TeamFilterComponent implements OnInit {
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams) => {
       this.teams$.next(teams);
-      const teamIds = Array.from([this.route.snapshot.queryParams['teams']])
-        .map((id) => Number(id))
-        .filter((id) => Number.isInteger(id));
+      const teamQuery = this.route.snapshot.queryParams['teams'];
+      const teamIds = this.teamService.getTeamIdsFromQuery(teamQuery);
       this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
     });
   }

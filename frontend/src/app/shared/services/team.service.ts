@@ -13,4 +13,11 @@ export class TeamService {
   getAllTeams(): Observable<Team[]> {
     return this.http.get<Team[]>('/api/v2/teams');
   }
+
+  getTeamIdsFromQuery(query: any): number[] {
+    return Array.from([query])
+      .reduce((flatten, arr) => [...flatten, ...arr])
+      .map((id: any) => Number(id))
+      .filter((id: number) => Number.isInteger(id));
+  }
 }

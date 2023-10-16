@@ -1,5 +1,5 @@
 <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
-  <div *ngIf="keyResult" class="d-flex flex-column">
+  <div *ngIf="keyResult" class="d-flex flex-column" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
     <div class="d-flex justify-content-between">
       <h1 class="mb-2 title">{{ keyResult.title }}</h1>
     </div>
@@ -72,7 +72,7 @@
       <p>{{ keyResult.description }}</p>
     </div>
     <div class="d-flex align-items-center flex-row justify-content-start gap-3">
-      <button color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
+      <button cdkFocusInitial color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
       <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
     </div>
   </div>

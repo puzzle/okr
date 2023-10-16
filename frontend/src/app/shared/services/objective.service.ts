@@ -30,7 +30,7 @@ export class ObjectiveService {
     return this.httpClient.post<Completed>('/api/v2/completed', completed);
   }
 
-  deleteCompleted(completed: Completed): void {
-    this.httpClient.delete<Completed>(`/api/v2/completed/${completed.objective.id}`);
+  deleteCompleted(objectiveId: number): Observable<Completed> {
+    return this.httpClient.delete<Completed>('/api/v2/completed/' + objectiveId);
   }
 }

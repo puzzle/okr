@@ -11,6 +11,8 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { State } from '../shared/types/enums/State';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
+import { Completed } from '../shared/types/model/Completed';
 
 @Component({
   selector: 'app-objective-column',
@@ -61,10 +63,13 @@ export class ObjectiveComponent implements AfterViewInit {
           dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
         },
         { displayName: 'Objective duplizieren', action: 'duplicate' },
+        // TODO nur wenn nicht auf Draft
         {
           displayName: 'Objective abschliessen',
           action: 'complete',
+          dialog: { dialog: CompleteDialogComponent, data: {} },
         },
+        // TODO nur wenn nicht auf OnGoing
         {
           displayName: 'Objective freigeben',
           action: 'release',
@@ -72,7 +77,7 @@ export class ObjectiveComponent implements AfterViewInit {
             dialog: ConfirmDialogComponent,
             data: {
               title: 'Objective',
-              action: 'Release',
+              action: 'release',
             },
           },
         },

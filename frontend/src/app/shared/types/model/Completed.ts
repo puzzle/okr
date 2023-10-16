@@ -1,7 +1,7 @@
 import { Objective } from './Objective';
 
 export interface Completed {
-  id: number;
+  id: number | null;
   objective: Objective;
   comment: string;
 }

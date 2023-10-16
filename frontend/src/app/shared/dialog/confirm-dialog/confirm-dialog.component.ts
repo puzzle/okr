@@ -16,7 +16,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   ngOnInit() {
     if (this.data.action) {
-      if (this.data.action === 'Release') {
+      if (this.data.action === 'release') {
         this.dialogTitle = this.data.title + ' freigeben';
         this.dialogText = 'Soll dieses ' + this.data.title + ' freigegeben werden?';
       }

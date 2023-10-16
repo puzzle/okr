@@ -42,7 +42,7 @@ public class AlignmentPersistenceServiceIT {
                 alignmentPersistenceService.deleteById(createdAlignment.getId());
             }
         } catch (ResponseStatusException ex) {
-            // created key result already deleted
+            // created alignment already deleted
         } finally {
             createdAlignment = null;
         }

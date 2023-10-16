@@ -29,26 +29,27 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   loadOverview() {
     const quarterId = this.activatedRoute.snapshot.queryParams['quarter'];
-    if (quarterId !== undefined && !isNaN(+quarterId)) {
-      this.overviewService
-        .getOverview(+quarterId)
-        .pipe(
-          catchError(() => {
-            return EMPTY;
-          }),
-        )
-        .subscribe((overviews) => {
-          this.overviewEntities$.next(overviews);
-        });
-    } else {
-      this.loadDefaultOverview();
-    }
+    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
+
+    const teamIds = Array.from([teamQuery])
+      .map((id) => Number(id))
+      .filter((id) => Number.isInteger(id));
+
+    this.getOverview(quarterId, teamIds);
   }
 
-  loadDefaultOverview() {
-    this.overviewService.getOverview().subscribe((overviews) => {
-      this.overviewEntities$.next(overviews);
-    });
+  getOverview(quarterId?: number, teamIds?: number[]) {
+    this.overviewService
+      .getOverview(quarterId, teamIds)
+      .pipe(
+        catchError(() => {
+          this.getOverview();
+          return EMPTY;
+        }),
+      )
+      .subscribe((overviews) => {
+        this.overviewEntities$.next(overviews);
+      });
   }
 
   ngOnDestroy(): void {

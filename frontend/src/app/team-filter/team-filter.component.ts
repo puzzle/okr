@@ -23,13 +23,11 @@ export class TeamFilterComponent implements OnInit {
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams) => {
       this.teams$.next(teams);
-      this.route.queryParams.subscribe((params) => {
-        const teamIds: number[] = Array.from(params['teams'])
-          .map((id) => Number(id))
-          .filter((id) => Number.isInteger(id));
-        const selectedTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
-        this.activeTeams$.next(selectedTeams);
-      });
+      const teamIds = Array.from(this.route.snapshot.queryParams['teams'])
+        .map((id) => Number(id))
+        .filter((id) => Number.isInteger(id));
+      const selectedTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
+      this.activeTeams$.next(selectedTeams);
     });
   }
 

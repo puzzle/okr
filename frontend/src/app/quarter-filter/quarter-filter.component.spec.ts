@@ -42,7 +42,7 @@ describe('QuarterFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get overview according to id set in quarter-filter', () => {
+  it('should set correct default value in form and set quarterId variable according to value in component', () => {
     const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();

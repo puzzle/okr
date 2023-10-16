@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class TeamFilterComponent implements OnInit {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
-  activeTeams$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  activeTeams: number[] = [];
 
   constructor(
     private teamService: TeamService,
@@ -26,26 +26,21 @@ export class TeamFilterComponent implements OnInit {
       const teamIds = Array.from(this.route.snapshot.queryParams['teams'])
         .map((id) => Number(id))
         .filter((id) => Number.isInteger(id));
-      const selectedTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
-      this.activeTeams$.next(selectedTeams);
+      this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
     });
   }
 
   changeTeamFilter() {
-    this.router
-      .navigate([], { queryParams: { teams: this.activeTeams$.getValue() }, queryParamsHandling: 'merge' })
-      .then(() => {
-        this.notifierService.reloadOverview.next(null);
-      });
+    this.router.navigate([], { queryParams: { teams: this.activeTeams }, queryParamsHandling: 'merge' }).then(() => {
+      this.notifierService.reloadOverview.next(null);
+    });
   }
 
   toggleSelection(id: number) {
-    const selectedTeam = this.activeTeams$.getValue();
-    if (selectedTeam.includes(id)) {
-      this.activeTeams$.next(selectedTeam.filter((teamId) => teamId !== id));
+    if (this.activeTeams.includes(id)) {
+      this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
     } else {
-      selectedTeam.push(id);
-      this.activeTeams$.next(selectedTeam);
+      this.activeTeams.push(id);
     }
     this.changeTeamFilter();
   }

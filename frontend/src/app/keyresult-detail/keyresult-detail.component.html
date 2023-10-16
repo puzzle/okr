@@ -39,7 +39,7 @@
       </ng-container>
 
       <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
-        <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex justify-content-between mb-4 w-100">
           <div class="zone-col h-auto">
             <p class="ordinal-zone-title">Commit</p>
             <div class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.commitZone || "Keine" }}</div>

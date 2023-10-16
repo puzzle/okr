@@ -1,11 +1,7 @@
 <mat-dialog-content class="d-flex justify-content-center flex-column">
   <div class="w-100 d-flex flex-row justify-content-start">
-    <h1 *ngIf="this.checkIn.value == undefined" class="title">
-      Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})
-    </h1>
-    <h1 *ngIf="this.checkIn.value != undefined" class="title">
-      Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})
-    </h1>
+    <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
+    <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})</h1>
     <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
     <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
   </div>
@@ -47,9 +43,10 @@
     mat-button
     mat-dialog-close
     [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
-    class="mb-3 pe-3 pt-1 pb-1 fw-bold text-white"
+    class="d-flex justify-content-center fw-bold text-white"
   >
-    Check-in erfassen
+    <span *ngIf="checkIn.id">Speichern</span>
+    <span *ngIf="!checkIn.id">Check-in erfassen</span>
   </button>
   <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
 </div>

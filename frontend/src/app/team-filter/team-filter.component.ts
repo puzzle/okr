@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
@@ -9,6 +9,7 @@ import { NotifierService } from '../shared/services/notifier.service';
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
   styleUrls: ['./team-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterComponent implements OnInit {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);

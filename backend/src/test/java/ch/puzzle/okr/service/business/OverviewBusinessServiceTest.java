@@ -86,7 +86,8 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenQuarterIdIsNonExistent() {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService).validateQuarter(quarterId);
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
+                .validateQuarter(quarterId);
         assertThrows(ResponseStatusException.class, () -> {
             overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
         });
@@ -100,7 +101,8 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenTeamIdIsNonExistent() {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService).validateOnGet(quarterId, teamIds);
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
+                .validateOnGet(quarterId, teamIds);
         assertThrows(ResponseStatusException.class, () -> {
             overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
         });

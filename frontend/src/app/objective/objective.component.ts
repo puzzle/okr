@@ -17,7 +17,7 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 })
 export class ObjectiveComponent implements AfterViewInit {
   menuEntries: MenuEntry[] = [];
-  private _objective = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+  private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   constructor(
     private matDialog: MatDialog,
@@ -27,11 +27,11 @@ export class ObjectiveComponent implements AfterViewInit {
 
   @Input()
   get objective(): BehaviorSubject<ObjectiveMin> {
-    return this._objective;
+    return this.objective$;
   }
 
   set objective(objective: ObjectiveMin) {
-    this._objective.next(objective);
+    this.objective$.next(objective);
   }
 
   ngAfterViewInit(): void {

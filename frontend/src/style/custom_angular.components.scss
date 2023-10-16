@@ -34,3 +34,7 @@
 .mat-icon {
   transform: scale(1.2);
 }
+
+.mat-mdc-standard-chip:not(.mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary) {
+  --mdc-chip-elevated-container-color: #ffffffff !important;
+}

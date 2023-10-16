@@ -1,22 +1,24 @@
-<ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
-  <div class="mb-2 d-flex justify-content-between flex-column">
-    <div class="mb-2 d-flex justify-content-between">
-      <div class="title">{{ objective.title }}</div>
+<div class="d-flex flex-column w-100">
+  <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
+    <div class="mb-2 d-flex justify-content-between flex-column w-100">
+      <div class="mb-2 d-flex flex-row">
+        <div class="title">{{ objective.title }}</div>
+      </div>
+      <div class="title fs-6">Beschrieb</div>
+      <p data-test-id="description">{{ objective.description }}</p>
+      <section class="py-3">
+        <button (click)="openAddKeyResultDialog()" mat-button color="primary">
+          <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+          Key Result hinzufügen
+        </button>
+      </section>
     </div>
-    <div class="title fs-6">Beschrieb</div>
-    <p data-test-id="description">{{ objective.description }}</p>
-    <section class="py-3">
-      <button (click)="openAddKeyResultDialog()" mat-button color="primary">
-        <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
-        Key Result hinzufügen
-      </button>
-    </section>
-  </div>
-</ng-container>
+  </ng-container>
 
-<ng-template #spinner>
-  <div class="spinner-container">
-    Objective wird geladen...
-    <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
-  </div>
-</ng-template>
+  <ng-template #spinner>
+    <div class="spinner-container">
+      Objective wird geladen...
+      <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
+    </div>
+  </ng-template>
+</div>

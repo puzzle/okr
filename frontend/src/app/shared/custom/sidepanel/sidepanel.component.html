@@ -13,14 +13,12 @@
   >
     <div #sidebar [cdkTrapFocusAutoCapture]="true" cdkScrollable="false" cdkTrapFocus class="sidebar bg-white w-100">
       <div class="sidebar__content d-flex">
-        <div [ngSwitch]="modelType" class="col-11">
+        <div [ngSwitch]="modelType" class="d-flex flex-row w-100">
           <div *ngSwitchDefault>Es ist eine Fehler aufgetreten!</div>
           <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
           <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
         </div>
-        <button [routerLink]="'/'" cdkFocusInitial data-test-id="closeDrawer" mat-button class="col-1">
-          <mat-icon>close</mat-icon>
-        </button>
+        <mat-icon [routerLink]="'/'" class="cursor-pointer" data-test-id="closeDrawer">close</mat-icon>
       </div>
     </div>
   </ng-template>

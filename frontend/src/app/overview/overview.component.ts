@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Observable } from 'rxjs';
+import { catchError, EMPTY, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { NotifierService } from '../shared/services/notifier.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-overview',
@@ -11,18 +12,43 @@ import { NotifierService } from '../shared/services/notifier.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit {
-  overviewEntities!: Observable<OverviewEntity[]>;
+  overviewEntities: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
 
   constructor(
     private overviewService: OverviewService,
     private notifierService: NotifierService,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.notifierService.reloadOverview.subscribe(() => {
-      this.overviewEntities = this.overviewService.getOverview();
+      this.loadOverview();
     });
   }
 
   ngOnInit(): void {
-    this.overviewEntities = this.overviewService.getOverview();
+    this.loadOverview();
+  }
+
+  loadOverview() {
+    const quarterId = this.activatedRoute.snapshot.queryParams['quarter'];
+    if (quarterId !== undefined && !isNaN(+quarterId)) {
+      this.overviewService
+        .getOverview(+quarterId)
+        .pipe(
+          catchError(() => {
+            return EMPTY;
+          }),
+        )
+        .subscribe((overviews) => {
+          this.overviewEntities.next(overviews);
+        });
+    } else {
+      this.loadDefaultOverview();
+    }
+  }
+
+  loadDefaultOverview() {
+    this.overviewService.getOverview().subscribe((overviews) => {
+      this.overviewEntities.next(overviews);
+    });
   }
 }

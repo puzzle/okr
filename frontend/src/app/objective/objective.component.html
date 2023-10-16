@@ -18,16 +18,14 @@
         [src]="'assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
-
-      <button
+      <mat-icon
+        class="three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
-        mat-icon-button
-        class="p-0"
         (click)="$event.stopPropagation()"
         data-testid="objective-menu"
       >
-        <img alt="objective options" class="col-1 icon" src="assets/icons/threedot.svg" />
-      </button>
+        more_vert
+      </mat-icon>
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
       <button *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0">

@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { NotifierService } from '../shared/services/notifier.service';
+import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-objective-detail',
@@ -11,22 +12,26 @@ import { NotifierService } from '../shared/services/notifier.service';
   styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveDetailComponent implements AfterViewInit {
-  @Input() objectiveId!: number;
-  objective!: Objective;
+export class ObjectiveDetailComponent {
+  @Input()
+  objectiveId!: number;
+  objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
   constructor(
     private objectiveService: ObjectiveService,
-    private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private notifierService: NotifierService,
+    private refreshDataService: RefreshDataService,
   ) {}
 
-  ngAfterViewInit(): void {
-    this.objectiveService.getFullObjective(this.objectiveId).subscribe((fullObjective) => {
-      this.objective = fullObjective;
-      this.changeDetectorRef.markForCheck();
-    });
+  ngOnInit(): void {
+    this.loadObjective(this.objectiveId);
+  }
+
+  loadObjective(id: number): void {
+    this.objectiveService
+      .getFullObjective(id)
+      .pipe(catchError(() => EMPTY))
+      .subscribe((objective) => this.objective$.next(objective));
   }
 
   openAddKeyResultDialog() {
@@ -35,25 +40,16 @@ export class ObjectiveDetailComponent implements AfterViewInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective,
+          objective: this.objective$.getValue(),
           keyResult: null,
         },
       })
       .afterClosed()
-      .subscribe(async (result) => {
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: null,
-          objective: result.objective,
-          delete: false,
-        });
-
-        if (result.openNew) {
+      .subscribe((result) => {
+        if (result?.openNew) {
           this.openAddKeyResultDialog();
         }
+        this.refreshDataService.markDataRefresh();
       });
-  }
-  closeDrawer() {
-    this.notifierService.closeDetailSubject.next();
   }
 }

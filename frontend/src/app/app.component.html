@@ -1,28 +1,7 @@
 <div>
   <app-application-top-bar></app-application-top-bar>
-
-  <mat-drawer-container hasBackdrop="true">
-    <mat-drawer
-      (closed)="enableScrolling()"
-      (closedStart)="closeDrawer()"
-      (keydown.enter)="closeDrawer()"
-      (keydown.escape)="closeDrawer()"
-      (keydown.space)="closeDrawer()"
-      [opened]="!!sidenavContentInformation"
-      class="mt-5 position-fixed p-3 col-sm-12 col-md-5"
-      data-test-id="mat-drawer"
-      mode="over"
-      position="end"
-    >
-      <app-drawer-content
-        *ngIf="sidenavContentInformation"
-        [drawerContent]="sidenavContentInformation!"
-      ></app-drawer-content>
-    </mat-drawer>
-    <mat-drawer-content>
-      <app-application-banner id="bannerComponent"></app-application-banner>
-      <div class="mt-header-height"></div>
-      <router-outlet></router-outlet>
-    </mat-drawer-content>
-  </mat-drawer-container>
+  <app-application-banner id="bannerComponent"></app-application-banner>
+  <div class="mt-header-height">
+    <router-outlet></router-outlet>
+  </div>
 </div>

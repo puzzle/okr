@@ -1,0 +1,9 @@
+.sidebar__content {
+  padding: 16px;
+}
+
+.sidepanel {
+  transition: right 300ms;
+  position: relative;
+  right: -100%;
+}

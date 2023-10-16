@@ -53,10 +53,10 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test.each([
-    [State.DRAFT, '../../assets/icons/draft-icon.svg'],
-    [State.ONGOING, '../../assets/icons/ongoing-icon.svg'],
-    [State.SUCCESSFUL, '../../assets/icons/successful-icon.svg'],
-    [State.NOTSUCCESSFUL, '../../assets/icons/not-successful-icon.svg'],
+    [State.DRAFT, 'assets/icons/draft-icon.svg'],
+    [State.ONGOING, 'assets/icons/ongoing-icon.svg'],
+    [State.SUCCESSFUL, 'assets/icons/successful-icon.svg'],
+    [State.NOTSUCCESSFUL, 'assets/icons/not-successful-icon.svg'],
   ])('Status-indicator should change based on the state given by the service', (state: State, path) => {
     component.objective = { ...objectiveMin, state: state };
     fixture.detectChanges();

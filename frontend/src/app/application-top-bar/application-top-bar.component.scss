@@ -1,5 +1,7 @@
+@import "_variables";
+
 #topBarHeight {
-  height: 48px;
+  height: $top-bar-height;
 }
 
 #okrTopbar {

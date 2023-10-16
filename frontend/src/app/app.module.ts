@@ -39,7 +39,6 @@ import { KeyresultComponent } from './keyresult/keyresult.component';
 import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { DrawerContentComponent } from './drawer-content/drawer-content.component';
 import { ConfidenceComponent } from './confidence/confidence.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { ErrorInterceptor } from './shared/interceptors/error-interceptor.service';
@@ -58,7 +57,9 @@ import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-d
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
 import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-value.pipe';
-import { ScoringComponent } from './shared/scoring/scoring/scoring.component';
+import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
+import { ScoringComponent } from './shared/custom/scoring/scoring.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
@@ -102,7 +103,6 @@ export const MY_FORMATS = {
     ScoringComponent,
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
-    DrawerContentComponent,
     ApplicationBannerComponent,
     KeyResultDialogComponent,
     ConfirmDialogComponent,
@@ -118,6 +118,7 @@ export const MY_FORMATS = {
     ParseUnitValuePipe,
     ObjectiveFormComponent,
     QuarterFilterComponent,
+    SidepanelComponent,
   ],
   imports: [
     CommonModule,
@@ -137,6 +138,7 @@ export const MY_FORMATS = {
     MatInputModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    OverlayModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     TranslateModule.forRoot({
@@ -157,6 +159,9 @@ export const MY_FORMATS = {
     MatDividerModule,
     MatSidenavModule,
     MatCheckboxModule,
+    CdkOverlayOrigin,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
   ],
   providers: [
     {

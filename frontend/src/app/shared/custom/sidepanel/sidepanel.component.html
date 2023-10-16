@@ -1,0 +1,32 @@
+<div #container class="container-fluid">
+  <ng-template
+    (backdropClick)="close()"
+    [cdkConnectedOverlayHasBackdrop]="true"
+    [cdkConnectedOverlayHeight]="'100vh'"
+    [cdkConnectedOverlayOffsetY]="48"
+    [cdkConnectedOverlayOpen]="true"
+    [cdkConnectedOverlayOrigin]="container"
+    [cdkConnectedOverlayPanelClass]="'panel'"
+    [cdkConnectedOverlayPositions]="position"
+    [cdkConnectedOverlayPush]="true"
+    cdkConnectedOverlay
+  >
+    <div
+      [cdkTrapFocusAutoCapture]="true"
+      cdkScrollable="false"
+      cdkTrapFocus
+      class="bg-white w-100 sidepanel"
+      id="detail-container"
+      [style.right]="right"
+    >
+      <div class="sidebar__content d-flex">
+        <div [ngSwitch]="modelType" class="d-flex flex-row w-100">
+          <div *ngSwitchDefault>Es ist eine Fehler aufgetreten!</div>
+          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
+          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
+        </div>
+        <mat-icon [routerLink]="'/'" class="cursor-pointer" data-test-id="closeDrawer">close</mat-icon>
+      </div>
+    </div>
+  </ng-template>
+</div>

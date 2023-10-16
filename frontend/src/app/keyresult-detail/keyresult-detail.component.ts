@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -6,8 +6,10 @@ import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
-import { NotifierService } from '../shared/services/notifier.service';
-import { CheckInService } from '../shared/services/check-in.service';
+import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 
 @Component({
@@ -16,46 +18,29 @@ import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/che
   styleUrls: ['./keyresult-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyresultDetailComponent implements AfterViewInit {
+export class KeyresultDetailComponent implements OnInit {
   @Input() keyResultId!: number;
-  keyResult!: KeyResult;
+
+  keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
 
   constructor(
     private keyResultService: KeyresultService,
-    private checkInService: CheckInService,
-    private notifierService: NotifierService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private refreshDataService: RefreshDataService,
     private dialog: MatDialog,
-  ) {
-    this.notifierService.reopenCheckInHistoryDialog.subscribe((result) => {
-      /* Update lastCheckIn if it was changed in history dialog */
-      if (this.keyResult.lastCheckIn?.id === result?.checkIn?.id) {
-        this.keyResult = { ...this.keyResult, lastCheckIn: result.checkIn };
-        this.changeDetectorRef.detectChanges();
-      }
-      /* Update lastCheckIn to null if it was deleted in history dialog */
-      if (result.deleted) {
-        if (result.checkIn?.id == this.keyResult.lastCheckIn?.id) {
-          this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
-            this.keyResult = fullKeyResult;
-            this.changeDetectorRef.markForCheck();
-            if (this.keyResult.lastCheckIn != null) {
-              this.checkInHistory();
-            }
-          });
-        }
-        return;
-      }
-      this.checkInHistory();
-    });
+    private router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.loadKeyResult();
   }
 
-  ngAfterViewInit(): void {
-    this.keyResultService.getFullKeyResult(this.keyResultId).subscribe((fullKeyResult) => {
-      this.keyResult = fullKeyResult;
-      this.changeDetectorRef.markForCheck();
-    });
+  loadKeyResult(): void {
+    this.keyResultService
+      .getFullKeyResult(this.keyResultId)
+      .pipe(catchError(() => EMPTY))
+      .subscribe((keyResult) => this.keyResult$.next(keyResult));
   }
+
   castToMetric(keyResult: KeyResult) {
     return keyResult as KeyResultMetric;
   }
@@ -67,63 +52,48 @@ export class KeyresultDetailComponent implements AfterViewInit {
   checkInHistory() {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
-        keyResultId: this.keyResult.id,
-        keyResult: this.keyResult,
+        keyResult: this.keyResult$.getValue(),
       },
     });
-    dialogRef.afterClosed().subscribe(() => {});
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
+    });
   }
 
-  openEditKeyResultDialog() {
+  openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialog
       .open(KeyResultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {
           objective: null,
-          keyResult: this.keyResult,
+          keyResult: keyResult,
         },
       })
       .afterClosed()
-      .subscribe(async (result) => {
-        await this.notifierService.keyResultsChanges.next({
-          keyResult: result.keyResult,
-          changeId: result.changeId,
-          objective: result.objective,
-          delete: result.delete,
-        });
-        if (result.openNew) {
-          this.openEditKeyResultDialog();
+      .subscribe((result) => {
+        if (result?.closeState === CloseState.SAVED) {
+          this.loadKeyResult();
+          this.refreshDataService.markDataRefresh();
         }
-
-        this.keyResult = {
-          ...this.keyResult,
-          id: result.keyResult.id,
-          title: result.keyResult.title,
-          description: result.keyResult.description,
-        };
-        this.changeDetectorRef.markForCheck();
+        if (result?.closeState === CloseState.DELETED) {
+          this.refreshDataService.markDataRefresh();
+          this.router.navigate(['/']);
+        }
       });
   }
 
   openCheckInForm() {
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
-        keyResult: this.keyResult,
+        keyResult: this.keyResult$.getValue(),
       },
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result != undefined && result != '') {
-        this.checkInService.createCheckIn(result.data).subscribe((createdCheckIn) => {
-          this.keyResult = { ...this.keyResult, lastCheckIn: createdCheckIn };
-          this.changeDetectorRef.detectChanges();
-        });
-      }
+      this.loadKeyResult();
+      this.refreshDataService.markDataRefresh();
     });
-  }
-
-  closeDrawer() {
-    this.notifierService.closeDetailSubject.next();
   }
 }

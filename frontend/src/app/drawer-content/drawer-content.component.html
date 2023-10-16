@@ -1,8 +1,0 @@
-<div [ngSwitch]="drawerContent.type" class="d-flex flex-row ms-1">
-  <ng-container *ngSwitchCase="'objective'">
-    <app-objective-detail [objectiveId]="drawerContent.id"></app-objective-detail>
-  </ng-container>
-  <ng-container *ngSwitchCase="'keyresult'">
-    <app-keyresult-detail [keyResultId]="drawerContent.id"></app-keyresult-detail>
-  </ng-container>
-</div>

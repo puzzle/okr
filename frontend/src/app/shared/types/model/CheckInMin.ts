@@ -1,5 +1,5 @@
 export interface CheckInMin {
-  id: number;
+  id?: number;
   value: number | string | undefined;
   confidence: number;
   createdOn: Date;

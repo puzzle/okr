@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NotifierService } from './notifier.service';
+import { RefreshDataService } from './refresh-data.service';
 
-describe('NotifierService', () => {
-  let service: NotifierService;
+describe('RefreshDataService', () => {
+  let service: RefreshDataService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(NotifierService);
+    service = TestBed.inject(RefreshDataService);
   });
 
   it('should be created', () => {

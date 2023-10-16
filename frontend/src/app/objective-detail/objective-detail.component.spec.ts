@@ -33,7 +33,6 @@ describe('ObjectiveDetailComponent', () => {
   });
 
   it('get data from backend', () => {
-    component.ngAfterViewInit();
     fixture.detectChanges();
     component.objectiveId = 2;
     const title = fixture.debugElement.query(By.css('.title')).nativeElement.innerHTML;

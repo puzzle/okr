@@ -4,11 +4,6 @@
 @import "fonts/Roboto";
 @import "fonts/MaterialIcons";
 
-body {
-  margin: 0;
-  padding: 0;
-}
-
 p {
   margin: 0;
   padding: 0;
@@ -18,17 +13,9 @@ html,
 body {
   font-size: 100%;
   margin: 0;
+  padding: 0;
   background-color: $overview-bg;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-//Applied since all menus have the same styling
-.mat-mdc-menu-panel {
-  border-radius: 0.5rem !important;
-}
-
-.mat-mdc-menu-content {
-  padding: 0 !important;
 }
 
 .title {
@@ -46,26 +33,9 @@ body {
   font-size: 1rem;
 }
 
-.anchor {
-  text-decoration: none;
-}
-
-.add-button {
-  font-size: 1rem;
-  font-weight: bold;
-  color: $pz-dark-blue !important;
-  letter-spacing: normal;
-
-  img {
-    width: 2rem;
-  }
-}
-
 .icon {
-  margin-top: 0.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  cursor: pointer;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
 }
 
 .keyResult-attribute-show {
@@ -75,17 +45,8 @@ body {
 }
 
 .keyResult-attribute-edit {
+  @extend .keyResult-attribute-show;
   border: solid $keyResult-attribute-edit-border 1px;
-  background-color: $keyResult-attribute-bg;
-  padding: 0.25em 0.75rem;
-}
-
-.default-cursor {
-  cursor: default;
-}
-
-.pointer-cursor {
-  cursor: pointer;
 }
 
 .bg-grey {
@@ -109,4 +70,26 @@ body pzsh-backdrop {
     8px 6px 6px 0 rgba(0, 0, 0, 0.03),
     14px 11px 7px 0 rgba(0, 0, 0, 0.01),
     21px 18px 8px 0 rgba(0, 0, 0, 0);
+}
+
+.disable-scrolling {
+  overflow-y: hidden;
+}
+
+.panel {
+  @extend .col-sm-12;
+  @extend .col-md-5;
+}
+
+.spinner-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @extend .mt-5;
+  @extend .display-6;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

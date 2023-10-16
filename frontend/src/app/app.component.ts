@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, map, Observable } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { map } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
-import { NotifierService } from './shared/services/notifier.service';
-import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
 
 @Component({
   selector: 'app-root',
@@ -12,15 +10,11 @@ import { drawerRoutes, ROUTE_PARAM_REGEX } from './shared/constantLibary';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit, OnDestroy {
-  sidenavContentInformation?: { id: number; type: string };
-  drawerOpen: boolean = false;
-
+export class AppComponent implements OnInit {
   constructor(
     public router: Router,
     private oauthService: OAuthService,
     private configService: ConfigService,
-    private notifierService: NotifierService,
   ) {
     // Try to login via url state
     oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
@@ -43,49 +37,5 @@ export class AppComponent implements OnInit, OnDestroy {
         }),
       )
       .subscribe();
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map((event) => event as NavigationEnd),
-      )
-      .subscribe((event) => {
-        drawerRoutes.forEach((route) => {
-          if (event.url.startsWith(`/${route}/`)) {
-            const match = event.url.match(ROUTE_PARAM_REGEX);
-            if (match) {
-              const id = parseInt(match[1]);
-              this.sidenavContentInformation = { id: id, type: route };
-              this.openDrawer();
-            }
-          }
-        });
-      });
-
-    this.notifierService.closeDetailSubject.subscribe(() => {
-      this.closeDrawer();
-    });
-  }
-
-  ngOnDestroy() {
-    this.notifierService.closeDetailSubject.unsubscribe();
-  }
-
-  enableScrolling() {
-    document.body.setAttribute('style', 'overflow: visible;');
-  }
-
-  private disableScrolling() {
-    document.body.setAttribute('style', 'overflow: hidden;');
-  }
-
-  openDrawer() {
-    this.drawerOpen = true;
-    this.disableScrolling();
-  }
-
-  closeDrawer() {
-    this.drawerOpen = false;
-    this.sidenavContentInformation = undefined;
-    this.router.navigate(['/']);
   }
 }

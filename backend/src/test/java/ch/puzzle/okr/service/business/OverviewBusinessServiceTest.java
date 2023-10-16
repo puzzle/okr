@@ -11,12 +11,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static ch.puzzle.okr.OverviewTestHelper.quarterId;
-import static ch.puzzle.okr.OverviewTestHelper.teamIds;
+import static ch.puzzle.okr.OverviewTestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,6 +81,33 @@ class OverviewBusinessServiceTest {
         verify(overviewValidationService, times(1)).validateQuarter(quarterId);
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterId(quarterId);
         verify(overviewValidationService, never()).validateOnGet(quarterId, teamIds);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+    }
+
+    @Test
+    void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenQuarterIdIsNonExistent() {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService).validateQuarter(quarterId);
+        assertThrows(ResponseStatusException.class, () -> {
+            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
+        });
+
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewValidationService, times(1)).validateQuarter(quarterId);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
+        verify(overviewValidationService, never()).validateOnGet(quarterId, teamIds);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+    }
+
+    @Test
+    void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenTeamIdIsNonExistent() {
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService).validateOnGet(quarterId, teamIds);
+        assertThrows(ResponseStatusException.class, () -> {
+            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
+        });
+
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewValidationService, never()).validateQuarter(quarterId);
+        verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
         verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
     }
 }

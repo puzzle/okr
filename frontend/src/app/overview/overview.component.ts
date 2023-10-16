@@ -35,7 +35,6 @@ export class OverviewComponent implements OnInit {
         .getOverview(+quarterId)
         .pipe(
           catchError(() => {
-            this.loadDefaultOverview();
             return EMPTY;
           }),
         )

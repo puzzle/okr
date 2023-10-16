@@ -24,14 +24,6 @@
           <span class="child" #target [attr.data-testId]="'target'"></span>
         </span>
       </div>
-      <span
-        *ngIf="keyResult.keyResultType == 'metric' && isDetail && keyResult.lastCheckIn"
-        #valueLabel
-        class="value-label detail-view-subtitle fw-bold"
-        id="valueLabel"
-      >
-        {{ keyResult.lastCheckIn!.value }}{{ "UNIT." + castToMetric().unit | translate }}
-      </span>
     </div>
 
     <div class="okr-stretch d-flex flex-column align-items-center mt-1">

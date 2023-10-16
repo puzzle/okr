@@ -43,11 +43,13 @@ describe('QuarterFilterComponent', () => {
   });
 
   it('should set correct default value in form and set quarterId variable according to value in component', () => {
+    jest.spyOn(component, 'changeDisplayedQuarter');
     const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.quarterId).toBe(quarter.id);
     expect(+quarterSelect.options[quarterSelect.selectedIndex].value).toBe(quarter.id);
+    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
   });
 });

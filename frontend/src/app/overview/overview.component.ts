@@ -1,9 +1,9 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {OverviewEntity} from '../shared/types/model/OverviewEntity';
-import {catchError, EMPTY, ReplaySubject, takeUntil} from 'rxjs';
-import {OverviewService} from '../shared/services/overview.service';
-import {ActivatedRoute} from '@angular/router';
-import {RefreshDataService} from '../shared/services/refresh-data.service';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { catchError, EMPTY, ReplaySubject, takeUntil } from 'rxjs';
+import { OverviewService } from '../shared/services/overview.service';
+import { ActivatedRoute } from '@angular/router';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-overview',

@@ -1,3 +1,5 @@
+@import "_variables";
+
 .objective {
   max-width: 750px;
   &:hover {
@@ -14,4 +16,14 @@
 .three-dot-menu:hover {
   border-radius: 1rem;
   background-color: lightgray;
+}
+
+.three-dot-menu {
+  color: $pz-dark-blue;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 0.2rem;
+  width: 35px;
+  height: 32px;
 }

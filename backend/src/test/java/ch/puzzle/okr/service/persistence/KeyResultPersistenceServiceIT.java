@@ -104,13 +104,13 @@ public class KeyResultPersistenceServiceIT {
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.recreateEntity(createdKeyResult.getId(),
+        KeyResult recreatedKeyResult = keyResultPersistenceService.recreateEntity(createdKeyResult.getId(),
                 createdKeyResult);
 
         assertNotNull(createdKeyResult.getId());
-        assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
-        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
-        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
+        assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
+        assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
 
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -118,6 +118,9 @@ public class KeyResultPersistenceServiceIT {
         });
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+
+        // delete re-created key result in tearDown()
+        createdKeyResult = recreatedKeyResult;
     }
 
     @Test
@@ -131,13 +134,13 @@ public class KeyResultPersistenceServiceIT {
                 .withOwner(createdKeyResult.getOwner()).withCreatedBy(createdKeyResult.getCreatedBy())
                 .withCreatedOn(createdKeyResult.getCreatedOn()).build();
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.recreateEntity(keyResultOrdinal.getId(),
+        KeyResult recreatedKeyResult = keyResultPersistenceService.recreateEntity(keyResultOrdinal.getId(),
                 keyResultOrdinal);
 
         assertNotNull(createdKeyResult.getId());
-        assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
-        assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
-        assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
+        assertEquals(createdKeyResult.getObjective().getId(), recreatedKeyResult.getObjective().getId());
+        assertEquals(KEY_RESULT_UPDATED, recreatedKeyResult.getTitle());
+        assertEquals(createdKeyResult.getOwner().getId(), recreatedKeyResult.getOwner().getId());
 
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
@@ -145,6 +148,9 @@ public class KeyResultPersistenceServiceIT {
         });
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+
+        // delete re-created key result in tearDown()
+        createdKeyResult = recreatedKeyResult;
     }
 
     @Test

@@ -3,12 +3,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { BehaviorSubject, of } from 'rxjs';
+import { of } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
-import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { AppRoutingModule } from '../app-routing.module';
-import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
-import { NgZone } from '@angular/core';
+import { RouterTestingHarness } from '@angular/router/testing';
 
 const overviewService = {
   getOverview() {

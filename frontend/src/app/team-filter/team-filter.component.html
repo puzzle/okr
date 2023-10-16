@@ -1,2 +1,14 @@
-<p>team-filter works!</p>
-<div *ngFor="let team of teams$ | async">{{ team.name }}</div>
+<span *ngFor="let team of activeTeams$ | async">
+  test
+  {{ team }}
+</span>
+{{ activeTeams$ | async }}
+<mat-chip-listbox aria-label="Dog selection">
+  <mat-chip
+    *ngFor="let team of teams$ | async"
+    color="primary"
+    [highlighted]="(activeTeams$ | async)!.includes(team.id)"
+    (click)="toggleSelection(team.id)"
+    >{{ team.name }}({{ team.activeObjectives }})</mat-chip
+  >
+</mat-chip-listbox>

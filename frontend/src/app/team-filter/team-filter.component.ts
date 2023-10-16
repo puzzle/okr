@@ -12,6 +12,7 @@ import { NotifierService } from '../shared/services/notifier.service';
 })
 export class TeamFilterComponent implements OnInit {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
+  activeTeams$: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
 
   constructor(
     private teamService: TeamService,
@@ -21,18 +22,33 @@ export class TeamFilterComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams) => {
+      this.teams$.next(teams);
       this.route.queryParams.subscribe((params) => {
-        const teamIds = params['teams'];
-        const selectedTeams = teams.filter((team) => teamIds?.includes(team.id));
-        this.teams$.next(selectedTeams);
+        const teamIds: number[] = Array.from(params['teams'])
+          .map((id) => Number(id))
+          .filter((id) => Number.isInteger(id));
+        const selectedTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
+        this.activeTeams$.next(selectedTeams);
       });
     });
   }
 
   changeTeamFilter() {
-    const teamIds = this.teams$.getValue().map((team) => team.id);
-    this.router.navigate([], { queryParams: { teams: teamIds }, queryParamsHandling: 'merge' }).then(() => {
-      this.notifierService.reloadOverview.next(null);
-    });
+    this.router
+      .navigate([], { queryParams: { teams: this.activeTeams$.getValue() }, queryParamsHandling: 'merge' })
+      .then(() => {
+        this.notifierService.reloadOverview.next(null);
+      });
+  }
+
+  toggleSelection(id: number) {
+    const selectedTeam = this.activeTeams$.getValue();
+    if (selectedTeam.includes(id)) {
+      this.activeTeams$.next(selectedTeam.filter((teamId) => teamId !== id));
+    } else {
+      selectedTeam.push(id);
+      this.activeTeams$.next(selectedTeam);
+    }
+    this.changeTeamFilter();
   }
 }

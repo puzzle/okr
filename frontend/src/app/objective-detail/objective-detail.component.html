@@ -7,8 +7,8 @@
       <div class="title fs-6">Beschrieb</div>
       <p data-test-id="description">{{ objective.description }}</p>
       <section class="py-3">
-        <button cdkFocusInitial (click)="openAddKeyResultDialog()" mat-button color="primary">
-          <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+        <button (click)="openAddKeyResultDialog()" mat-button class="ps-0" color="primary" disableRipple="true">
+          <mat-icon>add</mat-icon>
           Key Result hinzufügen
         </button>
       </section>

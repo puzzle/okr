@@ -2,7 +2,7 @@
   <mat-chip
     *ngFor="let team of teams$ | async"
     color="primary"
-    [highlighted]="activeTeams.includes(team.id)"
+    [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
     (click)="toggleSelection(team.id)"
     >{{ team.name }} ({{ team.activeObjectives }})</mat-chip
   >

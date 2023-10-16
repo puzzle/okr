@@ -14,7 +14,7 @@ import { Objective } from '../shared/types/model/Objective';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent {
-  private _overviewEntity = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
+  private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
 
   constructor(
     private dialog: MatDialog,
@@ -23,11 +23,11 @@ export class TeamComponent {
 
   @Input()
   get overviewEntity(): BehaviorSubject<OverviewEntity> {
-    return this._overviewEntity;
+    return this.overviewEntity$;
   }
 
   set overviewEntity(overviewEntity: OverviewEntity) {
-    this._overviewEntity.next(overviewEntity);
+    this.overviewEntity$.next(overviewEntity);
   }
 
   createObjective() {

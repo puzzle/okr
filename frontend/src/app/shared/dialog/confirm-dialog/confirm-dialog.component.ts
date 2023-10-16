@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -6,11 +6,25 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.scss'],
 })
-export class ConfirmDialogComponent {
+export class ConfirmDialogComponent implements OnInit {
+  dialogTitle: string = '';
+  dialogText: string = '';
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
   ) {}
+
+  ngOnInit() {
+    if (this.data.action) {
+      if (this.data.action === 'Release') {
+        this.dialogTitle = this.data.title + ' freigeben';
+        this.dialogText = 'Soll dieses ' + this.data.title + ' freigegeben werden?';
+      }
+    } else {
+      this.dialogTitle = this.data.title + ' löschen';
+      this.dialogText = 'Soll dieses ' + this.data.title + ' gelöscht werden?';
+    }
+  }
 
   closeAndDelete() {
     this.dialogRef.close(true);

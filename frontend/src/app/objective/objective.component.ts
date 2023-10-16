@@ -10,6 +10,7 @@ import { CloseState } from '../shared/types/enums/CloseState';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { State } from '../shared/types/enums/State';
 import { ObjectiveService } from '../shared/services/objective.service';
+import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-objective-column',
@@ -18,6 +19,17 @@ import { ObjectiveService } from '../shared/services/objective.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent implements AfterViewInit {
+  @Input()
+  get objective(): BehaviorSubject<ObjectiveMin> {
+    return this._objective;
+  }
+
+  set objective(objective: ObjectiveMin) {
+    this._objective.next(objective);
+  }
+
+  private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
+  @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [];
 
   constructor(
@@ -37,7 +49,6 @@ export class ObjectiveComponent implements AfterViewInit {
   private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngAfterViewInit(): void {
-    console.log(this.objective.value.state);
     if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
       this.menuEntries = [
         { displayName: 'Objective wiedereröffnen', action: 'reopen' },
@@ -50,8 +61,21 @@ export class ObjectiveComponent implements AfterViewInit {
           dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
         },
         { displayName: 'Objective duplizieren', action: 'duplicate' },
-        { displayName: 'Objective abschliessen', action: 'complete' },
-        { displayName: 'Objective freigeben', action: 'release' },
+        {
+          displayName: 'Objective abschliessen',
+          action: 'complete',
+        },
+        {
+          displayName: 'Objective freigeben',
+          action: 'release',
+          dialog: {
+            dialog: ConfirmDialogComponent,
+            data: {
+              title: 'Objective',
+              action: 'Release',
+            },
+          },
+        },
       ];
     }
   }
@@ -78,7 +102,14 @@ export class ObjectiveComponent implements AfterViewInit {
               break;
             case 'complete':
               // TODO Open Complete dialog for successful or not successful
+              const matDialogRef = this.matDialog.open(menuEntry.dialog!.dialog, {
+                data: menuEntry.dialog!.data,
+                width: '850px',
+              });
               // TODO this.objective.value.state = State.SUCCESSFUL
+              matDialogRef.afterClosed().subscribe((result: string) => {
+                fullObjective.state = State[result as keyof typeof State];
+              });
               // TODO Update Objective with service
               break;
             case 'release':
@@ -87,7 +118,19 @@ export class ObjectiveComponent implements AfterViewInit {
           this.objectiveService.updateObjective(fullObjective);
         });
       } else {
-        this.router.navigate([menuEntry.route!]);
+        if (menuEntry.dialog) {
+          const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
+            data: menuEntry.dialog.data,
+            width: '850px',
+          });
+          matDialogRef.afterClosed().subscribe((result) => {
+            if (result?.objective) {
+              this.refreshDataService.markDataRefresh()
+            }
+          });
+        } else {
+          this.router.navigate([menuEntry.route!]);
+        }
       }
     }
   }

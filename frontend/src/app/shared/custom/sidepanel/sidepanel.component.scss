@@ -1,12 +1,9 @@
-.sidebar {
-  right: -600px;
-}
-
-.sidebar-show {
-  transition: right 200ms;
-  right: 0;
-}
-
 .sidebar__content {
   padding: 16px;
+}
+
+.sidepanel {
+  transition: right 300ms;
+  position: relative;
+  right: -100%;
 }

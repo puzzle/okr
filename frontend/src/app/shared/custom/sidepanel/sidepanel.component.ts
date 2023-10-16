@@ -17,6 +17,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
+  right = '-100%';
   @ViewChild('sidebar')
   sidebar!: ElementRef<HTMLDivElement>;
   position: ConnectedPosition[] = [
@@ -44,7 +45,7 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     document.body.classList.add('disable-scrolling');
-    this.sidebar.nativeElement.classList.add('sidebar-show');
+    this.right = '0';
   }
 
   ngOnDestroy() {

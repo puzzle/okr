@@ -11,7 +11,14 @@
     [cdkConnectedOverlayPush]="true"
     cdkConnectedOverlay
   >
-    <div #sidebar [cdkTrapFocusAutoCapture]="true" cdkScrollable="false" cdkTrapFocus class="sidebar bg-white w-100">
+    <div
+      [cdkTrapFocusAutoCapture]="true"
+      cdkScrollable="false"
+      cdkTrapFocus
+      class="bg-white w-100 sidepanel"
+      id="detail-container"
+      [style.right]="right"
+    >
       <div class="sidebar__content d-flex">
         <div [ngSwitch]="modelType" class="d-flex flex-row w-100">
           <div *ngSwitchDefault>Es ist eine Fehler aufgetreten!</div>

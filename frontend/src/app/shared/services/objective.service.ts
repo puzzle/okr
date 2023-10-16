@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Objective } from '../types/model/Objective';
 import { Observable } from 'rxjs';
+import { Completed } from '../types/model/Completed';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,13 @@ export class ObjectiveService {
 
   deleteObjective(objectiveId: number): Observable<Objective> {
     return this.httpClient.delete<Objective>(`/api/v2/objectives/${objectiveId}`);
+  }
+
+  createCompleted(completed: Completed): Observable<Completed> {
+    return this.httpClient.post<Completed>('/api/v2/completed', completed);
+  }
+
+  deleteCompleted(completed: Completed): void {
+    this.httpClient.delete<Completed>(`/api/v2/completed/${completed.objective.id}`);
   }
 }

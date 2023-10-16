@@ -32,11 +32,11 @@ public class CompletedController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCompleted);
     }
 
-    @Operation(summary = "Delete Completed by Id", description = "Delete Completed Reference by Id")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Completed by Id"),
-            @ApiResponse(responseCode = "404", description = "Did not find the Completed with requested id") })
-    @DeleteMapping("/{id}")
-    public void deleteCompletedById(@PathVariable long id) {
-        completedBusinessService.deleteCompletedById(id);
+    @Operation(summary = "Delete Completed by Objective Id", description = "Delete Completed Reference by Objective Id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Completed by Objective Id"),
+            @ApiResponse(responseCode = "404", description = "Did not find the Completed with requested Objective id") })
+    @DeleteMapping("/{objectiveId}")
+    public void deleteCompletedByObjectiveId(@PathVariable long objectiveId) {
+        completedBusinessService.deleteCompletedByObjectiveId(objectiveId);
     }
 }

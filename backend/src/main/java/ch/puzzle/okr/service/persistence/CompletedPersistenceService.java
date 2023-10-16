@@ -15,4 +15,8 @@ public class CompletedPersistenceService extends PersistenceBase<Completed, Long
     public String getModelName() {
         return "Completed";
     }
+
+    public Completed getCompletedByObjectiveId(Long objectiveId) {
+        return ((CompletedRepository) this.repository).findByObjectiveId(objectiveId);
+    }
 }

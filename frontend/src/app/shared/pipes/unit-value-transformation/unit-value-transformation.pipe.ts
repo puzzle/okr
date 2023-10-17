@@ -7,6 +7,7 @@ import { THOUSAND_SEPERATOR } from '../../regexLibrary';
 })
 export class UnitValueTransformationPipe implements PipeTransform {
   transform(value: number, unit: String): string {
+    /* If user tries to input String, set value to 0 */
     if (Number.isNaN(value)) {
       value = 0;
     }

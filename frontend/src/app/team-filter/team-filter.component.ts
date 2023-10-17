@@ -4,7 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getValueFromQuery } from '../shared/common';
+import { getValueFromQuery, optional } from '../shared/common';
 
 @Component({
   selector: 'app-team-filter',
@@ -38,12 +38,17 @@ export class TeamFilterComponent implements OnInit {
       if (this.areAllTeamsShown()) {
         this.activeTeams = [];
       }
-      this.changeTeamFilter();
+      this.changeTeamFilterParams();
     });
   }
 
-  changeTeamFilter() {
-    this.router.navigate([], { queryParams: { teams: this.activeTeams }, queryParamsHandling: 'merge' }).then(() => {
+  changeTeamFilterParams() {
+    const params = optional({ teams: this.activeTeams.join(',') });
+    return this.router.navigate([], { queryParams: params, queryParamsHandling: 'merge' });
+  }
+
+  changeTeamFilterParamsAndReload() {
+    this.changeTeamFilterParams().then(() => {
       this.refreshDataService.markDataRefresh();
     });
   }
@@ -64,7 +69,7 @@ export class TeamFilterComponent implements OnInit {
       this.activeTeams = [];
     }
 
-    this.changeTeamFilter();
+    this.changeTeamFilterParamsAndReload();
   }
 
   areAllTeamsShown() {
@@ -82,7 +87,10 @@ export class TeamFilterComponent implements OnInit {
   }
 
   selectAll() {
+    if (this.activeTeams.length == 0) {
+      return;
+    }
     this.activeTeams = [];
-    this.changeTeamFilter();
+    this.changeTeamFilterParamsAndReload();
   }
 }

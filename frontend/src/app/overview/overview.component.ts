@@ -4,7 +4,6 @@ import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { TeamService } from '../shared/services/team.service';
 import { getValueFromQuery } from '../shared/common';
 
 @Component({
@@ -21,7 +20,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
-    private teamService: TeamService,
   ) {
     this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverview());
   }
@@ -36,6 +34,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
+
     this.getOverview(quarterId, teamIds);
   }
 
@@ -48,9 +47,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
           return EMPTY;
         }),
       )
-      .subscribe((overviews) => {
-        this.overviewEntities$.next(overviews);
-      });
+      .subscribe((overviews) => this.overviewEntities$.next(overviews));
   }
 
   ngOnDestroy(): void {

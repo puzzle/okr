@@ -8,6 +8,7 @@ export function getNumberOrNull(str: string | null | undefined): number | null {
 
 export function getValueFromQuery(query: any): number[] {
   return Array.from([query])
+    .map((e) => (typeof e == 'string' ? e.split(',') : e))
     .flat(1)
     .map((id: any) => Number(id))
     .filter((id: number) => Number.isInteger(id));

@@ -32,7 +32,7 @@
 </mat-dialog-content>
 <!--    Buttons to submit the check-in-->
 <div class="d-flex flex-row ms-4">
-  <button *ngIf="!continued" (click)="continued = true" class="ps-3 submit mb-3 pe-3 pt-1 pb-1 fw-bold text-white">
+  <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">
     Weiter
   </button>
   <button
@@ -48,5 +48,5 @@
     <span *ngIf="checkIn.id">Speichern</span>
     <span *ngIf="!checkIn.id">Check-in erfassen</span>
   </button>
-  <button mat-button mat-dialog-close class="cancel ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">Abbrechen</button>
+  <button mat-button mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
 </div>

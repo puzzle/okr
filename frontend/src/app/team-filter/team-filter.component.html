@@ -1,7 +1,8 @@
 <mat-chip-listbox>
   <mat-chip color="primary" [highlighted]="activeTeams.length == 0" (click)="selectAll()"
-    >Alle ({{ getAllObjectives((this.teams$ | async)!) }})</mat-chip
+    >Alle ({{ getAllObjectivesCount((this.teams$ | async)!) }})</mat-chip
   >
+
   <mat-chip
     *ngFor="let team of teams$ | async"
     color="primary"

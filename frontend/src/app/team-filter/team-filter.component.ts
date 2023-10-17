@@ -21,7 +21,13 @@ export class TeamFilterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private refreshDataService: RefreshDataService,
-  ) {}
+  ) {
+    this.refreshDataService.reloadOverviewSubject.subscribe(() => {
+      this.teamService.getAllTeams().subscribe((teams) => {
+        this.teams$.next(teams);
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams) => {
@@ -29,7 +35,9 @@ export class TeamFilterComponent implements OnInit {
       const teamQuery = this.route.snapshot.queryParams['teams'];
       const teamIds = getValueFromQuery(teamQuery);
       this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
-      this.clearIfAllTeamsAreSelected();
+      if (this.areAllTeamsShown()) {
+        this.activeTeams = [];
+      }
       this.changeTeamFilter();
     });
   }
@@ -41,29 +49,35 @@ export class TeamFilterComponent implements OnInit {
   }
 
   toggleSelection(id: number) {
-    if (this.activeTeams.includes(id)) {
+    if (this.areAllTeamsShown()) {
+      this.activeTeams = this.teams$
+        .getValue()
+        .filter((team) => team.id != id)
+        .map((team) => team.id);
+    } else if (this.activeTeams.includes(id)) {
       this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
     } else {
       this.activeTeams.push(id);
     }
-    this.clearIfAllTeamsAreSelected();
+
+    if (this.areAllTeamsShown()) {
+      this.activeTeams = [];
+    }
+
     this.changeTeamFilter();
   }
 
-  clearIfAllTeamsAreSelected() {
-    if (
-      this.activeTeams.sort().toString() ==
-      this.teams$
-        .getValue()
-        .map((team) => team.id)
-        .sort()
-        .toString()
-    ) {
-      this.activeTeams = [];
-    }
+  areAllTeamsShown() {
+    const activeTeamsSortedString = this.activeTeams.sort().toString();
+    const allTeamsSortedString = this.teams$
+      .getValue()
+      .map((team) => team.id)
+      .sort()
+      .toString();
+    return this.activeTeams.length == 0 || activeTeamsSortedString == allTeamsSortedString;
   }
 
-  getAllObjectives(teams: Team[]) {
+  getAllObjectivesCount(teams: Team[]) {
     return teams.map((team) => team.activeObjectives).reduce((a, b) => a + b, 0);
   }
 

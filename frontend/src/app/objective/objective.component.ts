@@ -11,6 +11,7 @@ import { State } from '../shared/types/enums/State';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
+import { Completed } from '../shared/types/model/Completed';
 
 @Component({
   selector: 'app-objective-column',
@@ -91,54 +92,49 @@ export class ObjectiveComponent implements AfterViewInit {
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
-        data: menuEntry.dialog.data,
+        data: {
+          title: menuEntry.dialog.data.title,
+          action: menuEntry.action,
+          objective: menuEntry.dialog.data,
+        },
         width: '850px',
       });
       matDialogRef.afterClosed().subscribe((result) => {
-        this.refreshDataService.markDataRefresh();
-      });
-    } else {
-      if (menuEntry.action) {
-        this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
-          let fullObjective = objective;
-          switch (menuEntry.action) {
-            case 'reopen':
-              fullObjective.state = State.ONGOING;
-              break;
-            case 'duplicate':
-              // TODO Duplicate Objective
-              break;
-            case 'complete':
-              // TODO Open Complete dialog for successful or not successful
-              const matDialogRef = this.matDialog.open(menuEntry.dialog!.dialog, {
-                data: menuEntry.dialog!.data,
-                width: '850px',
+        if (menuEntry.action) {
+          this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+            if (menuEntry.action == 'complete') {
+              objective.state = result.endState as State;
+              const completed: Completed = {
+                id: null,
+                objective: objective,
+                comment: result.comment,
+              };
+              this.objectiveService.updateObjective(objective).subscribe(() => {
+                this.objectiveService.createCompleted(completed).subscribe();
               });
-              // TODO this.objective.value.state = State.SUCCESSFUL
-              matDialogRef.afterClosed().subscribe((result: string) => {
-                fullObjective.state = State[result as keyof typeof State];
-              });
-              // TODO Update Objective with service
-              break;
-            case 'release':
-              fullObjective.state = State.ONGOING;
-          }
-          this.objectiveService.updateObjective(fullObjective);
-        });
-      } else {
-        if (menuEntry.dialog) {
-          const matDialogRef = this.matDialog.open(menuEntry.dialog, {
-            data: menuEntry.dialog['data'],
-            width: '850px',
-          });
-          matDialogRef.afterClosed().subscribe((result) => {
-            if (result?.objective) {
-              this.refreshDataService.markDataRefresh();
+            } else if (menuEntry.action == 'release') {
+              if (result) {
+                objective.state = 'ONGOING' as State;
+                this.objectiveService.updateObjective(objective).subscribe();
+              }
             }
           });
         } else {
-          this.router.navigate([menuEntry.route!]);
+          if (result?.objective) {
+            this.refreshDataService.markDataRefresh();
+          }
         }
+      });
+    } else {
+      if (menuEntry.action === 'reopen') {
+        this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+          objective.state = 'ONGOING' as State;
+          this.objectiveService.updateObjective(objective).subscribe(() => {
+            this.objectiveService.deleteCompleted(objective.id).subscribe();
+          });
+        });
+      } else {
+        this.router.navigate([menuEntry.route!]);
       }
     }
   }

@@ -1,14 +1,22 @@
-<div>
-  <p class="title">Objective abschliessen</p>
+<div class="p-4">
+  <p class="title mb-3">Objective abschliessen</p>
+  <div>Bewertung</div>
+  <mat-radio-group class="gap-3 d-flex mb-3">
+    <div class="bg-grey w-50 valuation-radio" role="button">
+      <mat-radio-button class="float-end" value="successful"></mat-radio-button>
+      <div>Objective erfolgreich</div>
+    </div>
+    <div class="bg-grey w-50 valuation-radio" role="button">
+      <mat-radio-button class="float-end" value="notsuccessful"></mat-radio-button>
+      <div>Objective erfolgreich</div>
+    </div>
+  </mat-radio-group>
 
-  <label>Bewertung</label>
-  <input type="radio" id="successful" value="successful" />
-  <label>Objective erfolgreich</label><br />
-  <input type="radio" id="notsuccessful" value="notsuccessful" />
-  <label>Objective nicht erfolgreich</label><br />
-
-  <label>Kommentar (optional)</label>
-  <input placeholder="Kommentar" />
-
-  <button (click)="closeDialog()">Submit</button>
+  <div>Kommentar (optional)</div>
+  <textarea class="commentary-field w-100"></textarea>
+  <br />
+  <button [attr.data-testId]="'submit'" type="submit" (click)="closeDialog()" color="primary" mat-flat-button>
+    Objective Abschliessen
+  </button>
+  <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
 </div>

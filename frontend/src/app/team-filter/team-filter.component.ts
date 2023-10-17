@@ -62,4 +62,13 @@ export class TeamFilterComponent implements OnInit {
       this.activeTeams = [];
     }
   }
+
+  getAllObjectives(teams: Team[]) {
+    return teams.map((team) => team.activeObjectives).reduce((a, b) => a + b, 0);
+  }
+
+  selectAll() {
+    this.activeTeams = [];
+    this.changeTeamFilter();
+  }
 }

@@ -1,24 +1,24 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {User} from '../shared/types/model/User';
-import {KeyResult} from '../shared/types/model/KeyResult';
-import {KeyresultService} from '../shared/services/keyresult.service';
-import {KeyResultMetricDTO} from '../shared/types/DTOs/KeyResultMetricDTO';
-import {testUser} from '../shared/testData';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../shared/types/model/User';
+import { KeyResult } from '../shared/types/model/KeyResult';
+import { KeyresultService } from '../shared/services/keyresult.service';
+import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
+import { testUser } from '../shared/testData';
 import errorMessages from '../../assets/errors/error-messages.json';
-import {ConfirmDialogComponent} from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import {Objective} from '../shared/types/model/Objective';
-import {KeyResultEmitOrdinalDTO} from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
-import {KeyResultEmitDTO} from '../shared/types/DTOs/KeyResultEmitDTO';
-import {KeyResultEmitMetricDTO} from '../shared/types/DTOs/KeyResultEmitMetricDTO';
-import {KeyResultDTO} from '../shared/types/DTOs/KeyResultDTO';
-import {KeyResultOrdinalDTO} from '../shared/types/DTOs/KeyResultOrdinalDTO';
-import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
-import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
-import {filter, map, Observable, of, share, startWith, switchMap} from "rxjs";
-import {UserService} from "../shared/services/user.service";
-import {CloseState} from "../shared/types/enums/CloseState";
+import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { Objective } from '../shared/types/model/Objective';
+import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
+import { KeyResultEmitDTO } from '../shared/types/DTOs/KeyResultEmitDTO';
+import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
+import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
+import { KeyResultOrdinalDTO } from '../shared/types/DTOs/KeyResultOrdinalDTO';
+import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
+import { filter, map, Observable, of, share, startWith, switchMap } from 'rxjs';
+import { UserService } from '../shared/services/user.service';
+import { CloseState } from '../shared/types/enums/CloseState';
 
 @Component({
   selector: 'app-key-result-dialog',

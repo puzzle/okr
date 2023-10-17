@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotifierService } from '../shared/services/notifier.service';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -19,7 +19,7 @@ export class TeamFilterComponent implements OnInit {
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
-    private notifierService: NotifierService,
+    private refreshDataService: RefreshDataService,
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class TeamFilterComponent implements OnInit {
 
   changeTeamFilter() {
     this.router.navigate([], { queryParams: { teams: this.activeTeams }, queryParamsHandling: 'merge' }).then(() => {
-      this.notifierService.reloadOverview.next(null);
+      this.refreshDataService.markDataRefresh();
     });
   }
 

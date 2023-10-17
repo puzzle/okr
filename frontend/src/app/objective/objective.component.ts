@@ -6,13 +6,11 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { MatDialog } from '@angular/material/dialog';
 import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject } from 'rxjs';
-import { CloseState } from '../shared/types/enums/CloseState';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { State } from '../shared/types/enums/State';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
-import { Completed } from '../shared/types/model/Completed';
 
 @Component({
   selector: 'app-objective-column',
@@ -129,13 +127,13 @@ export class ObjectiveComponent implements AfterViewInit {
         });
       } else {
         if (menuEntry.dialog) {
-          const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
-            data: menuEntry.dialog.data,
+          const matDialogRef = this.matDialog.open(menuEntry.dialog, {
+            data: menuEntry.dialog['data'],
             width: '850px',
           });
           matDialogRef.afterClosed().subscribe((result) => {
             if (result?.objective) {
-              this.refreshDataService.markDataRefresh()
+              this.refreshDataService.markDataRefresh();
             }
           });
         } else {

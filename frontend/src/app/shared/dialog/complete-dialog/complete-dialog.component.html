@@ -1,22 +1,24 @@
-<div class="p-4">
+<form class="p-4" [formGroup]="completeForm">
   <p class="title mb-3">Objective abschliessen</p>
   <div>Bewertung</div>
-  <mat-radio-group class="gap-3 d-flex mb-3">
+  <mat-radio-group class="gap-3 d-flex mb-3" formControlName="isSuccessful">
     <div class="bg-grey w-50 valuation-radio" role="button">
-      <mat-radio-button class="float-end" value="successful"></mat-radio-button>
+      <mat-radio-button class="float-end" value="1"></mat-radio-button>
       <div>Objective erfolgreich</div>
     </div>
     <div class="bg-grey w-50 valuation-radio" role="button">
-      <mat-radio-button class="float-end" value="notsuccessful"></mat-radio-button>
-      <div>Objective erfolgreich</div>
+      <mat-radio-button class="float-end" value="0"></mat-radio-button>
+      <div>Objective nicht erfolgreich</div>
     </div>
   </mat-radio-group>
 
   <div>Kommentar (optional)</div>
   <textarea class="commentary-field w-100"></textarea>
+
+  {{ completeForm.value | json }}
   <br />
   <button [attr.data-testId]="'submit'" type="submit" (click)="closeDialog()" color="primary" mat-flat-button>
     Objective Abschliessen
   </button>
   <button class="add-button" mat-button mat-dialog-close>Abbrechen</button>
-</div>
+</form>

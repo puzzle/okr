@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { RefreshDataService } from '../../services/refresh-data.service';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -9,15 +10,18 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class CompleteDialogComponent {
   completeForm = new FormGroup({
-    isSuccessful: new FormControl<boolean>(true, [Validators.required]),
+    isSuccessful: new FormControl<string>('1', [Validators.required]),
     comment: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
 
-  constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<CompleteDialogComponent>,
+    private refreshDataService: RefreshDataService,
+  ) {}
 
   closeDialog() {
     this.dialogRef.close({
-      endState: this.completeForm.value.isSuccessful ? 'SUCCESSFUL' : 'NOTSUCCESSFUL',
+      endState: Boolean(+!this.completeForm.value.isSuccessful) ? 'SUCCESSFUL' : 'NOTSUCCESSFUL',
       comment: this.completeForm.value.comment,
     });
   }

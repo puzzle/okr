@@ -12,13 +12,13 @@ export class UnitValueTransformationPipe implements PipeTransform {
     }
     switch (unit) {
       case Unit.CHF:
-        return this.addCHFSign(value.toFixed(2).toString().replace(THOUSAND_SEPERATOR, "'"));
+        return this.addCHFSign(this.roundAndAddThousandSplitSign(value));
       case Unit.PERCENT:
         return value + '%';
       case Unit.FTE:
-        return value.toString();
+        return this.roundAndAddThousandSplitSign(value);
       case Unit.NUMBER:
-        return value.toString();
+        return this.roundAndAddThousandSplitSign(value);
       default:
         return value.toString();
     }
@@ -26,5 +26,9 @@ export class UnitValueTransformationPipe implements PipeTransform {
 
   addCHFSign(value: string): string {
     return !+value.split('.')[1] ? value.split('.')[0] + '.-' : value;
+  }
+
+  roundAndAddThousandSplitSign(value: number): string {
+    return (+value.toFixed(2)).toString().replace(THOUSAND_SEPERATOR, "'");
   }
 }

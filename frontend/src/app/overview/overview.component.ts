@@ -5,6 +5,7 @@ import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { TeamService } from '../shared/services/team.service';
+import { getValueFromQuery } from '../shared/common';
 
 @Component({
   selector: 'app-overview',
@@ -30,10 +31,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   loadOverview() {
-    const quarterId = this.activatedRoute.snapshot.queryParams['quarter'];
+    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
-    const teamIds = this.teamService.getTeamIdsFromQuery(teamQuery);
 
+    const teamIds = getValueFromQuery(teamQuery);
+    const quarterId = getValueFromQuery(quarterQuery)[0];
     this.getOverview(quarterId, teamIds);
   }
 

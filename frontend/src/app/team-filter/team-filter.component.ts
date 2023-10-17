@@ -4,6 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { getValueFromQuery } from '../shared/common';
 
 @Component({
   selector: 'app-team-filter',
@@ -26,7 +27,7 @@ export class TeamFilterComponent implements OnInit {
     this.teamService.getAllTeams().subscribe((teams) => {
       this.teams$.next(teams);
       const teamQuery = this.route.snapshot.queryParams['teams'];
-      const teamIds = this.teamService.getTeamIdsFromQuery(teamQuery);
+      const teamIds = getValueFromQuery(teamQuery);
       this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
       this.clearIfAllTeamsAreSelected();
       this.changeTeamFilter();

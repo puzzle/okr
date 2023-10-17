@@ -18,6 +18,7 @@ import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
 import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
 import {filter, map, Observable, of, share, startWith, switchMap} from "rxjs";
 import {UserService} from "../shared/services/user.service";
+import {CloseState} from "../shared/types/enums/CloseState";
 
 @Component({
   selector: 'app-key-result-dialog',

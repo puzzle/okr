@@ -63,13 +63,11 @@ export class ObjectiveComponent implements AfterViewInit {
           dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
         },
         { displayName: 'Objective duplizieren', action: 'duplicate' },
-        // TODO nur wenn nicht auf Draft
         {
           displayName: 'Objective abschliessen',
           action: 'complete',
           dialog: { dialog: CompleteDialogComponent, data: {} },
         },
-        // TODO nur wenn nicht auf OnGoing
         {
           displayName: 'Objective freigeben',
           action: 'release',

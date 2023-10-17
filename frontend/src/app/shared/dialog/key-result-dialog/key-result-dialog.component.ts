@@ -1,24 +1,24 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from '../shared/types/model/User';
-import { KeyResult } from '../shared/types/model/KeyResult';
-import { KeyresultService } from '../shared/services/keyresult.service';
-import { KeyResultMetricDTO } from '../shared/types/DTOs/KeyResultMetricDTO';
-import { testUser } from '../shared/testData';
-import errorMessages from '../../assets/errors/error-messages.json';
-import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { Objective } from '../shared/types/model/Objective';
-import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
-import { KeyResultEmitDTO } from '../shared/types/DTOs/KeyResultEmitDTO';
-import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
-import { KeyResultDTO } from '../shared/types/DTOs/KeyResultDTO';
-import { KeyResultOrdinalDTO } from '../shared/types/DTOs/KeyResultOrdinalDTO';
-import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
+import { User } from '../../types/model/User';
+import { KeyResult } from '../../types/model/KeyResult';
+import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultMetricDTO } from '../../types/DTOs/KeyResultMetricDTO';
+import { testUser } from '../../testData';
+import errorMessages from '../../../../assets/errors/error-messages.json';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Objective } from '../../types/model/Objective';
+import { KeyResultEmitOrdinalDTO } from '../../types/DTOs/KeyResultEmitOrdinalDTO';
+import { KeyResultEmitDTO } from '../../types/DTOs/KeyResultEmitDTO';
+import { KeyResultEmitMetricDTO } from '../../types/DTOs/KeyResultEmitMetricDTO';
+import { KeyResultDTO } from '../../types/DTOs/KeyResultDTO';
+import { KeyResultOrdinalDTO } from '../../types/DTOs/KeyResultOrdinalDTO';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { filter, map, Observable, of, share, startWith, switchMap } from 'rxjs';
-import { UserService } from '../shared/services/user.service';
-import { CloseState } from '../shared/types/enums/CloseState';
+import { UserService } from '../../services/user.service';
+import { CloseState } from '../../types/enums/CloseState';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -34,13 +34,13 @@ export class KeyResultDialogComponent implements OnInit {
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | null>(null, [Validators.required, Validators.nullValidator]),
-    unit: new FormControl<string | null>(null),
-    baseline: new FormControl<number | null>(null),
-    stretchGoal: new FormControl<number | null>(null),
-    commitZone: new FormControl<string | null>(null),
-    targetZone: new FormControl<string | null>(null),
-    stretchZone: new FormControl<string | null>(null),
+    owner: new FormControl<User | string| null>(null, [Validators.required, Validators.nullValidator]),
+    unit: new FormControl<string | null>(null, [Validators.required]),
+    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
+    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
+    commitZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
+    targetZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
+    stretchZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
   });
   protected readonly errorMessages: any = errorMessages;
 
@@ -53,7 +53,7 @@ export class KeyResultDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.users$ = this.userService.getUsers().pipe(share());
+    this.users$ = this.userService.getUsers();
     this.filteredUsers$ = this.keyResultForm.get('owner')?.valueChanges.pipe(
       startWith(''),
       filter((value) => typeof value === 'string'),
@@ -61,60 +61,46 @@ export class KeyResultDialogComponent implements OnInit {
     );
 
     if (this.data.keyResult) {
+      this.keyResultForm.controls.title.setValue(this.data.keyResult.title);
+      this.keyResultForm.controls.description.setValue(this.data.keyResult.description);
+      this.keyResultForm.controls.owner.setValue(this.data.keyResult.owner);
+
       this.isMetricKeyResult = this.data.keyResult.keyResultType == 'metric';
       if (this.isMetricKeyResult) {
         let keyResultMetric = this.data.keyResult as KeyResultMetric;
-        this.keyResultForm.setValue({
-          title: keyResultMetric.title,
-          description: keyResultMetric.description,
-          owner: keyResultMetric.owner,
-          unit: keyResultMetric.unit,
-          baseline: keyResultMetric.baseline,
-          stretchGoal: keyResultMetric.stretchGoal,
-          commitZone: null,
-          targetZone: null,
-          stretchZone: null,
-        });
+        this.keyResultForm.controls.unit.setValue(keyResultMetric.unit);
+        this.keyResultForm.controls.baseline.setValue(keyResultMetric.baseline);
+        this.keyResultForm.controls.stretchGoal.setValue(keyResultMetric.stretchGoal);
       } else {
         let keyResultOrdinal = this.data.keyResult as KeyResultOrdinal;
-        this.keyResultForm.setValue({
-          title: keyResultOrdinal.title,
-          description: keyResultOrdinal.description,
-          owner: keyResultOrdinal.owner,
-          unit: null,
-          baseline: null,
-          stretchGoal: null,
-          commitZone: keyResultOrdinal.commitZone,
-          targetZone: keyResultOrdinal.targetZone,
-          stretchZone: keyResultOrdinal.stretchZone,
-        });
+        this.keyResultForm.controls.commitZone.setValue(keyResultOrdinal.commitZone);
+        this.keyResultForm.controls.targetZone.setValue(keyResultOrdinal.targetZone);
+        this.keyResultForm.controls.stretchZone.setValue(keyResultOrdinal.stretchZone);
       }
     }
   }
 
   saveKeyResult(openNewDialog = false) {
     const value = this.keyResultForm.value;
-    let keyResult: KeyResultDTO;
+    let keyResult: KeyResultDTO = {
+      id: this.data.keyResult?.id,
+      title: value.title,
+      description: value.description,
+      objective: this.data.objective,
+      owner: value.owner
+    } as KeyResultDTO;
+
     if (this.isMetricKeyResult) {
-      keyResult = {
-        id: this.data.keyResult ? this.data.keyResult.id : null,
-        title: value.title,
-        description: value.description,
-        objective: this.data.objective ? this.data.objective : this.data.keyResult.objective,
-        keyResultType: 'metric',
-        owner: value.owner,
+      keyResult = {...keyResult,
+        keyResultType: "metric",
         unit: value.unit,
         baseline: value.baseline,
-        stretchGoal: value.stretchGoal,
+        stretchGoal: value.stretchGoal
       } as KeyResultMetricDTO;
+
     } else {
-      keyResult = {
-        id: this.data.keyResult ? this.data.keyResult.id : null,
-        title: value.title,
-        description: value.description,
-        objective: this.data.objective ? this.data.objective : this.data.keyResult.objective,
+      keyResult = {...keyResult,
         keyResultType: 'ordinal',
-        owner: value.owner,
         commitZone: value.commitZone,
         targetZone: value.targetZone,
         stretchZone: value.stretchZone,
@@ -199,11 +185,7 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   getUserNameById(user: User): string {
-    if (user === null || user === undefined) {
-      return '';
-    }
-
-    return user.firstname + ' ' + user.lastname;
+    return user ?  user.firstname + ' ' + user.lastname :"";
   }
 
   validOwner() {

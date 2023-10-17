@@ -15,27 +15,19 @@ import { Unit } from '../shared/types/enums/Unit';
   styleUrls: ['./keyresult-type.component.scss'],
 })
 export class KeyresultTypeComponent implements OnInit {
+  @Input() keyResultForm!: FormGroup
   @Input() keyresult!: KeyResult;
   @Output() newKeyresultEvent = new EventEmitter<KeyResultEmitDTO>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
 
-  typeForm = new FormGroup({
-    unit: new FormControl<string | null>(null, [Validators.required]),
-    baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
-    stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
-    commitZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
-    targetZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
-    stretchZone: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(400)]),
-  });
-
   ngOnInit(): void {
     if (this.keyresult) {
-      this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
+      // this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
       if (this.keyresult.keyResultType == 'metric') {
         this.isMetric = true;
         let keyresultMetric: KeyResultMetric = this.castToMetric(this.keyresult);
-        this.typeForm.setValue({
+        this.keyResultForm.setValue({
           unit: keyresultMetric.unit,
           baseline: keyresultMetric.baseline,
           stretchGoal: keyresultMetric.stretchGoal,
@@ -46,7 +38,7 @@ export class KeyresultTypeComponent implements OnInit {
       } else {
         this.isMetric = false;
         let keyresultOrdinal: KeyResultOrdinal = this.castToOrdinal(this.keyresult);
-        this.typeForm.setValue({
+        this.keyResultForm.setValue({
           unit: null,
           baseline: null,
           stretchGoal: null,
@@ -75,32 +67,12 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   isTouchedOrDirty(name: string) {
-    return this.typeForm.get(name)?.dirty || this.typeForm.get(name)?.touched;
+    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
   getErrorKeysOfFormField(name: string) {
-    const errors = this.typeForm.get(name)?.errors;
+    const errors = this.keyResultForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
-  }
-
-  emitData() {
-    if (this.isMetric) {
-      let keyresultEmit: KeyResultEmitMetricDTO = {
-        keyresultType: 'metric',
-        unit: this.typeForm.value.unit,
-        baseline: this.typeForm.value.baseline,
-        stretchGoal: this.typeForm.value.stretchGoal,
-      };
-      this.newKeyresultEvent.emit(keyresultEmit);
-    } else {
-      let keyresultEmit: KeyResultEmitOrdinalDTO = {
-        keyresultType: 'ordinal',
-        commitZone: this.typeForm.value.commitZone,
-        targetZone: this.typeForm.value.targetZone,
-        stretchZone: this.typeForm.value.stretchZone,
-      };
-      this.newKeyresultEvent.emit(keyresultEmit);
-    }
   }
 
   protected readonly errorMessages: any = errorMessages;

@@ -20,6 +20,7 @@
     <div class="mt-2">
       <app-keyresult-type
         [keyresult]="data.keyResult"
+        [keyResultForm]="keyResultForm"
         (newKeyresultEvent)="saveEmittedData($event)"
       ></app-keyresult-type>
     </div>
@@ -31,7 +32,6 @@
         [matAutocomplete]="auto"
         formControlName="owner"
         class="input-fields owner-input"
-        (focusout)="validOwner()"
       />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">

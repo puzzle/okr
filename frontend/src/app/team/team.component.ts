@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
 
 @Component({

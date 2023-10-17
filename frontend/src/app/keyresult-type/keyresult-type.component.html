@@ -23,7 +23,7 @@
 </div>
 
 <div *ngIf="isMetric; else ordinalBlock">
-  <form [formGroup]="typeForm" class="gap-1">
+  <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
@@ -32,7 +32,6 @@
               <label>Einheit</label>
               <select
                 class="unit-dropdown bg-white input-fields menu-option"
-                (change)="emitData()"
                 formControlName="unit"
                 [attr.data-testId]="'unit'"
               >
@@ -45,7 +44,6 @@
               <label>Baseline</label>
               <input
                 class="input-fields metric-fields"
-                (change)="emitData()"
                 formControlName="baseline"
                 [attr.data-testId]="'baseline'"
               />
@@ -59,7 +57,6 @@
               <label>Stretch Goal</label>
               <input
                 class="input-fields metric-fields"
-                (change)="emitData()"
                 formControlName="stretchGoal"
                 [attr.data-testId]="'stretchGoal'"
               />
@@ -77,7 +74,7 @@
 </div>
 
 <ng-template #ordinalBlock>
-  <form [formGroup]="typeForm" class="gap-1">
+  <form [formGroup]="keyResultForm" class="gap-1">
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
@@ -86,7 +83,6 @@
               <label>Commit Zone</label>
               <textarea
                 class="input-fields"
-                (change)="emitData()"
                 formControlName="commitZone"
                 [attr.data-testId]="'commitZone'"
               ></textarea>
@@ -100,7 +96,6 @@
               <label>Target Zone</label>
               <textarea
                 class="input-fields"
-                (change)="emitData()"
                 formControlName="targetZone"
                 [attr.data-testId]="'targetZone'"
               ></textarea>
@@ -114,7 +109,6 @@
               <label>Stretch Zone</label>
               <textarea
                 class="input-fields"
-                (change)="emitData()"
                 formControlName="stretchZone"
                 [attr.data-testId]="'stretchZone'"
               ></textarea>

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KeyResultDialogComponent } from './key-result-dialog.component';
-import * as errorData from '../../assets/errors/error-messages.json';
+import * as errorData from '../../../../assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -9,18 +9,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
-import { testUser, users } from '../shared/testData';
-import { State } from '../shared/types/enums/State';
-import { KeyresultService } from '../shared/services/keyresult.service';
-import { KeyResult } from '../shared/types/model/KeyResult';
+import { testUser, users } from '../../testData';
+import { State } from '../../types/enums/State';
+import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResult } from '../../types/model/KeyResult';
 import { Observable, of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { KeyResultObjective } from '../shared/types/model/KeyResultObjective';
-import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
-import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
-import { User } from '../shared/types/model/User';
+import { KeyResultObjective } from '../../types/model/KeyResultObjective';
+import { KeyResultEmitMetricDTO } from '../../types/DTOs/KeyResultEmitMetricDTO';
+import { KeyResultEmitOrdinalDTO } from '../../types/DTOs/KeyResultEmitOrdinalDTO';
+import { User } from '../../types/model/User';
 
 class matDialogRefMock {
   close() {}

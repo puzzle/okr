@@ -15,7 +15,7 @@ import { Unit } from '../shared/types/enums/Unit';
   styleUrls: ['./keyresult-type.component.scss'],
 })
 export class KeyresultTypeComponent implements OnInit {
-  @Input() keyResultForm!: FormGroup
+  @Input() keyResultForm!: FormGroup;
   @Input() keyresult!: KeyResult;
   @Output() newKeyresultEvent = new EventEmitter<KeyResultEmitDTO>();
   isMetric: boolean = true;

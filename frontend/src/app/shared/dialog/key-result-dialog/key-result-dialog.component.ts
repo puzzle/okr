@@ -34,7 +34,7 @@ export class KeyResultDialogComponent implements OnInit {
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
-    owner: new FormControl<User | string| null>(null, [Validators.required, Validators.nullValidator]),
+    owner: new FormControl<User | string | null>(null, [Validators.required, Validators.nullValidator]),
     unit: new FormControl<string | null>(null, [Validators.required]),
     baseline: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
     stretchGoal: new FormControl<number | null>(null, [Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]),
@@ -87,19 +87,20 @@ export class KeyResultDialogComponent implements OnInit {
       title: value.title,
       description: value.description,
       objective: this.data.objective,
-      owner: value.owner
+      owner: value.owner,
     } as KeyResultDTO;
 
     if (this.isMetricKeyResult) {
-      keyResult = {...keyResult,
-        keyResultType: "metric",
+      keyResult = {
+        ...keyResult,
+        keyResultType: 'metric',
         unit: value.unit,
         baseline: value.baseline,
-        stretchGoal: value.stretchGoal
+        stretchGoal: value.stretchGoal,
       } as KeyResultMetricDTO;
-
     } else {
-      keyResult = {...keyResult,
+      keyResult = {
+        ...keyResult,
         keyResultType: 'ordinal',
         commitZone: value.commitZone,
         targetZone: value.targetZone,
@@ -185,7 +186,7 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   getUserNameById(user: User): string {
-    return user ?  user.firstname + ' ' + user.lastname :"";
+    return user ? user.firstname + ' ' + user.lastname : '';
   }
 
   validOwner() {

@@ -1,5 +1,5 @@
 <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
-  <div *ngIf="keyResult" class="d-flex flex-column" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
+  <div *ngIf="keyResult" class="d-flex flex-column">
     <div class="d-flex justify-content-between">
       <h1 class="mb-2 title">{{ keyResult.title }}</h1>
     </div>

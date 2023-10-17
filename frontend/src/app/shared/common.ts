@@ -12,3 +12,17 @@ export function getValueFromQuery(query: any): number[] {
     .map((id: any) => Number(id))
     .filter((id: number) => Number.isInteger(id));
 }
+
+export function optional(param: object): {} {
+  return Object.fromEntries(
+    Object.entries(param)
+      .filter(([_, v]) => v != undefined)
+      .filter(([_, v]) => v != '')
+      .filter(([_, v]) => {
+        if (Array.isArray(v)) {
+          return v.length > 0;
+        }
+        return true;
+      }),
+  );
+}

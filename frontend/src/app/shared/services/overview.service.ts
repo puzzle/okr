@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { OverviewEntity } from '../types/model/OverviewEntity';
 import { State } from '../types/enums/State';
+import { optional } from '../common';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +11,8 @@ import { State } from '../types/enums/State';
 export class OverviewService {
   constructor(private http: HttpClient) {}
 
-  optional(param: object): {} {
-    return Object.fromEntries(
-      Object.entries(param)
-        .filter(([_, v]) => v != undefined)
-        .filter(([_, v]) => {
-          if (Array.isArray(v)) {
-            return v.length > 0;
-          }
-          return true;
-        }),
-    );
-  }
-
   getOverview(quarterId?: number, teamIds?: number[]): Observable<OverviewEntity[]> {
-    const params = this.optional({
+    const params = optional({
       quarter: quarterId,
       team: teamIds,
     });

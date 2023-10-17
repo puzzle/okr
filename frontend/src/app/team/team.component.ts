@@ -14,7 +14,7 @@ import {Objective} from '../shared/types/model/Objective';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent {
-  @ViewChild("objective-column")
+  @ViewChild('objective-column')
   objectiveColumn!: ElementRef<HTMLElement | undefined>;
 
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);

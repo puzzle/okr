@@ -82,6 +82,13 @@ export class ObjectiveComponent implements AfterViewInit {
           },
         },
       ];
+
+      if (this.objective.value.state === State.ONGOING) {
+        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective freigeben');
+      }
+      if (this.objective.value.state === State.DRAFT) {
+        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective abschliessen');
+      }
     }
   }
 

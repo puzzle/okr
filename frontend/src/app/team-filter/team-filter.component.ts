@@ -30,7 +30,7 @@ export class TeamFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.teamService.getAllTeams().subscribe((teams) => {
+    this.teamService.getAllTeams().subscribe((teams: Team[]) => {
       this.teams$.next(teams);
       const teamQuery = this.route.snapshot.queryParams['teams'];
       const teamIds = getValueFromQuery(teamQuery);

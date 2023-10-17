@@ -1,4 +1,4 @@
-<mat-chip-listbox>
+<mat-chip-listbox *ngIf="(teams$ | async)?.[0]">
   <mat-chip color="primary" [highlighted]="activeTeams.length == 0" (click)="selectAll()"
     >Alle ({{ getAllObjectivesCount((this.teams$ | async)!) }})</mat-chip
   >

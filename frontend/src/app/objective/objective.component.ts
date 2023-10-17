@@ -4,7 +4,7 @@ import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { RefreshDataService } from '../shared/services/refresh-data.service';

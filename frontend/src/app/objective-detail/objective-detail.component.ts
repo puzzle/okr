@@ -3,7 +3,7 @@ import { Objective } from '../shared/types/model/Objective';
 import { ObjectiveService } from '../shared/services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
+import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({

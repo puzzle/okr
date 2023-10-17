@@ -52,7 +52,7 @@ import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transform
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
-import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
+import { KeyResultDialogComponent } from './shared/dialog/key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';

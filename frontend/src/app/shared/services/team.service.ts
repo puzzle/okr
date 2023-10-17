@@ -16,7 +16,7 @@ export class TeamService {
 
   getTeamIdsFromQuery(query: any): number[] {
     return Array.from([query])
-      .reduce((flatten, arr) => [...flatten, ...arr])
+      .flat(1)
       .map((id: any) => Number(id))
       .filter((id: number) => Number.isInteger(id));
   }

@@ -21,12 +21,15 @@ export class TeamFilterComponent implements OnInit {
     private router: Router,
     private notifierService: NotifierService,
   ) {}
+
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams) => {
       this.teams$.next(teams);
       const teamQuery = this.route.snapshot.queryParams['teams'];
       const teamIds = this.teamService.getTeamIdsFromQuery(teamQuery);
       this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
+      this.clearIfAllTeamsAreSelected();
+      this.changeTeamFilter();
     });
   }
 
@@ -42,6 +45,20 @@ export class TeamFilterComponent implements OnInit {
     } else {
       this.activeTeams.push(id);
     }
+    this.clearIfAllTeamsAreSelected();
     this.changeTeamFilter();
+  }
+
+  clearIfAllTeamsAreSelected() {
+    if (
+      this.activeTeams.sort().toString() ==
+      this.teams$
+        .getValue()
+        .map((team) => team.id)
+        .sort()
+        .toString()
+    ) {
+      this.activeTeams = [];
+    }
   }
 }

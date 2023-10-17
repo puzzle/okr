@@ -42,11 +42,7 @@
             </div>
             <div>
               <label>Baseline</label>
-              <input
-                class="input-fields metric-fields"
-                formControlName="baseline"
-                [attr.data-testId]="'baseline'"
-              />
+              <input class="input-fields metric-fields" formControlName="baseline" [attr.data-testId]="'baseline'" />
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
@@ -81,11 +77,7 @@
           <div class="d-flex gap-1">
             <div>
               <label>Commit Zone</label>
-              <textarea
-                class="input-fields"
-                formControlName="commitZone"
-                [attr.data-testId]="'commitZone'"
-              ></textarea>
+              <textarea class="input-fields" formControlName="commitZone" [attr.data-testId]="'commitZone'"></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}
@@ -94,11 +86,7 @@
             </div>
             <div>
               <label>Target Zone</label>
-              <textarea
-                class="input-fields"
-                formControlName="targetZone"
-                [attr.data-testId]="'targetZone'"
-              ></textarea>
+              <textarea class="input-fields" formControlName="targetZone" [attr.data-testId]="'targetZone'"></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
                   {{ errorMessages[errorKey.toUpperCase()] }}

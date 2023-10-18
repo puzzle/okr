@@ -15,7 +15,6 @@
   <div>Kommentar (optional)</div>
   <textarea class="commentary-field w-100"></textarea>
 
-  {{ completeForm.value | json }}
   <br />
   <button [attr.data-testId]="'submit'" type="submit" (click)="closeDialog()" color="primary" mat-flat-button>
     Objective Abschliessen

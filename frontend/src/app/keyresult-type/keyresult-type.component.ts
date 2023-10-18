@@ -19,11 +19,12 @@ export class KeyresultTypeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.keyresult) {
+      this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
+      this.isMetric = this.keyresult.keyResultType == 'metric';
       this.isMetric
         ? this.keyResultForm.setValue({ ...this.castToMetric(this.keyresult) })
         : this.keyResultForm.setValue({ ...this.castToOrdinal(this.keyresult) });
     }
-    this.isMetric = this.keyResultForm.controls['keyResultType'].value == 'metric';
     this.switchValidators();
   }
 
@@ -78,7 +79,7 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   switchKeyResultType(type: String) {
-    if ((type != 'metric' && !this.isMetric) || (type != 'ordinal' && this.isMetric) || this.typeChangeAllowed) {
+    if (((type == 'metric' && !this.isMetric) || (type == 'ordinal' && this.isMetric)) && this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
       let keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);

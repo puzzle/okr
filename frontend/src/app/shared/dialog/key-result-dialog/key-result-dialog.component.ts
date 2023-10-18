@@ -86,6 +86,7 @@ export class KeyResultDialogComponent implements OnInit {
     let keyResult = this.isMetricKeyResult()
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
+    keyResult.id = this.data.keyResult?.id;
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,

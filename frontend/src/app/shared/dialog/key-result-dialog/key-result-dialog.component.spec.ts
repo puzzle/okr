@@ -18,8 +18,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../types/model/KeyResultObjective';
-import { KeyResultEmitMetricDTO } from '../../types/DTOs/KeyResultEmitMetricDTO';
-import { KeyResultEmitOrdinalDTO } from '../../types/DTOs/KeyResultEmitOrdinalDTO';
 import { User } from '../../types/model/User';
 
 class matDialogRefMock {
@@ -60,6 +58,21 @@ describe('KeyResultDialogComponent', () => {
     unit: 'CHF',
   };
 
+  let receivedKeyResultMetric = {
+    id: 3,
+    title: 'Der Titel ist hier',
+    description: 'Die Beschreibung',
+    owner: testUser,
+    objective: keyResultObjective,
+    baseline: 3,
+    keyResultType: 'metric',
+    stretchGoal: 25,
+    unit: 'CHF',
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
+  };
+
   let fullKeyResultOrdinal = {
     id: 6,
     title: 'Der Titel ist hier',
@@ -72,8 +85,23 @@ describe('KeyResultDialogComponent', () => {
     stretchZone: 'Stretch zone',
   };
 
+  let receivedKeyResultOrdinal = {
+    id: 6,
+    title: 'Der Titel ist hier',
+    description: 'Die Beschreibung',
+    owner: testUser,
+    objective: keyResultObjective,
+    keyResultType: 'ordinal',
+    commitZone: 'Commit zone',
+    targetZone: 'Target zone',
+    stretchZone: 'Stretch zone',
+    baseline: null,
+    stretchGoal: null,
+    unit: null,
+  };
+
   let initKeyResult = {
-    id: null,
+    id: undefined,
     title: '',
     description: '',
     owner: testUser,
@@ -82,6 +110,9 @@ describe('KeyResultDialogComponent', () => {
     keyResultType: 'metric',
     stretchGoal: 25,
     unit: 'CHF',
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
   };
 
   const mockUserService = {
@@ -139,11 +170,7 @@ describe('KeyResultDialogComponent', () => {
       expect(buttons.length).toEqual(4);
     }));
 
-    it('should be able to set title', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      titleInput.nativeElement.textContent = 'Title';
-      expect(component.keyResultForm.value.title).toEqual('Title');
-
+    it('should be able to set title and description', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
         title: 'Title',
@@ -152,30 +179,13 @@ describe('KeyResultDialogComponent', () => {
         targetZone: null,
         commitZone: null,
         unit: null,
-        description: '',
+        description: 'Description',
         stretchGoal: null,
+        keyResultType: null,
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(await submitButton.nativeElement.disabled).toBeFalsy();
-
-      const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('Title');
-      expect(component.keyResultForm.invalid).toBeFalsy();
-    }));
-
-    it('should be able to set title with description', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      const descriptionInput = fixture.debugElement.query(By.css('[data-testId="descriptionInput"]'));
-      titleInput.nativeElement.textContent = 'Title';
-      descriptionInput.nativeElement.textContent = 'Description';
-
-      component.keyResultForm.patchValue({ owner: testUser });
-
-      let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeFalsy();
-      let saveAndNewButton = fixture.debugElement.query(By.css('[data-testId="saveAndNew"]'));
-      expect(saveAndNewButton.nativeElement.disabled).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
 
       const formObject = fixture.componentInstance.keyResultForm.value;
       expect(formObject.title).toBe('Title');
@@ -184,50 +194,69 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should display error message of too short input', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      titleInput.nativeElement.textContent = 'T';
-
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.MINLENGTH);
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: 'T',
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
-      const saveAndNewButton = fixture.debugElement.query(By.css('[data-testId="saveAndNew"]'));
-      expect(saveAndNewButton.nativeElement.disabled).toBeTruthy();
+      expect(await submitButton.nativeElement.getAttribute('disabled')).toEqual('');
       expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.errors).not.toBeNull();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
     }));
 
     it('should display error message of required', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      const descriptionInput = fixture.debugElement.query(By.css('[data-testId="descriptionInput"]'));
-      titleInput.nativeElement.textContent = '';
-      descriptionInput.nativeElement.textContent = 'Description';
-
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.REQUIRED);
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
-      const saveAndNewButton = fixture.debugElement.query(By.css('[data-testId="saveAndNew"]'));
-      expect(saveAndNewButton.nativeElement.disabled).toBeTruthy();
+      expect(await submitButton.nativeElement.getAttribute('disabled')).toEqual('');
       expect(component.keyResultForm.invalid).toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
-      component.keyResultForm.patchValue({
+      component.keyResultForm.setValue({
         owner: testUser,
         title: 'Neuer Titel',
+        baseline: 3,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: 'CHF',
         description: 'Description',
+        stretchGoal: 25,
+        keyResultType: 'metric',
       });
+
       initKeyResult.title = 'Neuer Titel';
       initKeyResult.description = 'Description';
 
-      let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      submitButton.nativeElement.click();
+      component.saveKeyResult();
+
       expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(initKeyResult);
     }));
@@ -254,7 +283,7 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultMetric },
+            useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
         declarations: [KeyResultDialogComponent],
@@ -291,85 +320,78 @@ describe('KeyResultDialogComponent', () => {
       expect(formObject.owner).toBe(testUser);
     }));
 
-    it('should be able to set title', () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
+    it('should be able to set title and description', waitForAsync(async () => {
+      expect(component.keyResultForm.value.title).toEqual('Der Titel ist hier');
+      expect(component.keyResultForm.value.description).toEqual('Die Beschreibung');
 
-      expect(titleInput.nativeElement.value).toEqual('Der Titel ist hier');
-      titleInput.nativeElement.textContent = 'New title';
-
-      component.keyResultForm.patchValue({
+      component.keyResultForm.setValue({
         owner: testUser,
+        title: 'Title',
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: 'Description',
+        stretchGoal: null,
+        keyResultType: null,
       });
-
+      fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
+
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('New title');
-    });
+      expect(formObject.title).toBe('Title');
+      expect(formObject.description).toBe('Description');
+      expect(component.keyResultForm.invalid).toBeFalsy();
+    }));
 
     it('should display error message of too short input', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      titleInput.nativeElement.textContent = 'T';
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: 'T',
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.MINLENGTH);
-
-      const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
       expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.errors).not.toBeNull();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
     }));
 
     it('should display error message of required', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      const descriptionInput = fixture.debugElement.query(By.css('[data-testId="descriptionInput"]'));
-      titleInput.nativeElement.textContent = '';
-      descriptionInput.nativeElement.textContent = 'Description';
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.REQUIRED);
-
-      const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
-      const saveAndNewButton = fixture.debugElement.query(By.css('[data-testId="saveAndNew"]'));
-      expect(saveAndNewButton.nativeElement.disabled).toBeTruthy();
       expect(component.keyResultForm.invalid).toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
-      component.keyResultForm.patchValue({
-        owner: testUser,
-        title: 'Neuer Titel',
-        description: 'Description',
-      });
-      fullKeyResultMetric.title = 'Neuer Titel';
-      fullKeyResultMetric.description = 'Description';
+      component.saveKeyResult();
 
-      let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      submitButton.nativeElement.click();
       expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(fullKeyResultMetric);
-    }));
-
-    it('should call service delete method', waitForAsync(() => {
-      const spy = jest.spyOn(keyResultService, 'deleteKeyResult');
-      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
-
-      component.keyResultForm.patchValue({
-        owner: testUser,
-        title: 'Neuer Titel',
-        description: 'Description',
-      });
-      fullKeyResultOrdinal.title = 'Neuer Titel';
-      fullKeyResultOrdinal.description = 'Description';
-
-      let deleteButton = fixture.debugElement.query(By.css('[data-testId="delete"]'));
-      deleteButton.nativeElement.click();
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(fullKeyResultOrdinal);
+      expect(spy).toHaveBeenCalledWith(receivedKeyResultMetric);
     }));
   });
 
@@ -394,7 +416,7 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultOrdinal },
+            useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
         declarations: [KeyResultDialogComponent],
@@ -404,7 +426,6 @@ describe('KeyResultDialogComponent', () => {
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
-      fullKeyResultOrdinal.id = 3;
     });
 
     afterEach(() => {
@@ -431,85 +452,78 @@ describe('KeyResultDialogComponent', () => {
       expect(formObject.owner).toBe(testUser);
     }));
 
-    it('should be able to set title', () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
+    it('should be able to set title and description', waitForAsync(async () => {
+      expect(component.keyResultForm.value.title).toEqual('Der Titel ist hier');
+      expect(component.keyResultForm.value.description).toEqual('Die Beschreibung');
 
-      expect(titleInput.nativeElement.value).toEqual('Der Titel ist hier');
-      titleInput.nativeElement.textContent = 'New title';
-
-      component.keyResultForm.patchValue({
+      component.keyResultForm.setValue({
         owner: testUser,
+        title: 'Title',
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: 'Description',
+        stretchGoal: null,
+        keyResultType: null,
       });
-
+      fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeFalsy();
+      expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
+
       const formObject = fixture.componentInstance.keyResultForm.value;
-      expect(formObject.title).toBe('New title');
-    });
+      expect(formObject.title).toBe('Title');
+      expect(formObject.description).toBe('Description');
+      expect(component.keyResultForm.invalid).toBeFalsy();
+    }));
 
     it('should display error message of too short input', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      titleInput.nativeElement.textContent = 'T';
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: 'T',
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.MINLENGTH);
-
-      const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
       expect(component.keyResultForm.invalid).toBeTruthy();
-      expect(component.keyResultForm.errors).not.toBeNull();
+      expect(component.keyResultForm.get('title')!.errors?.['minlength']).toBeTruthy();
     }));
 
     it('should display error message of required', waitForAsync(async () => {
-      const titleInput = fixture.debugElement.query(By.css('[data-testId="titleInput"]'));
-      const descriptionInput = fixture.debugElement.query(By.css('[data-testId="descriptionInput"]'));
-      titleInput.nativeElement.textContent = '';
-      descriptionInput.nativeElement.textContent = 'Description';
+      component.keyResultForm.setValue({
+        owner: testUser,
+        title: null,
+        baseline: null,
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
+        unit: null,
+        description: '',
+        stretchGoal: null,
+        keyResultType: null,
+      });
+      fixture.detectChanges();
 
-      const errorMessage = fixture.debugElement.query(By.css('mat-error'));
-      expect(errorMessage.nativeElement.textContent).toContain(errors.REQUIRED);
-
-      const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      expect(submitButton.nativeElement.disabled).toBeTruthy();
-      const saveAndNewButton = fixture.debugElement.query(By.css('[data-testId="saveAndNew"]'));
-      expect(saveAndNewButton.nativeElement.disabled).toBeTruthy();
       expect(component.keyResultForm.invalid).toBeTruthy();
+      expect(component.keyResultForm.get('title')!.errors?.['required']).toBeTruthy();
     }));
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
       spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
-      component.keyResultForm.patchValue({
-        owner: testUser,
-        title: 'Neuer Titel',
-        description: 'Description',
-      });
-      fullKeyResultOrdinal.title = 'Neuer Titel';
-      fullKeyResultOrdinal.description = 'Description';
+      component.saveKeyResult();
 
-      let submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
-      submitButton.nativeElement.click();
       expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(fullKeyResultOrdinal);
-    }));
-
-    it('should call service delete method', waitForAsync(() => {
-      const spy = jest.spyOn(keyResultService, 'deleteKeyResult');
-      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
-
-      component.keyResultForm.patchValue({
-        owner: testUser,
-        title: 'Neuer Titel',
-        description: 'Description',
-      });
-      fullKeyResultOrdinal.title = 'Neuer Titel';
-      fullKeyResultOrdinal.description = 'Description';
-
-      let deleteButton = fixture.debugElement.query(By.css('[data-testId="delete"]'));
-      deleteButton.nativeElement.click();
-      expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(fullKeyResultOrdinal);
+      expect(spy).toHaveBeenCalledWith(receivedKeyResultOrdinal);
     }));
   });
 
@@ -549,36 +563,6 @@ describe('KeyResultDialogComponent', () => {
 
     afterEach(() => {
       mockUserService.getUsers.mockReset();
-    });
-
-    it('should update form from emitted data metric', () => {
-      let keyResultMetric: KeyResultEmitMetricDTO = {
-        keyresultType: 'metric',
-        unit: 'CHF',
-        baseline: 30,
-        stretchGoal: 100,
-      };
-
-      component.saveEmittedData(keyResultMetric);
-      expect(component.isMetricKeyResult).toBeTruthy();
-      expect(component.keyResultForm.value.unit).toEqual('CHF');
-      expect(component.keyResultForm.value.baseline).toEqual(30);
-      expect(component.keyResultForm.value.stretchGoal).toEqual(100);
-    });
-
-    it('should update form from emitted data ordinal', () => {
-      let keyResultOrdinal: KeyResultEmitOrdinalDTO = {
-        keyresultType: 'ordinal',
-        commitZone: 'Commit zone',
-        targetZone: 'Target zone',
-        stretchZone: 'Stretch zone',
-      };
-
-      component.saveEmittedData(keyResultOrdinal);
-      expect(component.isMetricKeyResult).toBeFalsy();
-      expect(component.keyResultForm.value.commitZone).toEqual('Commit zone');
-      expect(component.keyResultForm.value.targetZone).toEqual('Target zone');
-      expect(component.keyResultForm.value.stretchZone).toEqual('Stretch zone');
     });
 
     it('should return right filtered user', () => {

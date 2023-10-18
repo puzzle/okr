@@ -21,8 +21,4 @@ export class CheckInService {
       return this.httpclient.post<any>('/api/v2/checkIns', checkIn);
     }
   }
-
-  deleteCheckIn(id: number) {
-    return this.httpclient.delete<any>('/api/v2/checkIns/' + id);
-  }
 }

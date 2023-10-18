@@ -1,0 +1,12 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Puzzle-Icons" clip-path="url(#clip0_1771_12205)">
+<path id="Vector" d="M18.152 1.84828C17.8795 1.57693 17.5559 1.36226 17.2 1.21667C16.844 1.07108 16.4627 0.997463 16.0782 1.00007C15.6936 1.00267 15.3134 1.08144 14.9594 1.23184C14.6055 1.38223 14.2848 1.60126 14.016 1.87628L2.416 13.4763L1 19.0003L6.524 17.5835L18.124 5.98348C18.3991 5.71479 18.6182 5.39423 18.7686 5.04034C18.9191 4.68645 18.9979 4.30625 19.0005 3.92172C19.0031 3.53719 18.9294 3.15596 18.7838 2.80006C18.6382 2.44417 18.4234 2.12067 18.152 1.84828Z" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M13.6846 2.20703L17.7918 6.31423" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M2.41699 13.4766L6.52819 17.5806" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<clipPath id="clip0_1771_12205">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

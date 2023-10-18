@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { KeyResult } from '../shared/types/model/KeyResult';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
-import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
+import {Component, Input, OnInit} from '@angular/core';
+import {KeyResult} from '../shared/types/model/KeyResult';
+import {FormGroup, Validators} from '@angular/forms';
+import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
+import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
-import { KeyResultEmitMetricDTO } from '../shared/types/DTOs/KeyResultEmitMetricDTO';
-import { KeyResultEmitOrdinalDTO } from '../shared/types/DTOs/KeyResultEmitOrdinalDTO';
-import { KeyResultEmitDTO } from '../shared/types/DTOs/KeyResultEmitDTO';
-import { Unit } from '../shared/types/enums/Unit';
+import {Unit} from '../shared/types/enums/Unit';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -17,37 +14,17 @@ import { Unit } from '../shared/types/enums/Unit';
 export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
   @Input() keyresult!: KeyResult;
-  @Output() newKeyresultEvent = new EventEmitter<KeyResultEmitDTO>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
 
   ngOnInit(): void {
     if (this.keyresult) {
-      // this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
-      if (this.keyresult.keyResultType == 'metric') {
-        this.isMetric = true;
-        let keyresultMetric: KeyResultMetric = this.castToMetric(this.keyresult);
-        this.keyResultForm.setValue({
-          unit: keyresultMetric.unit,
-          baseline: keyresultMetric.baseline,
-          stretchGoal: keyresultMetric.stretchGoal,
-          commitZone: null,
-          targetZone: null,
-          stretchZone: null,
-        });
-      } else {
-        this.isMetric = false;
-        let keyresultOrdinal: KeyResultOrdinal = this.castToOrdinal(this.keyresult);
-        this.keyResultForm.setValue({
-          unit: null,
-          baseline: null,
-          stretchGoal: null,
-          commitZone: keyresultOrdinal.commitZone,
-          targetZone: keyresultOrdinal.targetZone,
-          stretchZone: keyresultOrdinal.stretchZone,
-        });
-      }
+      this.isMetric ?  this.keyResultForm.setValue({...this.castToMetric(this.keyresult)})
+          : this.keyResultForm.setValue({...this.castToOrdinal(this.keyresult)});
     }
+    this.isMetric = this.keyResultForm.controls["keyResultType"].value == 'metric';
+    this.switchValidators();
+
   }
 
   castToMetric(keyResult: KeyResult) {
@@ -58,11 +35,48 @@ export class KeyresultTypeComponent implements OnInit {
     return keyResult as KeyResultOrdinal;
   }
 
+  switchValidators() {
+    if(this.isMetric) {
+      this.setValidatorsMetric();
+      this.clearValidatorsOrdinal();
+      this.keyResultForm.updateValueAndValidity();
+    }else {
+      this.setValidatorsOrdinal();
+      this.clearValidatorsMetric();
+      this.keyResultForm.updateValueAndValidity();
+    }
+  }
+
+  setValidatorsMetric() {
+    this.keyResultForm.controls['unit'].setValidators([Validators.required]);
+    this.keyResultForm.controls['baseline'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
+    this.keyResultForm.controls['stretchGoal'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
+  }
+
+  setValidatorsOrdinal() {
+    this.keyResultForm.controls['commitZone'].setValidators([Validators.required, Validators.maxLength(400)]);
+    this.keyResultForm.controls['targetZone'].setValidators([Validators.required, Validators.maxLength(400)]);
+    this.keyResultForm.controls['stretchZone'].setValidators([Validators.required, Validators.maxLength(400)]);
+  }
+
+  clearValidatorsMetric() {
+    this.keyResultForm.controls['unit'].clearValidators();
+    this.keyResultForm.controls['baseline'].clearValidators();
+    this.keyResultForm.controls['stretchGoal'].clearValidators();
+  }
+
+  clearValidatorsOrdinal() {
+    this.keyResultForm.controls['commitZone'].clearValidators();
+    this.keyResultForm.controls['targetZone'].clearValidators();
+    this.keyResultForm.controls['stretchZone'].clearValidators();
+  }
+
   switchKeyResultType(type: String) {
-    if ((type == 'metric' && this.isMetric) || (type == 'ordinal' && !this.isMetric) || !this.typeChangeAllowed) {
-      return;
-    } else {
+    if((type != 'metric' && !this.isMetric) || (type != 'ordinal' && this.isMetric) || this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
+      let keyResultType = this.isMetric ? 'metric' : 'ordinal';
+      this.keyResultForm.controls['keyResultType'].setValue(keyResultType);
+      this.switchValidators();
     }
   }
 

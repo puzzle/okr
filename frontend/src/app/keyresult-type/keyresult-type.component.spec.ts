@@ -1,11 +1,11 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import * as de from '../../assets/i18n/de.json';
 
-import {KeyresultTypeComponent} from './keyresult-type.component';
-import {KeyResult} from '../shared/types/model/KeyResult';
-import {keyResultMetric, keyResultOrdinal} from '../shared/testData';
-import {TranslateTestingModule} from 'ngx-translate-testing';
-import {By} from '@angular/platform-browser';
+import { KeyresultTypeComponent } from './keyresult-type.component';
+import { KeyResult } from '../shared/types/model/KeyResult';
+import { keyResultMetric, keyResultOrdinal } from '../shared/testData';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { By } from '@angular/platform-browser';
 
 describe('KeyresultTypeComponent', () => {
   let component: KeyresultTypeComponent;

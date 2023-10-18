@@ -1,10 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {KeyResult} from '../shared/types/model/KeyResult';
-import {FormGroup, Validators} from '@angular/forms';
-import {KeyResultMetric} from '../shared/types/model/KeyResultMetric';
-import {KeyResultOrdinal} from '../shared/types/model/KeyResultOrdinal';
+import { Component, Input, OnInit } from '@angular/core';
+import { KeyResult } from '../shared/types/model/KeyResult';
+import { FormGroup, Validators } from '@angular/forms';
+import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
-import {Unit} from '../shared/types/enums/Unit';
+import { Unit } from '../shared/types/enums/Unit';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -19,12 +19,12 @@ export class KeyresultTypeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.keyresult) {
-      this.isMetric ?  this.keyResultForm.setValue({...this.castToMetric(this.keyresult)})
-          : this.keyResultForm.setValue({...this.castToOrdinal(this.keyresult)});
+      this.isMetric
+        ? this.keyResultForm.setValue({ ...this.castToMetric(this.keyresult) })
+        : this.keyResultForm.setValue({ ...this.castToOrdinal(this.keyresult) });
     }
-    this.isMetric = this.keyResultForm.controls["keyResultType"].value == 'metric';
+    this.isMetric = this.keyResultForm.controls['keyResultType'].value == 'metric';
     this.switchValidators();
-
   }
 
   castToMetric(keyResult: KeyResult) {
@@ -36,7 +36,7 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   switchValidators() {
-    if(this.isMetric) {
+    if (this.isMetric) {
       this.setValidatorsMetric();
       this.clearValidatorsOrdinal();
       this.keyResultForm.updateValueAndValidity();

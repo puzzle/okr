@@ -54,6 +54,8 @@ export class KeyresultDetailComponent implements OnInit {
       data: {
         keyResult: this.keyResult$.getValue(),
       },
+      height: '491px',
+      width: '721px',
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();

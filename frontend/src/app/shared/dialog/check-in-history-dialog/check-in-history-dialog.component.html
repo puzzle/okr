@@ -5,7 +5,7 @@
       <mat-icon class="icon mt-2 me-0" mat-dialog-close>close</mat-icon>
     </div>
   </div>
-  <mat-dialog-content class="d-flex justify-content-start flex-column mb-2 gap-4">
+  <mat-dialog-content class="d-flex justify-content-start flex-column mb-2 gap-4 dialog-content">
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
@@ -51,7 +51,7 @@
     </div>
   </ng-template>
 
-  <mat-dialog-actions class="d-flex justify-content-start">
+  <mat-dialog-actions class="d-flex justify-content-start position-sticky">
     <button mat-button mat-dialog-close class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">
       Schliessen
     </button>

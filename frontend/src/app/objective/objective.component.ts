@@ -27,12 +27,11 @@ export class ObjectiveComponent implements AfterViewInit {
   get objective(): BehaviorSubject<ObjectiveMin> {
     return this.objective$;
   }
-@Input()
+  @Input()
   set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
   private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
-
 
   ngAfterViewInit(): void {
     this.menuEntries = [

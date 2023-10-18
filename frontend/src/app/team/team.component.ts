@@ -17,7 +17,6 @@ export class TeamComponent {
   // @ViewChild('#objective-column')
   // objectiveColumn!: ElementRef<HTMLElement | undefined>;
 
-
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
 
   constructor(

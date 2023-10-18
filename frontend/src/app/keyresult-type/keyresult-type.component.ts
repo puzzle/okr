@@ -40,7 +40,7 @@ export class KeyresultTypeComponent implements OnInit {
       this.setValidatorsMetric();
       this.clearValidatorsOrdinal();
       this.keyResultForm.updateValueAndValidity();
-    }else {
+    } else {
       this.setValidatorsOrdinal();
       this.clearValidatorsMetric();
       this.keyResultForm.updateValueAndValidity();
@@ -49,8 +49,14 @@ export class KeyresultTypeComponent implements OnInit {
 
   setValidatorsMetric() {
     this.keyResultForm.controls['unit'].setValidators([Validators.required]);
-    this.keyResultForm.controls['baseline'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
-    this.keyResultForm.controls['stretchGoal'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
+    this.keyResultForm.controls['baseline'].setValidators([
+      Validators.required,
+      Validators.pattern('^-?\\d+\\.?\\d*$'),
+    ]);
+    this.keyResultForm.controls['stretchGoal'].setValidators([
+      Validators.required,
+      Validators.pattern('^-?\\d+\\.?\\d*$'),
+    ]);
   }
 
   setValidatorsOrdinal() {
@@ -72,7 +78,7 @@ export class KeyresultTypeComponent implements OnInit {
   }
 
   switchKeyResultType(type: String) {
-    if((type != 'metric' && !this.isMetric) || (type != 'ordinal' && this.isMetric) || this.typeChangeAllowed) {
+    if ((type != 'metric' && !this.isMetric) || (type != 'ordinal' && this.isMetric) || this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
       let keyResultType = this.isMetric ? 'metric' : 'ordinal';
       this.keyResultForm.controls['keyResultType'].setValue(keyResultType);

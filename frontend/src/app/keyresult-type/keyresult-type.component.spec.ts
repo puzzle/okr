@@ -6,6 +6,8 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { keyResultMetric, keyResultOrdinal } from '../shared/testData';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../shared/types/model/User';
 
 describe('KeyresultTypeComponent', () => {
   let component: KeyresultTypeComponent;
@@ -13,6 +15,28 @@ describe('KeyresultTypeComponent', () => {
 
   let metricKeyResult: KeyResult = keyResultMetric;
   let ordinalKeyResult: KeyResult = keyResultOrdinal;
+
+  let keyResultForm = new FormGroup({
+    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250),
+    ]),
+    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
+      Validators.maxLength(4096),
+    ]),
+    owner: new FormControl<User | string | null>(
+      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+      [Validators.required, Validators.nullValidator],
+    ),
+    unit: new FormControl<string | null>('metric'),
+    baseline: new FormControl<number | null>(30),
+    stretchGoal: new FormControl<number | null>(100),
+    commitZone: new FormControl<string | null>(null),
+    targetZone: new FormControl<string | null>(null),
+    stretchZone: new FormControl<string | null>(null),
+    keyResultType: new FormControl<string>('metric'),
+  });
 
   describe('Edit Metric', () => {
     beforeEach(() => {
@@ -27,6 +51,7 @@ describe('KeyresultTypeComponent', () => {
       fixture = TestBed.createComponent(KeyresultTypeComponent);
       component = fixture.componentInstance;
       component.keyresult = metricKeyResult;
+      component.keyResultForm = keyResultForm;
       fixture.detectChanges();
     });
 

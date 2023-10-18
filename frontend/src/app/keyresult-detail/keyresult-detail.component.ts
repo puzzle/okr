@@ -67,7 +67,7 @@ export class KeyresultDetailComponent implements OnInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: null,
+          objective: keyResult.objective,
           keyResult: keyResult,
         },
       })

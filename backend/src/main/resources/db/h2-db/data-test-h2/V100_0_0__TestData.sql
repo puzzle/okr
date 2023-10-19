@@ -110,3 +110,7 @@ insert into alignment (id, aligned_objective_id, alignment_type, target_key_resu
        (2, 4, 'keyResult', 8, null);
 
                                                                                                                   );
+
+insert into completed (id, objective, comment) values
+       (1, 4, 'Das hat geklappt'),
+       (2, 6, 'War leider nicht moeglich');

@@ -4,7 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { areEqual, getValueFromQuery, optional } from '../shared/common';
+import { areEqual, getValueFromQuery, optional, optionalReplaceWithNulls } from '../shared/common';
 
 @Component({
   selector: 'app-team-filter',
@@ -44,9 +44,8 @@ export class TeamFilterComponent implements OnInit {
 
   changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
-    const optionalParams = optional(params, true);
-
-    return this.router.navigate([], { queryParams: optionalParams, queryParamsHandling: 'merge', replaceUrl: true });
+    const optionalParams = optionalReplaceWithNulls(params);
+    return this.router.navigate([], { queryParams: optionalParams, queryParamsHandling: 'merge' });
   }
 
   changeTeamFilterParamsAndReload() {

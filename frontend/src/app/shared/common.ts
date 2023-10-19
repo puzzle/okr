@@ -15,8 +15,8 @@ export function getValueFromQuery(query: any): number[] {
     .filter((id: number) => Number.isInteger(id));
 }
 
-export function optional(param: object, replaceWithNull = false): {} {
-  const clearObject = Object.fromEntries(
+export function optional(param: object): { [p: string]: any } {
+  return Object.fromEntries(
     Object.entries(param)
       .filter(([_, v]) => v != undefined)
       .filter(([_, v]) => v != '')
@@ -27,11 +27,10 @@ export function optional(param: object, replaceWithNull = false): {} {
         return true;
       }),
   );
-
-  const objectWithNulls = Object.fromEntries(
-    Object.entries(param).map(([k, v]) => [k, clearObject[k] === undefined ? null : v]),
-  );
-  return replaceWithNull ? objectWithNulls : clearObject;
+}
+export function optionalReplaceWithNulls(param: object): { [p: string]: any } {
+  const clearObject = optional(param);
+  return Object.fromEntries(Object.entries(param).map(([k, v]) => [k, clearObject[k] === undefined ? null : v]));
 }
 
 export function areEqual(arr1: number[], arr2: number[]) {

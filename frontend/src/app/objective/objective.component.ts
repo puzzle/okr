@@ -20,17 +20,6 @@ import { Completed } from '../shared/types/model/Completed';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent implements OnInit, AfterViewInit {
-  @Input()
-  get objective(): BehaviorSubject<ObjectiveMin> {
-    return this._objective;
-  }
-
-  set objective(objective: ObjectiveMin) {
-    this._objective.next(objective);
-  }
-
-  private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
-  @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
 

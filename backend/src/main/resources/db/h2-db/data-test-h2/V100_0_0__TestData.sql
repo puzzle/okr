@@ -7,6 +7,7 @@ truncate table person;
 truncate table quarter;
 truncate table team;
 truncate table alignment;
+truncate table completed;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
@@ -17,6 +18,7 @@ ALTER SEQUENCE sequence_objective RESTART WITH 200;
 ALTER SEQUENCE sequence_key_result RESTART WITH 200;
 ALTER SEQUENCE sequence_check_in RESTART WITH 200;
 ALTER SEQUENCE sequence_alignment RESTART WITH 200;
+ALTER SEQUENCE sequence_completed RESTART WITH 200;
 
 insert into person (id, email, firstname, lastname, username)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
@@ -111,6 +113,7 @@ insert into alignment (id, aligned_objective_id, alignment_type, target_key_resu
 
                                                                                                                   );
 
-insert into completed (id, objective, comment) values
+insert into completed (id, objective_id, comment) values
        (1, 4, 'Das hat geklappt'),
-       (2, 6, 'War leider nicht moeglich');
+       (2, 6, 'War leider nicht moeglich'),
+       (3, 10, 'Schade');

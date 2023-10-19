@@ -1,6 +1,6 @@
 <div class="d-flex flex-column w-100">
   <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
-    <div class="mb-2 d-flex justify-content-between flex-column w-100">
+    <div class="mb-2 d-flex justify-content-between flex-column w-100" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
       <div class="mb-2 d-flex flex-row">
         <div class="title">{{ objective.title }}</div>
       </div>

@@ -25,9 +25,7 @@
           <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
           <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
         </div>
-        <button mat-button [routerLink]="'/'" data-test-id="closeDrawer">
-          <mat-icon>close</mat-icon>
-        </button>
+        <mat-icon [routerLink]="'/'" class="cursor-pointer" data-test-id="closeDrawer">close</mat-icon>
       </div>
     </div>
   </ng-template>

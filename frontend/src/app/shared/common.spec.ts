@@ -1,4 +1,4 @@
-import { getNumberOrNull } from './common';
+import { areEqual, getNumberOrNull } from './common';
 
 describe('test common functions', () => {
   describe('getNumberOrNull', () => {
@@ -50,5 +50,20 @@ describe('test common functions', () => {
       expect(getNumberOrNull('- 3')).toBe(null);
       expect(getNumberOrNull('- 3 ')).toBe(null);
     });
+  });
+
+  it.each([
+    [[], [], true],
+    [[1], [], false],
+    [[1, 2], [], false],
+    [[1], [1], true],
+    [[1, 2], [1, 2], true],
+    [[1, 2, 3], [1, 2, 3], true],
+    [[1, 2, 3], [1, 2, 3, 4], false],
+    [[1, 2, 3], [1, 2, 3, 3], false],
+    [[1, 2, 3], [3, 2, 1], true],
+  ])('should give correct output for deep equal', (arr1: number[], arr2: number[], output: boolean) => {
+    expect(areEqual(arr1, arr2)).toBe(output);
+    expect(areEqual(arr2, arr1)).toBe(output);
   });
 });

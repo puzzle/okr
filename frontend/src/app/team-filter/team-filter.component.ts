@@ -4,7 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getValueFromQuery, optional } from '../shared/common';
+import { areEqual, getValueFromQuery, optional } from '../shared/common';
 
 @Component({
   selector: 'app-team-filter',
@@ -43,8 +43,10 @@ export class TeamFilterComponent implements OnInit {
   }
 
   changeTeamFilterParams() {
-    const params = optional({ teams: this.activeTeams.join(',') });
-    return this.router.navigate([], { queryParams: params, queryParamsHandling: 'merge' });
+    const params = { teams: this.activeTeams.join(',') };
+    const optionalParams = optional(params, true);
+
+    return this.router.navigate([], { queryParams: optionalParams, queryParamsHandling: 'merge', replaceUrl: true });
   }
 
   changeTeamFilterParamsAndReload() {
@@ -73,13 +75,8 @@ export class TeamFilterComponent implements OnInit {
   }
 
   areAllTeamsShown() {
-    const activeTeamsSortedString = this.activeTeams.sort().toString();
-    const allTeamsSortedString = this.teams$
-      .getValue()
-      .map((team) => team.id)
-      .sort()
-      .toString();
-    return this.activeTeams.length == 0 || activeTeamsSortedString == allTeamsSortedString;
+    const allTeamsIds = this.teams$.getValue().map((team) => team.id);
+    return this.activeTeams.length == 0 || areEqual(this.activeTeams, allTeamsIds);
   }
 
   getAllObjectivesCount(teams: Team[]) {

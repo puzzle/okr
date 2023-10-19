@@ -36,7 +36,6 @@ public class ObjectiveBusinessService {
     @Transactional
     public Objective updateObjective(Long id, Objective objective, Jwt token) {
         Objective savedObjective = objectivePersistenceService.findById(id);
-        objective.setState(objective.getState());
         objective.setCreatedBy(savedObjective.getCreatedBy());
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(userBusinessService.getUserByAuthorisationToken(token));

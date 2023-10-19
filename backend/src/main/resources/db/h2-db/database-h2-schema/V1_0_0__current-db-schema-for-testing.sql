@@ -116,7 +116,7 @@ create table if not exists completed
     objective_id bigint       not null
     constraint fk_completed_objective
     references objective,
-    comment       varchar(4096) not null
+    comment       varchar(4096)
     );
 
 

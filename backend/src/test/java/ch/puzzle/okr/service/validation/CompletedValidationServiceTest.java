@@ -70,10 +70,8 @@ class CompletedValidationServiceTest {
     private CompletedValidationService validator;
 
     private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(
-                arguments(StringUtils.repeat('1', 5000),
-                        List.of("Attribute comment has a max length of 4096 characters when completing an objective")),
-                arguments(null, List.of("Comment must not be null")));
+        return Stream.of(arguments(StringUtils.repeat('1', 5000),
+                List.of("Attribute comment has a max length of 4096 characters when completing an objective")));
     }
 
     @Test
@@ -114,12 +112,10 @@ class CompletedValidationServiceTest {
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
-            System.out.println(exceptionParts[i].strip());
             errorArray[i] = exceptionParts[i].strip();
         }
 
         for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
             assert (errors.contains(errorArray[i]));
         }
     }

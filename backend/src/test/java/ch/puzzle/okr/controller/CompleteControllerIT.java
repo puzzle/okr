@@ -1,16 +1,10 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.mapper.checkin.CheckInMapper;
-import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.business.CompletedBusinessService;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
-import ch.puzzle.okr.service.persistence.UserPersistenceService;
-import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -26,17 +20,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
-import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static ch.puzzle.okr.KeyResultTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)

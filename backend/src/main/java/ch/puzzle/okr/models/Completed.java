@@ -15,7 +15,6 @@ public class Completed {
     @OneToOne
     private Objective objective;
 
-    @NotNull(message = "Comment must not be null")
     @Size(max = 4096, message = "Attribute comment has a max length of 4096 characters when completing an objective")
     private String comment;
 

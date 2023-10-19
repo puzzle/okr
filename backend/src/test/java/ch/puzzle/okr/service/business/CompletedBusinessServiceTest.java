@@ -7,6 +7,7 @@ import ch.puzzle.okr.service.validation.CompletedValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,10 +19,10 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CompletedBusinessServiceTest {
-    @MockBean
-    CompletedPersistenceService completedPersistenceService = Mockito.mock(CompletedPersistenceService.class);
-    @InjectMocks
-    CompletedValidationService validator = Mockito.mock(CompletedValidationService.class);;
+    @Mock
+    CompletedPersistenceService completedPersistenceService;
+    @Mock
+    CompletedValidationService validator;
 
     Completed successfulCompleted = Completed.Builder.builder().withId(1L)
             .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())

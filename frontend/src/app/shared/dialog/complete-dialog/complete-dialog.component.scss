@@ -12,16 +12,39 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 1px black solid;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.card-hover:hover {
+  background-color: lightgray;
+  box-shadow:
+    0 0 0 0 rgba(0, 0, 0, 0.06),
+    1px 1px 2px 0 rgba(0, 0, 0, 0.06),
+    3px 3px 4px 0 rgba(0, 0, 0, 0.05),
+    8px 6px 6px 0 rgba(0, 0, 0, 0.03),
+    14px 11px 7px 0 rgba(0, 0, 0, 0.01),
+    21px 18px 8px 0 rgba(0, 0, 0, 0);
 }
 
 .active {
   background-color: #1e5a96;
   color: white;
-  font-weight: bold;
 }
 
 .non-active {
   background-color: white;
   color: black;
-  font-weight: bold;
+}
+
+.non-active:hover {
+  background-color: lightgray;
+  box-shadow:
+    0 0 0 0 rgba(0, 0, 0, 0.06),
+    1px 1px 2px 0 rgba(0, 0, 0, 0.06),
+    3px 3px 4px 0 rgba(0, 0, 0, 0.05),
+    8px 6px 6px 0 rgba(0, 0, 0, 0.03),
+    14px 11px 7px 0 rgba(0, 0, 0, 0.01),
+    21px 18px 8px 0 rgba(0, 0, 0, 0);
 }

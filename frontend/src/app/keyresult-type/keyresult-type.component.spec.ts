@@ -6,8 +6,9 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { keyResultMetric, keyResultOrdinal } from '../shared/testData';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
+import { NgModule } from '@angular/core';
 
 describe('KeyresultTypeComponent', () => {
   let component: KeyresultTypeComponent;
@@ -29,7 +30,7 @@ describe('KeyresultTypeComponent', () => {
       { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
       [Validators.required, Validators.nullValidator],
     ),
-    unit: new FormControl<string | null>('metric'),
+    unit: new FormControl<string | null>('PERCENT'),
     baseline: new FormControl<number | null>(30),
     stretchGoal: new FormControl<number | null>(100),
     commitZone: new FormControl<string | null>(null),
@@ -46,17 +47,20 @@ describe('KeyresultTypeComponent', () => {
           TranslateTestingModule.withTranslations({
             de: de,
           }),
+          ReactiveFormsModule,
         ],
       });
       fixture = TestBed.createComponent(KeyresultTypeComponent);
       component = fixture.componentInstance;
-      component.keyresult = metricKeyResult;
       component.keyResultForm = keyResultForm;
+      fixture.detectChanges();
+      component.keyresult = metricKeyResult;
       fixture.detectChanges();
     });
 
     it('should create', () => {
       expect(component).toBeTruthy();
+      console.log(component.keyresult);
     });
 
     it('should use values from input', () => {

@@ -5,6 +5,7 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { Unit } from '../shared/types/enums/Unit';
+import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -15,7 +16,7 @@ export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
   @Input() keyresult!: KeyResult;
   isMetric: boolean = true;
-  typeChangeAllowed: boolean = true;
+  typeChangeAllowed: boolean = false;
 
   ngOnInit(): void {
     if (this.keyresult) {

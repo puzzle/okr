@@ -89,3 +89,13 @@ body pzsh-backdrop {
   @extend .mt-5;
   @extend .display-6;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.icon-button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}

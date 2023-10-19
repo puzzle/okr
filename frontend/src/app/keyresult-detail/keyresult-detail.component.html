@@ -1,84 +1,89 @@
-<ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
-  <div *ngIf="keyResult" class="d-flex flex-column" cdkTrapFocus [cdkTrapFocusAutoCapture]="true">
-    <div class="d-flex justify-content-between">
-      <h1 class="mb-2 title">{{ keyResult.title }}</h1>
-    </div>
-    <div class="keyresult-header d-flex justify-content-between mb-3">
-      <div>
-        {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
-      </div>
-      <div class="d-flex align-items-center">
-        <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
-        <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
-      </div>
-      <div class="d-flex flex-row" *ngIf="keyResult?.objective?.quarter as quarter">
-        <p>{{ quarter.startDate | date: "dd.MM.yyy" }} -</p>
-        <p>{{ quarter.endDate | date: "dd.MM.yyy" }}</p>
-      </div>
-    </div>
-    <div class="d-flex justify-content-between mb-2 align-items-center">
-      <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
-
-      <span class="text-small">
-        Confidence
-        <app-confidence
-          [backgroundColor]="'#F5F5F5'"
-          [checkIn]="keyResult.lastCheckIn!"
-          [edit]="false"
-        ></app-confidence>
-      </span>
-    </div>
-
-    <div class="d-flex gap-4 flex-row">
-      <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
-        <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ keyResultMetric.unit }}</p>
-        <p class="keyResult-detail-attribute-show rounded-3 p-1">Baseline: {{ keyResultMetric.baseline }}</p>
-        <p class="keyResult-detail-attribute-show rounded-3 p-1">Stretch Goal: {{ keyResultMetric.stretchGoal }}</p>
-      </ng-container>
-
-      <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
-        <div class="d-flex justify-content-between mb-4 w-100">
-          <div class="zone-col h-auto">
-            <p class="ordinal-zone-title">Commit</p>
-            <div class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.commitZone }}</div>
-          </div>
-          <div class="zone-col h-auto">
-            <p class="ordinal-zone-title">Target</p>
-            <p class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.targetZone }}</p>
-          </div>
-          <div class="zone-col h-auto">
-            <p class="ordinal-zone-title">Stretch</p>
-            <p class="keyResult-detail-attribute-show p-3">{{ keyResultOrdinal.stretchZone }}</p>
-          </div>
-        </div>
-      </ng-container>
-    </div>
-
-    <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
-      <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: "dd.MM.yyy" }})</p>
-      <p *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
-      <span class="d-flex justify-content-start">
-        <button (click)="checkInHistory()" class="px-0" color="primary" disableRipple="true" mat-button>
-          Alle Check-ins anzeigen
+<div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true">
+  <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
+    <div *ngIf="keyResult" class="d-flex flex-column">
+      <div class="d-flex justify-content-between">
+        <h1 class="mb-2 title">{{ keyResult.title }}</h1>
+        <button class="icon-button" [routerLink]="'/'" data-test-id="closeDrawer">
+          <mat-icon>close</mat-icon>
         </button>
-      </span>
-    </div>
+      </div>
+      <div class="keyresult-header d-flex justify-content-between mb-3">
+        <div>
+          {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
+        </div>
+        <div class="d-flex align-items-center">
+          <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
+          <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
+        </div>
+        <div class="d-flex flex-row" *ngIf="keyResult?.objective?.quarter as quarter">
+          <p>{{ quarter.startDate | date: "dd.MM.yyy" }} -</p>
+          <p>{{ quarter.endDate | date: "dd.MM.yyy" }}</p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mb-2 align-items-center">
+        <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
 
-    <div class="mt-3 mb-4">
-      <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
-      <p>{{ keyResult.description }}</p>
-    </div>
+        <span class="text-small">
+          Confidence
+          <app-confidence
+            [backgroundColor]="'#F5F5F5'"
+            [checkIn]="keyResult.lastCheckIn!"
+            [edit]="false"
+          ></app-confidence>
+        </span>
+      </div>
 
-    <div class="d-flex align-items-center flex-row justify-content-start gap-3">
-      <button cdkFocusInitial color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
-      <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
-    </div>
-  </div>
-</ng-container>
+      <div class="d-flex gap-4 flex-row">
+        <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
+          <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ keyResultMetric.unit }}</p>
+          <p class="keyResult-detail-attribute-show rounded-3 p-1">Baseline: {{ keyResultMetric.baseline }}</p>
+          <p class="keyResult-detail-attribute-show rounded-3 p-1">Stretch Goal: {{ keyResultMetric.stretchGoal }}</p>
+        </ng-container>
 
-<ng-template #spinner>
-  <div class="spinner-container">
-    Keyresult wird geladen...
-    <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
-  </div>
-</ng-template>
+        <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
+          <div class="d-flex justify-content-between mb-4 w-100">
+            <div class="zone-col h-auto">
+              <p class="ordinal-zone-title">Commit</p>
+              <div class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.commitZone }}</div>
+            </div>
+            <div class="zone-col h-auto">
+              <p class="ordinal-zone-title">Target</p>
+              <p class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.targetZone }}</p>
+            </div>
+            <div class="zone-col h-auto">
+              <p class="ordinal-zone-title">Stretch</p>
+              <p class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.stretchZone }}</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
+        <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: "dd.MM.yyy" }})</p>
+        <p *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
+        <span class="d-flex justify-content-start">
+          <button (click)="checkInHistory()" class="px-0" color="primary" disableRipple="true" mat-button>
+            Alle Check-ins anzeigen
+          </button>
+        </span>
+      </div>
+
+      <div class="mt-3 mb-4">
+        <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
+        <p>{{ keyResult.description }}</p>
+      </div>
+
+      <div class="d-flex align-items-center flex-row justify-content-start gap-3">
+        <button cdkFocusInitial color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
+        <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #spinner>
+    <div class="spinner-container">
+      Keyresult wird geladen...
+      <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
+    </div>
+  </ng-template>
+</div>

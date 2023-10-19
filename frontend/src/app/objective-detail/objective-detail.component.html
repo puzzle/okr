@@ -6,7 +6,10 @@
       </div>
       <div class="title fs-6">Beschrieb</div>
       <p data-test-id="description">{{ objective.description }}</p>
-      <section class="py-3">
+      <section
+        class="py-3"
+        *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
+      >
         <button (click)="openAddKeyResultDialog()" mat-button class="ps-0" color="primary" disableRipple="true">
           <mat-icon>add</mat-icon>
           Key Result hinzufügen

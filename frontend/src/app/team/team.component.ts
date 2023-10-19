@@ -32,8 +32,8 @@ export class TeamComponent {
 
   createObjective() {
     const matDialogRef = this.dialog.open(ObjectiveFormComponent, {
-      data: { teamId: this.overviewEntity.value.team.id },
-      width: '850px',
+      data: { objective: { teamId: this.overviewEntity.value.team.id } },
+      width: '45em',
     });
     matDialogRef.afterClosed().subscribe((result) => {
       if (result?.addKeyResult) {

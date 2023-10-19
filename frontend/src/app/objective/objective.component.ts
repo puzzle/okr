@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { Completed } from '../shared/types/model/Completed';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent implements AfterViewInit {
+export class ObjectiveComponent implements OnInit, AfterViewInit {
   @Input()
   get objective(): BehaviorSubject<ObjectiveMin> {
     return this._objective;
@@ -32,6 +32,7 @@ export class ObjectiveComponent implements AfterViewInit {
   private _objective = new BehaviorSubject<ObjectiveMin>({} as unknown as ObjectiveMin);
   @Input() objectiveMin!: ObjectiveMin;
   menuEntries: MenuEntry[] = [];
+  isComplete: boolean = false;
 
   constructor(
     private matDialog: MatDialog,
@@ -48,6 +49,12 @@ export class ObjectiveComponent implements AfterViewInit {
     this.objective$.next(objective);
   }
   private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+
+  ngOnInit() {
+    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
+      this.isComplete = true;
+    }
+  }
 
   ngAfterViewInit(): void {
     if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
@@ -91,41 +98,44 @@ export class ObjectiveComponent implements AfterViewInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
+      let dialogWidth = menuEntry.action == 'release' ? 'auto' : '45em';
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
         data: {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
           objective: menuEntry.dialog.data,
         },
-        width: '850px',
+        width: dialogWidth,
       });
       matDialogRef.afterClosed().subscribe((result) => {
-        if (menuEntry.action) {
-          this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
-            if (menuEntry.action == 'complete') {
-              objective.state = result.endState as State;
-              const completed: Completed = {
-                id: null,
-                objective: objective,
-                comment: result.comment,
-              };
-              this.objectiveService.updateObjective(objective).subscribe(() => {
-                this.objectiveService.createCompleted(completed).subscribe(() => {
-                  this.refreshDataService.markDataRefresh();
-                });
-              });
-            } else if (menuEntry.action == 'release') {
-              if (result) {
-                objective.state = 'ONGOING' as State;
+        if (result) {
+          if (menuEntry.action) {
+            this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+              if (menuEntry.action == 'complete') {
+                objective.state = result.endState as State;
+                const completed: Completed = {
+                  id: null,
+                  objective: objective,
+                  comment: result.comment,
+                };
                 this.objectiveService.updateObjective(objective).subscribe(() => {
-                  this.refreshDataService.markDataRefresh();
+                  this.objectiveService.createCompleted(completed).subscribe(() => {
+                    this.refreshDataService.markDataRefresh();
+                  });
                 });
+              } else if (menuEntry.action == 'release') {
+                if (result) {
+                  objective.state = 'ONGOING' as State;
+                  this.objectiveService.updateObjective(objective).subscribe(() => {
+                    this.refreshDataService.markDataRefresh();
+                  });
+                }
               }
+            });
+          } else {
+            if (result?.objective) {
+              this.refreshDataService.markDataRefresh();
             }
-          });
-        } else {
-          if (result?.objective) {
-            this.refreshDataService.markDataRefresh();
           }
         }
       });

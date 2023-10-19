@@ -33,7 +33,13 @@
       </button>
     </section>
     <section class="py-3">
-      <button mat-button color="primary" class="fw-bold" (click)="$event.stopPropagation(); openAddKeyResultDialog()">
+      <button
+        *ngIf="!isComplete"
+        mat-button
+        color="primary"
+        class="fw-bold"
+        (click)="$event.stopPropagation(); openAddKeyResultDialog()"
+      >
         <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
         Key Result hinzufügen
       </button>

@@ -34,7 +34,7 @@ import { ApplicationTopBarComponent } from './application-top-bar/application-to
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule, LocationStrategy, NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
 import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';
@@ -63,6 +63,7 @@ import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.componen
 import { CompleteDialogComponent } from './shared/dialog/complete-dialog/complete-dialog.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
 import { KeyResultDialogComponent } from './shared/dialog/key-result-dialog/key-result-dialog.component';
+import { PreserveQueryParamsPathLocationStrategy } from './shared/PreserveQueryParamsPathLocationStrategy';
 import { TeamFilterComponent } from './team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 
@@ -182,6 +183,10 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    {
+      provide: LocationStrategy,
+      useClass: PreserveQueryParamsPathLocationStrategy,
+    },
     UnitValueTransformationPipe,
     ParseUnitValuePipe,
   ],

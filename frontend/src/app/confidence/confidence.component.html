@@ -3,7 +3,9 @@
     [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'"
     [ngStyle]="{ 'background-color': backgroundColor }"
   >
-    <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" data-testid="confidence">{{ checkIn.confidence }}/{{ max }}</p>
+    <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" class="text-black" data-testid="confidence">
+      {{ checkIn.confidence }}/{{ max }}
+    </p>
   </div>
 
   <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [showTickMarks]="true" color="accent">

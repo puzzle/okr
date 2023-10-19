@@ -3,22 +3,22 @@
   <mat-radio-group formControlName="value" class="d-flex flex-column gap-2 mt-2">
     <mat-radio-button value="{{ Zone.FAIL }}">
       <div class="radio-text-container d-flex align-items-center p-3">
-        Meilenstein (Commit / Target / Stretch) noch nicht erreicht
+        Zone (Commit / Target / Stretch) noch nicht erreicht
       </div>
     </mat-radio-button>
     <mat-radio-button value="{{ Zone.COMMIT }}">
-      <div class="radio-text-container d-flex align-items-center p-3">
-        {{ keyResult.commitZone }}
+      <div class="radio-text-container d-flex p-3">
+        <p><b>Commit:&nbsp; </b> {{ keyResult.commitZone }}</p>
       </div>
     </mat-radio-button>
     <mat-radio-button value="{{ Zone.TARGET }}">
-      <div class="radio-text-container d-flex align-items-center p-3">
-        {{ keyResult.targetZone }}
+      <div class="radio-text-container d-flex p-3">
+        <p><b>Target:&nbsp; </b>{{ keyResult.targetZone }}</p>
       </div>
     </mat-radio-button>
     <mat-radio-button value="{{ Zone.STRETCH }}">
-      <div class="radio-text-container d-flex align-items-center p-3">
-        {{ keyResult.stretchZone }}
+      <div class="radio-text-container d-flex p-3">
+        <p><b>Stretch:&nbsp; </b>{{ keyResult.stretchZone }}</p>
       </div>
     </mat-radio-button>
   </mat-radio-group>

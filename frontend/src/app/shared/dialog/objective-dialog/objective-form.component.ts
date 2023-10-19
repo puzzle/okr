@@ -32,6 +32,7 @@ export class ObjectiveFormComponent implements OnInit {
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
   currentTeam: Team = {} as Team;
+  state: string | null = null;
   protected readonly errorMessages: any = errorMessages;
 
   constructor(
@@ -51,7 +52,7 @@ export class ObjectiveFormComponent implements OnInit {
 
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
-    const state = event.submitter.getAttribute('submitType');
+    const state = this.state == null ? event.submitter.getAttribute('submitType') : this.state;
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       quarterId: value.quarter,
@@ -83,6 +84,7 @@ export class ObjectiveFormComponent implements OnInit {
         this.currentTeam = value.filter((team) => team.id == teamId)[0];
       });
       const quarterId = this.data.objective.objectiveId ? objective.quarterId : quarters[0].id;
+      this.state = objective.state;
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,
@@ -146,7 +148,7 @@ export class ObjectiveFormComponent implements OnInit {
       id: 0,
       title: '',
       description: '',
-      state: State.DRAFT,
+      state: 'DRAFT' as State,
       teamId: 0,
       quarterId: 0,
     } as Objective;

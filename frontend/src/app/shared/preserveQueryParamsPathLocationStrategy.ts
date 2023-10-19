@@ -24,7 +24,11 @@ export class PreserveQueryParamsPathLocationStrategy extends PathLocationStrateg
     const existingURLSearchParams = new URLSearchParams(this.search);
     const existingQueryParams: { [key: string]: string } = {};
     existingURLSearchParams.forEach((value, key) => (existingQueryParams[key] = value));
+
     urlTree.queryParams = { ...existingQueryParams, ...nextQueryParams };
+    console.log('existing ', this.search);
+    console.log('next ', internal);
+    console.log('merged ', urlTree.toString());
     return urlTree.toString();
   }
 }

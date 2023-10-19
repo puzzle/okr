@@ -15,7 +15,7 @@ export function getValueFromQuery(query: any): number[] {
     .filter((id: number) => Number.isInteger(id));
 }
 
-export function optional(param: object): { [p: string]: any } {
+export function optionalValue(param: object): { [p: string]: any } {
   return Object.fromEntries(
     Object.entries(param)
       .filter(([_, v]) => v != undefined)
@@ -29,7 +29,7 @@ export function optional(param: object): { [p: string]: any } {
   );
 }
 export function optionalReplaceWithNulls(param: object): { [p: string]: any } {
-  const clearObject = optional(param);
+  const clearObject = optionalValue(param);
   return Object.fromEntries(Object.entries(param).map(([k, v]) => [k, clearObject[k] === undefined ? null : v]));
 }
 

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class UserValidationService extends ValidationBase<User, Long> {
+public class UserValidationService extends ValidationBase<User, Long, UserRepository> {
 
     UserValidationService(UserPersistenceService persistenceService) {
         super(persistenceService);

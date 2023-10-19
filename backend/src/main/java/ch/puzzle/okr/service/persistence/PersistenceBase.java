@@ -9,20 +9,41 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
 
-public abstract class PersistenceBase<T, E> {
+import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
+public abstract class PersistenceBase<T, E, R> {
+
     protected final CrudRepository<T, E> repository;
 
     protected PersistenceBase(CrudRepository<T, E> repository) {
         this.repository = repository;
     }
 
+    public R getRepository() {
+        return (R) repository;
+    }
+
     public T findById(E id) throws ResponseStatusException {
+        checkIdNull(id);
+        return repository.findById(id).orElseThrow(() -> createEntityNotFoundException(id));
+    }
+
+    public void checkIdNull(E id) {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Missing identifier for %s", getModelName()));
+                    format("Missing identifier for %s", getModelName()));
         }
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                String.format("%s with id %s not found", getModelName(), id)));
+    }
+
+    public ResponseStatusException createEntityNotFoundException(E id) {
+        return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
+    }
+
+    public ResponseStatusException createUnauthorizedException(Long id) {
+        return new ResponseStatusException(UNAUTHORIZED,
+                String.format("not authorized to select id=%s from %s", id, getModelName()));
     }
 
     public T save(T model) {

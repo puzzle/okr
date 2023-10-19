@@ -1,14 +1,12 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
-import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,27 +18,21 @@ import java.util.Objects;
 public class KeyResultBusinessService {
 
     private final KeyResultPersistenceService keyResultPersistenceService;
-    private final ObjectivePersistenceService objectivePersistenceService;
     private final CheckInBusinessService checkInBusinessService;
-    private final UserBusinessService userBusinessService;
     private final KeyResultValidationService validator;
-
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            ObjectivePersistenceService objectivePersistenceService, UserBusinessService userBusinessService,
             KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
-        this.objectivePersistenceService = objectivePersistenceService;
-        this.userBusinessService = userBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.validator = validator;
     }
 
     @Transactional
-    public KeyResult createKeyResult(KeyResult keyResult, Jwt token) {
+    public KeyResult createKeyResult(KeyResult keyResult, AuthorizationUser authorizationUser) {
         keyResult.setCreatedOn(LocalDateTime.now());
-        keyResult.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        keyResult.setCreatedBy(authorizationUser.user());
         validator.validateOnCreate(keyResult);
         return keyResultPersistenceService.save(keyResult);
     }
@@ -82,7 +74,7 @@ public class KeyResultBusinessService {
     public void deleteKeyResultById(Long id) {
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
-                .forEach(checkIn -> checkInBusinessService.deleteCheckIn(checkIn.getId()));
+                .forEach(checkIn -> checkInBusinessService.deleteCheckInById(checkIn.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 
@@ -92,8 +84,7 @@ public class KeyResultBusinessService {
     }
 
     public List<KeyResult> getAllKeyResultsByObjective(Long objectiveId) {
-        Objective objective = objectivePersistenceService.findById(objectiveId);
-        return keyResultPersistenceService.getKeyResultsByObjective(objective);
+        return keyResultPersistenceService.getKeyResultsByObjective(objectiveId);
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {

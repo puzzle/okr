@@ -11,11 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v2/caches")
 public class CacheController {
-
     private final CacheService cacheService;
 
     public CacheController(CacheService cacheService) {
         this.cacheService = cacheService;
+    }
+
+    @Operation(summary = "Delete authorization users cache", description = "Delete authorization users cache")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Authorization users cache deleted") })
+    @PostMapping("emptyAuthorizationUsersCache")
+    public void emptyAuthorizationUsersCache() {
+        cacheService.emptyAuthorizationUsersCache();
     }
 
     @Operation(summary = "Delete users cache", description = "Delete users cache")

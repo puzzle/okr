@@ -1,11 +1,12 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.repository.QuarterRepository;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QuarterValidationService extends ValidationBase<Quarter, Long> {
+public class QuarterValidationService extends ValidationBase<Quarter, Long, QuarterRepository> {
 
     public QuarterValidationService(QuarterPersistenceService quarterPersistenceService) {
         super(quarterPersistenceService);

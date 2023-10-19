@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class ValidationBase<T, E> {
+public abstract class ValidationBase<T, E, R> {
     private final Validator validator;
-    protected final PersistenceBase<T, E> persistenceService;
+    protected final PersistenceBase<T, E, R> persistenceService;
 
-    ValidationBase(PersistenceBase<T, E> persistenceService) {
+    ValidationBase(PersistenceBase<T, E, R> persistenceService) {
         this.persistenceService = persistenceService;
         try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
             validator = factory.getValidator();

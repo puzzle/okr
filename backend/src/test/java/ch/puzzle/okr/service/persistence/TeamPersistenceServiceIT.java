@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import static ch.puzzle.okr.Constants.TEAM_PUZZLE;
+import static ch.puzzle.okr.TestConstants.TEAM_PUZZLE;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @SpringIntegrationTest
 class TeamPersistenceServiceIT {
@@ -44,7 +46,7 @@ class TeamPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamPersistenceService.findById(321L));
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(NOT_FOUND, exception.getStatus());
         assertEquals("Team with id 321 not found", exception.getReason());
     }
 
@@ -59,7 +61,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldSaveANewTeam() {
-        Team team = Team.Builder.builder().withName("TestTeam").build();
+        Team team = Team.Builder.builder().withName("TestTeam").withRoleName("TestRole").build();
 
         createdTeam = teamPersistenceService.save(team);
         assertNotNull(createdTeam.getId());
@@ -68,7 +70,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldUpdateTeamProperly() {
-        Team team = Team.Builder.builder().withName("New Team").build();
+        Team team = Team.Builder.builder().withName("New Team").withRoleName("TestRole").build();
         createdTeam = teamPersistenceService.save(team);
         createdTeam.setName("Updated Team");
 
@@ -80,13 +82,30 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldDeleteTeam() {
-        Team team = Team.Builder.builder().withName("New Team").build();
+        Team team = Team.Builder.builder().withName("New Team").withRoleName("TestRole").build();
         createdTeam = teamPersistenceService.save(team);
         teamPersistenceService.deleteById(createdTeam.getId());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamPersistenceService.findById(createdTeam.getId()));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Team with id %d not found", createdTeam.getId()), exception.getReason());
+    }
+
+    @Test
+    void findByRoleName_ShouldReturnTeam_WhenRoleNameFound() {
+        Team team = teamPersistenceService.findByRoleName("org_gl");
+
+        assertEquals("Puzzle ITC", team.getName());
+        assertEquals("org_gl", team.getRoleName());
+    }
+
+    @Test
+    void findByRoleName_ShouldThrowException_WhenRoleNameNotFound() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamPersistenceService.findByRoleName("unknown"));
+
+        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals("role name unknown does not match team", exception.getReason());
     }
 }

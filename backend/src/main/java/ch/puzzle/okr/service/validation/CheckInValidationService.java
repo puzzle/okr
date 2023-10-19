@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.repository.CheckInRepository;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-public class CheckInValidationService extends ValidationBase<CheckIn, Long> {
+public class CheckInValidationService extends ValidationBase<CheckIn, Long, CheckInRepository> {
 
     public CheckInValidationService(CheckInPersistenceService checkInPersistenceService) {
         super(checkInPersistenceService);

@@ -3,10 +3,10 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,15 +17,12 @@ public class ObjectiveBusinessService {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
-    private final UserBusinessService userBusinessService;
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
-            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
-            UserBusinessService userBusinessService) {
+            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.userBusinessService = userBusinessService;
     }
 
     public Objective getObjectiveById(Long id) {
@@ -34,19 +31,19 @@ public class ObjectiveBusinessService {
     }
 
     @Transactional
-    public Objective updateObjective(Long id, Objective objective, Jwt token) {
+    public Objective updateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective savedObjective = objectivePersistenceService.findById(id);
         objective.setCreatedBy(savedObjective.getCreatedBy());
         objective.setCreatedOn(savedObjective.getCreatedOn());
-        objective.setModifiedBy(userBusinessService.getUserByAuthorisationToken(token));
+        objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }
 
     @Transactional
-    public Objective createObjective(Objective objective, Jwt token) {
-        objective.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+    public Objective createObjective(Objective objective, AuthorizationUser authorizationUser) {
+        objective.setCreatedBy(authorizationUser.user());
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);

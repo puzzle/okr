@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.models.checkin.CheckIn;
-import ch.puzzle.okr.service.business.CheckInBusinessService;
+import ch.puzzle.okr.service.authorization.CheckInAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.*;
 public class CheckInController {
 
     private final CheckInMapper checkInMapper;
-    private final CheckInBusinessService checkInBusinessService;
+    private final CheckInAuthorizationService checkInAuthorizationService;
 
-    public CheckInController(CheckInMapper checkInMapper, CheckInBusinessService checkInBusinessService) {
+    public CheckInController(CheckInMapper checkInMapper, CheckInAuthorizationService checkInAuthorizationService) {
         this.checkInMapper = checkInMapper;
-        this.checkInBusinessService = checkInBusinessService;
+        this.checkInAuthorizationService = checkInAuthorizationService;
     }
 
     @Operation(summary = "Get Check-in", description = "Get Check-in by ID")
@@ -34,9 +34,9 @@ public class CheckInController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Did not find a Check-in with a specified ID", content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id) {
+    public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id, @AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(checkInMapper.toDto(this.checkInBusinessService.getCheckInById(id)));
+                .body(checkInMapper.toDto(this.checkInAuthorizationService.getCheckInById(id, jwt)));
     }
 
     @Operation(summary = "Create Check-in", description = "Create a new Check-in")
@@ -49,7 +49,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
-        CheckInDto createdCheckIn = checkInMapper.toDto(checkInBusinessService.createCheckIn(checkIn, jwt));
+        CheckInDto createdCheckIn = checkInMapper.toDto(checkInAuthorizationService.createCheckIn(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
 
@@ -62,9 +62,11 @@ public class CheckInController {
     @PutMapping("/{id}")
     public ResponseEntity<CheckInDto> updateCheckIn(
             @Parameter(description = "The ID for updating a Check-in.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to update an existing Check-in.", required = true) @RequestBody CheckInDto checkInDto) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to update an existing Check-in.", required = true) @RequestBody CheckInDto checkInDto,
+            @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
-        CheckInDto updatedCheckIn = this.checkInMapper.toDto(this.checkInBusinessService.updateCheckIn(id, checkIn));
+        CheckInDto updatedCheckIn = this.checkInMapper
+                .toDto(this.checkInAuthorizationService.updateCheckIn(id, checkIn, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);
     }
 
@@ -72,8 +74,9 @@ public class CheckInController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Check-in by ID"),
             @ApiResponse(responseCode = "404", description = "Did not find the Check-in with requested ID") })
     @DeleteMapping("/{id}")
-    public void deleteCheckIn(
-            @Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id) {
-        this.checkInBusinessService.deleteCheckIn(id);
+    public void deleteCheckInById(
+            @Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id,
+            @AuthenticationPrincipal Jwt jwt) {
+        this.checkInAuthorizationService.deleteCheckInById(id, jwt);
     }
 }

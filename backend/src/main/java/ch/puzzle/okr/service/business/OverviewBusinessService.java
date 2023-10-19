@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
@@ -26,18 +27,17 @@ public class OverviewBusinessService {
         this.validator = validator;
     }
 
-    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
+    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds,String objectiveQuery,
+            AuthorizationUser authorizationUser) {
         if (Objects.isNull(quarterId)) {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
 
         if (CollectionUtils.isEmpty(teamIds)) {
-            // TODO get current team (of current user) if teamIds is empty and remove temp implementation
-            // TODO remove line below as soon as teamids are able to be read from jwt token
-            teamIds = teamBusinessService.getAllTeams().stream().map(Team::getId).toList();
+            teamIds = authorizationUser.teamIds();
         }
         validator.validateOnGet(quarterId, teamIds);
         return overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(quarterId, teamIds,
-                objectiveQuery);
+                objectiveQuery, authorizationUser);
     }
 }

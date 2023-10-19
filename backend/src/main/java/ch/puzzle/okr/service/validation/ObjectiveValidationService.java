@@ -1,13 +1,14 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class ObjectiveValidationService extends ValidationBase<Objective, Long> {
+public class ObjectiveValidationService extends ValidationBase<Objective, Long, ObjectiveRepository> {
 
     public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService) {
         super(objectivePersistenceService);

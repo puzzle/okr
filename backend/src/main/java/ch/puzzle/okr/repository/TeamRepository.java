@@ -1,16 +1,17 @@
 package ch.puzzle.okr.repository;
 
 import ch.puzzle.okr.models.Team;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TeamRepository extends CrudRepository<Team, Long> {
 
-    List<Team> findAllByNameNotOrderByNameAsc(String excludedTeamName);
+    Optional<Team> findByRoleName(String roleName);
 
-    List<Team> findAllByIdInAndNameNotOrderByNameAsc(List<Long> ids, String excludedTeamName);
-
-    Optional<Team> findByName(String name);
+    @Query(value = "select t.id from Team t where t.roleName IN (:roleNames)")
+    List<Long> findByRoleNames(@Param("roleNames") List<String> roleNames);
 }

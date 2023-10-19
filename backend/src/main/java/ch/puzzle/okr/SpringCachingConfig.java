@@ -10,8 +10,11 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 public class SpringCachingConfig {
 
+    public static final String AUTHORIZATION_USER_CACHE = "authorizationUsers";
+    public static final String USER_CACHE = "users";
+
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager(Constants.USER_CACHE);
+        return new ConcurrentMapCacheManager(AUTHORIZATION_USER_CACHE, USER_CACHE);
     }
 }

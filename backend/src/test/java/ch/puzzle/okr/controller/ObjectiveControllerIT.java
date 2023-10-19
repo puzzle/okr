@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,17 +34,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
 
-    public static final String OBJECTIVE_TITLE_1 = "Objective 1";
-    public static final String OBJECTIVE_TITLE_2 = "Objective 2";
-    public static final String DESCRIPTION = "This is our description";
-    public static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
+    private static final String OBJECTIVE_TITLE_1 = "Objective 1";
+    private static final String OBJECTIVE_TITLE_2 = "Objective 2";
+    private static final String DESCRIPTION = "This is our description";
+    private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
 
-    public static final String TITLE = "Hunting";
+    private static final String TITLE = "Hunting";
 
-    public static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
-    public static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
+    private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
 
-    public static final String JSON = "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
+    private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
+    private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
+
+    private static final String JSON = "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
             + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
             + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
             + "\"description\": \"This is our description\", \"progress\": 33.3}";
@@ -66,7 +68,7 @@ class ObjectiveControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private ObjectiveBusinessService objectiveBusinessService;
+    private ObjectiveAuthorizationService objectiveAuthorizationService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
 
@@ -78,17 +80,18 @@ class ObjectiveControllerIT {
 
     @Test
     void getObjective() throws Exception {
-        BDDMockito.given(objectiveBusinessService.getObjectiveById(5L)).willReturn(objective1);
+        BDDMockito.given(objectiveAuthorizationService.getObjectiveById(anyLong(), any())).willReturn(objective1);
 
-        mvc.perform(get("/api/v2/objectives/5").contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
                 .andExpect(jsonPath("$.title", Is.is(OBJECTIVE_TITLE_1)));
     }
 
     @Test
     void getObjectiveFail() throws Exception {
-        BDDMockito.given(objectiveBusinessService.getObjectiveById(10L))
+        BDDMockito.given(objectiveAuthorizationService.getObjectiveById(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         mvc.perform(get(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -99,7 +102,7 @@ class ObjectiveControllerIT {
                 null, null);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveBusinessService.createObjective(any(), any())).willReturn(fullObjective);
+        BDDMockito.given(objectiveAuthorizationService.createObjective(any(), any())).willReturn(fullObjective);
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
@@ -107,12 +110,12 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
                         "{\"id\":null,\"title\":\"Program Faster\",\"teamId\":1,\"quarterId\":1,\"description\":\"Just be faster\",\"state\":\"DRAFT\",\"createdOn\":null,\"modifiedOn\":null}"));
-        verify(objectiveBusinessService, times(1)).createObjective(any(), any());
+        verify(objectiveAuthorizationService, times(1)).createObjective(any(), any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
-        BDDMockito.given(objectiveBusinessService.createObjective(any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.createObjective(any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON).content(
@@ -129,7 +132,7 @@ class ObjectiveControllerIT {
                 .withTitle(TITLE).build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveBusinessService.updateObjective(anyLong(), any(), any())).willReturn(objective);
+        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willReturn(objective);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
@@ -148,7 +151,8 @@ class ObjectiveControllerIT {
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objectiveImUsed);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
-        BDDMockito.given(objectiveBusinessService.updateObjective(anyLong(), any(), any())).willReturn(objectiveImUsed);
+        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any()))
+                .willReturn(objectiveImUsed);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
@@ -156,7 +160,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveBusinessService.updateObjective(anyLong(), any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
@@ -166,7 +170,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveBusinessService.updateObjective(anyLong(), any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -181,8 +185,8 @@ class ObjectiveControllerIT {
 
     @Test
     void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found")).when(objectiveBusinessService)
-                .deleteObjectiveById(anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
+                .when(objectiveAuthorizationService).deleteObjectiveById(anyLong(), any());
 
         mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

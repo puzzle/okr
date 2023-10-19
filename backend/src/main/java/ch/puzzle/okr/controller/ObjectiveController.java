@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.business.ObjectiveBusinessService;
+import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v2/objectives")
 public class ObjectiveController {
-    private final ObjectiveBusinessService objectiveBusinessService;
+    private final ObjectiveAuthorizationService objectiveAuthorizationService;
     private final ObjectiveMapper objectiveMapper;
 
-    public ObjectiveController(ObjectiveBusinessService objectiveBusinessService, ObjectiveMapper objectiveMapper) {
-        this.objectiveBusinessService = objectiveBusinessService;
+    public ObjectiveController(ObjectiveAuthorizationService objectiveAuthorizationService,
+            ObjectiveMapper objectiveMapper) {
+        this.objectiveAuthorizationService = objectiveAuthorizationService;
         this.objectiveMapper = objectiveMapper;
     }
 
@@ -34,9 +35,10 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective with a specified ID", content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<ObjectiveDto> getObjective(
-            @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
+            @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id,
+            @AuthenticationPrincipal Jwt token) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.objectiveMapper.toDto(objectiveBusinessService.getObjectiveById(id)));
+                .body(this.objectiveMapper.toDto(objectiveAuthorizationService.getObjectiveById(id, token)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -44,8 +46,9 @@ public class ObjectiveController {
             @ApiResponse(responseCode = "404", description = "Did not find the Objective with requested ID") })
     @DeleteMapping("/{id}")
     public void deleteObjectiveById(
-            @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id) {
-        this.objectiveBusinessService.deleteObjectiveById(id);
+            @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id,
+            @AuthenticationPrincipal Jwt token) {
+        this.objectiveAuthorizationService.deleteObjectiveById(id, token);
     }
 
     @Operation(summary = "Create Objective", description = "Create a new Objective")
@@ -56,10 +59,10 @@ public class ObjectiveController {
     @PostMapping
     public ResponseEntity<ObjectiveDto> createObjective(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
-            @AuthenticationPrincipal Jwt jwt) {
+            @AuthenticationPrincipal Jwt token) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveBusinessService.createObjective(objective, jwt));
+                .toDto(this.objectiveAuthorizationService.createObjective(objective, token));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -75,10 +78,10 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO,
-            @AuthenticationPrincipal Jwt jwt) {
+            @AuthenticationPrincipal Jwt token) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveBusinessService.updateObjective(id, objective, jwt));
+                .toDto(this.objectiveAuthorizationService.updateObjective(id, objective, token));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

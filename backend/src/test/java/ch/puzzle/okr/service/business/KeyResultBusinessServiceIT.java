@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
@@ -14,21 +15,19 @@ import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-import static ch.puzzle.okr.TestHelper.mockJwtToken;
+import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
-class KeyResultBusinessServiceIT {
-
+public class KeyResultBusinessServiceIT {
     private static final String KEY_RESULT_UPDATED = "Updated Key Result";
-    private static final Jwt jwtToken = mockJwtToken("findus", "Findus", "Peterson", "peterson@puzzle.ch");
+    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     private KeyResult createdKeyResult;
 
@@ -79,8 +78,8 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateKeyResultShouldUpdateKeyResultWithSameTypeMetric() {
-        createdKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null), jwtToken);
+    void updateKeyResult_shouldUpdateKeyResultWithSameTypeMetric() {
+        createdKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResult updatedKeyResult = keyResultBusinessService.updateKeyResult(createdKeyResult.getId(),
@@ -90,8 +89,8 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateKeyResultShouldUpdateKeyResultWithSameTypeOrdinal() {
-        createdKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null), jwtToken);
+    void updateKeyResult_shouldUpdateKeyResultWithSameTypeOrdinal() {
+        createdKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
         KeyResult updatedKeyResult = keyResultBusinessService.updateKeyResult(createdKeyResult.getId(),
@@ -102,7 +101,8 @@ class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldRecreateKeyResultMetric() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null), jwtToken);
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null),
+                authorizationUser);
         KeyResult updatedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
         createdKeyResult = keyResultBusinessService.updateKeyResult(updatedKeyResult.getId(), updatedKeyResult);
@@ -112,7 +112,8 @@ class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldRecreateKeyResultOrdinal() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null), jwtToken);
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null),
+                authorizationUser);
         KeyResult updatedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 
         createdKeyResult = keyResultBusinessService.updateKeyResult(updatedKeyResult.getId(), updatedKeyResult);
@@ -122,8 +123,9 @@ class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null), jwtToken);
-        checkInBusinessService.createCheckIn(createCheckInOrdinal(savedKeyResult), jwtToken);
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null),
+                authorizationUser);
+        checkInBusinessService.createCheckIn(createCheckInOrdinal(savedKeyResult), authorizationUser);
 
         KeyResult updatedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
@@ -134,8 +136,9 @@ class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null), jwtToken);
-        checkInBusinessService.createCheckIn(createCheckInMetric(savedKeyResult), jwtToken);
+        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null),
+                authorizationUser);
+        checkInBusinessService.createCheckIn(createCheckInMetric(savedKeyResult), authorizationUser);
 
         KeyResult updatedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 

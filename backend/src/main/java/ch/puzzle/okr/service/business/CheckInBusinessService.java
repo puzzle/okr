@@ -1,9 +1,9 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,13 +14,11 @@ import java.util.List;
 public class CheckInBusinessService {
     private final CheckInPersistenceService checkInPersistenceService;
     private final CheckInValidationService validator;
-    private final UserBusinessService userBusinessService;
 
     public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService,
-            CheckInValidationService validator, UserBusinessService userBusinessService) {
+            CheckInValidationService validator) {
         this.checkInPersistenceService = checkInPersistenceService;
         this.validator = validator;
-        this.userBusinessService = userBusinessService;
     }
 
     public CheckIn getCheckInById(Long id) {
@@ -29,10 +27,10 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public CheckIn createCheckIn(CheckIn checkIn, Jwt token) {
+    public CheckIn createCheckIn(CheckIn checkIn, AuthorizationUser authorizationUser) {
         checkIn.setCreatedOn(LocalDateTime.now());
         checkIn.setModifiedOn(LocalDateTime.now());
-        checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        checkIn.setCreatedBy(authorizationUser.user());
         validator.validateOnCreate(checkIn);
         return checkInPersistenceService.save(checkIn);
     }
@@ -48,7 +46,7 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public void deleteCheckIn(Long id) {
+    public void deleteCheckInById(Long id) {
         validator.validateOnDelete(id);
         checkInPersistenceService.deleteById(id);
     }

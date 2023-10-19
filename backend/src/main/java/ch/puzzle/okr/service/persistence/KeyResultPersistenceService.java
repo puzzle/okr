@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long> {
+public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long, KeyResultRepository> {
 
     protected KeyResultPersistenceService(KeyResultRepository repository) {
         super(repository);
@@ -20,8 +19,8 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
         return "KeyResult";
     }
 
-    public List<KeyResult> getKeyResultsByObjective(Objective objective) {
-        return ((KeyResultRepository) this.repository).findByObjectiveId(objective.getId());
+    public List<KeyResult> getKeyResultsByObjective(Long objectiveId) {
+        return getRepository().findByObjectiveId(objectiveId);
     }
 
     @Transactional

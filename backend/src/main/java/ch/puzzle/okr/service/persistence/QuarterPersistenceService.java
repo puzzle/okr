@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
+public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, QuarterRepository> {
 
     protected QuarterPersistenceService(QuarterRepository repository) {
         super(repository);
@@ -20,14 +20,10 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long> {
     }
 
     public List<Quarter> getMostCurrentQuarters() {
-        return getQuarterRepository().getTop6ByOrderByStartDateDesc();
+        return getRepository().getTop6ByOrderByStartDateDesc();
     }
 
     public Quarter getCurrentQuarter() {
-        return getQuarterRepository().getActiveQuarter(LocalDate.now());
-    }
-
-    private QuarterRepository getQuarterRepository() {
-        return (QuarterRepository) repository;
+        return getRepository().getActiveQuarter(LocalDate.now());
     }
 }

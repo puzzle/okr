@@ -2,8 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.mapper.OverviewMapper;
-import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.business.OverviewBusinessService;
+import ch.puzzle.okr.service.authorization.OverviewAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,7 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,14 +23,12 @@ import java.util.List;
 @RequestMapping("api/v2/overview")
 public class OverviewController {
     private final OverviewMapper overviewMapper;
-    private final OverviewBusinessService overviewBusinessService;
-    private final RegisterNewUserService registerNewUserService;
+    private final OverviewAuthenticationService overviewAuthenticationService;
 
-    public OverviewController(OverviewMapper overviewMapper, OverviewBusinessService overviewBusinessService,
-            RegisterNewUserService registerNewUserService) {
+    public OverviewController(OverviewMapper overviewMapper,
+            OverviewAuthenticationService overviewAuthenticationService) {
         this.overviewMapper = overviewMapper;
-        this.overviewBusinessService = overviewBusinessService;
-        this.registerNewUserService = registerNewUserService;
+        this.overviewAuthenticationService = overviewAuthenticationService;
     }
 
     @Operation(summary = "Get all teams and their objectives", description = "Get a List of teams with their objectives")
@@ -43,9 +41,8 @@ public class OverviewController {
     public ResponseEntity<List<OverviewDto>> getOverview(
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
-            @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
-        registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
+            @AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
-                .toDto(overviewBusinessService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
+                .toDto(overviewAuthenticationService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter, jwt)));
     }
 }

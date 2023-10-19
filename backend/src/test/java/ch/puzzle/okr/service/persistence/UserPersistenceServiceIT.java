@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.assertj.core.api.Assertions;
@@ -15,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -30,7 +30,7 @@ class UserPersistenceServiceIT {
 
     @BeforeEach
     void beforeEach() {
-        cache = cacheManager.getCache(Constants.USER_CACHE);
+        cache = cacheManager.getCache(USER_CACHE);
     }
 
     @AfterEach
@@ -138,7 +138,7 @@ class UserPersistenceServiceIT {
         User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
         userPersistenceService.getOrCreateUser(existingUser);
 
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
+        User cachedUser = cacheManager.getCache(USER_CACHE).get(USERNAME_ALICE, User.class);
         assertNotNull(cachedUser);
     }
 }

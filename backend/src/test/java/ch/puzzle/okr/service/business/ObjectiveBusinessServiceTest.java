@@ -1,50 +1,43 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.mockJwtToken;
+import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
+    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @InjectMocks
     @Spy
     ObjectiveBusinessService objectiveBusinessService;
-    @MockBean
-    ObjectivePersistenceService objectivePersistenceService = Mockito.mock(ObjectivePersistenceService.class);
-    @MockBean
-    KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
-    @MockBean
-    KeyResultBusinessService keyResultBusinessService = Mockito.mock(KeyResultBusinessService.class);
-    @MockBean
+    @Mock
+    ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    KeyResultBusinessService keyResultBusinessService;
+    @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
-    @MockBean
-    UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
 
-    @MockBean
-    CheckInBusinessService checkInBusinessService = Mockito.mock(CheckInBusinessService.class);
     Objective objective;
     Objective fullObjective1;
     KeyResult ordinalKeyResult;
@@ -52,7 +45,6 @@ class ObjectiveBusinessServiceTest {
     Quarter quarter;
     List<KeyResult> keyResultList;
     Team team1;
-    Jwt jwtToken;
 
     @BeforeEach
     void setUp() {
@@ -68,8 +60,6 @@ class ObjectiveBusinessServiceTest {
         this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
                 .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
                 .withModifiedOn(LocalDateTime.MAX).build();
-
-        this.jwtToken = mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
     }
 
     @Test
@@ -98,9 +88,8 @@ class ObjectiveBusinessServiceTest {
                 .withState(State.DRAFT).build());
 
         doNothing().when(objective).setCreatedOn(any());
-        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
 
-        objectiveBusinessService.createObjective(objective, jwtToken);
+        objectiveBusinessService.createObjective(objective, authorizationUser);
 
         verify(objectivePersistenceService, times(1)).save(objective);
         assertEquals(State.DRAFT, objective.getState());
@@ -112,10 +101,10 @@ class ObjectiveBusinessServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
                 .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        Mockito.when(objectiveBusinessService.createObjective(objective1, jwtToken)).thenReturn(this.fullObjective1);
-        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
+        Mockito.when(objectiveBusinessService.createObjective(objective1, authorizationUser))
+                .thenReturn(this.fullObjective1);
 
-        Objective savedObjective = objectiveBusinessService.createObjective(objective1, jwtToken);
+        Objective savedObjective = objectiveBusinessService.createObjective(objective1, authorizationUser);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
@@ -129,9 +118,8 @@ class ObjectiveBusinessServiceTest {
 
         doNothing().when(objective).setModifiedOn(any());
         Mockito.when(objectivePersistenceService.findById(any())).thenReturn(objective);
-        Mockito.when(userBusinessService.getUserByAuthorisationToken(any())).thenReturn(user);
 
-        objectiveBusinessService.updateObjective(objective.getId(), objective, jwtToken);
+        objectiveBusinessService.updateObjective(objective.getId(), objective, authorizationUser);
 
         verify(objectivePersistenceService).save(objective);
         assertEquals(user, objective.getModifiedBy());
@@ -140,8 +128,6 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
-        when(this.objectivePersistenceService.findById(anyLong())).thenReturn(objective);
-        when(this.keyResultPersistenceService.getKeyResultsByObjective(objective)).thenReturn(keyResultList);
         when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(this.keyResultList);
 
         this.objectiveBusinessService.deleteObjectiveById(1L);

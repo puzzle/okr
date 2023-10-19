@@ -4,6 +4,7 @@ import { Quarter } from '../shared/types/model/Quarter';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { getValueFromQuery } from '../shared/common';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -25,9 +26,10 @@ export class QuarterFilterComponent implements OnInit {
   ngOnInit() {
     this.quarterService.getAllQuarters().subscribe((quarters) => {
       this.quarters.next(quarters);
-      const quarterId = this.route.snapshot.queryParams['quarter'];
-      if (quarterId !== undefined && quarters.map((quarter) => quarter.id).includes(+quarterId)) {
-        this.quarterId = +quarterId;
+      const quarterQuery = this.route.snapshot.queryParams['quarter'];
+      const quarterId: number = getValueFromQuery(quarterQuery)[0];
+      if (quarterId && quarters.map((quarter) => quarter.id).includes(quarterId)) {
+        this.quarterId = quarterId;
       } else {
         this.quarterId = quarters[0].id;
         if (this.router.url !== '/') {
@@ -39,7 +41,7 @@ export class QuarterFilterComponent implements OnInit {
 
   changeDisplayedQuarter() {
     const id = this.quarterId;
-    this.router.navigate([], { queryParams: { quarter: id } }).then(() => {
+    this.router.navigate([], { queryParams: { quarter: id }, queryParamsHandling: 'merge' }).then(() => {
       this.refreshDataService.markDataRefresh();
     });
   }

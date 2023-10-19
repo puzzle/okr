@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { OverviewEntity } from '../types/model/OverviewEntity';
 import { State } from '../types/enums/State';
+import { optionalValue } from '../common';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +11,24 @@ import { State } from '../types/enums/State';
 export class OverviewService {
   constructor(private http: HttpClient) {}
 
-  getOverview(quarterId?: number): Observable<OverviewEntity[]> {
-    return this.http
-      .get<OverviewEntity[]>(quarterId !== undefined ? '/api/v2/overview?quarter=' + quarterId : '/api/v2/overview')
-      .pipe(
-        //Map state from string to enum
-        map((overviews) => {
-          overviews.forEach((overview) => {
-            overview.objectives.forEach((objective) => {
-              objective.state = State[objective.state as string as keyof typeof State];
-              return objective;
-            });
-            return overview;
+  getOverview(quarterId?: number, teamIds?: number[]): Observable<OverviewEntity[]> {
+    const params = optionalValue({
+      quarter: quarterId,
+      team: teamIds,
+    });
+
+    return this.http.get<OverviewEntity[]>('/api/v2/overview', { params: params }).pipe(
+      //Map state from string to enum
+      map((overviews) => {
+        overviews.forEach((overview) => {
+          overview.objectives.forEach((objective) => {
+            objective.state = State[objective.state as string as keyof typeof State];
+            return objective;
           });
-          return overviews;
-        }),
-      );
+          return overview;
+        });
+        return overviews;
+      }),
+    );
   }
 }

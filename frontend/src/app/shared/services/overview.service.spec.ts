@@ -37,11 +37,11 @@ describe('OverviewService', () => {
 
   it('should make call to overview endpoint when quarterId is undefined', () => {
     service.getOverview();
-    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview');
+    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview', { params: {} });
   });
 
   it('should make call to overview endpoint with overview url param when quarterId is defined', () => {
     service.getOverview(quarter.id);
-    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview?quarter=' + quarter.id);
+    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview', { params: { quarter: 1 } });
   });
 });

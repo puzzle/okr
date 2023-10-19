@@ -15,11 +15,32 @@ import { Objective } from './types/model/Objective';
 import { User } from './types/model/User';
 import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
+import { Team } from './types/model/Team';
 
-export const team1: TeamMin = {
+export const teamMin1: TeamMin = {
   id: 1,
   name: 'Marketing Team',
 } as TeamMin;
+
+export const team1: Team = {
+  id: 1,
+  name: 'Team2',
+  activeObjectives: 1,
+} as Team;
+
+export const team2: Team = {
+  id: 2,
+  name: 'Team2',
+  activeObjectives: 2,
+} as Team;
+
+export const team3: Team = {
+  id: 3,
+  name: 'Team3',
+  activeObjectives: 3,
+} as Team;
+
+export const teamList = [team1, team2, team3];
 
 export const quarterMin: QuarterMin = {
   id: 1,
@@ -126,7 +147,7 @@ export const objectiveMin: ObjectiveMin = {
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
 } as ObjectiveMin;
 export const overViewEntity1: OverviewEntity = {
-  team: team1,
+  team: teamMin1,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
 };
 

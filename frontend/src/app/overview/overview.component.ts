@@ -4,6 +4,7 @@ import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { getValueFromQuery } from '../shared/common';
 
 @Component({
   selector: 'app-overview',
@@ -20,35 +21,35 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverview());
+    this.refreshDataService.reloadOverviewSubject
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.prepareOverview());
   }
 
   ngOnInit(): void {
-    this.loadOverview();
+    this.prepareOverview();
   }
 
-  loadOverview() {
-    const quarterId = this.activatedRoute.snapshot.queryParams['quarter'];
-    if (quarterId !== undefined && !isNaN(+quarterId)) {
-      this.overviewService
-        .getOverview(+quarterId)
-        .pipe(
-          catchError(() => {
-            return EMPTY;
-          }),
-        )
-        .subscribe((overviews) => {
-          this.overviewEntities$.next(overviews);
-        });
-    } else {
-      this.loadDefaultOverview();
-    }
+  prepareOverview() {
+    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
+    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
+
+    const teamIds = getValueFromQuery(teamQuery);
+    const quarterId = getValueFromQuery(quarterQuery)[0];
+
+    this.loadOverview(quarterId, teamIds);
   }
 
-  loadDefaultOverview() {
-    this.overviewService.getOverview().subscribe((overviews) => {
-      this.overviewEntities$.next(overviews);
-    });
+  loadOverview(quarterId?: number, teamIds?: number[]) {
+    this.overviewService
+      .getOverview(quarterId, teamIds)
+      .pipe(
+        catchError(() => {
+          this.loadOverview();
+          return EMPTY;
+        }),
+      )
+      .subscribe((overviews) => this.overviewEntities$.next(overviews));
   }
 
   ngOnDestroy(): void {

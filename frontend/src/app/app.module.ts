@@ -62,6 +62,8 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/c
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './shared/dialog/complete-dialog/complete-dialog.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
+import { TeamFilterComponent } from './team-filter/team-filter.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -121,6 +123,7 @@ export const MY_FORMATS = {
     CompleteDialogComponent,
     QuarterFilterComponent,
     SidepanelComponent,
+    TeamFilterComponent,
   ],
   imports: [
     CommonModule,
@@ -164,6 +167,7 @@ export const MY_FORMATS = {
     CdkOverlayOrigin,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
+    MatChipsModule,
   ],
   providers: [
     {

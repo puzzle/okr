@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { TeamMin } from '../types/model/TeamMin';
 import { Team } from '../types/model/Team';
 import { Observable } from 'rxjs';
 

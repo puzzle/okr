@@ -3,7 +3,14 @@
 }
 
 .column-width {
+  flex-grow: 1;
   min-width: 320px;
   max-width: 500px;
   flex-wrap: wrap;
+}
+
+@media screen and (max-width: 500px) {
+  .team-title {
+    padding-left: 28px;
+  }
 }

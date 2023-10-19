@@ -1,4 +1,12 @@
 .overviewContainer {
   overflow-x: hidden;
   padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media screen and (max-width: 570px) {
+  .overviewContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

@@ -55,14 +55,15 @@ class KeyResultValidationServiceTest {
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
                 .withCreatedOn(LocalDateTime.MAX).build();
 
-        this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit("ECTS")
-                .withId(5L).withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user).build();
+        this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
+                .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(this.objective)
+                .withOwner(this.user).build();
 
         this.keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Ein Baum")
                 .withTargetZone("Zwei Bäume").withTitle("Keyresult Ordinal").withObjective(this.objective)
                 .withOwner(this.user).build();
 
-        this.fullKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit("ECTS")
+        this.fullKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit(Unit.FTE)
                 .withId(null).withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user)
                 .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
                 .withCreatedBy(this.user).build();
@@ -136,8 +137,8 @@ class KeyResultValidationServiceTest {
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS")
-                .withId(null).withTitle(title).withOwner(this.user).withObjective(this.objective)
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
+                .withUnit(Unit.FTE).withId(null).withTitle(title).withOwner(this.user).withObjective(this.objective)
                 .withCreatedBy(this.user).withCreatedOn(LocalDateTime.MIN).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -172,8 +173,8 @@ class KeyResultValidationServiceTest {
 
     @Test
     void validateOnUpdate_ShouldBeSuccessfulWhenKeyResultIsValid() {
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit("ECTS")
-                .withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
+                .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
                 .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
                 .withCreatedBy(user).build();
 
@@ -217,9 +218,9 @@ class KeyResultValidationServiceTest {
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
     void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
-        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit("ECTS")
-                .withId(3L).withTitle(title).withOwner(this.user).withObjective(this.objective).withCreatedBy(this.user)
-                .withCreatedOn(LocalDateTime.MIN).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
+                .withUnit(Unit.FTE).withId(3L).withTitle(title).withOwner(this.user).withObjective(this.objective)
+                .withCreatedBy(this.user).withCreatedOn(LocalDateTime.MIN).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, keyResult));

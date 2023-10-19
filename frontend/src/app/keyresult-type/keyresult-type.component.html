@@ -1,0 +1,114 @@
+<div>
+  <div class="d-flex">
+    <div
+      [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
+      [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
+      [attr.data-testId]="'metricTab'"
+      class="metric tab-title"
+      (click)="switchKeyResultType('metric')"
+    >
+      Metrisch
+    </div>
+    <div
+      [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
+      [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
+      [attr.data-testId]="'ordinalTab'"
+      class="ordinal tab-title"
+      (click)="switchKeyResultType('ordinal')"
+    >
+      Ordinal
+    </div>
+    <div class="buffer tab-title flex-fill"></div>
+  </div>
+</div>
+
+<div *ngIf="isMetric; else ordinalBlock">
+  <form [formGroup]="keyResultForm" class="gap-1">
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row">
+        <div class="flex-fill">
+          <div class="d-flex gap-1">
+            <div>
+              <label>Einheit</label>
+              <select
+                class="unit-dropdown bg-white input-fields menu-option"
+                formControlName="unit"
+                [attr.data-testId]="'unit'"
+              >
+                <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
+                  {{ "UNIT." + unit.value | translate }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <label>Baseline</label>
+              <input class="input-fields metric-fields" formControlName="baseline" [attr.data-testId]="'baseline'" />
+              <div *ngIf="isTouchedOrDirty('baseline')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
+            </div>
+            <div>
+              <label>Stretch Goal</label>
+              <input
+                class="input-fields metric-fields"
+                formControlName="stretchGoal"
+                [attr.data-testId]="'stretchGoal'"
+              />
+              <div *ngIf="isTouchedOrDirty('stretchGoal')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #ordinalBlock>
+  <form [formGroup]="keyResultForm" class="gap-1">
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row">
+        <div class="flex-fill">
+          <div class="d-flex gap-1">
+            <div>
+              <label>Commit Zone</label>
+              <textarea class="input-fields" formControlName="commitZone" [attr.data-testId]="'commitZone'"></textarea>
+              <div *ngIf="isTouchedOrDirty('commitZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
+            </div>
+            <div>
+              <label>Target Zone</label>
+              <textarea class="input-fields" formControlName="targetZone" [attr.data-testId]="'targetZone'"></textarea>
+              <div *ngIf="isTouchedOrDirty('targetZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
+            </div>
+            <div>
+              <label>Stretch Zone</label>
+              <textarea
+                class="input-fields"
+                formControlName="stretchZone"
+                [attr.data-testId]="'stretchZone'"
+              ></textarea>
+              <div *ngIf="isTouchedOrDirty('stretchZone')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
+                  {{ errorMessages[errorKey.toUpperCase()] }}
+                </mat-error>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>

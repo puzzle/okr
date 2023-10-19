@@ -5,13 +5,13 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
+import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -76,7 +76,7 @@ export class KeyresultDetailComponent implements OnInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: null,
+          objective: keyResult.objective,
           keyResult: keyResult,
         },
       })

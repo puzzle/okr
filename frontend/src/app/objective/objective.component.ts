@@ -4,7 +4,6 @@ import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { KeyResultDialogComponent } from '../key-result-dialog/key-result-dialog.component';
 import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { State } from '../shared/types/enums/State';
@@ -12,6 +11,7 @@ import { ObjectiveService } from '../shared/services/objective.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../shared/types/model/Completed';
+import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 
 @Component({
   selector: 'app-objective-column',

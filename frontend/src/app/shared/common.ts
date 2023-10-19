@@ -9,6 +9,7 @@ export function getNumberOrNull(str: string | null | undefined): number | null {
 export function getValueFromQuery(query: any): number[] {
   return Array.from([query])
     .flat()
+    .filter((e) => e !== '')
     .map((e) => (typeof e == 'string' ? e.split(',') : e))
     .flat()
     .map((id: any) => Number(id))

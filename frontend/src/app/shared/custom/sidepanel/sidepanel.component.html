@@ -22,8 +22,8 @@
       <div class="sidebar__content d-flex">
         <div [ngSwitch]="modelType" class="d-flex flex-row w-100">
           <div *ngSwitchDefault>Es ist eine Fehler aufgetreten!</div>
-          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id"></app-objective-detail>
-          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id"></app-keyresult-detail>
+          <app-objective-detail *ngSwitchCase="'Objective'" [objectiveId]="id" class="w-100"></app-objective-detail>
+          <app-keyresult-detail *ngSwitchCase="'KeyResult'" [keyResultId]="id" class="w-100"></app-keyresult-detail>
         </div>
         <mat-icon [routerLink]="'/'" class="cursor-pointer" data-test-id="closeDrawer">close</mat-icon>
       </div>

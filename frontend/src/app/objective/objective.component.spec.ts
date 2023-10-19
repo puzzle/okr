@@ -13,6 +13,7 @@ import { objectiveMin } from '../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -26,7 +27,14 @@ describe('ObjectiveColumnComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [ObjectiveComponent, KeyresultComponent],
-      imports: [MatMenuModule, MatCardModule, NoopAnimationsModule, RouterTestingModule, MatDialogModule],
+      imports: [
+        MatMenuModule,
+        MatCardModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
+        MatDialogModule,
+        HttpClientTestingModule,
+      ],
       providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
     }).compileComponents();
 

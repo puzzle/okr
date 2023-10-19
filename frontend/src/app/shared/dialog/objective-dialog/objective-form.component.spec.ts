@@ -62,9 +62,11 @@ const dialogMock = {
   close: jest.fn(),
 };
 
-let matDataMock: { objectiveId: number | undefined; teamId: number | undefined } = {
-  objectiveId: undefined,
-  teamId: 1,
+let matDataMock: { objective: { objectiveId: number | undefined; teamId: number | undefined } } = {
+  objective: {
+    objectiveId: undefined,
+    teamId: 1,
+  },
 };
 describe('ObjectiveDialogComponent', () => {
   let component: ObjectiveFormComponent;
@@ -179,7 +181,7 @@ describe('ObjectiveDialogComponent', () => {
   });
 
   it('should create objective', () => {
-    matDataMock.objectiveId = undefined;
+    matDataMock.objective.objectiveId = undefined;
     component.objectiveForm.setValue({
       title: 'Test title',
       description: 'Test description',
@@ -206,7 +208,7 @@ describe('ObjectiveDialogComponent', () => {
   });
 
   it('should update objective', () => {
-    matDataMock.objectiveId = 1;
+    matDataMock.objective.objectiveId = 1;
     component.objectiveForm.setValue({
       title: 'Test title',
       description: 'Test description',
@@ -233,21 +235,21 @@ describe('ObjectiveDialogComponent', () => {
   });
 
   it('should load default values into form onInit with undefined objectiveId', () => {
-    matDataMock.objectiveId = undefined;
-    matDataMock.teamId = 1;
+    matDataMock.objective.objectiveId = undefined;
+    matDataMock.objective.teamId = 1;
     component.ngOnInit();
     const rawFormValue = component.objectiveForm.getRawValue();
     const defaultComponent = component.getDefaultObjective();
     expect(rawFormValue.title).toBe(defaultComponent.title);
     expect(rawFormValue.description).toBe(defaultComponent.description);
-    expect(rawFormValue.team).toBe(matDataMock.teamId);
+    expect(rawFormValue.team).toBe(matDataMock.objective.teamId);
     quarterService.getAllQuarters().subscribe((quarters) => {
       expect(rawFormValue.quarter).toBe([quarters[0].id]);
     });
   });
 
   it('should load default values into form onInit with defined objectiveId', () => {
-    matDataMock.objectiveId = 1;
+    matDataMock.objective.objectiveId = 1;
     objectiveService.getFullObjective.mockReturnValue(of(objective));
     component.ngOnInit();
     const rawFormValue = component.objectiveForm.getRawValue();

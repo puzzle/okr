@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RefreshDataService } from '../../services/refresh-data.service';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -9,19 +8,22 @@ import { RefreshDataService } from '../../services/refresh-data.service';
   styleUrls: ['./complete-dialog.component.scss'],
 })
 export class CompleteDialogComponent {
+  isSuccessful: boolean = true;
   completeForm = new FormGroup({
-    isSuccessful: new FormControl<string>('1', [Validators.required]),
     comment: new FormControl<string>('', [Validators.maxLength(4096)]),
   });
 
-  constructor(
-    public dialogRef: MatDialogRef<CompleteDialogComponent>,
-    private refreshDataService: RefreshDataService,
-  ) {}
+  constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}
+
+  switchSuccessState(input: string) {
+    if ((input == 'successful' && !this.isSuccessful) || (input == 'notSuccessful' && this.isSuccessful)) {
+      this.isSuccessful = !this.isSuccessful;
+    }
+  }
 
   closeDialog() {
     this.dialogRef.close({
-      endState: Boolean(+!this.completeForm.value.isSuccessful) ? 'SUCCESSFUL' : 'NOTSUCCESSFUL',
+      endState: this.isSuccessful ? 'SUCCESSFUL' : 'NOTSUCCESSFUL',
       comment: this.completeForm.value.comment,
     });
   }

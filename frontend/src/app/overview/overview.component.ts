@@ -21,29 +21,31 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverview());
+    this.refreshDataService.reloadOverviewSubject
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.prepareOverview());
   }
 
   ngOnInit(): void {
-    this.loadOverview();
+    this.prepareOverview();
   }
 
-  loadOverview() {
+  prepareOverview() {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
 
-    this.getOverview(quarterId, teamIds);
+    this.loadOverview(quarterId, teamIds);
   }
 
-  getOverview(quarterId?: number, teamIds?: number[]) {
+  loadOverview(quarterId?: number, teamIds?: number[]) {
     this.overviewService
       .getOverview(quarterId, teamIds)
       .pipe(
         catchError(() => {
-          this.getOverview();
+          this.loadOverview();
           return EMPTY;
         }),
       )

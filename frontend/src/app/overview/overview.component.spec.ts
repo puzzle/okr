@@ -3,15 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 const overviewService = {
-  getOverview() {
-    return of(overViewEntity1);
-  },
+  getOverview: jest.fn(),
 };
 
 describe('OverviewComponent', () => {
@@ -26,6 +24,7 @@ describe('OverviewComponent', () => {
 
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
+    overviewService.getOverview.mockReturnValue(of([overViewEntity1]));
     fixture.detectChanges();
   });
 
@@ -35,6 +34,7 @@ describe('OverviewComponent', () => {
 
   it('should load default overview when no quarter is defined in route-params', () => {
     jest.spyOn(overviewService, 'getOverview');
+
     component.ngOnInit();
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
@@ -45,6 +45,22 @@ describe('OverviewComponent', () => {
     await routerHarness.navigateByUrl('/?quarter=7');
     routerHarness.detectChanges();
     component.ngOnInit();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(7);
+    expect(overviewService.getOverview).toHaveBeenCalledWith(7, []);
+  });
+
+  it('should refresh overview Entities after getOVerview is called', async () => {
+    jest.spyOn(component.overviewEntities$, 'next');
+    jest.spyOn(component, 'loadOverview');
+    component.loadOverview();
+    expect(component.loadOverview).toHaveBeenCalledTimes(1);
+    expect(component.overviewEntities$.next).toHaveBeenCalledWith([overViewEntity1]);
+  });
+
+  it('should get default if call throws error', async () => {
+    overviewService.getOverview.mockReturnValue(of(new Error('')));
+
+    jest.spyOn(component, 'loadOverview');
+    component.loadOverview();
+    expect(component.loadOverview).toHaveBeenLastCalledWith();
   });
 });

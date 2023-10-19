@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
@@ -14,9 +14,6 @@ import { Objective } from '../shared/types/model/Objective';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamComponent {
-  // @ViewChild('#objective-column')
-  // objectiveColumn!: ElementRef<HTMLElement | undefined>;
-
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
 
   constructor(

@@ -41,7 +41,7 @@ describe('CompleteDialogComponent', () => {
 
     expect(elements.length).toEqual(2);
     expect(component.completeForm.value.isSuccessful).toBeNull();
-    expect(component.completeForm.value.comment).toBe('');
+    expect(component.completeForm.value.comment).toBeNull();
     expect(component.completeForm.invalid).toBeTruthy();
     expect(submitButton.disabled).toBeTruthy();
   });

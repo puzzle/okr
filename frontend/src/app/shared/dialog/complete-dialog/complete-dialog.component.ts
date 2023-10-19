@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class CompleteDialogComponent {
   completeForm = new FormGroup({
     isSuccessful: new FormControl<boolean | null>(null, [Validators.required]),
-    comment: new FormControl<string>('', [Validators.maxLength(4096)]),
+    comment: new FormControl<string | null>(null, [Validators.maxLength(4096)]),
   });
 
   constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}

@@ -110,12 +110,16 @@ export class ObjectiveComponent implements AfterViewInit {
                 comment: result.comment,
               };
               this.objectiveService.updateObjective(objective).subscribe(() => {
-                this.objectiveService.createCompleted(completed).subscribe();
+                this.objectiveService.createCompleted(completed).subscribe(() => {
+                  this.refreshDataService.markDataRefresh();
+                });
               });
             } else if (menuEntry.action == 'release') {
               if (result) {
                 objective.state = 'ONGOING' as State;
-                this.objectiveService.updateObjective(objective).subscribe();
+                this.objectiveService.updateObjective(objective).subscribe(() => {
+                  this.refreshDataService.markDataRefresh();
+                });
               }
             }
           });
@@ -130,7 +134,9 @@ export class ObjectiveComponent implements AfterViewInit {
         this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
           objective.state = 'ONGOING' as State;
           this.objectiveService.updateObjective(objective).subscribe(() => {
-            this.objectiveService.deleteCompleted(objective.id).subscribe();
+            this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
+              this.refreshDataService.markDataRefresh();
+            });
           });
         });
       } else {

@@ -205,7 +205,24 @@ export const testUser: User = {
   id: 1,
   firstname: 'Bob',
   lastname: 'Baumeister',
+  username: 'username',
 };
+
+export const users: User[] = [
+  testUser,
+  {
+    id: 2,
+    username: 'pacoegiman',
+    firstname: 'Paco',
+    lastname: 'Egiman',
+  },
+  {
+    id: 3,
+    username: 'robinpapier',
+    firstname: 'Robin',
+    lastname: 'Papier',
+  },
+];
 
 export const keyResult: KeyResultOrdinal = {
   id: 101,
@@ -214,7 +231,7 @@ export const keyResult: KeyResultOrdinal = {
   commitZone: 'Äpfel',
   targetZone: 'Äpfel und Birnen',
   stretchZone: 'Äpfel, Birnen, Bananen und Erdberen',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -246,7 +263,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   commitZone: 'Grundriss steht',
   targetZone: 'Gebäude gebaut',
   stretchZone: 'Inneneinrichtung gestaltet',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -278,7 +295,7 @@ export const keyResultMetric: KeyResultMetric = {
   baseline: 30,
   stretchGoal: 100,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
   keyResultType: 'metric',
   objective: {
     id: 302,

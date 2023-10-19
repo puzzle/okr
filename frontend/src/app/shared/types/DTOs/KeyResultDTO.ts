@@ -5,11 +5,11 @@ import { CheckIn } from '../model/CheckIn';
 export interface KeyResultDTO {
   id: number | undefined;
   keyResultType: string | undefined;
-  title: number;
+  title: string;
   description: string;
   owner: User;
   objective: Objective;
-  lastCheckIn: CheckIn | null | undefined;
-  createdOn: Date | undefined;
-  modifiedOn: Date | undefined;
+  lastCheckIn?: CheckIn | null | undefined;
+  createdOn?: Date | null | undefined;
+  modifiedOn?: Date | null | undefined;
 }

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -48,8 +49,8 @@ class CheckInBusinessServiceTest {
         /* KeyResult definition */
         this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
                 .withId(7L).withTitle("Keyresult Ordinal").build();
-        this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D).withUnit("CHF")
-                .withId(8L).withTitle("Keyresult Metric").build();
+        this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
+                .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
 
         /* CheckIn definition */
         this.checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)

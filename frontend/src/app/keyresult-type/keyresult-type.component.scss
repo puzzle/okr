@@ -1,0 +1,61 @@
+.active {
+  border-left: #ddd 1px solid;
+  border-top: #ddd 1px solid;
+  border-right: #ddd 1px solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background: white;
+  color: black;
+}
+
+.non-active {
+  color: #9c9c9c;
+  border-bottom: #ddd 1px solid;
+}
+
+.tab-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 39px;
+}
+
+.metric {
+  width: 87px;
+}
+
+.ordinal {
+  width: 75px;
+}
+
+.buffer {
+  border-bottom: #ddd 1px solid;
+}
+
+.input-fields {
+  width: 13.8rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #dddddd;
+}
+
+textarea {
+  resize: none;
+  height: 4.3rem;
+}
+
+.metric-fields {
+  height: 2rem;
+}
+
+label {
+  margin-bottom: 3px;
+  margin-top: 7px;
+  color: black;
+}
+
+.unit-dropdown {
+  border: solid 1px #dddddd;
+  padding: 0.44rem 0.625rem 0.375rem 0.625rem;
+  cursor: pointer;
+  height: 2rem;
+}

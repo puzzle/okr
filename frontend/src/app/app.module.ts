@@ -52,7 +52,6 @@ import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transform
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
-import { KeyResultDialogComponent } from './key-result-dialog/key-result-dialog.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
 import { UnitLabelTransformationPipe } from './shared/pipes/unit-label-transformation/unit-label-transformation.pipe';
@@ -60,8 +59,10 @@ import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-v
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
+import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
 import { CompleteDialogComponent } from './shared/dialog/complete-dialog/complete-dialog.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
+import { KeyResultDialogComponent } from './shared/dialog/key-result-dialog/key-result-dialog.component';
 import { TeamFilterComponent } from './team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 
@@ -124,6 +125,7 @@ export const MY_FORMATS = {
     QuarterFilterComponent,
     SidepanelComponent,
     TeamFilterComponent,
+    KeyresultTypeComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.checkin.CheckInMetricDto;
 import ch.puzzle.okr.dto.keyresult.*;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -37,7 +38,7 @@ public class KeyResultTestHelpers {
     public static final String FIRSTNAME = "Johnny";
     public static final String LASTNAME = "Appleseed";
     public static final String START_DATE = "-999999999-01-01";
-    public static final String KEY_RESULT_UNIT = "ECTS";
+    public static final Unit KEY_RESULT_UNIT = Unit.FTE;
     public static final String KEY_RESULT_CREATED_ON = "-999999999-01-01T00:00:00";
     public static final String OBJECTIVE_STATE_ONGOING = "ONGOING";
     public static final String JSON_PATH_ID = "$.id";
@@ -123,7 +124,7 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PT"
+               "unit":"FTE"
             }
             """;
 
@@ -184,7 +185,7 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":""
+               "unit":"PERCENT"
             }
             """;
 
@@ -196,7 +197,7 @@ public class KeyResultTestHelpers {
                 "description":"",
                 "baseline":2.0,
                 "stretchGoal":5.0,
-                "unit":"ECTS",
+                "unit":"NUMBER",
                 "ownerId":5,
                 "ownerFirstname":"",
                 "ownerLastname":"",

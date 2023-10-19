@@ -6,9 +6,8 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { keyResultMetric, keyResultOrdinal } from '../shared/testData';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { By } from '@angular/platform-browser';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../shared/types/model/User';
-import { NgModule } from '@angular/core';
 
 describe('KeyresultTypeComponent', () => {
   let component: KeyresultTypeComponent;
@@ -17,7 +16,7 @@ describe('KeyresultTypeComponent', () => {
   let metricKeyResult: KeyResult = keyResultMetric;
   let ordinalKeyResult: KeyResult = keyResultOrdinal;
 
-  let keyResultForm = new FormGroup({
+  let metricKeyResultForm = new FormGroup({
     title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
       Validators.required,
       Validators.minLength(2),
@@ -39,6 +38,50 @@ describe('KeyresultTypeComponent', () => {
     keyResultType: new FormControl<string>('metric'),
   });
 
+  let ordinalKeyResultForm = new FormGroup({
+    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250),
+    ]),
+    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
+      Validators.maxLength(4096),
+    ]),
+    owner: new FormControl<User | string | null>(
+      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+      [Validators.required, Validators.nullValidator],
+    ),
+    unit: new FormControl<string | null>(null),
+    baseline: new FormControl<number | null>(null),
+    stretchGoal: new FormControl<number | null>(null),
+    commitZone: new FormControl<string | null>('Commit'),
+    targetZone: new FormControl<string | null>('Target'),
+    stretchZone: new FormControl<string | null>('Stretch'),
+    keyResultType: new FormControl<string>('metric'),
+  });
+
+  let emptyKeyResultForm = new FormGroup({
+    title: new FormControl<string>('100% aller Schweizer Kunden betreuen', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(250),
+    ]),
+    description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
+      Validators.maxLength(4096),
+    ]),
+    owner: new FormControl<User | string | null>(
+      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+      [Validators.required, Validators.nullValidator],
+    ),
+    unit: new FormControl<string | null>(null),
+    baseline: new FormControl<number | null>(null),
+    stretchGoal: new FormControl<number | null>(null),
+    commitZone: new FormControl<string | null>(null),
+    targetZone: new FormControl<string | null>(null),
+    stretchZone: new FormControl<string | null>(null),
+    keyResultType: new FormControl<string>('metric'),
+  });
+
   describe('Edit Metric', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -52,7 +95,7 @@ describe('KeyresultTypeComponent', () => {
       });
       fixture = TestBed.createComponent(KeyresultTypeComponent);
       component = fixture.componentInstance;
-      component.keyResultForm = keyResultForm;
+      component.keyResultForm = metricKeyResultForm;
       fixture.detectChanges();
       component.keyresult = metricKeyResult;
       fixture.detectChanges();
@@ -60,11 +103,10 @@ describe('KeyresultTypeComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
-      console.log(component.keyresult);
     });
 
     it('should use values from input', () => {
-      expect(component.typeChangeAllowed).toBeFalsy();
+      expect(component.typeChangeAllowed).toBeTruthy();
       expect(component.isMetric).toBeTruthy();
       expect(component.keyResultForm.value.unit).toEqual('PERCENT');
       expect(component.keyResultForm.value.baseline).toEqual(30);
@@ -113,10 +155,13 @@ describe('KeyresultTypeComponent', () => {
           TranslateTestingModule.withTranslations({
             de: de,
           }),
+          ReactiveFormsModule,
         ],
       });
       fixture = TestBed.createComponent(KeyresultTypeComponent);
       component = fixture.componentInstance;
+      component.keyResultForm = ordinalKeyResultForm;
+      fixture.detectChanges();
       component.keyresult = ordinalKeyResult;
       fixture.detectChanges();
     });
@@ -126,14 +171,13 @@ describe('KeyresultTypeComponent', () => {
     });
 
     it('should use values from input', () => {
-      expect(component.typeChangeAllowed).toBeFalsy();
-      expect(component.isMetric).toBeFalsy();
+      expect(component.typeChangeAllowed).toBeTruthy();
       expect(component.keyResultForm.value.unit).toBeNull();
       expect(component.keyResultForm.value.baseline).toBeNull();
       expect(component.keyResultForm.value.stretchGoal).toBeNull();
-      expect(component.keyResultForm.value.commitZone).toEqual('Grundriss steht');
-      expect(component.keyResultForm.value.targetZone).toEqual('Gebäude gebaut');
-      expect(component.keyResultForm.value.stretchZone).toEqual('Inneneinrichtung gestaltet');
+      expect(component.keyResultForm.value.commitZone).toEqual('Commit');
+      expect(component.keyResultForm.value.targetZone).toEqual('Target');
+      expect(component.keyResultForm.value.stretchZone).toEqual('Stretch');
     });
 
     it('should switch type of KeyResult', () => {
@@ -152,6 +196,7 @@ describe('KeyresultTypeComponent', () => {
 
     it('should select ordinal tab', () => {
       component.isMetric = false;
+      fixture.detectChanges();
 
       let activeTab = document.getElementsByClassName('active')[0];
       expect(activeTab.innerHTML).toContain('Ordinal');
@@ -159,6 +204,7 @@ describe('KeyresultTypeComponent', () => {
 
     it('should change to metric from html click', () => {
       component.typeChangeAllowed = true;
+      component.isMetric = false;
 
       expect(component.isMetric).toBeFalsy();
       const metricTab = fixture.debugElement.query(By.css('[data-testId="metricTab"]'));
@@ -175,10 +221,14 @@ describe('KeyresultTypeComponent', () => {
           TranslateTestingModule.withTranslations({
             de: de,
           }),
+          ReactiveFormsModule,
         ],
       });
       fixture = TestBed.createComponent(KeyresultTypeComponent);
       component = fixture.componentInstance;
+      component.keyResultForm = emptyKeyResultForm;
+      fixture.detectChanges();
+      component.keyresult = {} as KeyResult;
       fixture.detectChanges();
     });
 

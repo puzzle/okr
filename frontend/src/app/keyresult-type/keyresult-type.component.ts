@@ -5,7 +5,6 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { Unit } from '../shared/types/enums/Unit';
-import { keyResult } from '../shared/testData';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -16,15 +15,15 @@ export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
   @Input() keyresult!: KeyResult;
   isMetric: boolean = true;
-  typeChangeAllowed: boolean = false;
+  typeChangeAllowed: boolean = true;
 
   ngOnInit(): void {
     if (this.keyresult) {
       this.typeChangeAllowed = this.keyresult.lastCheckIn?.id == null;
       this.isMetric = this.keyresult.keyResultType == 'metric';
       this.isMetric
-        ? this.keyResultForm.setValue({ ...this.castToMetric(this.keyresult) })
-        : this.keyResultForm.setValue({ ...this.castToOrdinal(this.keyresult) });
+        ? this.keyResultForm.patchValue({ ...this.castToMetric(this.keyresult) })
+        : this.keyResultForm.patchValue({ ...this.castToOrdinal(this.keyresult) });
     }
     this.switchValidators();
   }

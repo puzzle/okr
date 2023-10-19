@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { Quarter } from '../shared/types/model/Quarter';
 import { QuarterService } from '../shared/services/quarter.service';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -30,7 +31,7 @@ describe('QuarterFilterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [QuarterFilterComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, FormsModule],
       providers: [
         { provide: OverviewService, useValue: overviewService },
         { provide: QuarterService, useValue: quarterService },

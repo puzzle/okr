@@ -45,7 +45,7 @@ export class TeamFilterComponent implements OnInit {
   changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
-    return this.router.navigate([], { queryParams: optionalParams, queryParamsHandling: 'merge' });
+    return this.router.navigate([], { queryParams: optionalParams });
   }
 
   changeTeamFilterParamsAndReload() {

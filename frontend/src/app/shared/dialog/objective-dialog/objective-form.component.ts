@@ -32,6 +32,7 @@ export class ObjectiveFormComponent implements OnInit {
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
   currentTeam: Team = {} as Team;
+  state: string | null = null;
   protected readonly errorMessages: any = errorMessages;
 
   constructor(
@@ -42,16 +43,18 @@ export class ObjectiveFormComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      objectiveId?: number;
-      teamId?: number;
+      objective: {
+        objectiveId?: number;
+        teamId?: number;
+      };
     },
   ) {}
 
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
-    const state = event.submitter.getAttribute('submitType');
+    const state = this.state == null ? event.submitter.getAttribute('submitType') : this.state;
     let objectiveDTO: Objective = {
-      id: this.data.objectiveId,
+      id: this.data.objective.objectiveId,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
@@ -71,16 +74,17 @@ export class ObjectiveFormComponent implements OnInit {
   ngOnInit(): void {
     this.teams$ = this.teamService.getAllTeams();
     this.quarters$ = this.quarterService.getAllQuarters();
-    const objective$ = this.data.objectiveId
-      ? this.objectiveService.getFullObjective(this.data.objectiveId)
+    const objective$ = this.data.objective.objectiveId
+      ? this.objectiveService.getFullObjective(this.data.objective.objectiveId)
       : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
-      const teamId = this.data.objectiveId ? objective.teamId : this.data.teamId;
+      const teamId = this.data.objective.objectiveId ? objective.teamId : this.data.objective.teamId;
       this.teams$.subscribe((value) => {
         this.currentTeam = value.filter((team) => team.id == teamId)[0];
       });
-      const quarterId = this.data.objectiveId ? objective.quarterId : quarters[0].id;
+      const quarterId = this.data.objective.objectiveId ? objective.quarterId : quarters[0].id;
+      this.state = objective.state;
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,
@@ -100,9 +104,9 @@ export class ObjectiveFormComponent implements OnInit {
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.objectiveService.deleteObjective(this.data.objectiveId!).subscribe({
+        this.objectiveService.deleteObjective(this.data.objective.objectiveId!).subscribe({
           next: () => {
-            let objectiveDTO: Objective = { id: this.data.objectiveId! } as unknown as Objective;
+            let objectiveDTO: Objective = { id: this.data.objective.objectiveId! } as unknown as Objective;
             this.closeDialog(objectiveDTO, true);
           },
           error: () => {
@@ -144,7 +148,7 @@ export class ObjectiveFormComponent implements OnInit {
       id: 0,
       title: '',
       description: '',
-      state: State.DRAFT,
+      state: 'DRAFT' as State,
       teamId: 0,
       quarterId: 0,
     } as Objective;

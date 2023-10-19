@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
+import { State } from '../shared/types/enums/State';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -22,6 +23,7 @@ export class KeyresultDetailComponent implements OnInit {
   @Input() keyResultId!: number;
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
+  isComplete: boolean = false;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -38,7 +40,11 @@ export class KeyresultDetailComponent implements OnInit {
     this.keyResultService
       .getFullKeyResult(this.keyResultId)
       .pipe(catchError(() => EMPTY))
-      .subscribe((keyResult) => this.keyResult$.next(keyResult));
+      .subscribe((keyResult) => {
+        this.keyResult$.next(keyResult);
+        const state = keyResult.objective.state;
+        this.isComplete = state === ('SUCCESSFUL' as State) || state === ('NOTSUCCESSFUL' as State);
+      });
   }
 
   castToMetric(keyResult: KeyResult) {
@@ -53,6 +59,7 @@ export class KeyresultDetailComponent implements OnInit {
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
+        isComplete: this.isComplete,
       },
       maxHeight: '491px',
       width: '721px',

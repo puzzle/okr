@@ -5,6 +5,7 @@ create sequence if not exists sequence_person;
 create sequence if not exists sequence_quarter;
 create sequence if not exists sequence_team;
 create sequence if not exists sequence_alignment;
+create sequence if not exists sequence_completed;
 
 create table if not exists person
 (
@@ -108,6 +109,16 @@ create table if not exists key_result
     constraint fkrk74v7vu0tugx9tbpeiotgw9b
         foreign key (owner_id) references person
 );
+
+create table if not exists completed
+(
+    id                   bigint       not null primary key,
+    objective_id bigint       not null
+    constraint fk_completed_objective
+    references objective,
+    comment       varchar(4096)
+    );
+
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS

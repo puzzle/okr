@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TeamComponent', () => {
   let component: TeamComponent;
@@ -14,7 +15,7 @@ describe('TeamComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatMenuModule, MatDialogModule],
+      imports: [RouterTestingModule, MatMenuModule, MatDialogModule, HttpClientTestingModule],
       declarations: [TeamComponent, MatIcon, ObjectiveComponent, KeyresultComponent],
     }).compileComponents();
 

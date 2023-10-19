@@ -1,0 +1,53 @@
+<form class="p-4" [formGroup]="completeForm">
+  <div class="w-100 d-flex justify-content-between align-items-center">
+    <span class="title">
+      <span> Objective abschliessen </span>
+    </span>
+    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div>Bewertung</div>
+  <div class="d-flex gap-3 mb-3">
+    <div
+      class="successful w-50 valuation-card card-hover"
+      [ngClass]="{
+        active: completeForm.value.isSuccessful == true,
+        'non-active': completeForm.value.isSuccessful === false
+      }"
+      (click)="switchSuccessState('successful')"
+    >
+      Objective erfolgreich
+    </div>
+    <div
+      class="not-successful w-50 valuation-card card-hover"
+      [ngClass]="{
+        active: completeForm.value.isSuccessful === false,
+        'non-active': completeForm.value.isSuccessful == true
+      }"
+      (click)="switchSuccessState('notSuccessful')"
+    >
+      Objective nicht erfolgreich
+    </div>
+  </div>
+
+  <div>Kommentar (optional)</div>
+  <textarea class="commentary-field w-100" formControlName="comment"></textarea>
+
+  <br />
+  <div class="d-flex justify-content-between" mat-dialog-actions>
+    <div class="d-flex gap-2 p-0">
+      <button
+        [attr.data-testId]="'submit'"
+        type="submit"
+        (click)="closeDialog()"
+        [disabled]="completeForm.invalid"
+        color="primary"
+        mat-flat-button
+      >
+        Objective abschliessen
+      </button>
+      <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+    </div>
+  </div>
+</form>

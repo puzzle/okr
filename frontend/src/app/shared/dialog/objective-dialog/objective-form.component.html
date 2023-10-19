@@ -1,7 +1,7 @@
 <div mat-dialog-content>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <span class="title">
-      <span *ngIf="!data.objectiveId; else objectiveEditTitle"> Objective erfassen </span>
+      <span *ngIf="!data.objective.objectiveId; else objectiveEditTitle"> Objective erfassen </span>
       <ng-template #objectiveEditTitle> Objective bearbeiten </ng-template>
     </span>
     <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
@@ -57,7 +57,7 @@
         class="d-flex align-items-center col-5 custom-text-wrap"
         color="primary"
         formControlName="createKeyResults"
-        *ngIf="!data.objectiveId"
+        *ngIf="!data.objective.objectiveId"
       >
         Key Results im Anschluss erfassen
       </mat-checkbox>
@@ -68,9 +68,10 @@
           Speichern
         </button>
         <button
-          *ngIf="!data.objectiveId"
+          *ngIf="!data.objective.objectiveId"
           [disabled]="objectiveForm.invalid"
           color="dark"
+          t
           mat-stroked-button
           submitType="DRAFT"
           type="submit"
@@ -79,7 +80,7 @@
         </button>
         <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
       </div>
-      <button color="primary" *ngIf="data.objectiveId" type="button" mat-button (click)="deleteObjective()">
+      <button color="primary" *ngIf="data.objective.objectiveId" type="button" mat-button (click)="deleteObjective()">
         Objective Löschen
       </button>
     </div>

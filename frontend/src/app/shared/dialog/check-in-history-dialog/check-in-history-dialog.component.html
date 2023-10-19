@@ -14,6 +14,7 @@
           <span class="w-25 d-flex align-items-center me-1 fw-bold">{{ checkIn.createdOn | date: DATE_FORMAT }}</span>
           <div class="w-75 d-flex justify-content-end">
             <img
+              *ngIf="!isComplete"
               class="edit-check-in cursor-pointer m-1"
               (click)="openCheckInDialogForm(checkIn)"
               src="assets/icons/edit.svg"

@@ -15,6 +15,7 @@ import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 })
 export class CheckInHistoryDialogComponent implements OnInit {
   keyResult!: KeyResult;
+  isComplete!: boolean;
   checkInHistory$: Observable<CheckInMin[]> = of([]);
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
@@ -27,6 +28,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.keyResult = this.data.keyResult;
+    this.isComplete = this.data.isComplete;
     this.loadCheckInHistory();
   }
 

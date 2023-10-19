@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 public class Completed {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_completed")
     private Long id;
 
     @NotNull(message = "Objective must not be null")

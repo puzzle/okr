@@ -5,8 +5,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { DATE_FORMAT } from '../../constantLibary';
 import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Observable, of } from 'rxjs';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -43,19 +43,6 @@ export class CheckInHistoryDialogComponent implements OnInit {
     });
   }
 
-  deleteCheckIn(checkIn: CheckInMin) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: {
-        title: 'Check-in',
-      },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.checkInService.deleteCheckIn(checkIn.id!).subscribe(() => this.loadCheckInHistory());
-      }
-    });
-  }
-
   loadCheckInHistory() {
     this.checkInHistory$ = this.checkInService.getAllCheckInOfKeyResult(this.keyResult.id);
     this.checkInHistory$.subscribe((result) => {
@@ -63,5 +50,9 @@ export class CheckInHistoryDialogComponent implements OnInit {
         this.dialogRef.close();
       }
     });
+  }
+
+  getMetricKeyResult(): KeyResultMetric {
+    return this.keyResult as KeyResultMetric;
   }
 }

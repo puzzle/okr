@@ -66,6 +66,7 @@ export class CheckInFormComponent {
         ...this.dialogForm.value,
         value: this.parserPipe.transform(this.dialogForm?.controls['value'].value!),
         keyResultId: this.keyResult.id,
+        id: this.checkIn.id,
       };
     }
 

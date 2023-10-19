@@ -69,6 +69,7 @@ describe('CheckInFormComponent', () => {
     component.saveCheckIn();
 
     expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
+      id: checkInMetric.id,
       confidence: checkInMetric.confidence,
       value: checkInMetric.value,
       changeInfo: checkInMetric.changeInfo,

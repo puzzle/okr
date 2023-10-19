@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { KeyresultService } from '../shared/services/keyresult.service';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -54,6 +54,8 @@ export class KeyresultDetailComponent implements OnInit {
       data: {
         keyResult: this.keyResult$.getValue(),
       },
+      maxHeight: '491px',
+      width: '721px',
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();

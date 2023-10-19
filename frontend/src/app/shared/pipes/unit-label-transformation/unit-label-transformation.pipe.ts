@@ -15,7 +15,7 @@ export class UnitLabelTransformationPipe implements PipeTransform {
       case Unit.CHF:
         return Unit.CHF;
       case Unit.NUMBER:
-        return translation.UNIT.NUMBER;
+        return '';
       default:
         return unitLabel;
     }

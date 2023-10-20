@@ -25,7 +25,9 @@
   </div>
 
   <div>Kommentar (optional)</div>
-  <textarea class="commentary-field w-100" formControlName="comment"></textarea>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="w-100">
+    <textarea class="commentary-field w-100" formControlName="comment" matInput></textarea>
+  </mat-form-field>
 
   <br />
   <div class="d-flex justify-content-between" mat-dialog-actions>

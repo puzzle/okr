@@ -13,3 +13,8 @@
   padding-top: $header-height;
   background-color: $overview-bg;
 }
+
+app-application-top-bar {
+  z-index: 1001;
+  position: relative;
+}

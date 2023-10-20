@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../types/model/KeyResultObjective';
 import { User } from '../../types/model/User';
+import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 
 class matDialogRefMock {
   close() {}
@@ -143,7 +144,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { objective: fullObjective, keyResult: undefined },
           },
         ],
-        declarations: [KeyResultDialogComponent],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent],
       }).compileComponents();
 
       matDialogRef = TestBed.inject(MatDialogRef);
@@ -286,7 +287,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);
@@ -419,7 +420,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);

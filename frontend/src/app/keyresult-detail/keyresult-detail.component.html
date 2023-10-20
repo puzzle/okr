@@ -86,8 +86,12 @@
       </div>
 
       <div class="d-flex align-items-center flex-row justify-content-start gap-3">
-        <button cdkFocusInitial color="primary" mat-flat-button (click)="openCheckInForm()">Check-in erfassen</button>
-        <button (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>Key Result bearbeiten</button>
+        <button *ngIf="!isComplete" cdkFocusInitial color="primary" mat-flat-button (click)="openCheckInForm()">
+          Check-in erfassen
+        </button>
+        <button *ngIf="!isComplete" (click)="openEditKeyResultDialog(keyResult)" color="primary" mat-button>
+          Key Result bearbeiten
+        </button>
       </div>
     </div>
   </ng-container>

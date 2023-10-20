@@ -4,7 +4,7 @@
   <mat-form-field appearance="outline">
     <textarea matInput class="w-100" formControlName="changeInfo"></textarea>
     <div *ngIf="isTouchedOrDirty('changeInfo')">
-      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
         {{ getErrorMessage(errorKey) }}
       </mat-error>
     </div>
@@ -15,7 +15,7 @@
   <mat-form-field appearance="outline">
     <textarea matInput formControlName="initiatives"></textarea>
     <div *ngIf="isTouchedOrDirty('initiatives')">
-      <mat-error class="fw-bold" *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
         {{ getErrorMessage(errorKey) }}
       </mat-error>
     </div>

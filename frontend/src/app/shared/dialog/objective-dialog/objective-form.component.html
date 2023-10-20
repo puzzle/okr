@@ -4,7 +4,12 @@
       <span *ngIf="!data.objective.objectiveId; else objectiveEditTitle"> Objective erfassen </span>
       <ng-template #objectiveEditTitle> Objective bearbeiten </ng-template>
     </span>
-    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
+    <button
+      data-test-id="closeDrawer"
+      class="d-flex justify-content-center align-items-center"
+      mat-dialog-close
+      mat-icon-button
+    >
       <mat-icon>close</mat-icon>
     </button>
   </div>

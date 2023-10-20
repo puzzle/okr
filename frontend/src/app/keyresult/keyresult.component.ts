@@ -3,6 +3,7 @@ import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { MatDialog } from '@angular/material/dialog';
 import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { Router } from '@angular/router';
+import { DATE_FORMAT } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-keyresult',
@@ -31,4 +32,6 @@ export class KeyresultComponent {
   openDrawer() {
     this.router.navigate(['keyresult', this.keyResult.id]);
   }
+
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

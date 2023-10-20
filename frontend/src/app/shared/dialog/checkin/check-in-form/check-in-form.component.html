@@ -1,8 +1,8 @@
 <mat-dialog-content class="d-flex justify-content-center flex-column">
   <div class="w-100 d-flex justify-content-between align-items-center">
     <div class="d-flex">
-      <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
-      <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})</h1>
+      <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: DATE_FORMAT }})</h1>
+      <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: DATE_FORMAT }})</h1>
       <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
       <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
     </div>

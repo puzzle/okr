@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-center">
       <span *ngIf="keyResult.lastCheckIn != null" class="d-flex align-items-center sub-title flex-wrap sub-title">
         <span class="me-1 text-nowrap">Letztes Check-in:</span>
-        <span>{{ keyResult!.lastCheckIn!.createdOn | date: "dd.MM.yyyy" }}</span>
+        <span>{{ keyResult!.lastCheckIn!.createdOn | date: DATE_FORMAT }}</span>
       </span>
       <span *ngIf="keyResult.lastCheckIn == null" class="d-flex align-items-center sub-title flex-wrap sub-title">
         <span class="me-1 text-nowrap">Noch kein Check-in vorhanden</span>

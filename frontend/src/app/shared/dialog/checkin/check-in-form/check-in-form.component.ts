@@ -7,6 +7,7 @@ import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../types/model/CheckInMin';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
+import { DATE_FORMAT } from '../../../constantLibary';
 
 @Component({
   selector: 'app-check-in-form',
@@ -82,4 +83,6 @@ export class CheckInFormComponent {
   getKeyResultOrdinal(): KeyResultOrdinal {
     return this.keyResult as KeyResultOrdinal;
   }
+
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

@@ -5,7 +5,6 @@ import errorMessages from '../../../../../assets/errors/error-messages.json';
 @Component({
   selector: 'app-check-in-base-informations',
   templateUrl: './check-in-base-informations.component.html',
-  styleUrls: ['./check-in-base-informations.component.scss'],
 })
 export class CheckInBaseInformationsComponent {
   @Input()

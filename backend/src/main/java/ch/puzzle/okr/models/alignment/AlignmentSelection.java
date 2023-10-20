@@ -91,6 +91,7 @@ public class AlignmentSelection {
         private String keyResultTitle;
 
         public Builder() {
+            // This builder can be empty, so that it can get called
         }
 
         public static Builder builder() {

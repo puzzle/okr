@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringIntegrationTest
-public class AlignmentPersistenceServiceIT {
+class AlignmentPersistenceServiceIT {
     Alignment createdAlignment;
     @Autowired
     private AlignmentPersistenceService alignmentPersistenceService;
@@ -49,7 +49,7 @@ public class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void save_ShouldSaveNewObjectiveAlignment() {
+    void saveAlignmentShouldSaveNewObjectiveAlignment() {
         Alignment alignment = createObjectiveAlignment(null);
 
         createdAlignment = alignmentPersistenceService.save(alignment);
@@ -60,7 +60,7 @@ public class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void save_ShouldSaveNewKeyResultAlignment() {
+    void saveAlignmentShouldSaveNewKeyResultAlignment() {
         Alignment alignment = createKeyResultAlignment(null);
 
         createdAlignment = alignmentPersistenceService.save(alignment);
@@ -71,7 +71,7 @@ public class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void findByAlignedObjectiveId_shouldReturnListOfAlignments() {
+    void findByAlignedObjectiveIdShouldReturnListOfAlignments() {
         List<Alignment> alignments = alignmentPersistenceService.findByAlignedObjectiveId(4L);
 
         assertEquals(2, alignments.size());
@@ -79,7 +79,7 @@ public class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void findByKeyResultAlignmentId_shouldReturnListOfAlignments() {
+    void findByKeyResultAlignmentIdShouldReturnListOfAlignments() {
         List<KeyResultAlignment> alignments = alignmentPersistenceService.findByKeyResultAlignmentId(8L);
 
         assertEquals(1, alignments.size());
@@ -87,7 +87,7 @@ public class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void findByObjectiveAlignmentId_shouldReturnListOfAlignments() {
+    void findByObjectiveAlignmentIdShouldReturnListOfAlignments() {
         List<ObjectiveAlignment> alignments = alignmentPersistenceService.findByObjectiveAlignmentId(3L);
 
         assertEquals(1, alignments.size());

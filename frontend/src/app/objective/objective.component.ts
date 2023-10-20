@@ -12,6 +12,7 @@ import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../shared/types/model/Completed';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
+import { Objective } from '../shared/types/model/Objective';
 
 @Component({
   selector: 'app-objective-column',
@@ -98,49 +99,63 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          if (menuEntry.action) {
-            this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
-              if (menuEntry.action == 'complete') {
-                objective.state = result.endState as State;
-                const completed: Completed = {
-                  id: null,
-                  objective: objective,
-                  comment: result.comment,
-                };
-                this.objectiveService.updateObjective(objective).subscribe(() => {
-                  this.objectiveService.createCompleted(completed).subscribe(() => {
-                    this.refreshDataService.markDataRefresh();
-                  });
-                });
-              } else if (menuEntry.action == 'release') {
-                if (result) {
-                  objective.state = 'ONGOING' as State;
-                  this.objectiveService.updateObjective(objective).subscribe(() => {
-                    this.refreshDataService.markDataRefresh();
-                  });
-                }
-              }
-            });
-          } else {
-            if (result?.objective) {
-              this.refreshDataService.markDataRefresh();
-            }
-          }
+          this.completeReleaseReload(menuEntry, result);
         }
       });
     } else {
-      if (menuEntry.action === 'reopen') {
-        this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
-          objective.state = 'ONGOING' as State;
-          this.objectiveService.updateObjective(objective).subscribe(() => {
-            this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
-              this.refreshDataService.markDataRefresh();
-            });
+      this.reopenRedirect(menuEntry);
+    }
+  }
+
+  completeReleaseReload(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
+    if (menuEntry.action) {
+      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+        if (menuEntry.action == 'complete') {
+          this.completeObjective(objective, result);
+        } else if (menuEntry.action == 'release') {
+          this.releaseObjective(objective);
+        }
+      });
+    } else {
+      if (result?.objective) {
+        this.refreshDataService.markDataRefresh();
+      }
+    }
+  }
+
+  completeObjective(objective: Objective, result: { endState: string; comment: string | null; objective: any }) {
+    objective.state = result.endState as State;
+    const completed: Completed = {
+      id: null,
+      objective: objective,
+      comment: result.comment,
+    };
+    this.objectiveService.updateObjective(objective).subscribe(() => {
+      this.objectiveService.createCompleted(completed).subscribe(() => {
+        this.refreshDataService.markDataRefresh();
+      });
+    });
+  }
+
+  releaseObjective(objective: Objective) {
+    objective.state = 'ONGOING' as State;
+    this.objectiveService.updateObjective(objective).subscribe(() => {
+      this.refreshDataService.markDataRefresh();
+    });
+  }
+
+  reopenRedirect(menuEntry: MenuEntry) {
+    if (menuEntry.action === 'reopen') {
+      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+        objective.state = 'ONGOING' as State;
+        this.objectiveService.updateObjective(objective).subscribe(() => {
+          this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
+            this.refreshDataService.markDataRefresh();
           });
         });
-      } else {
-        this.router.navigate([menuEntry.route!]);
-      }
+      });
+    } else {
+      this.router.navigate([menuEntry.route!]);
     }
   }
 

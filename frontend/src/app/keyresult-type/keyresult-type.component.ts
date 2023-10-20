@@ -78,7 +78,7 @@ export class KeyresultTypeComponent implements OnInit {
     this.keyResultForm.controls['stretchZone'].clearValidators();
   }
 
-  switchKeyResultType(type: String) {
+  switchKeyResultType(type: string) {
     if (((type == 'metric' && !this.isMetric) || (type == 'ordinal' && this.isMetric)) && this.typeChangeAllowed) {
       this.isMetric = !this.isMetric;
       let keyResultType = this.isMetric ? 'metric' : 'ordinal';

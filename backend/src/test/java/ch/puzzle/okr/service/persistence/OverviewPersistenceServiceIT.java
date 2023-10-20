@@ -12,12 +12,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
-public class OverviewPersistenceServiceIT {
+class OverviewPersistenceServiceIT {
     @Autowired
     private OverviewPersistenceService overviewPersistenceService;
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews() {
+    void getOverviewByQuarterIdAndTeamIdsShouldReturnOverviews() {
         List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(2L, List.of(5L, 6L, 8L));
 
         assertEquals(13, overviews.size());

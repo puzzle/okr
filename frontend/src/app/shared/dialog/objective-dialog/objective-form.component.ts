@@ -52,7 +52,7 @@ export class ObjectiveFormComponent implements OnInit {
 
   onSubmit(event: any): void {
     const value = this.objectiveForm.getRawValue();
-    const state = this.state == null ? event.submitter.getAttribute('submitType') : this.state;
+    const state = this.data.objective.objectiveId == null ? event.submitter.getAttribute('submitType') : this.state;
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       quarterId: value.quarter,

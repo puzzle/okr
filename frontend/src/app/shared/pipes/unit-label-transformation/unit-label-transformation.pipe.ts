@@ -1,12 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Unit } from '../../types/enums/Unit';
-import translation from '../../../../assets/i18n/de.json';
 
 @Pipe({
   name: 'unitLabelTransformation',
 })
 export class UnitLabelTransformationPipe implements PipeTransform {
-  transform(unitLabel: String): String {
+  transform(unitLabel: string): string {
     switch (unitLabel) {
       case Unit.PERCENT:
         return '';

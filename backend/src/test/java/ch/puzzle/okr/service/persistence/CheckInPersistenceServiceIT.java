@@ -18,7 +18,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
-public class CheckInPersistenceServiceIT {
+class CheckInPersistenceServiceIT {
     CheckIn createdCheckIn;
     @Autowired
     private CheckInPersistenceService checkInPersistenceService;
@@ -48,7 +48,7 @@ public class CheckInPersistenceServiceIT {
     }
 
     @Test
-    void saveCheckIn_ShouldSaveNewCheckIn() {
+    void saveCheckInShouldSaveNewCheckIn() {
         CheckIn checkIn = createCheckIn(null);
 
         createdCheckIn = checkInPersistenceService.save(checkIn);
@@ -63,7 +63,7 @@ public class CheckInPersistenceServiceIT {
     }
 
     @Test
-    void updateKeyResult_ShouldUpdateKeyResult() {
+    void updateKeyResultShouldUpdateKeyResult() {
         CheckIn checkIn = createCheckIn(null);
         createdCheckIn = checkInPersistenceService.save(checkIn);
         createdCheckIn.setChangeInfo("Updated CheckIn");
@@ -75,14 +75,14 @@ public class CheckInPersistenceServiceIT {
     }
 
     @Test
-    void getAllCheckIn_ShouldReturnListOfAllCheckIns() {
+    void getAllCheckInShouldReturnListOfAllCheckIns() {
         List<CheckIn> checkIns = checkInPersistenceService.findAll();
 
         assertEquals(19, checkIns.size());
     }
 
     @Test
-    void getCheckInById_ShouldReturnCheckInProperly() {
+    void getCheckInByIdShouldReturnCheckInProperly() {
         CheckIn checkIn = checkInPersistenceService.findById(20L);
 
         assertEquals(20L, checkIn.getId());

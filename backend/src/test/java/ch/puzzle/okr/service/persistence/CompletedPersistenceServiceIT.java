@@ -11,21 +11,19 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
-public class CompletedPersistenceServiceIT {
+class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
 
-    Completed successfulCompleted = Completed.Builder.builder().withId(1L)
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
-
-    Completed createCompleted = Completed.Builder.builder()
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
+    private static Completed createCompleted(Long id) {
+        return Completed.Builder.builder().withId(id)
+                .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
+                .withComment("Wir haben es gut geschafft").build();
+    }
 
     @Test
-    void saveCompleted_ShouldSaveCompleted() {
-        Completed createdCompleted = completedPersistenceService.save(createCompleted);
+    void saveCompletedShouldSaveCompleted() {
+        Completed createdCompleted = completedPersistenceService.save(createCompleted(null));
 
         assertNotNull(createdCompleted.getId());
         assertEquals(createdCompleted.getComment(), createdCompleted.getComment());
@@ -33,17 +31,17 @@ public class CompletedPersistenceServiceIT {
     }
 
     @Test
-    void deleteCompleted_ShouldGetCompletedByObjectiveId() {
-        Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(10L);
+    void deleteCompletedShouldGetCompletedByObjectiveId() {
+        Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(6L);
 
         assertNotNull(savedCompleted.getId());
-        assertEquals(savedCompleted.getComment(), "Schade");
-        assertEquals(savedCompleted.getObjective().getTitle(),
-                "should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+        assertEquals("War leider nicht moeglich", savedCompleted.getComment());
+        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
+                savedCompleted.getObjective().getTitle());
     }
 
     @Test
-    void deleteCompletedId_ShouldDeleteExistingCompletedByObjectiveId() {
+    void deleteCompletedIdShouldDeleteExistingCompletedByObjectiveId() {
 
         completedPersistenceService.deleteById(3L);
 
@@ -54,12 +52,13 @@ public class CompletedPersistenceServiceIT {
     }
 
     @Test
-    void deleteCompleted_ShouldThrowExceptionWhenCompletedNotFound() {
-        Completed newCompleted = completedPersistenceService.save(successfulCompleted);
+    void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
+        Completed newCompleted = completedPersistenceService.save(createCompleted(33L));
         completedPersistenceService.deleteById(newCompleted.getId());
 
+        Long completedId = newCompleted.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> completedPersistenceService.findById(newCompleted.getId()));
+                () -> completedPersistenceService.findById(completedId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Completed with id %d not found", newCompleted.getId()), exception.getReason());
     }

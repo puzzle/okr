@@ -16,7 +16,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
-public class OverviewMapperTest {
+class OverviewMapperTest {
     private final OverviewMapper overviewMapper = new OverviewMapper();
 
     @Test

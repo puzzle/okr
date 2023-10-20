@@ -79,7 +79,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void findUserByUsername_ShouldReturnExistingUser() {
+    void findUserByUsernameShouldReturnExistingUser() {
         User returnedUser = userPersistenceService.findUserByUsername(USERNAME_ALICE);
 
         assertEquals(11L, returnedUser.getId());
@@ -90,7 +90,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void findUserByUsername_ShouldThrowExceptionWhenUserNotFound() {
+    void findUserByUsernameShouldThrowExceptionWhenUserNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> userPersistenceService.findUserByUsername("unknown"));
 
@@ -99,7 +99,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void findUserByUsername_ShouldAddUserToCache() {
+    void findUserByUsernameShouldAddUserToCache() {
         userPersistenceService.findUserByUsername(USERNAME_ALICE);
 
         User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
@@ -107,7 +107,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
+    void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
 
         User returnedUser = userPersistenceService.getOrCreateUser(existingUser);
@@ -120,7 +120,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void getOrCreateUser_ShouldReturnSavedUserWhenUserNotFound() {
+    void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         User newUser = User.Builder.builder().withId(null).withFirstname("firstname").withLastname("lastname")
                 .withUsername("username").withEmail("lastname@puzzle.ch").build();
 
@@ -134,7 +134,7 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void getOrCreateUser_ShouldAddUserToCache() {
+    void getOrCreateUserShouldAddUserToCache() {
         User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
         userPersistenceService.getOrCreateUser(existingUser);
 

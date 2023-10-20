@@ -166,7 +166,7 @@ public abstract class KeyResult {
         private LocalDateTime modifiedOn;
         private String keyResultType;
 
-        public Builder(String keyResultType) {
+        protected Builder(String keyResultType) {
             this.keyResultType = keyResultType;
         }
 

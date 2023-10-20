@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(OverviewController.class)
-public class OverviewControllerIT {
+class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -79,13 +79,13 @@ public class OverviewControllerIT {
                     .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
 
     static Overview overviewKuchen = Overview.Builder.builder().withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))
-            .withTeamName("Kuchen").withObjectiveTitle("Objective 8").withObjectiveState(ONGOING).withQuarterId(1L)
+            .withTeamName(TEAM_KUCHEN).withObjectiveTitle("Objective 8").withObjectiveState(ONGOING).withQuarterId(1L)
             .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION).withKeyResultType(KEY_RESULT_TYPE_METRIC)
             .withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0).withCheckInValue(15.0).withConfidence(5)
             .withCreatedOn(LocalDateTime.now()).build();
 
-    static Overview overviewFindus = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
-            .withTeamName("Findus").build();
+    static Overview simpleOverview = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
+            .withTeamName(TEAM_KUCHEN).build();
 
     @BeforeEach
     void setUp() {
@@ -144,12 +144,12 @@ public class OverviewControllerIT {
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
         BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(4L)))
-                .willReturn(List.of(overviewFindus));
+                .willReturn(List.of(simpleOverview));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(4)))
-                .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is("Findus")))
+                .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(TEAM_KUCHEN)))
                 .andExpect(jsonPath("$[0].objectives.size()", Is.is(0)));
     }
 }

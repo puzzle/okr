@@ -9,7 +9,7 @@ export interface KeyResultDTO {
   description: string;
   owner: User;
   objective: Objective;
-  lastCheckIn?: CheckIn | null | undefined;
-  createdOn?: Date | null | undefined;
-  modifiedOn?: Date | null | undefined;
+  lastCheckIn: CheckIn | null | undefined;
+  createdOn: Date | null | undefined;
+  modifiedOn: Date | null | undefined;
 }

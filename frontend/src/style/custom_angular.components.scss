@@ -1,3 +1,4 @@
+@import "variables";
 //Applied since all menus have the same styling
 .mat-mdc-menu-panel {
   border-radius: 0.5rem !important;
@@ -41,4 +42,8 @@
 
 .mdc-evolution-chip__action {
   cursor: pointer !important;
+}
+
+.cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
+  margin-top: $top-bar-height;
 }

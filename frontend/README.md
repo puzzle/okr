@@ -34,8 +34,9 @@ We use the **prettier** code formatter for the frontend code:
 https://www.npmjs.com/package/prettier
 
 ## Test Coverage
+
 For generating the coverage of our frontend specs (jest), you can use following command:
 `npx jest --coverage ` (`jest --coverage` if you have jest installed locally)
 
-This generates the coverage, you can see it in `frontend/coverage/lcov-report/index.html`. 
+This generates the coverage, you can see it in `frontend/coverage/lcov-report/index.html`.
 Open the html file in browser and you get a beautiful overview

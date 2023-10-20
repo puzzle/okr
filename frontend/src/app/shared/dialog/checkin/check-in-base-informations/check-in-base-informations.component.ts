@@ -10,6 +10,7 @@ import errorMessages from '../../../../../assets/errors/error-messages.json';
 export class CheckInBaseInformationsComponent {
   @Input()
   dialogForm!: FormGroup;
+  protected readonly errorMessages: any = errorMessages;
 
   isTouchedOrDirty(name: string) {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
@@ -19,10 +20,4 @@ export class CheckInBaseInformationsComponent {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  getErrorMessage(key: string) {
-    return errorMessages[key.toUpperCase() as keyof typeof errorMessages];
-  }
-
-  protected readonly errorMessages = errorMessages;
 }

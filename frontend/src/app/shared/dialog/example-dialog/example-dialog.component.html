@@ -1,5 +1,5 @@
-<h1 mat-dialog-title class="d-flex justify-content-center">This is an example dialog</h1>
 <mat-dialog-content class="d-flex justify-content-center flex-column">
+  <app-dialog-header [dialogTitle]="'This is an example dialog'"></app-dialog-header>
   <form [formGroup]="dialogForm" (ngSubmit)="save()" class="d-flex flex-column justify-content-center">
     <mat-form-field>
       <mat-label>Name</mat-label>

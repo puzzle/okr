@@ -1,15 +1,6 @@
-<div class="dialog">
-  <div mat-dialog-title class="w-100 d-flex align-items-center">
-    <div class="d-flex title w-50 mt-2">
-      <span>Check-in History</span>
-    </div>
-    <div class="w-50 d-flex justify-content-end">
-      <button mat-dialog-close mat-icon-button>
-        <mat-icon>close</mat-icon>
-      </button>
-    </div>
-  </div>
-  <mat-dialog-content class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content">
+<div mat-dialog-content>
+  <app-dialog-header [dialogTitle]="'Check-in History'"></app-dialog-header>
+  <div class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content">
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
@@ -49,7 +40,7 @@
         </div>
       </div>
     </ng-container>
-  </mat-dialog-content>
+  </div>
   <ng-template #spinner>
     <div class="spinner-container">
       Check-in history wird geladen...
@@ -62,7 +53,7 @@
       cdkFocusInitial
       mat-button
       mat-dialog-close
-      class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold"
+      class="cancel-button text-white mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold"
     >
       Schliessen
     </button>

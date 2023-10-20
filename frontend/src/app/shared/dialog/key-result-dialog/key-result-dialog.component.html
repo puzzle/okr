@@ -1,11 +1,7 @@
 <div mat-dialog-content class="dialog">
-  <div class="d-flex justify-content-between align-items-center">
-    <p class="title">Key Result {{ data.keyResult ? "bearbeiten" : "erfassen" }}</p>
-    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-
+  <app-dialog-header
+    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
+  ></app-dialog-header>
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>

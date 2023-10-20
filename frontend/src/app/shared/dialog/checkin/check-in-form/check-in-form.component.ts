@@ -84,5 +84,12 @@ export class CheckInFormComponent {
     return this.keyResult as KeyResultOrdinal;
   }
 
+  getStepLabel(): string {
+    if (this.continued) {
+      return '(2/2)';
+    }
+    return '(1/2)';
+  }
+
   protected readonly DATE_FORMAT = DATE_FORMAT;
 }

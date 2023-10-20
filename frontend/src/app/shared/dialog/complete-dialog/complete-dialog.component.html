@@ -1,12 +1,5 @@
 <form class="p-4" [formGroup]="completeForm">
-  <div class="w-100 d-flex justify-content-between align-items-center">
-    <span class="title">
-      <span> Objective abschliessen </span>
-    </span>
-    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+  <app-dialog-header [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
   <div>Bewertung</div>
   <div class="d-flex gap-3 mb-3">
     <div

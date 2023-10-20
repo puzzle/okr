@@ -1,15 +1,9 @@
-<mat-dialog-content class="d-flex justify-content-center flex-column">
-  <div class="w-100 d-flex justify-content-between align-items-center">
-    <div class="d-flex">
-      <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: DATE_FORMAT }})</h1>
-      <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: DATE_FORMAT }})</h1>
-      <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
-      <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
-    </div>
-    <button mat-dialog-close mat-icon-button>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+<div mat-dialog-content>
+  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
+  <app-dialog-header
+    *ngIf="this.checkIn.id"
+    [dialogTitle]="'Check-in bearbeiten ' + getStepLabel()"
+  ></app-dialog-header>
   <!--  First part of dialog-->
   <div *ngIf="!continued">
     <p class="fs-6 mt-1 text-black">Key Result</p>
@@ -34,7 +28,7 @@
   <div *ngIf="continued">
     <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
   </div>
-</mat-dialog-content>
+</div>
 <!--    Buttons to submit the check-in-->
 <div class="d-flex flex-row ms-4">
   <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">

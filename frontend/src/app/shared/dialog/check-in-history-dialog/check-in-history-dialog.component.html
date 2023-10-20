@@ -1,10 +1,13 @@
-<div mat-dialog-content>
-  <app-dialog-header [dialogTitle]="'Check-in History'"></app-dialog-header>
+<div mat-dialog-content class="dialog-background">
+  <app-dialog-header [dialogTitle]="'Check-in History'" class="check-in-history-title"></app-dialog-header>
   <div class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content">
     <ng-container
       *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"
     >
-      <div *ngFor="let checkIn of checkInHistory; index as i" class="d-flex flex-column bg-grey p-2 check-in-box">
+      <div
+        *ngFor="let checkIn of checkInHistory; index as i"
+        class="d-flex flex-column dialog-form-fields p-2 check-in-box border border-1"
+      >
         <div class="d-flex flex-row">
           <span class="w-25 d-flex align-items-center me-1 fw-bold">{{ checkIn.createdOn | date: DATE_FORMAT }}</span>
           <div class="w-75 d-flex justify-content-end">
@@ -40,6 +43,14 @@
         </div>
       </div>
     </ng-container>
+    <button
+      cdkFocusInitial
+      mat-button
+      mat-dialog-close
+      class="cancel-button text-white mb-1 ps-3 pe-3 pt-1 pb-1 fw-bold"
+    >
+      Schliessen
+    </button>
   </div>
   <ng-template #spinner>
     <div class="spinner-container">
@@ -47,15 +58,4 @@
       <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
     </div>
   </ng-template>
-
-  <mat-dialog-actions class="d-flex justify-content-start position-sticky">
-    <button
-      cdkFocusInitial
-      mat-button
-      mat-dialog-close
-      class="cancel-button text-white mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold"
-    >
-      Schliessen
-    </button>
-  </mat-dialog-actions>
 </div>

@@ -1,11 +1,11 @@
-<div mat-dialog-content class="dialog">
+<div mat-dialog-content class="dialog dialog-background">
   <app-dialog-header
     [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
   ></app-dialog-header>
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
         <textarea
           [attr.data-testId]="'titleInput'"
           class="input-fields"
@@ -28,7 +28,7 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
         <input
           matInput
           class="input-fields owner-input"
@@ -49,7 +49,7 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Beschreibung (optional)</label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="dialog-form-fields" subscriptSizing="dynamic">
         <textarea
           [attr.data-testId]="'descriptionInput'"
           class="input-fields"

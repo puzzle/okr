@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-background">
   <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
   <app-dialog-header
     *ngIf="this.checkIn.id"
@@ -28,25 +28,25 @@
   <div *ngIf="continued">
     <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
   </div>
-</div>
-<!--    Buttons to submit the check-in-->
-<div class="d-flex flex-row ms-4">
-  <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">
-    Weiter
-  </button>
-  <button
-    [disabled]="!this.dialogForm.valid"
-    (click)="saveCheckIn()"
-    *ngIf="continued"
-    type="submit"
-    mat-button
-    mat-dialog-close
-    [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
-    class="d-flex justify-content-center fw-bold text-white"
-  >
-    <span *ngIf="checkIn.id">Speichern</span>
-    <span *ngIf="!checkIn.id">Check-in erfassen</span>
-  </button>
-  <button mat-button *ngIf="!continued" mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
-  <button mat-button *ngIf="continued" class="cancel ms-2 mb-3 fw-bold" (click)="continued = false">Zurück</button>
+  <!--    Buttons to submit the check-in-->
+  <div class="d-flex flex-row mt-4">
+    <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">
+      Weiter
+    </button>
+    <button
+      [disabled]="!this.dialogForm.valid"
+      (click)="saveCheckIn()"
+      *ngIf="continued"
+      type="submit"
+      mat-button
+      mat-dialog-close
+      [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
+      class="d-flex justify-content-center fw-bold text-white"
+    >
+      <span *ngIf="checkIn.id">Speichern</span>
+      <span *ngIf="!checkIn.id">Check-in erfassen</span>
+    </button>
+    <button mat-button *ngIf="!continued" mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
+    <button mat-button *ngIf="continued" class="cancel ms-2 mb-3 fw-bold" (click)="continued = false">Zurück</button>
+  </div>
 </div>

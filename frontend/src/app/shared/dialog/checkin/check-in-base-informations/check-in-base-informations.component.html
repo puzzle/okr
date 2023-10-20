@@ -1,23 +1,23 @@
 <form [formGroup]="dialogForm" class="d-flex flex-column mt-1">
   <!--    Changeinfo   -->
   <mat-label class="mb-2 text-black">Veränderungen seit letztem Check-in (optional)</mat-label>
-  <mat-form-field appearance="outline">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
     <textarea matInput class="w-100" formControlName="changeInfo"></textarea>
-    <div *ngIf="isTouchedOrDirty('changeInfo')">
-      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-        {{ errorMessages[errorKey.toUpperCase().trim()] }}
-      </mat-error>
-    </div>
   </mat-form-field>
+  <div *ngIf="isTouchedOrDirty('changeInfo')">
+    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+      {{ errorMessages[errorKey.toUpperCase().trim()] }}
+    </mat-error>
+  </div>
 
   <!--    Initiatives   -->
-  <mat-label class="mb-2 text-black">Massnahmen (optional)</mat-label>
-  <mat-form-field appearance="outline">
+  <mat-label class="mt-3 text-black mb-2">Massnahmen (optional)</mat-label>
+  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
     <textarea matInput formControlName="initiatives"></textarea>
-    <div *ngIf="isTouchedOrDirty('initiatives')">
-      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-        {{ errorMessages[errorKey.toUpperCase().trim()] }}
-      </mat-error>
-    </div>
   </mat-form-field>
+  <div *ngIf="isTouchedOrDirty('initiatives')">
+    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+      {{ errorMessages[errorKey.toUpperCase().trim()] }}
+    </mat-error>
+  </div>
 </form>

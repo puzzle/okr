@@ -41,7 +41,7 @@ export class QuarterFilterComponent implements OnInit {
 
   changeDisplayedQuarter() {
     const id = this.quarterId;
-    this.router.navigate([], { queryParams: { quarter: id }, queryParamsHandling: 'merge' }).then(() => {
+    this.router.navigate([], { queryParams: { quarter: id } }).then(() => {
       this.refreshDataService.markDataRefresh();
     });
   }

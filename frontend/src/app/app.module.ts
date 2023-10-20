@@ -34,7 +34,7 @@ import { ApplicationTopBarComponent } from './application-top-bar/application-to
 import { TeamComponent } from './team/team.component';
 import { OverviewComponent } from './overview/overview.component';
 import { ObjectiveComponent } from './objective/objective.component';
-import { CommonModule, LocationStrategy, NgOptimizedImage } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { KeyresultComponent } from './keyresult/keyresult.component';
 import { KeyresultDetailComponent } from './keyresult-detail/keyresult-detail.component';
 import { ObjectiveDetailComponent } from './objective-detail/objective-detail.component';

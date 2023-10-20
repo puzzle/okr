@@ -1,3 +1,5 @@
+create sequence if not exists sequence_organisation;
+
 create table if not exists organisation
 (
     id       bigint       not null,

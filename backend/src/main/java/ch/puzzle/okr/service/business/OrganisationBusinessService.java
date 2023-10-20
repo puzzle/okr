@@ -1,43 +1,50 @@
 package ch.puzzle.okr.service.business;
 
-import com.unboundid.ldap.sdk.*;
-import org.springframework.beans.factory.annotation.Value;
+import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
+import org.springframework.ldap.core.AttributesMapper;
+import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.LdapQuery;
+import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrganisationBusinessService {
 
-    @Value("${ldapHost}")
-    private String ldapHost;
+    private OrganisationPersistenceService persistenceService;
 
-    @Value("${ldapPort}")
-    private int ldapPort;
+    private LdapTemplate ldapTemplate;
 
-    @Value("${bindDN}")
-    private String bindDN;
+    public OrganisationBusinessService(LdapTemplate ldapTemplate, OrganisationPersistenceService persistenceService) {
+        this.ldapTemplate = ldapTemplate;
+        this.persistenceService = persistenceService;
+    }
 
-    @Value("${bindPwd}")
-    private String bindPwd;
-
-    @Scheduled(cron = "0 0 0 * * ?") // This cron expression runs at midnight every day
+    @Scheduled(cron = "0 0 0 * * *")
     public void importOrgFromLDAP() {
-        try (LDAPConnection connection = new LDAPConnection(ldapHost, ldapPort)) {
-            connection.bind(bindDN, bindPwd);
+        LdapQuery query = LdapQueryBuilder.query().base("ou=groups").where("objectClass").is("groupOfNames");
+        List<String> organisations = ldapTemplate.search(query, new CnAttributesMapper());
+        organisations.removeIf(Objects::isNull);
+        for (String org : organisations) {
+            persistenceService.saveIfNotExists(Organisation.Builder.builder().withOrgName(org).build());
+        }
+    }
 
-            SearchRequest searchRequest = new SearchRequest("ou=groups,dc=puzzle,dc=itc", SearchScope.ONE,
-                    Filter.create("(objectClass=groupOfNames)"), "cn");
-
-            SearchResult searchResult = connection.search(searchRequest);
-
-            for (SearchResultEntry entry : searchResult.getSearchEntries()) {
-                String cn = entry.getAttributeValue("cn");
-                if (cn != null && cn.startsWith("org_")) {
-                    System.out.println(cn);
-                }
+    private static class CnAttributesMapper implements AttributesMapper<String> {
+        @Override
+        public String mapFromAttributes(Attributes attributes) throws NamingException {
+            Attribute cnAttribute = attributes.get("cn");
+            if (cnAttribute != null && cnAttribute.get().toString().startsWith("org_")) {
+                return cnAttribute.get().toString();
             }
-        } catch (LDAPException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

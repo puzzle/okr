@@ -10,9 +10,7 @@ Build only the Backend
 Build Frontend + Backend together
 - Build Frontend for production im `frontend` dir: `npm run build`
 - Build Backend with frontend: `mvn clean package -P build-for-docker`
-- Setup DB: 
-  - Run `V1_0_0__baseLine.sql`
-  - Run `V1_1_0__initialData.sql`
+- Setup DB
 - Start Backend `java -jar {path to .jar file}`
 
 Formatting:

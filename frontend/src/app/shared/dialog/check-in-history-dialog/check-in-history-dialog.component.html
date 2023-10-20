@@ -58,7 +58,12 @@
   </ng-template>
 
   <mat-dialog-actions class="d-flex justify-content-start position-sticky">
-    <button mat-button mat-dialog-close class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">
+    <button
+      cdkFocusInitial
+      mat-button
+      mat-dialog-close
+      class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold"
+    >
       Schliessen
     </button>
   </mat-dialog-actions>

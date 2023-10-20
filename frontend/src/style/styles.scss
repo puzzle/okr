@@ -108,6 +108,14 @@ body pzsh-backdrop {
   color: #b3261b;
 }
 
+.dialog-background {
+  background: linear-gradient(to bottom, #ffffff, #dcedf9);
+}
+
+.dialog-form-fields {
+  background-color: white !important;
+}
+
 *:focus {
   outline: blue solid 2px;
 }

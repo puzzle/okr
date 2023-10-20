@@ -1,11 +1,11 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-background">
   <app-dialog-header *ngIf="!data.objective.objectiveId" [dialogTitle]="'Objective erfassen'"></app-dialog-header>
   <app-dialog-header *ngIf="data.objective.objectiveId" [dialogTitle]="'Objective bearbeiten'"></app-dialog-header>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Titel</label>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
           <textarea
             cdkFocusInitial
             formControlName="title"
@@ -13,24 +13,24 @@
             matInput
             placeholder="Objective Title"
           ></textarea>
-          <span *ngIf="isTouchedOrDirty('title')">
-            <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-              {{ errorMessages[errorKey.toUpperCase().trim()] }}
-            </mat-error>
-          </span>
         </mat-form-field>
+        <span *ngIf="isTouchedOrDirty('title')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          </mat-error>
+        </span>
       </div>
 
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Beschreibung (optional)</label>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="dialog-form-fields" subscriptSizing="dynamic">
           <textarea formControlName="description" matInput placeholder="Objective Beschreibung"></textarea>
-          <span *ngIf="isTouchedOrDirty('description')">
-            <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-              {{ errorMessages[errorKey.toUpperCase().trim()] }}
-            </mat-error>
-          </span>
         </mat-form-field>
+        <span *ngIf="isTouchedOrDirty('description')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
+            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          </mat-error>
+        </span>
       </div>
 
       <div class="row">

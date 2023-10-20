@@ -13,11 +13,11 @@ export class UnitValueTransformationPipe implements PipeTransform {
     }
     switch (unit) {
       case Unit.CHF:
-        return this.addCHFSign(this.roundAndAddThousandSplitSign(value));
+        return 'CHF ' + this.addCHFSign(this.roundAndAddThousandSplitSign(value));
       case Unit.PERCENT:
         return value + '%';
       case Unit.FTE:
-        return this.roundAndAddThousandSplitSign(value);
+        return this.roundAndAddThousandSplitSign(value) + ' FTE';
       case Unit.NUMBER:
         return this.roundAndAddThousandSplitSign(value);
       default:

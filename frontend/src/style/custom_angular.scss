@@ -3,7 +3,7 @@
 @import "custom_angular.components";
 
 $my-primary: mat.define-palette($pz-dark-blue-palette, 500);
-$my-accent: mat.define-palette(mat.$grey-palette);
+$my-accent: mat.define-palette(mat.$grey-palette, 900);
 $my-warn: mat.define-palette(mat.$red-palette);
 
 $pz-theme: mat.define-light-theme(
@@ -12,7 +12,6 @@ $pz-theme: mat.define-light-theme(
       primary: $my-primary,
       accent: $my-accent,
       warn: $my-warn,
-      dark: $my-accent,
     ),
   )
 );

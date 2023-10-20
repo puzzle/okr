@@ -1,9 +1,14 @@
 <mat-dialog-content class="d-flex justify-content-center flex-column">
-  <div class="w-100 d-flex flex-row justify-content-start">
-    <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
-    <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})</h1>
-    <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
-    <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
+  <div class="w-100 d-flex justify-content-between align-items-center">
+    <div class="d-flex">
+      <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
+      <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})</h1>
+      <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
+      <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
+    </div>
+    <button mat-dialog-close mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
   <!--  First part of dialog-->
   <div *ngIf="!continued">
@@ -48,5 +53,6 @@
     <span *ngIf="checkIn.id">Speichern</span>
     <span *ngIf="!checkIn.id">Check-in erfassen</span>
   </button>
-  <button mat-button mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
+  <button mat-button *ngIf="!continued" mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
+  <button mat-button *ngIf="continued" class="cancel ms-2 mb-3 fw-bold" (click)="continued = false">Zurück</button>
 </div>

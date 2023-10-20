@@ -1,6 +1,6 @@
 <form [formGroup]="dialogForm" class="d-flex flex-column mt-1">
   <!--    Changeinfo   -->
-  <mat-label class="mb-2">Veränderungen seit letztem Check-in (optional)</mat-label>
+  <mat-label class="mb-2 text-black">Veränderungen seit letztem Check-in (optional)</mat-label>
   <mat-form-field appearance="outline">
     <textarea matInput class="w-100" formControlName="changeInfo"></textarea>
     <div *ngIf="isTouchedOrDirty('changeInfo')">
@@ -11,7 +11,7 @@
   </mat-form-field>
 
   <!--    Initiatives   -->
-  <mat-label class="mb-2">Massnahmen (optional)</mat-label>
+  <mat-label class="mb-2 text-black">Massnahmen (optional)</mat-label>
   <mat-form-field appearance="outline">
     <textarea matInput formControlName="initiatives"></textarea>
     <div *ngIf="isTouchedOrDirty('initiatives')">

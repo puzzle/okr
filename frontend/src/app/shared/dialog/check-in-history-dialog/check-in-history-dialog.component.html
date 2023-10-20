@@ -1,8 +1,12 @@
 <div class="dialog">
-  <div mat-dialog-title class="d-flex flex-row justify-content-start mt-2">
-    <h1 class="d-flex title w-50 mt-2">Check-in History</h1>
+  <div mat-dialog-title class="w-100 d-flex align-items-center">
+    <div class="d-flex title w-50 mt-2">
+      <span>Check-in History</span>
+    </div>
     <div class="w-50 d-flex justify-content-end">
-      <mat-icon class="icon mt-2 me-0" mat-dialog-close>close</mat-icon>
+      <button mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
   </div>
   <mat-dialog-content class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content">
@@ -13,13 +17,14 @@
         <div class="d-flex flex-row">
           <span class="w-25 d-flex align-items-center me-1 fw-bold">{{ checkIn.createdOn | date: DATE_FORMAT }}</span>
           <div class="w-75 d-flex justify-content-end">
-            <img
-              *ngIf="!isComplete"
-              class="edit-check-in cursor-pointer m-1"
+            <button
+              class="d-flex align-items-center justify-content-center"
+              mat-icon-button
               (click)="openCheckInDialogForm(checkIn)"
-              src="assets/icons/edit.svg"
-              alt="edit check-in"
-            />
+              *ngIf="!isComplete"
+            >
+              <img class="edit-check-in cursor-pointer m-1" src="assets/icons/edit.svg" alt="edit check-in" />
+            </button>
           </div>
         </div>
         <div class="d-flex flex-row">
@@ -53,7 +58,12 @@
   </ng-template>
 
   <mat-dialog-actions class="d-flex justify-content-start position-sticky">
-    <button mat-button mat-dialog-close class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold">
+    <button
+      cdkFocusInitial
+      mat-button
+      mat-dialog-close
+      class="cancel-button text-white ms-3 mb-3 ps-3 pe-3 pt-1 pb-1 fw-bold"
+    >
       Schliessen
     </button>
   </mat-dialog-actions>

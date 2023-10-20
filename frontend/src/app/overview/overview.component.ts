@@ -23,14 +23,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.prepareOverview());
+      .subscribe(() => this.loadOverviewWithParams());
   }
 
   ngOnInit(): void {
-    this.prepareOverview();
+    this.loadOverview();
   }
 
-  prepareOverview() {
+  loadOverviewWithParams() {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
 

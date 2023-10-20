@@ -106,7 +106,7 @@ describe('TeamFilterComponent', () => {
     await component.changeTeamFilterParams();
 
     expect(router.navigate).toBeCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' }, queryParamsHandling: 'merge' });
+    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
   }));
 
   it('change filter params and reload', fakeAsync(() => {

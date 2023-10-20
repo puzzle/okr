@@ -81,8 +81,13 @@ describe('test common functions', () => {
     ['1,3.5', [1]],
     ['1,3.5,3', [1, 3]],
     ['1,nonsense,3', [1, 3]],
-  ])('should give correct output for getValueFromQuery', (arr1: any, arr2: number[]) => {
-    expect(getValueFromQuery(arr1)).toStrictEqual(arr2);
+    [0, [0]],
+    [[0], [0]],
+    ['0', [0]],
+    ['1,0', [1, 0]],
+    ['0,1', [0, 1]],
+  ])('should give correct output for getValueFromQuery', (value: any, arr2: number[]) => {
+    expect(getValueFromQuery(value)).toStrictEqual(arr2);
   });
 
   it.each([

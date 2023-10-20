@@ -59,12 +59,14 @@ import { ParseUnitValuePipe } from './shared/pipes/parse-unit-value/parse-unit-v
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
 import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
-import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
 import { CompleteDialogComponent } from './shared/dialog/complete-dialog/complete-dialog.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
 import { KeyResultDialogComponent } from './shared/dialog/key-result-dialog/key-result-dialog.component';
 import { TeamFilterComponent } from './team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { Router } from '@angular/router';
+import { CustomRouter } from './shared/customRouter';
+import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -182,6 +184,10 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    {
+      provide: Router,
+      useClass: CustomRouter,
+    },
     UnitValueTransformationPipe,
     ParseUnitValuePipe,
   ],

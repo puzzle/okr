@@ -66,6 +66,7 @@ import { TeamFilterComponent } from './team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { CustomRouter } from './shared/customRouter';
+import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {

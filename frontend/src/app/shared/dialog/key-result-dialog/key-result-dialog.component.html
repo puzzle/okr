@@ -12,7 +12,7 @@
       <textarea [attr.data-testId]="'titleInput'" class="input-fields" formControlName="title" id="title"></textarea>
       <div *ngIf="isTouchedOrDirty('title')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
+          {{ errorMessages[errorKey.toUpperCase().trim()] }}
         </mat-error>
       </div>
     </div>
@@ -44,7 +44,7 @@
       <textarea [attr.data-testId]="'descriptionInput'" class="input-fields" formControlName="description"></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
+          {{ errorMessages[errorKey.toUpperCase().trim()] }}
         </mat-error>
       </div>
     </div>

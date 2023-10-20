@@ -45,7 +45,7 @@
               <input class="input-fields metric-fields" formControlName="baseline" [attr.data-testId]="'baseline'" />
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
+                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
                 </mat-error>
               </div>
             </div>
@@ -58,7 +58,7 @@
               />
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
+                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
                 </mat-error>
               </div>
             </div>
@@ -80,7 +80,7 @@
               <textarea class="input-fields" formControlName="commitZone" [attr.data-testId]="'commitZone'"></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
+                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
                 </mat-error>
               </div>
             </div>
@@ -89,7 +89,7 @@
               <textarea class="input-fields" formControlName="targetZone" [attr.data-testId]="'targetZone'"></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
+                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
                 </mat-error>
               </div>
             </div>
@@ -102,7 +102,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('stretchZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
-                  {{ errorMessages[errorKey.toUpperCase()] }}
+                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
                 </mat-error>
               </div>
             </div>

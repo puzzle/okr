@@ -16,7 +16,7 @@
         <textarea cdkFocusInitial formControlName="title" id="title" matInput placeholder="Objective Title"></textarea>
         <span *ngIf="isTouchedOrDirty('title')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-            {{ errorMessages[errorKey.toUpperCase()] }}
+            {{ errorMessages[errorKey.toUpperCase().trim()] }}
           </mat-error>
         </span>
       </mat-form-field>
@@ -28,7 +28,7 @@
         <textarea formControlName="description" matInput placeholder="Objective Beschreibung"></textarea>
         <span *ngIf="isTouchedOrDirty('description')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-            {{ errorMessages[errorKey.toUpperCase()] }}
+            {{ errorMessages[errorKey.toUpperCase().trim()] }}
           </mat-error>
         </span>
       </mat-form-field>

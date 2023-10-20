@@ -39,12 +39,21 @@ describe('OverviewComponent', () => {
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
 
-  it('should load overview according to quarter-id when valid quarterId is defined in route-params', async () => {
+  it('should load default overview on init', async () => {
     jest.spyOn(overviewService, 'getOverview');
     const routerHarness = await RouterTestingHarness.create();
     await routerHarness.navigateByUrl('/?quarter=7');
     routerHarness.detectChanges();
     component.ngOnInit();
+    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, undefined);
+  });
+
+  it('should load overview based on queryparams', async () => {
+    jest.spyOn(overviewService, 'getOverview');
+    const routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/?quarter=7');
+    routerHarness.detectChanges();
+    component.loadOverviewWithParams();
     expect(overviewService.getOverview).toHaveBeenCalledWith(7, []);
   });
 

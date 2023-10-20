@@ -28,7 +28,7 @@ export class QuarterFilterComponent implements OnInit {
       this.quarters.next(quarters);
       const quarterQuery = this.route.snapshot.queryParams['quarter'];
       const quarterId: number = getValueFromQuery(quarterQuery)[0];
-      if (quarterId && quarters.map((quarter) => quarter.id).includes(quarterId)) {
+      if (Number.isInteger(quarterId) && quarters.map((quarter) => quarter.id).includes(quarterId)) {
         this.quarterId = quarterId;
       } else {
         this.quarterId = quarters[0].id;

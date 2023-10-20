@@ -1,9 +1,12 @@
 package ch.puzzle.okr.models;
 
+import org.aspectj.weaver.ast.Or;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,7 +23,7 @@ public class Team {
 
     @ManyToMany
     @JoinTable(name = "team_organisation", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "organisation_id"))
-    private Set<Organisation> authorizationOrganisation;
+    private List<Organisation> authorizationOrganisation;
 
     public Team() {
     }
@@ -28,6 +31,7 @@ public class Team {
     private Team(Builder builder) {
         id = builder.id;
         setName(builder.name);
+        setAuthorizationOrganisation(builder.authorizationOrganisation);
     }
 
     public Long getId() {
@@ -40,6 +44,14 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Organisation> getAuthorizationOrganisation() {
+        return authorizationOrganisation;
+    }
+
+    public void setAuthorizationOrganisation(List<Organisation> authorizationOrganisation) {
+        this.authorizationOrganisation = authorizationOrganisation;
     }
 
     @Override
@@ -66,6 +78,8 @@ public class Team {
         private Long id;
         private String name;
 
+        private List<Organisation> authorizationOrganisation;
+
         private Builder() {
         }
 
@@ -80,6 +94,11 @@ public class Team {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withAuthorizationOrganisation(List<Organisation> authOrg) {
+            this.authorizationOrganisation = authOrg;
             return this;
         }
 

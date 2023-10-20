@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Unit } from '../../types/enums/Unit';
-import { THOUSAND_SEPERATOR } from '../../regexLibrary';
 
 @Pipe({
   name: 'unitValueTransformation',
@@ -30,6 +29,6 @@ export class UnitValueTransformationPipe implements PipeTransform {
   }
 
   roundAndAddThousandSplitSign(value: number): string {
-    return (+value.toFixed(2)).toString().replace(THOUSAND_SEPERATOR, "'");
+    return (+value.toFixed(2)).toLocaleString('en-US').replace(/,/g, "'");
   }
 }

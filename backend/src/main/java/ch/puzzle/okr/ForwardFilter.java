@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 @Component
@@ -20,7 +19,7 @@ public class ForwardFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String path = new URL(request.getRequestURL().toString()).getPath();
+        String path = request.getRequestURI();
         if (request.getParameter("state") != null) {
             logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
                     request.getRequestURI(), "/"));

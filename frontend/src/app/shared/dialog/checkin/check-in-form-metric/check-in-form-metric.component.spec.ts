@@ -26,7 +26,7 @@ describe('CheckInFormComponent', () => {
         MatRadioModule,
         ReactiveFormsModule,
       ],
-      declarations: [CheckInFormMetricComponent],
+      declarations: [CheckInFormMetricComponent, UnitValueTransformationPipe],
       providers: [UnitValueTransformationPipe, ParseUnitValuePipe],
     });
     fixture = TestBed.createComponent(CheckInFormMetricComponent);
@@ -55,13 +55,13 @@ describe('CheckInFormComponent', () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.CHF };
     component.dialogForm.controls['value'].setValue(checkInMetric.value!.toString());
     component.formatValue();
-    expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value + '.-');
+    expect(component.dialogForm.controls['value'].value).toBe('CHF ' + checkInMetric.value + '.-');
   }));
 
   it('should format FTE correctly', waitForAsync(async () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.FTE };
     component.dialogForm.controls['value'].setValue(checkInMetric.value!.toString());
     component.formatValue();
-    expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value!.toString());
+    expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value!.toString() + ' FTE');
   }));
 });

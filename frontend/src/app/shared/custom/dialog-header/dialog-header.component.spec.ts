@@ -8,7 +8,7 @@ describe('DialogHeaderComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DialogHeaderComponent]
+      declarations: [DialogHeaderComponent],
     });
     fixture = TestBed.createComponent(DialogHeaderComponent);
     component = fixture.componentInstance;

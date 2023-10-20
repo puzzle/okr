@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
+
 import static ch.puzzle.okr.OverviewTestHelper.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -25,23 +24,23 @@ class OverviewValidationServiceTest {
 
     @Test
     void validateOnGet_ShouldCallQuarterValidator() {
-        validator.validateQuarter(quarterId);
-        verify(quarterValidationService, times(1)).validateOnGet(quarterId);
-        verify(quarterValidationService, times(1)).doesEntityExist(quarterId);
+        validator.validateQuarter(QUARTER_ID);
+        verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
+        verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
     }
 
     @Test
     void validateOnGet_ShouldCallTeamValidator() {
-        validator.validateTeam(teamId);
-        verify(teamValidationService, times(1)).validateOnGet(teamId);
-        verify(teamValidationService, times(1)).doesEntityExist(teamId);
+        validator.validateTeam(TEAM_ID);
+        verify(teamValidationService, times(1)).validateOnGet(TEAM_ID);
+        verify(teamValidationService, times(1)).doesEntityExist(TEAM_ID);
     }
 
     @Test
     void validateOnGet_ShouldCallQuarterValidatorAndTeamValidator() {
-        validator.validateOnGet(quarterId, teamIds);
-        verify(quarterValidationService, times(1)).validateOnGet(quarterId);
-        verify(quarterValidationService, times(1)).doesEntityExist(quarterId);
+        validator.validateOnGet(QUARTER_ID, teamIds);
+        verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
+        verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
         verify(teamValidationService, times(teamIds.size())).validateOnGet(anyLong());
         verify(teamValidationService, times(teamIds.size())).doesEntityExist(anyLong());
     }

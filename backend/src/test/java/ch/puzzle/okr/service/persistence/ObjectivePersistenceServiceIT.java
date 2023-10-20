@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
-public class ObjectivePersistenceServiceIT {
+class ObjectivePersistenceServiceIT {
     Objective createdObjective;
     @Autowired
     private ObjectivePersistenceService objectivePersistenceService;
@@ -47,14 +47,14 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findAll_ShouldReturnListOfObjectives() {
+    void findAllShouldReturnListOfObjectives() {
         List<Objective> objectives = objectivePersistenceService.findAll();
 
         assertEquals(7, objectives.size());
     }
 
     @Test
-    void findById_ShouldReturnObjectiveProperly() {
+    void findByIdShouldReturnObjectiveProperly() {
         Objective objective = objectivePersistenceService.findById(5L);
 
         assertEquals(5L, objective.getId());
@@ -62,7 +62,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findById_ShouldThrowExceptionWhenObjectiveNotFound() {
+    void findByIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findById(321L));
 
@@ -71,7 +71,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findById_ShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void findByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findById(null));
 
@@ -80,7 +80,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void saveObjective_shouldSaveNewObjective() {
+    void saveObjectiveShouldSaveNewObjective() {
         Objective objective = createObjective(null);
 
         createdObjective = objectivePersistenceService.save(objective);
@@ -92,7 +92,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void updateObjective_shouldUpdateObjective() {
+    void updateObjectiveShouldUpdateObjective() {
         Objective objective = createObjective(null);
         createdObjective = objectivePersistenceService.save(objective);
         createdObjective.setState(State.ONGOING);
@@ -104,42 +104,45 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void deleteObjective_ShouldThrowExceptionWhenKeyResultNotFound() {
+    void deleteObjectiveShouldThrowExceptionWhenKeyResultNotFound() {
         Objective objective = createObjective(321L);
         createdObjective = objectivePersistenceService.save(objective);
         objectivePersistenceService.deleteById(createdObjective.getId());
 
+        Long objectiveId = createdObjective.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findById(createdObjective.getId()));
+                () -> objectivePersistenceService.findById(objectiveId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
     }
 
     @Test
-    void countByTeamAndQuarter_shouldReturnActiveObjectivesOfTeamByQuarter() {
+    void countByTeamAndQuarterShouldReturnActiveObjectivesOfTeamByQuarter() {
         Integer count = objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
                 quarterPersistenceService.findById(2L));
         assertEquals(2, count);
     }
 
     @Test
-    void countByTeamAndQuarter_shouldThrowErrorIfQuarterDoesNotExist() {
+    void countByTeamAndQuarterShouldThrowErrorIfQuarterDoesNotExist() {
+        Team teamId5 = teamPersistenceService.findById(5L);
+        Quarter quarterId12 = quarterPersistenceService.findById(12L);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
-                        quarterPersistenceService.findById(12L)));
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamId5, quarterId12));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
 
+        Team teamId500 = teamPersistenceService.findById(500L);
+        Quarter quarterId2 = quarterPersistenceService.findById(2L);
         ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
-                        quarterPersistenceService.findById(2L)));
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamId500, quarterId2));
         assertEquals(HttpStatus.NOT_FOUND, exceptionTeam.getStatus());
         assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
 
     }
 
     @Test
-    void countByTeamAndQuarter_ShouldReturnCountValue() {
+    void countByTeamAndQuarterShouldReturnCountValue() {
         Integer count = objectivePersistenceService.countByTeamAndQuarter(Team.Builder.builder().withId(5L).build(),
                 Quarter.Builder.builder().withId(2L).build());
 

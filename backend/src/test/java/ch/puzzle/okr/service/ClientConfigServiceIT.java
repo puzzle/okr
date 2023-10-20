@@ -9,13 +9,13 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
-public class ClientConfigServiceIT {
+class ClientConfigServiceIT {
 
     @Autowired
     private ClientConfigService clientConfigService;
 
     @Test
-    void saveKeyResult_ShouldSaveNewKeyResult() {
+    void saveKeyResultShouldSaveNewKeyResult() {
         Map<String, String> configMap = clientConfigService.getConfigBasedOnActiveEnv();
 
         assertEquals("prod", configMap.get("activeProfile"));

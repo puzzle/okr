@@ -42,7 +42,7 @@ class CompleteControllerIT {
             .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
             .withComment("Wir haben es gut geschafft").build();
 
-    public static final String createBodySuccessful = """
+    public static final String SUCCESSFUL_CREATE_BODY = """
             {
                 "id":null,
                 "objectiveId":3,
@@ -56,7 +56,7 @@ class CompleteControllerIT {
     void createSuccessfulCompleted() throws Exception {
         BDDMockito.given(this.completedBusinessService.createCompleted((any()))).willReturn(successfulCompleted);
 
-        mvc.perform(post(baseUrl).content(createBodySuccessful).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(1)))
                 .andExpect(jsonPath("$.objective.id", Is.is(3)))

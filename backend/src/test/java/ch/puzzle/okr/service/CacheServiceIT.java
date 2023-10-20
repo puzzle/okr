@@ -48,7 +48,7 @@ class CacheServiceIT {
     }
 
     @Test
-    void emptyUsersCache_ShouldClearUserCache() {
+    void emptyUsersCacheShouldClearUserCache() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
         User userBeforeClearCache = cache.get(USERNAME, User.class);
 
@@ -60,7 +60,7 @@ class CacheServiceIT {
     }
 
     @Test
-    void emptyAllCaches_ShouldClearAllCaches() {
+    void emptyAllCachesShouldClearAllCaches() {
         createdUser = userPersistenceService.getOrCreateUser(createUser());
         User userBeforeClearCache = cache.get(USERNAME, User.class);
 

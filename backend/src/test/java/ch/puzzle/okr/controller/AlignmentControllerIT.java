@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(AlignmentController.class)
-public class AlignmentControllerIT {
+class AlignmentControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -38,6 +38,7 @@ public class AlignmentControllerIT {
     @SpyBean
     private AlignmentSelectionMapper alignmentSelectionMapper;
 
+    static String alignmentObjectiveName = "Objective 5";
     static List<AlignmentSelection> alignmentSelectionPuzzle = List.of(
             AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(1L, 20L))
                     .withObjectiveTitle("Objective 1").withKeyResultTitle("KeyResult 20").build(),
@@ -45,13 +46,13 @@ public class AlignmentControllerIT {
                     .withObjectiveTitle("Objective 1").withKeyResultTitle("KeyResult 40").build());
     static List<AlignmentSelection> alignmentSelectionOKR = List.of(
             AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 21L))
-                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 21").build(),
+                    .withObjectiveTitle(alignmentObjectiveName).withKeyResultTitle("KeyResult 21").build(),
             AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 41L))
-                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 41").build(),
+                    .withObjectiveTitle(alignmentObjectiveName).withKeyResultTitle("KeyResult 41").build(),
             AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 61L))
-                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 61").build(),
+                    .withObjectiveTitle(alignmentObjectiveName).withKeyResultTitle("KeyResult 61").build(),
             AlignmentSelection.Builder.builder().withAlignmentSelectionId(AlignmentSelectionId.of(5L, 81L))
-                    .withObjectiveTitle("Objective 5").withKeyResultTitle("KeyResult 81").build());
+                    .withObjectiveTitle(alignmentObjectiveName).withKeyResultTitle("KeyResult 81").build());
     static AlignmentSelection alignmentSelectionEmptyKeyResults = AlignmentSelection.Builder.builder()
             .withAlignmentSelectionId(AlignmentSelectionId.of(8L, null)).withObjectiveTitle("Objective 8").build();
 

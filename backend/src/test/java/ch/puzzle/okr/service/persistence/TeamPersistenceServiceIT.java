@@ -32,7 +32,7 @@ class TeamPersistenceServiceIT {
     }
 
     @Test
-    void getTeamById_ShouldReturnTeam() throws ResponseStatusException {
+    void getTeamByIdShouldReturnTeam() throws ResponseStatusException {
         Team team = teamPersistenceService.findById(5L);
 
         assertEquals(5L, team.getId());
@@ -40,7 +40,7 @@ class TeamPersistenceServiceIT {
     }
 
     @Test
-    void getTeamById_ShouldThrowExceptionWhenTeamNotFound() {
+    void getTeamByIdShouldThrowExceptionWhenTeamNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamPersistenceService.findById(321L));
 
@@ -49,7 +49,7 @@ class TeamPersistenceServiceIT {
     }
 
     @Test
-    void getTeamById_ShouldThrowExceptionWhenTeamIdIsNull() {
+    void getTeamByIdShouldThrowExceptionWhenTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamPersistenceService.findById(null));
 

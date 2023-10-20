@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
-public class CompletedPersistenceServiceIT {
+class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
 
@@ -24,7 +24,7 @@ public class CompletedPersistenceServiceIT {
             .withComment("Wir haben es gut geschafft").build();
 
     @Test
-    void saveCompleted_ShouldSaveCompleted() {
+    void saveCompletedShouldSaveCompleted() {
         Completed createdCompleted = completedPersistenceService.save(createCompleted);
 
         assertNotNull(createdCompleted.getId());
@@ -33,17 +33,17 @@ public class CompletedPersistenceServiceIT {
     }
 
     @Test
-    void deleteCompleted_ShouldGetCompletedByObjectiveId() {
+    void deleteCompletedShouldGetCompletedByObjectiveId() {
         Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(10L);
 
         assertNotNull(savedCompleted.getId());
-        assertEquals(savedCompleted.getComment(), "Schade");
-        assertEquals(savedCompleted.getObjective().getTitle(),
-                "should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+        assertEquals("Schade", savedCompleted.getComment());
+        assertEquals("should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                savedCompleted.getObjective().getTitle());
     }
 
     @Test
-    void deleteCompletedId_ShouldDeleteExistingCompletedByObjectiveId() {
+    void deleteCompletedIdShouldDeleteExistingCompletedByObjectiveId() {
 
         completedPersistenceService.deleteById(3L);
 
@@ -54,12 +54,13 @@ public class CompletedPersistenceServiceIT {
     }
 
     @Test
-    void deleteCompleted_ShouldThrowExceptionWhenCompletedNotFound() {
+    void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
         Completed newCompleted = completedPersistenceService.save(successfulCompleted);
         completedPersistenceService.deleteById(newCompleted.getId());
 
+        Long completedId = newCompleted.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> completedPersistenceService.findById(newCompleted.getId()));
+                () -> completedPersistenceService.findById(completedId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Completed with id %d not found", newCompleted.getId()), exception.getReason());
     }

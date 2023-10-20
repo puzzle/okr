@@ -15,8 +15,6 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -84,8 +82,6 @@ public class KeyResultTestHelpers {
     public static final CheckIn checkIn2 = CheckInMetric.Builder.builder().withValue(12D).withId(4L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO_2).withInitiatives(INITIATIVES_2).build();
-    public static final List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
-
     public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L, CHANGE_INFO_1, INITIATIVES_1, 6,
             metricKeyResult.getId(), LocalDateTime.MAX, LocalDateTime.MAX, 23D);
     public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L, CHANGE_INFO_2, INITIATIVES_2, 5,

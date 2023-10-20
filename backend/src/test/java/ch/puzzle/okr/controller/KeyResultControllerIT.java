@@ -2,6 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
@@ -23,7 +24,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -111,6 +114,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnCheckInsFromKeyResult() throws Exception {
+        List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
         BDDMockito.given(this.keyResultBusinessService.getAllCheckInsByKeyResult(5)).willReturn(checkInList);
         BDDMockito.given(this.checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
         BDDMockito.given(this.checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
@@ -187,14 +191,14 @@ class KeyResultControllerIT {
     }
 
     @Test
-    void shouldThrowException_WhenKeyResultTypeMissing() throws Exception {
+    void shouldThrowExceptionWhenKeyResultTypeMissing() throws Exception {
         mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_MISSING).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());
     }
 
     @Test
-    void shouldThrowException_WhenKeyResultTypeUnknown() throws Exception {
+    void shouldThrowExceptionWhenKeyResultTypeUnknown() throws Exception {
         mvc.perform(post(URL_BASE).content(CREATE_BODY_KEY_RESULT_TYPE_UNKNOWN).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError());

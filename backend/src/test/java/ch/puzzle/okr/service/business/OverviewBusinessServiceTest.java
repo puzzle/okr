@@ -9,9 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -42,21 +40,21 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
-        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds))
+        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds))
                 .thenReturn(List.of(createOverview()));
 
-        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
+        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
 
         assertEquals(1, overviews.size());
         verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
-        verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
-        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
+        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
-        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds))
+        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds))
                 .thenReturn(List.of(createOverview()));
         when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build());
@@ -65,51 +63,51 @@ class OverviewBusinessServiceTest {
 
         assertEquals(1, overviews.size());
         verify(quarterBusinessService, times(1)).getCurrentQuarter();
-        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
-        verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
-        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
+        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenTeamIdsAreNull() {
-        when(overviewPersistenceService.getOverviewByQuarterId(quarterId)).thenReturn(List.of(createOverview()));
+        when(overviewPersistenceService.getOverviewByQuarterId(QUARTER_ID)).thenReturn(List.of(createOverview()));
 
-        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
+        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, null);
 
         assertEquals(1, overviews.size());
         verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewValidationService, times(1)).validateQuarter(quarterId);
-        verify(overviewPersistenceService, times(1)).getOverviewByQuarterId(quarterId);
-        verify(overviewValidationService, never()).validateOnGet(quarterId, teamIds);
+        verify(overviewValidationService, times(1)).validateQuarter(QUARTER_ID);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterId(QUARTER_ID);
+        verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);
         verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenQuarterIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
-                .validateQuarter(quarterId);
+                .validateQuarter(QUARTER_ID);
         assertThrows(ResponseStatusException.class, () -> {
-            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, null);
+            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, null);
         });
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewValidationService, times(1)).validateQuarter(quarterId);
-        verify(overviewPersistenceService, never()).getOverviewByQuarterId(quarterId);
-        verify(overviewValidationService, never()).validateOnGet(quarterId, teamIds);
+        verify(overviewValidationService, times(1)).validateQuarter(QUARTER_ID);
+        verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
+        verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);
         verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnExceptionWhenTeamIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
-                .validateOnGet(quarterId, teamIds);
+                .validateOnGet(QUARTER_ID, teamIds);
         assertThrows(ResponseStatusException.class, () -> {
-            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
+            overviewBusinessService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
         });
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewValidationService, never()).validateQuarter(quarterId);
-        verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
+        verify(overviewValidationService, never()).validateQuarter(QUARTER_ID);
+        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
         verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
     }
 }

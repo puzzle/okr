@@ -149,7 +149,7 @@ class CheckInControllerIT {
     }
 
     @Test
-    void shouldThrowException_WhenKeyResultIdMissing() throws Exception {
+    void shouldThrowExceptionWhenKeyResultIdMissing() throws Exception {
         BDDMockito.given(keyResultBusinessService.getKeyResultById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInBusinessService.createCheckIn(any(), any())).willReturn(checkInOrdinal);

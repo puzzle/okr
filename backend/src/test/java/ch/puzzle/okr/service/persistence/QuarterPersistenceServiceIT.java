@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
-public class QuarterPersistenceServiceIT {
+class QuarterPersistenceServiceIT {
 
     @Autowired
     private QuarterPersistenceService quarterPersistenceService;

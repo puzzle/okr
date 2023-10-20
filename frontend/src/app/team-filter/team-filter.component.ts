@@ -9,7 +9,6 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls } from '../shared
 @Component({
   selector: 'app-team-filter',
   templateUrl: './team-filter.component.html',
-  styleUrls: ['./team-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamFilterComponent implements OnInit {

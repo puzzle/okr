@@ -66,9 +66,8 @@
             <artifactId>h2</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.unboundid</groupId>
-            <artifactId>unboundid-ldapsdk</artifactId>
-            <version>6.0.10</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-ldap</artifactId>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>

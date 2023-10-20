@@ -81,6 +81,10 @@ body pzsh-backdrop {
   @extend .col-md-5;
 }
 
+.backdrop {
+  margin-top: $top-bar-height;
+}
+
 .spinner-container {
   width: 100%;
   display: flex;

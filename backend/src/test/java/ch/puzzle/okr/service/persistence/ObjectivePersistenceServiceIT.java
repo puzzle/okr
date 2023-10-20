@@ -126,16 +126,16 @@ class ObjectivePersistenceServiceIT {
     @Test
     void countByTeamAndQuarterShouldThrowErrorIfQuarterDoesNotExist() {
         Team teamId5 = teamPersistenceService.findById(5L);
-        Quarter quarterId12 = quarterPersistenceService.findById(12L);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.countByTeamAndQuarter(teamId5, quarterId12));
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamId5,
+                        quarterPersistenceService.findById(12L)));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
 
-        Team teamId500 = teamPersistenceService.findById(500L);
         Quarter quarterId2 = quarterPersistenceService.findById(2L);
         ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.countByTeamAndQuarter(teamId500, quarterId2));
+                () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
+                        quarterId2));
         assertEquals(HttpStatus.NOT_FOUND, exceptionTeam.getStatus());
         assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
 

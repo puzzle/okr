@@ -15,17 +15,15 @@ class CompletedPersistenceServiceIT {
     @Autowired
     private CompletedPersistenceService completedPersistenceService;
 
-    Completed successfulCompleted = Completed.Builder.builder().withId(1L)
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
-
-    Completed createCompleted = Completed.Builder.builder()
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
+    private static Completed createCompleted(Long id) {
+        return Completed.Builder.builder().withId(id)
+                .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
+                .withComment("Wir haben es gut geschafft").build();
+    }
 
     @Test
     void saveCompletedShouldSaveCompleted() {
-        Completed createdCompleted = completedPersistenceService.save(createCompleted);
+        Completed createdCompleted = completedPersistenceService.save(createCompleted(null));
 
         assertNotNull(createdCompleted.getId());
         assertEquals(createdCompleted.getComment(), createdCompleted.getComment());
@@ -34,11 +32,11 @@ class CompletedPersistenceServiceIT {
 
     @Test
     void deleteCompletedShouldGetCompletedByObjectiveId() {
-        Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(10L);
+        Completed savedCompleted = completedPersistenceService.getCompletedByObjectiveId(6L);
 
         assertNotNull(savedCompleted.getId());
-        assertEquals("Schade", savedCompleted.getComment());
-        assertEquals("should not appear on staging, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+        assertEquals("War leider nicht moeglich", savedCompleted.getComment());
+        assertEquals("Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.",
                 savedCompleted.getObjective().getTitle());
     }
 
@@ -55,7 +53,7 @@ class CompletedPersistenceServiceIT {
 
     @Test
     void deleteCompletedShouldThrowExceptionWhenCompletedNotFound() {
-        Completed newCompleted = completedPersistenceService.save(successfulCompleted);
+        Completed newCompleted = completedPersistenceService.save(createCompleted(33L));
         completedPersistenceService.deleteById(newCompleted.getId());
 
         Long completedId = newCompleted.getId();

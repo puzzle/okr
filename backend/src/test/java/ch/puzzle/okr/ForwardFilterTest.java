@@ -36,6 +36,8 @@ class ForwardFilterTest {
     @Mock
     RequestDispatcher requestDispatcher;
 
+    private final String URL_BASE = "http://localhost:8080";
+
     @BeforeEach
     void setup() {
     }
@@ -46,6 +48,7 @@ class ForwardFilterTest {
     void shouldNotFilterTheRootPath(String requestUri) throws ServletException, IOException {
         // given
         when(request.getRequestURI()).thenReturn(requestUri);
+        when(request.getRequestURL()).thenReturn(new StringBuffer(URL_BASE + requestUri));
         doNothing().when(filterChain).doFilter(Mockito.eq(request), Mockito.eq(response));
 
         // when
@@ -59,6 +62,7 @@ class ForwardFilterTest {
     @Test
     void shouldFilterAuthPath() throws ServletException, IOException {
         // given
+        when(request.getRequestURL()).thenReturn(new StringBuffer(URL_BASE + "/state=''"));
         when(request.getRequestURI()).thenReturn("/state=''");
         when(request.getParameter("state")).thenReturn("state");
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);

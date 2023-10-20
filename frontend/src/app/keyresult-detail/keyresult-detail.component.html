@@ -35,9 +35,19 @@
 
       <div class="d-flex gap-4 flex-row">
         <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
-          <p class="keyResult-detail-attribute-show rounded-3 p-1">Einheit: {{ keyResultMetric.unit }}</p>
-          <p class="keyResult-detail-attribute-show rounded-3 p-1">Baseline: {{ keyResultMetric.baseline }}</p>
-          <p class="keyResult-detail-attribute-show rounded-3 p-1">Stretch Goal: {{ keyResultMetric.stretchGoal }}</p>
+          <p class="keyResult-detail-attribute-show rounded-3 p-2 d-flex justify-content-center zone-col">
+            Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
+          </p>
+          <p
+            class="keyResult-detail-attribute-show rounded-3 p-2 zone-col d-flex justify-content-center"
+            *ngIf="keyResultMetric.lastCheckIn"
+          >
+            Aktuell:
+            {{ +keyResultMetric.lastCheckIn!.value! | unitValueTransformation: keyResultMetric.unit.toString() }}
+          </p>
+          <p class="keyResult-detail-attribute-show rounded-3 p-2 zone-col d-flex justify-content-center">
+            Stretch Goal: {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}
+          </p>
         </ng-container>
 
         <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">

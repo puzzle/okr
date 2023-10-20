@@ -48,5 +48,6 @@
     <span *ngIf="checkIn.id">Speichern</span>
     <span *ngIf="!checkIn.id">Check-in erfassen</span>
   </button>
-  <button mat-button mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
+  <button mat-button *ngIf="!continued" mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
+  <button mat-button *ngIf="continued" class="cancel ms-2 mb-3 fw-bold" (click)="continued = false">Zurück</button>
 </div>

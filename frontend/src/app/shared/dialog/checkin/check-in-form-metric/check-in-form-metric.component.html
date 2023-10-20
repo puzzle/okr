@@ -15,8 +15,8 @@
         (focusin)="resetValue()"
       ></app-custom-input>
       <div *ngIf="isTouchedOrDirty('value')">
-        <mat-error class="fw-bold error-font" *ngFor="let errorKey of getErrorKeysOfFormField('value')">
-          {{ errorMessages[errorKey.toUpperCase()] }}
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">
+          {{ errorMessages[errorKey.toUpperCase().trim()] }}
         </mat-error>
       </div>
     </div>

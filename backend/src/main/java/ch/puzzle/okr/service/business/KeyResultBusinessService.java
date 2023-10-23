@@ -19,13 +19,15 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
+    private final ActionBusinessService actionBusinessService;
     private final KeyResultValidationService validator;
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
+            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,  ActionBusinessService actionBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
+        this.actionBusinessService = actionBusinessService;
         this.validator = validator;
     }
 
@@ -75,6 +77,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
                 .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
+        actionBusinessService.getActionsByKeyResultId(id)
+                .forEach(action -> actionBusinessService.deleteActionById(action.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 

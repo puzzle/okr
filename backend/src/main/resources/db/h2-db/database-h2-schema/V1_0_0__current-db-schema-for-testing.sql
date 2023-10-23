@@ -7,6 +7,7 @@ create sequence if not exists sequence_team;
 create sequence if not exists sequence_alignment;
 create sequence if not exists sequence_completed;
 create sequence if not exists sequence_organisation;
+create sequence if not exists sequence_action;
 
 create table if not exists person
 (
@@ -137,6 +138,18 @@ create table if not exists completed
         constraint fk_completed_objective
             references objective,
     comment      varchar(4096)
+);
+
+create table action
+(
+    id            bigint        not null
+        primary key,
+    action        varchar(4096) not null,
+    priority      integer       not null,
+    is_checked    boolean       not null,
+    key_result_id bigint        not null
+        constraint fk_completed_key_result
+            references key_result
 );
 
 create index if not exists idx_completed_objective

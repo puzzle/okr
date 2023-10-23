@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -9,6 +10,8 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
+
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +43,8 @@ class KeyResultBusinessServiceTest {
     CheckInBusinessService checkInBusinessService;
     @InjectMocks
     KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);
+    @Mock
+    ActionPersistenceService actionPersistenceService = Mockito.mock(ActionPersistenceService.class);
     @InjectMocks
     @Spy
     private KeyResultBusinessService keyResultBusinessService;
@@ -52,6 +57,7 @@ class KeyResultBusinessServiceTest {
     CheckIn checkIn2;
     CheckIn checkIn3;
     List<CheckIn> checkIns;
+    List<Action> actions;
 
     @BeforeEach
     void setup() {
@@ -74,6 +80,9 @@ class KeyResultBusinessServiceTest {
                 .build();
         this.keyResults = List.of(this.metricKeyResult, this.ordinalKeyResult);
         this.checkIns = List.of(checkIn1, checkIn2, checkIn3);
+        Action action = Action.Builder.builder().withId(3L).withAction("Neues Haus").withPriority(1).withIsChecked(true)
+                .withKeyResult(this.metricKeyResult).build();
+        this.actions = List.of(action, action);
     }
 
     @Test
@@ -302,6 +311,8 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckIns() {
         when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
+        when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(any())).thenReturn(actions);
+        when(actionBusinessService.getActionsByKeyResultId(1L)).thenReturn(actions);
 
         this.keyResultBusinessService.deleteEntityById(1L);
 

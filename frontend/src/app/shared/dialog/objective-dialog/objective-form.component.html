@@ -1,6 +1,12 @@
 <div mat-dialog-content class="dialog-background">
-  <app-dialog-header *ngIf="!data.objective.objectiveId" [dialogTitle]="'Objective erfassen'"></app-dialog-header>
-  <app-dialog-header *ngIf="data.objective.objectiveId" [dialogTitle]="'Objective bearbeiten'"></app-dialog-header>
+  <app-dialog-header
+    *ngIf="!data.objective.objectiveId"
+    [dialogTitle]="'Objective für ' + this.currentTeam.name + ' erfassen'"
+  ></app-dialog-header>
+  <app-dialog-header
+    *ngIf="data.objective.objectiveId"
+    [dialogTitle]="'Objective von ' + this.currentTeam.name + ' bearbeiten'"
+  ></app-dialog-header>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-column gap-2 col-12">
@@ -33,7 +39,7 @@
         </span>
       </div>
 
-      <div class="row">
+      <div class="d-flex align-items-center row">
         <div class="d-flex flex-column gap-2 col-6">
           <label class="text-black" for="quarter">Quartal</label>
           <mat-form-field>
@@ -45,15 +51,8 @@
           </mat-form-field>
         </div>
 
-        <div class="d-flex flex-column justify-content-center gap-2 col-6">
-          <label class="text-black" for="team">Team</label>
-          <div class="team-container mb-4 d-flex align-items-center">
-            <span id="team" class="ps-3">{{ this.currentTeam.name }}</span>
-          </div>
-        </div>
-
         <mat-checkbox
-          class="d-flex align-items-center col-5 custom-text-wrap"
+          class="d-flex align-items-center col-5 custom-text-wrap mt-3"
           color="primary"
           formControlName="createKeyResults"
           *ngIf="!data.objective.objectiveId"

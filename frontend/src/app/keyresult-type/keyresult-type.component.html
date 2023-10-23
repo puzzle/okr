@@ -42,7 +42,12 @@
             </div>
             <div>
               <label>Baseline</label>
-              <input class="input-fields metric-fields" formControlName="baseline" [attr.data-testId]="'baseline'" />
+              <input
+                class="input-fields metric-fields"
+                [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
+                formControlName="baseline"
+                [attr.data-testId]="'baseline'"
+              />
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
                   {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -53,6 +58,7 @@
               <label>Stretch Goal</label>
               <input
                 class="input-fields metric-fields"
+                [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
                 formControlName="stretchGoal"
                 [attr.data-testId]="'stretchGoal'"
               />

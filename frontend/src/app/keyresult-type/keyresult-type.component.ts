@@ -5,6 +5,7 @@ import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
 import errorMessages from '../../assets/errors/error-messages.json';
 import { Unit } from '../shared/types/enums/Unit';
+import { formInputCheck } from '../shared/common';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -98,4 +99,5 @@ export class KeyresultTypeComponent implements OnInit {
 
   protected readonly errorMessages: any = errorMessages;
   protected readonly Unit = Unit;
+  protected readonly formInputCheck = formInputCheck;
 }

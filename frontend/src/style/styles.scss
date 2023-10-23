@@ -108,8 +108,17 @@ body pzsh-backdrop {
   color: #b3261b;
 }
 
-.dialog-form-fields {
-  background-color: white !important;
+.dialog-form-field {
+  transition: border-color 0.3s ease;
+  outline: none !important;
+  &:focus {
+    border-color: $pz-dark-blue !important;
+  }
+}
+
+.dialog-form-field-error {
+  outline: none !important;
+  border-color: red !important;
 }
 
 *:focus {

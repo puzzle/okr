@@ -1,3 +1,5 @@
+import { FormGroup } from '@angular/forms';
+
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {
     return null;
@@ -60,4 +62,12 @@ export function areEqual(arr1: number[], arr2: number[]) {
 
 export function trackByFn(id: any): any {
   return id;
+}
+
+export function formInputCheck(form: FormGroup, propertyName: string) {
+  if ((form.get(propertyName)?.dirty || form.get(propertyName)?.touched) && form.get(propertyName)?.invalid) {
+    return 'dialog-form-field-error';
+  } else {
+    return 'dialog-form-field';
+  }
 }

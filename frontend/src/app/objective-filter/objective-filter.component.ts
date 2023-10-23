@@ -5,4 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './objective-filter.component.html',
   styleUrls: ['./objective-filter.component.scss'],
 })
-export class ObjectiveFilterComponent {}
+export class ObjectiveFilterComponent {
+  options = [];
+  displayFn = (test: any) => test;
+  input: string = '';
+}

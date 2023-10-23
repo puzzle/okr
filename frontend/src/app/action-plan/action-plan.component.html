@@ -1,0 +1,13 @@
+<div
+  cdkDropList
+  #todoList="cdkDropList"
+  [cdkDropListData]="actionPoints"
+  class="action-points-list d-flex flex-column gap-2"
+  (cdkDropListDropped)="drop($event)"
+>
+  <div class="action-point-item" *ngFor="let action of actionPoints; index as i" cdkDrag>
+    <img src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
+    <input type="text" [value]="action" (change)="changeActionText($event, i)" />
+    <img src="../assets/delete-icon.svg" alt="Delete bin" />
+  </div>
+</div>

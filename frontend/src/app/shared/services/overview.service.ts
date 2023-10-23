@@ -11,10 +11,11 @@ import { optionalValue } from '../common';
 export class OverviewService {
   constructor(private http: HttpClient) {}
 
-  getOverview(quarterId?: number, teamIds?: number[]): Observable<OverviewEntity[]> {
+  getOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string): Observable<OverviewEntity[]> {
     const params = optionalValue({
       quarter: quarterId,
       team: teamIds,
+      objectiveQuery: objectiveQuery,
     });
 
     return this.http.get<OverviewEntity[]>('/api/v2/overview', { params: params }).pipe(

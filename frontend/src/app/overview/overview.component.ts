@@ -34,16 +34,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
   loadOverviewWithParams() {
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
+    const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
 
-    this.loadOverview(quarterId, teamIds);
+    this.loadOverview(quarterId, teamIds, objectiveQuery);
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[]) {
+  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
     this.overviewService
-      .getOverview(quarterId, teamIds)
+      .getOverview(quarterId, teamIds, objectiveQuery)
       .pipe(
         catchError(() => {
           this.loadOverview();

@@ -1,4 +1,4 @@
-<div (click)="openDrawer()" class="key-result rounded-2 p-3">
+<button (click)="openDrawer()" class="key-result rounded-2 p-3 w-100" (keydown.enter)="openDrawer(); $event.stopPropagation()">
   <div class="lh-base text-start">{{ keyResult.title }}</div>
   <app-scoring [keyResult]="keyResult" [isDetail]="false"></app-scoring>
   <div class="d-flex justify-content-between">
@@ -17,4 +17,4 @@
       <app-confidence [edit]="false" [checkIn]="keyResult.lastCheckIn!" class="ms-2"></app-confidence>
     </div>
   </div>
-</div>
+</button>

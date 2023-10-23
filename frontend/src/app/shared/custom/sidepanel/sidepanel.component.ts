@@ -17,7 +17,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
-  leaveKeys = ['Escape', 'Space'];
+  leaveKeys = ['Escape'];
   right = '-100%';
   @ViewChild('sidebar')
   sidebar!: ElementRef<HTMLDivElement>;

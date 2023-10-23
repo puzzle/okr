@@ -181,4 +181,9 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         this.refreshDataService.markDataRefresh();
       });
   }
+
+
+  asdfa($event: any) {
+    console.log($event)
+  }
 }

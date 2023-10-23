@@ -25,6 +25,9 @@
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
       <mat-icon
+        tabindex="0"
+        (keydown)="$event.stopPropagation()"
+        (keydown.enter)="objectiveMenu"
         class="three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation()"
@@ -34,9 +37,8 @@
       </mat-icon>
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
-      <button *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0">
-        <app-keyresult (click)="$event.stopPropagation()" [keyResult]="keyResult"></app-keyresult>
-      </button>
+      <app-keyresult *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0"
+                     [keyResult]="keyResult"></app-keyresult>
     </section>
     <section class="py-3">
       <button
@@ -46,7 +48,7 @@
         class="fw-bold"
         (click)="$event.stopPropagation(); openAddKeyResultDialog()"
       >
-        <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+        <img src="assets/icons/new-icon.svg" alt="Add key-result button"/>
         Key Result hinzufügen
       </button>
     </section>

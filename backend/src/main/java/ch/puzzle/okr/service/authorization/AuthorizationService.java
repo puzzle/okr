@@ -102,6 +102,12 @@ public class AuthorizationService {
         hasRoleWrite(authorizationUser, objective.getTeam(), NOT_AUTHORIZED_TO_WRITE_CHECK_IN);
     }
 
+    public void hasRoleCreateOrUpdateByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
+                NOT_AUTHORIZED_TO_READ_OBJECTIVE);
+        hasRoleWrite(authorizationUser, objective.getTeam(), NOT_AUTHORIZED_TO_WRITE_OBJECTIVE);
+    }
+
     public void hasRoleDeleteByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
                 NOT_AUTHORIZED_TO_READ_OBJECTIVE);

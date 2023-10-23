@@ -2,9 +2,8 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.service.business.CompletedBusinessService;
+import ch.puzzle.okr.service.authorization.CompletedAuthorizationService;
 import org.hamcrest.core.Is;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -20,20 +19,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
-import static ch.puzzle.okr.KeyResultTestHelpers.*;
+import static ch.puzzle.okr.KeyResultTestHelpers.JSON_PATH_ID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @WithMockUser(value = "spring")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CompletedController.class)
-class CompleteControllerIT {
+class CompletedControllerIT {
 
     @MockBean
-    CompletedBusinessService completedBusinessService;
+    CompletedAuthorizationService completedAuthorizationService;
 
     @Autowired
     private MockMvc mvc;
@@ -54,7 +54,8 @@ class CompleteControllerIT {
 
     @Test
     void createSuccessfulCompleted() throws Exception {
-        BDDMockito.given(this.completedBusinessService.createCompleted((any()))).willReturn(successfulCompleted);
+        BDDMockito.given(this.completedAuthorizationService.createCompleted(any(), (any())))
+                .willReturn(successfulCompleted);
 
         mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -71,8 +72,8 @@ class CompleteControllerIT {
 
     @Test
     void throwExceptionWhenCompletedWithIdCantBeFoundWhileDeleting() throws Exception {
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found")).when(completedBusinessService)
-                .deleteCompletedByObjectiveId(anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found"))
+                .when(completedAuthorizationService).deleteCompletedByObjectiveId(anyLong(), any());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

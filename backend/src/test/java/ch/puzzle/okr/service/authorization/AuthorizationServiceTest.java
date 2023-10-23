@@ -269,6 +269,17 @@ class AuthorizationServiceTest {
     }
 
     @Test
+    void hasRoleCreateOrUpdateByObjectiveId_ShouldPassThrough_WhenAuthorizedForAllObjectives() {
+        Long id = 13L;
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
+        AuthorizationUser authorizationUser = defaultAuthorizationUser();
+        String reason = "not authorized to read objective";
+        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, reason)).thenReturn(objective);
+
+        authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
+    }
+
+    @Test
     void hasRoleDeleteByObjectiveId_ShouldPassThrough_WhenAuthorizedForAllObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();

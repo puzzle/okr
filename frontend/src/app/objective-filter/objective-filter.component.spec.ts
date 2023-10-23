@@ -8,7 +8,7 @@ describe('ObjectiveFilterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ObjectiveFilterComponent]
+      declarations: [ObjectiveFilterComponent],
     });
     fixture = TestBed.createComponent(ObjectiveFilterComponent);
     component = fixture.componentInstance;

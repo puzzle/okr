@@ -14,6 +14,7 @@ import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -106,7 +107,7 @@ export class KeyResultDialogComponent implements OnInit {
         data: {
           title: 'Key Result',
         },
-        width: '15em',
+        width: CONFIRM_DIALOG_WIDTH,
         height: 'auto',
       })
       .afterClosed()

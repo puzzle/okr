@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-objective-filter',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./objective-filter.component.scss'],
 })
 export class ObjectiveFilterComponent {
-  options = [];
-  displayFn = (test: any) => test;
-  input: string = '';
+  objectiveControl = new FormControl('', [Validators.required, Validators.email]);
+
+  submit() {
+    console.log('test');
+  }
 }

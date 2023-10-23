@@ -1,8 +1,17 @@
-<div class="d-flex h-75">
-  <mat-form-field class="bg-white col-10" subscriptSizing="dynamic" [appearance]="'outline'" [floatLabel]="'auto'">
-    <input type="text" matInput [(ngModel)]="input" placeholder="Nach Objectives suchen" />
+<form class="d-flex h-75" (ngSubmit)="submit()">
+  <mat-form-field
+    class="bg-white col-10"
+    ngDefaultControl
+    subscriptSizing="dynamic"
+    [appearance]="'outline'"
+    [formControl]="objectiveControl"
+  >
+    <input type="text" matInput placeholder="Nach Objectives suchen" />
   </mat-form-field>
-  <button class="bg-pz-dark-blue col-2 d-flex justify-content-center align-items-center search-button icon-button">
+  <button
+    class="bg-pz-dark-blue col-1 d-flex justify-content-center align-items-center search-button icon-button"
+    type="submit"
+  >
     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="search" class="text-white"></mat-icon>
   </button>
-</div>
+</form>

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(indexes = { @Index(name = "idx_objective_title", columnList = "title") })
-public class Objective {
+public class Objective implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
     private Long id;
@@ -45,6 +45,8 @@ public class Objective {
 
     @ManyToOne
     private User modifiedBy;
+
+    private transient boolean writeable;
 
     public Objective() {
     }
@@ -136,6 +138,16 @@ public class Objective {
 
     public void setModifiedBy(User modifiedBy) {
         this.modifiedBy = modifiedBy;
+    }
+
+    @Override
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    @Override
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
     }
 
     @Override

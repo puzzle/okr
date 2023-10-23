@@ -15,8 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import static ch.puzzle.okr.CheckInTestHelpers.checkInMetric;
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.TestHelper.defaultJwtToken;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -41,6 +40,19 @@ class CheckInAuthorizationServiceTest {
 
         CheckIn checkIn = checkInAuthorizationService.getEntityById(id, token);
         assertEquals(checkInMetric, checkIn);
+    }
+
+    @Test
+    void getEntityById_ShouldReturnCheckInReadOnly_WhenAuthorizedForReadyOnly() {
+        Long id = 13L;
+        String reason = "junit test reason";
+        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
+                .hasRoleCreateOrUpdate(checkInMetric, authorizationUser);
+        when(checkInBusinessService.getEntityById(id)).thenReturn(checkInMetric);
+
+        CheckIn checkIn = checkInAuthorizationService.getEntityById(id, token);
+        assertFalse(checkIn.isWriteable());
     }
 
     @Test

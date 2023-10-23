@@ -37,7 +37,7 @@ public class KeyResultOrdinalMapper {
         return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
                 keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn());
+                keyResult.getModifiedOn(), keyResult.isWriteable());
     }
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {

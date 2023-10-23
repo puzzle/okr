@@ -6,6 +6,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -34,10 +35,21 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId, Jwt token) {
         AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser(token);
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
-        return getBusinessService().getAllCheckInsByKeyResult(keyResultId);
+        List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
+        checkIns.forEach(c -> setRoleCreateOrUpdateCheckIn(c, authorizationUser));
+        return checkIns;
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
         return getBusinessService().isImUsed(id, keyResult);
+    }
+
+    private void setRoleCreateOrUpdateCheckIn(CheckIn checkIn, AuthorizationUser authorizationUser) {
+        try {
+            getAuthorizationService().hasRoleCreateOrUpdate(checkIn, authorizationUser);
+            checkIn.setWriteable(true);
+        } catch (ResponseStatusException ex) {
+            checkIn.setWriteable(false);
+        }
     }
 }

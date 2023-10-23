@@ -17,7 +17,8 @@ public class CheckInMetricMapper {
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
                 checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
-                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue());
+                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue(),
+                checkInMetric.isWriteable());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {

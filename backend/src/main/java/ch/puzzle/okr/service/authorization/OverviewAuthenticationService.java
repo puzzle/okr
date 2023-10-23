@@ -5,6 +5,7 @@ import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,6 +23,26 @@ public class OverviewAuthenticationService {
 
     public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        return overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds, authorizationUser);
+        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds,
+                authorizationUser);
+        overviews.forEach(o -> setRoleCreateOrUpdate(o, authorizationUser));
+        return overviews;
+    }
+
+    private void setRoleCreateOrUpdate(Overview overview, AuthorizationUser authorizationUser) {
+        if (overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null) {
+            overview.setWriteable(hasRoleCreateOrUpdate(overview.getOverviewId().getObjectiveId(), authorizationUser));
+        } else {
+            overview.setWriteable(false);
+        }
+    }
+
+    private boolean hasRoleCreateOrUpdate(Long objectiveId, AuthorizationUser authorizationUser) {
+        try {
+            authorizationService.hasRoleCreateOrUpdateByObjectiveId(objectiveId, authorizationUser);
+            return true;
+        } catch (ResponseStatusException ex) {
+            return false;
+        }
     }
 }

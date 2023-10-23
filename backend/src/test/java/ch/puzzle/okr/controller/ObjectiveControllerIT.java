@@ -38,14 +38,10 @@ class ObjectiveControllerIT {
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
     private static final String DESCRIPTION = "This is our description";
     private static final String EVERYTHING_FINE_DESCRIPTION = "Everything Fine";
-
     private static final String TITLE = "Hunting";
-
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
-
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
-
     private static final String JSON = "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
             + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
             + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
@@ -61,9 +57,9 @@ class ObjectiveControllerIT {
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION)
             .withModifiedOn(LocalDateTime.MAX).build();
     static ObjectiveDto objective1Dto = new ObjectiveDto(5L, OBJECTIVE_TITLE_1, 1L, 1L, DESCRIPTION, State.DRAFT,
-            LocalDateTime.MAX, LocalDateTime.MAX);
+            LocalDateTime.MAX, LocalDateTime.MAX, true);
     static ObjectiveDto objective2Dto = new ObjectiveDto(7L, OBJECTIVE_TITLE_2, 1L, 1L, DESCRIPTION, State.DRAFT,
-            LocalDateTime.MIN, LocalDateTime.MIN);
+            LocalDateTime.MIN, LocalDateTime.MIN, true);
 
     @Autowired
     private MockMvc mvc;
@@ -99,7 +95,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT,
-                null, null);
+                null, null, true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any(), any())).willReturn(fullObjective);
@@ -109,7 +105,7 @@ class ObjectiveControllerIT {
                         "{\"title\": \"FullObjective\", \"ownerId\": 1, \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\"}"))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":null,\"title\":\"Program Faster\",\"teamId\":1,\"quarterId\":1,\"description\":\"Just be faster\",\"state\":\"DRAFT\",\"createdOn\":null,\"modifiedOn\":null}"));
+                        "{\"id\":null,\"title\":\"Program Faster\",\"teamId\":1,\"quarterId\":1,\"description\":\"Just be faster\",\"state\":\"DRAFT\",\"createdOn\":null,\"modifiedOn\":null,\"writeable\":true}"));
         verify(objectiveAuthorizationService, times(1)).createEntity(any(), any());
     }
 
@@ -127,7 +123,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
         ObjectiveDto testObjective = new ObjectiveDto(1L, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
-                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX);
+                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withTitle(TITLE).build();
 
@@ -144,7 +140,7 @@ class ObjectiveControllerIT {
     @Test
     void shouldReturnImUsed() throws Exception {
         ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
-                State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX);
+                State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
         Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();

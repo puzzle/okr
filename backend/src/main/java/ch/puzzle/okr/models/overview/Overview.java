@@ -34,6 +34,8 @@ public class Overview {
     private Integer confidence;
     private LocalDateTime createdOn;
 
+    private transient boolean writeable;
+
     public Overview() {
     }
 
@@ -128,6 +130,14 @@ public class Overview {
 
     public LocalDateTime getCreatedOn() {
         return createdOn;
+    }
+
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
     }
 
     @Override

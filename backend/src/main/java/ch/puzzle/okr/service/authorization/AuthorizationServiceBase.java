@@ -1,10 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.BusinessServiceInterface;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.server.ResponseStatusException;
 
-public abstract class AuthorizationServiceBase<K, E, B> {
+public abstract class AuthorizationServiceBase<K, E extends WriteableInterface, B> {
     private final BusinessServiceInterface<K, E> businessService;
     private final AuthorizationService authorizationService;
 
@@ -23,7 +25,9 @@ public abstract class AuthorizationServiceBase<K, E, B> {
     public E getEntityById(K id, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
         hasRoleReadById(id, authorizationUser);
-        return businessService.getEntityById(id);
+        E entity = businessService.getEntityById(id);
+        setRoleCreateOrUpdate(entity, authorizationUser);
+        return entity;
     }
 
     public E createEntity(E entity, Jwt token) {
@@ -50,5 +54,14 @@ public abstract class AuthorizationServiceBase<K, E, B> {
 
     public B getBusinessService() {
         return (B) businessService;
+    }
+
+    private void setRoleCreateOrUpdate(E entity, AuthorizationUser authorizationUser) {
+        try {
+            hasRoleCreateOrUpdate(entity, authorizationUser);
+            entity.setWriteable(true);
+        } catch (ResponseStatusException ex) {
+            entity.setWriteable(false);
+        }
     }
 }

@@ -14,8 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.TestHelper.defaultJwtToken;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -61,8 +60,21 @@ class ObjectiveAuthorizationServiceTest {
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
         when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
 
-        Objective Objective = objectiveAuthorizationService.getEntityById(id, token);
-        assertEquals(newObjective, Objective);
+        Objective objective = objectiveAuthorizationService.getEntityById(id, token);
+        assertEquals(newObjective, objective);
+    }
+
+    @Test
+    void getEntityById_ShouldReturnObjectiveReadOnly_WhenAuthorizedReadOnly() {
+        Long id = 13L;
+        String reason = "junit test reason";
+        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
+                .hasRoleCreateOrUpdate(newObjective, authorizationUser);
+        when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
+
+        Objective objective = objectiveAuthorizationService.getEntityById(id, token);
+        assertFalse(objective.isWriteable());
     }
 
     @Test

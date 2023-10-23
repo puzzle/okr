@@ -1,6 +1,7 @@
 package ch.puzzle.okr.models.checkin;
 
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "check_in_type")
-public abstract class CheckIn {
+public abstract class CheckIn implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_check_in")
     private Long id;
@@ -45,6 +46,8 @@ public abstract class CheckIn {
 
     @Column(name = "check_in_type", insertable = false, updatable = false)
     private String checkInType;
+
+    private transient boolean writeable;
 
     /* Getter and Setter */
     public Long getId() {
@@ -111,7 +114,15 @@ public abstract class CheckIn {
         return checkInType;
     }
 
-    /* toString(), equals() and hashCode() methods */
+    @Override
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    @Override
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
 
     @Override
     public String toString() {

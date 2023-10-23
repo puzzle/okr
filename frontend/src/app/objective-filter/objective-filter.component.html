@@ -1,12 +1,6 @@
-<div class="d-flex">
+<div class="d-flex h-75">
   <mat-form-field class="bg-white col-10" subscriptSizing="dynamic" [appearance]="'outline'" [floatLabel]="'auto'">
-    <input type="text" matInput [(ngModel)]="input" [matAutocomplete]="auto" placeholder="Nach Objectives suchen" />
-
-    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-      <mat-option *ngFor="let option of options" [value]="option">
-        {{ option }}
-      </mat-option>
-    </mat-autocomplete>
+    <input type="text" matInput [(ngModel)]="input" placeholder="Nach Objectives suchen" />
   </mat-form-field>
   <button class="bg-pz-dark-blue col-2 d-flex justify-content-center align-items-center search-button icon-button">
     <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="search" class="text-white"></mat-icon>

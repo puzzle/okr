@@ -1,12 +1,6 @@
-<form class="d-flex h-75" (ngSubmit)="updateURL()">
-  <mat-form-field
-    class="bg-white col-10"
-    ngDefaultControl
-    subscriptSizing="dynamic"
-    [appearance]="'outline'"
-    [formControl]="objectiveControl"
-  >
-    <input type="text" matInput placeholder="Nach Objectives suchen" />
+<form class="d-flex h-75" (ngSubmit)="updateURL()" [formGroup]="form">
+  <mat-form-field class="bg-white col-10" ngDefaultControl subscriptSizing="dynamic" [appearance]="'outline'">
+    <input type="text" matInput placeholder="Nach Objectives suchen" [formControlName]="'objectiveControl'" />
   </mat-form-field>
   <button
     class="bg-pz-dark-blue col-1 d-flex justify-content-center align-items-center search-button icon-button"

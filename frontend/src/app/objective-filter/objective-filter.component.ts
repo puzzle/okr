@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
@@ -9,7 +9,9 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
   styleUrls: ['./objective-filter.component.scss'],
 })
 export class ObjectiveFilterComponent implements OnInit {
-  objectiveControl = new FormControl<string>('');
+  form = new FormGroup({
+    objectiveControl: new FormControl<string>(''),
+  });
 
   constructor(
     private router: Router,
@@ -19,19 +21,17 @@ export class ObjectiveFilterComponent implements OnInit {
 
   updateURL() {
     this.router
-      .navigate([], { queryParams: { objectiveQuery: this.objectiveControl.value } })
+      .navigate([], { queryParams: { objectiveQuery: this.form.value.objectiveControl } })
       .then(() => this.refreshService.markDataRefresh());
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       const objectiveQuery = (params['objectiveQuery'] as string) || '';
-      if (this.objectiveControl.value?.toLowerCase().trim() !== objectiveQuery.toLowerCase().trim()) {
-        console.log(objectiveQuery);
-        this.objectiveControl.patchValue(objectiveQuery);
-        console.log(this.objectiveControl.value);
-        this.updateURL();
-      }
+      // if (this.form.value.objectiveControl?.toLowerCase().trim() !== objectiveQuery.toLowerCase().trim()) {
+      this.form.controls.objectiveControl.setValue(objectiveQuery);
+      // this.updateURL();
+      // }
     });
   }
 }

@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
@@ -12,15 +13,16 @@ import org.springframework.stereotype.Service;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class OrganisationBusinessService {
 
-    private OrganisationPersistenceService persistenceService;
+    private final OrganisationPersistenceService persistenceService;
 
-    private LdapTemplate ldapTemplate;
+    private final LdapTemplate ldapTemplate;
 
     public OrganisationBusinessService(LdapTemplate ldapTemplate, OrganisationPersistenceService persistenceService) {
         this.ldapTemplate = ldapTemplate;
@@ -33,7 +35,15 @@ public class OrganisationBusinessService {
         List<String> organisations = ldapTemplate.search(query, new CnAttributesMapper());
         organisations.removeIf(Objects::isNull);
         for (String org : organisations) {
-            persistenceService.saveIfNotExists(Organisation.Builder.builder().withOrgName(org).build());
+            persistenceService.saveIfNotExists(
+                    Organisation.Builder.builder().withOrgName(org).withState(OrganisationState.ACTIVE).build());
+        }
+        List<Organisation> existingOrganisations = persistenceService.findAll();
+        List<String> existingOrganisationNames = new ArrayList<>(
+                existingOrganisations.stream().map(Organisation::getOrgName).toList());
+        existingOrganisationNames.removeAll(organisations);
+        for (String orgName : existingOrganisationNames) {
+            persistenceService.updateOrganisationStateToInactive(orgName);
         }
     }
 

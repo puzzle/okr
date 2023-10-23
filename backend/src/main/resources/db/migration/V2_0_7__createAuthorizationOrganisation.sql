@@ -4,6 +4,7 @@ create table if not exists organisation
 (
     id       bigint       not null,
     org_name varchar(255) not null,
+    state text not null,
     primary key (id)
 );
 

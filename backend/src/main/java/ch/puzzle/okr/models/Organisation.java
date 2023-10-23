@@ -22,6 +22,10 @@ public class Organisation {
     @ManyToMany(mappedBy = "authorizationOrganisation")
     private List<Team> teams;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private OrganisationState state;
+
     public Organisation() {
     }
 
@@ -29,6 +33,7 @@ public class Organisation {
         id = builder.id;
         setOrgName(builder.orgName);
         setTeams(builder.teams);
+        setState(builder.state);
     }
 
     public Long getId() {
@@ -49,6 +54,14 @@ public class Organisation {
 
     public void setTeams(List<Team> teams) {
         this.teams = teams;
+    }
+
+    public OrganisationState getState() {
+        return this.state;
+    }
+
+    public void setState(OrganisationState state) {
+        this.state = state;
     }
 
     @Override
@@ -78,6 +91,8 @@ public class Organisation {
 
         private List<Team> teams;
 
+        private OrganisationState state;
+
         private Builder() {
         }
 
@@ -92,6 +107,11 @@ public class Organisation {
 
         public Builder withOrgName(String name) {
             this.orgName = name;
+            return this;
+        }
+
+        public Builder withState(OrganisationState state) {
+            this.state = state;
             return this;
         }
 

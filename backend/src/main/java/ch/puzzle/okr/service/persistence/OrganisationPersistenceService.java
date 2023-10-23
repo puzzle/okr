@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.repository.OrganisationRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,19 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         return "organisation";
     }
 
-    public Organisation saveIfNotExists(Organisation org) {
-        return getOrgRepository().findByOrgName(org.getOrgName()).orElseGet(() -> repository.save(org));
+    public void saveIfNotExists(Organisation org) {
+        if (!getOrgRepository().existsOrganisationByOrgName(org.getOrgName())) {
+            repository.save(org);
+        }
     }
 
     private OrganisationRepository getOrgRepository() {
         return (OrganisationRepository) repository;
+    }
+
+    public void updateOrganisationStateToInactive(String orgName) {
+        Organisation orgInactive = getOrgRepository().findByOrgName(orgName);
+        orgInactive.setState(OrganisationState.INACTIVE);
+        repository.save(orgInactive);
     }
 }

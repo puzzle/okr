@@ -68,6 +68,9 @@ import { Router } from '@angular/router';
 import { CustomRouter } from './shared/customRouter';
 import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
 import { DialogHeaderComponent } from './shared/custom/dialog-header/dialog-header.component';
+import { CustomPrimaryButtonComponent } from './shared/custom/custom-primary-button/custom-primary-button.component';
+import { CustomSecondaryButtonComponent } from './shared/custom/custom-secondary-button/custom-secondary-button.component';
+import { CustomCancelButtonComponent } from './shared/custom/custom-cancel-button/custom-cancel-button.component';
 import { ObjectiveFilterComponent } from './objective-filter/objective-filter.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
@@ -131,6 +134,9 @@ export const MY_FORMATS = {
     TeamFilterComponent,
     KeyresultTypeComponent,
     DialogHeaderComponent,
+    CustomPrimaryButtonComponent,
+    CustomSecondaryButtonComponent,
+    CustomCancelButtonComponent,
     ObjectiveFilterComponent,
   ],
   imports: [

@@ -36,7 +36,7 @@ public class CheckInController {
     @GetMapping("/{id}")
     public ResponseEntity<CheckInDto> getCheckInById(@PathVariable long id, @AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(checkInMapper.toDto(this.checkInAuthorizationService.getCheckInById(id, jwt)));
+                .body(checkInMapper.toDto(this.checkInAuthorizationService.getEntityById(id, jwt)));
     }
 
     @Operation(summary = "Create Check-in", description = "Create a new Check-in")
@@ -49,7 +49,7 @@ public class CheckInController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Check-in as json to create a new Check-in.", required = true) @RequestBody CheckInDto checkInDto,
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
-        CheckInDto createdCheckIn = checkInMapper.toDto(checkInAuthorizationService.createCheckIn(checkIn, jwt));
+        CheckInDto createdCheckIn = checkInMapper.toDto(checkInAuthorizationService.createEntity(checkIn, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCheckIn);
     }
 
@@ -66,7 +66,7 @@ public class CheckInController {
             @AuthenticationPrincipal Jwt jwt) {
         CheckIn checkIn = checkInMapper.toCheckIn(checkInDto);
         CheckInDto updatedCheckIn = this.checkInMapper
-                .toDto(this.checkInAuthorizationService.updateCheckIn(id, checkIn, jwt));
+                .toDto(this.checkInAuthorizationService.updateEntity(id, checkIn, jwt));
         return ResponseEntity.status(HttpStatus.OK).body(updatedCheckIn);
     }
 
@@ -77,6 +77,6 @@ public class CheckInController {
     public void deleteCheckInById(
             @Parameter(description = "The ID of an Check-in to delete it.", required = true) @PathVariable long id,
             @AuthenticationPrincipal Jwt jwt) {
-        this.checkInAuthorizationService.deleteCheckInById(id, jwt);
+        this.checkInAuthorizationService.deleteEntityById(id, jwt);
     }
 }

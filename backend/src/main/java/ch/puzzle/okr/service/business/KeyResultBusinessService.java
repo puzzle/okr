@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class KeyResultBusinessService {
+public class KeyResultBusinessService implements BusinessServiceInterface<Long, KeyResult> {
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
@@ -30,20 +30,20 @@ public class KeyResultBusinessService {
     }
 
     @Transactional
-    public KeyResult createKeyResult(KeyResult keyResult, AuthorizationUser authorizationUser) {
+    public KeyResult createEntity(KeyResult keyResult, AuthorizationUser authorizationUser) {
         keyResult.setCreatedOn(LocalDateTime.now());
         keyResult.setCreatedBy(authorizationUser.user());
         validator.validateOnCreate(keyResult);
         return keyResultPersistenceService.save(keyResult);
     }
 
-    public KeyResult getKeyResultById(Long id) {
+    public KeyResult getEntityById(Long id) {
         validator.validateOnGet(id);
         return keyResultPersistenceService.findById(id);
     }
 
     @Transactional
-    public KeyResult updateKeyResult(Long id, KeyResult keyResult) {
+    public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser) {
         KeyResult savedKeyResult = keyResultPersistenceService.findById(id);
         keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
         keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
@@ -71,10 +71,10 @@ public class KeyResultBusinessService {
     }
 
     @Transactional
-    public void deleteKeyResultById(Long id) {
+    public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
-                .forEach(checkIn -> checkInBusinessService.deleteCheckInById(checkIn.getId()));
+                .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 

@@ -79,7 +79,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldGetMetricKeyResultById() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
-        KeyResult keyResult = keyResultBusinessService.getKeyResultById(1L);
+        KeyResult keyResult = keyResultBusinessService.getEntityById(1L);
 
         assertEquals("Keyresult Metric", keyResult.getTitle());
         assertEquals(5, keyResult.getId());
@@ -88,7 +88,7 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldGetOrdinalKeyResultById() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
-        KeyResult keyResult = keyResultBusinessService.getKeyResultById(1L);
+        KeyResult keyResult = keyResultBusinessService.getEntityById(1L);
 
         assertEquals("Keyresult Ordinal", keyResult.getTitle());
         assertEquals(7, keyResult.getId());
@@ -103,7 +103,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(0)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -119,7 +119,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.updateEntity(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(0)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -136,7 +136,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).recreateEntity(1L, newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -153,7 +153,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).recreateEntity(1L, newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         assertEquals(1L, newKeyresult.getId());
@@ -170,7 +170,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(ordinalKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
@@ -188,7 +188,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
-        keyResultBusinessService.updateKeyResult(newKeyresult.getId(), newKeyresult);
+        keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(metricKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
@@ -203,7 +203,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setCreatedOn(any());
 
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(newKeyresult, authorizationUser);
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals("Keyresult Metric save", savedKeyResult.getTitle());
     }
@@ -216,7 +216,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setCreatedOn(any());
 
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(newKeyresult, authorizationUser);
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals("Keyresult ordinal save", savedKeyResult.getTitle());
     }
@@ -228,7 +228,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setCreatedOn(any());
 
-        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(newKeyresult, authorizationUser);
+        KeyResult keyResult = this.keyResultBusinessService.createEntity(newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals("Keyresult Metric save", keyResult.getTitle());
     }
@@ -240,7 +240,7 @@ class KeyResultBusinessServiceTest {
         Mockito.when(this.keyResultPersistenceService.save(any())).thenReturn(newKeyresult);
         doNothing().when(newKeyresult).setCreatedOn(any());
 
-        KeyResult keyResult = this.keyResultBusinessService.createKeyResult(newKeyresult, authorizationUser);
+        KeyResult keyResult = this.keyResultBusinessService.createEntity(newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).save(newKeyresult);
         assertEquals("Keyresult ordinal save", keyResult.getTitle());
         assertNull(keyResult.getDescription());
@@ -303,10 +303,10 @@ class KeyResultBusinessServiceTest {
     void shouldDeleteKeyResultAndAssociatedCheckIns() {
         when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
 
-        this.keyResultBusinessService.deleteKeyResultById(1L);
+        this.keyResultBusinessService.deleteEntityById(1L);
 
-        verify(this.checkInBusinessService, times(1)).deleteCheckInById(1L);
-        verify(this.keyResultBusinessService, times(1)).deleteKeyResultById(1L);
+        verify(this.checkInBusinessService, times(1)).deleteEntityById(1L);
+        verify(this.keyResultBusinessService, times(1)).deleteEntityById(1L);
     }
 
     @Test

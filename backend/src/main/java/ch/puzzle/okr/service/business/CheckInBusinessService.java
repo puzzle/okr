@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CheckInBusinessService {
+public class CheckInBusinessService implements BusinessServiceInterface<Long, CheckIn> {
     private final CheckInPersistenceService checkInPersistenceService;
     private final CheckInValidationService validator;
 
@@ -21,13 +21,13 @@ public class CheckInBusinessService {
         this.validator = validator;
     }
 
-    public CheckIn getCheckInById(Long id) {
+    public CheckIn getEntityById(Long id) {
         validator.validateOnGet(id);
         return checkInPersistenceService.findById(id);
     }
 
     @Transactional
-    public CheckIn createCheckIn(CheckIn checkIn, AuthorizationUser authorizationUser) {
+    public CheckIn createEntity(CheckIn checkIn, AuthorizationUser authorizationUser) {
         checkIn.setCreatedOn(LocalDateTime.now());
         checkIn.setModifiedOn(LocalDateTime.now());
         checkIn.setCreatedBy(authorizationUser.user());
@@ -36,7 +36,7 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public CheckIn updateCheckIn(Long id, CheckIn checkIn) {
+    public CheckIn updateEntity(Long id, CheckIn checkIn, AuthorizationUser authorizationUser) {
         CheckIn savedCheckIn = checkInPersistenceService.findById(id);
         checkIn.setCreatedOn(savedCheckIn.getCreatedOn());
         checkIn.setCreatedBy(savedCheckIn.getCreatedBy());
@@ -46,7 +46,7 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public void deleteCheckInById(Long id) {
+    public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         checkInPersistenceService.deleteById(id);
     }

@@ -53,7 +53,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldGetMetricCheckIn() {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
-        CheckIn checkIn = checkInBusinessService.getCheckInById(this.checkInMetric.getId());
+        CheckIn checkIn = checkInBusinessService.getEntityById(this.checkInMetric.getId());
 
         assertEquals(this.checkInMetric.getCheckInType(), checkIn.getCheckInType());
         assertEquals(this.checkInMetric.getChangeInfo(), checkIn.getChangeInfo());
@@ -64,7 +64,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldGetOrdinalCheckIn() {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
-        CheckIn checkIn = checkInBusinessService.getCheckInById(this.checkInOrdinal.getId());
+        CheckIn checkIn = checkInBusinessService.getEntityById(this.checkInOrdinal.getId());
 
         assertEquals(this.checkInOrdinal.getCheckInType(), checkIn.getCheckInType());
         assertEquals(this.checkInOrdinal.getChangeInfo(), checkIn.getChangeInfo());
@@ -77,7 +77,8 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInMetric.getId(), this.checkInMetric);
+        CheckIn newCheckIn = checkInBusinessService.updateEntity(this.checkInMetric.getId(), this.checkInMetric,
+                authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), newCheckIn.getId());
@@ -90,7 +91,8 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInOrdinal.getId(), this.checkInOrdinal);
+        CheckIn newCheckIn = checkInBusinessService.updateEntity(this.checkInOrdinal.getId(), this.checkInOrdinal,
+                authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), newCheckIn.getId());
@@ -101,7 +103,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveMetricCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
-        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInMetric, authorizationUser);
+        CheckIn createdCheckIn = checkInBusinessService.createEntity(this.checkInMetric, authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), createdCheckIn.getId());
@@ -113,7 +115,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveOrdinalCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
-        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInOrdinal, authorizationUser);
+        CheckIn createdCheckIn = checkInBusinessService.createEntity(this.checkInOrdinal, authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), createdCheckIn.getId());
@@ -124,7 +126,7 @@ class CheckInBusinessServiceTest {
 
     @Test
     void shouldDeleteCheckIn() {
-        checkInBusinessService.deleteCheckInById(this.checkInOrdinal.getId());
+        checkInBusinessService.deleteEntityById(this.checkInOrdinal.getId());
         verify(checkInPersistenceService, times(1)).deleteById(this.checkInOrdinal.getId());
     }
 

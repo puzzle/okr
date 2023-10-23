@@ -79,8 +79,8 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void getObjective() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.getObjectiveById(anyLong(), any())).willReturn(objective1);
+    void getObjectiveById() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong(), any())).willReturn(objective1);
 
         mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
@@ -88,8 +88,8 @@ class ObjectiveControllerIT {
     }
 
     @Test
-    void getObjectiveFail() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.getObjectiveById(anyLong(), any()))
+    void getObjectiveByIdFail() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mvc.perform(get(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON))
@@ -102,7 +102,7 @@ class ObjectiveControllerIT {
                 null, null);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveAuthorizationService.createObjective(any(), any())).willReturn(fullObjective);
+        BDDMockito.given(objectiveAuthorizationService.createEntity(any(), any())).willReturn(fullObjective);
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
@@ -110,12 +110,12 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(MockMvcResultMatchers.content().string(
                         "{\"id\":null,\"title\":\"Program Faster\",\"teamId\":1,\"quarterId\":1,\"description\":\"Just be faster\",\"state\":\"DRAFT\",\"createdOn\":null,\"modifiedOn\":null}"));
-        verify(objectiveAuthorizationService, times(1)).createObjective(any(), any());
+        verify(objectiveAuthorizationService, times(1)).createEntity(any(), any());
     }
 
     @Test
     void shouldReturnResponseStatusExceptionWhenCreatingObjectiveWithNullValues() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.createObjective(any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.createEntity(any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON).content(
@@ -132,7 +132,7 @@ class ObjectiveControllerIT {
                 .withTitle(TITLE).build();
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
-        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willReturn(objective);
+        BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any(), any())).willReturn(objective);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
@@ -151,7 +151,7 @@ class ObjectiveControllerIT {
 
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objectiveImUsed);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
-        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any()))
+        BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any(), any()))
                 .willReturn(objectiveImUsed);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
@@ -160,7 +160,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnNotFound() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
@@ -170,7 +170,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnBadRequest() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.updateObjective(anyLong(), any(), any())).willThrow(
+        BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any(), any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Failed objective -> Attribut is invalid"));
 
         mvc.perform(put(URL_OBJECTIVE_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -186,7 +186,7 @@ class ObjectiveControllerIT {
     @Test
     void throwExceptionWhenObjectiveWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective not found"))
-                .when(objectiveAuthorizationService).deleteObjectiveById(anyLong(), any());
+                .when(objectiveAuthorizationService).deleteEntityById(anyLong(), any());
 
         mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

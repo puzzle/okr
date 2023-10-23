@@ -44,7 +44,7 @@ public class KeyResultOrdinalMapper {
         return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultOrdinalDto.commitZone())
                 .withTargetZone(keyResultOrdinalDto.targetZone()).withStretchZone(keyResultOrdinalDto.stretchZone())
                 .withId(keyResultOrdinalDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultOrdinalDto.objective().id()))
+                .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
                 .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
                 .withModifiedOn(keyResultOrdinalDto.modifiedOn()).build();

@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static ch.puzzle.okr.TestConstants.TEAM_PUZZLE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
@@ -107,5 +110,12 @@ class TeamPersistenceServiceIT {
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals("role name unknown does not match team", exception.getReason());
+    }
+
+    @Test
+    void findByRoleNames_ShouldReturnSelectedTeamIds() {
+        List<Long> teamIds = teamPersistenceService.findByRoleNames(List.of("org_gl", "org_bl", "org_foo"));
+
+        assertThat(List.of(5L, 6L)).hasSameElementsAs(teamIds);
     }
 }

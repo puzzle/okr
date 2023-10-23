@@ -65,7 +65,7 @@ class ObjectiveBusinessServiceTest {
     @Test
     void getOneObjective() {
         Mockito.when(objectivePersistenceService.findById(5L)).thenReturn(this.objective);
-        Objective realObjective = objectiveBusinessService.getObjectiveById(5L);
+        Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
         assertEquals("Objective 1", realObjective.getTitle());
     }
@@ -76,7 +76,7 @@ class ObjectiveBusinessServiceTest {
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 6 not found"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveBusinessService.getObjectiveById(6L));
+                () -> objectiveBusinessService.getEntityById(6L));
         assertEquals(404, exception.getRawStatusCode());
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
@@ -89,7 +89,7 @@ class ObjectiveBusinessServiceTest {
 
         doNothing().when(objective).setCreatedOn(any());
 
-        objectiveBusinessService.createObjective(objective, authorizationUser);
+        objectiveBusinessService.createEntity(objective, authorizationUser);
 
         verify(objectivePersistenceService, times(1)).save(objective);
         assertEquals(State.DRAFT, objective.getState());
@@ -101,10 +101,10 @@ class ObjectiveBusinessServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
                 .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        Mockito.when(objectiveBusinessService.createObjective(objective1, authorizationUser))
+        Mockito.when(objectiveBusinessService.createEntity(objective1, authorizationUser))
                 .thenReturn(this.fullObjective1);
 
-        Objective savedObjective = objectiveBusinessService.createObjective(objective1, authorizationUser);
+        Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());
         assertEquals("FullObjective1", savedObjective.getTitle());
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
@@ -119,7 +119,7 @@ class ObjectiveBusinessServiceTest {
         doNothing().when(objective).setModifiedOn(any());
         Mockito.when(objectivePersistenceService.findById(any())).thenReturn(objective);
 
-        objectiveBusinessService.updateObjective(objective.getId(), objective, authorizationUser);
+        objectiveBusinessService.updateEntity(objective.getId(), objective, authorizationUser);
 
         verify(objectivePersistenceService).save(objective);
         assertEquals(user, objective.getModifiedBy());
@@ -130,10 +130,10 @@ class ObjectiveBusinessServiceTest {
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
         when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(this.keyResultList);
 
-        this.objectiveBusinessService.deleteObjectiveById(1L);
+        this.objectiveBusinessService.deleteEntityById(1L);
 
-        verify(this.keyResultBusinessService, times(3)).deleteKeyResultById(5L);
-        verify(this.objectiveBusinessService, times(1)).deleteObjectiveById(1L);
+        verify(this.keyResultBusinessService, times(3)).deleteEntityById(5L);
+        verify(this.objectiveBusinessService, times(1)).deleteEntityById(1L);
     }
 
     @Test

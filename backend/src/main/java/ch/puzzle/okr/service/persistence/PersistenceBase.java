@@ -11,7 +11,6 @@ import java.util.stream.StreamSupport;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 public abstract class PersistenceBase<T, E, R> {
 
@@ -39,11 +38,6 @@ public abstract class PersistenceBase<T, E, R> {
 
     public ResponseStatusException createEntityNotFoundException(E id) {
         return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
-    }
-
-    public ResponseStatusException createUnauthorizedException(Long id) {
-        return new ResponseStatusException(UNAUTHORIZED,
-                String.format("not authorized to select id=%s from %s", id, getModelName()));
     }
 
     public T save(T model) {

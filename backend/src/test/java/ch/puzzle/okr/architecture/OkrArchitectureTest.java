@@ -102,9 +102,9 @@ class OkrArchitectureTest {
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName(repository).should().onlyHaveDependentClassesThat()
-                .areAssignableTo(persistenceService).orShould().haveSimpleName(validationService);
+                .areAssignableTo(persistenceService);
 
-        // TODO complete rule and uncomment the following check
+        // TODO fix rule and/or classes
         // rule.check(importedClasses);
     }
 

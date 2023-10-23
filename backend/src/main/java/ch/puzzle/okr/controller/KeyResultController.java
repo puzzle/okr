@@ -45,7 +45,7 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id", content = @Content) })
     @GetMapping("/{id}")
     public KeyResultDto getKeyResultById(@PathVariable long id, @AuthenticationPrincipal Jwt jwt) {
-        return keyResultMapper.toDto(keyResultAuthorizationService.getKeyResultById(id, jwt));
+        return keyResultMapper.toDto(keyResultAuthorizationService.getEntityById(id, jwt));
     }
 
     @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
@@ -72,7 +72,7 @@ public class KeyResultController {
             @AuthenticationPrincipal Jwt jwt) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         KeyResultDto createdKeyResult = keyResultMapper
-                .toDto(keyResultAuthorizationService.createKeyResult(keyResult, jwt));
+                .toDto(keyResultAuthorizationService.createEntity(keyResult, jwt));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
     }
 
@@ -89,7 +89,7 @@ public class KeyResultController {
         KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultDto);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, mappedKeyResult);
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultAuthorizationService.updateKeyResult(id, mappedKeyResult, jwt));
+                .toDto(keyResultAuthorizationService.updateEntity(id, mappedKeyResult, jwt));
         return isKeyResultImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedKeyResult)
                 : ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
     }
@@ -99,6 +99,6 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id") })
     @DeleteMapping("/{id}")
     public void deleteKeyResultById(@PathVariable long id, @AuthenticationPrincipal Jwt jwt) {
-        keyResultAuthorizationService.deleteKeyResultById(id, jwt);
+        keyResultAuthorizationService.deleteEntityById(id, jwt);
     }
 }

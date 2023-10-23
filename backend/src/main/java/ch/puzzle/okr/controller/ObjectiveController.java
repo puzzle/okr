@@ -38,7 +38,7 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id,
             @AuthenticationPrincipal Jwt token) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.objectiveMapper.toDto(objectiveAuthorizationService.getObjectiveById(id, token)));
+                .body(this.objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id, token)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -48,7 +48,7 @@ public class ObjectiveController {
     public void deleteObjectiveById(
             @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id,
             @AuthenticationPrincipal Jwt token) {
-        this.objectiveAuthorizationService.deleteObjectiveById(id, token);
+        this.objectiveAuthorizationService.deleteEntityById(id, token);
     }
 
     @Operation(summary = "Create Objective", description = "Create a new Objective")
@@ -62,7 +62,7 @@ public class ObjectiveController {
             @AuthenticationPrincipal Jwt token) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveAuthorizationService.createObjective(objective, token));
+                .toDto(this.objectiveAuthorizationService.createEntity(objective, token));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -81,7 +81,7 @@ public class ObjectiveController {
             @AuthenticationPrincipal Jwt token) {
         Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveAuthorizationService.updateObjective(id, objective, token));
+                .toDto(this.objectiveAuthorizationService.updateEntity(id, objective, token));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

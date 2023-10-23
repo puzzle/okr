@@ -10,47 +10,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class KeyResultAuthorizationService {
-    private final KeyResultBusinessService keyResultBusinessService;
-    private final AuthorizationService authorizationService;
-
+public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long, KeyResult, KeyResultBusinessService> {
     public KeyResultAuthorizationService(KeyResultBusinessService keyResultBusinessService,
             AuthorizationService authorizationService) {
-        this.keyResultBusinessService = keyResultBusinessService;
-        this.authorizationService = authorizationService;
+        super(keyResultBusinessService, authorizationService);
     }
 
-    public KeyResult createKeyResult(KeyResult keyResult, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
-        return keyResultBusinessService.createKeyResult(keyResult, authorizationUser);
+    @Override
+    protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
+        getAuthorizationService().hasRoleReadByKeyResultId(id, authorizationUser);
     }
 
-    public KeyResult getKeyResultById(Long id, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
-        return keyResultBusinessService.getKeyResultById(id);
+    @Override
+    protected void hasRoleCreateOrUpdate(KeyResult entity, AuthorizationUser authorizationUser) {
+        getAuthorizationService().hasRoleCreateOrUpdate(entity, authorizationUser);
     }
 
-    public KeyResult updateKeyResult(Long id, KeyResult keyResult, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
-        return keyResultBusinessService.updateKeyResult(id, keyResult);
-    }
-
-    public void deleteKeyResultById(Long id, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
-        keyResultBusinessService.deleteKeyResultById(id);
+    @Override
+    protected void hasRoleDeleteById(Long id, AuthorizationUser authorizationUser) {
+        getAuthorizationService().hasRoleDeleteByKeyResultId(id, authorizationUser);
     }
 
     public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
-        authorizationService.hasRoleReadByKeyResultId(keyResultId, authorizationUser);
-        return keyResultBusinessService.getAllCheckInsByKeyResult(keyResultId);
+        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser(token);
+        getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
+        return getBusinessService().getAllCheckInsByKeyResult(keyResultId);
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
-        return keyResultBusinessService.isImUsed(id, keyResult);
+        return getBusinessService().isImUsed(id, keyResult);
     }
 }

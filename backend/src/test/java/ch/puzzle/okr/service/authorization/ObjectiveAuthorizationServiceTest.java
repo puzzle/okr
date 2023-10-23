@@ -34,39 +34,39 @@ class ObjectiveAuthorizationServiceTest {
     private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
     @Test
-    void createObjective_ShouldReturnObjective_WhenAuthorized() {
+    void createEntity_ShouldReturnObjective_WhenAuthorized() {
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        when(objectiveBusinessService.createObjective(newObjective, authorizationUser)).thenReturn(newObjective);
+        when(objectiveBusinessService.createEntity(newObjective, authorizationUser)).thenReturn(newObjective);
 
-        Objective objective = objectiveAuthorizationService.createObjective(newObjective, token);
+        Objective objective = objectiveAuthorizationService.createEntity(newObjective, token);
         assertEquals(newObjective, objective);
     }
 
     @Test
-    void createObjective_ShouldThrowException_WhenNotAuthorized() {
+    void createEntity_ShouldThrowException_WhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(newObjective, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.createObjective(newObjective, token));
+                () -> objectiveAuthorizationService.createEntity(newObjective, token));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
 
     @Test
-    void getObjectiveById_ShouldReturnObjective_WhenAuthorized() {
+    void getEntityById_ShouldReturnObjective_WhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        when(objectiveBusinessService.getObjectiveById(id)).thenReturn(newObjective);
+        when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
 
-        Objective Objective = objectiveAuthorizationService.getObjectiveById(id, token);
+        Objective Objective = objectiveAuthorizationService.getEntityById(id, token);
         assertEquals(newObjective, Objective);
     }
 
     @Test
-    void getObjectiveById_ShouldThrowException_WhenNotAuthorized() {
+    void getEntityById_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
@@ -74,23 +74,23 @@ class ObjectiveAuthorizationServiceTest {
                 .hasRoleReadByObjectiveId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.getObjectiveById(id, token));
+                () -> objectiveAuthorizationService.getEntityById(id, token));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
 
     @Test
-    void updateObjective_ShouldReturnUpdatedObjective_WhenAuthorized() {
+    void updateEntity_ShouldReturnUpdatedObjective_WhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        when(objectiveBusinessService.updateObjective(id, newObjective, authorizationUser)).thenReturn(newObjective);
+        when(objectiveBusinessService.updateEntity(id, newObjective, authorizationUser)).thenReturn(newObjective);
 
-        Objective Objective = objectiveAuthorizationService.updateObjective(id, newObjective, token);
+        Objective Objective = objectiveAuthorizationService.updateEntity(id, newObjective, token);
         assertEquals(newObjective, Objective);
     }
 
     @Test
-    void updateObjective_ShouldThrowException_WhenNotAuthorized() {
+    void updateEntity_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
@@ -98,21 +98,21 @@ class ObjectiveAuthorizationServiceTest {
                 .hasRoleCreateOrUpdate(newObjective, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.updateObjective(id, newObjective, token));
+                () -> objectiveAuthorizationService.updateEntity(id, newObjective, token));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
 
     @Test
-    void deleteObjective_ShouldPassThrough_WhenAuthorized() {
+    void deleteEntityById_ShouldPassThrough_WhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
 
-        objectiveAuthorizationService.deleteObjectiveById(id, token);
+        objectiveAuthorizationService.deleteEntityById(id, token);
     }
 
     @Test
-    void deleteObjective_ShouldThrowException_WhenNotAuthorized() {
+    void deleteEntityById_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
@@ -120,7 +120,7 @@ class ObjectiveAuthorizationServiceTest {
                 .hasRoleDeleteByObjectiveId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectiveAuthorizationService.deleteObjectiveById(id, token));
+                () -> objectiveAuthorizationService.deleteEntityById(id, token));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }

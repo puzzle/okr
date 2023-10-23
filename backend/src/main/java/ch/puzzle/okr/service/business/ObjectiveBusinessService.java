@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Service
-public class ObjectiveBusinessService {
+public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
@@ -25,13 +25,13 @@ public class ObjectiveBusinessService {
         this.objectivePersistenceService = objectivePersistenceService;
     }
 
-    public Objective getObjectiveById(Long id) {
+    public Objective getEntityById(Long id) {
         validator.validateOnGet(id);
         return objectivePersistenceService.findById(id);
     }
 
     @Transactional
-    public Objective updateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
+    public Objective updateEntity(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective savedObjective = objectivePersistenceService.findById(id);
         objective.setCreatedBy(savedObjective.getCreatedBy());
         objective.setCreatedOn(savedObjective.getCreatedOn());
@@ -42,7 +42,7 @@ public class ObjectiveBusinessService {
     }
 
     @Transactional
-    public Objective createObjective(Objective objective, AuthorizationUser authorizationUser) {
+    public Objective createEntity(Objective objective, AuthorizationUser authorizationUser) {
         objective.setCreatedBy(authorizationUser.user());
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
@@ -50,10 +50,10 @@ public class ObjectiveBusinessService {
     }
 
     @Transactional
-    public void deleteObjectiveById(Long id) {
+    public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         keyResultBusinessService.getAllKeyResultsByObjective(id)
-                .forEach(keyResult -> keyResultBusinessService.deleteKeyResultById(keyResult.getId()));
+                .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }
 

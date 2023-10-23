@@ -12,13 +12,7 @@
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Titel</label>
         <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
-          <textarea
-            cdkFocusInitial
-            formControlName="title"
-            id="title"
-            matInput
-            placeholder="Objective Title"
-          ></textarea>
+          <textarea cdkFocusInitial formControlName="title" id="title" matInput></textarea>
         </mat-form-field>
         <span *ngIf="isTouchedOrDirty('title')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
@@ -30,7 +24,7 @@
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Beschreibung (optional)</label>
         <mat-form-field appearance="outline" class="dialog-form-fields" subscriptSizing="dynamic">
-          <textarea formControlName="description" matInput placeholder="Objective Beschreibung"></textarea>
+          <textarea formControlName="description" matInput></textarea>
         </mat-form-field>
         <span *ngIf="isTouchedOrDirty('description')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
+import { formInputCheck } from '../../../common';
 
 @Component({
   selector: 'app-check-in-base-informations',
@@ -19,4 +20,6 @@ export class CheckInBaseInformationsComponent {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
+
+  protected readonly formInputCheck = formInputCheck;
 }

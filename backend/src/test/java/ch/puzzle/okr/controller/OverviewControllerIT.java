@@ -98,7 +98,7 @@ class OverviewControllerIT {
         overviews.addAll(overviewPuzzle);
         overviews.addAll(overviewOKR);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 2L, 3L, 4L)))
+        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(1L, 2L, 3L, 4L), ""))
                 .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
@@ -116,7 +116,7 @@ class OverviewControllerIT {
 
     @Test
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
-        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(any(), any()))
+        BDDMockito.given(overviewBusinessService.getFilteredOverview(any(), any(), any()))
                 .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
@@ -128,8 +128,7 @@ class OverviewControllerIT {
         List<Overview> overviews = new ArrayList<>();
         overviews.addAll(overviewPuzzle);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(1L, 3L)))
-                .willReturn(overviews);
+        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(1L, 3L), "")).willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -143,7 +142,7 @@ class OverviewControllerIT {
 
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(2L, List.of(4L)))
+        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(4L), ""))
                 .willReturn(List.of(simpleOverview));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))

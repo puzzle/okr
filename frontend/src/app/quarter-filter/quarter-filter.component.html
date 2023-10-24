@@ -1,4 +1,4 @@
-<mat-form-field appearance="outline" class="bg-white" subscriptSizing="dynamic">
+<mat-form-field appearance="outline" class="bg-white header-form-field" subscriptSizing="dynamic">
   <mat-select [(ngModel)]="quarterId" (change)="changeDisplayedQuarter()">
     <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">{{ quarter.label }}</mat-option>
   </mat-select>

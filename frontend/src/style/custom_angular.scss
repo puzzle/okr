@@ -17,4 +17,7 @@ $pz-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($pz-theme);
-@include mat.private-form-field-density(-4);
+
+.header-form-field {
+  @include mat.private-form-field-density(-4);
+}

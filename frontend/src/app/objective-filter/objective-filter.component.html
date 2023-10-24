@@ -6,15 +6,6 @@
     [appearance]="'outline'"
   >
     <input type="text" matInput placeholder="Nach Objectives suchen" [formControlName]="'objectiveControl'" />
-    <button
-      *ngIf="this.form.controls.objectiveControl.value"
-      matSuffix
-      mat-icon-button
-      aria-label="Clear"
-      (click)="this.form.controls.objectiveControl.setValue('')"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
   </mat-form-field>
 
   <button

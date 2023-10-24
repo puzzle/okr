@@ -17,6 +17,6 @@ public class OverviewPersistenceService {
 
     public List<Overview> getOverviewByQuarterAndTeamsAndObjectiveQuery(Long quarterId, List<Long> teamIds,
             String objectiveQuery) {
-        return overviewRepository.getFilteredOverview(quarterId, teamIds, objectiveQuery);
+        return overviewRepository.getFilteredOverview(quarterId, teamIds, objectiveQuery.toLowerCase());
     }
 }

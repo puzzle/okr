@@ -29,9 +29,8 @@ public class OverviewBusinessService {
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
         if (Objects.isNull(quarterId)) {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
-        } else {
-            validator.validateQuarter(quarterId);
         }
+
         if (CollectionUtils.isEmpty(teamIds)) {
             // TODO get current team (of current user) if teamIds is empty and remove temp implementation
             // TODO remove line below as soon as teamids are able to be read from jwt token

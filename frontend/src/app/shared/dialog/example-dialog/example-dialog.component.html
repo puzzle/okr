@@ -3,7 +3,7 @@
   <form [formGroup]="dialogForm" (ngSubmit)="save()" class="d-flex flex-column justify-content-center">
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name" placeholder="Ex. Tom" />
+      <input [ngClass]="formInputCheck(dialogForm, 'name')" formControlName="name" placeholder="Ex. Tom" />
       <div *ngIf="isTouchedOrDirty('name')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
           {{ errorMessages[errorKey.toUpperCase().trim()] }}

@@ -15,6 +15,7 @@ import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -150,4 +151,6 @@ export class KeyResultDialogComponent implements OnInit {
   validOwner() {
     return typeof this.keyResultForm.value.owner === 'string';
   }
+
+  protected readonly formInputCheck = formInputCheck;
 }

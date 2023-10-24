@@ -108,17 +108,25 @@ body pzsh-backdrop {
   color: #b3261b;
 }
 
+.big-dialog-form-field {
+  height: 3.56rem;
+}
+
 .dialog-form-field {
-  transition: border-color 0.3s ease;
+  resize: none;
   outline: none !important;
   &:focus {
-    border-color: $pz-dark-blue !important;
+    outline: $pz-dark-blue 2px solid !important;
   }
 }
 
 .dialog-form-field-error {
-  outline: none !important;
-  border-color: red !important;
+  resize: none;
+  outline: red 2px solid !important;
+}
+
+select:focus {
+  outline: $pz-dark-blue 2px solid !important;
 }
 
 *:focus {

@@ -5,16 +5,14 @@
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
-        <textarea
-          [attr.data-testId]="'titleInput'"
-          class="input-fields"
-          formControlName="title"
-          id="title"
-          matInput
-          cdkFocusInitial
-        ></textarea>
-      </mat-form-field>
+      <textarea
+        [attr.data-testId]="'titleInput'"
+        [ngClass]="formInputCheck(keyResultForm, 'title')"
+        class="input-fields"
+        formControlName="title"
+        id="title"
+        cdkFocusInitial
+      ></textarea>
       <span *ngIf="isTouchedOrDirty('title')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
           {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -28,20 +26,18 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
-        <input
-          matInput
-          class="input-fields owner-input"
-          [attr.data-testId]="'ownerInput'"
-          [matAutocomplete]="auto"
-          formControlName="owner"
-        />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
-          <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
-            {{ user.firstname + " " + user.lastname }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <input
+        [ngClass]="validOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+        class="input-fields owner-input"
+        [attr.data-testId]="'ownerInput'"
+        [matAutocomplete]="auto"
+        formControlName="owner"
+      />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
+        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
+          {{ user.firstname + " " + user.lastname }}
+        </mat-option>
+      </mat-autocomplete>
       <div *ngIf="validOwner()">
         <mat-error> Du musst einen Owner auswählen </mat-error>
       </div>
@@ -49,14 +45,12 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Beschreibung (optional)</label>
-      <mat-form-field appearance="outline" class="dialog-form-fields" subscriptSizing="dynamic">
-        <textarea
-          [attr.data-testId]="'descriptionInput'"
-          class="input-fields"
-          formControlName="description"
-          matInput
-        ></textarea>
-      </mat-form-field>
+      <textarea
+        [attr.data-testId]="'descriptionInput'"
+        class="input-fields"
+        [ngClass]="formInputCheck(keyResultForm, 'description')"
+        formControlName="description"
+      ></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
           {{ errorMessages[errorKey.toUpperCase().trim()] }}

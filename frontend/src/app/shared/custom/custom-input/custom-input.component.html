@@ -1,5 +1,3 @@
 <form [formGroup]="formGroup">
-  <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
-    <input matInput formControlName="{{ formControlNameGiven }}" />
-  </mat-form-field>
+  <input [ngClass]="formInputCheck(formGroup, formControlNameGiven)" formControlName="{{ formControlNameGiven }}" />
 </form>

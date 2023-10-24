@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-example-dialog',
@@ -36,4 +37,5 @@ export class ExampleDialogComponent {
   }
 
   protected readonly errorMessages: any = errorMessages;
+  protected readonly formInputCheck = formInputCheck;
 }

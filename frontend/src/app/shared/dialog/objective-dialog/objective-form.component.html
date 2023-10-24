@@ -11,9 +11,12 @@
     <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Titel</label>
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="dialog-form-fields">
-          <textarea cdkFocusInitial formControlName="title" id="title" matInput></textarea>
-        </mat-form-field>
+        <textarea
+          [ngClass]="formInputCheck(objectiveForm, 'title')"
+          cdkFocusInitial
+          formControlName="title"
+          id="title"
+        ></textarea>
         <span *ngIf="isTouchedOrDirty('title')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
             {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -23,9 +26,7 @@
 
       <div class="d-flex flex-column gap-2 col-12">
         <label class="text-black" for="title">Beschreibung (optional)</label>
-        <mat-form-field appearance="outline" class="dialog-form-fields" subscriptSizing="dynamic">
-          <textarea formControlName="description" matInput></textarea>
-        </mat-form-field>
+        <textarea formControlName="description" [ngClass]="formInputCheck(objectiveForm, 'description')"></textarea>
         <span *ngIf="isTouchedOrDirty('description')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
             {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -63,7 +64,6 @@
             *ngIf="!data.objective.objectiveId"
             [disabled]="objectiveForm.invalid"
             color="dark"
-            t
             mat-stroked-button
             submitType="DRAFT"
             type="submit"

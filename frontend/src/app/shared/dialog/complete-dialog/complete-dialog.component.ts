@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -41,4 +42,6 @@ export class CompleteDialogComponent {
       el.classList.remove('card-hover');
     });
   }
+
+  protected readonly formInputCheck = formInputCheck;
 }

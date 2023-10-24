@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-custom-input',
@@ -12,4 +13,5 @@ export class CustomInputComponent {
 
   @Input()
   formControlNameGiven!: string;
+  protected readonly formInputCheck = formInputCheck;
 }

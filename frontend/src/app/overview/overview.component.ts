@@ -56,4 +56,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
+
+  trackByFn(id: any) {
+    return id;
+  }
 }

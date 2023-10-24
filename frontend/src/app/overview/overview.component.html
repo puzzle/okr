@@ -1,5 +1,9 @@
 <router-outlet></router-outlet>
 
 <div class="overviewContainer bg-grey">
-  <app-team *ngFor="let overviewEntity of overviewEntities$ | async" [overviewEntity]="overviewEntity"> </app-team>
+  <app-team
+    *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
+    [overviewEntity]="overviewEntity"
+  >
+  </app-team>
 </div>

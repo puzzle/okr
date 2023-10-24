@@ -7,7 +7,7 @@
     >
       <app-objective-column
         id="objective-column"
-        *ngFor="let objective of OVEntity.objectives"
+        *ngFor="let objective of OVEntity.objectives; trackBy: trackByFn"
         [objective]="objective"
         class="col-xs-12 col-md-4 p-0 column-width"
         data-testid="objective"

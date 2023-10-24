@@ -36,8 +36,9 @@
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
       <app-keyresult
-        *ngFor="let keyResult of (objective | async)?.keyResults"
+        *ngFor="let keyResult of (objective | async)?.keyResults; trackBy: trackByFn"
         class="border-0 p-0"
+        (click)="$event.stopPropagation()"
         [keyResult]="keyResult"
       ></app-keyresult>
     </section>
@@ -47,7 +48,7 @@
         mat-button
         color="primary"
         class="fw-bold"
-        (click)="$event.stopPropagation(); openAddKeyResultDialog()"
+        (click)="openAddKeyResultDialog(); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"
       >
         <img src="assets/icons/new-icon.svg" alt="Add key-result button" />

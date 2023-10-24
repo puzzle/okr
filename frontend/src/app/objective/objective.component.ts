@@ -96,6 +96,8 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           objective: menuEntry.dialog.data,
         },
         width: dialogWidth,
+        autoFocus: true,
+        restoreFocus: true,
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
@@ -172,8 +174,8 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           objective: this.objective.value,
           keyResult: null,
         },
-        autoFocus: true, // <-- add this here
         restoreFocus: true,
+        autoFocus: true,
       })
       .afterClosed()
       .subscribe((result) => {
@@ -182,5 +184,9 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         }
         this.refreshDataService.markDataRefresh();
       });
+  }
+
+  trackByFn(id: any) {
+    return id;
   }
 }

@@ -61,4 +61,8 @@ export class TeamComponent {
         this.refreshDataService.markDataRefresh();
       });
   }
+
+  trackByFn(id: any) {
+    return id;
+  }
 }

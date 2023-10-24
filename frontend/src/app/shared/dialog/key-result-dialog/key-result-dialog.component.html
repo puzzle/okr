@@ -65,7 +65,7 @@
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid"
+        [disabled]="keyResultForm.invalid || validOwner()"
         color="primary"
         mat-flat-button
       >

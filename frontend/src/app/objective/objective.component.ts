@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -180,10 +180,5 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         }
         this.refreshDataService.markDataRefresh();
       });
-  }
-
-
-  asdfa($event: any) {
-    console.log($event)
   }
 }

@@ -24,21 +24,17 @@
         [src]="'assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
-      <mat-icon
-        tabindex="0"
-        (keydown)="$event.stopPropagation()"
-        (keydown.enter)="objectiveMenu"
-        class="three-dot-menu"
-        [matMenuTriggerFor]="objectiveMenu"
-        (click)="$event.stopPropagation()"
-        data-testid="objective-menu"
-      >
-        more_vert
-      </mat-icon>
+
+      <button class="icon-button three-dot-menu" [matMenuTriggerFor]="objectiveMenu" (click)="$event.stopPropagation()" data-testid="objective-menu" (keydown.enter)="$event.stopPropagation()">
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
-      <app-keyresult *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0"
-                     [keyResult]="keyResult"></app-keyresult>
+      <app-keyresult
+        *ngFor="let keyResult of (objective | async)?.keyResults"
+        class="border-0 p-0"
+        [keyResult]="keyResult"
+      ></app-keyresult>
     </section>
     <section class="py-3">
       <button
@@ -48,7 +44,7 @@
         class="fw-bold"
         (click)="$event.stopPropagation(); openAddKeyResultDialog()"
       >
-        <img src="assets/icons/new-icon.svg" alt="Add key-result button"/>
+        <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
         Key Result hinzufügen
       </button>
     </section>

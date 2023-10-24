@@ -1,4 +1,11 @@
-import { areEqual, getNumberOrNull, getValueFromQuery, optionalReplaceWithNulls, optionalValue } from './common';
+import {
+  areEqual,
+  getNumberOrNull,
+  getValueFromQuery,
+  optionalReplaceWithNulls,
+  optionalValue,
+  sanitize,
+} from './common';
 
 describe('test common functions', () => {
   describe('getNumberOrNull', () => {
@@ -100,6 +107,13 @@ describe('test common functions', () => {
     [{ v: undefined, v2: 1 }, { v2: 1 }],
   ])('should give correct output for optionalValue', (obj1: { [p: string]: any }, obj2: { [p: string]: any }) => {
     expect(optionalValue(obj1)).toStrictEqual(obj2);
+  });
+
+  it.each([
+    [' test ', 'test'],
+    ['ffF', 'fff'],
+  ])('test sanitize function', (str: any, expected: string) => {
+    expect(sanitize(str)).toBe(expected);
   });
 
   it.each([

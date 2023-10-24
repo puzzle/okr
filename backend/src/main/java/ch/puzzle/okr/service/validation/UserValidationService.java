@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class UserValidationService extends ValidationBase<User, Long, UserRepository> {
+public class UserValidationService extends ValidationBase<User, Long, UserRepository, UserPersistenceService> {
 
     UserValidationService(UserPersistenceService persistenceService) {
         super(persistenceService);

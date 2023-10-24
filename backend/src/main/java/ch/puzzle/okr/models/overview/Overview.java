@@ -1,6 +1,7 @@
 package ch.puzzle.okr.models.overview;
 
 import ch.puzzle.okr.models.State;
+import ch.puzzle.okr.models.WriteableInterface;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.EmbeddedId;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Immutable
-public class Overview {
+public class Overview implements WriteableInterface {
 
     @EmbeddedId
     private OverviewId overviewId;
@@ -132,10 +133,12 @@ public class Overview {
         return createdOn;
     }
 
+    @Override
     public boolean isWriteable() {
         return writeable;
     }
 
+    @Override
     public void setWriteable(boolean writeable) {
         this.writeable = writeable;
     }
@@ -148,7 +151,8 @@ public class Overview {
                 + ", keyResultType='" + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal
                 + ", unit='" + unit + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\''
                 + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='"
-                + checkInZone + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + '}';
+                + checkInZone + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + ", writeable="
+                + writeable + '\'' + '}';
     }
 
     public static final class Builder {

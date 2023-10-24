@@ -102,6 +102,22 @@ public class AuthorizationService {
         hasRoleWrite(authorizationUser, objective.getTeam(), NOT_AUTHORIZED_TO_WRITE_CHECK_IN);
     }
 
+    public boolean isWriteable(Objective objective, AuthorizationUser authorizationUser) {
+        return isWriteable(authorizationUser, objective.getTeam());
+    }
+
+    public boolean isWriteable(KeyResult keyResult, AuthorizationUser authorizationUser) {
+        Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
+                authorizationUser, NOT_AUTHORIZED_TO_READ_KEY_RESULT);
+        return isWriteable(authorizationUser, objective.getTeam());
+    }
+
+    public boolean isWriteable(CheckIn checkIn, AuthorizationUser authorizationUser) {
+        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
+                authorizationUser, NOT_AUTHORIZED_TO_READ_CHECK_IN);
+        return isWriteable(authorizationUser, objective.getTeam());
+    }
+
     public void hasRoleCreateOrUpdateByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
                 NOT_AUTHORIZED_TO_READ_OBJECTIVE);
@@ -127,14 +143,23 @@ public class AuthorizationService {
     }
 
     private void hasRoleWrite(AuthorizationUser authorizationUser, Team team, String reason) {
-        if (hasRoleWriteAll(authorizationUser)) {
-            return;
-        } else if (hasRoleWriteAllTeams(authorizationUser)
-                && !Objects.equals(authorizationUser.firstLevelTeamId(), team.getId())) {
-            return;
-        } else if (hasRoleWriteTeam(authorizationUser) && authorizationUser.teamIds().contains(team.getId())) {
+        if (isWriteable(authorizationUser, team)) {
             return;
         }
         throw new ResponseStatusException(UNAUTHORIZED, reason);
+    }
+
+    private boolean isWriteable(AuthorizationUser authorizationUser, Team team) {
+        return isWriteable(authorizationUser, team.getId());
+    }
+
+    public boolean isWriteable(AuthorizationUser authorizationUser, Long teamId) {
+        if (hasRoleWriteAll(authorizationUser)) {
+            return true;
+        } else if (hasRoleWriteAllTeams(authorizationUser)
+                && !Objects.equals(authorizationUser.firstLevelTeamId(), teamId)) {
+            return true;
+        } else
+            return hasRoleWriteTeam(authorizationUser) && authorizationUser.teamIds().contains(teamId);
     }
 }

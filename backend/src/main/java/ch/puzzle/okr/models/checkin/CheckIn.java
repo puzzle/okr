@@ -129,7 +129,7 @@ public abstract class CheckIn implements WriteableInterface {
         return "CheckIn{" + "id=" + id + ", changeInfo='" + changeInfo + '\'' + ", initiatives='" + initiatives + '\''
                 + ", confidence=" + confidence + ", keyResult=" + keyResult + ", createdBy=" + createdBy
                 + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", checkInType='" + checkInType + '\''
-                + '}';
+                + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override

@@ -12,11 +12,19 @@ import java.util.stream.StreamSupport;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-public abstract class PersistenceBase<T, E, R> {
+/**
+ * @param <T>
+ *            the Type or entity of the repository
+ * @param <ID>
+ *            the Identifier or primary key of the entity
+ * @param <R>
+ *            the Repository of the entity
+ */
+public abstract class PersistenceBase<T, ID, R> {
 
-    protected final CrudRepository<T, E> repository;
+    protected final CrudRepository<T, ID> repository;
 
-    protected PersistenceBase(CrudRepository<T, E> repository) {
+    protected PersistenceBase(CrudRepository<T, ID> repository) {
         this.repository = repository;
     }
 
@@ -24,19 +32,19 @@ public abstract class PersistenceBase<T, E, R> {
         return (R) repository;
     }
 
-    public T findById(E id) throws ResponseStatusException {
+    public T findById(ID id) throws ResponseStatusException {
         checkIdNull(id);
         return repository.findById(id).orElseThrow(() -> createEntityNotFoundException(id));
     }
 
-    public void checkIdNull(E id) {
+    public void checkIdNull(ID id) {
         if (id == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     format("Missing identifier for %s", getModelName()));
         }
     }
 
-    public ResponseStatusException createEntityNotFoundException(E id) {
+    public ResponseStatusException createEntityNotFoundException(ID id) {
         return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
     }
 
@@ -48,7 +56,7 @@ public abstract class PersistenceBase<T, E, R> {
         return iteratorToList(repository.findAll());
     }
 
-    public void deleteById(E id) {
+    public void deleteById(ID id) {
         repository.deleteById(id);
     }
 

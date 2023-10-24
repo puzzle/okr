@@ -154,7 +154,8 @@ public class Objective implements WriteableInterface {
     public String toString() {
         return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
                 + ", quarter=" + quarter + ", description='" + description + '\'' + ", modifiedOn=" + modifiedOn
-                + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + '}';
+                + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + ", writeable="
+                + writeable + '\'' + '}';
     }
 
     @Override

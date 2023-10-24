@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.mapper.OverviewMapper;
-import ch.puzzle.okr.service.authorization.OverviewAuthenticationService;
+import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,12 +23,12 @@ import java.util.List;
 @RequestMapping("api/v2/overview")
 public class OverviewController {
     private final OverviewMapper overviewMapper;
-    private final OverviewAuthenticationService overviewAuthenticationService;
+    private final OverviewAuthorizationService overviewAuthorizationService;
 
     public OverviewController(OverviewMapper overviewMapper,
-            OverviewAuthenticationService overviewAuthenticationService) {
+            OverviewAuthorizationService overviewAuthorizationService) {
         this.overviewMapper = overviewMapper;
-        this.overviewAuthenticationService = overviewAuthenticationService;
+        this.overviewAuthorizationService = overviewAuthorizationService;
     }
 
     @Operation(summary = "Get all teams and their objectives", description = "Get a List of teams with their objectives")
@@ -43,6 +43,6 @@ public class OverviewController {
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
             @AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
-                .toDto(overviewAuthenticationService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter, jwt)));
+                .toDto(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter, jwt)));
     }
 }

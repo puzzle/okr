@@ -43,16 +43,15 @@ class CheckInAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnCheckInReadOnly_WhenAuthorizedForReadyOnly() {
+    void getEntityById_ShouldReturnCheckInWritable_WhenAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(checkInMetric, authorizationUser);
+        when(authorizationService.isWriteable(checkInMetric, authorizationUser)).thenReturn(true);
         when(checkInBusinessService.getEntityById(id)).thenReturn(checkInMetric);
 
         CheckIn checkIn = checkInAuthorizationService.getEntityById(id, token);
-        assertFalse(checkIn.isWriteable());
+        assertTrue(checkIn.isWriteable());
     }
 
     @Test

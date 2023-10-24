@@ -6,7 +6,8 @@ import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KeyResultValidationService extends ValidationBase<KeyResult, Long, KeyResultRepository> {
+public class KeyResultValidationService
+        extends ValidationBase<KeyResult, Long, KeyResultRepository, KeyResultPersistenceService> {
 
     public KeyResultValidationService(KeyResultPersistenceService keyResultPersistenceService) {
         super(keyResultPersistenceService);

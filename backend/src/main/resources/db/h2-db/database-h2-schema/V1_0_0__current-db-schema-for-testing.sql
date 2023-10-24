@@ -34,9 +34,8 @@ create table if not exists quarter
 
 create table if not exists team
 (
-    id        bigint       not null,
-    name      varchar(250) not null,
-    role_name varchar(250) not null,
+    id   bigint       not null,
+    name varchar(250) not null,
     primary key (id)
 );
 
@@ -113,12 +112,12 @@ create table if not exists key_result
 
 create table if not exists completed
 (
-    id                   bigint       not null primary key,
-    objective_id bigint       not null
-    constraint fk_completed_objective
-    references objective,
-    comment       varchar(4096)
-    );
+    id           bigint not null primary key,
+    objective_id bigint not null
+        constraint fk_completed_objective
+            references objective,
+    comment      varchar(4096)
+);
 
 
 DROP VIEW IF EXISTS OVERVIEW;

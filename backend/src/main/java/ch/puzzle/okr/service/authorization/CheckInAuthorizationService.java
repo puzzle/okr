@@ -27,4 +27,9 @@ public class CheckInAuthorizationService extends AuthorizationServiceBase<Long, 
     protected void hasRoleDeleteById(Long id, AuthorizationUser authorizationUser) {
         getAuthorizationService().hasRoleDeleteByCheckInId(id, authorizationUser);
     }
+
+    @Override
+    protected boolean isWriteable(CheckIn entity, AuthorizationUser authorizationUser) {
+        return getAuthorizationService().isWriteable(entity, authorizationUser);
+    }
 }

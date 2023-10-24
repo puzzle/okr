@@ -37,11 +37,11 @@ values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
        (6, 'GJ 21/22-Q4', '2022-04-01', '2022-06-30'),
        (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31');
 
-insert into team (id, name, role_name)
-values (4, '/BBT', 'org_ausbildung'),
-       (8, 'we are cube.³', 'org_wearecube'),
-       (5, 'Puzzle ITC', 'org_gl'),
-       (6, 'Puzzle BL', 'org_bl');
+insert into team (id, name)
+values (4, '/BBT'),
+       (8, 'we are cube.³'),
+       (5, 'Puzzle ITC'),
+       (6, 'Puzzle BL');
 
 insert into objective (id, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)

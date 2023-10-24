@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class ObjectiveValidationService extends ValidationBase<Objective, Long, ObjectiveRepository> {
+public class ObjectiveValidationService
+        extends ValidationBase<Objective, Long, ObjectiveRepository, ObjectivePersistenceService> {
 
     public ObjectiveValidationService(ObjectivePersistenceService objectivePersistenceService) {
         super(objectivePersistenceService);

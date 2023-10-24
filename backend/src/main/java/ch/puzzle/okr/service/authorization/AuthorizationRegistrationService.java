@@ -43,12 +43,13 @@ public class AuthorizationRegistrationService {
     public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
         List<String> roles = jwtRolesConverter.convert(token);
         return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(roles),
-                teamPersistenceService.findByRoleName(firstLevelRoleName).getId(), getReadRoles(roles),
-                getWriteRoles(roles));
+                // TODO: teamPersistenceService.findByRoleName(firstLevelRoleName).getId(), getReadRoles(roles),
+                13L, getReadRoles(roles), getWriteRoles(roles));
     }
 
     private List<Long> getTeamIds(List<String> tokenRoles) {
-        List<Long> teamIds = teamPersistenceService.findByRoleNames(tokenRoles);
+        // TODO: List<Long> teamIds = teamPersistenceService.findByRoleNames(tokenRoles);
+        List<Long> teamIds = List.of();
         if (teamIds.isEmpty()) {
             throw new ResponseStatusException(UNAUTHORIZED, "no team found for given roles " + tokenRoles);
         }

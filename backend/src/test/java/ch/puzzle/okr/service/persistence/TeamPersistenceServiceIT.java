@@ -8,13 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 import static ch.puzzle.okr.TestConstants.TEAM_PUZZLE;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @SpringIntegrationTest
 class TeamPersistenceServiceIT {
@@ -64,7 +60,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldSaveANewTeam() {
-        Team team = Team.Builder.builder().withName("TestTeam").withRoleName("TestRole").build();
+        Team team = Team.Builder.builder().withName("TestTeam").build();
 
         createdTeam = teamPersistenceService.save(team);
         assertNotNull(createdTeam.getId());
@@ -73,7 +69,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldUpdateTeamProperly() {
-        Team team = Team.Builder.builder().withName("New Team").withRoleName("TestRole").build();
+        Team team = Team.Builder.builder().withName("New Team").build();
         createdTeam = teamPersistenceService.save(team);
         createdTeam.setName("Updated Team");
 
@@ -85,7 +81,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldDeleteTeam() {
-        Team team = Team.Builder.builder().withName("New Team").withRoleName("TestRole").build();
+        Team team = Team.Builder.builder().withName("New Team").build();
         createdTeam = teamPersistenceService.save(team);
         teamPersistenceService.deleteById(createdTeam.getId());
 
@@ -93,29 +89,5 @@ class TeamPersistenceServiceIT {
                 () -> teamPersistenceService.findById(createdTeam.getId()));
         assertEquals(NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Team with id %d not found", createdTeam.getId()), exception.getReason());
-    }
-
-    @Test
-    void findByRoleName_ShouldReturnTeam_WhenRoleNameFound() {
-        Team team = teamPersistenceService.findByRoleName("org_gl");
-
-        assertEquals("Puzzle ITC", team.getName());
-        assertEquals("org_gl", team.getRoleName());
-    }
-
-    @Test
-    void findByRoleName_ShouldThrowException_WhenRoleNameNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> teamPersistenceService.findByRoleName("unknown"));
-
-        assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("role name unknown does not match team", exception.getReason());
-    }
-
-    @Test
-    void findByRoleNames_ShouldReturnSelectedTeamIds() {
-        List<Long> teamIds = teamPersistenceService.findByRoleNames(List.of("org_gl", "org_bl", "org_foo"));
-
-        assertThat(List.of(5L, 6L)).hasSameElementsAs(teamIds);
     }
 }

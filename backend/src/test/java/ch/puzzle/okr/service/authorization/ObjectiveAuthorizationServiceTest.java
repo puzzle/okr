@@ -65,16 +65,15 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnObjectiveReadOnly_WhenAuthorizedReadOnly() {
+    void getEntityById_ShouldReturnObjectiveWritable_WhenAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(newObjective, authorizationUser);
+        when(authorizationService.isWriteable(newObjective, authorizationUser)).thenReturn(true);
         when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
 
         Objective objective = objectiveAuthorizationService.getEntityById(id, token);
-        assertFalse(objective.isWriteable());
+        assertTrue(objective.isWriteable());
     }
 
     @Test

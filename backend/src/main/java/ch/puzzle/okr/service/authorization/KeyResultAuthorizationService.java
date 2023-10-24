@@ -6,7 +6,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -32,11 +32,16 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
         getAuthorizationService().hasRoleDeleteByKeyResultId(id, authorizationUser);
     }
 
+    @Override
+    protected boolean isWriteable(KeyResult entity, AuthorizationUser authorizationUser) {
+        return getAuthorizationService().isWriteable(entity, authorizationUser);
+    }
+
     public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId, Jwt token) {
         AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser(token);
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
         List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
-        checkIns.forEach(c -> setRoleCreateOrUpdateCheckIn(c, authorizationUser));
+        setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);
         return checkIns;
     }
 
@@ -44,12 +49,10 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
         return getBusinessService().isImUsed(id, keyResult);
     }
 
-    private void setRoleCreateOrUpdateCheckIn(CheckIn checkIn, AuthorizationUser authorizationUser) {
-        try {
-            getAuthorizationService().hasRoleCreateOrUpdate(checkIn, authorizationUser);
-            checkIn.setWriteable(true);
-        } catch (ResponseStatusException ex) {
-            checkIn.setWriteable(false);
+    private void setRoleCreateOrUpdateCheckIn(List<CheckIn> checkIns, AuthorizationUser authorizationUser) {
+        if (!CollectionUtils.isEmpty(checkIns)) {
+            boolean isWriteable = getAuthorizationService().isWriteable(checkIns.get(0), authorizationUser);
+            checkIns.forEach(c -> c.setWriteable(isWriteable));
         }
     }
 }

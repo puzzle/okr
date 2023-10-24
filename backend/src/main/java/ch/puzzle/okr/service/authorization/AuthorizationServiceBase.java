@@ -4,45 +4,54 @@ import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.BusinessServiceInterface;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
-public abstract class AuthorizationServiceBase<K, E extends WriteableInterface, B> {
-    private final BusinessServiceInterface<K, E> businessService;
+/**
+ * @param <ID>
+ *            the Identifier or primary key of the entity
+ * @param <T>
+ *            the Type or entity of the repository
+ * @param <BS>
+ *            the Business Service of this entity
+ */
+public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface, BS> {
+    private final BusinessServiceInterface<ID, T> businessService;
     private final AuthorizationService authorizationService;
 
-    public AuthorizationServiceBase(BusinessServiceInterface<K, E> businessService,
+    public AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService,
             AuthorizationService authorizationService) {
         this.businessService = businessService;
         this.authorizationService = authorizationService;
     }
 
-    protected abstract void hasRoleReadById(K id, AuthorizationUser authorizationUser);
+    protected abstract void hasRoleReadById(ID id, AuthorizationUser authorizationUser);
 
-    protected abstract void hasRoleCreateOrUpdate(E entity, AuthorizationUser authorizationUser);
+    protected abstract void hasRoleCreateOrUpdate(T entity, AuthorizationUser authorizationUser);
 
-    protected abstract void hasRoleDeleteById(K id, AuthorizationUser authorizationUser);
+    protected abstract void hasRoleDeleteById(ID id, AuthorizationUser authorizationUser);
 
-    public E getEntityById(K id, Jwt token) {
+    protected abstract boolean isWriteable(T entity, AuthorizationUser authorizationUser);
+
+    public T getEntityById(ID id, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
         hasRoleReadById(id, authorizationUser);
-        E entity = businessService.getEntityById(id);
+        T entity = businessService.getEntityById(id);
         setRoleCreateOrUpdate(entity, authorizationUser);
         return entity;
     }
 
-    public E createEntity(E entity, Jwt token) {
+    public T createEntity(T entity, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
         hasRoleCreateOrUpdate(entity, authorizationUser);
         return businessService.createEntity(entity, authorizationUser);
     }
 
-    public E updateEntity(K id, E entity, Jwt token) {
+    public T updateEntity(ID id, T entity, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
         hasRoleCreateOrUpdate(entity, authorizationUser);
         return businessService.updateEntity(id, entity, authorizationUser);
     }
 
-    public void deleteEntityById(K id, Jwt token) {
+    public void deleteEntityById(ID id, Jwt token) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
         hasRoleDeleteById(id, authorizationUser);
         businessService.deleteEntityById(id);
@@ -52,16 +61,11 @@ public abstract class AuthorizationServiceBase<K, E extends WriteableInterface, 
         return authorizationService;
     }
 
-    public B getBusinessService() {
-        return (B) businessService;
+    public BS getBusinessService() {
+        return (BS) businessService;
     }
 
-    private void setRoleCreateOrUpdate(E entity, AuthorizationUser authorizationUser) {
-        try {
-            hasRoleCreateOrUpdate(entity, authorizationUser);
-            entity.setWriteable(true);
-        } catch (ResponseStatusException ex) {
-            entity.setWriteable(false);
-        }
+    private void setRoleCreateOrUpdate(T entity, AuthorizationUser authorizationUser) {
+        entity.setWriteable(isWriteable(entity, authorizationUser));
     }
 }

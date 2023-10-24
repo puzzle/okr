@@ -69,16 +69,15 @@ class KeyResultAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnKeyResultReadOnly_WhenAuthorizedReadOnly() {
+    void getEntityById_ShouldReturnKeyResultWritable_WhenAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
+        when(authorizationService.isWriteable(metricKeyResult, authorizationUser)).thenReturn(true);
         when(keyResultBusinessService.getEntityById(id)).thenReturn(metricKeyResult);
 
         KeyResult keyResult = keyResultAuthorizationService.getEntityById(id, token);
-        assertFalse(keyResult.isWriteable());
+        assertTrue(keyResult.isWriteable());
     }
 
     @Test

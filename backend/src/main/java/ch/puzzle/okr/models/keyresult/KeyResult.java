@@ -131,7 +131,8 @@ public abstract class KeyResult implements WriteableInterface {
     public String toString() {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
                 + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn
-                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + '\'' + '}';
+                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\''
+                + '}';
     }
 
     @Override

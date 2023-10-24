@@ -10,7 +10,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
-public class CheckInValidationService extends ValidationBase<CheckIn, Long, CheckInRepository> {
+public class CheckInValidationService
+        extends ValidationBase<CheckIn, Long, CheckInRepository, CheckInPersistenceService> {
 
     public CheckInValidationService(CheckInPersistenceService checkInPersistenceService) {
         super(checkInPersistenceService);
@@ -30,7 +31,7 @@ public class CheckInValidationService extends ValidationBase<CheckIn, Long, Chec
         throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(id);
 
-        List<CheckIn> checkInsOfKeyResult = ((CheckInPersistenceService) this.persistenceService)
+        List<CheckIn> checkInsOfKeyResult = getPersistenceService()
                 .getCheckInsByKeyResultIdOrderByCheckInDateDesc(model.getKeyResult().getId());
         checkInsOfKeyResult = checkInsOfKeyResult.stream().filter(checkIn -> checkIn.getId().equals(id)).toList();
         if (checkInsOfKeyResult.isEmpty()) {

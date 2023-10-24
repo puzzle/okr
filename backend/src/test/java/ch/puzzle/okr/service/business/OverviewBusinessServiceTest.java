@@ -40,7 +40,7 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
-        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds))
+        when(overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds))
                 .thenReturn(List.of(createOverview()));
 
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
@@ -49,12 +49,12 @@ class OverviewBusinessServiceTest {
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds);
     }
 
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
-        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds))
+        when(overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds))
                 .thenReturn(List.of(createOverview()));
         when(quarterBusinessService.getCurrentQuarter())
                 .thenReturn(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build());
@@ -65,7 +65,7 @@ class OverviewBusinessServiceTest {
         verify(quarterBusinessService, times(1)).getCurrentQuarter();
         verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, times(1)).getOverviewByQuarterIdAndTeamIds(QUARTER_ID, teamIds);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds);
     }
 
     @Test
@@ -79,7 +79,7 @@ class OverviewBusinessServiceTest {
         verify(overviewValidationService, times(1)).validateQuarter(QUARTER_ID);
         verify(overviewPersistenceService, times(1)).getOverviewByQuarterId(QUARTER_ID);
         verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+        verify(overviewPersistenceService, never()).getOverviewByQuarterAndTeamsAndObjectiveQuery(anyLong(), anyList());
     }
 
     @Test
@@ -94,7 +94,7 @@ class OverviewBusinessServiceTest {
         verify(overviewValidationService, times(1)).validateQuarter(QUARTER_ID);
         verify(overviewPersistenceService, never()).getOverviewByQuarterId(QUARTER_ID);
         verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+        verify(overviewPersistenceService, never()).getOverviewByQuarterAndTeamsAndObjectiveQuery(anyLong(), anyList());
     }
 
     @Test
@@ -108,6 +108,6 @@ class OverviewBusinessServiceTest {
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, never()).validateQuarter(QUARTER_ID);
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
-        verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList());
+        verify(overviewPersistenceService, never()).getOverviewByQuarterAndTeamsAndObjectiveQuery(anyLong(), anyList());
     }
 }

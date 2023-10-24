@@ -18,7 +18,8 @@ class OverviewPersistenceServiceIT {
 
     @Test
     void getOverviewByQuarterIdAndTeamIdsShouldReturnOverviews() {
-        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(2L, List.of(5L, 6L, 8L));
+        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(2L,
+                List.of(5L, 6L, 8L));
 
         assertEquals(13, overviews.size());
         overviews.forEach(overview -> matchOverviewId(overview.getOverviewId()));

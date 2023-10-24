@@ -45,7 +45,7 @@ describe('OverviewComponent', () => {
     await routerHarness.navigateByUrl('/?quarter=7');
     routerHarness.detectChanges();
     component.ngOnInit();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, undefined);
+    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, undefined, undefined);
   });
 
   it('should load overview based on queryparams', async () => {
@@ -54,7 +54,7 @@ describe('OverviewComponent', () => {
     await routerHarness.navigateByUrl('/?quarter=7');
     routerHarness.detectChanges();
     component.loadOverviewWithParams();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(7, []);
+    expect(overviewService.getOverview).toHaveBeenCalledWith(7, [], undefined);
   });
 
   it('should refresh overview Entities after getOVerview is called', async () => {

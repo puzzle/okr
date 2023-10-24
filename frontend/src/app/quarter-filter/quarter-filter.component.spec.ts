@@ -8,6 +8,13 @@ import { Quarter } from '../shared/types/model/Quarter';
 import { QuarterService } from '../shared/services/quarter.service';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatSelectHarness } from '@angular/material/select/testing';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -28,10 +35,19 @@ const quarterService = {
 describe('QuarterFilterComponent', () => {
   let component: QuarterFilterComponent;
   let fixture: ComponentFixture<QuarterFilterComponent>;
+  let loader: HarnessLoader;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [QuarterFilterComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, FormsModule],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        FormsModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        NoopAnimationsModule,
+      ],
       providers: [
         { provide: OverviewService, useValue: overviewService },
         { provide: QuarterService, useValue: quarterService },
@@ -39,6 +55,7 @@ describe('QuarterFilterComponent', () => {
     });
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
+    loader = TestbedHarnessEnvironment.loader(fixture);
     fixture.detectChanges();
   });
 
@@ -48,12 +65,12 @@ describe('QuarterFilterComponent', () => {
 
   it('should set correct default quarter if no route param is defined', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
-    const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
+    const quarterSelect = await loader.getHarness(MatSelectHarness);
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.quarterId).toBe(quarters[0].id);
-    expect(+quarterSelect.value).toBe(quarters[0].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[0].label);
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
   });
 
@@ -75,7 +92,8 @@ describe('QuarterFilterComponent', () => {
 
   it('should set default quarter if quarter id in route params does not exist', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
-    const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
+    const quarterSelect = await loader.getHarness(MatSelectHarness);
+
     const routerHarness = await RouterTestingHarness.create();
     await routerHarness.navigateByUrl('/?quarter=10');
 
@@ -84,7 +102,7 @@ describe('QuarterFilterComponent', () => {
     component.ngOnInit();
     fixture.detectChanges();
     expect(component.quarterId).toBe(quarters[0].id);
-    expect(+quarterSelect.value).toBe(quarters[0].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[0].label);
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
   });
 });

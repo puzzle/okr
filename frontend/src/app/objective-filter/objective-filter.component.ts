@@ -11,7 +11,7 @@ import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
   styleUrls: ['./objective-filter.component.scss'],
 })
 export class ObjectiveFilterComponent implements OnInit {
-  isTyping: Subject<void> = new Subject();
+  refresh: Subject<void> = new Subject();
   query: string = '';
 
   constructor(
@@ -19,7 +19,7 @@ export class ObjectiveFilterComponent implements OnInit {
     private refreshService: RefreshDataService,
     private route: ActivatedRoute,
   ) {
-    this.isTyping.pipe(debounceTime(300)).subscribe(() => this.updateURL());
+    this.refresh.pipe(debounceTime(300)).subscribe(() => this.updateURL());
   }
 
   updateURL() {

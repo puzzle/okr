@@ -1,4 +1,4 @@
-<form class="d-flex h-75" (ngSubmit)="updateURL()">
+<form class="d-flex h-75" (ngSubmit)="this.refresh.next()">
   <mat-form-field
     class="bg-white col-10 header-form-field"
     ngDefaultControl
@@ -10,7 +10,7 @@
       matInput
       placeholder="Nach Objectives suchen"
       [(ngModel)]="query"
-      (selectionchange)="this.isTyping.next()"
+      (selectionchange)="this.refresh.next()"
       [ngModelOptions]="{ standalone: true }"
     />
   </mat-form-field>

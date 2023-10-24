@@ -63,8 +63,6 @@ export class KeyresultDetailComponent implements OnInit {
       },
       maxHeight: '491px',
       width: '721px',
-      autoFocus: true,
-      restoreFocus: true,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();

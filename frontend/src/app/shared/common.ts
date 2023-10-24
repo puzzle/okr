@@ -48,3 +48,7 @@ export function areEqual(arr1: number[], arr2: number[]) {
 
   return true;
 }
+
+export function trackByFn(id: any): any {
+  return id;
+}

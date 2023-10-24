@@ -13,6 +13,7 @@ import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/comple
 import { Completed } from '../shared/types/model/Completed';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
+import { trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-objective-column',
@@ -23,6 +24,7 @@ import { Objective } from '../shared/types/model/Objective';
 export class ObjectiveComponent implements OnInit, AfterViewInit {
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
+  protected readonly trackByFn = trackByFn;
 
   constructor(
     private matDialog: MatDialog,
@@ -96,8 +98,6 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           objective: menuEntry.dialog.data,
         },
         width: dialogWidth,
-        autoFocus: true,
-        restoreFocus: true,
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
@@ -174,8 +174,6 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           objective: this.objective.value,
           keyResult: null,
         },
-        restoreFocus: true,
-        autoFocus: true,
       })
       .afterClosed()
       .subscribe((result) => {
@@ -184,9 +182,5 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         }
         this.refreshDataService.markDataRefresh();
       });
-  }
-
-  trackByFn(id: any) {
-    return id;
   }
 }

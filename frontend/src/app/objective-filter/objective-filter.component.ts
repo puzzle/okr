@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { optionalReplaceWithNulls, sanitize } from '../shared/common';
+import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
 
 @Component({
   selector: 'app-objective-filter',
@@ -10,18 +11,19 @@ import { optionalReplaceWithNulls, sanitize } from '../shared/common';
   styleUrls: ['./objective-filter.component.scss'],
 })
 export class ObjectiveFilterComponent implements OnInit {
-  form = new FormGroup({
-    objectiveControl: new FormControl<string>(''),
-  });
+  isTyping: Subject<void> = new Subject();
+  query: string = '';
 
   constructor(
     private router: Router,
     private refreshService: RefreshDataService,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+    this.isTyping.pipe(debounceTime(300)).subscribe(() => this.updateURL());
+  }
 
   updateURL() {
-    const sanitizedQuery = sanitize(this.form.value.objectiveControl!);
+    const sanitizedQuery = sanitize(this.query);
     const encoded = encodeURI(sanitizedQuery);
     const params = { objectiveQuery: encoded };
     const optionalParams = optionalReplaceWithNulls(params);
@@ -32,8 +34,8 @@ export class ObjectiveFilterComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       const objectiveQuery = decodeURI(params['objectiveQuery'] || '');
       const sanitizedQuery = sanitize(objectiveQuery);
-      if (sanitize(this.form.value.objectiveControl!) !== sanitizedQuery) {
-        this.form.controls.objectiveControl.setValue(sanitizedQuery);
+      if (sanitize(this.query) !== sanitizedQuery) {
+        this.query = sanitizedQuery;
         this.updateURL();
       }
     });

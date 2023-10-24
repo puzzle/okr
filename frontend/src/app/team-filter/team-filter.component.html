@@ -1,13 +1,13 @@
-<mat-chip-listbox>
-  <mat-chip color="primary" [highlighted]="activeTeams.length == 0" (click)="selectAll()"
-    >Alle ({{ getAllObjectivesCount((this.teams$ | async)!) }})</mat-chip
-  >
+<mat-chip-listbox class="d-flex gap-2">
+  <button class="icon-button team-button" (click)="selectAll()">
+    <mat-chip color="primary" [highlighted]="activeTeams.length == 0"
+      >Alle ({{ getAllObjectivesCount((this.teams$ | async)!) }})</mat-chip
+    >
+  </button>
 
-  <mat-chip
-    *ngFor="let team of teams$ | async"
-    color="primary"
-    [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
-    (click)="toggleSelection(team.id)"
-    >{{ team.name }} ({{ team.activeObjectives }})</mat-chip
-  >
+  <button class="icon-button" *ngFor="let team of teams$ | async" (click)="toggleSelection(team.id)">
+    <mat-chip color="primary" [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
+      >{{ team.name }} ({{ team.activeObjectives }})</mat-chip
+    >
+  </button>
 </mat-chip-listbox>

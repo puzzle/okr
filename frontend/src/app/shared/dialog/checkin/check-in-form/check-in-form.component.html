@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="pt-2">
   <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
   <app-dialog-header
     *ngIf="this.checkIn.id"
@@ -29,8 +29,8 @@
     <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
   </div>
   <!--    Buttons to submit the check-in-->
-  <div class="d-flex flex-row mt-4">
-    <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">
+  <div class="d-flex flex-row buttons">
+    <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-2 fw-bold text-white">
       Weiter
     </button>
     <button
@@ -46,7 +46,7 @@
       <span *ngIf="checkIn.id">Speichern</span>
       <span *ngIf="!checkIn.id">Check-in erfassen</span>
     </button>
-    <button mat-button color="primary" *ngIf="!continued" mat-dialog-close>Abbrechen</button>
-    <button mat-button color="primary" *ngIf="continued" (click)="continued = false">Zurück</button>
+    <button mat-button color="primary" *ngIf="!continued" mat-dialog-close class="ms-2">Abbrechen</button>
+    <button mat-button color="primary" *ngIf="continued" (click)="continued = false" class="ms-2">Zurück</button>
   </div>
 </div>

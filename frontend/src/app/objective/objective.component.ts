@@ -172,8 +172,8 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           objective: this.objective.value,
           keyResult: null,
         },
-        autoFocus: true,  // <-- add this here
-        restoreFocus:true
+        autoFocus: true, // <-- add this here
+        restoreFocus: true,
       })
       .afterClosed()
       .subscribe((result) => {
@@ -183,5 +183,4 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         this.refreshDataService.markDataRefresh();
       });
   }
-
 }

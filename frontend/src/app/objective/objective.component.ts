@@ -181,4 +181,6 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         this.refreshDataService.markDataRefresh();
       });
   }
+
+  protected readonly focus = focus;
 }

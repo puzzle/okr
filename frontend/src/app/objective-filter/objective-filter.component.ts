@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { optionalReplaceWithNulls, sanitize } from '../shared/common';
-import { debounceTime, distinctUntilChanged, Subject, tap } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-objective-filter',
   templateUrl: './objective-filter.component.html',
   styleUrls: ['./objective-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveFilterComponent implements OnInit {
   refresh: Subject<void> = new Subject();

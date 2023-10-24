@@ -1,4 +1,4 @@
-<form class="p-4" [formGroup]="completeForm">
+<form class="p-4 pt-3 pb-3" [formGroup]="completeForm">
   <app-dialog-header [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
   <div>Bewertung</div>
   <div class="d-flex gap-3 mb-3">
@@ -27,8 +27,7 @@
   <div>Kommentar (optional)</div>
   <textarea class="dialog-form-field commentary-field w-100" formControlName="comment"></textarea>
 
-  <br />
-  <div class="d-flex justify-content-between" mat-dialog-actions>
+  <div class="d-flex justify-content-between p-0" mat-dialog-actions>
     <div class="d-flex gap-2 p-0">
       <button
         [attr.data-testId]="'submit'"

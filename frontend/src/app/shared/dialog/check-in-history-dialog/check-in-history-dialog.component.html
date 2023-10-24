@@ -1,4 +1,4 @@
-<div class="overflow-hidden">
+<div class="overflow-hidden mt-1 mb-1">
   <div mat-dialog-content>
     <app-dialog-header [dialogTitle]="'Check-in History'" class="check-in-history-title"></app-dialog-header>
     <div
@@ -47,12 +47,12 @@
         </div>
       </ng-container>
     </div>
-    <ng-template #spinner>
-      <div class="spinner-container">
-        Check-in history wird geladen...
-        <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
-      </div>
-    </ng-template>
+    <button cdkFocusInitial class="close-button" mat-flat-button color="primary" mat-dialog-close>Schliessen</button>
   </div>
-  <button cdkFocusInitial mat-button color="primary" mat-dialog-close>Schliessen</button>
+  <ng-template #spinner>
+    <div class="spinner-container">
+      Check-in history wird geladen...
+      <mat-progress-spinner color="primary" mode="indeterminate"> </mat-progress-spinner>
+    </div>
+  </ng-template>
 </div>

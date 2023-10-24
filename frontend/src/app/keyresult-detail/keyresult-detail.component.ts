@@ -62,7 +62,7 @@ export class KeyresultDetailComponent implements OnInit {
         keyResult: this.keyResult$.getValue(),
         isComplete: this.isComplete,
       },
-      maxHeight: '491px',
+      maxHeight: '492px',
       width: '721px',
     });
     dialogRef.afterClosed().subscribe(() => {

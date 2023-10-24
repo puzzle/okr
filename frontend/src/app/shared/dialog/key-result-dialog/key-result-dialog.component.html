@@ -8,7 +8,7 @@
       <textarea
         [attr.data-testId]="'titleInput'"
         [ngClass]="formInputCheck(keyResultForm, 'title')"
-        class="input-fields"
+        class="input-fields big-dialog-form-field"
         formControlName="title"
         id="title"
         cdkFocusInitial
@@ -47,7 +47,7 @@
       <label for="title" class="text-black">Beschreibung (optional)</label>
       <textarea
         [attr.data-testId]="'descriptionInput'"
-        class="input-fields"
+        class="input-fields big-dialog-form-field"
         [ngClass]="formInputCheck(keyResultForm, 'description')"
         formControlName="description"
       ></textarea>

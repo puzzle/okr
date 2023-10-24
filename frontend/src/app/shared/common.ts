@@ -29,6 +29,10 @@ export function optionalValue(param: object): { [p: string]: any } {
       }),
   );
 }
+
+export function sanitize(query: string) {
+  return query.trim().toLowerCase();
+}
 export function optionalReplaceWithNulls(param: object): { [p: string]: any } {
   const clearObject = optionalValue(param);
   return Object.fromEntries(Object.entries(param).map(([k, v]) => [k, clearObject[k] === undefined ? null : v]));

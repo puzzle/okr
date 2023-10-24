@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { optionalReplaceWithNulls } from '../shared/common';
+import { optionalReplaceWithNulls, sanitize } from '../shared/common';
 
 @Component({
   selector: 'app-objective-filter',
@@ -21,16 +21,19 @@ export class ObjectiveFilterComponent implements OnInit {
   ) {}
 
   updateURL() {
-    const params = { objectiveQuery: this.form.value.objectiveControl };
+    const sanitizedQuery = sanitize(this.form.value.objectiveControl!);
+    const encoded = encodeURI(sanitizedQuery);
+    const params = { objectiveQuery: encoded };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router.navigate([], { queryParams: optionalParams }).then(() => this.refreshService.markDataRefresh());
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      const objectiveQuery = (params['objectiveQuery'] as string) || '';
-      if (this.form.value.objectiveControl?.toLowerCase().trim() !== objectiveQuery.toLowerCase().trim()) {
-        this.form.controls.objectiveControl.setValue(objectiveQuery);
+      const objectiveQuery = decodeURI(params['objectiveQuery'] || '');
+      const sanitizedQuery = sanitize(objectiveQuery);
+      if (sanitize(this.form.value.objectiveControl!) !== sanitizedQuery) {
+        this.form.controls.objectiveControl.setValue(sanitizedQuery);
         this.updateURL();
       }
     });

@@ -5,7 +5,7 @@
     >
   </button>
 
-  <button class="icon-button" *ngFor="let team of teams$ | async" (click)="toggleSelection(team.id)">
+  <button class="icon-button" *ngFor="let team of teams$ | async; trackBy: trackByFn" (click)="toggleSelection(team.id)">
     <mat-chip color="primary" [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
       >{{ team.name }} ({{ team.activeObjectives }})</mat-chip
     >

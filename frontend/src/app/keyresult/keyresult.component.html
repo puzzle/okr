@@ -1,7 +1,8 @@
-<button
-  (click)="openDrawer(); $event.stopPropagation()"
+<div
+  (click)="openDrawer()"
   class="key-result rounded-2 p-3 w-100"
-  (keydown.enter)="openDrawer(); $event.stopPropagation()"
+  (keydown.enter)="openDrawer()"
+  tabindex="0"
 >
   <div class="lh-base text-start">{{ keyResult.title }}</div>
   <app-scoring [keyResult]="keyResult" [isDetail]="false"></app-scoring>
@@ -21,4 +22,4 @@
       <app-confidence [edit]="false" [checkIn]="keyResult.lastCheckIn!" class="ms-2"></app-confidence>
     </div>
   </div>
-</button>
+</div>

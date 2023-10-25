@@ -39,6 +39,7 @@
         *ngFor="let keyResult of (objective | async)?.keyResults; trackBy: trackByFn"
         class="border-0 p-0"
         (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
         [keyResult]="keyResult"
       ></app-keyresult>
     </section>

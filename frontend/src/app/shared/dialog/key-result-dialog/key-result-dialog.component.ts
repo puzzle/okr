@@ -14,6 +14,7 @@ import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
+import { Action } from '../../types/model/Action';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 
@@ -26,6 +27,7 @@ import { formInputCheck } from '../../common';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
+  actionPlan: Action[] = [];
   protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
@@ -90,6 +92,7 @@ export class KeyResultDialogComponent implements OnInit {
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
+    keyResult.actionPlan = this.actionPlan;
     keyResult.version = this.data.keyResult?.version;
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
@@ -155,5 +158,11 @@ export class KeyResultDialogComponent implements OnInit {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
+  }
+
+  updateActionPlan(event: Action[]) {
+    console.log('Hello');
+    console.log(event);
+    this.actionPlan = event;
   }
 }

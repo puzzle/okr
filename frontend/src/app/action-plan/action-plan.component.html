@@ -3,11 +3,11 @@
 <div
   cdkDropList
   #todoList="cdkDropList"
-  [cdkDropListData]="actionPoints"
+  [cdkDropListData]="actionPointsText"
   class="action-points-list d-flex flex-column gap-2"
   (cdkDropListDropped)="drop($event)"
 >
-  <div class="action-point-item" *ngFor="let action of actionPoints; index as i" cdkDrag>
+  <div class="action-point-item" *ngFor="let action of actionPointsText; index as i" cdkDrag>
     <div class="drag-drop-dots">
       <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
     </div>

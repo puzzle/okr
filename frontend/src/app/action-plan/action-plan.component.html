@@ -1,3 +1,5 @@
+<label class="text-black">Action Plan (optional)</label>
+
 <div
   cdkDropList
   #todoList="cdkDropList"
@@ -6,8 +8,17 @@
   (cdkDropListDropped)="drop($event)"
 >
   <div class="action-point-item" *ngFor="let action of actionPoints; index as i" cdkDrag>
-    <img src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
-    <input type="text" [value]="action" (change)="changeActionText($event, i)" />
-    <img src="../assets/delete-icon.svg" alt="Delete bin" />
+    <div class="drag-drop-dots">
+      <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
+    </div>
+    <input class="action-input" type="text" [value]="action" (change)="changeActionText($event, i)" />
+    <img class="icons bin-icon" src="../assets/icons/delete-icon.svg" alt="Delete bin" />
   </div>
 </div>
+
+<section class="py-3">
+  <button mat-button color="primary" class="fw-bold" (click)="addNewAction()">
+    <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+    Weitere Zeile hinzufügen
+  </button>
+</section>

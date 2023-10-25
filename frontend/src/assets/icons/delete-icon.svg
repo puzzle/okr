@@ -1,0 +1,16 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="trash">
+<mask id="mask0_1916_12886" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+<rect id="Bounding box" width="20" height="20" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_1916_12886)">
+<g id="Group">
+<path id="Vector" d="M1.40625 4.53125H18.5938" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M11.7578 1.40625H8.24219C7.93139 1.40625 7.63332 1.52971 7.41355 1.74948C7.19378 1.96925 7.07031 2.26732 7.07031 2.57812V4.53125H12.9297V2.57812C12.9297 2.26732 12.8062 1.96925 12.5865 1.74948C12.3667 1.52971 12.0686 1.40625 11.7578 1.40625Z" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M8.24219 14.4922V8.63281" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M11.7578 14.4922V8.63281" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_5" d="M15.3594 17.5156C15.3376 17.8092 15.2055 18.0837 14.9895 18.2837C14.7735 18.4838 14.4897 18.5946 14.1953 18.5938H5.80469C5.51029 18.5946 5.22652 18.4838 5.01052 18.2837C4.79453 18.0837 4.66236 17.8092 4.64062 17.5156L3.55469 4.53125H16.4453L15.3594 17.5156Z" stroke="black" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</svg>

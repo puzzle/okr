@@ -1,25 +1,17 @@
 .action-points-list {
-  border: solid 1px #ccc;
-  min-height: 60px;
-  background: white;
-  border-radius: 4px;
   overflow: hidden;
   display: block;
 }
 
 .action-point-item {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
   font-size: 14px;
-  margin-bottom: 20px;
+  height: 32px;
 }
 
 .cdk-drag-preview {
@@ -45,4 +37,25 @@
 
 .action-points-list.cdk-drop-list-dragging .action-point-item:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.icons {
+  height: 20px;
+  width: 20px;
+}
+
+.drag-drop-dots {
+  background-color: #ddd;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bin-icon {
+  margin-left: 8px;
+}
+
+.action-input {
+  width: 100%;
 }

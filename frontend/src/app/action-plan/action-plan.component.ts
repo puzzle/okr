@@ -21,4 +21,8 @@ export class ActionPlanComponent {
   changeActionText(event: any, index: number) {
     this.actionPoints[index] = event.target.value!;
   }
+
+  addNewAction() {
+    this.actionPoints.push('');
+  }
 }

@@ -38,7 +38,7 @@ public class KeyResultMetricMapper {
         return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(),
                 keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable());
+                keyResult.getModifiedOn(), keyResult.isWriteable(), keyResult.getActionList());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {

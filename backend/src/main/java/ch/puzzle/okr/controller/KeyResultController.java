@@ -8,6 +8,7 @@ import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
+import ch.puzzle.okr.service.business.ActionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,12 +27,14 @@ import static org.springframework.http.HttpStatus.*;
 public class KeyResultController {
 
     private final KeyResultAuthorizationService keyResultAuthorizationService;
+    private final ActionBusinessService actionBusinessService;
     private final KeyResultMapper keyResultMapper;
     private final CheckInMapper checkInMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-            KeyResultMapper keyResultMapper, CheckInMapper checkInMapper) {
+                               ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
+        this.actionBusinessService = actionBusinessService;
         this.keyResultMapper = keyResultMapper;
         this.checkInMapper = checkInMapper;
     }
@@ -70,6 +73,8 @@ public class KeyResultController {
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
+        if (keyResult.getActionList() != null)
+            this.actionBusinessService.createActions(keyResult.getActionList());
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultAuthorizationService.createEntity(keyResult));
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }

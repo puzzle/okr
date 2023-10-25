@@ -23,14 +23,19 @@ public class ActionBusinessService {
     }
 
     @Transactional
-    public Action updateAction(Long id, Action action) {
-        validator.validateOnUpdate(id, action);
-        return actionPersistenceService.save(action);
+    public void createActions(List<Action> actionList) {
+        actionList.forEach(this::createAction);
     }
 
     @Transactional
-    public Action createAction(Action action) {
+    public void createAction(Action action) {
         validator.validateOnCreate(action);
+        actionPersistenceService.save(action);
+    }
+
+    @Transactional
+    public Action updateAction(Long id, Action action) {
+        validator.validateOnUpdate(id, action);
         return actionPersistenceService.save(action);
     }
 

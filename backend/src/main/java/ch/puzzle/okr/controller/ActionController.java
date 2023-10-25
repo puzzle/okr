@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -45,10 +46,10 @@ public class ActionController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
             @ApiResponse(responseCode = "404", description = "Could not create Action", content = @Content) })
     @PostMapping
-    public ResponseEntity<ActionDto> createAction(@RequestBody ActionDto actionDto) {
-        Action action = actionMapper.toAction(actionDto);
-        ActionDto createdAction = this.actionMapper.toDto(actionBusinessService.createAction(action));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdAction);
+    public ResponseEntity.BodyBuilder createAction(@RequestBody ActionDto[] actionDtos) {
+        List<Action> actionList = Arrays.stream(actionDtos).map(this.actionMapper::toAction).toList();
+        actionBusinessService.createActions(actionList);
+        return ResponseEntity.status(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update Action", description = "Update Action by ID")

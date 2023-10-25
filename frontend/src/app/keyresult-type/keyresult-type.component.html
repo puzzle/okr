@@ -27,7 +27,7 @@
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex gap-1">
+          <div class="d-flex gap-2">
             <div>
               <label>Einheit</label>
               <select
@@ -80,10 +80,15 @@
     <div class="d-flex flex-column">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex gap-1">
+          <div class="d-flex gap-2">
             <div>
               <label>Commit Zone</label>
-              <textarea class="input-fields" formControlName="commitZone" [attr.data-testId]="'commitZone'"></textarea>
+              <textarea
+                [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
+                class="input-fields"
+                formControlName="commitZone"
+                [attr.data-testId]="'commitZone'"
+              ></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -92,7 +97,12 @@
             </div>
             <div>
               <label>Target Zone</label>
-              <textarea class="input-fields" formControlName="targetZone" [attr.data-testId]="'targetZone'"></textarea>
+              <textarea
+                [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
+                class="input-fields"
+                formControlName="targetZone"
+                [attr.data-testId]="'targetZone'"
+              ></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
                   {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -102,6 +112,7 @@
             <div>
               <label>Stretch Zone</label>
               <textarea
+                [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
                 class="input-fields"
                 formControlName="stretchZone"
                 [attr.data-testId]="'stretchZone'"

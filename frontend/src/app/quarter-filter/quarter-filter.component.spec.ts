@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { QuarterFilterComponent } from './quarter-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OverviewService } from '../shared/services/overview.service';
@@ -8,8 +8,8 @@ import { Quarter } from '../shared/types/model/Quarter';
 import { QuarterService } from '../shared/services/quarter.service';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -74,16 +74,18 @@ describe('QuarterFilterComponent', () => {
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
   });
 
-  xit('should set correct value in form according to route param', async () => {
+  it('should set correct value in form according to route param', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
-    const quarterSelect = <HTMLSelectElement>document.getElementById('quarter-select');
     const routerHarness = await RouterTestingHarness.create();
     await routerHarness.navigateByUrl('/?quarter=' + quarters[2].id);
+    let quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter-select')).nativeElement;
 
     expect(quarterSelect).toBeTruthy();
     routerHarness.detectChanges();
     component.ngOnInit();
+    quarterSelect.dispatchEvent(new Event('input'));
     fixture.detectChanges();
+    await fixture.whenStable();
 
     expect(component.quarterId).toBe(quarters[2].id);
     expect(+quarterSelect.value).toBe(quarters[2].id);

@@ -13,6 +13,7 @@ export class CompleteDialogComponent {
     isSuccessful: new FormControl<boolean | null>(null, [Validators.required]),
     comment: new FormControl<string | null>(null, [Validators.maxLength(4096)]),
   });
+  protected readonly formInputCheck = formInputCheck;
 
   constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}
 
@@ -42,6 +43,4 @@ export class CompleteDialogComponent {
       el.classList.remove('card-hover');
     });
   }
-
-  protected readonly formInputCheck = formInputCheck;
 }

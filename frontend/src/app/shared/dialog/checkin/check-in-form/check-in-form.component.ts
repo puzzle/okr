@@ -20,6 +20,7 @@ export class CheckInFormComponent {
   checkIn!: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
@@ -90,6 +91,4 @@ export class CheckInFormComponent {
     }
     return '(1/2)';
   }
-
-  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

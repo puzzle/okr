@@ -17,4 +17,10 @@
 
 .help-icon {
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(332deg) brightness(102%) contrast(103%);
+  height: 48px;
+  margin-right: 15px;
+}
+
+.wiki-link {
+  border-right: 1px solid white;
 }

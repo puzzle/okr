@@ -1,9 +1,8 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 
 import { CustomInputComponent } from './custom-input.component';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatInputHarness } from '@angular/material/input/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -44,11 +43,10 @@ describe('CustomInputComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //ToDo: All mat-input fields are now native input fields and therefore harness does not work anymore.
-  xit('should save given text in input to form-group in typescript', waitForAsync(async () => {
-    const input = await loader.getHarness(MatInputHarness);
-    await input.setValue(checkInMetric.value!.toString());
-
+  it('should save given text in input to form-group in typescript', async () => {
+    const input = fixture.debugElement.query(By.css('input')).nativeElement;
+    input.value = checkInMetric.value;
+    input.dispatchEvent(new Event('input'));
     expect(component.formGroup.controls['value'].value).toBe(checkInMetric.value!.toString());
-  }));
+  });
 });

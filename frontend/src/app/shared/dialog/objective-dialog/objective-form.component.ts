@@ -35,6 +35,7 @@ export class ObjectiveFormComponent implements OnInit {
   currentTeam: Team = {} as Team;
   state: string | null = null;
   protected readonly errorMessages: any = errorMessages;
+  protected readonly formInputCheck = formInputCheck;
 
   constructor(
     private teamService: TeamService,
@@ -154,6 +155,4 @@ export class ObjectiveFormComponent implements OnInit {
       quarterId: 0,
     } as Objective;
   }
-
-  protected readonly formInputCheck = formInputCheck;
 }

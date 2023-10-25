@@ -10,6 +10,8 @@ import { formInputCheck } from '../../common';
 })
 export class ExampleDialogComponent {
   hobbies = ['fishing', 'football', 'videogames', 'tennis', 'other'];
+  protected readonly errorMessages: any = errorMessages;
+  protected readonly formInputCheck = formInputCheck;
 
   dialogForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -35,7 +37,4 @@ export class ExampleDialogComponent {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  protected readonly errorMessages: any = errorMessages;
-  protected readonly formInputCheck = formInputCheck;
 }

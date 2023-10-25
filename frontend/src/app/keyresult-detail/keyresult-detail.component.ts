@@ -25,6 +25,7 @@ export class KeyresultDetailComponent implements OnInit {
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
   isComplete: boolean = false;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -106,6 +107,4 @@ export class KeyresultDetailComponent implements OnInit {
       this.refreshDataService.markDataRefresh();
     });
   }
-
-  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

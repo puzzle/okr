@@ -26,6 +26,7 @@ import { formInputCheck } from '../../common';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
+  protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
@@ -151,6 +152,4 @@ export class KeyResultDialogComponent implements OnInit {
   validOwner() {
     return typeof this.keyResultForm.value.owner === 'string';
   }
-
-  protected readonly formInputCheck = formInputCheck;
 }

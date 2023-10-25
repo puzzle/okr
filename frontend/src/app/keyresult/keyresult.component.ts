@@ -13,6 +13,7 @@ import { DATE_FORMAT } from '../shared/constantLibary';
 })
 export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
     public dialog: MatDialog,
@@ -32,6 +33,4 @@ export class KeyresultComponent {
   openDrawer() {
     this.router.navigate(['keyresult', this.keyResult.id]);
   }
-
-  protected readonly DATE_FORMAT = DATE_FORMAT;
 }

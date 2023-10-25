@@ -17,6 +17,9 @@ export class KeyresultTypeComponent implements OnInit {
   @Input() keyresult!: KeyResult;
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
+  protected readonly errorMessages: any = errorMessages;
+  protected readonly Unit = Unit;
+  protected readonly formInputCheck = formInputCheck;
 
   ngOnInit(): void {
     if (this.keyresult) {
@@ -96,8 +99,4 @@ export class KeyresultTypeComponent implements OnInit {
     const errors = this.keyResultForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  protected readonly errorMessages: any = errorMessages;
-  protected readonly Unit = Unit;
-  protected readonly formInputCheck = formInputCheck;
 }

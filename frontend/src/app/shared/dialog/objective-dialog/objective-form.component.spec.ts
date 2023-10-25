@@ -21,6 +21,7 @@ import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
 import { By } from '@angular/platform-browser';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 
 const submitEvent = {
   submitter: {
@@ -124,8 +125,8 @@ describe('ObjectiveDialogComponent', () => {
       By.css('[data-testId="description"]'),
     ).nativeElement;
     descriptionInput.value = description;
-    const checkBox = fixture.debugElement.query(By.css('[data-testId="checkbox"]')).nativeElement;
-    checkBox.click();
+    const checkBox = await loader.getHarness(MatCheckboxHarness);
+    await checkBox.check();
     const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter')).nativeElement;
     quarterSelect.value = quarter.toString();
 
@@ -134,7 +135,6 @@ describe('ObjectiveDialogComponent', () => {
     titleInput.dispatchEvent(new Event('input'));
     descriptionInput.dispatchEvent(new Event('input'));
     quarterSelect.dispatchEvent(new Event('input'));
-    checkBox.dispatchEvent(new Event('input'));
 
     const rawFormValue = component.objectiveForm.getRawValue();
     expect(rawFormValue.description).toBe(description);

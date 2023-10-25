@@ -40,8 +40,8 @@
         </span>
       </div>
 
-      <div class="d-flex flex-row align-items-center row gap-2">
-        <div class="d-flex flex-column col-5">
+      <div class="d-flex align-items-center row">
+        <div class="d-flex flex-column gap-2 col-6">
           <label class="text-black" for="quarter">Quartal</label>
           <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
             <option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
@@ -49,18 +49,15 @@
             </option>
           </select>
         </div>
-        <div class="d-flex flex-row col-6 mt-4">
-          <input
-            id="checkbox"
-            type="checkbox"
-            [attr.data-testId]="'checkbox'"
-            class="d-flex align-items-center custom-text-wrap pt-4 me-1"
-            color="primary"
-            formControlName="createKeyResults"
-            *ngIf="!data.objective.objectiveId"
-          />
-          <label for="checkbox">Key Results im Anschluss erfassen</label>
-        </div>
+        <mat-checkbox
+          [attr.data-testId]="'checkbox'"
+          class="d-flex align-items-center col-5 custom-text-wrap pt-4"
+          color="primary"
+          formControlName="createKeyResults"
+          *ngIf="!data.objective.objectiveId"
+        >
+          Key Results im Anschluss erfassen
+        </mat-checkbox>
       </div>
       <div class="d-flex justify-content-between p-0" mat-dialog-actions>
         <div class="d-flex gap-2 p-0">

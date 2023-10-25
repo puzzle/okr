@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,18 +11,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
 import { objective, quarter, teamMin1 } from '../../testData';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MatInputHarness } from '@angular/material/input/testing';
-import { MatSelectHarness } from '@angular/material/select/testing';
-import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Quarter } from '../../types/model/Quarter';
 import { QuarterService } from '../../services/quarter.service';
 import { Team } from '../../types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
+import { By } from '@angular/platform-browser';
 
 const submitEvent = {
   submitter: {
@@ -105,55 +103,38 @@ describe('ObjectiveDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //ToDo: All mat-input fields are now native input fields and therefore harness does not work anymore.
-  xit.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
-    let title: string = '';
-    let description: string = '';
+  it.each([['DRAFT'], ['ONGOING']])('onSubmit create', async (state: string) => {
+    //Prepare data
+    let title: string = 'title';
+    let description: string = 'description';
     let createKeyresults: boolean = true;
     let quarter: number = 0;
     let team: number = 0;
+    teamService.getAllTeams().subscribe((teams) => {
+      team = teams[0].id;
+    });
+    quarterService.getAllQuarters().subscribe((quarters) => {
+      quarter = quarters[0].id;
+    });
 
-    const inputs = loader.getAllHarnesses(MatInputHarness);
-    const selects = loader.getAllHarnesses(MatSelectHarness);
-    const checkbox = loader.getHarness(MatCheckboxHarness);
+    // Get input elements and set values
+    const titleInput: HTMLInputElement = fixture.debugElement.query(By.css('[data-testId="title"]')).nativeElement;
+    titleInput.value = title;
+    const descriptionInput: HTMLInputElement = fixture.debugElement.query(
+      By.css('[data-testId="description"]'),
+    ).nativeElement;
+    descriptionInput.value = description;
+    const checkBox = fixture.debugElement.query(By.css('[data-testId="checkbox"]')).nativeElement;
+    checkBox.click();
+    const quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter')).nativeElement;
+    quarterSelect.value = quarter.toString();
 
-    await Promise.all([inputs, selects, checkbox]).then(
-      fakeAsync(([inputs, selects, checkbox]: [MatInputHarness[], MatSelectHarness[], MatCheckboxHarness]) => {
-        inputs[0].setValue('title');
-        advance();
-        inputs[0].getValue().then((value) => {
-          title = value;
-        });
-        advance();
-        inputs[1].setValue('description');
-        advance();
-        inputs[1].getValue().then((value) => {
-          description = value;
-        });
-        advance();
-        checkbox.uncheck();
-        advance();
-        checkbox.isChecked().then((isChecked) => {
-          createKeyresults = isChecked;
-        });
-        advance();
-        const quarterSelect = selects[0];
-        advance();
-        quarterSelect.open().then(() => {
-          quarterSelect.getOptions().then((selectOptions) => {
-            selectOptions[0].click();
-            advance();
-            quarterService.getAllQuarters().subscribe((options) => {
-              quarter = options[0].id;
-            });
-          });
-        });
-        teamService.getAllTeams().subscribe((teams) => {
-          team = teams[0].id;
-        });
-        advance();
-      }),
-    );
+    // Trigger update of form
+    fixture.detectChanges();
+    titleInput.dispatchEvent(new Event('input'));
+    descriptionInput.dispatchEvent(new Event('input'));
+    quarterSelect.dispatchEvent(new Event('input'));
+    checkBox.dispatchEvent(new Event('input'));
 
     const rawFormValue = component.objectiveForm.getRawValue();
     expect(rawFormValue.description).toBe(description);
@@ -259,10 +240,4 @@ describe('ObjectiveDialogComponent', () => {
     expect(rawFormValue.team).toBe(objective.teamId);
     expect(rawFormValue.quarter).toBe(objective.quarterId);
   });
-
-  function advance(duration = 100) {
-    tick(duration);
-    fixture.detectChanges();
-    tick(duration);
-  }
 });

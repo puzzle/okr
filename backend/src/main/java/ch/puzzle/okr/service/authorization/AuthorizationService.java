@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.converter.JwtUserConverter;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
@@ -7,14 +8,14 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
-
-import static ch.puzzle.okr.models.authorization.AuthorizationReadRole.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationWriteRole.*;
+import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
@@ -40,34 +41,37 @@ public class AuthorizationService {
     }
 
     public static boolean hasRoleReadTeamsDraft(AuthorizationUser user) {
-        return user.readRoles().contains(READ_TEAMS_DRAFT);
+        return user.roles().contains(READ_TEAMS_DRAFT);
     }
 
     public static boolean hasRoleReadTeamDraft(AuthorizationUser user) {
-        return user.readRoles().contains(READ_TEAM_DRAFT);
+        return user.roles().contains(READ_TEAM_DRAFT);
     }
 
     public static boolean hasRoleReadAllPublished(AuthorizationUser user) {
-        return user.readRoles().contains(READ_ALL_PUBLISHED);
+        return user.roles().contains(READ_ALL_PUBLISHED);
     }
 
     public static boolean hasRoleReadAllDraft(AuthorizationUser user) {
-        return user.readRoles().contains(READ_ALL_DRAFT);
+        return user.roles().contains(READ_ALL_DRAFT);
     }
 
     public static boolean hasRoleWriteAll(AuthorizationUser user) {
-        return user.writeRoles().contains(WRITE_ALL);
+        return user.roles().contains(WRITE_ALL);
     }
 
     public static boolean hasRoleWriteAllTeams(AuthorizationUser user) {
-        return user.writeRoles().contains(WRITE_ALL_TEAMS);
+        return user.roles().contains(WRITE_ALL_TEAMS);
     }
 
     public static boolean hasRoleWriteTeam(AuthorizationUser user) {
-        return user.writeRoles().contains(WRITE_TEAM);
+        return user.roles().contains(WRITE_TEAM);
     }
 
-    public AuthorizationUser getAuthorizationUser(Jwt token) {
+    public AuthorizationUser getAuthorizationUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        Jwt token = (Jwt) authentication.getPrincipal();
         User user = jwtUserConverter.convert(token);
         return authorizationRegistrationService.registerAuthorizationUser(user, token);
     }
@@ -156,10 +160,9 @@ public class AuthorizationService {
     public boolean isWriteable(AuthorizationUser authorizationUser, Long teamId) {
         if (hasRoleWriteAll(authorizationUser)) {
             return true;
-        } else if (hasRoleWriteAllTeams(authorizationUser)
-                && !Objects.equals(authorizationUser.firstLevelTeamId(), teamId)) {
+        } else if (hasRoleWriteAllTeams(authorizationUser) && !authorizationUser.firstLevelTeamIds().contains(teamId)) {
             return true;
         } else
-            return hasRoleWriteTeam(authorizationUser) && authorizationUser.teamIds().contains(teamId);
+            return hasRoleWriteTeam(authorizationUser) && authorizationUser.userTeamIds().contains(teamId);
     }
 }

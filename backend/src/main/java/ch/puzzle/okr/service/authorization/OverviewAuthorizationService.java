@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -23,8 +22,8 @@ public class OverviewAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
+    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds,
                 authorizationUser);
         setRoleCreateOrUpdateObjective(overviews, authorizationUser);

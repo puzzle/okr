@@ -10,11 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.defaultJwtToken;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
@@ -29,7 +27,6 @@ class CompletedAuthorizationServiceTest {
     CompletedBusinessService completedBusinessService;
     @Mock
     AuthorizationService authorizationService;
-    private final Jwt token = defaultJwtToken();
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     private final Long objectiveId = 12L;
@@ -38,42 +35,42 @@ class CompletedAuthorizationServiceTest {
 
     @Test
     void createCompleted_ShouldReturnObjective_WhenAuthorized() {
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(completedBusinessService.createCompleted(newCompleted)).thenReturn(newCompleted);
 
-        Completed completed = completedAuthorizationService.createCompleted(newCompleted, token);
+        Completed completed = completedAuthorizationService.createCompleted(newCompleted);
         assertEquals(newCompleted, completed);
     }
 
     @Test
     void createCompleted_ShouldThrowException_WhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdateByObjectiveId(objectiveId, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> completedAuthorizationService.createCompleted(newCompleted, token));
+                () -> completedAuthorizationService.createCompleted(newCompleted));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
 
     @Test
     void deleteCompletedByObjectiveId_ShouldPassThrough_WhenAuthorized() {
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
-        completedAuthorizationService.deleteCompletedByObjectiveId(13L, token);
+        completedAuthorizationService.deleteCompletedByObjectiveId(13L);
     }
 
     @Test
     void deleteCompletedByObjectiveId_ShouldThrowException_WhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId, token));
+                () -> completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }

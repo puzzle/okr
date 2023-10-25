@@ -271,7 +271,7 @@ class KeyResultBusinessServiceTest {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
-        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1);
+        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1L);
 
         assertEquals(3, checkInList.size());
         assertEquals(1, checkInList.get(0).getId());
@@ -284,7 +284,7 @@ class KeyResultBusinessServiceTest {
     void shouldReturnEmptyListWhenNoCheckInsInKeyResult() {
         when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
 
-        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1);
+        List<CheckIn> checkInList = keyResultBusinessService.getAllCheckInsByKeyResult(1L);
 
         assertEquals(0, checkInList.size());
     }
@@ -294,7 +294,7 @@ class KeyResultBusinessServiceTest {
         when(keyResultPersistenceService.findById(1L))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultBusinessService.getAllCheckInsByKeyResult(1));
+                () -> keyResultBusinessService.getAllCheckInsByKeyResult(1L));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }

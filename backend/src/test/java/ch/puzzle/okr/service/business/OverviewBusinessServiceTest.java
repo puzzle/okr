@@ -1,10 +1,12 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
+import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +38,8 @@ class OverviewBusinessServiceTest {
     QuarterBusinessService quarterBusinessService;
 
     @Mock
+    TeamPersistenceService teamPersistenceService;
+    @Mock
     OverviewValidationService overviewValidationService;
 
     private static Overview createOverview() {
@@ -44,7 +48,7 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
+    void getOverviewByQuarterIdAndTeamIdsShouldReturnListOfOverviews() {
         when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L), "",authorizationUser))
                 .thenReturn(List.of(createOverview()));
 
@@ -130,7 +134,7 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldThrowExceptionWhenTeamIdIsNonExistent() {
+    void getOverviewByQuarterIdAndTeamIdsShouldThrowExceptionWhenTeamIdIsNonExistent() {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(quarterId, teamIds);
         assertThrows(ResponseStatusException.class,
@@ -139,5 +143,9 @@ class OverviewBusinessServiceTest {
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);
         verify(overviewPersistenceService, never()).getOverviewByQuarterIdAndTeamIds(anyLong(), anyList(), any());
+    }
+
+    private List<Team> getAllTeams(List<Long> teamIds) {
+        return teamIds.stream().map(id -> Team.Builder.builder().withId(id).build()).toList();
     }
 }

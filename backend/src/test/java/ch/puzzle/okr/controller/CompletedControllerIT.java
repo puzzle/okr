@@ -54,8 +54,7 @@ class CompletedControllerIT {
 
     @Test
     void createSuccessfulCompleted() throws Exception {
-        BDDMockito.given(this.completedAuthorizationService.createCompleted(any(), (any())))
-                .willReturn(successfulCompleted);
+        BDDMockito.given(this.completedAuthorizationService.createCompleted(any())).willReturn(successfulCompleted);
 
         mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -73,7 +72,7 @@ class CompletedControllerIT {
     @Test
     void throwExceptionWhenCompletedWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Completed not found"))
-                .when(completedAuthorizationService).deleteCompletedByObjectiveId(anyLong(), any());
+                .when(completedAuthorizationService).deleteCompletedByObjectiveId(anyLong());
 
         mvc.perform(delete("/api/v2/completed/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

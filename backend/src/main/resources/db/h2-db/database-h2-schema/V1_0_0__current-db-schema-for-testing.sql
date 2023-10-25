@@ -6,6 +6,7 @@ create sequence if not exists sequence_quarter;
 create sequence if not exists sequence_team;
 create sequence if not exists sequence_alignment;
 create sequence if not exists sequence_completed;
+create sequence if not exists sequence_organisation;
 
 create table if not exists person
 (
@@ -180,3 +181,22 @@ FROM OBJECTIVE O
          LEFT JOIN TEAM T ON O.TEAM_ID = T.ID
          LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID;
+
+create table if not exists organisation
+(
+    id       bigint       not null,
+    org_name varchar(255) not null,
+    state    text         not null,
+    primary key (id)
+);
+
+create table if not exists team_organisation
+(
+    team_id         bigint not null,
+    organisation_id bigint not null,
+    primary key (organisation_id, team_id),
+    constraint fk_team_organisation_organisation
+        foreign key (organisation_id) references organisation,
+    constraint fk_team_organisation_team
+        foreign key (team_id) references team
+);

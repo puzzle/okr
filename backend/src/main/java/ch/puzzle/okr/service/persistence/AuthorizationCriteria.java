@@ -24,18 +24,18 @@ public class AuthorizationCriteria<T> {
     private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn) {
         StringBuilder sb = new StringBuilder(256);
         if (hasRoleReadAllDraft(user)) {
-            sb.append(format(" or %s.%s=:draftState", alias, stateColumn));
+            sb.append(format(" or %s.%s=:allDraftState", alias, stateColumn));
         }
         if (hasRoleReadAllPublished(user)) {
             sb.append(format(" or %s.%s IN (:publishedStates)", alias, stateColumn));
         }
         if (hasRoleReadTeamDraft(user)) {
-            sb.append(format(" or %s.%s=:draftState and %s.%s IN (:authorizationTeamId)", alias, stateColumn, alias,
+            sb.append(format(" or %s.%s=:teamDraftState and %s.%s IN (:userTeamIds)", alias, stateColumn, alias,
                     teamIdColumn));
         }
         if (hasRoleReadTeamsDraft(user)) {
-            sb.append(format(" or %s.%s=:draftState and %s.%s <> :firstLevelTeamId", alias, stateColumn, alias,
-                    teamIdColumn));
+            sb.append(format(" or %s.%s=:teamsDraftState and %s.%s NOT IN (:firstLevelTeamIds)", alias, stateColumn,
+                    alias, teamIdColumn));
         }
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");
@@ -45,18 +45,18 @@ public class AuthorizationCriteria<T> {
 
     public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user) {
         if (hasRoleReadAllDraft(user)) {
-            typedQuery.setParameter("draftState", DRAFT);
+            typedQuery.setParameter("allDraftState", DRAFT);
         }
         if (hasRoleReadAllPublished(user)) {
             typedQuery.setParameter("publishedStates", List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
         }
         if (hasRoleReadTeamDraft(user)) {
-            typedQuery.setParameter("draftState", DRAFT);
-            typedQuery.setParameter("authorizationTeamId", user.teamIds());
+            typedQuery.setParameter("teamDraftState", DRAFT);
+            typedQuery.setParameter("userTeamIds", user.userTeamIds());
         }
         if (hasRoleReadTeamsDraft(user)) {
-            typedQuery.setParameter("draftState", DRAFT);
-            typedQuery.setParameter("firstLevelTeamId", user.firstLevelTeamId());
+            typedQuery.setParameter("teamsDraftState", DRAFT);
+            typedQuery.setParameter("firstLevelTeamIds", user.firstLevelTeamIds());
         }
     }
 }

@@ -1,18 +1,15 @@
 package ch.puzzle.okr;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.authorization.AuthorizationReadRole;
+import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.authorization.AuthorizationWriteRole;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
 import java.util.*;
 
-import static ch.puzzle.okr.models.authorization.AuthorizationReadRole.READ_ALL_DRAFT;
-import static ch.puzzle.okr.models.authorization.AuthorizationReadRole.READ_ALL_PUBLISHED;
-import static ch.puzzle.okr.models.authorization.AuthorizationWriteRole.WRITE_ALL;
+import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 public class TestHelper {
     private TestHelper() {
@@ -25,20 +22,19 @@ public class TestHelper {
 
     public static AuthorizationUser defaultAuthorizationUser() {
         return mockAuthorizationUser(1L, "bkaufmann", "Bob", "Kaufmann", "kaufmann@puzzle.ch", List.of(5L), 5L,
-                List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT), List.of(WRITE_ALL));
+                List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user, List<Long> teamIds, Long firstLevelTeamId,
-            List<AuthorizationReadRole> readRoles, List<AuthorizationWriteRole> writeRoles) {
+            List<AuthorizationRole> roles) {
         return mockAuthorizationUser(user.getId(), user.getUsername(), user.getFirstname(), user.getLastname(),
-                user.getEmail(), teamIds, firstLevelTeamId, readRoles, writeRoles);
+                user.getEmail(), teamIds, firstLevelTeamId, roles);
     }
 
     public static AuthorizationUser mockAuthorizationUser(Long id, String username, String firstname, String lastname,
-            String email, List<Long> teamIds, Long firstLevelTeamId, List<AuthorizationReadRole> readRoles,
-            List<AuthorizationWriteRole> writeRoles) {
+            String email, List<Long> teamIds, Long firstLevelTeamId, List<AuthorizationRole> roles) {
         return new AuthorizationUser(User.Builder.builder().withId(id).withUsername(username).withFirstname(firstname)
-                .withLastname(lastname).withEmail(email).build(), teamIds, firstLevelTeamId, readRoles, writeRoles);
+                .withLastname(lastname).withEmail(email).build(), teamIds, List.of(firstLevelTeamId), roles);
     }
 
     public static Jwt defaultJwtToken() {
@@ -70,7 +66,7 @@ public class TestHelper {
         if (!CollectionUtils.isEmpty(roles)) {
             Map<String, Collection<String>> realmAccess = new HashMap<>();
             realmAccess.put("roles", new ArrayList<>(roles));
-            claims.put("pict", realmAccess);
+            claims.put("pitc", realmAccess);
         }
 
         return new Jwt(exampleToken, Instant.now(), Instant.now().plusSeconds(3600), headers, claims);

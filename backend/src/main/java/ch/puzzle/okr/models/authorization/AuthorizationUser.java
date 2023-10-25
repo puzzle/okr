@@ -4,6 +4,6 @@ import ch.puzzle.okr.models.User;
 
 import java.util.List;
 
-public record AuthorizationUser(User user, List<Long> teamIds, Long firstLevelTeamId,
-        List<AuthorizationReadRole> readRoles, List<AuthorizationWriteRole> writeRoles) {
+public record AuthorizationUser(User user, List<Long> userTeamIds, List<Long> firstLevelTeamIds,
+        List<AuthorizationRole> roles) {
 }

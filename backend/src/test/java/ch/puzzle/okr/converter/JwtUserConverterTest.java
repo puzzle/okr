@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.authorization;
+package ch.puzzle.okr.converter;
 
 import ch.puzzle.okr.models.User;
 import org.junit.jupiter.api.BeforeEach;

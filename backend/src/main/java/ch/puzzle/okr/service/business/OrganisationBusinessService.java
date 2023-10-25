@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.AttributesMapper;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.LdapQuery;
@@ -21,8 +22,9 @@ import java.util.Objects;
 public class OrganisationBusinessService {
 
     private final OrganisationPersistenceService persistenceService;
-
     private final LdapTemplate ldapTemplate;
+    @Value("${okr.jwt.claim.organisation.name.prefix}")
+    private String organisationNamePrefix;
 
     public OrganisationBusinessService(LdapTemplate ldapTemplate, OrganisationPersistenceService persistenceService) {
         this.ldapTemplate = ldapTemplate;
@@ -47,11 +49,11 @@ public class OrganisationBusinessService {
         }
     }
 
-    private static class CnAttributesMapper implements AttributesMapper<String> {
+    private class CnAttributesMapper implements AttributesMapper<String> {
         @Override
         public String mapFromAttributes(Attributes attributes) throws NamingException {
             Attribute cnAttribute = attributes.get("cn");
-            if (cnAttribute != null && cnAttribute.get().toString().startsWith("org_")) {
+            if (cnAttribute != null && cnAttribute.get().toString().startsWith(organisationNamePrefix)) {
                 return cnAttribute.get().toString();
             }
             return null;

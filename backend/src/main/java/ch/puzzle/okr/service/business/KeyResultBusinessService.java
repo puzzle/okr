@@ -78,7 +78,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         keyResultPersistenceService.deleteById(id);
     }
 
-    public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId) {
+    public List<CheckIn> getAllCheckInsByKeyResult(Long keyResultId) {
         KeyResult keyResult = keyResultPersistenceService.findById(keyResultId);
         return checkInBusinessService.getCheckInsByKeyResultId(keyResult.getId());
     }

@@ -51,7 +51,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldGetMetricCheckInWithId() throws Exception {
-        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInMetric);
 
         mvc.perform(get(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
@@ -65,7 +65,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldGetOrdinalCheckInWithId() throws Exception {
-        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong(), any())).willReturn(checkInOrdinal);
+        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong())).willReturn(checkInOrdinal);
 
         mvc.perform(get(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath(JSON_PATH_ID, Is.is(4)))
@@ -79,7 +79,7 @@ class CheckInControllerIT {
 
     @Test
     void shouldNotFindTheCheckInWithId() throws Exception {
-        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong(), any()))
+        BDDMockito.given(checkInAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mvc.perform(get(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON))
@@ -90,7 +90,7 @@ class CheckInControllerIT {
     void shouldReturnUpdatedCheckIn() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
-        BDDMockito.given(checkInAuthorizationService.updateEntity(anyLong(), any(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInAuthorizationService.updateEntity(anyLong(), any())).willReturn(checkInMetric);
         BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
 
         mvc.perform(put(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +107,7 @@ class CheckInControllerIT {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
         BDDMockito.given(checkInMapper.toCheckIn(any())).willReturn(checkInMetric);
-        BDDMockito.given(checkInAuthorizationService.updateEntity(anyLong(), any(), any()))
+        BDDMockito.given(checkInAuthorizationService.updateEntity(anyLong(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found"));
 
         mvc.perform(put(CHECK_IN_5_URL).contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +119,7 @@ class CheckInControllerIT {
     void shouldCreateKeyResultMetric() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
-        BDDMockito.given(checkInAuthorizationService.createEntity(any(), any())).willReturn(checkInMetric);
+        BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInMetric);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
@@ -135,7 +135,7 @@ class CheckInControllerIT {
     void shouldCreateKeyResultOrdinal() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
-        BDDMockito.given(checkInAuthorizationService.createEntity(any(), any())).willReturn(checkInOrdinal);
+        BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
@@ -151,7 +151,7 @@ class CheckInControllerIT {
     void shouldThrowExceptionWhenKeyResultIdMissing() throws Exception {
         BDDMockito.given(keyResultBusinessService.getEntityById(anyLong()))
                 .willReturn(KeyResultMetric.Builder.builder().withId(1L).build());
-        BDDMockito.given(checkInAuthorizationService.createEntity(any(), any())).willReturn(checkInOrdinal);
+        BDDMockito.given(checkInAuthorizationService.createEntity(any())).willReturn(checkInOrdinal);
 
         mvc.perform(post(CHECK_IN_BASE_URL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON_WITHOUT_KEY_RESULT_ID))

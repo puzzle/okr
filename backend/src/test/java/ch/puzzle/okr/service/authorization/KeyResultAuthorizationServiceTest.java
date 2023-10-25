@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.List;
 import static ch.puzzle.okr.KeyResultTestHelpers.checkIn1;
 import static ch.puzzle.okr.KeyResultTestHelpers.metricKeyResult;
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.defaultJwtToken;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
@@ -33,27 +31,26 @@ class KeyResultAuthorizationServiceTest {
     KeyResultBusinessService keyResultBusinessService;
     @Mock
     AuthorizationService authorizationService;
-    private final Jwt token = defaultJwtToken();
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     @Test
     void createEntity_ShouldReturnKeyResult_WhenAuthorized() {
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.createEntity(metricKeyResult, authorizationUser)).thenReturn(metricKeyResult);
 
-        KeyResult keyResult = keyResultAuthorizationService.createEntity(metricKeyResult, token);
+        KeyResult keyResult = keyResultAuthorizationService.createEntity(metricKeyResult);
         assertEquals(metricKeyResult, keyResult);
     }
 
     @Test
     void createEntity_ShouldThrowException_WhenNotAuthorized() {
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultAuthorizationService.createEntity(metricKeyResult, token));
+                () -> keyResultAuthorizationService.createEntity(metricKeyResult));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
@@ -61,22 +58,21 @@ class KeyResultAuthorizationServiceTest {
     @Test
     void getEntityById_ShouldReturnKeyResult_WhenAuthorized() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.getEntityById(id)).thenReturn(metricKeyResult);
 
-        KeyResult keyResult = keyResultAuthorizationService.getEntityById(id, token);
+        KeyResult keyResult = keyResultAuthorizationService.getEntityById(id);
         assertEquals(metricKeyResult, keyResult);
     }
 
     @Test
     void getEntityById_ShouldReturnKeyResultWritable_WhenAuthorized() {
         Long id = 13L;
-        String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(metricKeyResult, authorizationUser)).thenReturn(true);
         when(keyResultBusinessService.getEntityById(id)).thenReturn(metricKeyResult);
 
-        KeyResult keyResult = keyResultAuthorizationService.getEntityById(id, token);
+        KeyResult keyResult = keyResultAuthorizationService.getEntityById(id);
         assertTrue(keyResult.isWriteable());
     }
 
@@ -84,12 +80,12 @@ class KeyResultAuthorizationServiceTest {
     void getEntityById_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleReadByKeyResultId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultAuthorizationService.getEntityById(id, token));
+                () -> keyResultAuthorizationService.getEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
@@ -97,10 +93,10 @@ class KeyResultAuthorizationServiceTest {
     @Test
     void updateEntity_ShouldReturnUpdatedKeyResult_WhenAuthorized() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.updateEntity(id, metricKeyResult, authorizationUser)).thenReturn(metricKeyResult);
 
-        KeyResult KeyResult = keyResultAuthorizationService.updateEntity(id, metricKeyResult, token);
+        KeyResult KeyResult = keyResultAuthorizationService.updateEntity(id, metricKeyResult);
         assertEquals(metricKeyResult, KeyResult);
     }
 
@@ -108,12 +104,12 @@ class KeyResultAuthorizationServiceTest {
     void updateEntity_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultAuthorizationService.updateEntity(id, metricKeyResult, token));
+                () -> keyResultAuthorizationService.updateEntity(id, metricKeyResult));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
@@ -121,32 +117,32 @@ class KeyResultAuthorizationServiceTest {
     @Test
     void deleteEntityById_ShouldPassThrough_WhenAuthorized() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
-        keyResultAuthorizationService.deleteEntityById(id, token);
+        keyResultAuthorizationService.deleteEntityById(id);
     }
 
     @Test
     void deleteEntityById_ShouldThrowException_WhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
                 .hasRoleDeleteByKeyResultId(id, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultAuthorizationService.deleteEntityById(id, token));
+                () -> keyResultAuthorizationService.deleteEntityById(id));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
     }
 
     @Test
     void getAllCheckInsByKeyResult_ShouldReturnListOfCheckIns_WhenAuthorized() {
-        Long id = 13L;
-        when(authorizationService.getAuthorizationUser(token)).thenReturn(authorizationUser);
+        long id = 13L;
+        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(keyResultBusinessService.getAllCheckInsByKeyResult(id)).thenReturn(List.of(checkIn1, checkIn1));
 
-        List<CheckIn> checkIns = keyResultAuthorizationService.getAllCheckInsByKeyResult(id, token);
+        List<CheckIn> checkIns = keyResultAuthorizationService.getAllCheckInsByKeyResult(id);
         assertThat(List.of(checkIn1, checkIn1)).hasSameElementsAs(checkIns);
     }
 

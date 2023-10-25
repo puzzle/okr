@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.BusinessServiceInterface;
-import org.springframework.security.oauth2.jwt.Jwt;
 
 /**
  * @param <ID>
@@ -31,28 +30,32 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
 
     protected abstract boolean isWriteable(T entity, AuthorizationUser authorizationUser);
 
-    public T getEntityById(ID id, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
+    public T getEntityById(ID id) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleReadById(id, authorizationUser);
         T entity = businessService.getEntityById(id);
         setRoleCreateOrUpdate(entity, authorizationUser);
         return entity;
     }
 
-    public T createEntity(T entity, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
+    public T createEntity(T entity) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
-        return businessService.createEntity(entity, authorizationUser);
+        T savedEntity = businessService.createEntity(entity, authorizationUser);
+        setRoleCreateOrUpdate(savedEntity, authorizationUser);
+        return savedEntity;
     }
 
-    public T updateEntity(ID id, T entity, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
+    public T updateEntity(ID id, T entity) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
-        return businessService.updateEntity(id, entity, authorizationUser);
+        T updatedEntity = businessService.updateEntity(id, entity, authorizationUser);
+        setRoleCreateOrUpdate(updatedEntity, authorizationUser);
+        return updatedEntity;
     }
 
-    public void deleteEntityById(ID id, Jwt token) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(token);
+    public void deleteEntityById(ID id) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleDeleteById(id, authorizationUser);
         businessService.deleteEntityById(id);
     }

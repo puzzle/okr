@@ -1,9 +1,8 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.authorization.AuthorizationReadRole;
+import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.authorization.AuthorizationWriteRole;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -21,11 +20,11 @@ import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static ch.puzzle.okr.TestConstants.*;
 import static ch.puzzle.okr.TestHelper.defaultUser;
 import static ch.puzzle.okr.TestHelper.mockJwtToken;
-import static ch.puzzle.okr.models.authorization.AuthorizationReadRole.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationWriteRole.*;
+import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.test.util.ReflectionTestUtils.setField;
 
 @SpringIntegrationTest
 class AuthorizationRegistrationServiceIT {
@@ -57,7 +56,7 @@ class AuthorizationRegistrationServiceIT {
 
     @Test
     void registerAuthorizationUser_ShouldAddAuthorizationUserToCache() {
-        Jwt token = mockJwtToken(user, List.of(ROLE_ORG_GL));
+        Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL));
         authorizationRegistrationService.registerAuthorizationUser(user, token);
 
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
@@ -70,52 +69,69 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetFirstLevelRoles() {
-        Jwt token = mockJwtToken(user, List.of(ROLE_ORG_GL, ROLE_ORG_BL));
+    void registerAuthorizationUser_ShouldSetFirstLeveOrganisations() {
+        Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
-        assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED), List.of(WRITE_ALL), authorizationUser);
+        assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL), authorizationUser);
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetSecondLevelRoles() {
-        Jwt token = mockJwtToken(user, List.of(ROLE_ORG_BL, ROLE_ORG_TEAM));
-        AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
+    void registerAuthorizationUser_ShouldThrowException_WhenFirstLevelOrganisationsNotFound() {
+        try {
+            setFirstLevelOrganisation("org_unknown");
+            Jwt token = mockJwtToken(user, List.of("org_gl"));
+            ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                    () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
 
-        assertRoles(List.of(READ_TEAMS_DRAFT, READ_ALL_PUBLISHED), List.of(WRITE_ALL_TEAMS), authorizationUser);
+            assertEquals(UNAUTHORIZED, exception.getStatus());
+            assertEquals("no team found for given organisation org_unknown", exception.getReason());
+        } finally {
+            setFirstLevelOrganisation("org_gl");
+        }
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetTeamRoles() {
-        Jwt token = mockJwtToken(user, List.of(ROLE_ORG_TEAM));
+    void registerAuthorizationUser_ShouldSetSecondLevelOrganisations() {
+        Jwt token = mockJwtToken(user, List.of(ORGANISATION_SECOND_LEVEL, ORGANISATION_TEAM));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
-        assertRoles(List.of(READ_TEAM_DRAFT, READ_ALL_PUBLISHED), List.of(WRITE_TEAM), authorizationUser);
+        assertRoles(List.of(READ_TEAMS_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL_TEAMS), authorizationUser);
     }
 
     @Test
-    void registerAuthorizationUser_ShouldThrowException_WhenTeamNotFound() {
-        Jwt token = mockJwtToken(user, List.of("org_foo", "xxx_bar"));
+    void registerAuthorizationUser_ShouldSetTeamOrganisations() {
+        Jwt token = mockJwtToken(user, List.of(ORGANISATION_TEAM));
+        AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
+
+        assertRoles(List.of(READ_TEAM_DRAFT, READ_ALL_PUBLISHED, WRITE_TEAM), authorizationUser);
+    }
+
+    @Test
+    void registerAuthorizationUser_ShouldThrowException_WhenTeamsNotFound() {
+        Jwt token = mockJwtToken(user, List.of("org_azubi", "xxx_bar"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("no team found for given roles [org_foo]", exception.getReason());
+        assertEquals("no team found for given organisations [org_azubi]", exception.getReason());
     }
 
     @Test
-    void registerAuthorizationUser_ShouldThrowException_WhenNoRolesFound() {
+    void registerAuthorizationUser_ShouldThrowException_WhenNoOrganisationsFound() {
         Jwt token = mockJwtToken(user, List.of());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("no team found for given roles []", exception.getReason());
+        assertEquals("no team found for given organisations []", exception.getReason());
     }
 
-    private static void assertRoles(List<AuthorizationReadRole> readRoles, List<AuthorizationWriteRole> writeRoles,
-            AuthorizationUser authorizationUser) {
-        assertThat(readRoles).hasSameElementsAs(authorizationUser.readRoles());
-        assertThat(writeRoles).hasSameElementsAs(authorizationUser.writeRoles());
+    private static void assertRoles(List<AuthorizationRole> roles, AuthorizationUser authorizationUser) {
+        assertThat(roles).hasSameElementsAs(authorizationUser.roles());
+    }
+
+    private void setFirstLevelOrganisation(String firstLevelOrganisation) {
+        setField(authorizationRegistrationService, "firstLevelOrganisationName", firstLevelOrganisation);
     }
 }

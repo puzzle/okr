@@ -95,7 +95,7 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/repositoriesAndServices.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
     void repositoriesShouldOnlyBeCalledFromPersistenceServices(String repository, String persistenceService) {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
@@ -111,8 +111,8 @@ class OkrArchitectureTest {
     void packagesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).should()
-                .resideInAPackage("ch.puzzle.okr." + passedName + "..");
+        ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).and()
+                .areTopLevelClasses().should().resideInAPackage("ch.puzzle.okr." + passedName + "..");
 
         rule.check(importedClasses);
     }

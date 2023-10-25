@@ -3,7 +3,6 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.CompletedBusinessService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,14 +16,14 @@ public class CompletedAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public Completed createCompleted(Completed completed, Jwt jwt) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(jwt);
+    public Completed createCompleted(Completed completed) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         authorizationService.hasRoleCreateOrUpdateByObjectiveId(completed.getObjective().getId(), authorizationUser);
         return completedBusinessService.createCompleted(completed);
     }
 
-    public void deleteCompletedByObjectiveId(Long objectiveId, Jwt jwt) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser(jwt);
+    public void deleteCompletedByObjectiveId(Long objectiveId) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         authorizationService.hasRoleDeleteByObjectiveId(objectiveId, authorizationUser);
         completedBusinessService.deleteCompletedByObjectiveId(objectiveId);
     }

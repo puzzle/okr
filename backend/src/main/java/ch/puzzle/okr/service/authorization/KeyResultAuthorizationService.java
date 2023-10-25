@@ -4,7 +4,6 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -37,8 +36,8 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
         return getAuthorizationService().isWriteable(entity, authorizationUser);
     }
 
-    public List<CheckIn> getAllCheckInsByKeyResult(long keyResultId, Jwt token) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser(token);
+    public List<CheckIn> getAllCheckInsByKeyResult(Long keyResultId) {
+        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
         List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
         setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);

@@ -1,4 +1,4 @@
-package ch.puzzle.okr.service.authorization;
+package ch.puzzle.okr.converter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,25 +13,25 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class JwtRolesConverter implements Converter<Jwt, Collection<String>> {
+public class JwtOrganisationConverter implements Converter<Jwt, List<String>> {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtRolesConverter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JwtOrganisationConverter.class);
 
     @Value("${okr.jwt.claim.realm}")
     private String claimRealm;
-    @Value("${okr.jwt.claim.roles}")
-    private String claimRoles;
-    @Value("${okr.team.role.name.prefix}")
-    private String roleNamePrefix;
+    @Value("${okr.jwt.claim.organisations}")
+    private String claimOrganisations;
+    @Value("${okr.jwt.claim.organisation.name.prefix}")
+    private String organisationNamePrefix;
 
     @Override
     public List<String> convert(Jwt token) {
         Map<String, Collection<String>> realmAccess = token.getClaim(claimRealm);
-        logger.debug("claimRealm {}", claimRealm);
+        logger.debug("realmAccess {}", realmAccess);
         if (!CollectionUtils.isEmpty(realmAccess)) {
-            Collection<String> roles = realmAccess.get(claimRoles);
-            if (!CollectionUtils.isEmpty(roles)) {
-                return roles.stream().filter(role -> role.startsWith(roleNamePrefix)).toList();
+            Collection<String> organisations = realmAccess.get(claimOrganisations);
+            if (!CollectionUtils.isEmpty(organisations)) {
+                return organisations.stream().filter(o -> o.startsWith(organisationNamePrefix)).toList();
             }
         }
         return List.of();

@@ -64,7 +64,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldGetMetricKeyResultWithId() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong(), any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
 
         mvc.perform(get(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON))
@@ -84,7 +84,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldGetOrdinalKeyResultWithId() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong(), any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(ordinalKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
 
         mvc.perform(get(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON))
@@ -105,7 +105,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldNotFindTheKeyResultWithGivenId() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong(), any()))
+        BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 55 not found"));
 
         mvc.perform(get(URL_TO_KEY_RESULT_55).contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ class KeyResultControllerIT {
     @Test
     void shouldReturnCheckInsFromKeyResult() throws Exception {
         List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
-        BDDMockito.given(this.keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong(), any()))
+        BDDMockito.given(this.keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
                 .willReturn(checkInList);
         BDDMockito.given(this.checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
         BDDMockito.given(this.checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
@@ -133,7 +133,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldGetAllCheckInsIfNoCheckInExistsInKeyResult() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong(), any()))
+        BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
                 .willReturn(Collections.emptyList());
 
         mvc.perform(get(URL_TO_KEY_RESULT_1_CHECK_IN).contentType(MediaType.APPLICATION_JSON))
@@ -142,7 +142,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnErrorWhenKeyResultDoesntExistWhenGettingCheckInsFromKeyResult() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong(), any()))
+        BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
 
         mvc.perform(get(URL_TO_KEY_RESULT_1_CHECK_IN).contentType(MediaType.APPLICATION_JSON))
@@ -151,7 +151,7 @@ class KeyResultControllerIT {
 
     @Test
     void createMetricKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any(), any())).willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
 
@@ -173,7 +173,7 @@ class KeyResultControllerIT {
 
     @Test
     void createOrdinalKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any(), any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
@@ -208,7 +208,7 @@ class KeyResultControllerIT {
 
     @Test
     void createEntityWithEnumKeys() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any(), any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
@@ -239,8 +239,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnUpdatedKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any(), any()))
-                .willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultAuthorizationService.isImUsed(any(), any())).willReturn(false);
@@ -260,8 +259,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnUpdatedKeyResultWithImUsed() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any(), any()))
-                .willReturn(metricKeyResult);
+        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
         BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
         BDDMockito.given(this.keyResultAuthorizationService.isImUsed(any(), any())).willReturn(true);
@@ -282,7 +280,7 @@ class KeyResultControllerIT {
     @Test
     void shouldReturnNotFoundWhenUpdatingKeyResult() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"))
-                .when(keyResultAuthorizationService).updateEntity(any(), any(), any());
+                .when(keyResultAuthorizationService).updateEntity(any(), any());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1000).content(PUT_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -291,7 +289,7 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnBadRequestWhenUpdatingKeyResult() throws Exception {
-        BDDMockito.given(keyResultAuthorizationService.updateEntity(any(), any(), any()))
+        BDDMockito.given(keyResultAuthorizationService.updateEntity(any(), any()))
                 .willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad request while updating keyresult"));
 
         mvc.perform(put(URL_TO_KEY_RESULT_10).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -307,7 +305,7 @@ class KeyResultControllerIT {
     @Test
     void throwExceptionWhenKeyResultWithIdCantBeFoundWhileDeleting() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"))
-                .when(keyResultAuthorizationService).deleteEntityById(anyLong(), any());
+                .when(keyResultAuthorizationService).deleteEntityById(anyLong());
 
         mvc.perform(delete(URL_TO_KEY_RESULT_1000).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());

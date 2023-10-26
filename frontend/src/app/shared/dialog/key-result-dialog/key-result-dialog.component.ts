@@ -15,6 +15,7 @@ import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
 import { Action } from '../../types/model/Action';
+import { ActionService } from '../../services/action.service';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 
@@ -27,13 +28,13 @@ import { formInputCheck } from '../../common';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
-  actionPlan: Action[] = [];
   protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     owner: new FormControl<User | string | null>(null, [Validators.required, Validators.nullValidator]),
+    actionList: new FormControl<Action[]>([]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),
@@ -48,6 +49,7 @@ export class KeyResultDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
+    private actionService: ActionService,
     public dialog: MatDialog,
     public userService: UserService,
   ) {}
@@ -60,6 +62,9 @@ export class KeyResultDialogComponent implements OnInit {
       switchMap((value) => this.filter(value as string)),
     );
     if (this.data.keyResult) {
+      this.actionService.getActionsFromKeyResult(this.data.keyResult.id).subscribe((actions) => {
+        this.keyResultForm.patchValue({ actionList: actions });
+      });
       this.keyResultForm.controls.title.setValue(this.data.keyResult.title);
       this.keyResultForm.controls.description.setValue(this.data.keyResult.description);
       this.keyResultForm.controls.owner.setValue(this.data.keyResult.owner);
@@ -92,7 +97,6 @@ export class KeyResultDialogComponent implements OnInit {
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.actionPlan = this.actionPlan;
     keyResult.version = this.data.keyResult?.version;
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
@@ -158,11 +162,5 @@ export class KeyResultDialogComponent implements OnInit {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
-  }
-
-  updateActionPlan(event: Action[]) {
-    console.log('Hello');
-    console.log(event);
-    this.actionPlan = event;
   }
 }

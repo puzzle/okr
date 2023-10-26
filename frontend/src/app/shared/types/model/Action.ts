@@ -5,4 +5,5 @@ export interface Action {
   action: string;
   priority: number;
   isChecked: boolean;
+  keyResult: KeyResult;
 }

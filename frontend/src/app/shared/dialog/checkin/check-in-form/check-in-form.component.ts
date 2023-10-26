@@ -7,6 +7,7 @@ import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../types/model/CheckInMin';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
+import { Action } from '../../../types/model/Action';
 import { DATE_FORMAT } from '../../../constantLibary';
 
 @Component({
@@ -27,6 +28,7 @@ export class CheckInFormComponent {
     confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
+    actionList: new FormControl<Action[]>([]),
   });
 
   constructor(

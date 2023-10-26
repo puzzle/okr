@@ -3,8 +3,6 @@ import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResult } from '../../../types/model/KeyResult';
 import { ActionService } from '../../../services/action.service';
-import { Action } from '../../../types/model/Action';
-import { Observable } from 'rxjs';
 import { formInputCheck } from '../../../common';
 
 @Component({
@@ -15,14 +13,15 @@ export class CheckInBaseInformationsComponent implements OnInit {
   @Input()
   dialogForm!: FormGroup;
   @Input() keyresult!: KeyResult;
-  actionPoints!: Observable<Action[]>;
   protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
 
   constructor(private actionService: ActionService) {}
 
   ngOnInit() {
-    this.actionPoints = this.actionService.getActionsFromKeyResult(this.keyresult.id);
+    this.actionService.getActionsFromKeyResult(this.keyresult.id).subscribe((actions) => {
+      this.dialogForm.patchValue({ actionList: actions });
+    });
   }
 
   isTouchedOrDirty(name: string) {
@@ -33,4 +32,6 @@ export class CheckInBaseInformationsComponent implements OnInit {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
+
+  changeIsChecked(event: any) {}
 }

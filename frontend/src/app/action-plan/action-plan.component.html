@@ -1,18 +1,18 @@
 <label class="text-black">Action Plan (optional)</label>
 
 <div
+  *ngIf="formControl?.getRawValue()"
   cdkDropList
-  #todoList="cdkDropList"
-  [cdkDropListData]="actionPointsText"
+  [cdkDropListData]="formControl.getRawValue()"
   class="action-points-list d-flex flex-column gap-2"
   (cdkDropListDropped)="drop($event)"
 >
-  <div class="action-point-item" *ngFor="let action of actionPointsText; index as i" cdkDrag>
+  <div class="action-point-item" *ngFor="let action of formControl.getRawValue(); index as i" cdkDrag>
     <div class="drag-drop-dots">
       <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
     </div>
-    <input class="action-input" type="text" [value]="action" (change)="changeActionText($event, i)" />
-    <img class="icons bin-icon" src="../assets/icons/delete-icon.svg" alt="Delete bin" />
+    <input class="action-input" type="text" [value]="action.action" (change)="changeActionText($event, i)" />
+    <img class="icons bin-icon" src="../assets/icons/delete-icon.svg" alt="Delete bin" (click)="removeAction(i)" />
   </div>
 </div>
 

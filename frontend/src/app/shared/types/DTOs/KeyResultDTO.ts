@@ -14,5 +14,5 @@ export interface KeyResultDTO {
   lastCheckIn: CheckIn | null | undefined;
   createdOn: Date | null | undefined;
   modifiedOn: Date | null | undefined;
-  actionPlan: Action[] | null | undefined;
+  actionList: Action[] | null;
 }

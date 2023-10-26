@@ -29,6 +29,6 @@
 </form>
 
 <label class="text-black">Action Plan</label>
-<div *ngFor="let action of actionPoints | async">
-  <mat-checkbox [(ngModel)]="action.isChecked">{{ action.action }}</mat-checkbox>
+<div *ngFor="let action of dialogForm.getRawValue()">
+  <mat-checkbox (change)="changeIsChecked($event)" [(ngModel)]="action.isChecked">{{ action.action }}</mat-checkbox>
 </div>

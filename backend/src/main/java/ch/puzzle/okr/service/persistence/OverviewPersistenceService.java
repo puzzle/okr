@@ -14,7 +14,13 @@ import java.util.List;
 public class OverviewPersistenceService {
 
     private static final Logger logger = LoggerFactory.getLogger(OverviewPersistenceService.class);
-    private static final String SELECT_OVERVIEW = "SELECT o FROM Overview o WHERE o.quarterId=:quarterId and o.overviewId.teamId in (:teamIds)";
+    private static final String SELECT_OVERVIEW = """
+            SELECT o FROM Overview o
+            WHERE o.quarterId=:quarterId
+              and o.overviewId.teamId in (:teamIds)
+              and (lower(coalesce(o.objectiveTitle, '')) like lower(concat('%',:objectiveQuery,'%'))
+                   or o.overviewId.objectiveId = -1)
+            """;
 
     private final EntityManager entityManager;
     private final AuthorizationCriteria<Overview> authorizationCriteria;
@@ -25,13 +31,14 @@ public class OverviewPersistenceService {
         this.authorizationCriteria = authorizationCriteria;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds,
+    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
             AuthorizationUser authorizationUser) {
         String queryString = SELECT_OVERVIEW + authorizationCriteria.appendOverview(authorizationUser);
         logger.debug("select overview by quarterId={} and teamIds={}: {}", quarterId, teamIds, queryString);
         TypedQuery<Overview> typedQuery = entityManager.createQuery(queryString, Overview.class);
         typedQuery.setParameter("quarterId", quarterId);
         typedQuery.setParameter("teamIds", teamIds);
+        typedQuery.setParameter("objectiveQuery", objectiveQuery);
         authorizationCriteria.setParameters(typedQuery, authorizationUser);
         return typedQuery.getResultList();
     }

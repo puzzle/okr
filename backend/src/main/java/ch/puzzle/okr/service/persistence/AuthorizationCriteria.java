@@ -14,14 +14,15 @@ import static java.lang.String.format;
 public class AuthorizationCriteria<T> {
 
     public String appendOverview(AuthorizationUser authorizationUser) {
-        return append(authorizationUser, "o", "objectiveState", "overviewId.teamId");
+        return append(authorizationUser, "o", "objectiveState", "overviewId.teamId", true);
     }
 
     public String appendObjective(AuthorizationUser authorizationUser) {
-        return append(authorizationUser, "o", "state", "team.id");
+        return append(authorizationUser, "o", "state", "team.id", false);
     }
 
-    private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn) {
+    private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn,
+            boolean skipObjective) {
         StringBuilder sb = new StringBuilder(256);
         if (hasRoleReadAllDraft(user)) {
             sb.append(format(" or %s.%s=:allDraftState", alias, stateColumn));
@@ -36,6 +37,9 @@ public class AuthorizationCriteria<T> {
         if (hasRoleReadTeamsDraft(user)) {
             sb.append(format(" or %s.%s=:teamsDraftState and %s.%s NOT IN (:firstLevelTeamIds)", alias, stateColumn,
                     alias, teamIdColumn));
+        }
+        if (skipObjective) {
+            sb.append(format(" or %s.overviewId.objectiveId = -1", alias));
         }
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");

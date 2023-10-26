@@ -7,7 +7,7 @@
     "build": "ng build",
     "build:staging": "ng build --configuration staging",
     "watch": "ng build --watch --configuration development",
-    "test": "jest",
+    "test": "jest --silent",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:open-test": "concurrently \"npm start\" \"cypress open\"",

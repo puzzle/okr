@@ -15,12 +15,8 @@ public class OverviewPersistenceService {
         this.overviewRepository = overviewRepository;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
-        return overviewRepository.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds);
-    }
-
-    public List<Overview> getOverviewByQuarterId(Long quarterId) {
-        // TODO remove function as soon as teamids are able to be read from jwt token
-        return overviewRepository.getOverviewByQuarterId(quarterId);
+    public List<Overview> getOverviewByQuarterAndTeamsAndObjectiveQuery(Long quarterId, List<Long> teamIds,
+            String objectiveQuery) {
+        return overviewRepository.getFilteredOverview(quarterId, teamIds, objectiveQuery.toLowerCase());
     }
 }

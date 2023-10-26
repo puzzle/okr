@@ -42,9 +42,10 @@ public class OverviewController {
     @GetMapping("")
     public ResponseEntity<List<OverviewDto>> getOverview(
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
-            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter) {
+            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
+            @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
         registerNewUserService.registerNewUser(SecurityContextHolder.getContext());
         return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
-                .toDto(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterFilter, teamFilter)));
+                .toDto(overviewBusinessService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
     }
 }

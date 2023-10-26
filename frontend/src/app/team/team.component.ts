@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
+import { trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-team',
@@ -15,6 +16,7 @@ import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key
 })
 export class TeamComponent {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
+  protected readonly trackByFn = trackByFn;
 
   constructor(
     private dialog: MatDialog,

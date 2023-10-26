@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/comple
 import { Completed } from '../shared/types/model/Completed';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
+import { trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-objective-column',
@@ -23,6 +24,7 @@ import { Objective } from '../shared/types/model/Objective';
 export class ObjectiveComponent implements OnInit, AfterViewInit {
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
+  protected readonly trackByFn = trackByFn;
 
   constructor(
     private matDialog: MatDialog,

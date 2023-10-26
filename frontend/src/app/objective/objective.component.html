@@ -1,4 +1,9 @@
-<div (click)="openObjectiveDetail()" role="button" class="objective rounded-3 bg-white">
+<div
+  (click)="openObjectiveDetail()"
+  (keydown.enter)="openObjectiveDetail()"
+  class="objective rounded-3 bg-white"
+  tabindex="0"
+>
   <span class="col">
     <img
       class="d-flex"
@@ -18,19 +23,25 @@
         [src]="'assets/icons/' + objective.value.state"
       />
       <header class="title col-10 ps-2">{{ objective.value.title }}</header>
-      <mat-icon
-        class="three-dot-menu"
+
+      <button
+        class="icon-button three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation()"
         data-testid="objective-menu"
+        (keydown.enter)="$event.stopPropagation()"
       >
-        more_vert
-      </mat-icon>
+        <mat-icon>more_vert</mat-icon>
+      </button>
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
-      <button *ngFor="let keyResult of (objective | async)?.keyResults" class="border-0 p-0">
-        <app-keyresult (click)="$event.stopPropagation()" [keyResult]="keyResult"></app-keyresult>
-      </button>
+      <app-keyresult
+        *ngFor="let keyResult of (objective | async)?.keyResults; trackBy: trackByFn"
+        class="border-0 p-0"
+        (click)="$event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
+        [keyResult]="keyResult"
+      ></app-keyresult>
     </section>
     <section class="py-3">
       <button
@@ -38,7 +49,8 @@
         mat-button
         color="primary"
         class="fw-bold"
-        (click)="$event.stopPropagation(); openAddKeyResultDialog()"
+        (click)="openAddKeyResultDialog(); $event.stopPropagation()"
+        (keydown.enter)="$event.stopPropagation()"
       >
         <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
         Key Result hinzufügen

@@ -4,7 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { areEqual, getValueFromQuery, optionalReplaceWithNulls } from '../shared/common';
+import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-team-filter',
@@ -88,4 +88,6 @@ export class TeamFilterComponent implements OnInit {
     this.activeTeams = [];
     this.changeTeamFilterParamsAndReload();
   }
+
+  protected readonly trackByFn = trackByFn;
 }

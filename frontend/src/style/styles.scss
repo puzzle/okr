@@ -107,3 +107,7 @@ body pzsh-backdrop {
 .mat-mdc-form-field-error {
   color: #b3261b;
 }
+
+*:focus {
+  outline: blue solid 2px;
+}

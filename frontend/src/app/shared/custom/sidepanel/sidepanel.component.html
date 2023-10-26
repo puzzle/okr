@@ -10,6 +10,7 @@
     [cdkConnectedOverlayPositions]="position"
     [cdkConnectedOverlayPush]="true"
     cdkConnectedOverlay
+    (overlayKeydown)="closeOnKeydown($event)"
   >
     <div
       [cdkTrapFocusAutoCapture]="true"

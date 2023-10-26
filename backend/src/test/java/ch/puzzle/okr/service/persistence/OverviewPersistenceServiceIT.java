@@ -36,15 +36,6 @@ class OverviewPersistenceServiceIT {
                 getOverviewIds(overviews));
     }
 
-    // Stop excluding test after query is updated so all teams are shown even if no filter matches
-    // @Test
-    void getOverviewByQuarterIdAndTeamIdsAndObjectiveQueryShouldReturnAllTeamsWhenQueryIsNotFound() {
-        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(2L,
-                List.of(5L, 6L, 8L), "asdfasdfasdf");
-
-        assertEquals(3, overviews.size());
-    }
-
     private List<OverviewId> getOverviewIds(List<Overview> overviewList) {
         return overviewList.stream().map(Overview::getOverviewId).toList();
     }

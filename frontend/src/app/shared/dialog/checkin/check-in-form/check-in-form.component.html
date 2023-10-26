@@ -30,18 +30,15 @@
   </div>
   <!--    Buttons to submit the check-in-->
   <div class="d-flex flex-row buttons">
-    <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-2 fw-bold text-white">
-      Weiter
-    </button>
+    <button mat-flat-button color="primary" *ngIf="!continued" (click)="continued = true">Weiter</button>
     <button
       [disabled]="!this.dialogForm.valid"
       (click)="saveCheckIn()"
       *ngIf="continued"
       type="submit"
-      mat-button
+      mat-flat-button
       mat-dialog-close
-      [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
-      class="d-flex justify-content-center fw-bold text-white"
+      color="primary"
     >
       <span *ngIf="checkIn.id">Speichern</span>
       <span *ngIf="!checkIn.id">Check-in erfassen</span>

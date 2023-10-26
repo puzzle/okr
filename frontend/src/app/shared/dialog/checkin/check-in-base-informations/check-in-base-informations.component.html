@@ -32,7 +32,7 @@
     <div *ngFor="let action of dialogForm.get('actionList')!.getRawValue(); let i = index">
       <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked">{{
         action.action
-        }}</mat-checkbox>
+      }}</mat-checkbox>
     </div>
   </div>
 </form>

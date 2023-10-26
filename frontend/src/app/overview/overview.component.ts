@@ -4,7 +4,7 @@ import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getValueFromQuery, trackByFn } from '../shared/common';
+import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-overview',
@@ -38,8 +38,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
     const teamIds = getValueFromQuery(teamQuery);
     const quarterId = getValueFromQuery(quarterQuery)[0];
-
-    this.loadOverview(quarterId, teamIds, objectiveQuery);
+    const objectiveQueryString = getQueryString(objectiveQuery);
+    this.loadOverview(quarterId, teamIds, objectiveQueryString);
   }
 
   loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {

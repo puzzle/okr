@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { optionalReplaceWithNulls, sanitize } from '../shared/common';
+import { getQueryString, optionalReplaceWithNulls, sanitize } from '../shared/common';
 import { debounceTime, Subject, tap } from 'rxjs';
 
 @Component({
@@ -31,11 +31,11 @@ export class ObjectiveFilterComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(decodeURI(decodeURI('t%2520t')));
     this.route.queryParams.subscribe((params) => {
-      const objectiveQuery = decodeURI(params['objectiveQuery'] || '');
-      const sanitizedQuery = sanitize(objectiveQuery);
-      if (sanitize(this.query) !== sanitizedQuery) {
-        this.query = sanitizedQuery;
+      const objectiveQuery = getQueryString(params['objectiveQuery'] || '');
+      if (sanitize(this.query) !== objectiveQuery) {
+        this.query = objectiveQuery;
         this.updateURL();
       }
     });

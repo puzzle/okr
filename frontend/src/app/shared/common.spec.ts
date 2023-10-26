@@ -1,6 +1,7 @@
 import {
   areEqual,
   getNumberOrNull,
+  getQueryString,
   getValueFromQuery,
   optionalReplaceWithNulls,
   optionalValue,
@@ -114,6 +115,16 @@ describe('test common functions', () => {
     ['ffF', 'fff'],
   ])('test sanitize function', (str: any, expected: string) => {
     expect(sanitize(str)).toBe(expected);
+  });
+
+  it.each([
+    ['t%20t', 't t'],
+    ['%20', ''],
+    ['f%20', 'f'],
+    ['%20f', 'f'],
+    ['test', 'test'],
+  ])('test getQueryString function', (str: any, expected: string) => {
+    expect(getQueryString(str)).toBe(expected);
   });
 
   it.each([

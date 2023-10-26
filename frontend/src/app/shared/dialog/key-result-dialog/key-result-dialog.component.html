@@ -1,20 +1,23 @@
 <div mat-dialog-content class="dialog">
-  <div class="d-flex justify-content-between align-items-center">
-    <p class="title">Key Result {{ data.keyResult ? "bearbeiten" : "erfassen" }}</p>
-    <button data-test-id="closeDrawer" mat-dialog-close mat-icon-button>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
-
+  <app-dialog-header
+    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
+  ></app-dialog-header>
   <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
-      <textarea [attr.data-testId]="'titleInput'" class="input-fields" formControlName="title" id="title"></textarea>
-      <div *ngIf="isTouchedOrDirty('title')">
+      <textarea
+        [attr.data-testId]="'titleInput'"
+        [ngClass]="formInputCheck(keyResultForm, 'title')"
+        class="input-fields big-dialog-form-field"
+        formControlName="title"
+        id="title"
+        cdkFocusInitial
+      ></textarea>
+      <span *ngIf="isTouchedOrDirty('title')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
           {{ errorMessages[errorKey.toUpperCase().trim()] }}
         </mat-error>
-      </div>
+      </span>
     </div>
 
     <div class="mt-2">
@@ -24,10 +27,11 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
+        [ngClass]="validOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+        class="input-fields owner-input"
         [attr.data-testId]="'ownerInput'"
         [matAutocomplete]="auto"
         formControlName="owner"
-        class="input-fields owner-input"
       />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
@@ -41,7 +45,12 @@
 
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Beschreibung (optional)</label>
-      <textarea [attr.data-testId]="'descriptionInput'" class="input-fields" formControlName="description"></textarea>
+      <textarea
+        [attr.data-testId]="'descriptionInput'"
+        class="input-fields big-dialog-form-field"
+        [ngClass]="formInputCheck(keyResultForm, 'description')"
+        formControlName="description"
+      ></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
           {{ errorMessages[errorKey.toUpperCase().trim()] }}
@@ -56,7 +65,7 @@
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid"
+        [disabled]="keyResultForm.invalid || validOwner()"
         color="primary"
         mat-flat-button
       >

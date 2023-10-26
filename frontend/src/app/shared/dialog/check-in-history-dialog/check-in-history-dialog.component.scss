@@ -3,6 +3,7 @@
 .cancel-button {
   background-color: $pz-dark-blue;
   border-radius: 8px;
+  width: min-content;
 }
 
 .edit-check-in {
@@ -23,5 +24,9 @@
 }
 
 .dialog-content {
-  max-height: 355px;
+  max-height: 312px;
+}
+
+.close-button {
+  margin-top: 32px;
 }

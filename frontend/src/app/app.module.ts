@@ -67,6 +67,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
 import { CustomRouter } from './shared/customRouter';
 import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.component';
+import { DialogHeaderComponent } from './shared/custom/dialog-header/dialog-header.component';
 import { ObjectiveFilterComponent } from './objective-filter/objective-filter.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
@@ -129,6 +130,7 @@ export const MY_FORMATS = {
     SidepanelComponent,
     TeamFilterComponent,
     KeyresultTypeComponent,
+    DialogHeaderComponent,
     ObjectiveFilterComponent,
   ],
   imports: [

@@ -1,5 +1,6 @@
 import {
   areEqual,
+  formInputCheck,
   getNumberOrNull,
   getQueryString,
   getValueFromQuery,
@@ -7,6 +8,8 @@ import {
   optionalValue,
   sanitize,
 } from './common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from './types/model/User';
 
 describe('test common functions', () => {
   describe('getNumberOrNull', () => {
@@ -147,4 +150,32 @@ describe('test common functions', () => {
       expect(optionalReplaceWithNulls(obj1)).toStrictEqual(obj2);
     },
   );
+
+  test('should return correct class', () => {
+    let testForm = new FormGroup({
+      title: new FormControl<string | undefined>(undefined, [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(250),
+      ]),
+      description: new FormControl<string>('', [Validators.maxLength(4096)]),
+      code: new FormControl<number>(0, [Validators.min(5), Validators.max(10)]),
+    });
+    testForm.controls['code'].markAsDirty();
+    testForm.controls['title'].markAsTouched();
+    testForm.controls['description'].markAsDirty();
+
+    //False check
+    expect(formInputCheck(testForm, 'code')).toBe('dialog-form-field-error');
+    expect(formInputCheck(testForm, 'title')).toBe('dialog-form-field-error');
+
+    //Fill in value to match validation
+    testForm.controls.code.setValue(8);
+    testForm.controls.title.setValue('Test');
+
+    //True check
+    expect(formInputCheck(testForm, 'description')).toBe('dialog-form-field');
+    expect(formInputCheck(testForm, 'code')).toBe('dialog-form-field');
+    expect(formInputCheck(testForm, 'title')).toBe('dialog-form-field');
+  });
 });

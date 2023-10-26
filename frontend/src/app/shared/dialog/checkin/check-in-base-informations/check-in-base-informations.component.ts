@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
+import { formInputCheck } from '../../../common';
 
 @Component({
   selector: 'app-check-in-base-informations',
@@ -10,6 +11,7 @@ export class CheckInBaseInformationsComponent {
   @Input()
   dialogForm!: FormGroup;
   protected readonly errorMessages: any = errorMessages;
+  protected readonly formInputCheck = formInputCheck;
 
   isTouchedOrDirty(name: string) {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;

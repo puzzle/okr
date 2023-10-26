@@ -1,5 +1,5 @@
 <!--    Confidence and Value   -->
-<div class="d-flex flex-row w-100">
+<div class="d-flex flex-row w-100 gap-4">
   <div class="d-flex flex-column w-25">
     <mat-label>
       Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT' && keyResult.unit != 'NUMBER'">
@@ -21,7 +21,7 @@
       </div>
     </div>
   </div>
-  <div class="d-flex flex-column w-75 justify-content-start align-items-start ms-5">
+  <div class="d-flex flex-column justify-content-start align-items-start ms-5">
     <mat-label
       >Confidence um Target ({{ calculateTarget() | unitValueTransformation: keyResult.unit }}) zu erreichen</mat-label
     >

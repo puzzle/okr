@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-example-dialog',
@@ -9,6 +10,8 @@ import errorMessages from '../../../../assets/errors/error-messages.json';
 })
 export class ExampleDialogComponent {
   hobbies = ['fishing', 'football', 'videogames', 'tennis', 'other'];
+  protected readonly errorMessages: any = errorMessages;
+  protected readonly formInputCheck = formInputCheck;
 
   dialogForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -34,6 +37,4 @@ export class ExampleDialogComponent {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  protected readonly errorMessages: any = errorMessages;
 }

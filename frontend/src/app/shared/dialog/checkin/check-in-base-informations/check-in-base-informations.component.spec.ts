@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CheckInBaseInformationsComponent } from './check-in-base-informations.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -49,17 +49,19 @@ describe('CheckInBaseInformationsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should save given text in input to form-group in typescript', waitForAsync(async () => {
-    const inputs = await loader.getAllHarnesses(MatInputHarness);
-    const changeInfoTextbox = inputs[0];
-    const initiativesTextbox = inputs[1];
+  it('should save given text in input to form-group in typescript', async () => {
+    const changeInfoTextbox = fixture.debugElement.query(By.css('[data-testId="changeInfo"]')).nativeElement;
+    const initiativesTextbox = fixture.debugElement.query(By.css('[data-testId="initiatives"]')).nativeElement;
+    changeInfoTextbox.value = changeInfoText;
+    initiativesTextbox.value = initiativesText;
 
-    await changeInfoTextbox.setValue(changeInfoText);
-    await initiativesTextbox.setValue(initiativesText);
+    //Update values in form
+    initiativesTextbox.dispatchEvent(new Event('input'));
+    changeInfoTextbox.dispatchEvent(new Event('input'));
 
     expect(component.dialogForm.controls['changeInfo'].value).toBe(changeInfoText);
     expect(component.dialogForm.controls['initiatives'].value).toBe(initiativesText);
-  }));
+  });
 
   it('should display error message if text input too long', () => {
     //Insert values into name input which don't match length validator

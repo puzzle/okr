@@ -12,6 +12,7 @@ import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
+import { DATE_FORMAT } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -24,6 +25,7 @@ export class KeyresultDetailComponent implements OnInit {
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
   isComplete: boolean = false;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -61,7 +63,7 @@ export class KeyresultDetailComponent implements OnInit {
         keyResult: this.keyResult$.getValue(),
         isComplete: this.isComplete,
       },
-      maxHeight: '491px',
+      maxHeight: '492px',
       width: '721px',
     });
     dialogRef.afterClosed().subscribe(() => {

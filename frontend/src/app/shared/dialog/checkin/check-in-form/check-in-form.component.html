@@ -1,15 +1,9 @@
-<mat-dialog-content class="d-flex justify-content-center flex-column">
-  <div class="w-100 d-flex justify-content-between align-items-center">
-    <div class="d-flex">
-      <h1 *ngIf="!this.checkIn.id" class="title">Check-in erfassen ({{ currentDate | date: "dd.MM.yyyy" }})</h1>
-      <h1 *ngIf="this.checkIn.id" class="title">Check-in bearbeiten ({{ checkIn.createdOn | date: "dd.MM.yyyy" }})</h1>
-      <h1 class="title ms-2" *ngIf="!continued">(1/2)</h1>
-      <h1 class="title ms-2" *ngIf="continued">(2/2)</h1>
-    </div>
-    <button mat-dialog-close mat-icon-button>
-      <mat-icon>close</mat-icon>
-    </button>
-  </div>
+<div mat-dialog-content class="pt-2">
+  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
+  <app-dialog-header
+    *ngIf="this.checkIn.id"
+    [dialogTitle]="'Check-in bearbeiten ' + getStepLabel()"
+  ></app-dialog-header>
   <!--  First part of dialog-->
   <div *ngIf="!continued">
     <p class="fs-6 mt-1 text-black">Key Result</p>
@@ -34,25 +28,22 @@
   <div *ngIf="continued">
     <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
   </div>
-</mat-dialog-content>
-<!--    Buttons to submit the check-in-->
-<div class="d-flex flex-row ms-4">
-  <button mat-button *ngIf="!continued" (click)="continued = true" class="submit mb-3 fw-bold text-white">
-    Weiter
-  </button>
-  <button
-    [disabled]="!this.dialogForm.valid"
-    (click)="saveCheckIn()"
-    *ngIf="continued"
-    type="submit"
-    mat-button
-    mat-dialog-close
-    [ngClass]="dialogForm.valid ? 'submit' : 'disabled'"
-    class="d-flex justify-content-center fw-bold text-white"
-  >
-    <span *ngIf="checkIn.id">Speichern</span>
-    <span *ngIf="!checkIn.id">Check-in erfassen</span>
-  </button>
-  <button mat-button *ngIf="!continued" mat-dialog-close class="cancel ms-2 mb-3 fw-bold">Abbrechen</button>
-  <button mat-button *ngIf="continued" class="cancel ms-2 mb-3 fw-bold" (click)="continued = false">Zurück</button>
+  <!--    Buttons to submit the check-in-->
+  <div class="d-flex flex-row buttons">
+    <button mat-flat-button color="primary" *ngIf="!continued" (click)="continued = true">Weiter</button>
+    <button
+      [disabled]="!this.dialogForm.valid"
+      (click)="saveCheckIn()"
+      *ngIf="continued"
+      type="submit"
+      mat-flat-button
+      mat-dialog-close
+      color="primary"
+    >
+      <span *ngIf="checkIn.id">Speichern</span>
+      <span *ngIf="!checkIn.id">Check-in erfassen</span>
+    </button>
+    <button mat-button color="primary" *ngIf="!continued" mat-dialog-close class="ms-2">Abbrechen</button>
+    <button mat-button color="primary" *ngIf="continued" (click)="continued = false" class="ms-2">Zurück</button>
+  </div>
 </div>

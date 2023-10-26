@@ -7,6 +7,7 @@ import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../types/model/CheckInMin';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
+import { DATE_FORMAT } from '../../../constantLibary';
 
 @Component({
   selector: 'app-check-in-form',
@@ -19,6 +20,7 @@ export class CheckInFormComponent {
   checkIn!: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
+  protected readonly DATE_FORMAT = DATE_FORMAT;
 
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
@@ -81,5 +83,12 @@ export class CheckInFormComponent {
 
   getKeyResultOrdinal(): KeyResultOrdinal {
     return this.keyResult as KeyResultOrdinal;
+  }
+
+  getStepLabel(): string {
+    if (this.continued) {
+      return '(2/2)';
+    }
+    return '(1/2)';
   }
 }

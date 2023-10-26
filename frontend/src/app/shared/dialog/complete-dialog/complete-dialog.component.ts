@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -12,6 +13,7 @@ export class CompleteDialogComponent {
     isSuccessful: new FormControl<boolean | null>(null, [Validators.required]),
     comment: new FormControl<string | null>(null, [Validators.maxLength(4096)]),
   });
+  protected readonly formInputCheck = formInputCheck;
 
   constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}
 

@@ -1,6 +1,8 @@
-<h1 mat-dialog-title>{{ this.dialogTitle }}</h1>
-<div mat-dialog-content>{{ this.dialogText }}</div>
-<div mat-dialog-actions>
-  <button color="primary" type="submit" mat-flat-button cdkFocusInitial (click)="closeAndDelete()">Ja</button>
-  <button mat-button mat-dialog-close>Nein</button>
+<div mat-dialog-content>
+  <app-dialog-header [dialogTitle]="this.dialogTitle"></app-dialog-header>
+  {{ this.dialogText }}
+  <div class="mt-3">
+    <button color="primary" type="submit" mat-flat-button cdkFocusInitial (click)="closeAndDelete()">Ja</button>
+    <button mat-button mat-dialog-close class="ms-2">Nein</button>
+  </div>
 </div>

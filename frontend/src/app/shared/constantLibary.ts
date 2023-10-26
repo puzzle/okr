@@ -3,4 +3,4 @@ export const drawerRoutes = ['objective', 'keyresult'];
 
 export const ROUTE_PARAM_REGEX = '\\/[^/]+\\/(\\d+)';
 
-export const CONFIRM_DIALOG_WIDTH: string = '350px';
+export const CONFIRM_DIALOG_WIDTH: string = '450px';

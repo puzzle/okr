@@ -14,6 +14,8 @@ import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { formInputCheck } from '../../common';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -24,6 +26,7 @@ import { CloseState } from '../../types/enums/CloseState';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
+  protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
@@ -106,7 +109,7 @@ export class KeyResultDialogComponent implements OnInit {
         data: {
           title: 'Key Result',
         },
-        width: '15em',
+        width: CONFIRM_DIALOG_WIDTH,
         height: 'auto',
       })
       .afterClosed()

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CompleteDialogComponent } from './complete-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 
 const dialogMock = {
   close: jest.fn(),
@@ -20,7 +21,7 @@ describe('CompleteDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CompleteDialogComponent],
+      declarations: [CompleteDialogComponent, DialogHeaderComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },

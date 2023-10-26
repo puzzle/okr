@@ -13,12 +13,8 @@ export class ActionService {
     return this.httpClient.get<Action[]>('/api/v2/action/' + keyResultId);
   }
 
-  createAction(actionDto: Action): Observable<Action> {
-    return this.httpClient.post<Action>('/api/v2/action', actionDto);
-  }
-
-  updateAction(actionDto: Action): Observable<Action> {
-    return this.httpClient.put<Action>(`/api/v2/action/${actionDto.id}`, actionDto);
+  updateActions(actionList: Action[]): Observable<Action> {
+    return this.httpClient.put<Action>(`/api/v2/action`, actionList);
   }
 
   deleteAction(actionId: number): Observable<Action> {

@@ -26,9 +26,13 @@
       <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
     </mat-error>
   </div>
-</form>
 
-<label class="text-black">Action Plan</label>
-<div *ngFor="let action of dialogForm.getRawValue()">
-  <mat-checkbox (change)="changeIsChecked($event)" [(ngModel)]="action.isChecked">{{ action.action }}</mat-checkbox>
-</div>
+  <div *ngIf="dialogForm.get('actionList')?.value.length != 0">
+    <label class="text-black">Action Plan</label>
+    <div *ngFor="let action of dialogForm.get('actionList')!.getRawValue(); let i = index">
+      <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked">{{
+        action.action
+        }}</mat-checkbox>
+    </div>
+  </div>
+</form>

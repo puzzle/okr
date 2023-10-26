@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-v
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../types/model/Action';
 import { DATE_FORMAT } from '../../../constantLibary';
+import { ActionService } from '../../../services/action.service';
 
 @Component({
   selector: 'app-check-in-form',
@@ -16,7 +17,7 @@ import { DATE_FORMAT } from '../../../constantLibary';
   styleUrls: ['./check-in-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckInFormComponent {
+export class CheckInFormComponent implements OnInit {
   keyResult: KeyResult;
   checkIn!: CheckInMin;
   currentDate: Date;
@@ -36,10 +37,17 @@ export class CheckInFormComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public parserPipe: ParseUnitValuePipe,
     private checkInService: CheckInService,
+    private actionService: ActionService,
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
+  }
+
+  ngOnInit() {
+    this.actionService.getActionsFromKeyResult(this.keyResult.id).subscribe((actions) => {
+      this.dialogForm.patchValue({ actionList: actions });
+    });
   }
 
   setDefaultValues() {
@@ -81,7 +89,9 @@ export class CheckInFormComponent {
     }
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
-      this.dialogRef.close();
+      this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
+        this.dialogRef.close();
+      });
     });
   }
 

@@ -60,7 +60,7 @@ class OverviewBusinessServiceTest {
         when(overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds, "Objective"))
                 .thenReturn(List.of(createOverview()));
 
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "");
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "Objective");
 
         assertEquals(1, overviews.size());
         verify(quarterBusinessService, never()).getCurrentQuarter();

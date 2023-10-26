@@ -56,6 +56,20 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
+    void getOverviewByQuarterIdAndTeamIdsAndQueryString_ShouldReturnListOfOverviews() {
+        when(overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds, "Objective"))
+                .thenReturn(List.of(createOverview()));
+
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "");
+
+        assertEquals(1, overviews.size());
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
+        verify(overviewPersistenceService, times(1)).getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds,
+                "Objective");
+    }
+
+    @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviewsWhenQuarterIsNull() {
         when(overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(QUARTER_ID, teamIds, ""))
                 .thenReturn(List.of(createOverview()));

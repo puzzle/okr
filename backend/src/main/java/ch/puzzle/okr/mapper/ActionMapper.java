@@ -5,6 +5,8 @@ import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ActionMapper {
 
@@ -17,6 +19,10 @@ public class ActionMapper {
     public ActionDto toDto(Action action) {
         return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked(),
                 action.getKeyResult());
+    }
+
+    public List<Action> toActions(List<ActionDto> actionDtos) {
+        return actionDtos.stream().map(this::toAction).toList();
     }
 
     public Action toAction(ActionDto actionDto) {

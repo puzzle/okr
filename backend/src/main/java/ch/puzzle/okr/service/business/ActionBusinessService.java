@@ -40,7 +40,9 @@ public class ActionBusinessService {
     @Transactional
     public void updateActions(KeyResult keyResult, List<Action> actionList) {
         actionList.forEach(action -> {
-            action.setKeyResult(keyResult);
+            if (keyResult == null) {
+                action.setKeyResult(keyResult);
+            }
             this.updateAction(action);
         });
     }

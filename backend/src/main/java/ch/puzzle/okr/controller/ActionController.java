@@ -2,6 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.mapper.ActionMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -36,6 +37,18 @@ public class ActionController {
             @Parameter(description = "The KeyResult ID for getting Actions of KeyResult.", required = true) @PathVariable Long keyResultId) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 actionBusinessService.getActionsByKeyResultId(keyResultId).stream().map(actionMapper::toDto).toList());
+    }
+
+    @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated Actions of KeyResult", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't update Actions, attributes are not set", content = @Content) })
+    @PutMapping
+    public void updateActions(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true) @RequestBody List<ActionDto> actionDtoList) {
+        List<Action> actionList = this.actionMapper.toActions(actionDtoList);
+        actionBusinessService.updateActions(null, actionList);
     }
 
     @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")

@@ -6,6 +6,7 @@ import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import ch.puzzle.okr.service.business.ActionBusinessService;
@@ -72,10 +73,11 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
+        List<Action> actionList = keyResultDto.getActionList();
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
-        if (keyResult.getActionList() != null)
-            this.actionBusinessService.createActions(keyResult.getActionList());
-        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultAuthorizationService.createEntity(keyResult));
+        keyResult = keyResultAuthorizationService.createEntity(keyResult);
+        actionBusinessService.createActions(keyResult, actionList);
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
@@ -93,10 +95,13 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-        KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultDto);
-        boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, mappedKeyResult);
+        List<Action> actionList = keyResultDto.getActionList();
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
+        boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
+        keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
+        actionBusinessService.updateActions(keyResult, actionList);
         KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultAuthorizationService.updateEntity(id, mappedKeyResult));
+                .toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }
 

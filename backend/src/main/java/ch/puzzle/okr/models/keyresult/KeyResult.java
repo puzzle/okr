@@ -1,6 +1,5 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
@@ -10,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -53,8 +51,6 @@ public abstract class KeyResult implements WriteableInterface {
     private String keyResultType;
 
     private transient boolean writeable;
-
-    private transient List<Action> actionList;
 
     public Long getId() {
         return id;
@@ -136,10 +132,6 @@ public abstract class KeyResult implements WriteableInterface {
     @Override
     public void setWriteable(boolean writeable) {
         this.writeable = writeable;
-    }
-
-    public List<Action> getActionList() {
-        return actionList;
     }
 
     @Override

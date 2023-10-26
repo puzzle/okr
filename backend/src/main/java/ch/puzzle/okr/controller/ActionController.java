@@ -2,7 +2,6 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.mapper.ActionMapper;
-import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -38,33 +36,6 @@ public class ActionController {
             @Parameter(description = "The KeyResult ID for getting Actions of KeyResult.", required = true) @PathVariable Long keyResultId) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 actionBusinessService.getActionsByKeyResultId(keyResultId).stream().map(actionMapper::toDto).toList());
-    }
-
-    @Operation(summary = "Create Action", description = "Create a new Action.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Created new Action.", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Could not create Action", content = @Content) })
-    @PostMapping
-    public ResponseEntity.BodyBuilder createAction(@RequestBody ActionDto[] actionDtos) {
-        List<Action> actionList = Arrays.stream(actionDtos).map(this.actionMapper::toAction).toList();
-        actionBusinessService.createActions(actionList);
-        return ResponseEntity.status(HttpStatus.CREATED);
-    }
-
-    @Operation(summary = "Update Action", description = "Update Action by ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Updated Action in db", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "Can't create new Action, attributes are not set", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Given ID of Action wasn't found", content = @Content) })
-    @PutMapping("/{id}")
-    public ResponseEntity<ActionDto> updateAction(
-            @Parameter(description = "The ID for updating an Action.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update an existing Action.", required = true) @RequestBody ActionDto actionDto) {
-        Action action = this.actionMapper.toAction(actionDto);
-        ActionDto updatedAction = this.actionMapper.toDto(this.actionBusinessService.updateAction(id, action));
-        return ResponseEntity.status(HttpStatus.OK).body(updatedAction);
     }
 
     @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")

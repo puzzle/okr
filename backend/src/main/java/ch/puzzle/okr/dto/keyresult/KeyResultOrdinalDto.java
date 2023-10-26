@@ -11,4 +11,8 @@ public record KeyResultOrdinalDto(Long id, int version, String keyResultType, St
         String commitZone, String targetZone, String stretchZone, KeyResultUserDto owner,
         KeyResultObjectiveDto objective, KeyResultLastCheckInOrdinalDto lastCheckIn, LocalDateTime createdOn,
         LocalDateTime modifiedOn, boolean writeable, List<Action> actionList) implements KeyResultDto {
+    @Override
+    public List<Action> getActionList() {
+        return this.actionList;
+    }
 }

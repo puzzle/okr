@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,11 @@ public class ActionBusinessService {
     }
 
     @Transactional
-    public void createActions(List<Action> actionList) {
-        actionList.forEach(this::createAction);
+    public void createActions(KeyResult keyResult, List<Action> actionList) {
+        actionList.forEach(action -> {
+            action.setKeyResult(keyResult);
+            this.createAction(action);
+        });
     }
 
     @Transactional
@@ -34,9 +38,17 @@ public class ActionBusinessService {
     }
 
     @Transactional
-    public Action updateAction(Long id, Action action) {
-        validator.validateOnUpdate(id, action);
-        return actionPersistenceService.save(action);
+    public void updateActions(KeyResult keyResult, List<Action> actionList) {
+        actionList.forEach(action -> {
+            action.setKeyResult(keyResult);
+            this.updateAction(action);
+        });
+    }
+
+    @Transactional
+    public void updateAction(Action action) {
+        validator.validateOnUpdate(action.getId(), action);
+        actionPersistenceService.save(action);
     }
 
     @Transactional

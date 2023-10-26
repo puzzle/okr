@@ -1,27 +1,34 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.keyresult.*;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.business.ActionBusinessService;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class KeyResultOrdinalMapper {
 
     private final UserPersistenceService userPersistenceService;
     private final ObjectiveBusinessService objectiveBusinessService;
+    private final ActionBusinessService actionBusinessService;
     private final CheckInBusinessService checkInBusinessService;
 
     public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService) {
+            ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
+            ActionBusinessService actionBusinessService) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
+        this.actionBusinessService = actionBusinessService;
     }
 
     public KeyResultDto toKeyResultOrdinalDto(KeyResultOrdinal keyResult) {
@@ -33,11 +40,12 @@ public class KeyResultOrdinalMapper {
         KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInOrdinalDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
+        List<Action> actionList = actionBusinessService.getActionsByKeyResultId(keyResult.getId());
 
         return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
                 keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable(), keyResult.getActionList());
+                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList);
     }
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {

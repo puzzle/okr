@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface OverviewRepository extends ReadOnlyRepository<Overview, OverviewId> {
 
-    @Query(value = "from Overview where quarterId = :quarter_id and overviewId.teamId in (:team_ids) and lower(objectiveTitle) like %:objective_query%")
-    List<Overview> getFilteredOverview(@Param("quarter_id") Long quarterId, @Param("team_ids") List<Long> teamIds,
-            @Param("objective_query") String objectiveQuery);
+    @Query(value = "from Overview where quarterId = :quarterId and overviewId.teamId in (:teamIds) and lower(coalesce(objectiveTitle, :objectiveQuery)) like %:objectiveQuery%")
+    List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery);
 }

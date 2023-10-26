@@ -13,6 +13,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
+import { Action } from '../../../types/model/Action';
 
 describe('CheckInBaseInformationsComponent', () => {
   let component: CheckInBaseInformationsComponent;
@@ -40,6 +41,7 @@ describe('CheckInBaseInformationsComponent', () => {
     component.dialogForm = new FormGroup({
       changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
       initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
+      actionList: new FormControl<Action[]>([]),
     });
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);

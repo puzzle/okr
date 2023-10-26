@@ -15,6 +15,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -99,10 +100,10 @@ public class KeyResultTestHelpers {
 
     public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, 1, KEY_RESULT_TYPE_METRIC,
             TITLE, DESCRIPTION, 1.0, 5.0, KEY_RESULT_UNIT, keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
+            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true, List.of());
     public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, 1,
             KEY_RESULT_TYPE_ORDINAL, TITLE, DESCRIPTION, COMMIT_ZONE, TARGET_ZONE, STRETCH_ZONE, keyResultUserDto,
-            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
+            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true, List.of());
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
             .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();

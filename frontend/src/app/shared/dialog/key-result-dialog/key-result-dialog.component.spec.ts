@@ -163,17 +163,20 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
     it('should be able to set title and description', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -197,6 +200,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -218,6 +222,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,
@@ -242,6 +247,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Neuer Titel',
         baseline: 3,
         stretchZone: null,
@@ -306,11 +312,13 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
@@ -327,6 +335,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -350,6 +359,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -369,6 +379,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,
@@ -438,11 +449,13 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
@@ -459,6 +472,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -482,6 +496,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -501,6 +516,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,

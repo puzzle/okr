@@ -31,7 +31,6 @@ export class ObjectiveFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(decodeURI(decodeURI('t%2520t')));
     this.route.queryParams.subscribe((params) => {
       const objectiveQuery = getQueryString(params['objectiveQuery'] || '');
       if (sanitize(this.query) !== objectiveQuery) {

@@ -76,20 +76,20 @@ describe('QuarterFilterComponent', () => {
 
   it('should set correct value in form according to route param', async () => {
     jest.spyOn(component, 'changeDisplayedQuarter');
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/?quarter=' + quarters[2].id);
-    let quarterSelect: HTMLSelectElement = fixture.debugElement.query(By.css('#quarter-select')).nativeElement;
+    const routerHarnessPromise = RouterTestingHarness.create();
+    const quarterSelectPromise = loader.getHarness(MatSelectHarness);
+    await Promise.all([routerHarnessPromise, quarterSelectPromise]).then(async ([routerHarness, quarterSelect]) => {
+      await routerHarness.navigateByUrl('/?quarter=' + quarters[2].id);
 
-    expect(quarterSelect).toBeTruthy();
-    routerHarness.detectChanges();
-    component.ngOnInit();
-    quarterSelect.dispatchEvent(new Event('input'));
-    fixture.detectChanges();
-    await fixture.whenStable();
+      expect(quarterSelect).toBeTruthy();
+      routerHarness.detectChanges();
+      component.ngOnInit();
+      fixture.detectChanges();
 
-    expect(component.quarterId).toBe(quarters[2].id);
-    expect(+quarterSelect.value).toBe(quarters[2].id);
-    expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
+      expect(component.quarterId).toBe(quarters[2].id);
+      expect(await quarterSelect.getValueText()).toBe(quarters[2].label);
+      expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('should set default quarter if quarter id in route params does not exist', async () => {

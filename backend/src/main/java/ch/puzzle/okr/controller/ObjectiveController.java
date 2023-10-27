@@ -73,7 +73,9 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO,
             @AuthenticationPrincipal Jwt jwt) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        ObjectiveDto duplicatedObjectiveDto = this.objectiveMapper
+                .toDto(this.objectiveBusinessService.duplicateObjective(id, objective, jwt));
+        return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 
     @Operation(summary = "Update Objective", description = "Update Objective by ID")

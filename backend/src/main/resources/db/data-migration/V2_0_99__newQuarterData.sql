@@ -100,20 +100,42 @@ values (21,
         ' sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat', '2023-10-02 22:00:00.000000',
         13, 1, 31, 3, 'metric', null);
 
-insert into public.quarter (id, label, start_date, end_date)
+insert into quarter (id, label, start_date, end_date)
 values  (200, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');
 
 insert into organisation (id, org_name, state) values
-                                                   (1, 'org_gl', 'ACTIVE'),
-                                                   (2, 'org_bl', 'ACTIVE'),
-                                                   (3, 'org_mobility', 'ACTIVE'),
-                                                   (4, 'org_azubi', 'ACTIVE'),
-                                                   (5, 'org_inactive', 'INACTIVE');
+                                                (1, 'org_bl', 'ACTIVE'),
+                                                (2, 'org_de', 'ACTIVE'),
+                                                (3, 'org_gl', 'ACTIVE'),
+                                                (4, 'org_pl', 'ACTIVE'),
+                                                (5, 'org_pv', 'ACTIVE'),
+                                                (6, 'org_ux', 'ACTIVE'),
+                                                (7, 'org_zh', 'ACTIVE'),
+                                                (8, 'org_sys', 'ACTIVE'),
+                                                (9, 'org_azubi', 'ACTIVE'),
+                                                (10, 'org_de_gl', 'ACTIVE'),
+                                                (11, 'org_de_gs', 'ACTIVE'),
+                                                (12, 'org_devtre', 'ACTIVE'),
+                                                (13, 'org_racoon', 'ACTIVE'),
+                                                (14, 'org_tqm_qm', 'ACTIVE'),
+                                                (15, 'org_devruby', 'ACTIVE'),
+                                                (16, 'org_midcicd', 'ACTIVE'),
+                                                (17, 'org_verkauf', 'ACTIVE'),
+                                                (18, 'org_finanzen', 'ACTIVE'),
+                                                (19, 'org_mobility', 'ACTIVE'),
+                                                (20, 'org_personal', 'ACTIVE'),
+                                                (21, 'org_security', 'ACTIVE'),
+                                                (22, 'org_marketing', 'ACTIVE'),
+                                                (23, 'org_openshift', 'ACTIVE'),
+                                                (24, 'org_ausbildung', 'ACTIVE'),
+                                                (25, 'org_backoffice', 'ACTIVE'),
+                                                (26, 'org_branch_sec', 'ACTIVE'),
+                                                (27, 'org_standort_zh', 'ACTIVE'),
+                                                (28, 'org_midcontainer', 'ACTIVE');
 
 insert into team_organisation (team_id, organisation_id) values
-                                                             (6, 3),
-                                                             (4, 5),
-                                                             (5, 1),
-                                                             (6, 2),
-                                                             (8, 2),
-                                                             (8, 5);
+                                                            (5, 3),
+                                                            (8, 6),
+                                                            (4, 9),
+                                                            (6, 19),
+                                                            (8, 19);

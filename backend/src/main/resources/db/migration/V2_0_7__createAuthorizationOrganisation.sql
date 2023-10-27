@@ -1,4 +1,5 @@
 create sequence if not exists sequence_organisation;
+Alter SEQUENCE sequence_organisation RESTART WITH 200;
 
 create table if not exists organisation
 (

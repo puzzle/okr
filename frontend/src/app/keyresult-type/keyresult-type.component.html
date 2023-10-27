@@ -50,7 +50,7 @@
               />
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -64,7 +64,7 @@
               />
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -91,7 +91,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -105,7 +105,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -119,7 +119,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('stretchZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>

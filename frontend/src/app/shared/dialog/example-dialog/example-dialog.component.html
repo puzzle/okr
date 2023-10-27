@@ -6,7 +6,7 @@
       <input matInput formControlName="name" placeholder="Ex. Tom" />
       <div *ngIf="isTouchedOrDirty('name')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
-          {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
       </div>
     </mat-form-field>
@@ -18,7 +18,7 @@
     </mat-radio-group>
     <div *ngIf="isTouchedOrDirty('gender')">
       <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('gender')">
-        {{ errorMessages[errorKey.toUpperCase().trim()] }}
+        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
       </mat-error>
     </div>
 
@@ -30,7 +30,7 @@
     </mat-form-field>
     <div *ngIf="isTouchedOrDirty('hobby')">
       <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('hobby')">
-        {{ errorMessages[errorKey.toUpperCase().trim()] }}
+        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
       </mat-error>
     </div>
 

@@ -1,6 +1,6 @@
 {
   "MINLENGTH": "Dieser Wert ist zu kurz",
-  "MAXLENGTH": "Dieser Werte ist zu lang",
+  "MAXLENGTH": "Dieser Wert ist zu lang",
   "REQUIRED": "Dieses Feld muss ausgefüllt sein",
   "MAX": "Dieser Wert ist zu gross",
   "MIN": "Dieser Wert ist zu klein",

@@ -16,7 +16,7 @@
       ></app-custom-input>
       <div *ngIf="isTouchedOrDirty('value')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">
-          {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
       </div>
     </div>

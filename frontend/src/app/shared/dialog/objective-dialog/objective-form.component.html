@@ -26,7 +26,7 @@
         ></textarea>
         <span *ngIf="isTouchedOrDirty('title')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
           </mat-error>
         </span>
       </div>
@@ -40,7 +40,7 @@
         ></textarea>
         <span *ngIf="isTouchedOrDirty('description')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
           </mat-error>
         </span>
       </div>

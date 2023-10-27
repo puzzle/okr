@@ -199,11 +199,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito.given(objectiveAuthorizationService.getBusinessService()).willReturn(objectiveBusinessService);
+        BDDMockito.given(objectiveAuthorizationService.duplicateEntity(anyLong(), any())).willReturn(objective1);
         BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
-        BDDMockito.given((objectiveBusinessService).duplicateObjective(anyLong(), any(), any())).willReturn(objective1);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
-        BDDMockito.given(authorizationService.getAuthorizationUser()).willReturn(authorizationUser);
 
         mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))

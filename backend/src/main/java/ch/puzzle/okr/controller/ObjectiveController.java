@@ -36,7 +36,7 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> getObjective(
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(this.objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+                .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")
@@ -46,7 +46,7 @@ public class ObjectiveController {
     @DeleteMapping("/{id}")
     public void deleteObjectiveById(
             @Parameter(description = "The ID of an Objective to delete it.", required = true) @PathVariable long id) {
-        this.objectiveAuthorizationService.deleteEntityById(id);
+        objectiveAuthorizationService.deleteEntityById(id);
     }
 
     @Operation(summary = "Create Objective", description = "Create a new Objective")
@@ -59,8 +59,7 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> createObjective(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective as json to create a new Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto createdObjective = this.objectiveMapper
-                .toDto(this.objectiveAuthorizationService.createEntity(objective));
+        ObjectiveDto createdObjective = objectiveMapper.toDto(objectiveAuthorizationService.createEntity(objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
@@ -72,8 +71,8 @@ public class ObjectiveController {
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto duplicatedObjectiveDto = this.objectiveMapper
-                .toDto(this.objectiveAuthorizationService.duplicateEntity(id, objective));
+        ObjectiveDto duplicatedObjectiveDto = objectiveMapper
+                .toDto(objectiveAuthorizationService.duplicateEntity(id, objective));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 
@@ -90,9 +89,9 @@ public class ObjectiveController {
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
-        Objective objective = this.objectiveMapper.toObjective(objectiveDTO);
-        ObjectiveDto updatedObjective = this.objectiveMapper
-                .toDto(this.objectiveAuthorizationService.updateEntity(id, objective));
+        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+        ObjectiveDto updatedObjective = objectiveMapper
+                .toDto(objectiveAuthorizationService.updateEntity(id, objective));
         return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
     }
 }

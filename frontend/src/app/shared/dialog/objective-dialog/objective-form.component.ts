@@ -4,7 +4,7 @@ import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../services/quarter.service';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
 import { ObjectiveService } from '../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -33,7 +33,7 @@ export class ObjectiveFormComponent implements OnInit {
   });
   quarters$: Observable<Quarter[]> = of([]);
   teams$: Observable<Team[]> = of([]);
-  currentTeam: Team = {} as Team;
+  currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
   protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
@@ -87,7 +87,7 @@ export class ObjectiveFormComponent implements OnInit {
       this.state = objective.state;
 
       this.teams$.subscribe((value) => {
-        this.currentTeam = value.filter((team) => team.id == teamId)[0];
+        this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });
 
       this.objectiveForm.patchValue({

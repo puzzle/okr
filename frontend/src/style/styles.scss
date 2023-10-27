@@ -114,19 +114,12 @@ body pzsh-backdrop {
 
 .dialog-form-field {
   resize: none;
-  outline: none !important;
-  &:focus {
-    outline: $pz-dark-blue 2px solid !important;
-  }
+  outline: none;
 }
 
 .dialog-form-field-error {
   resize: none;
   outline: $error-color 2px solid !important;
-}
-
-select:focus {
-  outline: $pz-dark-blue 2px solid !important;
 }
 
 .custom-select {
@@ -139,7 +132,7 @@ select:focus {
 }
 
 *:focus {
-  outline: blue solid 2px;
+  outline: $pz-dark-blue solid 2px;
 }
 
 .bg-inherit {

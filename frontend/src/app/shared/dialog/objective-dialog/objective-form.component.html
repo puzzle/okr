@@ -67,8 +67,7 @@
       <div class="d-flex justify-content-between p-0" mat-dialog-actions>
         <div class="d-flex gap-2 p-0">
           <button [disabled]="objectiveForm.invalid" color="primary" mat-flat-button type="submit" submitType="ONGOING">
-            <span *ngIf="data.action != 'duplicate'">Speichern</span>
-            <span *ngIf="data.action == 'duplicate'">Duplizieren</span>
+            Speichern
           </button>
           <button
             *ngIf="!data.objective.objectiveId"

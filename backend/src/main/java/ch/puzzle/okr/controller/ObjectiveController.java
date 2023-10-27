@@ -64,6 +64,18 @@ public class ObjectiveController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdObjective);
     }
 
+    @Operation(summary = "Duplicate Objective", description = "Duplicate a given Objective")
+    @ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Duplicated a given Objective", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }) })
+    @PostMapping("/{id}")
+    public ResponseEntity<ObjectiveDto> duplicateObjective(
+            @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO,
+            @AuthenticationPrincipal Jwt jwt) {
+        Objective objective = objectiveMapper.toObjective(objectiveDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(null);
+    }
+
     @Operation(summary = "Update Objective", description = "Update Objective by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Objective in db", content = {

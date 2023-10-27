@@ -3,15 +3,12 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
-import ch.puzzle.okr.service.RegisterNewUserService;
-import ch.puzzle.okr.service.business.OverviewBusinessService;
+import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +27,7 @@ import java.util.List;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static ch.puzzle.okr.models.State.ONGOING;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -41,9 +38,7 @@ class OverviewControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private OverviewBusinessService overviewBusinessService;
-    @MockBean
-    private RegisterNewUserService registerNewUserService;
+    private OverviewAuthorizationService overviewAuthorizationService;
     @SpyBean
     private OverviewMapper overviewMapper;
 
@@ -87,19 +82,14 @@ class OverviewControllerIT {
     static Overview simpleOverview = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
             .withTeamName(TEAM_KUCHEN).build();
 
-    @BeforeEach
-    void setUp() {
-        Mockito.doNothing().when(registerNewUserService).registerNewUser(any());
-    }
-
     @Test
     void shouldGetAllTeamsWithObjective() throws Exception {
         List<Overview> overviews = new ArrayList<>();
         overviews.addAll(overviewPuzzle);
         overviews.addAll(overviewOKR);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(1L, 2L, 3L, 4L), ""))
-                .willReturn(overviews);
+        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
+                anyList(), anyString())).willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
@@ -116,8 +106,8 @@ class OverviewControllerIT {
 
     @Test
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
-        BDDMockito.given(overviewBusinessService.getFilteredOverview(any(), any(), any()))
-                .willReturn(Collections.emptyList());
+        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
+                anyList(), anyString())).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -125,10 +115,10 @@ class OverviewControllerIT {
 
     @Test
     void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
-        List<Overview> overviews = new ArrayList<>();
-        overviews.addAll(overviewPuzzle);
+        List<Overview> overviews = new ArrayList<>(overviewPuzzle);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(1L, 3L), "")).willReturn(overviews);
+        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
+                anyList(), anyString())).willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -142,8 +132,8 @@ class OverviewControllerIT {
 
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewBusinessService.getFilteredOverview(2L, List.of(4L), ""))
-                .willReturn(List.of(simpleOverview));
+        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
+                anyList(), anyString())).willReturn(List.of(simpleOverview));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))

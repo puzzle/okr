@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long> {
+public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long, CheckInRepository> {
 
     protected CheckInPersistenceService(CheckInRepository repository) {
         super(repository);
@@ -19,14 +19,10 @@ public class CheckInPersistenceService extends PersistenceBase<CheckIn, Long> {
     }
 
     public List<CheckIn> getCheckInsByKeyResultIdOrderByCheckInDateDesc(Long keyResultId) {
-        return getCheckInRepository().findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);
+        return getRepository().findCheckInsByKeyResultIdOrderByCreatedOnDesc(keyResultId);
     }
 
     public CheckIn getLastCheckInOfKeyResult(Long keyResultId) {
-        return getCheckInRepository().findFirstByKeyResultIdOrderByCreatedOnDesc(keyResultId);
-    }
-
-    public CheckInRepository getCheckInRepository() {
-        return (CheckInRepository) repository;
+        return getRepository().findFirstByKeyResultIdOrderByCreatedOnDesc(keyResultId);
     }
 }

@@ -1,12 +1,10 @@
 package ch.puzzle.okr.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -20,12 +18,17 @@ public class Team {
     @Size(min = 2, max = 250, message = "Attribute name must have size between 2 and 250 characters when saving team")
     private String name;
 
+    @ManyToMany
+    @JoinTable(name = "team_organisation", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "organisation_id"))
+    private List<Organisation> authorizationOrganisation;
+
     public Team() {
     }
 
     private Team(Builder builder) {
         id = builder.id;
         setName(builder.name);
+        setAuthorizationOrganisation(builder.authorizationOrganisation);
     }
 
     public Long getId() {
@@ -40,9 +43,17 @@ public class Team {
         this.name = name;
     }
 
+    public List<Organisation> getAuthorizationOrganisation() {
+        return authorizationOrganisation;
+    }
+
+    public void setAuthorizationOrganisation(List<Organisation> authorizationOrganisation) {
+        this.authorizationOrganisation = authorizationOrganisation;
+    }
+
     @Override
     public String toString() {
-        return "Team{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return "Team{" + "id=" + id + ", name='" + name + '}';
     }
 
     @Override
@@ -64,6 +75,8 @@ public class Team {
         private Long id;
         private String name;
 
+        private List<Organisation> authorizationOrganisation;
+
         private Builder() {
         }
 
@@ -78,6 +91,11 @@ public class Team {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withAuthorizationOrganisation(List<Organisation> authOrg) {
+            this.authorizationOrganisation = authOrg;
             return this;
         }
 

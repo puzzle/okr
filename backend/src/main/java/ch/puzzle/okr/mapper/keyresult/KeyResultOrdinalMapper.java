@@ -37,14 +37,14 @@ public class KeyResultOrdinalMapper {
         return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
                 keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn());
+                keyResult.getModifiedOn(), keyResult.isWriteable());
     }
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {
         return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultOrdinalDto.commitZone())
                 .withTargetZone(keyResultOrdinalDto.targetZone()).withStretchZone(keyResultOrdinalDto.stretchZone())
                 .withId(keyResultOrdinalDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultOrdinalDto.objective().id()))
+                .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
                 .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
                 .withModifiedOn(keyResultOrdinalDto.modifiedOn()).build();

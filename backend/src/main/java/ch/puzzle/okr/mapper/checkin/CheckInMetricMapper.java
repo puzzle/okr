@@ -17,13 +17,14 @@ public class CheckInMetricMapper {
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
         return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
                 checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
-                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue());
+                checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue(),
+                checkInMetric.isWriteable());
     }
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
         return CheckInMetric.Builder.builder().withValue(checkInMetricDto.value()).withId(checkInMetricDto.id())
                 .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
                 .withConfidence(checkInMetricDto.confidence())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(checkInMetricDto.keyResultId())).build();
+                .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())).build();
     }
 }

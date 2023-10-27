@@ -60,9 +60,9 @@ public class CheckInTestHelpers {
 
     /* Test DTOs */
     public static final CheckInDto checkInMetricDto = new CheckInMetricDto(5L, CHANGE_INFO_1, INITIATIVES_1, 6, 1L,
-            LocalDateTime.MAX, LocalDateTime.MAX, 46D);
+            LocalDateTime.MAX, LocalDateTime.MAX, 46D, true);
     public static final CheckInDto checkInOrdinalDto = new CheckInOrdinalDto(4L, CHANGE_INFO_2, INITIATIVES_2, 5, 2L,
-            LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT);
+            LocalDateTime.MAX, LocalDateTime.MAX, Zone.COMMIT, true);
 
     private CheckInTestHelpers() {
     }

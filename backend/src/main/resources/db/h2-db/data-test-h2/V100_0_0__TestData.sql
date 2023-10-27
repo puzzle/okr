@@ -38,10 +38,10 @@ values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
        (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31');
 
 insert into team (id, name)
-values  (4, '/BBT'),
-        (5, 'Puzzle ITC'),
-        (6, 'LoremIpsum'),
-        (8, 'we are cube.³');
+values (4, '/BBT'),
+       (8, 'we are cube.³'),
+       (5, 'Puzzle ITC'),
+       (6, 'Puzzle BL');
 
 insert into objective (id, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)
@@ -111,9 +111,22 @@ insert into alignment (id, aligned_objective_id, alignment_type, target_key_resu
        (1, 4, 'objective', null, 3),
        (2, 4, 'keyResult', 8, null);
 
-                                                                                                                  );
-
 insert into completed (id, objective_id, comment) values
        (1, 4, 'Das hat geklappt'),
        (2, 6, 'War leider nicht moeglich'),
        (3, 10, 'Schade');
+
+insert into organisation (id, org_name, state) values
+       (1, 'org_gl', 'ACTIVE'),
+       (2, 'org_bl', 'ACTIVE'),
+       (3, 'org_mobility', 'ACTIVE'),
+       (4, 'org_azubi', 'ACTIVE'),
+       (5, 'org_inactive', 'INACTIVE');
+
+insert into team_organisation (team_id, organisation_id) values
+       (6, 3),
+       (4, 5),
+       (5, 1),
+       (6, 2),
+       (8, 2),
+       (8, 5);

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long> {
+public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long, AlignmentRepository> {
 
     protected AlignmentPersistenceService(AlignmentRepository repository) {
         super(repository);
@@ -21,18 +21,14 @@ public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long
     }
 
     public List<Alignment> findByAlignedObjectiveId(Long alignedObjectiveId) {
-        return getAlignmentRepository().findByAlignedObjectiveId(alignedObjectiveId);
+        return getRepository().findByAlignedObjectiveId(alignedObjectiveId);
     }
 
     public List<KeyResultAlignment> findByKeyResultAlignmentId(Long keyResultId) {
-        return getAlignmentRepository().findByKeyResultAlignmentId(keyResultId);
+        return getRepository().findByKeyResultAlignmentId(keyResultId);
     }
 
     public List<ObjectiveAlignment> findByObjectiveAlignmentId(Long objectiveId) {
-        return getAlignmentRepository().findByObjectiveAlignmentId(objectiveId);
-    }
-
-    private AlignmentRepository getAlignmentRepository() {
-        return (AlignmentRepository) repository;
+        return getRepository().findByObjectiveAlignmentId(objectiveId);
     }
 }

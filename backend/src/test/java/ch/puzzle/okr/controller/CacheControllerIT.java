@@ -26,6 +26,14 @@ class CacheControllerIT {
     private CacheService cacheService;
 
     @Test
+    void shouldEmptyAuthorisationUsersCache() throws Exception {
+        mvc.perform(
+                post("/api/v2/caches/emptyAuthorizationUsersCache").with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+    }
+
+    @Test
     void shouldEmptyUsersCache() throws Exception {
         mvc.perform(post("/api/v2/caches/emptyUsersCache").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());

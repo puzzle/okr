@@ -1,4 +1,4 @@
-package architecture;
+package ch.puzzle.okr.architecture;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
-class OKRArchitectureTest {
+class OkrArchitectureTest {
 
     @Test
     void repositoryAccessedOnlyByPersistenceService() {
@@ -96,12 +96,14 @@ class OKRArchitectureTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
-    void repositorysShouldOnlyBeCalledFromPersistenceServices(String repository, String persistenceService) {
+    void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository,
+            String persistenceService, String validationService) {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName(repository).should().onlyHaveDependentClassesThat()
-                .haveSimpleName(persistenceService);
+                .haveSimpleName(persistenceService).orShould().haveSimpleName(repository).orShould()
+                .haveSimpleName(validationService);
 
         rule.check(importedClasses);
     }
@@ -111,8 +113,8 @@ class OKRArchitectureTest {
     void packagesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 
-        ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).should()
-                .resideInAPackage("ch.puzzle.okr." + passedName + "..");
+        ArchRule rule = classes().that().haveSimpleNameEndingWith(StringUtils.capitalize(passedName)).and()
+                .areTopLevelClasses().should().resideInAPackage("ch.puzzle.okr." + passedName + "..");
 
         rule.check(importedClasses);
     }

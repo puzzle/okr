@@ -2,6 +2,7 @@ package ch.puzzle.okr.models.keyresult;
 
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.WriteableInterface;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "key_result_type")
-public abstract class KeyResult {
+public abstract class KeyResult implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
     private Long id;
@@ -45,6 +46,8 @@ public abstract class KeyResult {
 
     @Column(name = "key_result_type", insertable = false, updatable = false)
     private String keyResultType;
+
+    private transient boolean writeable;
 
     public Long getId() {
         return id;
@@ -115,10 +118,21 @@ public abstract class KeyResult {
     }
 
     @Override
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    @Override
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
+
+    @Override
     public String toString() {
         return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
                 + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn
-                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + '\'' + '}';
+                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\''
+                + '}';
     }
 
     @Override

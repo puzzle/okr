@@ -102,3 +102,18 @@ values (21,
 
 insert into public.quarter (id, label, start_date, end_date)
 values  (200, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');
+
+insert into organisation (id, org_name, state) values
+                                                   (1, 'org_gl', 'ACTIVE'),
+                                                   (2, 'org_bl', 'ACTIVE'),
+                                                   (3, 'org_mobility', 'ACTIVE'),
+                                                   (4, 'org_azubi', 'ACTIVE'),
+                                                   (5, 'org_inactive', 'INACTIVE');
+
+insert into team_organisation (team_id, organisation_id) values
+                                                             (6, 3),
+                                                             (4, 5),
+                                                             (5, 1),
+                                                             (6, 2),
+                                                             (8, 2),
+                                                             (8, 5);

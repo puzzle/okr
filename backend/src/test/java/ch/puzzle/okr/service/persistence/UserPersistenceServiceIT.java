@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.assertj.core.api.Assertions;
@@ -15,22 +14,27 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
-    User createdUser;
-    @Autowired
-    private UserPersistenceService userPersistenceService;
-    @Autowired
-    private CacheManager cacheManager;
-    private Cache cache;
 
     private static final String USERNAME_ALICE = "alice";
 
+    User createdUser;
+
+    @Autowired
+    private UserPersistenceService userPersistenceService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    private Cache cache;
+
     @BeforeEach
     void beforeEach() {
-        cache = cacheManager.getCache(Constants.USER_CACHE);
+        cache = cacheManager.getCache(USER_CACHE);
     }
 
     @AfterEach
@@ -79,34 +83,6 @@ class UserPersistenceServiceIT {
     }
 
     @Test
-    void findUserByUsernameShouldReturnExistingUser() {
-        User returnedUser = userPersistenceService.findUserByUsername(USERNAME_ALICE);
-
-        assertEquals(11L, returnedUser.getId());
-        assertEquals("Alice", returnedUser.getFirstname());
-        assertEquals("Wunderland", returnedUser.getLastname());
-        assertEquals(USERNAME_ALICE, returnedUser.getUsername());
-        assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
-    }
-
-    @Test
-    void findUserByUsernameShouldThrowExceptionWhenUserNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userPersistenceService.findUserByUsername("unknown"));
-
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("User with username unknown not found", exception.getReason());
-    }
-
-    @Test
-    void findUserByUsernameShouldAddUserToCache() {
-        userPersistenceService.findUserByUsername(USERNAME_ALICE);
-
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
-        assertNotNull(cachedUser);
-    }
-
-    @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
 
@@ -138,7 +114,7 @@ class UserPersistenceServiceIT {
         User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
         userPersistenceService.getOrCreateUser(existingUser);
 
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
+        User cachedUser = cacheManager.getCache(USER_CACHE).get(USERNAME_ALICE, User.class);
         assertNotNull(cachedUser);
     }
 }

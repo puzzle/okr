@@ -37,14 +37,15 @@ public class KeyResultMetricMapper {
 
         return new KeyResultMetricDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
                 keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(),
-                ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn());
+                ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn(),
+                keyResult.isWriteable());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
         return KeyResultMetric.Builder.builder().withBaseline(keyResultMetricDto.baseline())
                 .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit())
                 .withId(keyResultMetricDto.id())
-                .withObjective(objectiveBusinessService.getObjectiveById(keyResultMetricDto.objective().id()))
+                .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
                 .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
                 .withModifiedOn(keyResultMetricDto.modifiedOn()).build();

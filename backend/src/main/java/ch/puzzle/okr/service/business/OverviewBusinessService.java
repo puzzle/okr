@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.validation.OverviewValidationService;
@@ -14,30 +15,29 @@ import java.util.Objects;
 public class OverviewBusinessService {
     private final OverviewPersistenceService overviewPersistenceService;
     private final QuarterBusinessService quarterBusinessService;
-    private final TeamBusinessService teamBusinessService;
     private final OverviewValidationService validator;
 
+    private final TeamBusinessService teamBusinessService;
+
     public OverviewBusinessService(OverviewPersistenceService overviewPersistenceService,
-            QuarterBusinessService quarterBusinessService, TeamBusinessService teamBusinessService,
-            OverviewValidationService validator) {
+            QuarterBusinessService quarterBusinessService, OverviewValidationService validator,
+            TeamBusinessService teamBusinessService) {
         this.overviewPersistenceService = overviewPersistenceService;
         this.quarterBusinessService = quarterBusinessService;
-        this.teamBusinessService = teamBusinessService;
         this.validator = validator;
+        this.teamBusinessService = teamBusinessService;
     }
 
-    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
+    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
+            AuthorizationUser authorizationUser) {
         if (Objects.isNull(quarterId)) {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
 
         if (CollectionUtils.isEmpty(teamIds)) {
-            // TODO get current team (of current user) if teamIds is empty and remove temp implementation
-            // TODO remove line below as soon as teamids are able to be read from jwt token
             teamIds = teamBusinessService.getAllTeams().stream().map(Team::getId).toList();
         }
         validator.validateOnGet(quarterId, teamIds);
-        return overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(quarterId, teamIds,
-                objectiveQuery);
+        return overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery, authorizationUser);
     }
 }

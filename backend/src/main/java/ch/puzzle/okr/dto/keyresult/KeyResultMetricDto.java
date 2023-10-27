@@ -8,6 +8,6 @@ import java.time.LocalDateTime;
 @JsonDeserialize(as = KeyResultMetricDto.class)
 public record KeyResultMetricDto(Long id, String keyResultType, String title, String description, Double baseline,
         Double stretchGoal, Unit unit, KeyResultUserDto owner, KeyResultObjectiveDto objective,
-        KeyResultLastCheckInMetricDto lastCheckIn, LocalDateTime createdOn, LocalDateTime modifiedOn)
+        KeyResultLastCheckInMetricDto lastCheckIn, LocalDateTime createdOn, LocalDateTime modifiedOn, boolean writeable)
         implements KeyResultDto {
 }

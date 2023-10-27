@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class QuarterBusinessServiceTest {
     @Mock
-    QuarterPersistenceService quarterPersistenceService = Mockito.mock(QuarterPersistenceService.class);
+    QuarterPersistenceService quarterPersistenceService;
 
     @Mock
-    QuarterValidationService quarterValidationService = Mockito.mock(QuarterValidationService.class);
+    QuarterValidationService quarterValidationService;
 
     @InjectMocks
     @Spy

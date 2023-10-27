@@ -1,9 +1,9 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,34 +11,32 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class CheckInBusinessService {
+public class CheckInBusinessService implements BusinessServiceInterface<Long, CheckIn> {
     private final CheckInPersistenceService checkInPersistenceService;
     private final CheckInValidationService validator;
-    private final UserBusinessService userBusinessService;
 
     public CheckInBusinessService(CheckInPersistenceService checkInPersistenceService,
-            CheckInValidationService validator, UserBusinessService userBusinessService) {
+            CheckInValidationService validator) {
         this.checkInPersistenceService = checkInPersistenceService;
         this.validator = validator;
-        this.userBusinessService = userBusinessService;
     }
 
-    public CheckIn getCheckInById(Long id) {
+    public CheckIn getEntityById(Long id) {
         validator.validateOnGet(id);
         return checkInPersistenceService.findById(id);
     }
 
     @Transactional
-    public CheckIn createCheckIn(CheckIn checkIn, Jwt token) {
+    public CheckIn createEntity(CheckIn checkIn, AuthorizationUser authorizationUser) {
         checkIn.setCreatedOn(LocalDateTime.now());
         checkIn.setModifiedOn(LocalDateTime.now());
-        checkIn.setCreatedBy(userBusinessService.getUserByAuthorisationToken(token));
+        checkIn.setCreatedBy(authorizationUser.user());
         validator.validateOnCreate(checkIn);
         return checkInPersistenceService.save(checkIn);
     }
 
     @Transactional
-    public CheckIn updateCheckIn(Long id, CheckIn checkIn) {
+    public CheckIn updateEntity(Long id, CheckIn checkIn, AuthorizationUser authorizationUser) {
         CheckIn savedCheckIn = checkInPersistenceService.findById(id);
         checkIn.setCreatedOn(savedCheckIn.getCreatedOn());
         checkIn.setCreatedBy(savedCheckIn.getCreatedBy());
@@ -48,7 +46,7 @@ public class CheckInBusinessService {
     }
 
     @Transactional
-    public void deleteCheckIn(Long id) {
+    public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         checkInPersistenceService.deleteById(id);
     }

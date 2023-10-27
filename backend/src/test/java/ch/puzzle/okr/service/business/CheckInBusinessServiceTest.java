@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
@@ -12,63 +13,47 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
 import ch.puzzle.okr.service.validation.CheckInValidationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.oauth2.jwt.Jwt;
 
+import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CheckInBusinessServiceTest {
-    @MockBean
-    CheckInPersistenceService checkInPersistenceService = Mockito.mock(CheckInPersistenceService.class);
-    @MockBean
-    CheckInValidationService validator = Mockito.mock(CheckInValidationService.class);
-    @MockBean
-    UserBusinessService userBusinessService = Mockito.mock(UserBusinessService.class);
+    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+
+    @Mock
+    CheckInPersistenceService checkInPersistenceService;
+    @Mock
+    CheckInValidationService validator;
+    @Mock
+    UserBusinessService userBusinessService;
     @InjectMocks
     private CheckInBusinessService checkInBusinessService;
 
-    /* Test data */
-    KeyResult ordinalKeyResult;
-    KeyResult metricKeyResult;
-    private CheckIn checkInMetric;
-    private CheckIn checkInOrdinal;
-    private User user;
-    private Jwt jwt;
-
-    @BeforeEach
-    void setUp() {
-        /* KeyResult definition */
-        this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
-                .withId(7L).withTitle("Keyresult Ordinal").build();
-        this.metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
-                .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
-
-        /* CheckIn definition */
-        this.checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)
-                .withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
-                .withKeyResult(metricKeyResult).build();
-        this.checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withConfidence(5)
-                .withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
-                .withKeyResult(ordinalKeyResult).build();
-
-        this.user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
-                .build();
-        this.jwt = TestHelper.mockJwtToken("johnny", "Johnny", "Appleseed", "test@test.ch");
-    }
+    private User user = User.Builder.builder().withEmail("Email").withFirstname("Firstname").withLastname("Lastname")
+            .build();
+    private KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
+            .withStretchZone("Wald").withId(7L).withTitle("Keyresult Ordinal").build();
+    private KeyResult metricKeyResult = KeyResultMetric.Builder.builder().withBaseline(10D).withStretchGoal(50D)
+            .withUnit(Unit.CHF).withId(8L).withTitle("Keyresult Metric").build();
+    private CheckIn checkInMetric = CheckInMetric.Builder.builder().withValue(30D).withId(1L).withConfidence(5)
+            .withChangeInfo("ChangeInfo1").withInitiatives("Initiatives1").withCreatedBy(user)
+            .withKeyResult(metricKeyResult).build();
+    private CheckIn checkInOrdinal = CheckInOrdinal.Builder.builder().withZone(Zone.COMMIT).withConfidence(5)
+            .withChangeInfo("ChangeInfo2").withInitiatives("Initiatives2").withCreatedBy(user)
+            .withKeyResult(ordinalKeyResult).build();
 
     @Test
     void shouldGetMetricCheckIn() {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
-        CheckIn checkIn = checkInBusinessService.getCheckInById(this.checkInMetric.getId());
+        CheckIn checkIn = checkInBusinessService.getEntityById(this.checkInMetric.getId());
 
         assertEquals(this.checkInMetric.getCheckInType(), checkIn.getCheckInType());
         assertEquals(this.checkInMetric.getChangeInfo(), checkIn.getChangeInfo());
@@ -79,7 +64,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldGetOrdinalCheckIn() {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
-        CheckIn checkIn = checkInBusinessService.getCheckInById(this.checkInOrdinal.getId());
+        CheckIn checkIn = checkInBusinessService.getEntityById(this.checkInOrdinal.getId());
 
         assertEquals(this.checkInOrdinal.getCheckInType(), checkIn.getCheckInType());
         assertEquals(this.checkInOrdinal.getChangeInfo(), checkIn.getChangeInfo());
@@ -92,7 +77,8 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInMetric.getId())).thenReturn(this.checkInMetric);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInMetric.getId(), this.checkInMetric);
+        CheckIn newCheckIn = checkInBusinessService.updateEntity(this.checkInMetric.getId(), this.checkInMetric,
+                authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), newCheckIn.getId());
@@ -105,7 +91,8 @@ class CheckInBusinessServiceTest {
         when(checkInPersistenceService.findById(this.checkInOrdinal.getId())).thenReturn(this.checkInOrdinal);
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
 
-        CheckIn newCheckIn = checkInBusinessService.updateCheckIn(this.checkInOrdinal.getId(), this.checkInOrdinal);
+        CheckIn newCheckIn = checkInBusinessService.updateEntity(this.checkInOrdinal.getId(), this.checkInOrdinal,
+                authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), newCheckIn.getId());
@@ -116,7 +103,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveMetricCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInMetric);
-        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInMetric, this.jwt);
+        CheckIn createdCheckIn = checkInBusinessService.createEntity(this.checkInMetric, authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInMetric);
         assertEquals(this.checkInMetric.getId(), createdCheckIn.getId());
@@ -128,7 +115,7 @@ class CheckInBusinessServiceTest {
     @Test
     void shouldSaveOrdinalCheckIn() {
         when(checkInPersistenceService.save(any())).thenReturn(this.checkInOrdinal);
-        CheckIn createdCheckIn = checkInBusinessService.createCheckIn(this.checkInOrdinal, this.jwt);
+        CheckIn createdCheckIn = checkInBusinessService.createEntity(this.checkInOrdinal, authorizationUser);
 
         verify(checkInPersistenceService, times(1)).save(this.checkInOrdinal);
         assertEquals(this.checkInOrdinal.getId(), createdCheckIn.getId());
@@ -139,7 +126,7 @@ class CheckInBusinessServiceTest {
 
     @Test
     void shouldDeleteCheckIn() {
-        checkInBusinessService.deleteCheckIn(this.checkInOrdinal.getId());
+        checkInBusinessService.deleteEntityById(this.checkInOrdinal.getId());
         verify(checkInPersistenceService, times(1)).deleteById(this.checkInOrdinal.getId());
     }
 

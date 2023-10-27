@@ -31,5 +31,4 @@ class ClientConfigControllerIT {
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
         verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv();
     }
-
 }

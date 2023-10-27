@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -8,6 +7,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @EnableScheduling
 @Service
@@ -21,7 +23,13 @@ public class CacheService {
         this.cacheManager = cacheManager;
     }
 
-    @CacheEvict(value = Constants.USER_CACHE, allEntries = true)
+    @CacheEvict(value = AUTHORIZATION_USER_CACHE, allEntries = true)
+    @Scheduled(fixedRateString = "${caching.authorization.users.TTL}")
+    public void emptyAuthorizationUsersCache() {
+        logger.info("emptying authorization users cache");
+    }
+
+    @CacheEvict(value = USER_CACHE, allEntries = true)
     @Scheduled(fixedRateString = "${caching.users.TTL}")
     public void emptyUsersCache() {
         logger.info("emptying users cache");

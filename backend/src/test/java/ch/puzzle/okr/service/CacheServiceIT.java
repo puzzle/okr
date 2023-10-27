@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
+import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -31,7 +31,7 @@ class CacheServiceIT {
 
     @BeforeEach
     void beforeEach() {
-        cache = cacheManager.getCache(Constants.USER_CACHE);
+        cache = cacheManager.getCache(USER_CACHE);
     }
 
     @AfterEach
@@ -40,6 +40,7 @@ class CacheServiceIT {
             userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
+        cache.clear();
     }
 
     private static User createUser() {

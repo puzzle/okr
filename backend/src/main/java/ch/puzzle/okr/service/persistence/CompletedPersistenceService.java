@@ -5,7 +5,7 @@ import ch.puzzle.okr.repository.CompletedRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CompletedPersistenceService extends PersistenceBase<Completed, Long> {
+public class CompletedPersistenceService extends PersistenceBase<Completed, Long, CompletedRepository> {
 
     protected CompletedPersistenceService(CompletedRepository repository) {
         super(repository);

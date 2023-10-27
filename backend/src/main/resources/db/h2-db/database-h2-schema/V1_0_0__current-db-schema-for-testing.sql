@@ -6,6 +6,7 @@ create sequence if not exists sequence_quarter;
 create sequence if not exists sequence_team;
 create sequence if not exists sequence_alignment;
 create sequence if not exists sequence_completed;
+create sequence if not exists sequence_organisation;
 
 create table if not exists person
 (
@@ -112,23 +113,23 @@ create table if not exists key_result
 
 create table if not exists completed
 (
-    id                   bigint       not null primary key,
-    objective_id bigint       not null
-    constraint fk_completed_objective
-    references objective,
-    comment       varchar(4096)
-    );
+    id           bigint not null primary key,
+    objective_id bigint not null
+        constraint fk_completed_objective
+            references objective,
+    comment      varchar(4096)
+);
 
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
-SELECT TQ.TEAM_ID          AS "TEAM_ID",
-       TQ.NAME             AS "TEAM_NAME",
-       TQ.QUATER_ID        AS "QUARTER_ID",
-       TQ.LABEL            AS "QUARTER_LABEL",
+SELECT T.ID                AS "TEAM_ID",
+       T.NAME              AS "TEAM_NAME",
        COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
        O.STATE             AS "OBJECTIVE_STATE",
+       Q.ID                AS "QUARTER_ID",
+       Q.LABEL             AS "QUARTER_LABEL",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",
@@ -143,10 +144,9 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
        C.CREATED_ON
-FROM (SELECT T.ID AS TEAM_ID, T.NAME, Q.ID AS QUATER_ID, Q.LABEL
-      FROM TEAM T,
-           QUARTER Q) TQ
-         LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID
+FROM TEAM T
+         LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
+         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC
@@ -165,4 +165,38 @@ create table if not exists alignment
         foreign key (target_key_result_id) references key_result,
     constraint fk_alignment_target_objective
         foreign key (target_objective_id) references objective
+);
+
+DROP VIEW IF EXISTS ALIGNMENT_SELECTION;
+CREATE VIEW ALIGNMENT_SELECTION AS
+SELECT O.ID                AS "OBJECTIVE_ID",
+       O.TITLE             AS "OBJECTIVE_TITLE",
+       T.ID                AS "TEAM_ID",
+       T.NAME              AS "TEAM_NAME",
+       Q.ID                AS "QUARTER_ID",
+       Q.LABEL             AS "QUARTER_LABEL",
+       COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
+       KR.TITLE            AS "KEY_RESULT_TITLE"
+FROM OBJECTIVE O
+         LEFT JOIN TEAM T ON O.TEAM_ID = T.ID
+         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
+         LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID;
+
+create table if not exists organisation
+(
+    id       bigint       not null,
+    org_name varchar(255) not null,
+    state    text         not null,
+    primary key (id)
+);
+
+create table if not exists team_organisation
+(
+    team_id         bigint not null,
+    organisation_id bigint not null,
+    primary key (organisation_id, team_id),
+    constraint fk_team_organisation_organisation
+        foreign key (organisation_id) references organisation,
+    constraint fk_team_organisation_team
+        foreign key (team_id) references team
 );

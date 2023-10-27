@@ -23,8 +23,6 @@ class KeyResultPersistenceServiceIT {
     KeyResult createdKeyResult;
     @Autowired
     private KeyResultPersistenceService keyResultPersistenceService;
-    @Autowired
-    private ObjectivePersistenceService objectivePersistenceService;
 
     private static KeyResult createKeyResultMetric(Long id) {
         return KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0).withUnit(Unit.FTE).withId(id)
@@ -115,8 +113,7 @@ class KeyResultPersistenceServiceIT {
 
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(keyResultId));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, this::execute);
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
 
@@ -146,7 +143,7 @@ class KeyResultPersistenceServiceIT {
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(keyResultId));
+                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
 
@@ -172,9 +169,8 @@ class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void getKeyResultsByObjectiveShouldReturnListOfKeyResults() {
-        List<KeyResult> keyResultsByObjective = keyResultPersistenceService
-                .getKeyResultsByObjective(Objective.Builder.builder().withId(3L).build());
+    void getKeyResultsByObjective_ShouldReturnListOfKeyResults() {
+        List<KeyResult> keyResultsByObjective = keyResultPersistenceService.getKeyResultsByObjective(3L);
 
         assertEquals(3, keyResultsByObjective.size());
     }
@@ -203,5 +199,9 @@ class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(keyResultId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
         assertEquals(String.format("KeyResult with id %d not found", newKeyResult.getId()), exception.getReason());
+    }
+
+    private void execute() {
+        keyResultPersistenceService.findById(createdKeyResult.getId());
     }
 }

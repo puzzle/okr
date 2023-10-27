@@ -1,11 +1,12 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.repository.TeamRepository;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TeamValidationService extends ValidationBase<Team, Long> {
+public class TeamValidationService extends ValidationBase<Team, Long, TeamRepository, TeamPersistenceService> {
 
     public TeamValidationService(TeamPersistenceService teamPersistenceService) {
         super(teamPersistenceService);

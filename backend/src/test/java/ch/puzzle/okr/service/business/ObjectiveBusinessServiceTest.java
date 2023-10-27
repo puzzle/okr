@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
@@ -140,5 +141,21 @@ class ObjectiveBusinessServiceTest {
     void verifyActiveObjectivesAmountOfTeam() {
         this.objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
         verify(this.objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
+    }
+
+    @Test
+    void shouldDuplicateObjective() {
+        KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
+        KeyResult keyResultOrdinal2 = KeyResultOrdinal.Builder.builder().withTitle("Ordinal2").build();
+        KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withTitle("Metric").withUnit(Unit.FTE).build();
+        KeyResult keyResultMetric2 = KeyResultMetric.Builder.builder().withTitle("Metric2").withUnit(Unit.CHF).build();
+        List<KeyResult> keyResults = List.of(keyResultOrdinal, keyResultOrdinal2, keyResultMetric, keyResultMetric2);
+
+        Mockito.when(objectivePersistenceService.save(any())).thenReturn(objective);
+        Mockito.when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
+
+        this.objectiveBusinessService.duplicateObjective(objective.getId(), objective, jwtToken);
+        verify(this.keyResultBusinessService, times(4)).createKeyResult(any(), any());
+        verify(this.objectiveBusinessService, times(1)).createObjective(any(), any());
     }
 }

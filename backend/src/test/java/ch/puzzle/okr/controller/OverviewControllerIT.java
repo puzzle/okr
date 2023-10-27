@@ -118,7 +118,8 @@ class OverviewControllerIT {
     void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
         List<Overview> overviews = new ArrayList<>(overviewPuzzle);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), any(), any(), "")).willReturn(overviews);
+        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), any(), any(), ""))
+                .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))

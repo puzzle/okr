@@ -68,7 +68,6 @@ public class OverviewPersistenceServiceIT {
                 OverviewId.of(8L, -1L, -1L, -1L));
     }
 
-
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews() {
         List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(2L, List.of(5L, 6L, 8L),
                 authorizationUser);

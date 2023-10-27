@@ -12,7 +12,6 @@ export class ConfidenceComponent implements OnChanges {
   max: number = 10;
   @Input() edit: boolean = true;
   @Input() checkIn!: CheckInMin;
-  @Input() backgroundColor!: string;
 
   ngOnChanges(changes: SimpleChanges) {
     if (!changes['checkIn']?.currentValue) {

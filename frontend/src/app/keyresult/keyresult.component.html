@@ -14,7 +14,11 @@
 
     <div class="d-flex align-items-center flex-wrap justify-content-end">
       <p class="sub-title">Confidence</p>
-      <app-confidence [edit]="false" [checkIn]="keyResult.lastCheckIn!" class="ms-2"></app-confidence>
+      <app-confidence
+        [edit]="false"
+        [checkIn]="keyResult.lastCheckIn!"
+        class="ms-2 bg-keyResult-attribute"
+      ></app-confidence>
     </div>
   </div>
 </div>

@@ -1,5 +1,13 @@
+:host(*) {
+  background-color: inherit;
+}
+
 p {
   font-size: 0.75rem;
+}
+
+#confidence {
+  width: min-content;
 }
 
 mat-slider {

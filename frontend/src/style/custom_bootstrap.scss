@@ -2,5 +2,7 @@
 $theme-colors: (
   "pz-dark-blue": $pz-dark-blue,
   "eggshell": $eggshell,
+  "keyResult-detail-attribute": $keyResult-detail-attribute-bg,
+  "keyResult-attribute": $keyResult-attribute-bg,
 );
 @import "bootstrap";

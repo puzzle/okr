@@ -70,11 +70,11 @@ public class ObjectiveController {
     @PostMapping("/{id}")
     public ResponseEntity<ObjectiveDto> duplicateObjective(
             @Parameter(description = "The ID for duplicating an Objective.", required = true) @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO,
-            @AuthenticationPrincipal Jwt jwt) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Objective which should be duplicated as json", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
         ObjectiveDto duplicatedObjectiveDto = this.objectiveMapper
-                .toDto(this.objectiveBusinessService.duplicateObjective(id, objective, jwt));
+                .toDto(this.objectiveAuthorizationService.getBusinessService().duplicateObjective(id, objective,
+                        this.objectiveAuthorizationService.getAuthorizationService().getAuthorizationUser()));
         return ResponseEntity.status(HttpStatus.CREATED).body(duplicatedObjectiveDto);
     }
 

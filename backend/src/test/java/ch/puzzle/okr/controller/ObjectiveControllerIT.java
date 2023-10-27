@@ -3,12 +3,16 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
+import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
+import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -34,6 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
 
+    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
     private static final String DESCRIPTION = "This is our description";
@@ -65,6 +71,10 @@ class ObjectiveControllerIT {
     private MockMvc mvc;
     @MockBean
     private ObjectiveAuthorizationService objectiveAuthorizationService;
+    @Mock
+    private ObjectiveBusinessService objectiveBusinessService;
+    @Mock
+    private AuthorizationService authorizationService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
 
@@ -189,8 +199,11 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
-        BDDMockito.given(objectiveBusinessService.duplicateObjective(anyLong(), any(), any())).willReturn(objective1);
+        BDDMockito.given(objectiveAuthorizationService.getBusinessService()).willReturn(objectiveBusinessService);
+        BDDMockito.given(objectiveAuthorizationService.getAuthorizationService()).willReturn(authorizationService);
+        BDDMockito.given((objectiveBusinessService).duplicateObjective(anyLong(), any(), any())).willReturn(objective1);
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
+        BDDMockito.given(authorizationService.getAuthorizationUser()).willReturn(authorizationUser);
 
         mvc.perform(post("/api/v2/objectives/" + objective1.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -199,7 +212,6 @@ class ObjectiveControllerIT {
                 .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
                 .andExpect(jsonPath("$.title", Is.is(objective1Dto.title())));
 
-        verify(objectiveBusinessService, times(1)).duplicateObjective(anyLong(), any(), any());
         verify(objectiveMapper, times(1)).toObjective(any());
         verify(objectiveMapper, times(1)).toDto(any());
     }

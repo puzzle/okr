@@ -154,8 +154,8 @@ class ObjectiveBusinessServiceTest {
         Mockito.when(objectivePersistenceService.save(any())).thenReturn(objective);
         Mockito.when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
 
-        this.objectiveBusinessService.duplicateObjective(objective.getId(), objective, jwtToken);
-        verify(this.keyResultBusinessService, times(4)).createKeyResult(any(), any());
-        verify(this.objectiveBusinessService, times(1)).createObjective(any(), any());
+        this.objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
+        verify(this.keyResultBusinessService, times(4)).createEntity(any(), any());
+        verify(this.objectiveBusinessService, times(1)).createEntity(any(), any());
     }
 }

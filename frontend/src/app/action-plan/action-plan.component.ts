@@ -3,6 +3,9 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Action } from '../shared/types/model/Action';
 import { FormControl } from '@angular/forms';
 import { ActionService } from '../shared/services/action.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
+import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-action-plan',
@@ -12,7 +15,10 @@ import { ActionService } from '../shared/services/action.service';
 export class ActionPlanComponent {
   @Input() formControl!: FormControl<Action[] | null>;
 
-  constructor(private actionService: ActionService) {}
+  constructor(
+    private actionService: ActionService,
+    public dialog: MatDialog,
+  ) {}
 
   drop(event: CdkDragDrop<Action[] | null>) {
     if (event.previousContainer === event.container) {
@@ -36,8 +42,29 @@ export class ActionPlanComponent {
 
   removeAction(index: number) {
     const actions = this.formControl.value!;
-    this.actionService.deleteAction(actions[index].id!).subscribe();
-    actions.splice(index, 1);
-    this.formControl.setValue(actions);
+    if (actions[index].action !== '') {
+      this.dialog
+        .open(ConfirmDialogComponent, {
+          data: {
+            title: 'Action',
+            isAction: true,
+          },
+          width: CONFIRM_DIALOG_WIDTH,
+          height: 'auto',
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          if (result) {
+            if (actions[index].id) {
+              this.actionService.deleteAction(actions[index].id!).subscribe();
+            }
+            actions.splice(index, 1);
+            this.formControl.setValue(actions);
+          }
+        });
+    } else {
+      actions.splice(index, 1);
+      this.formControl.setValue(actions);
+    }
   }
 }

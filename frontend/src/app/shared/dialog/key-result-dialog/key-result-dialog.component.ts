@@ -62,9 +62,7 @@ export class KeyResultDialogComponent implements OnInit {
       switchMap((value) => this.filter(value as string)),
     );
     if (this.data.keyResult) {
-      this.actionService.getActionsFromKeyResult(this.data.keyResult.id).subscribe((actions) => {
-        this.keyResultForm.patchValue({ actionList: actions });
-      });
+      this.keyResultForm.patchValue({ actionList: this.data.keyResult.actionList });
       this.keyResultForm.controls.title.setValue(this.data.keyResult.title);
       this.keyResultForm.controls.description.setValue(this.data.keyResult.description);
       this.keyResultForm.controls.owner.setValue(this.data.keyResult.owner);

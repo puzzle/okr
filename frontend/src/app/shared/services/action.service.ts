@@ -9,10 +9,6 @@ import { Action } from '../types/model/Action';
 export class ActionService {
   constructor(private httpClient: HttpClient) {}
 
-  getActionsFromKeyResult(keyResultId: number) {
-    return this.httpClient.get<Action[]>('/api/v2/action/' + keyResultId);
-  }
-
   updateActions(actionList: Action[]): Observable<Action> {
     return this.httpClient.put<Action>(`/api/v2/action`, actionList);
   }

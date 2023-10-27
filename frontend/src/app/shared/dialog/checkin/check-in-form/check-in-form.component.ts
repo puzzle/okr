@@ -45,9 +45,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.actionService.getActionsFromKeyResult(this.keyResult.id).subscribe((actions) => {
-      this.dialogForm.patchValue({ actionList: actions });
-    });
+    this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
   }
 
   setDefaultValues() {

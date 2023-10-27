@@ -21,7 +21,7 @@ export class ConfirmDialogComponent implements OnInit {
       }
     } else {
       this.dialogTitle = this.data.title + ' löschen';
-      this.dialogText = 'Soll dieses ' + this.data.title + ' gelöscht werden?';
+      this.dialogText = (this.data.isAction ? 'Soll diese ' : 'Soll dieses ') + this.data.title + ' gelöscht werden?';
     }
   }
 

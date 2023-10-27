@@ -27,7 +27,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
-        [ngClass]="validOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
         class="input-fields owner-input"
         [attr.data-testId]="'ownerInput'"
         [matAutocomplete]="auto"
@@ -38,7 +38,7 @@
           {{ user.firstname + " " + user.lastname }}
         </mat-option>
       </mat-autocomplete>
-      <div *ngIf="validOwner()">
+      <div *ngIf="invalidOwner()">
         <mat-error> Du musst einen Owner auswählen </mat-error>
       </div>
     </div>
@@ -65,7 +65,7 @@
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid || validOwner()"
+        [disabled]="keyResultForm.invalid || invalidOwner()"
         color="primary"
         mat-flat-button
       >

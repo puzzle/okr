@@ -149,7 +149,10 @@ export class KeyResultDialogComponent implements OnInit {
     return user ? user.firstname + ' ' + user.lastname : '';
   }
 
-  validOwner() {
-    return typeof this.keyResultForm.value.owner === 'string';
+  invalidOwner(): boolean {
+    return (
+      !!this.isTouchedOrDirty('owner') &&
+      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
+    );
   }
 }

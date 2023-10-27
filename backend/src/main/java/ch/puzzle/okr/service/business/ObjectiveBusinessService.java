@@ -4,6 +4,9 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultMetric;
+import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
@@ -47,6 +51,28 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
         return objectivePersistenceService.save(objective);
+    }
+
+    @Transactional
+    public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
+        Objective duplicatedObjective = createEntity(objective, authorizationUser);
+        List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
+        for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
+            if (keyResult.getKeyResultType().equals("metric")) {
+                KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
+                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
+                        .withOwner(authorizationUser.user()).withUnit(((KeyResultMetric) keyResult).getUnit())
+                        .withBaseline(0D).withStretchGoal(1D).build();
+                keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
+            } else if (keyResult.getKeyResultType().equals("ordinal")) {
+                KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
+                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
+                        .withOwner(authorizationUser.user()).withCommitZone("-").withTargetZone("-")
+                        .withStretchZone("-").build();
+                keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
+            }
+        }
+        return duplicatedObjective;
     }
 
     @Transactional

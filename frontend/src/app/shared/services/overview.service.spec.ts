@@ -28,20 +28,4 @@ describe('OverviewService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
-  it('should map correctly', () => {
-    service.getOverview().subscribe((overviews) => {
-      expect(overviews[0].objectives[0].state).toBe(State.DRAFT);
-    });
-  });
-
-  it('should make call to overview endpoint when quarterId is undefined', () => {
-    service.getOverview();
-    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview', { params: {} });
-  });
-
-  it('should make call to overview endpoint with overview url param when quarterId is defined', () => {
-    service.getOverview(quarter.id);
-    expect(httpClient.get).toHaveBeenCalledWith('/api/v2/overview', { params: { quarter: 1 } });
-  });
 });

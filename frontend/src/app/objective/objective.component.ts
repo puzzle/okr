@@ -60,7 +60,11 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           displayName: 'Objective bearbeiten',
           dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
         },
-        { displayName: 'Objective duplizieren', action: 'duplicate' },
+        {
+          displayName: 'Objective duplizieren',
+          action: 'duplicate',
+          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
+        },
         {
           displayName: 'Objective abschliessen',
           action: 'complete',
@@ -116,6 +120,8 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
           this.completeObjective(objective, result);
         } else if (menuEntry.action == 'release') {
           this.releaseObjective(objective);
+        } else if (menuEntry.action == 'duplicate') {
+          this.refreshDataService.markDataRefresh();
         }
       });
     } else {

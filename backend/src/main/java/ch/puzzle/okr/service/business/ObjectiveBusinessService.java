@@ -56,20 +56,20 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     @Transactional
     public Objective duplicateObjective(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
-        List<KeyResult> keyResultsOfDuplicatedObjective = this.keyResultBusinessService.getAllKeyResultsByObjective(id);
+        List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
         for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
             if (keyResult.getKeyResultType().equals("metric")) {
                 KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
                         .withOwner(authorizationUser.user()).withUnit(((KeyResultMetric) keyResult).getUnit())
                         .withBaseline(0D).withStretchGoal(1D).build();
-                this.keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
+                keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
             } else if (keyResult.getKeyResultType().equals("ordinal")) {
                 KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
                         .withOwner(authorizationUser.user()).withCommitZone("-").withTargetZone("-")
                         .withStretchZone("-").build();
-                this.keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
+                keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
             }
         }
         return duplicatedObjective;

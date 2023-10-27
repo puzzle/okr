@@ -121,7 +121,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         } else if (menuEntry.action == 'release') {
           this.releaseObjective(objective);
         } else if (menuEntry.action == 'duplicate') {
-          this.duplicateObjective(result.objective);
+          this.refreshDataService.markDataRefresh();
         }
       });
     } else {
@@ -148,13 +148,6 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
   releaseObjective(objective: Objective) {
     objective.state = 'ONGOING' as State;
     this.objectiveService.updateObjective(objective).subscribe(() => {
-      this.refreshDataService.markDataRefresh();
-    });
-  }
-
-  duplicateObjective(objective: Objective) {
-    objective.state = 'DRAFT' as State;
-    this.objectiveService.duplicateObjective(objective.id, objective).subscribe(() => {
       this.refreshDataService.markDataRefresh();
     });
   }

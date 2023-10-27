@@ -65,10 +65,7 @@ export class ObjectiveFormComponent implements OnInit {
       state: state,
     } as unknown as Objective;
 
-    const submitFunction = objectiveDTO.id
-      ? this.objectiveService.updateObjective(objectiveDTO)
-      : this.objectiveService.createObjective(objectiveDTO);
-
+    const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
     submitFunction.subscribe((savedObjective: Objective) =>
       this.closeDialog(savedObjective, false, value.createKeyResults!),
     );
@@ -95,6 +92,16 @@ export class ObjectiveFormComponent implements OnInit {
         quarter: quarterId,
       });
     });
+  }
+
+  getSubmitFunction(id: number, objectiveDTO: Objective): Observable<Objective> {
+    if (this.data.action == 'duplicate') {
+      return this.objectiveService.duplicateObjective(id, objectiveDTO);
+    } else {
+      return id
+        ? this.objectiveService.updateObjective(objectiveDTO)
+        : this.objectiveService.createObjective(objectiveDTO);
+    }
   }
 
   deleteObjective() {

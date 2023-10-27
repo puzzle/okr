@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.controller.ObjectiveController;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
@@ -62,11 +61,14 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
             if (keyResult.getKeyResultType().equals("metric")) {
                 KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withUnit(((KeyResultMetric) keyResult).getUnit()).build();
+                        .withOwner(authorizationUser.user())
+                        .withUnit(((KeyResultMetric) keyResult).getUnit()).withBaseline(0D).withStretchGoal(1D).build();
                 this.keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
             } else if (keyResult.getKeyResultType().equals("ordinal")) {
                 KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
-                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription()).build();
+                        .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
+                        .withOwner(authorizationUser.user()).withCommitZone("-")
+                        .withTargetZone("-").withStretchZone("-").build();
                 this.keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
             }
         }

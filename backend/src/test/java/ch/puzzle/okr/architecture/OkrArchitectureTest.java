@@ -96,12 +96,14 @@ class OkrArchitectureTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/repositoriesAndPersistenceServices.csv", numLinesToSkip = 1)
-    void repositoriesShouldOnlyBeCalledFromPersistenceServices(String repository, String persistenceService) {
+    void repositoriesShouldOnlyBeCalledFromPersistenceServicesAndValidationService(String repository,
+            String persistenceService, String validationService) {
         JavaClasses importedClasses = new ClassFileImporter().withImportOption(new ImportOption.DoNotIncludeTests())
                 .importPackages("ch.puzzle.okr");
 
         ArchRule rule = classes().that().haveSimpleName(repository).should().onlyHaveDependentClassesThat()
-                .haveSimpleName(persistenceService).orShould().haveSimpleName(repository);
+                .haveSimpleName(persistenceService).orShould().haveSimpleName(repository).orShould()
+                .haveSimpleName(validationService);
 
         rule.check(importedClasses);
     }

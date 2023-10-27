@@ -19,14 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
-    User createdUser;
-    @Autowired
-    private UserPersistenceService userPersistenceService;
-    @Autowired
-    private CacheManager cacheManager;
-    private Cache cache;
 
     private static final String USERNAME_ALICE = "alice";
+
+    User createdUser;
+
+    @Autowired
+    private UserPersistenceService userPersistenceService;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+    private Cache cache;
 
     @BeforeEach
     void beforeEach() {
@@ -76,34 +80,6 @@ class UserPersistenceServiceIT {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
         assertEquals("Missing identifier for User", exception.getReason());
-    }
-
-    @Test
-    void findUserByUsernameShouldReturnExistingUser() {
-        User returnedUser = userPersistenceService.findUserByUsername(USERNAME_ALICE);
-
-        assertEquals(11L, returnedUser.getId());
-        assertEquals("Alice", returnedUser.getFirstname());
-        assertEquals("Wunderland", returnedUser.getLastname());
-        assertEquals(USERNAME_ALICE, returnedUser.getUsername());
-        assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
-    }
-
-    @Test
-    void findUserByUsernameShouldThrowExceptionWhenUserNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> userPersistenceService.findUserByUsername("unknown"));
-
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("User with username unknown not found", exception.getReason());
-    }
-
-    @Test
-    void findUserByUsernameShouldAddUserToCache() {
-        userPersistenceService.findUserByUsername(USERNAME_ALICE);
-
-        User cachedUser = cacheManager.getCache(Constants.USER_CACHE).get(USERNAME_ALICE, User.class);
-        assertNotNull(cachedUser);
     }
 
     @Test

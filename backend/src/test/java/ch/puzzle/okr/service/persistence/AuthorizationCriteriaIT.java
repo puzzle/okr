@@ -56,7 +56,7 @@ class AuthorizationCriteriaIT {
     void appendOverview_ShouldReturnObjective_WhenFirstLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, List.of(5L),
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
                 authorizationUser);
 
         assertEquals(6L, overviews.size());
@@ -67,7 +67,7 @@ class AuthorizationCriteriaIT {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAMS_DRAFT));
-        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, List.of(5L),
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
                 authorizationUser);
 
         assertEquals(6L, overviews.size());
@@ -78,7 +78,7 @@ class AuthorizationCriteriaIT {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAM_DRAFT));
-        List<Overview> overviews = overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(quarterId, List.of(5L),
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
                 authorizationUser);
 
         assertEquals(6L, overviews.size());

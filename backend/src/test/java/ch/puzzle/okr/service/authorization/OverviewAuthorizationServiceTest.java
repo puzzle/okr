@@ -18,6 +18,7 @@ import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,9 +37,11 @@ class OverviewAuthorizationServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews_WhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of(overview));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
+        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
+                List.of(5L), "");
 
         assertThat(List.of(overview)).hasSameElementsAs(overviews);
     }
@@ -48,9 +51,11 @@ class OverviewAuthorizationServiceTest {
     void getOverviewByQuarterIdAndTeamIds_ShouldSetWritableProperly(boolean isWritable) {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of(overview));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
+                .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
+        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
+                List.of(5L), "");
 
         assertEquals(isWritable, overviews.get(0).isWriteable());
     }
@@ -58,9 +63,10 @@ class OverviewAuthorizationServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnEmptyList_WhenNotAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of());
+        when(overviewBusinessService.getFilteredOverview(1L, List.of(5L), "", authorizationUser)).thenReturn(List.of());
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
+        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
+                List.of(5L), "");
         assertThat(List.of()).hasSameElementsAs(overviews);
     }
 }

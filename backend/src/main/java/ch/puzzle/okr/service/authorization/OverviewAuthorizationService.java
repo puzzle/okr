@@ -22,9 +22,10 @@ public class OverviewAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
+    public List<Overview> getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(Long quarterId, List<Long> teamIds,
+            String objectiveQuery) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, "",
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
         setRoleCreateOrUpdateObjective(overviews, authorizationUser);
         return overviews;

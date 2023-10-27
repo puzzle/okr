@@ -31,17 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(CompletedController.class)
 class CompletedControllerIT {
-
-    @MockBean
-    CompletedAuthorizationService completedAuthorizationService;
-
-    @Autowired
-    private MockMvc mvc;
-
-    Completed successfulCompleted = Completed.Builder.builder().withId(1L)
-            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
-
     public static final String SUCCESSFUL_CREATE_BODY = """
             {
                 "id":null,
@@ -49,8 +38,14 @@ class CompletedControllerIT {
                 "comment":"Wir haben es gut geschafft"
             }
             """;
-
+    @MockBean
+    CompletedAuthorizationService completedAuthorizationService;
+    Completed successfulCompleted = Completed.Builder.builder().withId(1L)
+            .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
+            .withComment("Wir haben es gut geschafft").build();
     String baseUrl = "/api/v2/completed";
+    @Autowired
+    private MockMvc mvc;
 
     @Test
     void createSuccessfulCompleted() throws Exception {

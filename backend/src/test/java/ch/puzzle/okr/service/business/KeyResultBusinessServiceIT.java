@@ -25,7 +25,7 @@ import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
-public class KeyResultBusinessServiceIT {
+class KeyResultBusinessServiceIT {
     private static final String KEY_RESULT_UPDATED = "Updated Key Result";
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
@@ -101,7 +101,7 @@ public class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldRecreateKeyResultMetric() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null),
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         KeyResult updatedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
@@ -113,7 +113,7 @@ public class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldRecreateKeyResultOrdinal() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null),
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
                 authorizationUser);
         KeyResult updatedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 
@@ -125,7 +125,7 @@ public class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultOrdinal(null),
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
         checkInBusinessService.createEntity(createCheckInOrdinal(savedKeyResult), authorizationUser);
 
@@ -139,7 +139,7 @@ public class KeyResultBusinessServiceIT {
 
     @Test
     void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
-        KeyResult savedKeyResult = keyResultBusinessService.createKeyResult(createKeyResultMetric(null),
+        KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
                 authorizationUser);
         checkInBusinessService.createEntity(createCheckInMetric(savedKeyResult), authorizationUser);
 

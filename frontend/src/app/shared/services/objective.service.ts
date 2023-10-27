@@ -27,7 +27,6 @@ export class ObjectiveService {
   }
 
   duplicateObjective(objectiveId: number, objectiveDTO: any): Observable<Objective> {
-    objectiveDTO.id = null;
     return this.httpClient.post<Objective>(`/api/v2/objectives/${objectiveId}`, objectiveDTO);
   }
 

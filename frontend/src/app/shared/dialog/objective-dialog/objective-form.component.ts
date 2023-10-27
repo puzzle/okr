@@ -94,8 +94,10 @@ export class ObjectiveFormComponent implements OnInit {
     });
   }
 
-  getSubmitFunction(id: number, objectiveDTO: Objective): Observable<Objective> {
+  getSubmitFunction(id: number, objectiveDTO: any): Observable<Objective> {
     if (this.data.action == 'duplicate') {
+      objectiveDTO.id = null;
+      objectiveDTO.state = 'DRAFT' as State;
       return this.objectiveService.duplicateObjective(id, objectiveDTO);
     } else {
       return id

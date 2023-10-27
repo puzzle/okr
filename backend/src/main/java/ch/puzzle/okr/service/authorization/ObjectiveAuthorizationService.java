@@ -13,6 +13,12 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
         super(objectiveBusinessService, authorizationService);
     }
 
+    public Objective duplicateEntity(Long id, Objective objective) {
+        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        hasRoleCreateOrUpdate(objective, authorizationUser);
+        return getBusinessService().duplicateObjective(id, objective, authorizationUser);
+    }
+
     @Override
     protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
         getAuthorizationService().hasRoleReadByObjectiveId(id, authorizationUser);

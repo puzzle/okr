@@ -32,6 +32,7 @@
               <label>Einheit</label>
               <select
                 class="unit-dropdown bg-white input-fields menu-option"
+                [ngClass]="formInputCheck(keyResultForm, 'unit')"
                 formControlName="unit"
                 [attr.data-testId]="'unit'"
               >
@@ -39,6 +40,11 @@
                   {{ "UNIT." + unit.value | translate }}
                 </option>
               </select>
+              <div *ngIf="isTouchedOrDirty('unit')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+                </mat-error>
+              </div>
             </div>
             <div>
               <label>Baseline</label>

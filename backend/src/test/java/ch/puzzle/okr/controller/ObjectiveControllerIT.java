@@ -186,4 +186,21 @@ class ObjectiveControllerIT {
         mvc.perform(delete("/api/v2/objectives/1000").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
+
+    @Test
+    void shouldReturnIsCreatedWhenObjectiveWasDuplicated() throws Exception {
+        BDDMockito.given(objectiveBusinessService.duplicateObjective(anyLong(), any(), any())).willReturn(objective1);
+        BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
+
+        mvc.perform(post("/api/v2/objectives/" + objective1.getId()).contentType(MediaType.APPLICATION_JSON)
+                .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
+                .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
+                .andExpect(jsonPath("$.title", Is.is(objective1Dto.title())));
+
+        verify(objectiveBusinessService, times(1)).duplicateObjective(anyLong(), any(), any());
+        verify(objectiveMapper, times(1)).toObjective(any());
+        verify(objectiveMapper, times(1)).toDto(any());
+    }
 }

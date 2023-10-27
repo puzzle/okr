@@ -1,5 +1,6 @@
 import {
   areEqual,
+  calculateCurrentPercentage,
   formInputCheck,
   getNumberOrNull,
   getQueryString,
@@ -10,6 +11,8 @@ import {
 } from './common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from './types/model/User';
+import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from './testData';
+import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 
 describe('test common functions', () => {
   describe('getNumberOrNull', () => {
@@ -119,6 +122,28 @@ describe('test common functions', () => {
   ])('test sanitize function', (str: any, expected: string) => {
     expect(sanitize(str)).toBe(expected);
   });
+
+  it.each([
+    [0, 100, 20, 20],
+    [100, 0, 20, 80],
+    [500, 400, 460, 40],
+    [100, 10, 110, 0],
+    [0, 100, -10, 0],
+    [0, 100, -10, 0],
+    [0, 100, -10, 0],
+  ])(
+    'should calculate progress correctly',
+    async (baseline: number, stretchGoal: number, value: number, filledPercentage: number) => {
+      const keyResult = {
+        ...keyResultMetricMinScoring,
+        baseline: baseline,
+        stretchGoal: stretchGoal,
+        lastCheckIn: { ...keyResultOrdinalMinScoring.lastCheckIn, value: value },
+      } as KeyResultMetricMin;
+      let percentage = calculateCurrentPercentage(keyResult);
+      expect(percentage).toBe(filledPercentage);
+    },
+  );
 
   it.each([
     ['t%20t', 't t'],

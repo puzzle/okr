@@ -93,26 +93,6 @@ describe('ScoringComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
-    it.each([[0, 100, 20, 20]])(
-      'should calculate progress correctly',
-      async (baseline: number, stretchGoal: number, value, filledPercentage: number) => {
-        component.keyResult = {
-          ...keyResultMetricMinScoring,
-          baseline: baseline,
-          stretchGoal: stretchGoal,
-          lastCheckIn: { ...keyResultOrdinalMinScoring.lastCheckIn, value: value },
-        } as KeyResultMetricMin;
-        let percentage = component.calculateCurrentPercentage();
-        expect(percentage).toBe(filledPercentage);
-      },
-    );
-
-    it('should calculate progress correctly if key result is inversive', async () => {
-      component.keyResult = keyResultMetricMinScoringInversion;
-      let percentage = component.calculateCurrentPercentage();
-      expect(percentage).toBe(75);
-    });
   });
 
   describe('KeyResult ordinal', () => {

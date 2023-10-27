@@ -1,4 +1,5 @@
 import { FormGroup } from '@angular/forms';
+import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {
@@ -31,7 +32,20 @@ export function optionalValue(param: object): { [p: string]: any } {
       }),
   );
 }
+export function isInValid(baseline: number, stretchGoal: number, value: number): boolean {
+  if (value < baseline && baseline < stretchGoal) return true;
+  if (value > baseline && baseline > stretchGoal) return true;
+  return false;
+}
 
+export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin): number {
+  let value: number = +keyResultMetric.lastCheckIn?.value!;
+  let baseline: number = +keyResultMetric.baseline;
+  let stretchGoal: number = +keyResultMetric.stretchGoal;
+  if (isInValid(baseline, stretchGoal, value)) return 0;
+
+  return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
+}
 export function sanitize(query: string) {
   return query.trim().toLowerCase();
 }

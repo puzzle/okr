@@ -41,9 +41,15 @@
             <p
               *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
               class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center gap-1"
-              [ngClass]="{ 'border-error': +lastCheckIn.value < keyResultMetric.baseline }"
+              [ngClass]="{
+                'border-error': isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)
+              }"
             >
-              <span class="text-error" *ngIf="+lastCheckIn.value < keyResultMetric.baseline">!</span>
+              <span
+                class="text-error"
+                *ngIf="isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)"
+                >!</span
+              >
               Aktuell:
               <span>
                 {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}

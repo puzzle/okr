@@ -14,6 +14,7 @@ import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
+import { calculateCurrentPercentage } from '../../common';
 
 @Component({
   selector: 'app-scoring',
@@ -75,7 +76,9 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
 
   calculatePercentageMetric() {
     if (this.keyResult.lastCheckIn !== null) {
-      let percentage = this.calculateCurrentPercentage();
+      let KeyResultMetric: KeyResultMetricMin = this.castToMetric();
+
+      let percentage = calculateCurrentPercentage(KeyResultMetric);
       this.labelPercentage = of(percentage);
       switch (true) {
         case percentage >= 100:
@@ -96,16 +99,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
           this.failPercent = (100 / 30) * percentage;
       }
     }
-  }
-
-  calculateCurrentPercentage(): number {
-    let castedKeyResult: KeyResultMetricMin = this.castToMetric();
-    let value: number = +castedKeyResult.lastCheckIn?.value!;
-    let baseline: number = +castedKeyResult.baseline;
-    let stretchGoal: number = +castedKeyResult.stretchGoal;
-    if (value < baseline) return 0;
-
-    return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
   }
 
   getScoringColorClassAndSetBorder(): string | null {

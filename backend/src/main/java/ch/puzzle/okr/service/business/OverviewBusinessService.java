@@ -1,8 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.persistence.OverviewPersistenceService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
@@ -17,33 +15,25 @@ import java.util.Objects;
 public class OverviewBusinessService {
     private final OverviewPersistenceService overviewPersistenceService;
     private final QuarterBusinessService quarterBusinessService;
-    private final TeamPersistenceService teamPersistenceService;
-    private final TeamBusinessService teamBusinessService;
     private final OverviewValidationService validator;
 
     public OverviewBusinessService(OverviewPersistenceService overviewPersistenceService,
-            QuarterBusinessService quarterBusinessService, TeamPersistenceService teamPersistenceService,
-            OverviewValidationService validator,
-             TeamBusinessService teamBusinessService
-            ) {
+            QuarterBusinessService quarterBusinessService, OverviewValidationService validator) {
         this.overviewPersistenceService = overviewPersistenceService;
         this.quarterBusinessService = quarterBusinessService;
-        this.teamPersistenceService = teamPersistenceService;
-        this.teamBusinessService = teamBusinessService;
         this.validator = validator;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds,String objectiveQuery,
+    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery,
             AuthorizationUser authorizationUser) {
         if (Objects.isNull(quarterId)) {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
 
         if (CollectionUtils.isEmpty(teamIds)) {
-            teamIds = authorizationUser.teamIds();
+            teamIds = authorizationUser.userTeamIds();
         }
         validator.validateOnGet(quarterId, teamIds);
-        return overviewPersistenceService.getOverviewByQuarterAndTeamsAndObjectiveQuery(quarterId, teamIds,
-                objectiveQuery, authorizationUser);
+        return overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery, authorizationUser);
     }
 }

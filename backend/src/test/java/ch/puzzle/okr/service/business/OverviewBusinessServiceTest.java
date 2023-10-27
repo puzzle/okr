@@ -49,9 +49,8 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIdsShouldReturnListOfOverviews() {
-        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L), "",authorizationUser))
+        when(overviewPersistenceService.getOverviewByQuarterIdAndTeamIds(1L, List.of(4L), "", authorizationUser))
                 .thenReturn(List.of(createOverview()));
-
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "Objective");
 
@@ -138,7 +137,7 @@ class OverviewBusinessServiceTest {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(quarterId, teamIds);
         assertThrows(ResponseStatusException.class,
-                () -> overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds, authorizationUser));
+                () -> overviewBusinessService.getFilteredOverview(quarterId, teamIds, authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, times(1)).validateOnGet(quarterId, teamIds);

@@ -36,8 +36,7 @@ class OverviewAuthorizationServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews_WhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(any(), any(), any()))
-                .thenReturn(List.of(overview));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of(overview));
 
         List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
 
@@ -49,8 +48,7 @@ class OverviewAuthorizationServiceTest {
     void getOverviewByQuarterIdAndTeamIds_ShouldSetWritableProperly(boolean isWritable) {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
-        when(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(any(), any(), any()))
-                .thenReturn(List.of(overview));
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of(overview));
 
         List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
 
@@ -60,7 +58,7 @@ class OverviewAuthorizationServiceTest {
     @Test
     void getOverviewByQuarterIdAndTeamIds_ShouldReturnEmptyList_WhenNotAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(overviewBusinessService.getOverviewByQuarterIdAndTeamIds(any(), any(), any())).thenReturn(List.of());
+        when(overviewBusinessService.getFilteredOverview(any(), any(), any())).thenReturn(List.of());
 
         List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIds(1L, List.of(5L));
         assertThat(List.of()).hasSameElementsAs(overviews);

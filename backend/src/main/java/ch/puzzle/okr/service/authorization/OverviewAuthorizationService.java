@@ -24,7 +24,7 @@ public class OverviewAuthorizationService {
 
     public List<Overview> getOverviewByQuarterIdAndTeamIds(Long quarterId, List<Long> teamIds) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        List<Overview> overviews = overviewBusinessService.getOverviewByQuarterIdAndTeamIds(quarterId, teamIds,
+        List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, "",
                 authorizationUser);
         setRoleCreateOrUpdateObjective(overviews, authorizationUser);
         return overviews;

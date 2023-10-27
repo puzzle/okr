@@ -45,6 +45,7 @@ export class ObjectiveFormComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA)
     public data: {
+      action: string;
       objective: {
         objectiveId?: number;
         teamId?: number;

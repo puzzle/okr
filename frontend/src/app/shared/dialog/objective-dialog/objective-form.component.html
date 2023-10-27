@@ -1,12 +1,17 @@
 <div mat-dialog-content>
-  <app-dialog-header
-    *ngIf="!data.objective.objectiveId"
-    [dialogTitle]="'Objective für ' + this.currentTeam.name + ' erfassen'"
-  ></app-dialog-header>
-  <app-dialog-header
-    *ngIf="data.objective.objectiveId"
-    [dialogTitle]="'Objective von ' + this.currentTeam.name + ' bearbeiten'"
-  ></app-dialog-header>
+  <div *ngIf="this.data.action == 'duplicate'">
+    <app-dialog-header [dialogTitle]="'Objective duplizieren'"></app-dialog-header>
+  </div>
+  <div *ngIf="this.data.action != 'duplicate'">
+    <app-dialog-header
+      *ngIf="!data.objective.objectiveId"
+      [dialogTitle]="'Objective für ' + this.currentTeam.name + ' erfassen'"
+    ></app-dialog-header>
+    <app-dialog-header
+      *ngIf="data.objective.objectiveId"
+      [dialogTitle]="'Objective von ' + this.currentTeam.name + ' bearbeiten'"
+    ></app-dialog-header>
+  </div>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-column gap-2 col-12 mb-3">
@@ -62,7 +67,8 @@
       <div class="d-flex justify-content-between p-0" mat-dialog-actions>
         <div class="d-flex gap-2 p-0">
           <button [disabled]="objectiveForm.invalid" color="primary" mat-flat-button type="submit" submitType="ONGOING">
-            Speichern
+            <span *ngIf="data.action != 'duplicate'">Speichern</span>
+            <span *ngIf="data.action == 'duplicate'">Duplizieren</span>
           </button>
           <button
             *ngIf="!data.objective.objectiveId"
@@ -76,7 +82,13 @@
           </button>
           <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
         </div>
-        <button color="primary" *ngIf="data.objective.objectiveId" type="button" mat-button (click)="deleteObjective()">
+        <button
+          color="primary"
+          *ngIf="data.objective.objectiveId && data.action != 'duplicate'"
+          type="button"
+          mat-button
+          (click)="deleteObjective()"
+        >
           Objective Löschen
         </button>
       </div>

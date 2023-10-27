@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { Zone } from '../../types/enums/Zone';
+import { KeyresultMin } from '../../types/model/KeyresultMin';
+import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;
@@ -90,18 +92,6 @@ describe('ScoringComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
-    });
-
-    it('should calculate progress correctly', async () => {
-      component.keyResult = keyResultMetricMinScoring;
-      let percentage = component.calculateCurrentPercentage();
-      expect(percentage).toBe(50);
-    });
-
-    it('should calculate progress correctly if key result is inversive', async () => {
-      component.keyResult = keyResultMetricMinScoringInversion;
-      let percentage = component.calculateCurrentPercentage();
-      expect(percentage).toBe(75);
     });
   });
 

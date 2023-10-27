@@ -141,3 +141,11 @@ select:focus {
 *:focus {
   outline: blue solid 2px;
 }
+
+.bg-inherit {
+  background-color: inherit;
+}
+
+.border-error {
+  border: 1px solid $error;
+}

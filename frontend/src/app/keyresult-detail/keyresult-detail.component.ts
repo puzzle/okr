@@ -13,6 +13,7 @@ import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/che
 import { State } from '../shared/types/enums/State';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { DATE_FORMAT } from '../shared/constantLibary';
+import { isInValid } from '../shared/common';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -26,6 +27,7 @@ export class KeyresultDetailComponent implements OnInit {
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
   isComplete: boolean = false;
   protected readonly DATE_FORMAT = DATE_FORMAT;
+  protected readonly isInValid = isInValid;
 
   constructor(
     private keyResultService: KeyresultService,

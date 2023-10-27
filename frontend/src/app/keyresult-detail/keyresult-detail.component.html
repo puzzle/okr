@@ -22,12 +22,12 @@
       <div class="d-flex justify-content-between mb-2 align-items-center">
         <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
 
-        <span class="text-small">
+        <span class="text-small d-flex align-items-center flex-column">
           Confidence
           <app-confidence
-            [backgroundColor]="'#F5F5F5'"
             [checkIn]="keyResult.lastCheckIn!"
             [edit]="false"
+            class="bg-keyResult-detail-attribute"
           ></app-confidence>
         </span>
       </div>
@@ -39,11 +39,21 @@
               Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
             </p>
             <p
-              class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center"
-              *ngIf="keyResultMetric.lastCheckIn"
+              *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
+              class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center gap-1"
+              [ngClass]="{
+                'border-error': isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)
+              }"
             >
+              <span
+                class="text-error"
+                *ngIf="isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)"
+                >!</span
+              >
               Aktuell:
-              {{ +keyResultMetric.lastCheckIn!.value! | unitValueTransformation: keyResultMetric.unit.toString() }}
+              <span>
+                {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}
+              </span>
             </p>
             <p class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center">
               Stretch Goal: {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}

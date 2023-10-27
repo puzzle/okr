@@ -59,3 +59,10 @@ label {
   cursor: pointer;
   height: 2rem;
 }
+
+.tabfocus {
+  outline: none;
+  &:focus-visible {
+    box-shadow: gray 2px 2px 5px;
+  }
+}

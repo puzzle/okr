@@ -6,6 +6,8 @@
       [attr.data-testId]="'metricTab'"
       class="metric tab-title"
       (click)="switchKeyResultType('metric')"
+      (keydown.enter)="switchKeyResultType('metric')"
+      tabindex="0"
     >
       Metrisch
     </div>
@@ -15,6 +17,8 @@
       [attr.data-testId]="'ordinalTab'"
       class="ordinal tab-title"
       (click)="switchKeyResultType('ordinal')"
+      (keydown.enter)="switchKeyResultType('ordinal')"
+      tabindex="0"
     >
       Ordinal
     </div>

@@ -145,3 +145,7 @@ select:focus {
 .bg-inherit {
   background-color: inherit;
 }
+
+.border-error {
+  border: 1px solid $error;
+}

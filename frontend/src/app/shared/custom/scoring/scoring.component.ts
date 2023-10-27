@@ -103,6 +103,8 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     let value: number = +castedKeyResult.lastCheckIn?.value!;
     let baseline: number = +castedKeyResult.baseline;
     let stretchGoal: number = +castedKeyResult.stretchGoal;
+    if (value < baseline) return 0;
+
     return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
   }
 

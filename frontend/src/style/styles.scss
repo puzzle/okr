@@ -105,7 +105,7 @@ body pzsh-backdrop {
 }
 
 .mat-mdc-form-field-error {
-  color: #b3261b;
+  color: $error-color;
 }
 
 .big-dialog-form-field {
@@ -122,7 +122,7 @@ body pzsh-backdrop {
 
 .dialog-form-field-error {
   resize: none;
-  outline: red 2px solid !important;
+  outline: $error-color 2px solid !important;
 }
 
 select:focus {

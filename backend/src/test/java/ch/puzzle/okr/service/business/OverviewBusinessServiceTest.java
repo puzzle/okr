@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
@@ -39,6 +40,9 @@ class OverviewBusinessServiceTest {
 
     @Mock
     OverviewValidationService overviewValidationService;
+
+    @Mock
+    TeamBusinessService teamBusinessService;
 
     private static Overview createOverview() {
         return Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).build())
@@ -84,6 +88,8 @@ class OverviewBusinessServiceTest {
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, List.of(5L), "", authorizationUser))
                 .thenReturn(List.of(createOverview()));
 
+        when(teamBusinessService.getAllTeams()).thenReturn(List.of(Team.Builder.builder().withId(5L).build()));
+
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
 
         assertEquals(1, overviews.size());
@@ -97,8 +103,11 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getOverviewByQuarterIdAndTeamIdsShouldReturnExceptionWhenQuarterIdIsNonExistent() {
+        when(teamBusinessService.getAllTeams()).thenReturn(List.of(Team.Builder.builder().withId(1L).build()));
+
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
+
         assertThrows(ResponseStatusException.class, () -> {
             overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
         });

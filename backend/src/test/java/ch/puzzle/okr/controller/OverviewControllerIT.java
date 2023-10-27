@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +39,8 @@ class OverviewControllerIT {
     private MockMvc mvc;
     @MockBean
     private OverviewAuthorizationService overviewAuthorizationService;
+    @SpyBean
+    private OverviewMapper overviewMapper;
 
     public static final String PUZZLE = "Puzzle";
     public static final String DESCRIPTION = "This is a description";
@@ -57,7 +61,6 @@ class OverviewControllerIT {
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
                     .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
                     .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
-
     static List<Overview> overviewOKR = List.of(
             Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 5L, 20L, 40L)).withTeamName("OKR")
                     .withObjectiveTitle("Objective 5").withObjectiveState(DRAFT).withQuarterId(1L)

@@ -205,7 +205,7 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(authorizationService.getAuthorizationUser()).willReturn(authorizationUser);
 
-        mvc.perform(post("/api/v2/objectives/" + objective1.getId()).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(post("/api/v2/objectives/{id}", objective1.getId()).contentType(MediaType.APPLICATION_JSON)
                 .content(JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))

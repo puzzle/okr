@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
@@ -59,7 +60,10 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return keyResultPersistenceService.recreateEntity(id, keyResult);
+                List<Action> actionList = actionBusinessService.getActionsByKeyResultId(id);
+                KeyResult createdKeyResult = keyResultPersistenceService.recreateEntity(id, keyResult);
+                actionBusinessService.updateActions(createdKeyResult, actionList);
+                return createdKeyResult;
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());

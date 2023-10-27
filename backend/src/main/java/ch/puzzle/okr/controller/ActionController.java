@@ -27,18 +27,6 @@ public class ActionController {
         this.actionMapper = actionMapper;
     }
 
-    @Operation(summary = "Get Actions of KeyResult", description = "Get all Actions by KeyResult ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned an Action with a specified KeyResult ID", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ActionDto.class)) }),
-            @ApiResponse(responseCode = "404", description = "Did not find an Action with a specified KeyResult ID", content = @Content) })
-    @GetMapping("/{keyResultId}")
-    public ResponseEntity<List<ActionDto>> getActionsByKeyResult(
-            @Parameter(description = "The KeyResult ID for getting Actions of KeyResult.", required = true) @PathVariable Long keyResultId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                actionBusinessService.getActionsByKeyResultId(keyResultId).stream().map(actionMapper::toDto).toList());
-    }
-
     @Operation(summary = "Update Actions", description = "Update Actions of KeyResult")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated Actions of KeyResult", content = {

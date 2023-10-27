@@ -1,6 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.keyresult.*;
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -19,17 +20,18 @@ public class KeyResultMetricMapper {
 
     private final UserBusinessService userBusinessService;
     private final ObjectiveBusinessService objectiveBusinessService;
-
     private final ActionBusinessService actionBusinessService;
     private final CheckInBusinessService checkInBusinessService;
+    private final ActionMapper actionMapper;
 
     public KeyResultMetricMapper(UserBusinessService userBusinessService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-                                 ActionBusinessService actionBusinessService) {
+                                 ActionBusinessService actionBusinessService, ActionMapper actionMapper) {
         this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionBusinessService = actionBusinessService;
+        this.actionMapper = actionMapper;
     }
 
     public KeyResultDto toKeyResultMetricDto(KeyResultMetric keyResult) {
@@ -46,7 +48,7 @@ public class KeyResultMetricMapper {
         return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(),
                 keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList);
+                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList.stream().map(actionMapper::toDto).toList());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {

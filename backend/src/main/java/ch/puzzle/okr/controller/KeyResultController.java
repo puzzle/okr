@@ -4,6 +4,7 @@ import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
@@ -31,13 +32,15 @@ public class KeyResultController {
     private final ActionBusinessService actionBusinessService;
     private final KeyResultMapper keyResultMapper;
     private final CheckInMapper checkInMapper;
+    private final ActionMapper actionMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-                               ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper) {
+                               ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper, ActionMapper actionMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
         this.actionBusinessService = actionBusinessService;
         this.keyResultMapper = keyResultMapper;
         this.checkInMapper = checkInMapper;
+        this.actionMapper = actionMapper;
     }
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
@@ -73,7 +76,7 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        List<Action> actionList = keyResultDto.getActionList();
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         keyResult = keyResultAuthorizationService.createEntity(keyResult);
         actionBusinessService.createActions(keyResult, actionList);
@@ -95,7 +98,7 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-        List<Action> actionList = keyResultDto.getActionList();
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
         keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);

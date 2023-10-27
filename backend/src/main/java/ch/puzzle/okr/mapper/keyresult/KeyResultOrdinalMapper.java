@@ -1,6 +1,7 @@
 package ch.puzzle.okr.mapper.keyresult;
 
 import ch.puzzle.okr.dto.keyresult.*;
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
@@ -21,14 +22,16 @@ public class KeyResultOrdinalMapper {
     private final ObjectiveBusinessService objectiveBusinessService;
     private final ActionBusinessService actionBusinessService;
     private final CheckInBusinessService checkInBusinessService;
+    private final ActionMapper actionMapper;
 
     public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-            ActionBusinessService actionBusinessService) {
+            ActionBusinessService actionBusinessService, ActionMapper actionMapper) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionBusinessService = actionBusinessService;
+        this.actionMapper = actionMapper;
     }
 
     public KeyResultDto toKeyResultOrdinalDto(KeyResultOrdinal keyResult) {
@@ -45,7 +48,7 @@ public class KeyResultOrdinalMapper {
         return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
                 keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList);
+                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList.stream().map(actionMapper::toDto).toList());
     }
 
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {

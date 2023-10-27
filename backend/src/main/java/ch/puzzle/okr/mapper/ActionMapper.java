@@ -17,8 +17,7 @@ public class ActionMapper {
     }
 
     public ActionDto toDto(Action action) {
-        return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked(),
-                action.getKeyResult());
+        return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked());
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos) {
@@ -27,7 +26,6 @@ public class ActionMapper {
 
     public Action toAction(ActionDto actionDto) {
         return Action.Builder.builder().withId(actionDto.id()).withAction(actionDto.action())
-                .withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
-                .withKeyResult(keyResultBusinessService.getKeyResultById(actionDto.keyResult().getId())).build();
+                .withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked()).build();
     }
 }

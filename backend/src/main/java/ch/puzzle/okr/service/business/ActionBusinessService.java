@@ -41,9 +41,15 @@ public class ActionBusinessService {
     public void updateActions(KeyResult keyResult, List<Action> actionList) {
         actionList.forEach(action -> {
             if (keyResult == null) {
+                action.setKeyResult(actionPersistenceService.findById(action.getId()).getKeyResult());
+            } else {
                 action.setKeyResult(keyResult);
             }
-            this.updateAction(action);
+            if (action.getId() == null) {
+                this.createAction(action);
+            } else {
+                this.updateAction(action);
+            }
         });
     }
 

@@ -1,12 +1,17 @@
 <div mat-dialog-content class="dialog-padding">
-  <app-dialog-header
-    *ngIf="!data.objective.objectiveId"
-    [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
-  ></app-dialog-header>
-  <app-dialog-header
-    *ngIf="data.objective.objectiveId"
-    [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
-  ></app-dialog-header>
+  <div *ngIf="this.data.action == 'duplicate'">
+    <app-dialog-header [dialogTitle]="'Objective duplizieren'"></app-dialog-header>
+  </div>
+  <div *ngIf="this.data.action != 'duplicate'">
+    <app-dialog-header
+      *ngIf="!data.objective.objectiveId"
+      [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
+    ></app-dialog-header>
+    <app-dialog-header
+      *ngIf="data.objective.objectiveId"
+      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
+    ></app-dialog-header>
+  </div>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form (ngSubmit)="onSubmit($event)" [formGroup]="objectiveForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-column gap-2 col-12 mb-3">

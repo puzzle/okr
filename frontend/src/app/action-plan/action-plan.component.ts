@@ -26,6 +26,7 @@ export class ActionPlanComponent {
     } else {
       transferArrayItem(event.previousContainer.data!, event.container.data!, event.previousIndex, event.currentIndex);
     }
+    this.adjustPriorities();
   }
 
   changeActionText(event: any, index: number) {
@@ -36,7 +37,7 @@ export class ActionPlanComponent {
 
   addNewAction() {
     const actions = this.formControl.value!;
-    actions.push({ action: '' } as Action);
+    actions.push({ action: '', priority: actions.length } as Action);
     this.formControl.setValue(actions);
   }
 
@@ -60,11 +61,21 @@ export class ActionPlanComponent {
             }
             actions.splice(index, 1);
             this.formControl.setValue(actions);
+            this.adjustPriorities();
           }
         });
     } else {
       actions.splice(index, 1);
       this.formControl.setValue(actions);
+      this.adjustPriorities();
     }
+  }
+
+  adjustPriorities() {
+    const actions = this.formControl.value!;
+    actions.forEach(function (action, index) {
+      action.priority = index;
+    });
+    this.formControl.setValue(actions);
   }
 }

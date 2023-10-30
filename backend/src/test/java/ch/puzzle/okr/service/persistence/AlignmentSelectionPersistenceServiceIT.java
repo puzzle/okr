@@ -18,7 +18,7 @@ public class AlignmentSelectionPersistenceServiceIT {
     private AlignmentSelectionPersistenceService alignmentSelectionPersistenceService;
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews() {
+    void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnAlignmentSelections() {
         List<AlignmentSelection> alignmentSelections = alignmentSelectionPersistenceService
                 .getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L);
 

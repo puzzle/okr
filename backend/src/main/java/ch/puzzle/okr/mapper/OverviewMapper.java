@@ -91,7 +91,7 @@ public class OverviewMapper {
         OverviewLastCheckInMetricDto lastCheckIn = null;
         if (isValidId(overview.getOverviewId().getCheckInId())) {
             lastCheckIn = new OverviewLastCheckInMetricDto(overview.getOverviewId().getCheckInId(),
-                    overview.getCheckInValue(), overview.getConfidence(), overview.getCreatedOn());
+                    overview.getCheckInValue(), overview.getConfidence(), overview.getCheckInCreatedOn());
         }
         return new OverviewKeyResultMetricDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
                 overview.getKeyResultType(), overview.getUnit(), overview.getBaseline(), overview.getStretchGoal(),
@@ -102,7 +102,7 @@ public class OverviewMapper {
         OverviewLastCheckInOrdinalDto lastCheckIn = null;
         if (isValidId(overview.getOverviewId().getCheckInId())) {
             lastCheckIn = new OverviewLastCheckInOrdinalDto(overview.getOverviewId().getCheckInId(),
-                    overview.getCheckInZone(), overview.getConfidence(), overview.getCreatedOn());
+                    overview.getCheckInZone(), overview.getConfidence(), overview.getCheckInCreatedOn());
         }
         return new OverviewKeyResultOrdinalDto(overview.getOverviewId().getKeyResultId(), overview.getKeyResultTitle(),
                 overview.getKeyResultType(), overview.getCommitZone(), overview.getTargetZone(),

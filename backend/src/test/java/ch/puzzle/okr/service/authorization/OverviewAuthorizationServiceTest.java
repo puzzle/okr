@@ -35,38 +35,35 @@ class OverviewAuthorizationServiceTest {
             .withObjectiveTitle("Objective 1").build();
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnOverviews_WhenAuthorized() {
+    void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
-                List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
 
         assertThat(List.of(overview)).hasSameElementsAs(overviews);
     }
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
-    void getOverviewByQuarterIdAndTeamIds_ShouldSetWritableProperly(boolean isWritable) {
+    void getFilteredOverviewShouldSetWritableProperly(boolean isWritable) {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
-                List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
 
         assertEquals(isWritable, overviews.get(0).isWriteable());
     }
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnEmptyList_WhenNotAuthorized() {
+    void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(1L, List.of(5L), "", authorizationUser)).thenReturn(List.of());
 
-        List<Overview> overviews = overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(1L,
-                List.of(5L), "");
+        List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
         assertThat(List.of()).hasSameElementsAs(overviews);
     }
 }

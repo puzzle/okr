@@ -22,8 +22,7 @@ public class OverviewAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public List<Overview> getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(Long quarterId, List<Long> teamIds,
-            String objectiveQuery) {
+    public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);

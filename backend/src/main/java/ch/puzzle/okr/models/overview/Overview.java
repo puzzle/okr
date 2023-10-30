@@ -20,6 +20,7 @@ public class Overview implements WriteableInterface {
     private String objectiveTitle;
     @Enumerated(EnumType.STRING)
     private State objectiveState;
+    private LocalDateTime objectiveCreatedOn;
     private Long quarterId;
     private String quarterLabel;
     private String keyResultTitle;
@@ -33,7 +34,7 @@ public class Overview implements WriteableInterface {
     private Double checkInValue;
     private String checkInZone;
     private Integer confidence;
-    private LocalDateTime createdOn;
+    private LocalDateTime checkInCreatedOn;
 
     private transient boolean writeable;
 
@@ -45,6 +46,7 @@ public class Overview implements WriteableInterface {
         teamName = builder.teamName;
         objectiveTitle = builder.objectiveTitle;
         objectiveState = builder.objectiveState;
+        objectiveCreatedOn = builder.objectiveCreatedOn;
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
         keyResultTitle = builder.keyResultTitle;
@@ -58,7 +60,7 @@ public class Overview implements WriteableInterface {
         checkInValue = builder.checkInValue;
         checkInZone = builder.checkInZone;
         confidence = builder.confidence;
-        createdOn = builder.createdOn;
+        checkInCreatedOn = builder.checkInCreatedOn;
     }
 
     public OverviewId getOverviewId() {
@@ -75,6 +77,10 @@ public class Overview implements WriteableInterface {
 
     public State getObjectiveState() {
         return objectiveState;
+    }
+
+    public LocalDateTime getObjectiveCreatedOn() {
+        return objectiveCreatedOn;
     }
 
     public Long getQuarterId() {
@@ -129,8 +135,8 @@ public class Overview implements WriteableInterface {
         return confidence;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
+    public LocalDateTime getCheckInCreatedOn() {
+        return checkInCreatedOn;
     }
 
     @Override
@@ -146,13 +152,14 @@ public class Overview implements WriteableInterface {
     @Override
     public String toString() {
         return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", objectiveTitle='"
-                + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", quarterId=" + quarterId
-                + ", quarterLabel='" + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\''
-                + ", keyResultType='" + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal
-                + ", unit='" + unit + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\''
-                + ", stretchZone='" + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='"
-                + checkInZone + '\'' + ", confidence=" + confidence + ", createdOn=" + createdOn + ", writeable="
-                + writeable + '\'' + '}';
+                + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", objectiveCreatedOn="
+                + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\''
+                + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\''
+                + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
+                + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
+                + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
+                + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
+                + '}';
     }
 
     public static final class Builder {
@@ -160,6 +167,7 @@ public class Overview implements WriteableInterface {
         private String teamName;
         private String objectiveTitle;
         private State objectiveState;
+        private LocalDateTime objectiveCreatedOn;
         private Long quarterId;
         private String quarterLabel;
         private String keyResultTitle;
@@ -173,7 +181,7 @@ public class Overview implements WriteableInterface {
         private Double checkInValue;
         private String checkInZone;
         private Integer confidence;
-        private LocalDateTime createdOn;
+        private LocalDateTime checkInCreatedOn;
 
         private Builder() {
         }
@@ -199,6 +207,11 @@ public class Overview implements WriteableInterface {
 
         public Builder withObjectiveState(State objectiveState) {
             this.objectiveState = objectiveState;
+            return this;
+        }
+
+        public Builder withObjectiveCreatedOn(LocalDateTime objectiveCreatedOn) {
+            this.objectiveCreatedOn = objectiveCreatedOn;
             return this;
         }
 
@@ -267,8 +280,8 @@ public class Overview implements WriteableInterface {
             return this;
         }
 
-        public Builder withCreatedOn(LocalDateTime createdOn) {
-            this.createdOn = createdOn;
+        public Builder withCheckInCreatedOn(LocalDateTime checkInCreatedOn) {
+            this.checkInCreatedOn = checkInCreatedOn;
             return this;
         }
 

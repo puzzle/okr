@@ -128,6 +128,7 @@ SELECT T.ID                AS "TEAM_ID",
        COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
        O.STATE             AS "OBJECTIVE_STATE",
+       O.CREATED_ON        AS "OBJECTIVE_CREATED_ON",
        Q.ID                AS "QUARTER_ID",
        Q.LABEL             AS "QUARTER_LABEL",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
@@ -143,7 +144,7 @@ SELECT T.ID                AS "TEAM_ID",
        C.VALUE_METRIC      AS "CHECK_IN_VALUE",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
-       C.CREATED_ON
+       C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
 FROM TEAM T
          LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
          LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID

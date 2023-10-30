@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 @SpringIntegrationTest
 class OverviewPersistenceServiceIT {
@@ -21,22 +21,21 @@ class OverviewPersistenceServiceIT {
     private OverviewPersistenceService overviewPersistenceService;
 
     @Test
-    void getOverviewByQuarterIdAndTeamIdsShouldReturnOverviews() {
+    void getFilteredOverviewShouldReturnOverviews() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L), "",
                 authorizationUser);
 
         assertEquals(12, overviews.size());
-        assertIterableEquals(overviewIds_getOverviewByQuarterIdAndTeamIdsAndObjectiveQueryShouldReturnOverviews(),
-                getOverviewIds(overviews));
+        assertIterableEquals(getOverviewIdsForFilteredOverviewShouldReturnOverviews(), getOverviewIds(overviews));
     }
 
     @Test
-    void getOverviewByQuarterIdAndTeamIdsAndObjectiveQueryShouldReturnOverviews() {
+    void getFilteredOverviewShouldReturnOverviewsWhenObjectiveQuery() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L),
                 "kundenzufriedenheit", authorizationUser);
 
         assertEquals(3, overviews.size());
-        assertIterableEquals(overviewIds_getExpectedOverviewIds_getOverviewByQuarterIdAndTeamIdsShouldReturnOverviews(),
+        assertIterableEquals(getOverviewIdsForFilteredOverviewShouldReturnOverviewsWhenObjectiveQuery(),
                 getOverviewIds(overviews));
     }
 
@@ -44,22 +43,14 @@ class OverviewPersistenceServiceIT {
         return overviewList.stream().map(Overview::getOverviewId).toList();
     }
 
-    private static List<OverviewId> overviewIds_getOverviewByQuarterIdAndTeamIdsAndObjectiveQueryShouldReturnOverviews() {
+    private static List<OverviewId> getOverviewIdsForFilteredOverviewShouldReturnOverviews() {
         return List.of(OverviewId.of(5L, 3L, 3L, 9L), OverviewId.of(5L, 3L, 4L, 8L), OverviewId.of(5L, 3L, 5L, 7L),
                 OverviewId.of(5L, 4L, 6L, 5L), OverviewId.of(5L, 4L, 7L, 4L), OverviewId.of(5L, 4L, 8L, 2L),
                 OverviewId.of(6L, 8L, 18L, 20L), OverviewId.of(6L, 8L, 19L, 19L), OverviewId.of(6L, 9L, 15L, 18L),
                 OverviewId.of(6L, 9L, 16L, 17L), OverviewId.of(6L, 9L, 17L, 16L), OverviewId.of(6L, 10L, -1L, -1L));
     }
 
-    private static List<OverviewId> overviewIds_getExpectedOverviewIds_getOverviewByQuarterIdAndTeamIdsShouldReturnOverviews() {
+    private static List<OverviewId> getOverviewIdsForFilteredOverviewShouldReturnOverviewsWhenObjectiveQuery() {
         return List.of(OverviewId.of(5L, 3L, 3L, 9L), OverviewId.of(5L, 3L, 4L, 8L), OverviewId.of(5L, 3L, 5L, 7L));
-    }
-
-    private static List<OverviewId> getExpectedOverviewIds() {
-        return List.of(OverviewId.of(5L, 3L, 3L, 9L), OverviewId.of(5L, 3L, 3L, 9L), OverviewId.of(5L, 3L, 4L, 8L),
-                OverviewId.of(5L, 3L, 5L, 7L), OverviewId.of(5L, 4L, 6L, 5L), OverviewId.of(5L, 4L, 7L, 4L),
-                OverviewId.of(5L, 4L, 8L, 2L), OverviewId.of(6L, 8L, 18L, 20L), OverviewId.of(6L, 8L, 19L, 19L),
-                OverviewId.of(6L, 9L, 15L, 18L), OverviewId.of(6L, 9L, 16L, 17L), OverviewId.of(6L, 9L, 17L, 16L),
-                OverviewId.of(6L, 10L, -1L, -1L));
     }
 }

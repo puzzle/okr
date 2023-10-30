@@ -7,6 +7,7 @@ SELECT tq.team_id          AS "team_id",
        coalesce(o.id, -1)  AS "objective_id",
        o.title             AS "objective_title",
        o.state             AS "objective_state",
+       o.created_on        AS "objective_created_on",
        coalesce(kr.id, -1) AS "key_result_id",
        kr.title            AS "key_result_title",
        kr.key_result_type  AS "key_result_type",
@@ -20,7 +21,7 @@ SELECT tq.team_id          AS "team_id",
        c.value_metric      AS "check_in_value",
        c.zone              AS "check_in_zone",
        c.confidence,
-       c.created_on
+       c.created_on        AS "check_in_created_on"
 FROM (select t.id as team_id, t.name, q.id as quater_id, q.label
       from team t,
            quarter q) tq

@@ -11,13 +11,10 @@ import javax.naming.directory.Attributes;
 @Component
 public class CnAttributesMapper implements AttributesMapper<String> {
 
-    @Value("${okr.jwt.claim.organisation.name.prefix}")
-    private String organisationNamePrefix;
-
     @Override
     public String mapFromAttributes(Attributes attributes) throws NamingException {
         Attribute cnAttribute = attributes.get("cn");
-        if (cnAttribute != null && cnAttribute.get().toString().startsWith(organisationNamePrefix)) {
+        if (cnAttribute != null) {
             return cnAttribute.get().toString();
         }
         return null;

@@ -71,8 +71,7 @@ public class Organisation {
         if (o == null || getClass() != o.getClass())
             return false;
         Organisation that = (Organisation) o;
-        return Objects.equals(id, that.id) && Objects.equals(orgName, that.orgName)
-                && Objects.equals(teams, that.teams);
+        return Objects.equals(id, that.id) && Objects.equals(orgName, that.orgName);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class Organisation {
 
     @Override
     public String toString() {
-        return "Organisation{" + "id=" + id + ", orgName='" + orgName + '\'' + ", teams=" + teams + '}';
+        return "Organisation{" + "id=" + id + ", orgName='" + orgName + '}';
     }
 
     public static final class Builder {

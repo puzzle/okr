@@ -25,7 +25,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,  ActionBusinessService actionBusinessService) {
+            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
+            ActionBusinessService actionBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionBusinessService = actionBusinessService;

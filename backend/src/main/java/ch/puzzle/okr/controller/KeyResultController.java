@@ -35,7 +35,8 @@ public class KeyResultController {
     private final ActionMapper actionMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-                               ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper, ActionMapper actionMapper) {
+            ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper,
+            ActionMapper actionMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
         this.actionBusinessService = actionBusinessService;
         this.keyResultMapper = keyResultMapper;
@@ -103,8 +104,7 @@ public class KeyResultController {
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
         keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
         actionBusinessService.updateActions(keyResult, actionList);
-        KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResult);
+        KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }
 

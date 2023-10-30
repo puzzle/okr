@@ -34,7 +34,7 @@ public class OrganisationBusinessService {
         this.cnAttributesMapper = cnAttributesMapper;
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 2 * * *")
     public void importOrgFromLDAP() {
         LdapQuery query = LdapQueryBuilder.query().countLimit(10000).base("ou=groups").where("objectClass")
                 .is("groupOfNames").and("cn").like(String.format("%s*", orgPrefix));

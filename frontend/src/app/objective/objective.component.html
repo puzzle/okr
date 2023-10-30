@@ -3,6 +3,7 @@
   (keydown.enter)="openObjectiveDetail()"
   class="objective rounded-3 bg-white"
   tabindex="0"
+  *ngIf="objective$ | async as objective"
 >
   <span class="col">
     <img
@@ -16,18 +17,18 @@
       <img
         alt="The objectives state"
         (click)="$event.stopPropagation()"
-        matTooltip="The objectives state is {{ objective.value.state.split('-')[0] | uppercase }}"
+        matTooltip="The objectives state is {{ objective.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         data-testid="objective-state"
         class="icon col-1 mt-1"
-        [src]="'assets/icons/' + objective.value.state"
+        [src]="'assets/icons/' + objective.state"
       />
-      <header class="title col-10 ps-2">{{ objective.value.title }}</header>
+      <header class="title col-10 ps-2">{{ objective.title }}</header>
 
       <button
         class="icon-button three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
-        (click)="$event.stopPropagation()"
+        (click)="$event.stopPropagation(); getMenu()"
         data-testid="objective-menu"
         (keydown.enter)="$event.stopPropagation()"
       >
@@ -36,7 +37,7 @@
     </section>
     <section class="d-flex gap-3 px-3 flex-column">
       <app-keyresult
-        *ngFor="let keyResult of (objective | async)?.keyResults; trackBy: trackByFn"
+        *ngFor="let keyResult of objective.keyResults; trackBy: trackByFn"
         class="border-0 p-0"
         (click)="$event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"

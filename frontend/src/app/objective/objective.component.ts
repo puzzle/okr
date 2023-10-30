@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { trackByFn } from '../shared/common';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent implements OnInit, AfterViewInit {
+export class ObjectiveComponent implements OnInit {
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
   protected readonly trackByFn = trackByFn;
@@ -33,63 +33,82 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
     private objectiveService: ObjectiveService,
   ) {}
 
-  get objective(): BehaviorSubject<ObjectiveMin> {
-    return this.objective$;
-  }
   @Input()
   set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
-  private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+  public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngOnInit() {
-    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
+    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
     }
   }
 
-  ngAfterViewInit(): void {
-    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
-      this.menuEntries = [
-        { displayName: 'Objective wiedereröffnen', action: 'reopen' },
-        { displayName: 'Objective duplizieren', action: 'duplicate' },
-      ];
+  getMenu(): void {
+    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
+      this.menuEntries = this.getCompletedMenuActions();
     } else {
-      this.menuEntries = [
-        {
-          displayName: 'Objective bearbeiten',
-          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
-        },
-        {
-          displayName: 'Objective duplizieren',
-          action: 'duplicate',
-          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
-        },
+      if (this.objective$.value.state === State.ONGOING) {
+        this.menuEntries = this.getOngoingMenuActions();
+      } else {
+        this.menuEntries = this.getDraftMenuActions();
+      }
+    }
+  }
+
+  getOngoingMenuActions() {
+    return [
+      ...this.getDefaultMenuActions(),
+      ...[
         {
           displayName: 'Objective abschliessen',
           action: 'complete',
           dialog: { dialog: CompleteDialogComponent, data: {} },
         },
+      ],
+    ];
+  }
+
+  getDraftMenuActions() {
+    return [
+      ...this.getDefaultMenuActions(),
+      ...[
         {
           displayName: 'Objective freigeben',
           action: 'release',
           dialog: {
             dialog: ConfirmDialogComponent,
-            data: {
-              title: 'Objective',
-              action: 'release',
-            },
+            data: { title: 'Objective', action: 'release' },
           },
         },
-      ];
+      ],
+    ];
+  }
 
-      if (this.objective.value.state === State.ONGOING) {
-        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective freigeben');
-      }
-      if (this.objective.value.state === State.DRAFT) {
-        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective abschliessen');
-      }
-    }
+  getDefaultMenuActions() {
+    return [
+      {
+        displayName: 'Objective bearbeiten',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
+      {
+        displayName: 'Objective duplizieren',
+        action: 'duplicate',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
+    ];
+  }
+
+  getCompletedMenuActions() {
+    return [
+      { displayName: 'Objective wiedereröffnen', action: 'reopen' },
+      {
+        displayName: 'Objective duplizieren',
+        action: 'duplicate',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
+    ];
   }
 
   redirect(menuEntry: MenuEntry) {
@@ -105,7 +124,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.completeReleaseReload(menuEntry, result);
+          this.handleDialogResult(menuEntry, result);
         }
       });
     } else {
@@ -113,9 +132,9 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
     }
   }
 
-  completeReleaseReload(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
+  handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
     if (menuEntry.action) {
-      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         if (menuEntry.action == 'complete') {
           this.completeObjective(objective, result);
         } else if (menuEntry.action == 'release') {
@@ -140,6 +159,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
     };
     this.objectiveService.updateObjective(objective).subscribe(() => {
       this.objectiveService.createCompleted(completed).subscribe(() => {
+        this.isComplete = true;
         this.refreshDataService.markDataRefresh();
       });
     });
@@ -154,10 +174,11 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
 
   reopenRedirect(menuEntry: MenuEntry) {
     if (menuEntry.action === 'reopen') {
-      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         objective.state = 'ONGOING' as State;
         this.objectiveService.updateObjective(objective).subscribe(() => {
           this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
+            this.isComplete = false;
             this.refreshDataService.markDataRefresh();
           });
         });
@@ -168,7 +189,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective.value.id]);
+    this.router.navigate(['objective', this.objective$.value.id]);
   }
 
   openAddKeyResultDialog() {
@@ -177,7 +198,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective.value,
+          objective: this.objective$.value,
           keyResult: null,
         },
       })

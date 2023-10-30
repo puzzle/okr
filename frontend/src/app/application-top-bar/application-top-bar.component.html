@@ -5,9 +5,10 @@
     </pzsh-topbar>
     <pzsh-menu>
       <div slot="actions">
-        <a href="https://wiki.puzzle.ch/Puzzle/OKRs" class="wiki-link">
-          <img src="assets/icons/life-ring.svg" alt="help-icon" height="24px" width="24px" class="help-icon" />
-        </a>
+        <pzsh-menu-action href="https://wiki.puzzle.ch/Puzzle/OKRs">
+          <pzsh-icon name="question-circle"></pzsh-icon>
+          Help
+        </pzsh-menu-action>
         <pzsh-menu-dropdown href="#">
           <div slot="toggle" role="button">
             <pzsh-icon name="user"></pzsh-icon>
@@ -20,9 +21,6 @@
             </pzsh-menu-dropdown-item>
           </div>
         </pzsh-menu-dropdown>
-        <a href="https://wiki.puzzle.ch/Puzzle/OKRs">
-          <img src="assets/icons/life-ring.svg" alt="help-icon" height="24px" width="24px" class="help-icon" />
-        </a>
       </div>
     </pzsh-menu>
   </div>

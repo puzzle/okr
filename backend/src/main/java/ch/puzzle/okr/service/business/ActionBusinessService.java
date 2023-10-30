@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.validation.ActionValidationService;
 import org.springframework.stereotype.Service;
@@ -23,44 +22,44 @@ public class ActionBusinessService {
         return actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
     }
 
-    @Transactional
-    public void createActions(KeyResult keyResult, List<Action> actionList) {
-        actionList.forEach(action -> {
-            action.setKeyResult(keyResult);
-            this.createAction(action);
-        });
+    public Action getEntityById(Long id) {
+        validator.validateOnGet(id);
+        return actionPersistenceService.findById(id);
     }
 
     @Transactional
-    public void createAction(Action action) {
+    public List<Action> createEntities(List<Action> actionList) {
+        return actionList.stream().map(this::createEntity).toList();
+    }
+
+    @Transactional
+    public Action createEntity(Action action) {
         validator.validateOnCreate(action);
-        actionPersistenceService.save(action);
+        return actionPersistenceService.save(action);
     }
 
     @Transactional
-    public void updateActions(KeyResult keyResult, List<Action> actionList) {
+    public void updateEntities(List<Action> actionList) {
         actionList.forEach(action -> {
-            if (keyResult == null) {
+            if (action.getKeyResult() == null) {
                 action.setKeyResult(actionPersistenceService.findById(action.getId()).getKeyResult());
-            } else {
-                action.setKeyResult(keyResult);
             }
             if (action.getId() == null) {
-                this.createAction(action);
+                this.createEntity(action);
             } else {
-                this.updateAction(action);
+                this.updateEntity(action.getId(), action);
             }
         });
     }
 
     @Transactional
-    public void updateAction(Action action) {
+    public Action updateEntity(Long id, Action action) {
         validator.validateOnUpdate(action.getId(), action);
-        actionPersistenceService.save(action);
+        return actionPersistenceService.save(action);
     }
 
     @Transactional
-    public void deleteActionById(Long id) {
+    public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         actionPersistenceService.deleteById(id);
     }

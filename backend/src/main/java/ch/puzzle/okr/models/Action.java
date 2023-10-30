@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
-public class Action {
+public class Action implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
     private Long id;
@@ -26,6 +26,8 @@ public class Action {
     @NotNull(message = "KeyResult must not be null")
     @ManyToOne
     private KeyResult keyResult;
+
+    private transient boolean writeable;
 
     public Action() {
     }
@@ -72,6 +74,16 @@ public class Action {
 
     public void setKeyResult(KeyResult keyResult) {
         this.keyResult = keyResult;
+    }
+
+    @Override
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    @Override
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ActionPersistenceService extends PersistenceBase<Action, Long> {
+public class ActionPersistenceService extends PersistenceBase<Action, Long, ActionRepository> {
 
     protected ActionPersistenceService(ActionRepository repository) {
         super(repository);

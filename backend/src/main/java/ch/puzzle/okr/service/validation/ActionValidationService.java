@@ -1,11 +1,12 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.repository.ActionRepository;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ActionValidationService extends ValidationBase<Action, Long> {
+public class ActionValidationService extends ValidationBase<Action, Long, ActionRepository, ActionPersistenceService> {
 
     public ActionValidationService(ActionPersistenceService actionPersistenceService) {
         super(actionPersistenceService);

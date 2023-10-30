@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.slf4j.Logger;
@@ -20,16 +21,16 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
-    private final ActionBusinessService actionBusinessService;
+    private final ActionAuthorizationService actionAuthorizationService;
     private final KeyResultValidationService validator;
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
-            ActionBusinessService actionBusinessService) {
+            ActionAuthorizationService actionAuthorizationService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
-        this.actionBusinessService = actionBusinessService;
+        this.actionAuthorizationService = actionAuthorizationService;
         this.validator = validator;
     }
 
@@ -61,9 +62,9 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                List<Action> actionList = actionBusinessService.getActionsByKeyResultId(id);
+                List<Action> actionList = actionAuthorizationService.getEntitiesByKeyResultId(id);
                 KeyResult createdKeyResult = keyResultPersistenceService.recreateEntity(id, keyResult);
-                actionBusinessService.updateActions(createdKeyResult, actionList);
+                actionAuthorizationService.updateEntities(createdKeyResult, actionList);
                 return createdKeyResult;
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
@@ -82,8 +83,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
                 .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
-        actionBusinessService.getActionsByKeyResultId(id)
-                .forEach(action -> actionBusinessService.deleteActionById(action.getId()));
+        actionAuthorizationService.getEntitiesByKeyResultId(id)
+                .forEach(action -> actionAuthorizationService.deleteActionByActionId(action.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 

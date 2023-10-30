@@ -9,8 +9,8 @@ import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
-import ch.puzzle.okr.service.business.ActionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,16 +29,16 @@ import static org.springframework.http.HttpStatus.*;
 public class KeyResultController {
 
     private final KeyResultAuthorizationService keyResultAuthorizationService;
-    private final ActionBusinessService actionBusinessService;
+    private final ActionAuthorizationService actionAuthorizationService;
     private final KeyResultMapper keyResultMapper;
     private final CheckInMapper checkInMapper;
     private final ActionMapper actionMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-            ActionBusinessService actionBusinessService, KeyResultMapper keyResultMapper, CheckInMapper checkInMapper,
-            ActionMapper actionMapper) {
+            ActionAuthorizationService actionAuthorizationService, KeyResultMapper keyResultMapper,
+            CheckInMapper checkInMapper, ActionMapper actionMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
-        this.actionBusinessService = actionBusinessService;
+        this.actionAuthorizationService = actionAuthorizationService;
         this.keyResultMapper = keyResultMapper;
         this.checkInMapper = checkInMapper;
         this.actionMapper = actionMapper;
@@ -80,7 +80,7 @@ public class KeyResultController {
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         keyResult = keyResultAuthorizationService.createEntity(keyResult);
-        actionBusinessService.createActions(keyResult, actionList);
+        actionAuthorizationService.createEntities(keyResult, actionList);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
@@ -103,7 +103,7 @@ public class KeyResultController {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
         keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
-        actionBusinessService.updateActions(keyResult, actionList);
+        actionAuthorizationService.updateEntities(keyResult, actionList);
         KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }

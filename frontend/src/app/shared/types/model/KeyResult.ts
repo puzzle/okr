@@ -15,5 +15,5 @@ export interface KeyResult {
   lastCheckIn: CheckIn | null;
   createdOn: Date;
   modifiedOn: Date;
-  actionList: Action[];
+  actionList: Action[] | null;
 }

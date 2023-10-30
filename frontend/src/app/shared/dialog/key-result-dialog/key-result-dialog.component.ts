@@ -15,7 +15,6 @@ import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
 import { Action } from '../../types/model/Action';
-import { ActionService } from '../../services/action.service';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 
@@ -49,7 +48,6 @@ export class KeyResultDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     public dialogRef: MatDialogRef<KeyResultDialogComponent>,
     private keyResultService: KeyresultService,
-    private actionService: ActionService,
     public dialog: MatDialog,
     public userService: UserService,
   ) {}

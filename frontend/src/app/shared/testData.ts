@@ -16,6 +16,7 @@ import { User } from './types/model/User';
 import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
+import { Action } from './types/model/Action';
 
 export const teamMin1: TeamMin = {
   id: 1,
@@ -272,6 +273,7 @@ export const keyResult: KeyResultOrdinal = {
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
+  actionList: null,
 };
 
 export const keyResultOrdinal: KeyResultOrdinal = {
@@ -307,6 +309,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
+  actionList: null,
 };
 
 export const keyResultMetric: KeyResultMetric = {
@@ -342,4 +345,52 @@ export const keyResultMetric: KeyResultMetric = {
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
+  actionList: null,
+};
+
+export const action1: Action = {
+  id: 33,
+  action: 'Drucker kaufen',
+  priority: 0,
+  isChecked: false,
+};
+
+export const action2: Action = {
+  id: 44,
+  action: 'Blätter kaufen',
+  priority: 1,
+  isChecked: false,
+};
+
+export const keyResultActions: KeyResultMetric = {
+  id: 334,
+  title: 'Das Büro ist modern und vollständig',
+  description: 'Puzzle ITC hat schöne Büros, wo es alles hat.',
+  baseline: 10,
+  stretchGoal: 30,
+  unit: Unit.PERCENT,
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  keyResultType: 'metric',
+  objective: {
+    id: 302,
+    state: State.DRAFT,
+    quarter: {
+      id: 1,
+      label: 'GJ 23/24-Q1',
+      startDate: new Date(),
+      endDate: new Date(),
+    } as Quarter,
+  } as KeyResultObjective,
+  lastCheckIn: {
+    id: 746,
+    value: 45,
+    confidence: 7,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'So far so good',
+    initiatives: 'Work a bit harder',
+  } as CheckIn,
+  createdOn: new Date(),
+  modifiedOn: new Date(),
+  actionList: [action1, action2],
 };

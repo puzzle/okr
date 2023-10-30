@@ -114,6 +114,7 @@ describe('KeyResultDialogComponent', () => {
     commitZone: null,
     targetZone: null,
     stretchZone: null,
+    actionList: [],
   };
 
   const mockUserService = {

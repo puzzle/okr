@@ -49,9 +49,41 @@ export class ObjectiveComponent implements OnInit {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.menuEntries = this.getCompletedMenuActions();
     } else {
-      this.menuEntries = this.getDefaultMenuActions();
-      this.filterMenuEntries();
+      if (this.objective$.value.state === State.ONGOING) {
+        this.menuEntries = this.getOngoingMenuActions();
+      } else {
+        this.menuEntries = this.getDraftMenuActions();
+      }
     }
+  }
+
+  getOngoingMenuActions() {
+    return [
+      ...this.getDefaultMenuActions(),
+      ...[
+        {
+          displayName: 'Objective abschliessen',
+          action: 'complete',
+          dialog: { dialog: CompleteDialogComponent, data: {} },
+        },
+      ],
+    ];
+  }
+
+  getDraftMenuActions() {
+    return [
+      ...this.getDefaultMenuActions(),
+      ...[
+        {
+          displayName: 'Objective freigeben',
+          action: 'release',
+          dialog: {
+            dialog: ConfirmDialogComponent,
+            data: { title: 'Objective', action: 'release' },
+          },
+        },
+      ],
+    ];
   }
 
   getDefaultMenuActions() {
@@ -65,19 +97,6 @@ export class ObjectiveComponent implements OnInit {
         action: 'duplicate',
         dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
       },
-      {
-        displayName: 'Objective abschliessen',
-        action: 'complete',
-        dialog: { dialog: CompleteDialogComponent, data: {} },
-      },
-      {
-        displayName: 'Objective freigeben',
-        action: 'release',
-        dialog: {
-          dialog: ConfirmDialogComponent,
-          data: { title: 'Objective', action: 'release' },
-        },
-      },
     ];
   }
 
@@ -90,14 +109,6 @@ export class ObjectiveComponent implements OnInit {
         dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
       },
     ];
-  }
-
-  filterMenuEntries() {
-    if (this.objective$.value.state === State.ONGOING) {
-      this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective freigeben');
-    } else if (this.objective$.value.state === State.DRAFT) {
-      this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective abschliessen');
-    }
   }
 
   redirect(menuEntry: MenuEntry) {

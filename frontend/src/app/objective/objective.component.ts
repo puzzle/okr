@@ -113,7 +113,7 @@ export class ObjectiveComponent implements OnInit {
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.completeReleaseReload(menuEntry, result);
+          this.handleDialogResult(menuEntry, result);
         }
       });
     } else {
@@ -121,7 +121,7 @@ export class ObjectiveComponent implements OnInit {
     }
   }
 
-  completeReleaseReload(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
+  handleDialogResult(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
     if (menuEntry.action) {
       this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         if (menuEntry.action == 'complete') {

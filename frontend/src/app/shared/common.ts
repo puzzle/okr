@@ -9,14 +9,16 @@ export function getNumberOrNull(str: string | null | undefined): number | null {
   return Number.isNaN(number) ? null : number;
 }
 
-export function getValueFromQuery(query: any): number[] {
-  return Array.from([query])
+export function getValueFromQuery(query: any, fallback?: number): number[] {
+  const values = Array.from([query])
     .flat()
     .filter((e) => e !== '')
     .map((e) => (typeof e == 'string' ? e.split(',') : e))
     .flat()
     .map((id: any) => Number(id))
     .filter((id: number) => Number.isInteger(id));
+  if (fallback === undefined) return values;
+  return values.length > 0 ? values : [fallback];
 }
 
 export function optionalValue(param: object): { [p: string]: any } {

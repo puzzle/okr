@@ -40,12 +40,12 @@
       <div class="d-flex gap-4 flex-row">
         <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
           <div class="d-flex justify-content-start gap-5 w-100">
-            <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center zone-col">
+            <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
               Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
             </p>
             <p
               *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
-              class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center gap-1"
+              class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center gap-1"
               [ngClass]="{
                 'border-error': isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)
               }"
@@ -60,7 +60,7 @@
                 {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}
               </span>
             </p>
-            <p class="keyResult-detail-attribute-show rounded-5 p-2 zone-col d-flex justify-content-center">
+            <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
               Stretch Goal: {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}
             </p>
           </div>
@@ -68,15 +68,15 @@
 
         <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
           <div class="d-flex justify-content-between mb-4 w-100">
-            <div class="zone-col h-auto">
+            <div class="ordinal-col h-auto">
               <p class="ordinal-zone-title">Commit</p>
               <div class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.commitZone }}</div>
             </div>
-            <div class="zone-col h-auto">
+            <div class="ordinal-col h-auto">
               <p class="ordinal-zone-title">Target</p>
               <p class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.targetZone }}</p>
             </div>
-            <div class="zone-col h-auto">
+            <div class="ordinal-col h-auto">
               <p class="ordinal-zone-title">Stretch</p>
               <p class="keyResult-detail-attribute-show p-3 ordinal-box">{{ keyResultOrdinal.stretchZone }}</p>
             </div>

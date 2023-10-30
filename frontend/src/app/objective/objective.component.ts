@@ -33,62 +33,66 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
     private objectiveService: ObjectiveService,
   ) {}
 
-  get objective(): BehaviorSubject<ObjectiveMin> {
-    return this.objective$;
-  }
   @Input()
   set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
-  private objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
+  public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngOnInit() {
-    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
+    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
     }
   }
 
   ngAfterViewInit(): void {
-    if (this.objective.value.state.includes('successful') || this.objective.value.state.includes('not-successful')) {
-      this.menuEntries = [
-        { displayName: 'Objective wiedereröffnen', action: 'reopen' },
-        { displayName: 'Objective duplizieren', action: 'duplicate' },
-      ];
+    if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
+      this.menuEntries = this.getCompletedMenuActions();
     } else {
-      this.menuEntries = [
-        {
-          displayName: 'Objective bearbeiten',
-          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
-        },
-        {
-          displayName: 'Objective duplizieren',
-          action: 'duplicate',
-          dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective.value.id } },
-        },
-        {
-          displayName: 'Objective abschliessen',
-          action: 'complete',
-          dialog: { dialog: CompleteDialogComponent, data: {} },
-        },
-        {
-          displayName: 'Objective freigeben',
-          action: 'release',
-          dialog: {
-            dialog: ConfirmDialogComponent,
-            data: {
-              title: 'Objective',
-              action: 'release',
-            },
-          },
-        },
-      ];
+      this.menuEntries = this.getDefaultMenuActions();
+      this.filterMenuEntries();
+    }
+  }
 
-      if (this.objective.value.state === State.ONGOING) {
-        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective freigeben');
-      }
-      if (this.objective.value.state === State.DRAFT) {
-        this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective abschliessen');
-      }
+  getDefaultMenuActions() {
+    return [
+      {
+        displayName: 'Objective bearbeiten',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
+      {
+        displayName: 'Objective duplizieren',
+        action: 'duplicate',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
+      {
+        displayName: 'Objective abschliessen',
+        action: 'complete',
+        dialog: { dialog: CompleteDialogComponent, data: {} },
+      },
+      {
+        displayName: 'Objective freigeben',
+        action: 'release',
+        dialog: {
+          dialog: ConfirmDialogComponent,
+          data: { title: 'Objective', action: 'release' },
+        },
+      },
+    ];
+  }
+
+  getCompletedMenuActions() {
+    return [
+      { displayName: 'Objective wiedereröffnen', action: 'reopen' },
+      { displayName: 'Objective duplizieren', action: 'duplicate' },
+    ];
+  }
+
+  filterMenuEntries() {
+    if (this.objective$.value.state === State.ONGOING) {
+      this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective freigeben');
+    } else if (this.objective$.value.state === State.DRAFT) {
+      this.menuEntries = this.menuEntries.filter((entry) => entry.displayName !== 'Objective abschliessen');
     }
   }
 
@@ -115,7 +119,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
 
   completeReleaseReload(menuEntry: MenuEntry, result: { endState: string; comment: string | null; objective: any }) {
     if (menuEntry.action) {
-      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         if (menuEntry.action == 'complete') {
           this.completeObjective(objective, result);
         } else if (menuEntry.action == 'release') {
@@ -154,7 +158,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
 
   reopenRedirect(menuEntry: MenuEntry) {
     if (menuEntry.action === 'reopen') {
-      this.objectiveService.getFullObjective(this.objective.value.id).subscribe((objective) => {
+      this.objectiveService.getFullObjective(this.objective$.value.id).subscribe((objective) => {
         objective.state = 'ONGOING' as State;
         this.objectiveService.updateObjective(objective).subscribe(() => {
           this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
@@ -168,7 +172,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective.value.id]);
+    this.router.navigate(['objective', this.objective$.value.id]);
   }
 
   openAddKeyResultDialog() {
@@ -177,7 +181,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
         width: '45em',
         height: 'auto',
         data: {
-          objective: this.objective.value,
+          objective: this.objective$.value,
           keyResult: null,
         },
       })

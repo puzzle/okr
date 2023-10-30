@@ -13,7 +13,7 @@
         </button>
       </div>
       <div class="title fs-6">Beschrieb</div>
-      <p data-test-id="description">{{ objective.description }}</p>
+      <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
       <section
         class="py-3"
         *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"

@@ -18,11 +18,16 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.linebreak {
+  white-space: pre-line;
+}
+
 .title {
   font-size: 1.25rem;
   font-weight: bold;
   word-wrap: anywhere;
   color: black;
+  @extend .linebreak;
 }
 
 .sub-title {

@@ -13,7 +13,8 @@ import { Objective } from '../../types/model/Objective';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
-import { formInputCheck } from '../../common';
+import { formInputCheck, getValueFromQuery } from '../../common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-objective-form',
@@ -38,6 +39,7 @@ export class ObjectiveFormComponent implements OnInit {
   protected readonly formInputCheck = formInputCheck;
 
   constructor(
+    private route: ActivatedRoute,
     private teamService: TeamService,
     private quarterService: QuarterService,
     private objectiveService: ObjectiveService,
@@ -72,19 +74,22 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const isCreating: boolean = !!this.data.objective.objectiveId;
     this.teams$ = this.teamService.getAllTeams();
     this.quarters$ = this.quarterService.getAllQuarters();
-    const objective$ = this.data.objective.objectiveId
-      ? this.objectiveService.getFullObjective(this.data.objective.objectiveId)
+    const objective$ = isCreating
+      ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
       : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
-      const teamId = this.data.objective.objectiveId ? objective.teamId : this.data.objective.teamId;
+      const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
+      const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[0].id)[0];
+      this.state = objective.state;
+
       this.teams$.subscribe((value) => {
         this.currentTeam = value.filter((team) => team.id == teamId)[0];
       });
-      const quarterId = this.data.objective.objectiveId ? objective.quarterId : quarters[0].id;
-      this.state = objective.state;
+
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,
@@ -150,6 +155,7 @@ export class ObjectiveFormComponent implements OnInit {
   isTouchedOrDirty(name: string) {
     return this.objectiveForm.get(name)?.dirty || this.objectiveForm.get(name)?.touched;
   }
+
   getErrorKeysOfFormField(name: string) {
     const errors = this.objectiveForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);

@@ -22,6 +22,8 @@ import { TeamService } from '../../services/team.service';
 import { State } from '../../types/enums/State';
 import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 
 const submitEvent = {
   submitter: {
@@ -84,8 +86,9 @@ describe('ObjectiveDialogComponent', () => {
         MatInputModule,
         NoopAnimationsModule,
         MatCheckboxModule,
+        RouterTestingModule,
       ],
-      declarations: [ObjectiveFormComponent],
+      declarations: [ObjectiveFormComponent, DialogHeaderComponent],
       providers: [
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },
@@ -230,8 +233,10 @@ describe('ObjectiveDialogComponent', () => {
     });
   });
 
-  it('should load default values into form onInit with defined objectiveId', () => {
+  it('should load default values into form onInit with defined objectiveId', async () => {
     matDataMock.objective.objectiveId = 1;
+    const routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/?quarter=2');
     objectiveService.getFullObjective.mockReturnValue(of(objective));
     component.ngOnInit();
     const rawFormValue = component.objectiveForm.getRawValue();

@@ -82,26 +82,25 @@ describe('test common functions', () => {
   });
 
   it.each([
-    [[], []],
-    [undefined, []],
-    ['', []],
-    [[1], [1]],
-    [[1, NaN], [1]],
-    [
-      [1, '', 3],
-      [1, 3],
-    ],
-    ['1,3', [1, 3]],
-    ['1,3.5', [1]],
-    ['1,3.5,3', [1, 3]],
-    ['1,nonsense,3', [1, 3]],
-    [0, [0]],
-    [[0], [0]],
-    ['0', [0]],
-    ['1,0', [1, 0]],
-    ['0,1', [0, 1]],
-  ])('should give correct output for getValueFromQuery', (value: any, arr2: number[]) => {
-    expect(getValueFromQuery(value)).toStrictEqual(arr2);
+    [[], undefined, []],
+    [undefined, undefined, []],
+    ['', undefined, []],
+    [[1], undefined, [1]],
+    [[1, NaN], undefined, [1]],
+    [[1, '', 3], undefined, [1, 3]],
+    ['1,3', undefined, [1, 3]],
+    ['1,3.5', undefined, [1]],
+    ['1,3.5,3', undefined, [1, 3]],
+    ['1,nonsense,3', undefined, [1, 3]],
+    [0, undefined, [0]],
+    [[0], undefined, [0]],
+    ['0', undefined, [0]],
+    ['1,0', undefined, [1, 0]],
+    ['0,1', undefined, [0, 1]],
+    ['', 1, [1]],
+    [[], 1, [1]],
+  ])('should give correct output for getValueFromQuery', (value: any, fallback: number | undefined, arr2: number[]) => {
+    expect(getValueFromQuery(value, fallback)).toStrictEqual(arr2);
   });
 
   it.each([
@@ -112,8 +111,8 @@ describe('test common functions', () => {
     [{ v: 1 }, { v: 1 }],
     [{ v: 1, v2: undefined }, { v: 1 }],
     [{ v: undefined, v2: 1 }, { v2: 1 }],
-  ])('should give correct output for optionalValue', (obj1: { [p: string]: any }, obj2: { [p: string]: any }) => {
-    expect(optionalValue(obj1)).toStrictEqual(obj2);
+  ])('should give correct output for optionalValue', (value: { [p: string]: any }, expected: { [p: string]: any }) => {
+    expect(optionalValue(value)).toStrictEqual(expected);
   });
 
   it.each([

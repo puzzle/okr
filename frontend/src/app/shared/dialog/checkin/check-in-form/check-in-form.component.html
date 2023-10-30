@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-padding">
   <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
   <app-dialog-header
     *ngIf="this.checkIn.id"

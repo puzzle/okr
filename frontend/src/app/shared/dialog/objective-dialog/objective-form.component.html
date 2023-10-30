@@ -1,4 +1,4 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-padding">
   <app-dialog-header
     *ngIf="!data.objective.objectiveId"
     [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"

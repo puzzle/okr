@@ -5,13 +5,6 @@ truncate table person cascade;
 truncate table quarter cascade;
 truncate table team cascade;
 
-ALTER SEQUENCE sequence_team RESTART WITH 200;
-ALTER SEQUENCE sequence_person RESTART WITH 200;
-ALTER SEQUENCE sequence_quarter RESTART WITH 200;
-ALTER SEQUENCE sequence_objective RESTART WITH 200;
-ALTER SEQUENCE sequence_key_result RESTART WITH 200;
-ALTER SEQUENCE sequence_measure RESTART WITH 200;
-
 insert into person (id, email, firstname, lastname, username)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
        (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice'),

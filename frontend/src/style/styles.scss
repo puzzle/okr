@@ -108,10 +108,9 @@ body pzsh-backdrop {
   color: $error-color;
 }
 
-//Dont remove important on height. It doesnt work without.
 .big-dialog-form-field {
   height: 4.375rem !important;
-  padding: 0.437rem 0.625rem 0.375rem 0.625rem;
+  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
 .dialog-form-field {
@@ -119,7 +118,6 @@ body pzsh-backdrop {
   outline: none;
 }
 
-//Dont remove important on outline. Its used because it has to override the outline coming from *:focus
 .dialog-form-field-error {
   resize: none;
   outline: $error-color 2px solid !important;

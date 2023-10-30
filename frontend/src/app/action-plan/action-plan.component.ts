@@ -21,6 +21,14 @@ export class ActionPlanComponent {
   ) {}
 
   drop(event: CdkDragDrop<Action[] | null>) {
+    let value = (<HTMLInputElement>event.container.element.nativeElement.children[event.previousIndex].children[1])
+      .value;
+    const actions = this.control.value!;
+    if (actions[event.previousIndex].action == '' && value != '') {
+      actions[event.previousIndex] = { ...actions[event.previousIndex], action: value };
+      this.control.setValue(actions);
+    }
+
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data!, event.previousIndex, event.currentIndex);
     } else {

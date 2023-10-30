@@ -9,7 +9,6 @@ import { getValueFromQuery } from '../shared/common';
 @Component({
   selector: 'app-quarter-filter',
   templateUrl: './quarter-filter.component.html',
-  styleUrls: ['./quarter-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuarterFilterComponent implements OnInit {

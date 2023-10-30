@@ -137,8 +137,7 @@ export class KeyResultDialogComponent implements OnInit {
       map((users) =>
         users.filter(
           (user) =>
-            user.firstname.toLowerCase().includes(filterValue) ||
-            user.lastname.toLowerCase().includes(filterValue) ||
+            (user.firstname.toLowerCase() + ' ' + user.lastname.toLowerCase()).includes(filterValue) ||
             user.username.toLowerCase().includes(filterValue),
         ),
       ),
@@ -149,7 +148,10 @@ export class KeyResultDialogComponent implements OnInit {
     return user ? user.firstname + ' ' + user.lastname : '';
   }
 
-  validOwner() {
-    return typeof this.keyResultForm.value.owner === 'string';
+  invalidOwner(): boolean {
+    return (
+      !!this.isTouchedOrDirty('owner') &&
+      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
+    );
   }
 }

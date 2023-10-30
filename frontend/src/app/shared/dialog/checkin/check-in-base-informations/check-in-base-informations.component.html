@@ -9,12 +9,12 @@
   ></textarea>
   <div *ngIf="isTouchedOrDirty('changeInfo')">
     <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-      {{ errorMessages[errorKey.toUpperCase().trim()] }}
+      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
     </mat-error>
   </div>
 
   <!--    Initiatives   -->
-  <mat-label class="mt-2 text-black mb-2">Massnahmen (optional)</mat-label>
+  <mat-label class="mt-3 text-black mb-2">Massnahmen (optional)</mat-label>
   <textarea
     [ngClass]="formInputCheck(dialogForm, 'initiatives')"
     class="w-100 big-dialog-form-field"
@@ -23,7 +23,7 @@
   ></textarea>
   <div *ngIf="isTouchedOrDirty('initiatives')">
     <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-      {{ errorMessages[errorKey.toUpperCase().trim()] }}
+      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
     </mat-error>
   </div>
 </form>

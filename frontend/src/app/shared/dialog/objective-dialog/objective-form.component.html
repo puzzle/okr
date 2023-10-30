@@ -1,15 +1,15 @@
-<div mat-dialog-content>
+<div mat-dialog-content class="dialog-padding">
   <div *ngIf="this.data.action == 'duplicate'">
     <app-dialog-header [dialogTitle]="'Objective duplizieren'"></app-dialog-header>
   </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
       *ngIf="!data.objective.objectiveId"
-      [dialogTitle]="'Objective für ' + this.currentTeam.name + ' erfassen'"
+      [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
     ></app-dialog-header>
     <app-dialog-header
       *ngIf="data.objective.objectiveId"
-      [dialogTitle]="'Objective von ' + this.currentTeam.name + ' bearbeiten'"
+      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
     ></app-dialog-header>
   </div>
   <div class="w-100 d-flex justify-content-between align-items-center">
@@ -26,7 +26,7 @@
         ></textarea>
         <span *ngIf="isTouchedOrDirty('title')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
           </mat-error>
         </span>
       </div>
@@ -40,12 +40,12 @@
         ></textarea>
         <span *ngIf="isTouchedOrDirty('description')">
           <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-            {{ errorMessages[errorKey.toUpperCase().trim()] }}
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
           </mat-error>
         </span>
       </div>
 
-      <div class="d-flex align-items-center row">
+      <div class="d-flex row align-items-end flex-nowrap mt-3 mb-4">
         <div class="d-flex flex-column gap-2 col-6">
           <label class="text-black" for="quarter">Quartal</label>
           <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
@@ -56,7 +56,7 @@
         </div>
         <mat-checkbox
           [attr.data-testId]="'checkbox'"
-          class="d-flex align-items-center col-5 custom-text-wrap pt-4"
+          class="d-flex align-items-center col-5 custom-text-wrap col-6"
           color="primary"
           formControlName="createKeyResults"
           *ngIf="!data.objective.objectiveId"
@@ -64,8 +64,8 @@
           Key Results im Anschluss erfassen
         </mat-checkbox>
       </div>
-      <div class="d-flex justify-content-between p-0" mat-dialog-actions>
-        <div class="d-flex gap-2 p-0">
+      <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+        <div class="d-flex p-0">
           <button [disabled]="objectiveForm.invalid" color="primary" mat-flat-button type="submit" submitType="ONGOING">
             Speichern
           </button>

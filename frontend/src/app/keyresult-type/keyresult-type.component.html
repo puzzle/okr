@@ -4,8 +4,10 @@
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: isMetric, 'non-active': !isMetric }"
       [attr.data-testId]="'metricTab'"
-      class="metric tab-title"
+      class="metric tab-title tabfocus"
       (click)="switchKeyResultType('metric')"
+      (keydown.enter)="switchKeyResultType('metric')"
+      tabindex="0"
     >
       Metrisch
     </div>
@@ -13,8 +15,10 @@
       [style.cursor]="typeChangeAllowed ? 'pointer' : 'default'"
       [ngClass]="{ active: !isMetric, 'non-active': isMetric }"
       [attr.data-testId]="'ordinalTab'"
-      class="ordinal tab-title"
+      class="ordinal tab-title tabfocus"
       (click)="switchKeyResultType('ordinal')"
+      (keydown.enter)="switchKeyResultType('ordinal')"
+      tabindex="0"
     >
       Ordinal
     </div>
@@ -32,6 +36,7 @@
               <label>Einheit</label>
               <select
                 class="unit-dropdown bg-white input-fields menu-option"
+                [ngClass]="formInputCheck(keyResultForm, 'unit')"
                 formControlName="unit"
                 [attr.data-testId]="'unit'"
               >
@@ -39,6 +44,11 @@
                   {{ "UNIT." + unit.value | translate }}
                 </option>
               </select>
+              <div *ngIf="isTouchedOrDirty('unit')">
+                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+                </mat-error>
+              </div>
             </div>
             <div>
               <label>Baseline</label>
@@ -50,7 +60,7 @@
               />
               <div *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -64,7 +74,7 @@
               />
               <div *ngIf="isTouchedOrDirty('stretchGoal')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -91,7 +101,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -105,7 +115,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>
@@ -119,7 +129,7 @@
               ></textarea>
               <div *ngIf="isTouchedOrDirty('stretchZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
-                  {{ errorMessages[errorKey.toUpperCase().trim()] }}
+                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
               </div>
             </div>

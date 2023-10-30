@@ -1,8 +1,13 @@
-<div mat-dialog-content class="dialog">
+<div mat-dialog-content class="dialog dialog-padding">
   <app-dialog-header
     [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
   ></app-dialog-header>
-  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
+  <form
+    (ngSubmit)="saveKeyResult()"
+    [formGroup]="keyResultForm"
+    class="d-flex flex-column flex-wrap container p-0"
+    (keydown.enter)="$event.preventDefault()"
+  >
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <textarea
@@ -15,7 +20,7 @@
       ></textarea>
       <span *ngIf="isTouchedOrDirty('title')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-          {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
       </span>
     </div>
@@ -27,7 +32,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
-        [ngClass]="validOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
         class="input-fields owner-input"
         [attr.data-testId]="'ownerInput'"
         [matAutocomplete]="auto"
@@ -38,8 +43,8 @@
           {{ user.firstname + " " + user.lastname }}
         </mat-option>
       </mat-autocomplete>
-      <div *ngIf="validOwner()">
-        <mat-error> Du musst einen Owner auswählen </mat-error>
+      <div *ngIf="invalidOwner()">
+        <mat-error>Du musst einen Owner auswählen</mat-error>
       </div>
     </div>
 
@@ -53,7 +58,7 @@
       ></textarea>
       <div *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-          {{ errorMessages[errorKey.toUpperCase().trim()] }}
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
       </div>
     </div>
@@ -65,7 +70,7 @@
         [attr.data-testId]="'submit'"
         type="submit"
         (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid || validOwner()"
+        [disabled]="keyResultForm.invalid || invalidOwner()"
         color="primary"
         mat-flat-button
       >

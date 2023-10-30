@@ -1,8 +1,12 @@
-<div class="w-100 d-flex justify-content-between align-items-center">
+<div class="w-100 d-flex justify-content-between align-items-center mb-3 position-relative">
   <span class="title">
     <span>{{ dialogTitle }}</span>
   </span>
-  <button class="d-flex justify-content-center align-items-center" mat-dialog-close mat-icon-button>
+  <button
+    class="d-flex justify-content-center align-items-center position-absolute closing-button ms-2"
+    mat-dialog-close
+    mat-icon-button
+  >
     <mat-icon class="text-secondary">close</mat-icon>
   </button>
 </div>

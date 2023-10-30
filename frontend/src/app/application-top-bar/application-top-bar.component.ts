@@ -12,4 +12,8 @@ export class ApplicationTopBarComponent {
   logOut() {
     this.oauthService.logOut();
   }
+
+  getUserName() {
+    return this.oauthService.getIdentityClaims()['name'];
+  }
 }

@@ -84,7 +84,11 @@ export class ObjectiveComponent implements OnInit {
   getCompletedMenuActions() {
     return [
       { displayName: 'Objective wiedereröffnen', action: 'reopen' },
-      { displayName: 'Objective duplizieren', action: 'duplicate' },
+      {
+        displayName: 'Objective duplizieren',
+        action: 'duplicate',
+        dialog: { dialog: ObjectiveFormComponent, data: { objectiveId: this.objective$.value.id } },
+      },
     ];
   }
 

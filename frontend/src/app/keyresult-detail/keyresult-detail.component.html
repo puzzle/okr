@@ -1,13 +1,13 @@
 <div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true">
   <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
     <div *ngIf="keyResult" class="d-flex flex-column">
-      <div class="d-flex justify-content-between">
-        <h1 class="mb-2 title">{{ keyResult.title }}</h1>
-        <button class="icon-button" [routerLink]="'/'" data-test-id="closeDrawer">
+      <div class="w-100 d-flex justify-content-between align-items-center position-relative mb-3">
+        <span class="title">{{ keyResult.title }}</span>
+        <button class="d-flex justify-content-center align-items-center position-absolute close-button" mat-icon-button [routerLink]="'/'" data-test-id="closeDrawer">
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <div class="keyresult-header d-flex justify-content-between mb-3">
+      <div class="d-flex justify-content-between mb-3">
         <div>
           {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
         </div>
@@ -34,7 +34,7 @@
 
       <div class="d-flex gap-4 flex-row">
         <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
-          <div class="d-flex justify-content-start gap-5 w-100">
+          <div class="d-flex justify-content-start gap-4 w-100">
             <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center zone-col">
               Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
             </p>

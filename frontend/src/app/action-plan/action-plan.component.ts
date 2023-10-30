@@ -13,7 +13,7 @@ import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
   styleUrls: ['./action-plan.component.scss'],
 })
 export class ActionPlanComponent {
-  @Input() formControl!: FormControl<Action[] | null>;
+  @Input() control!: FormControl<Action[] | null>;
 
   constructor(
     private actionService: ActionService,
@@ -30,19 +30,19 @@ export class ActionPlanComponent {
   }
 
   changeActionText(event: any, index: number) {
-    const actions = this.formControl.value!;
+    const actions = this.control.value!;
     actions[index] = { ...actions[index], action: event.target.value! };
-    this.formControl.setValue(actions);
+    this.control.setValue(actions);
   }
 
   addNewAction() {
-    const actions = this.formControl.value!;
+    const actions = this.control.value!;
     actions.push({ action: '', priority: actions.length } as Action);
-    this.formControl.setValue(actions);
+    this.control.setValue(actions);
   }
 
   removeAction(index: number) {
-    const actions = this.formControl.value!;
+    const actions = this.control.value!;
     if (actions[index].action !== '') {
       this.dialog
         .open(ConfirmDialogComponent, {
@@ -60,22 +60,22 @@ export class ActionPlanComponent {
               this.actionService.deleteAction(actions[index].id!).subscribe();
             }
             actions.splice(index, 1);
-            this.formControl.setValue(actions);
+            this.control.setValue(actions);
             this.adjustPriorities();
           }
         });
     } else {
       actions.splice(index, 1);
-      this.formControl.setValue(actions);
+      this.control.setValue(actions);
       this.adjustPriorities();
     }
   }
 
   adjustPriorities() {
-    const actions = this.formControl.value!;
+    const actions = this.control.value!;
     actions.forEach(function (action, index) {
       action.priority = index;
     });
-    this.formControl.setValue(actions);
+    this.control.setValue(actions);
   }
 }

@@ -12,7 +12,12 @@
       <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
     </div>
     <input class="action-input" type="text" [value]="action.action" (change)="changeActionText($event, i)" />
-    <img class="icons bin-icon" src="../assets/icons/delete-icon.svg" alt="Delete bin" (click)="removeAction(i)" />
+    <img
+      class="icons bin-icon cursor-pointer"
+      src="../assets/icons/delete-icon.svg"
+      alt="Delete bin"
+      (click)="removeAction(i)"
+    />
   </div>
 </div>
 

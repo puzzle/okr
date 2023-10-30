@@ -149,3 +149,7 @@ select:focus {
 .border-error {
   border: 1px solid $error;
 }
+
+* {
+  white-space: pre-line;
+}

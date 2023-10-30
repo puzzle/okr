@@ -137,8 +137,7 @@ export class KeyResultDialogComponent implements OnInit {
       map((users) =>
         users.filter(
           (user) =>
-            user.firstname.toLowerCase().includes(filterValue) ||
-            user.lastname.toLowerCase().includes(filterValue) ||
+            (user.firstname.toLowerCase() + ' ' + user.lastname.toLowerCase()).includes(filterValue) ||
             user.username.toLowerCase().includes(filterValue),
         ),
       ),

@@ -309,7 +309,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: null,
+  actionList: [],
 };
 
 export const keyResultMetric: KeyResultMetric = {

@@ -43,6 +43,20 @@ export const team3: Team = {
 
 export const teamList = [team1, team2, team3];
 
+export const action1: Action = {
+  id: 33,
+  action: 'Drucker kaufen',
+  priority: 0,
+  isChecked: false,
+};
+
+export const action2: Action = {
+  id: 44,
+  action: 'Blätter kaufen',
+  priority: 1,
+  isChecked: true,
+};
+
 export const quarterMin: QuarterMin = {
   id: 1,
   label: 'GJ 23/24-Q1',
@@ -345,21 +359,7 @@ export const keyResultMetric: KeyResultMetric = {
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
-  actionList: null,
-};
-
-export const action1: Action = {
-  id: 33,
-  action: 'Drucker kaufen',
-  priority: 0,
-  isChecked: false,
-};
-
-export const action2: Action = {
-  id: 44,
-  action: 'Blätter kaufen',
-  priority: 1,
-  isChecked: false,
+  actionList: [action1, action2],
 };
 
 export const keyResultActions: KeyResultMetric = {

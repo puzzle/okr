@@ -19,6 +19,7 @@ ALTER SEQUENCE sequence_key_result RESTART WITH 200;
 ALTER SEQUENCE sequence_check_in RESTART WITH 200;
 ALTER SEQUENCE sequence_alignment RESTART WITH 200;
 ALTER SEQUENCE sequence_completed RESTART WITH 200;
+ALTER SEQUENCE sequence_organisation RESTART WITH 200;
 
 insert into person (id, email, firstname, lastname, username)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),

@@ -9,7 +9,6 @@ import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key
 @Component({
   selector: 'app-objective-detail',
   templateUrl: './objective-detail.component.html',
-  styleUrls: ['./objective-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveDetailComponent {

@@ -61,3 +61,10 @@ END$$;
 alter table quarter
     ALTER column start_date SET NOT NULL,
     ALTER column end_date SET NOT NULL;
+
+ALTER SEQUENCE sequence_team RESTART WITH 500;
+ALTER SEQUENCE sequence_person RESTART WITH 500;
+ALTER SEQUENCE sequence_quarter RESTART WITH 500;
+ALTER SEQUENCE sequence_objective RESTART WITH 500;
+ALTER SEQUENCE sequence_key_result RESTART WITH 500;
+ALTER SEQUENCE sequence_measure RESTART WITH 500;

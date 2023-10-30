@@ -139,3 +139,9 @@ insert into team_organisation (team_id, organisation_id) values
                                                             (4, 9),
                                                             (6, 19),
                                                             (8, 19);
+
+insert into completed (id, objective_id, comment) values
+                                                      (1, 15, 'Not successful because there were many events this month'),
+                                                      (2, 19, 'Was not successful because we were too slow'),
+                                                      (3, 18, 'Sadly we had not enough members to complete this objective'),
+                                                      (4, 20, 'Objective could be completed fast and easy');

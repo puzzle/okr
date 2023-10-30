@@ -14,7 +14,7 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
 
     @Override
     public String getModelName() {
-        return "organisation";
+        return "Organisation";
     }
 
     public void saveIfNotExists(Organisation org) {

@@ -82,7 +82,7 @@ public class Organisation {
 
     @Override
     public String toString() {
-        return "Organisation{" + "id=" + id + ", orgName='" + orgName + '\'' + ", teams=" + teams + '}';
+        return "Organisation{" + "id=" + id + ", orgName='" + orgName + '}';
     }
 
     public static final class Builder {

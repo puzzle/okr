@@ -110,10 +110,3 @@ create table if not exists measure
 
 create index if not exists idx_objective_title
     on objective (title);
-
-ALTER SEQUENCE sequence_team RESTART WITH 500;
-ALTER SEQUENCE sequence_person RESTART WITH 500;
-ALTER SEQUENCE sequence_quarter RESTART WITH 500;
-ALTER SEQUENCE sequence_objective RESTART WITH 500;
-ALTER SEQUENCE sequence_key_result RESTART WITH 500;
-ALTER SEQUENCE sequence_measure RESTART WITH 500;

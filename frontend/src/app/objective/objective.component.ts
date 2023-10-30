@@ -159,6 +159,7 @@ export class ObjectiveComponent implements OnInit {
     };
     this.objectiveService.updateObjective(objective).subscribe(() => {
       this.objectiveService.createCompleted(completed).subscribe(() => {
+        this.isComplete = true;
         this.refreshDataService.markDataRefresh();
       });
     });
@@ -177,6 +178,7 @@ export class ObjectiveComponent implements OnInit {
         objective.state = 'ONGOING' as State;
         this.objectiveService.updateObjective(objective).subscribe(() => {
           this.objectiveService.deleteCompleted(objective.id).subscribe(() => {
+            this.isComplete = false;
             this.refreshDataService.markDataRefresh();
           });
         });

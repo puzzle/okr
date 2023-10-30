@@ -29,7 +29,7 @@ class AlignmentSelectionBusinessServiceTest {
     }
 
     @Test
-    void getOverviewByQuarterIdAndTeamIds_ShouldReturnListOfOverviews() {
+    void getAlignmentSelectionByQuarterIdAndTeamIdNotShouldReturnListOfAlignmentSelections() {
         when(alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(2L, 4L))
                 .thenReturn(List.of(createAlignmentSelection()));
 

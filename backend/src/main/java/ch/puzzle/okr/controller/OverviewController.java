@@ -41,7 +41,7 @@ public class OverviewController {
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
             @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
-        return ResponseEntity.status(HttpStatus.OK).body(overviewMapper.toDto(overviewAuthorizationService
-                .getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(quarterFilter, teamFilter, objectiveQuery)));
+        return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
+                .toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
     }
 }

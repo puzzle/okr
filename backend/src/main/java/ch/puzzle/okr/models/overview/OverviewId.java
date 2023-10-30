@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class OverviewId implements Serializable {
+public class OverviewId implements Comparable<OverviewId>, Serializable {
 
     private Long teamId;
     private Long objectiveId;
@@ -66,6 +66,22 @@ public class OverviewId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(objectiveId, keyResultId, checkInId);
+    }
+
+    @Override
+    public int compareTo(OverviewId otherId) {
+        if (Objects.equals(teamId, otherId.getTeamId())) {
+            if (Objects.equals(objectiveId, otherId.getObjectiveId())) {
+                if (Objects.equals(keyResultId, otherId.getKeyResultId())) {
+                    return checkInId.compareTo(otherId.getCheckInId());
+                } else {
+                    return keyResultId.compareTo(otherId.getKeyResultId());
+                }
+            } else {
+                return objectiveId.compareTo(otherId.getObjectiveId());
+            }
+        }
+        return teamId.compareTo(otherId.getTeamId());
     }
 
     public static final class Builder {

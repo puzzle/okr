@@ -55,29 +55,29 @@ class OverviewControllerIT {
                     .withObjectiveTitle("Objective 1").withObjectiveState(DRAFT).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
                     .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
-                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build(),
+                    .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build(),
             Overview.Builder.builder().withOverviewId(OverviewId.of(1L, 2L, 21L, 41L)).withTeamName(PUZZLE)
                     .withObjectiveTitle("Objective 1").withObjectiveState(DRAFT).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
                     .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
-                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
+                    .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build());
     static List<Overview> overviewOKR = List.of(
             Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 5L, 20L, 40L)).withTeamName("OKR")
                     .withObjectiveTitle("Objective 5").withObjectiveState(DRAFT).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
                     .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
-                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build(),
+                    .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build(),
             Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 7L, 21L, 41L)).withTeamName("OKR")
                     .withObjectiveTitle("Objective 7").withObjectiveState(ONGOING).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
                     .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
-                    .withCheckInValue(15.0).withConfidence(5).withCreatedOn(LocalDateTime.now()).build());
+                    .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build());
 
     static Overview overviewKuchen = Overview.Builder.builder().withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))
             .withTeamName(TEAM_KUCHEN).withObjectiveTitle("Objective 8").withObjectiveState(ONGOING).withQuarterId(1L)
             .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION).withKeyResultType(KEY_RESULT_TYPE_METRIC)
             .withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0).withCheckInValue(15.0).withConfidence(5)
-            .withCreatedOn(LocalDateTime.now()).build();
+            .withCheckInCreatedOn(LocalDateTime.now()).build();
 
     static Overview simpleOverview = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))
             .withTeamName(TEAM_KUCHEN).build();
@@ -88,8 +88,8 @@ class OverviewControllerIT {
         overviews.addAll(overviewPuzzle);
         overviews.addAll(overviewOKR);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
-                anyList(), anyString())).willReturn(overviews);
+        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
+                .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(3)))
@@ -106,8 +106,8 @@ class OverviewControllerIT {
 
     @Test
     void shouldGetAllTeamsWithObjectiveIfNoTeamsExists() throws Exception {
-        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
-                anyList(), anyString())).willReturn(Collections.emptyList());
+        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
+                .willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -117,8 +117,8 @@ class OverviewControllerIT {
     void shouldReturnOnlyFilteredObjectivesByQuarterAndTeam() throws Exception {
         List<Overview> overviews = new ArrayList<>(overviewPuzzle);
         overviews.add(overviewKuchen);
-        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
-                anyList(), anyString())).willReturn(overviews);
+        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
+                .willReturn(overviews);
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -132,8 +132,8 @@ class OverviewControllerIT {
 
     @Test
     void shouldReturnTeamWithEmptyObjectiveListWhenNoObjectiveInFilteredQuarter() throws Exception {
-        BDDMockito.given(overviewAuthorizationService.getOverviewByQuarterIdAndTeamIdsAndObjectiveQuery(anyLong(),
-                anyList(), anyString())).willReturn(List.of(simpleOverview));
+        BDDMockito.given(overviewAuthorizationService.getFilteredOverview(anyLong(), anyList(), anyString()))
+                .willReturn(List.of(simpleOverview));
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))

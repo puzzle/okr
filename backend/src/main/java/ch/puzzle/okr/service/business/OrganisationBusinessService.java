@@ -4,7 +4,9 @@ import ch.puzzle.okr.mapper.CnAttributesMapper;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.query.ContainerCriteria;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,6 +24,9 @@ public class OrganisationBusinessService {
 
     private final CnAttributesMapper cnAttributesMapper;
 
+    @Value("${okr.jwt.claim.organisation.name.prefix}")
+    private String orgPrefix;
+
     public OrganisationBusinessService(LdapTemplate ldapTemplate, OrganisationPersistenceService persistenceService,
             CnAttributesMapper cnAttributesMapper) {
         this.ldapTemplate = ldapTemplate;
@@ -31,9 +36,9 @@ public class OrganisationBusinessService {
 
     @Scheduled(cron = "0 0 0 * * *")
     public void importOrgFromLDAP() {
-        LdapQuery query = LdapQueryBuilder.query().base("ou=groups").where("objectClass").is("groupOfNames");
+        LdapQuery query = LdapQueryBuilder.query().countLimit(10000).base("ou=groups").where("objectClass")
+                .is("groupOfNames").and("cn").like(String.format("%s*", orgPrefix));
         List<String> organisations = ldapTemplate.search(query, cnAttributesMapper);
-        organisations.removeIf(Objects::isNull);
         for (String org : organisations) {
             persistenceService.saveIfNotExists(
                     Organisation.Builder.builder().withOrgName(org).withState(OrganisationState.ACTIVE).build());

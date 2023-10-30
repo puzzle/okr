@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class OrganisationBusinessServiceTest {
 
-    private static final List<String> listIncludingNullObjects = new ArrayList<>();
+    private static final List<String> listOfOrgNames = new ArrayList<>();
 
     private static final List<Organisation> organisationDbMock = new ArrayList<>();
 
@@ -50,19 +50,15 @@ class OrganisationBusinessServiceTest {
 
     @BeforeEach
     void prepareLists() {
-        listIncludingNullObjects.addAll(List.of("org_one", "org_two"));
-        listIncludingNullObjects.add(null);
+        listOfOrgNames.addAll(List.of("org_one", "org_two"));
         organisationDbMock.addAll(List.of(organisationOne, organisationTwo, organisationThree));
     }
 
     @Test
     void shouldRemoveEmptyEntriesOfList() {
-        when(ldapTemplate.search(any(LdapQuery.class), any(CnAttributesMapper.class)))
-                .thenReturn(listIncludingNullObjects);
+        when(ldapTemplate.search(any(LdapQuery.class), any(CnAttributesMapper.class))).thenReturn(listOfOrgNames);
         when(organisationPersistenceService.findAll()).thenReturn(organisationDbMock);
-        boolean containsNull = listIncludingNullObjects.contains(null);
         organisationBusinessService.importOrgFromLDAP();
-        assertTrue(containsNull);
         verify(organisationPersistenceService).saveIfNotExists(
                 Organisation.Builder.builder().withOrgName("org_one").withState(OrganisationState.ACTIVE).build());
         verify(organisationPersistenceService).saveIfNotExists(

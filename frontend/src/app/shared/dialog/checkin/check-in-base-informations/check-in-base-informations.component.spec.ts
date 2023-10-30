@@ -14,6 +14,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { Action } from '../../../types/model/Action';
+import { action1, action2 } from '../../../testData';
 
 describe('CheckInBaseInformationsComponent', () => {
   let component: CheckInBaseInformationsComponent;
@@ -41,7 +42,7 @@ describe('CheckInBaseInformationsComponent', () => {
     component.dialogForm = new FormGroup({
       changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
       initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
-      actionList: new FormControl<Action[]>([]),
+      actionList: new FormControl<Action[]>([action1, action2]),
     });
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -77,5 +78,11 @@ describe('CheckInBaseInformationsComponent', () => {
       const errorMessage = fixture.debugElement.query(By.css('mat-error'));
       expect(errorMessage.nativeElement.textContent).toContain(errors.MAXLENGTH);
     });
+  });
+
+  it('should display action list', () => {
+    let checkBoxes = document.querySelectorAll('mat-checkbox');
+    expect(checkBoxes.length).toEqual(2);
+    expect(checkBoxes[1].getAttribute('checked')).toBeTruthy();
   });
 });

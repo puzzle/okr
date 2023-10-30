@@ -22,6 +22,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
+import { ActionService } from '../../../services/action.service';
+import { compareNumbers } from '@angular/compiler-cli/src/version_helpers';
 
 const dialogMock = {
   close: jest.fn(),
@@ -29,6 +31,10 @@ const dialogMock = {
 
 const checkInServiceMock = {
   saveCheckIn: jest.fn(),
+};
+
+const actionServiceMock = {
+  updateActions: jest.fn(),
 };
 
 describe('CheckInFormComponent', () => {
@@ -52,6 +58,7 @@ describe('CheckInFormComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: { keyResult: {} } },
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: CheckInService, useValue: checkInServiceMock },
+        { provide: ActionService, useValue: actionServiceMock },
         ParseUnitValuePipe,
       ],
       declarations: [CheckInFormComponent],
@@ -74,6 +81,7 @@ describe('CheckInFormComponent', () => {
     component.dialogForm.controls['initiatives'].setValue(checkInMetric.initiatives);
 
     checkInServiceMock.saveCheckIn.mockReturnValue(of(checkInMetric));
+    actionServiceMock.updateActions.mockReturnValue(of(action2));
     component.saveCheckIn();
 
     expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
@@ -85,6 +93,7 @@ describe('CheckInFormComponent', () => {
       initiatives: checkInMetric.initiatives,
       keyResultId: keyResultMetric.id,
     });
+    expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
 
   it('should save check-in correctly if key result is ordinal', waitForAsync(async () => {

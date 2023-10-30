@@ -3,10 +3,8 @@ package ch.puzzle.okr.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 public class Organisation {

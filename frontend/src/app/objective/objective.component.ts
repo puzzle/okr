@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { trackByFn } from '../shared/common';
   styleUrls: ['./objective.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveComponent implements OnInit, AfterViewInit {
+export class ObjectiveComponent implements OnInit {
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
   protected readonly trackByFn = trackByFn;
@@ -45,7 +45,7 @@ export class ObjectiveComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
+  getMenu(): void {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.menuEntries = this.getCompletedMenuActions();
     } else {

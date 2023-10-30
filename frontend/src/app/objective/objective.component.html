@@ -28,7 +28,7 @@
       <button
         class="icon-button three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
-        (click)="$event.stopPropagation()"
+        (click)="$event.stopPropagation(); getMenu()"
         data-testid="objective-menu"
         (keydown.enter)="$event.stopPropagation()"
       >

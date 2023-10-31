@@ -1,0 +1,22 @@
+{
+  "gl": {
+    "username": "gl",
+    "password": "gl",
+    "name": "Jaya Norris"
+  },
+  "bl": {
+    "username": "bl",
+    "password": "bl",
+    "name": "Esha Harris"
+  },
+  "bbt": {
+    "username": "bbt",
+    "password": "bbt",
+    "name": "Ashleigh Russell"
+  },
+  "member": {
+    "username": "member",
+    "password": "member",
+    "name": "Abraham Woodard"
+  }
+}

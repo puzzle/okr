@@ -16,7 +16,8 @@ declare global {
     }
 
     interface Chainable<Subject = any> {
-      loginWithCredentials(username: string, password: string): Chainable<any>;
+      loginAsUser(user: any): Chainable<any>;
+      getByTestId(testsId: string): Chainable<any>;
     }
   }
 }

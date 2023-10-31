@@ -27,7 +27,15 @@
 // ***********************************************
 //
 //
-Cypress.Commands.add('loginWithCredentials', (username: string, password: string) => {
+Cypress.Commands.add('loginAsUser', (user: any) => {
+  loginWithCredentials(user.username, user.password);
+});
+
+Cypress.Commands.add('getByTestId', (testId: string) => {
+  return cy.get(`*[data-testId=${testId}]`);
+});
+
+function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.origin(
     'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch',
@@ -38,8 +46,12 @@ Cypress.Commands.add('loginWithCredentials', (username: string, password: string
       cy.get('input[type="submit"]').click();
     },
   );
-});
-
+  cy.url().then((url) => {
+    const currentUrl = new URL(url);
+    const baseURL = new URL(Cypress.config().baseUrl!);
+    expect(currentUrl.pathname).equal(baseURL.pathname);
+  });
+}
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
 //

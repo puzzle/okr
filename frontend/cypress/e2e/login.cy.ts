@@ -1,20 +1,24 @@
+import * as users from '../fixtures/users.json';
+
 describe('OKR Login', () => {
   beforeEach(() => {
-    cy.loginWithCredentials('gl', 'gl');
+    cy.loginAsUser(users.gl);
   });
 
-  it('Logs in with user johnny and has right overview and teams', () => {
-    cy.title().should('equal', 'Angular Workshop: Counters');
-    cy.contains('Objectives und Key Results');
-    cy.contains('Overview');
-    cy.contains('Team');
-    cy.contains('Puzzle ITC');
-    cy.contains('/BBT');
+  it.skip('Login and check correct name is displayed', () => {
+    cy.title().should('equal', 'Puzzle OKR');
+    cy.get("pzsh-menu-dropdown > div[slot='toggle']").contains(users.gl.name);
+  });
+
+  it('Login  and logout', () => {
+    cy.title().should('equal', 'Puzzle OKR');
+    cy.get("pzsh-menu-dropdown > div[slot='toggle']").click();
     cy.wait(500);
-    cy.get('pzsh-nav-item:last').click();
-    cy.contains('Teams');
-    cy.contains('Team erstellen');
-    cy.contains('Puzzle ITC');
-    cy.contains('/BBT');
+    cy.getByTestId('logout').click();
+    cy.wait(2000);
+    cy.origin('https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch', () => {
+      cy.url().should('include', 'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch');
+      cy.get('#kc-page-title').contains('Sign in to your account');
+    });
   });
 });

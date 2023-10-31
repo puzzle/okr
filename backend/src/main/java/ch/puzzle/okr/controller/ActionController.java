@@ -33,7 +33,7 @@ public class ActionController {
     public void updateActions(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Action as json to update existing Actions.", required = true) @RequestBody List<ActionDto> actionDtoList) {
         List<Action> actionList = this.actionMapper.toActions(actionDtoList);
-        actionAuthorizationService.updateEntities(actionList.get(0).getKeyResult(), actionList);
+        actionAuthorizationService.updateEntities(actionList);
     }
 
     @Operation(summary = "Delete Action by Id", description = "Delete Action by Id")

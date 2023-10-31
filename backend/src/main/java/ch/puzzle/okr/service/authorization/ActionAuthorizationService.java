@@ -28,21 +28,15 @@ public class ActionAuthorizationService {
         return actionList;
     }
 
-    public List<Action> createEntities(KeyResult keyResult, List<Action> actionList) {
+    public void createEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> {
-            action.setKeyResult(keyResult);
-            hasRoleCreateOrUpdate(action, authorizationUser);
-        });
-        return actionBusinessService.createEntities(actionList);
+        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
+        actionBusinessService.createEntities(actionList);
     }
 
-    public void updateEntities(KeyResult keyResult, List<Action> actionList) {
+    public void updateEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> {
-            action.setKeyResult(keyResult);
-            hasRoleCreateOrUpdate(action, authorizationUser);
-        });
+        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
         actionBusinessService.updateEntities(actionList);
     }
 

@@ -64,7 +64,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 validator.validateOnUpdate(id, keyResult);
                 List<Action> actionList = actionAuthorizationService.getEntitiesByKeyResultId(id);
                 KeyResult createdKeyResult = keyResultPersistenceService.recreateEntity(id, keyResult);
-                actionAuthorizationService.updateEntities(createdKeyResult, actionList);
+                actionAuthorizationService.updateEntities(actionList);
                 return createdKeyResult;
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());

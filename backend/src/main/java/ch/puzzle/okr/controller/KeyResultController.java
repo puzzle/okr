@@ -82,7 +82,7 @@ public class KeyResultController {
         List<ActionDto> actionDTOs = keyResultDto.getActionList().stream()
                 .map(actionDto -> actionDto.withKeyResultId(keyResult.getId())).toList();
         List<Action> actionList = actionMapper.toActions(actionDTOs);
-        actionAuthorizationService.createEntities(keyResult, actionList);
+        actionAuthorizationService.createEntities(actionList);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
@@ -105,7 +105,7 @@ public class KeyResultController {
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
         keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
         List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
-        actionAuthorizationService.updateEntities(keyResult, actionList);
+        actionAuthorizationService.updateEntities(actionList);
         KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }

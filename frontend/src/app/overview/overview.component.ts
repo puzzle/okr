@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, EMPTY, forkJoin, ReplaySubject, Subject, take, takeUntil, tap } from 'rxjs';
+import { catchError, EMPTY, ReplaySubject, Subject, takeUntil, tap } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
-import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
+import { trackByFn } from '../shared/common';
+import { FilterModel } from '../shared/types/model/FilterModel';
 
 @Component({
   selector: 'app-overview',
@@ -17,10 +17,6 @@ export class OverviewComponent implements OnDestroy {
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
-  private teamIds: number[] = [];
-  private objectiveQuery: string = '';
-  private quarterId?: number;
-
   constructor(
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
@@ -28,12 +24,12 @@ export class OverviewComponent implements OnDestroy {
     this.refreshDataService.getReloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .pipe(tap(console.log))
-      .subscribe(() => this.loadOverview(this.quarterId, this.teamIds, this.objectiveQuery));
+      .subscribe((filterValue: FilterModel) => this.loadOverview(filterValue));
   }
 
-  loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
+  loadOverview(filterValue?: FilterModel) {
     this.overviewService
-      .getOverview(quarterId, teamIds, objectiveQuery)
+      .getOverview(filterValue)
       .pipe(
         catchError(() => {
           this.loadOverview();

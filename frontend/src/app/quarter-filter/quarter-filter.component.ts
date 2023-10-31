@@ -27,9 +27,6 @@ export class QuarterFilterComponent implements OnInit {
       const quarterId: number = getValueFromQuery(quarterQuery)[0];
       if (quarters.map((quarter) => quarter.id).includes(quarterId)) {
         this.quarterId = quarterId;
-        if (quarters[0].id != this.quarterId) {
-          this.changeDisplayedQuarter();
-        }
       } else {
         this.quarterId = quarters[0].id;
         if (quarterId !== undefined) {

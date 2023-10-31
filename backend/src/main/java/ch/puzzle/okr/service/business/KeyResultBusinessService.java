@@ -88,11 +88,15 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private boolean isKeyResultTypeChangeable(Long id) {
-        return checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
+        return !hasKeyResultAnyCheckIns(id);
+    }
+
+    public boolean hasKeyResultAnyCheckIns(Long id) {
+        return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
     }
 
     public boolean isImUsed(Long id, KeyResult keyResult) {
-        return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty()
+        return hasKeyResultAnyCheckIns(id)
                 && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
     }
 }

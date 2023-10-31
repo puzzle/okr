@@ -11,10 +11,14 @@ import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
@@ -41,8 +45,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
+        throwExceptionWhenQuarterIsNotChangable(savedObjective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
+    }
+
+    private void throwExceptionWhenQuarterIsNotChangable(Objective objective) {
+        if (keyResultBusinessService.getAllKeyResultsByObjective(objective.getId()).stream()
+                .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent()) {
+            throw new ResponseStatusException(BAD_REQUEST,
+                    format("Not allowed to change the quarter of objective %s", objective.getTitle()));
+        }
     }
 
     @Transactional

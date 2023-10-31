@@ -15,7 +15,7 @@ public class CompletedValidationService
 
     @Override
     public void validateOnCreate(Completed model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         validate(model);
     }

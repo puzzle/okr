@@ -7,7 +7,6 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,16 +14,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.models.State.DRAFT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveBusinessServiceTest {
@@ -39,33 +40,21 @@ class ObjectiveBusinessServiceTest {
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
-    Objective objective;
-    Objective fullObjective1;
-    KeyResult ordinalKeyResult;
-    User user;
-    Quarter quarter;
-    List<KeyResult> keyResultList;
-    Team team1;
-
-    @BeforeEach
-    void setUp() {
-        this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
-        this.ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum").withStretchZone("Wald")
-                .withId(5L).withTitle("Keyresult Ordinal").withObjective(this.objective).build();
-        this.keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
-
-        user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann")
-                .withEmail("kaufmann@puzzle.ch").build();
-        this.team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
-        quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-        this.fullObjective1 = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
-                .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
-                .withModifiedOn(LocalDateTime.MAX).build();
-    }
+    private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();
+    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+    private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+    private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
+            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).build();
+    private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
+            .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
+    private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
 
     @Test
     void getOneObjective() {
-        Mockito.when(objectivePersistenceService.findById(5L)).thenReturn(this.objective);
+        Mockito.when(objectivePersistenceService.findById(5L)).thenReturn(objective);
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
         assertEquals("Objective 1", realObjective.getTitle());
@@ -74,11 +63,11 @@ class ObjectiveBusinessServiceTest {
     @Test
     void shouldNotFindTheObjective() {
         Mockito.when(objectivePersistenceService.findById(6L))
-                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Objective with id 6 not found"));
+                .thenThrow(new ResponseStatusException(NOT_FOUND, "Objective with id 6 not found"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveBusinessService.getEntityById(6L));
-        assertEquals(404, exception.getRawStatusCode());
+        assertEquals(NOT_FOUND, exception.getStatus());
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 
@@ -86,14 +75,14 @@ class ObjectiveBusinessServiceTest {
     void shouldSaveANewObjective() {
         Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
                 .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
-                .withState(State.DRAFT).build());
+                .withState(DRAFT).build());
 
         doNothing().when(objective).setCreatedOn(any());
 
         objectiveBusinessService.createEntity(objective, authorizationUser);
 
         verify(objectivePersistenceService, times(1)).save(objective);
-        assertEquals(State.DRAFT, objective.getState());
+        assertEquals(DRAFT, objective.getState());
         assertEquals(user, objective.getCreatedBy());
         assertNull(objective.getCreatedOn());
     }
@@ -102,8 +91,7 @@ class ObjectiveBusinessServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
                 .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        Mockito.when(objectiveBusinessService.createEntity(objective1, authorizationUser))
-                .thenReturn(this.fullObjective1);
+        Mockito.when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());
@@ -128,19 +116,39 @@ class ObjectiveBusinessServiceTest {
     }
 
     @Test
+    void updateEntityShouldThrowExceptionWhenQuarterHasChanged() {
+        Objective savedObjective = spy(
+                Objective.Builder.builder().withTitle("Received Objective").withTeam(team1).withQuarter(quarter)
+                        .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
+        Objective updatedObjective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
+                .withQuarter(Quarter.Builder.builder().withId(2L).withLabel("an other quarter").build())
+                .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
+
+        doNothing().when(updatedObjective).setModifiedOn(any());
+        Mockito.when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
+        when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(Boolean.TRUE);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveBusinessService
+                .updateEntity(updatedObjective.getId(), updatedObjective, authorizationUser));
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals("Not allowed to change the quarter of objective Received Objective", exception.getReason());
+    }
+
+    @Test
     void shouldDeleteObjectiveAndAssociatedKeyResults() {
-        when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(this.keyResultList);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(1L)).thenReturn(keyResultList);
 
-        this.objectiveBusinessService.deleteEntityById(1L);
+        objectiveBusinessService.deleteEntityById(1L);
 
-        verify(this.keyResultBusinessService, times(3)).deleteEntityById(5L);
-        verify(this.objectiveBusinessService, times(1)).deleteEntityById(1L);
+        verify(keyResultBusinessService, times(3)).deleteEntityById(5L);
+        verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
     }
 
     @Test
     void verifyActiveObjectivesAmountOfTeam() {
-        this.objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
-        verify(this.objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
+        objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
+        verify(objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
     }
 
     @Test
@@ -154,8 +162,8 @@ class ObjectiveBusinessServiceTest {
         Mockito.when(objectivePersistenceService.save(any())).thenReturn(objective);
         Mockito.when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
 
-        this.objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
-        verify(this.keyResultBusinessService, times(4)).createEntity(any(), any());
-        verify(this.objectiveBusinessService, times(1)).createEntity(any(), any());
+        objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
+        verify(keyResultBusinessService, times(4)).createEntity(any(), any());
+        verify(objectiveBusinessService, times(1)).createEntity(any(), any());
     }
 }

@@ -45,16 +45,16 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     public abstract void validateOnUpdate(ID id, T model);
 
-    public void validateOnDelete(ID id) {
+    public T validateOnDelete(ID id) {
         throwExceptionWhenIdIsNull(id);
-        doesEntityExist(id);
+        return doesEntityExist(id);
     }
 
-    public void doesEntityExist(ID id) {
-        persistenceService.findById(id);
+    public T doesEntityExist(ID id) {
+        return persistenceService.findById(id);
     }
 
-    public void throwExceptionIfModelIsNull(T model) {
+    public void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("Given model %s is null", persistenceService.getModelName()));

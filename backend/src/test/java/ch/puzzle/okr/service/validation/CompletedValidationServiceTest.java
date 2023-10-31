@@ -1,11 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.models.keyresult.KeyResult;
-import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
-import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +74,7 @@ class CompletedValidationServiceTest {
     void validateOnCreate_ShouldBeSuccessfulWhenCompletedIsValid() {
         validator.validateOnCreate(this.validCompleted);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.validCompleted);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(this.validCompleted);
         verify(validator, times(1)).validate(this.validCompleted);
     }
 

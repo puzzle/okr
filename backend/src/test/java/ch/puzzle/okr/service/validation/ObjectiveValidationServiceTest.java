@@ -80,7 +80,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidObjectiveId() {
+    void validateOnGetShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -88,7 +88,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfObjectiveIdIsNull() {
+    void validateOnGetShouldThrowExceptionIfObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -97,15 +97,15 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenTeamIsValid() {
+    void validateOnCreateShouldBeSuccessfulWhenTeamIsValid() {
         validator.validateOnCreate(objectiveMinimal);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objectiveMinimal);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveMinimal);
         verify(validator, times(1)).validate(objectiveMinimal);
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -113,7 +113,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objective1));
 
@@ -122,7 +122,7 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
@@ -143,7 +143,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
@@ -156,7 +156,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrModifiedByIsSet() {
+    void validateOnCreateShouldThrowExceptionWhenAttrModifiedByIsSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(null)
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(user).build();
@@ -168,17 +168,17 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldBeSuccessfulWhenObjectiveIsValid() {
+    void validateOnUpdateShouldBeSuccessfulWhenObjectiveIsValid() {
         validator.validateOnUpdate(objective1.getId(), objective1);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objective1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(objective1.getId(), objective1.getId());
         verify(validator, times(1)).validate(objective1);
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
@@ -186,21 +186,21 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, objectiveMinimal));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objectiveMinimal);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objectiveMinimal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(7L, objective1));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(objective1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(objective1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(objective1.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, objective1.getId());
         assertEquals("Id 7 has changed to 1 during update", exception.getReason());
@@ -208,16 +208,17 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
                 .withCreatedOn(LocalDateTime.MAX).build();
+        when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, objective));
-
         String[] exceptionParts = exception.getReason().split("\\.");
+
         String[] errorArray = new String[errors.size()];
 
         for (int i = 0; i < errors.size(); i++) {
@@ -230,8 +231,9 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withModifiedBy(user).build();
+        when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
@@ -244,7 +246,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
+    void validateOnUpdateShouldThrowExceptionWhenAttrModifiedByIsNotSet() {
         Objective objectiveInvalid = Objective.Builder.builder().withId(1L)
                 .withTitle("ModifiedBy is not null on create").withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
                 .withState(State.DRAFT).withTeam(team).withQuarter(quarter).withModifiedBy(null).build();
@@ -256,7 +258,27 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidObjectiveId() {
+    void validateOnUpdateShouldThrowExceptionWheTeamHasChanged() {
+        Objective savedObjective = Objective.Builder.builder().withId(1L).withTitle("Team has changed")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(quarter).withModifiedBy(null).build();
+        Objective updatedObjective = Objective.Builder.builder().withId(1L).withTitle("Team has changed")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT)
+                .withTeam(Team.Builder.builder().withId(2L).withName("other team").build()).withQuarter(quarter)
+                .withModifiedBy(user).build();
+        when(objectivePersistenceService.findById(savedObjective.getId())).thenReturn(savedObjective);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, updatedObjective));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(
+                String.format("The team can not be changed (new team %s, old team %s)",
+                        updatedObjective.getTeam().getName(), savedObjective.getTeam().getName()),
+                exception.getReason());
+    }
+
+    @Test
+    void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -264,7 +286,7 @@ class ObjectiveValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfObjectiveIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

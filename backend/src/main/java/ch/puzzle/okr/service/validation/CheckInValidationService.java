@@ -3,11 +3,13 @@ package ch.puzzle.okr.service.validation;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.repository.CheckInRepository;
 import ch.puzzle.okr.service.persistence.CheckInPersistenceService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.util.Objects;
+
+import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class CheckInValidationService
@@ -19,24 +21,25 @@ public class CheckInValidationService
 
     @Override
     public void validateOnCreate(CheckIn model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         validate(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, CheckIn model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNull(id);
         throwExceptionWhenIdHasChanged(id, model.getId());
-        doesEntityExist(id);
-
-        List<CheckIn> checkInsOfKeyResult = getPersistenceService()
-                .getCheckInsByKeyResultIdOrderByCheckInDateDesc(model.getKeyResult().getId());
-        checkInsOfKeyResult = checkInsOfKeyResult.stream().filter(checkIn -> checkIn.getId().equals(id)).toList();
-        if (checkInsOfKeyResult.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can not change key result id of check-in");
-        }
+        CheckIn savedCheckIn = doesEntityExist(id);
+        throwExceptionWhenKeyResultHasChanged(model, savedCheckIn);
         validate(model);
+    }
+
+    private static void throwExceptionWhenKeyResultHasChanged(CheckIn checkIn, CheckIn savedCheckIn) {
+        if (!Objects.equals(checkIn.getKeyResult().getId(), savedCheckIn.getKeyResult().getId())) {
+            throw new ResponseStatusException(BAD_REQUEST,
+                    format("Not allowed change the association to the key result (id = %s)", savedCheckIn.getId()));
+        }
     }
 }

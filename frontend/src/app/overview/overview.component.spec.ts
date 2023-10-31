@@ -77,7 +77,7 @@ describe('OverviewComponent', () => {
     },
   );
 
-  it('should refresh overview Entities after getOVerview is called', async () => {
+  it('should refresh overview Entities after getOverview is called', async () => {
     jest.spyOn(component.overviewEntities$, 'next');
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();

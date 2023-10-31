@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { catchError, EMPTY, filter, ReplaySubject, Subject, takeUntil, tap } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -26,7 +26,14 @@ export class OverviewComponent implements OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
 
-    this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$)).subscribe(() => this.loadOverviewWithParams());
+    this.activatedRoute.queryParams
+      .pipe(
+        //State is filtered so on login the overview is not loaded twice. This would happen because the login process changes
+        //query params which then results in a reloaded overview.
+        filter((value) => !value['state']),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe(() => this.loadOverviewWithParams());
   }
 
   loadOverviewWithParams() {

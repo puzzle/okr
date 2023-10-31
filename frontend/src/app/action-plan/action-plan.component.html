@@ -3,7 +3,7 @@
 <div
   *ngIf="control?.getValue()"
   cdkDropList
-  [cdkDropListData]="control.getValue()"
+  [cdkDropListData]="control | async"
   class="action-points-list d-flex flex-column gap-2"
   (cdkDropListDropped)="drop($event)"
 >

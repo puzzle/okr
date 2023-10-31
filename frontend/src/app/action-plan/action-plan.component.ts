@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Action } from '../shared/types/model/Action';
-import { FormControl } from '@angular/forms';
 import { ActionService } from '../shared/services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
@@ -29,7 +28,6 @@ export class ActionPlanComponent {
       actions[event.previousIndex] = { ...actions[event.previousIndex], action: value };
       this.control.next(actions);
     }
-
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data!, event.previousIndex, event.currentIndex);
     } else {

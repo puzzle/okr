@@ -27,6 +27,7 @@ import { formInputCheck } from '../../common';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
+  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
   protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
@@ -50,7 +51,11 @@ export class KeyResultDialogComponent implements OnInit {
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
     public userService: UserService,
-  ) {}
+  ) {
+    if (this.data.keyResult) {
+      this.actionList$ = new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
+    }
+  }
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
@@ -93,8 +98,8 @@ export class KeyResultDialogComponent implements OnInit {
       ? ({ ...value, objective: this.data.objective } as KeyResultMetricDTO)
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
-    keyResult.actionList?.forEach((action) => (action.keyResultId = keyResult.id));
     keyResult.version = this.data.keyResult?.version;
+    keyResult.actionList = this.actionList$.getValue();
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,
@@ -159,9 +164,5 @@ export class KeyResultDialogComponent implements OnInit {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
-  }
-
-  getSubjectOfActionList() {
-    return new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
   }
 }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
 
@@ -21,6 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
@@ -28,7 +29,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadOverview();
+    if (this.router.url === '/') {
+      this.loadOverview();
+    }
   }
 
   loadOverviewWithParams() {

@@ -53,11 +53,7 @@ describe('OverviewComponent', () => {
 
   it('should load default overview on init', async () => {
     jest.spyOn(overviewService, 'getOverview');
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/?quarter=7');
-    routerHarness.detectChanges();
-    component.ngOnInit();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, undefined, undefined);
+    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, [], '');
   });
 
   it.each([

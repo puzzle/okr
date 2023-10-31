@@ -16,7 +16,6 @@ export class ObjectiveFilterComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private refreshService: RefreshDataService,
     private route: ActivatedRoute,
   ) {
     this.refresh.pipe(debounceTime(300)).subscribe(() => this.updateURL());
@@ -27,7 +26,7 @@ export class ObjectiveFilterComponent implements OnInit {
     const encoded = encodeURI(sanitizedQuery);
     const params = { objectiveQuery: encoded };
     const optionalParams = optionalReplaceWithNulls(params);
-    this.router.navigate([], { queryParams: optionalParams }).then(() => this.refreshService.markDataRefresh());
+    this.router.navigate([], { queryParams: optionalParams });
   }
 
   ngOnInit() {

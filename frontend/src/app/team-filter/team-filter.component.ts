@@ -19,14 +19,7 @@ export class TeamFilterComponent implements OnInit {
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
-    private refreshDataService: RefreshDataService,
-  ) {
-    this.refreshDataService.reloadOverviewSubject.subscribe(() => {
-      this.teamService.getAllTeams().subscribe((teams) => {
-        this.teams$.next(teams);
-      });
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams: Team[]) => {
@@ -48,9 +41,7 @@ export class TeamFilterComponent implements OnInit {
   }
 
   changeTeamFilterParamsAndReload() {
-    this.changeTeamFilterParams().then(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    this.changeTeamFilterParams();
   }
 
   toggleSelection(id: number) {

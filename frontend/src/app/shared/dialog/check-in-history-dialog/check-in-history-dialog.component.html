@@ -38,11 +38,11 @@
           </div>
           <div class="d-flex flex-row w-100 text-wrap mt-1" *ngIf="checkIn.changeInfo !== ''">
             <span class="label-width"><i>Veränderungen: </i></span>
-            <span class="value-width">{{ checkIn.changeInfo }}</span>
+            <span class="value-width linebreak">{{ checkIn.changeInfo }}</span>
           </div>
           <div class="d-flex flex-row w-100 text-wrap mt-1" *ngIf="checkIn.initiatives !== ''">
             <span class="label-width"><i>Massnahmen: </i></span>
-            <span class="value-width">{{ checkIn.initiatives }}</span>
+            <span class="value-width linebreak">{{ checkIn.initiatives }}</span>
           </div>
         </div>
       </ng-container>

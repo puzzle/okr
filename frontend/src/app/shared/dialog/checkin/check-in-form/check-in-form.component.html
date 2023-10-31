@@ -7,7 +7,7 @@
   <!--  First part of dialog-->
   <div *ngIf="!continued">
     <p class="fs-6 mt-1 text-black">Key Result</p>
-    <p class="ms-2 mt-2 text-black">{{ keyResult.title }}</p>
+    <p class="ms-2 mt-2 text-black linebreak">{{ keyResult.title }}</p>
     <form [formGroup]="dialogForm" class="d-flex flex-column mt-3">
       <!--      Custom input which depends on type of keyResult-->
       <app-check-in-form-metric

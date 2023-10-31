@@ -1,9 +1,10 @@
 describe('OKR Login', () => {
   beforeEach(() => {
-    cy.loginWithCredentials('johnny', '123'); // Call the custom login command before each test
+    cy.loginWithCredentials('gl', 'gl');
   });
 
   it('Logs in with user johnny and has right overview and teams', () => {
+    cy.title().should('equal', 'Angular Workshop: Counters');
     cy.contains('Objectives und Key Results');
     cy.contains('Overview');
     cy.contains('Team');

@@ -4,7 +4,7 @@
       <div class="w-100 d-flex justify-content-between align-items-center position-relative mb-3">
         <span class="title">{{ objective.title }}</span>
         <button
-          class="d-flex justify-content-center align-items-center position-absolute close-button r-0"
+          class="d-flex justify-content-center align-items-center position-absolute close-button end-0"
           mat-icon-button
           [routerLink]="'/'"
           data-test-id="closeDrawer"
@@ -13,7 +13,7 @@
         </button>
       </div>
       <div class="title fs-6">Beschrieb</div>
-      <p data-test-id="description">{{ objective.description }}</p>
+      <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
       <section
         class="py-3"
         *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"

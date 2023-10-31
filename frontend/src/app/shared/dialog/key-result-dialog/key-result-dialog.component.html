@@ -2,12 +2,7 @@
   <app-dialog-header
     [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
   ></app-dialog-header>
-  <form
-    (ngSubmit)="saveKeyResult()"
-    [formGroup]="keyResultForm"
-    class="d-flex flex-column flex-wrap container p-0"
-    (keydown.enter)="$event.preventDefault()"
-  >
+  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <textarea
@@ -32,6 +27,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
+        (keydown.enter)="$event.preventDefault()"
         [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
         class="input-fields owner-input"
         [attr.data-testId]="'ownerInput'"

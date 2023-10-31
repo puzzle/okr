@@ -15,20 +15,7 @@ export class KeyresultComponent {
   @Input() keyResult!: KeyresultMin;
   protected readonly DATE_FORMAT = DATE_FORMAT;
 
-  constructor(
-    public dialog: MatDialog,
-    private router: Router,
-  ) {}
-
-  checkInHistory() {
-    const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
-      data: {
-        keyResultId: this.keyResult.id,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(() => {});
-  }
+  constructor(private router: Router) {}
 
   openDrawer() {
     this.router.navigate(['keyresult', this.keyResult.id]);

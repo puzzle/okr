@@ -11,7 +11,7 @@ import { Objective } from '../../types/model/Objective';
 import { KeyResultOrdinalDTO } from '../../types/DTOs/KeyResultOrdinalDTO';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
 import { Action } from '../../types/model/Action';
@@ -159,5 +159,9 @@ export class KeyResultDialogComponent implements OnInit {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
+  }
+
+  getSubjectOfActionList() {
+    return new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
   }
 }

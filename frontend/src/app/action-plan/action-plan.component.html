@@ -1,13 +1,13 @@
 <label class="text-black">Action Plan (optional)</label>
 
 <div
-  *ngIf="control?.getRawValue()"
+  *ngIf="control?.getValue()"
   cdkDropList
-  [cdkDropListData]="control.getRawValue()"
+  [cdkDropListData]="control.getValue()"
   class="action-points-list d-flex flex-column gap-2"
   (cdkDropListDropped)="drop($event)"
 >
-  <div class="action-point-item" *ngFor="let action of control.getRawValue(); index as i" cdkDrag>
+  <div class="action-point-item" *ngFor="let action of (control | async)!; index as i" cdkDrag>
     <div class="drag-drop-dots">
       <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
     </div>

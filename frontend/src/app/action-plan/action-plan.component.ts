@@ -6,6 +6,7 @@ import { ActionService } from '../shared/services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-action-plan',
@@ -13,7 +14,7 @@ import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
   styleUrls: ['./action-plan.component.scss'],
 })
 export class ActionPlanComponent {
-  @Input() control!: FormControl<Action[] | null>;
+  @Input() control!: BehaviorSubject<Action[] | null>;
 
   constructor(
     private actionService: ActionService,
@@ -23,10 +24,10 @@ export class ActionPlanComponent {
   drop(event: CdkDragDrop<Action[] | null>) {
     let value = (<HTMLInputElement>event.container.element.nativeElement.children[event.previousIndex].children[1])
       .value;
-    const actions = this.control.value!;
+    const actions = this.control.getValue()!;
     if (actions[event.previousIndex].action == '' && value != '') {
       actions[event.previousIndex] = { ...actions[event.previousIndex], action: value };
-      this.control.setValue(actions);
+      this.control.next(actions);
     }
 
     if (event.previousContainer === event.container) {
@@ -38,19 +39,19 @@ export class ActionPlanComponent {
   }
 
   changeActionText(event: any, index: number) {
-    const actions = this.control.value!;
+    const actions = this.control.getValue()!;
     actions[index] = { ...actions[index], action: event.target.value! };
-    this.control.setValue(actions);
+    this.control.next(actions);
   }
 
   addNewAction() {
-    const actions = this.control.value!;
+    const actions = this.control.getValue()!;
     actions.push({ action: '', priority: actions.length } as Action);
-    this.control.setValue(actions);
+    this.control.next(actions);
   }
 
   removeAction(index: number) {
-    const actions = this.control.value!;
+    const actions = this.control.getValue()!;
     if (actions[index].action !== '') {
       this.dialog
         .open(ConfirmDialogComponent, {
@@ -68,22 +69,22 @@ export class ActionPlanComponent {
               this.actionService.deleteAction(actions[index].id!).subscribe();
             }
             actions.splice(index, 1);
-            this.control.setValue(actions);
+            this.control.next(actions);
             this.adjustPriorities();
           }
         });
     } else {
       actions.splice(index, 1);
-      this.control.setValue(actions);
+      this.control.next(actions);
       this.adjustPriorities();
     }
   }
 
   adjustPriorities() {
-    const actions = this.control.value!;
+    const actions = this.control.getValue()!;
     actions.forEach(function (action, index) {
       action.priority = index;
     });
-    this.control.setValue(actions);
+    this.control.next(actions);
   }
 }

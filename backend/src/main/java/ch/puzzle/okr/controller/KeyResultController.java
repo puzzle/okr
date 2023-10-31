@@ -77,9 +77,9 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         keyResult = keyResultAuthorizationService.createEntity(keyResult);
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         actionAuthorizationService.createEntities(keyResult, actionList);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
@@ -99,10 +99,10 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
         keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
         actionAuthorizationService.updateEntities(keyResult, actionList);
         KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);

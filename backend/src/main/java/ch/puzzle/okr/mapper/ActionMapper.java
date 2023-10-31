@@ -2,7 +2,7 @@ package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
+import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -10,14 +10,15 @@ import java.util.List;
 @Component
 public class ActionMapper {
 
-    private final KeyResultBusinessService keyResultBusinessService;
+    private final KeyResultAuthorizationService keyResultAuthorizationService;
 
-    public ActionMapper(KeyResultBusinessService keyResultBusinessService) {
-        this.keyResultBusinessService = keyResultBusinessService;
+    public ActionMapper(KeyResultAuthorizationService keyResultAuthorizationService) {
+        this.keyResultAuthorizationService = keyResultAuthorizationService;
     }
 
     public ActionDto toDto(Action action) {
-        return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked());
+        return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked(),
+                action.getKeyResult().getId());
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos) {
@@ -26,6 +27,9 @@ public class ActionMapper {
 
     public Action toAction(ActionDto actionDto) {
         return Action.Builder.builder().withId(actionDto.id()).withAction(actionDto.action())
-                .withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked()).build();
+                .withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
+                .withKeyResult(
+                        keyResultAuthorizationService.getBusinessService().getEntityById(actionDto.keyResultId()))
+                .build();
     }
 }

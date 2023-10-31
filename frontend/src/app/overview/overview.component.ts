@@ -21,7 +21,6 @@ export class OverviewComponent implements OnDestroy {
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))

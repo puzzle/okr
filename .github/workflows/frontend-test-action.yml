@@ -49,5 +49,6 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: frontend
-          wait-on: 'http://localhost:8080, http://localhost:4200'
           start: npm start
+          wait-on: 'http://localhost:8080/config, http://localhost:4200'
+          wait-on-timeout: 120

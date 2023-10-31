@@ -23,7 +23,6 @@ export class OverviewComponent implements OnDestroy {
   ) {
     this.refreshDataService.getReloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .pipe(tap(console.log))
       .subscribe((filterValue: FilterModel) => this.loadOverview(filterValue));
   }
 

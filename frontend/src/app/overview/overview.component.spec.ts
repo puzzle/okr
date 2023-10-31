@@ -8,6 +8,7 @@ import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../shared/guards/auth.guard';
+import { query } from '@angular/animations';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -91,5 +92,18 @@ describe('OverviewComponent', () => {
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();
     expect(component.loadOverview).toHaveBeenLastCalledWith();
+  });
+
+  it('should filter out the state param so it doesnt make the overview reload on login', async () => {
+    jest.spyOn(component, 'loadOverviewWithParams');
+    const routerHarness = await RouterTestingHarness.create();
+    await routerHarness.navigateByUrl('/quarter=1');
+    routerHarness.detectChanges();
+    fixture.detectChanges();
+    expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(1);
+    await routerHarness.navigateByUrl('/state=asdf');
+    routerHarness.detectChanges();
+    fixture.detectChanges();
+    expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(0);
   });
 });

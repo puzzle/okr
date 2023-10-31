@@ -53,13 +53,13 @@ class AuthorizationCriteriaIT {
     }
 
     @Test
-    void appendOverview_ShouldReturnObjective_WhenFirstLevelRole() {
+    void appendOverview_ShouldReturnObjective_WhenFirstLevelRoleAndTeamIdsEmpty() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(5L), "",
+        List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(), "",
                 authorizationUser);
 
-        assertEquals(6L, overviews.size());
+        assertEquals(17L, overviews.size());
     }
 
     @Test

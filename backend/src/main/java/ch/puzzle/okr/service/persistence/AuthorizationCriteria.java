@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -13,33 +14,47 @@ import static java.lang.String.format;
 @Component
 public class AuthorizationCriteria<T> {
 
-    public String appendOverview(AuthorizationUser authorizationUser) {
-        return append(authorizationUser, "o", "objectiveState", "overviewId.teamId", true);
+    private static final String PARAM_ALL_DRAFT_STATE = "allDraftState";
+    private static final String PARAM_FIRST_LEVEL_TEAM_IDS = "firstLevelTeamIds";
+    private static final String PARAM_PUBLISHED_STATES = "publishedStates";
+    private static final String PARAM_TEAM_DRAFT_STATE = "teamDraftState";
+    private static final String PARAM_TEAMS_DRAFT_STATE = "teamsDraftState";
+    private static final String PARAM_TEAM_IDS = "teamIds";
+    private static final String PARAM_USER_TEAM_IDS = "userTeamIds";
+
+    public String appendOverview(AuthorizationUser authorizationUser, List<Long> teamIds) {
+        String alias = "o";
+        StringBuilder sb = new StringBuilder(256);
+        if (shouldAddTeamFilter(teamIds)) {
+            sb.append("  and o.overviewId.teamId in (:" + PARAM_TEAM_IDS + ")");
+        }
+        String authorizationWhereClause = append(authorizationUser, alias, "objectiveState", "overviewId.teamId");
+        if (!authorizationWhereClause.isEmpty()) {
+            sb.append("\n ").append(authorizationWhereClause.substring(0, authorizationWhereClause.length() - 1));
+            sb.append(format(" or %s.overviewId.objectiveId = -1)", alias));
+        }
+        return sb.toString();
     }
 
     public String appendObjective(AuthorizationUser authorizationUser) {
-        return append(authorizationUser, "o", "state", "team.id", false);
+        return append(authorizationUser, "o", "state", "team.id");
     }
 
-    private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn,
-            boolean skipObjective) {
+    private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn) {
         StringBuilder sb = new StringBuilder(256);
         if (hasRoleReadAllDraft(user)) {
-            sb.append(format(" or %s.%s=:allDraftState", alias, stateColumn));
+            sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
         }
         if (hasRoleReadAllPublished(user)) {
-            sb.append(format(" or %s.%s IN (:publishedStates)", alias, stateColumn));
+            sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
         }
         if (hasRoleReadTeamDraft(user)) {
-            sb.append(format(" or %s.%s=:teamDraftState and %s.%s IN (:userTeamIds)", alias, stateColumn, alias,
-                    teamIdColumn));
+            sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
+                    teamIdColumn, PARAM_USER_TEAM_IDS));
         }
         if (hasRoleReadTeamsDraft(user)) {
-            sb.append(format(" or %s.%s=:teamsDraftState and %s.%s NOT IN (:firstLevelTeamIds)", alias, stateColumn,
-                    alias, teamIdColumn));
-        }
-        if (skipObjective) {
-            sb.append(format(" or %s.overviewId.objectiveId = -1", alias));
+            sb.append(format(" or %s.%s=:%s and %s.%s NOT IN (:%s)", alias, stateColumn, PARAM_TEAMS_DRAFT_STATE, alias,
+                    teamIdColumn, PARAM_FIRST_LEVEL_TEAM_IDS));
         }
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");
@@ -47,20 +62,31 @@ public class AuthorizationCriteria<T> {
         return sb.toString();
     }
 
+    public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user, List<Long> teamIds) {
+        if (shouldAddTeamFilter(teamIds)) {
+            typedQuery.setParameter(PARAM_TEAM_IDS, teamIds);
+        }
+        setParameters(typedQuery, user);
+    }
+
     public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user) {
         if (hasRoleReadAllDraft(user)) {
-            typedQuery.setParameter("allDraftState", DRAFT);
+            typedQuery.setParameter(PARAM_ALL_DRAFT_STATE, DRAFT);
         }
         if (hasRoleReadAllPublished(user)) {
-            typedQuery.setParameter("publishedStates", List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
+            typedQuery.setParameter(PARAM_PUBLISHED_STATES, List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
         }
         if (hasRoleReadTeamDraft(user)) {
-            typedQuery.setParameter("teamDraftState", DRAFT);
-            typedQuery.setParameter("userTeamIds", user.userTeamIds());
+            typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
+            typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.userTeamIds());
         }
         if (hasRoleReadTeamsDraft(user)) {
-            typedQuery.setParameter("teamsDraftState", DRAFT);
-            typedQuery.setParameter("firstLevelTeamIds", user.firstLevelTeamIds());
+            typedQuery.setParameter(PARAM_TEAMS_DRAFT_STATE, DRAFT);
+            typedQuery.setParameter(PARAM_FIRST_LEVEL_TEAM_IDS, user.firstLevelTeamIds());
         }
+    }
+
+    private static boolean shouldAddTeamFilter(List<Long> teamIds) {
+        return !CollectionUtils.isEmpty(teamIds);
     }
 }

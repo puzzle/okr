@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, optionalReplaceWithNulls, sanitize } from '../shared/common';
-import { debounceTime, map, Subject } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-objective-filter',
@@ -10,9 +10,9 @@ import { debounceTime, map, Subject } from 'rxjs';
   styleUrls: ['./objective-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveFilterComponent implements OnInit {
+export class ObjectiveFilterComponent implements AfterViewInit {
   refresh: Subject<void> = new Subject();
-  query: string = '';
+  query: string = 'test';
 
   constructor(
     private router: Router,
@@ -30,13 +30,12 @@ export class ObjectiveFilterComponent implements OnInit {
     this.router.navigate([], { queryParams: optionalParams }).then(() => this.refreshService.markDataRefresh());
   }
 
-  ngOnInit() {
-    this.route.queryParams.pipe(map((p) => p['objectiveQuery'])).subscribe((query) => {
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const query = this.route.snapshot.queryParams['objectiveQuery'];
       const objectiveQuery = getQueryString(query);
-      if (sanitize(this.query) !== objectiveQuery) {
-        this.query = objectiveQuery;
-        this.updateURL();
-      }
-    });
+      this.query = objectiveQuery;
+      this.refreshService.refreshObjectiveFilter(objectiveQuery);
+    }, 1000);
   }
 }

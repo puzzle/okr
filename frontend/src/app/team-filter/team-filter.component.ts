@@ -21,7 +21,7 @@ export class TeamFilterComponent implements OnInit {
     private router: Router,
     private refreshDataService: RefreshDataService,
   ) {
-    this.refreshDataService.reloadOverviewSubject.subscribe(() => {
+    this.refreshDataService.getReloadOverviewSubject.subscribe(() => {
       this.teamService.getAllTeams().subscribe((teams) => {
         this.teams$.next(teams);
       });
@@ -37,7 +37,7 @@ export class TeamFilterComponent implements OnInit {
       if (this.areAllTeamsShown()) {
         this.activeTeams = [];
       }
-      this.changeTeamFilterParams();
+      this.refreshDataService.refreshTeamFilter(this.activeTeams);
     });
   }
 

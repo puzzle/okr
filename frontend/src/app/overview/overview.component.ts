@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { catchError, EMPTY, forkJoin, ReplaySubject, Subject, take, takeUntil, tap } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -12,34 +12,23 @@ import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   protected readonly trackByFn = trackByFn;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+
+  private teamIds: number[] = [];
+  private objectiveQuery: string = '';
+  private quarterId?: number;
 
   constructor(
     private overviewService: OverviewService,
     private refreshDataService: RefreshDataService,
-    private activatedRoute: ActivatedRoute,
   ) {
-    this.refreshDataService.reloadOverviewSubject
+    this.refreshDataService.getReloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.loadOverviewWithParams());
-  }
-
-  ngOnInit(): void {
-    this.loadOverview();
-  }
-
-  loadOverviewWithParams() {
-    const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
-    const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
-    const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];
-
-    const teamIds = getValueFromQuery(teamQuery);
-    const quarterId = getValueFromQuery(quarterQuery)[0];
-    const objectiveQueryString = getQueryString(objectiveQuery);
-    this.loadOverview(quarterId, teamIds, objectiveQueryString);
+      .pipe(tap(console.log))
+      .subscribe(() => this.loadOverview(this.quarterId, this.teamIds, this.objectiveQuery));
   }
 
   loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {

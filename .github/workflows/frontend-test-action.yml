@@ -22,3 +22,6 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
+      - name: Run End to end tests (Cypress)
+        run: "npm run cypress:run"

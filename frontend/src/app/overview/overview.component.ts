@@ -12,7 +12,7 @@ import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -34,10 +34,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$),
       )
       .subscribe(() => this.loadOverviewWithParams());
-  }
-
-  ngOnInit(): void {
-    this.loadOverview();
   }
 
   loadOverviewWithParams() {

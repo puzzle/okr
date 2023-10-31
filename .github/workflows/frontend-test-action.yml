@@ -1,4 +1,4 @@
-name: 'Frontend unit tests'
+name: 'Frontend unit & e2e tests'
 
 on: [push]
 jobs:
@@ -23,9 +23,21 @@ jobs:
         run: npm test
   e2e:
     runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres:12
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pwd
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: start backend
+        run:  cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:

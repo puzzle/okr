@@ -1,10 +1,9 @@
-name: 'Frontend tests'
+name: 'Frontend unit tests'
 
 on: [push]
 jobs:
-
-  Tests:
-    runs-on: ubuntu-latest
+  unit-tests:
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: frontend
@@ -22,6 +21,13 @@ jobs:
 
       - name: Run unit tests
         run: npm test
-
-      - name: Run End to end tests (Cypress)
-        run: "npm run cypress:run"
+  e2e:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start

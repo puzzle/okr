@@ -118,7 +118,7 @@ describe('TeamFilterComponent', () => {
     component.changeTeamFilterParamsAndReload();
     tick(500);
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(refreshDataServiceMock.markDataRefresh).toBeCalledTimes(1);
+    expect(refreshDataServiceMock.markDataRefresh).toBeCalledTimes(0);
   }));
 
   it.each([

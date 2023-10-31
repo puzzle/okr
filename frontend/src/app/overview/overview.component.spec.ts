@@ -48,8 +48,6 @@ describe('OverviewComponent', () => {
 
   it('should load default overview when no quarter is defined in route-params', () => {
     jest.spyOn(overviewService, 'getOverview');
-
-    component.ngOnInit();
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
 

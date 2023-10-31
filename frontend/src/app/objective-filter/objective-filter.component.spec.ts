@@ -14,6 +14,7 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../shared/guards/auth.guard';
+import { OverviewComponent } from '../overview/overview.component';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -27,7 +28,7 @@ describe('ObjectiveFilterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ObjectiveFilterComponent],
+      declarations: [ObjectiveFilterComponent, OverviewComponent],
       providers: [
         {
           provide: authGuard,

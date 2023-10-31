@@ -2,11 +2,7 @@
   <app-dialog-header
     [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
   ></app-dialog-header>
-  <form
-    (ngSubmit)="saveKeyResult()"
-    [formGroup]="keyResultForm"
-    class="d-flex flex-column flex-wrap container p-0"
-  >
+  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
       <textarea

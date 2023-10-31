@@ -6,7 +6,6 @@
     (ngSubmit)="saveKeyResult()"
     [formGroup]="keyResultForm"
     class="d-flex flex-column flex-wrap container p-0"
-    (keydown.enter)="$event.preventDefault()"
   >
     <div class="d-flex flex-column gap-2 col-12">
       <label for="title" class="text-black">Titel</label>
@@ -32,6 +31,7 @@
     <div class="d-flex flex-column gap-2 col-12">
       <label>Owner</label>
       <input
+        (keydown.enter)="$event.preventDefault()"
         [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
         class="input-fields owner-input"
         [attr.data-testId]="'ownerInput'"

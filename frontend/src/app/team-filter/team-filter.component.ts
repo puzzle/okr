@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../shared/common';
 
 @Component({

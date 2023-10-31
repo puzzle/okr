@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, optionalReplaceWithNulls, sanitize } from '../shared/common';
 import { debounceTime, map, Subject } from 'rxjs';
 

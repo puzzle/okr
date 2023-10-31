@@ -35,7 +35,6 @@ export class ObjectiveFilterComponent implements OnInit {
       const objectiveQuery = getQueryString(query);
       if (sanitize(this.query) !== objectiveQuery) {
         this.query = objectiveQuery;
-        this.updateURL();
       }
     });
   }

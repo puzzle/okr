@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
@@ -77,9 +78,10 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
-        keyResult = keyResultAuthorizationService.createEntity(keyResult);
-        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
+        KeyResult keyResult = keyResultAuthorizationService.createEntity(keyResultMapper.toKeyResult(keyResultDto));
+        List<ActionDto> actionDTOs = keyResultDto.getActionList().stream()
+                .map(actionDto -> actionDto.withKeyResultId(keyResult.getId())).toList();
+        List<Action> actionList = actionMapper.toActions(actionDTOs);
         actionAuthorizationService.createEntities(keyResult, actionList);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);

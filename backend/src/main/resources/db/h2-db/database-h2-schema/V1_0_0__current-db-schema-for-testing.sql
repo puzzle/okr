@@ -44,6 +44,7 @@ create table if not exists team
 create table if not exists objective
 (
     id             bigint       not null,
+    version        int          not null,
     description    varchar(4096),
     modified_on    timestamp    not null,
     progress       bigint,
@@ -75,6 +76,7 @@ create index if not exists idx_objective_title
 create table if not exists key_result
 (
     id              bigint    not null,
+    version         int       not null,
     baseline        double precision,
     description     varchar(4096),
     modified_on     timestamp,
@@ -107,9 +109,8 @@ create index if not exists idx_key_result_objective
 
 create table if not exists check_in
 (
-    id            bigint    not null
-        constraint check_in_pkey
-            primary key,
+    id            bigint    not null,
+    version       int       not null,
     change_info   varchar(4096),
     created_on    timestamp not null,
     initiatives   varchar(4096),
@@ -120,6 +121,7 @@ create table if not exists check_in
     confidence    integer,
     check_in_type varchar(255),
     zone          text,
+    primary key (id),
     constraint fk_check_in_key_result
         foreign key (key_result_id) references key_result
 );
@@ -130,6 +132,7 @@ create index if not exists idx_check_in_key_result
 create table if not exists completed
 (
     id           bigint not null primary key,
+    version      int    not null,
     objective_id bigint not null
         constraint fk_completed_objective
             references objective,
@@ -173,6 +176,7 @@ FROM TEAM T
 create table if not exists alignment
 (
     id                   bigint       not null,
+    version              int          not null,
     aligned_objective_id bigint       not null,
     alignment_type       varchar(255) not null,
     target_key_result_id bigint,
@@ -204,6 +208,7 @@ FROM OBJECTIVE O
 create table if not exists organisation
 (
     id       bigint       not null,
+    version  int          not null,
     org_name varchar(255) not null,
     state    text         not null,
     primary key (id)

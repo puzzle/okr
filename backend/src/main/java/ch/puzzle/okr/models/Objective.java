@@ -14,6 +14,9 @@ public class Objective implements WriteableInterface {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
     private Long id;
 
+    @Version
+    private int version;
+
     @NotBlank(message = "Missing attribute title when saving objective")
     @NotNull(message = "Attribute title can not be null when saving objective")
     @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
@@ -53,6 +56,7 @@ public class Objective implements WriteableInterface {
 
     private Objective(Builder builder) {
         id = builder.id;
+        version = builder.version;
         setTitle(builder.title);
         setCreatedBy(builder.createdBy);
         setTeam(builder.team);
@@ -66,6 +70,10 @@ public class Objective implements WriteableInterface {
 
     public Long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public String getTitle() {
@@ -152,10 +160,10 @@ public class Objective implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Objective{" + "id=" + id + ", title='" + title + '\'' + ", createdBy=" + createdBy + ", team=" + team
-                + ", quarter=" + quarter + ", description='" + description + '\'' + ", modifiedOn=" + modifiedOn
-                + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy=" + modifiedBy + ", writeable="
-                + writeable + '\'' + '}';
+        return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
+                + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
+                + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
+                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -165,20 +173,23 @@ public class Objective implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Objective objective = (Objective) o;
-        return Objects.equals(id, objective.id) && Objects.equals(title, objective.title)
-                && Objects.equals(createdBy, objective.createdBy) && Objects.equals(team, objective.team)
-                && Objects.equals(quarter, objective.quarter) && Objects.equals(description, objective.description)
+        return Objects.equals(id, objective.id) && version == objective.version
+                && Objects.equals(title, objective.title) && Objects.equals(createdBy, objective.createdBy)
+                && Objects.equals(team, objective.team) && Objects.equals(quarter, objective.quarter)
+                && Objects.equals(description, objective.description)
                 && Objects.equals(modifiedOn, objective.modifiedOn) && state == objective.state
                 && Objects.equals(createdOn, objective.createdOn) && Objects.equals(modifiedBy, objective.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, createdBy, team, quarter, description, modifiedOn, state, createdOn, modifiedBy);
+        return Objects.hash(id, version, title, createdBy, team, quarter, description, modifiedOn, state, createdOn,
+                modifiedBy);
     }
 
     public static final class Builder {
         private Long id;
+        private int version;
         private String title;
         private User createdBy;
         private Team team;
@@ -198,6 +209,11 @@ public class Objective implements WriteableInterface {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withVersion(int version) {
+            this.version = version;
             return this;
         }
 

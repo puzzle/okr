@@ -15,16 +15,16 @@ public class CheckInOrdinalMapper {
     }
 
     public CheckInOrdinalDto toDto(CheckInOrdinal checkInOrdinal) {
-        return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getChangeInfo(),
-                checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(), checkInOrdinal.getKeyResult().getId(),
-                checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(), checkInOrdinal.getZone(),
-                checkInOrdinal.isWriteable());
+        return new CheckInOrdinalDto(checkInOrdinal.getId(), checkInOrdinal.getVersion(),
+                checkInOrdinal.getChangeInfo(), checkInOrdinal.getInitiatives(), checkInOrdinal.getConfidence(),
+                checkInOrdinal.getKeyResult().getId(), checkInOrdinal.getCreatedOn(), checkInOrdinal.getModifiedOn(),
+                checkInOrdinal.getZone(), checkInOrdinal.isWriteable());
     }
 
     public CheckIn toCheckInOrdinal(CheckInOrdinalDto checkInOrdinalDto) {
         return CheckInOrdinal.Builder.builder().withZone(checkInOrdinalDto.value()).withId(checkInOrdinalDto.id())
-                .withChangeInfo(checkInOrdinalDto.changeInfo()).withInitiatives(checkInOrdinalDto.initiatives())
-                .withConfidence(checkInOrdinalDto.confidence())
+                .withVersion(checkInOrdinalDto.version()).withChangeInfo(checkInOrdinalDto.changeInfo())
+                .withInitiatives(checkInOrdinalDto.initiatives()).withConfidence(checkInOrdinalDto.confidence())
                 .withKeyResult(keyResultBusinessService.getEntityById(checkInOrdinalDto.keyResultId())).build();
     }
 }

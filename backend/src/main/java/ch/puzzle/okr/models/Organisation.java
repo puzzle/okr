@@ -13,6 +13,9 @@ public class Organisation {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_organisation")
     private Long id;
 
+    @Version
+    private int version;
+
     @NotNull
     @NotBlank
     private String orgName;
@@ -29,6 +32,7 @@ public class Organisation {
 
     private Organisation(Builder builder) {
         id = builder.id;
+        version = builder.version;
         setOrgName(builder.orgName);
         setTeams(builder.teams);
         setState(builder.state);
@@ -36,6 +40,10 @@ public class Organisation {
 
     public Long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public String getOrgName() {
@@ -69,21 +77,22 @@ public class Organisation {
         if (o == null || getClass() != o.getClass())
             return false;
         Organisation that = (Organisation) o;
-        return Objects.equals(id, that.id) && Objects.equals(orgName, that.orgName);
+        return Objects.equals(id, that.id) && version == that.version && Objects.equals(orgName, that.orgName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orgName, teams);
+        return Objects.hash(id, version, orgName, teams);
     }
 
     @Override
     public String toString() {
-        return "Organisation{" + "id=" + id + ", orgName='" + orgName + '}';
+        return "Organisation{" + "id=" + id + ", version=" + version + ", orgName='" + orgName + '}';
     }
 
     public static final class Builder {
         private Long id;
+        private int version;
         private String orgName;
 
         private List<Team> teams;
@@ -99,6 +108,11 @@ public class Organisation {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withVersion(int version) {
+            this.version = version;
             return this;
         }
 

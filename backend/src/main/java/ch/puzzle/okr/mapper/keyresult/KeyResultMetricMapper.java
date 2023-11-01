@@ -35,16 +35,16 @@ public class KeyResultMetricMapper {
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInMetricDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultMetricDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
-                keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(), keyResult.getUnit(),
-                ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(), keyResult.getModifiedOn(),
-                keyResult.isWriteable());
+        return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
+                keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(),
+                keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
+                keyResult.getModifiedOn(), keyResult.isWriteable());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {
         return KeyResultMetric.Builder.builder().withBaseline(keyResultMetricDto.baseline())
                 .withStretchGoal(keyResultMetricDto.stretchGoal()).withUnit(keyResultMetricDto.unit())
-                .withId(keyResultMetricDto.id())
+                .withId(keyResultMetricDto.id()).withVersion(keyResultMetricDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
                 .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
@@ -57,7 +57,7 @@ public class KeyResultMetricMapper {
         if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            lastCheckInDto = new KeyResultLastCheckInMetricDto(lastCheckIn.getId(),
+            lastCheckInDto = new KeyResultLastCheckInMetricDto(lastCheckIn.getId(), lastCheckIn.getVersion(),
                     ((CheckInMetric) lastCheckIn).getValue(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
                     lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }

@@ -11,6 +11,9 @@ public class Completed {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_completed")
     private Long id;
 
+    @Version
+    private int version;
+
     @NotNull(message = "Objective must not be null")
     @OneToOne
     private Objective objective;
@@ -23,12 +26,17 @@ public class Completed {
 
     private Completed(Builder builder) {
         id = builder.id;
+        version = builder.version;
         setObjective(builder.objective);
         setComment(builder.comment);
     }
 
     public Long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public Objective getObjective() {
@@ -49,7 +57,8 @@ public class Completed {
 
     @Override
     public String toString() {
-        return "Completed{" + "id=" + id + ", objective=" + objective + ", comment='" + comment + '\'' + '}';
+        return "Completed{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", comment='" + comment
+                + '\'' + '}';
     }
 
     @Override
@@ -59,17 +68,18 @@ public class Completed {
         if (o == null || getClass() != o.getClass())
             return false;
         Completed completed = (Completed) o;
-        return Objects.equals(id, completed.id) && Objects.equals(objective, completed.objective)
-                && Objects.equals(comment, completed.comment);
+        return Objects.equals(id, completed.id) && version == completed.version
+                && Objects.equals(objective, completed.objective) && Objects.equals(comment, completed.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, comment);
+        return Objects.hash(id, version, objective, comment);
     }
 
     public static final class Builder {
         private Long id;
+        private int version;
         private Objective objective;
         private String comment;
 
@@ -82,6 +92,11 @@ public class Completed {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withVersion(int version) {
+            this.version = version;
             return this;
         }
 

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class CheckInPersistenceServiceIT {
@@ -24,7 +25,11 @@ class CheckInPersistenceServiceIT {
     private CheckInPersistenceService checkInPersistenceService;
 
     private static CheckIn createCheckIn(Long id) {
-        return CheckInMetric.Builder.builder().withValue(30D).withId(id)
+        return createCheckIn(id, 1);
+    }
+
+    private static CheckIn createCheckIn(Long id, int version) {
+        return CheckInMetric.Builder.builder().withValue(30D).withId(id).withVersion(version)
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
                 .withCreatedOn(LocalDateTime.MAX)
                 .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
@@ -64,14 +69,27 @@ class CheckInPersistenceServiceIT {
 
     @Test
     void updateKeyResultShouldUpdateKeyResult() {
-        CheckIn checkIn = createCheckIn(null);
-        createdCheckIn = checkInPersistenceService.save(checkIn);
-        createdCheckIn.setChangeInfo("Updated CheckIn");
+        createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
+        CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), createdCheckIn.getVersion());
+        updateCheckIn.setChangeInfo("Updated CheckIn");
 
-        CheckIn updateCheckIn = checkInPersistenceService.save(createdCheckIn);
+        CheckIn updatedCheckIn = checkInPersistenceService.save(updateCheckIn);
 
-        assertEquals(createdCheckIn.getId(), updateCheckIn.getId());
-        assertEquals("Updated CheckIn", updateCheckIn.getChangeInfo());
+        assertEquals(createdCheckIn.getId(), updatedCheckIn.getId());
+        assertEquals(createdCheckIn.getVersion() + 1, updatedCheckIn.getVersion());
+        assertEquals("Updated CheckIn", updatedCheckIn.getChangeInfo());
+    }
+
+    @Test
+    void updateKeyResultShouldThrowExceptionWhenAlreadyUpdated() {
+        createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
+        CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), 0);
+        updateCheckIn.setChangeInfo("Updated CheckIn");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> checkInPersistenceService.save(updateCheckIn));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("optimistic locking failed"));
     }
 
     @Test

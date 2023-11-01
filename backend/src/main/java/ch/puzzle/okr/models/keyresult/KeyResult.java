@@ -19,6 +19,9 @@ public abstract class KeyResult implements WriteableInterface {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
     private Long id;
 
+    @Version
+    private int version;
+
     @NotNull(message = "Objective must not be null")
     @ManyToOne
     private Objective objective;
@@ -51,6 +54,10 @@ public abstract class KeyResult implements WriteableInterface {
 
     public Long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public Objective getObjective() {
@@ -129,10 +136,10 @@ public abstract class KeyResult implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "KeyResult{" + "id=" + id + ", objective=" + objective + ", title='" + title + '\'' + ", description='"
-                + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy + ", createdOn=" + createdOn
-                + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType + ", writeable=" + writeable + '\''
-                + '}';
+        return "KeyResult{" + "id=" + id + ", version=" + version + ", objective=" + objective + ", title='" + title
+                + '\'' + ", description='" + description + '\'' + ", owner=" + owner + ", createdBy=" + createdBy
+                + ", createdOn=" + createdOn + ", modifiedOn=" + modifiedOn + ", keyResultType='" + keyResultType
+                + ", writeable=" + writeable + '\'' + '}';
     }
 
     @Override
@@ -142,16 +149,18 @@ public abstract class KeyResult implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         KeyResult keyResult = (KeyResult) o;
-        return Objects.equals(id, keyResult.id) && Objects.equals(objective, keyResult.objective)
-                && Objects.equals(title, keyResult.title) && Objects.equals(description, keyResult.description)
-                && Objects.equals(owner, keyResult.owner) && Objects.equals(createdBy, keyResult.createdBy)
-                && Objects.equals(createdOn, keyResult.createdOn) && Objects.equals(modifiedOn, keyResult.modifiedOn)
+        return Objects.equals(id, keyResult.id) && version == keyResult.version
+                && Objects.equals(objective, keyResult.objective) && Objects.equals(title, keyResult.title)
+                && Objects.equals(description, keyResult.description) && Objects.equals(owner, keyResult.owner)
+                && Objects.equals(createdBy, keyResult.createdBy) && Objects.equals(createdOn, keyResult.createdOn)
+                && Objects.equals(modifiedOn, keyResult.modifiedOn)
                 && Objects.equals(keyResultType, keyResult.keyResultType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, title, description, owner, createdBy, createdOn, modifiedOn, keyResultType);
+        return Objects.hash(id, version, objective, title, description, owner, createdBy, createdOn, modifiedOn,
+                keyResultType);
     }
 
     protected KeyResult() {
@@ -159,6 +168,7 @@ public abstract class KeyResult implements WriteableInterface {
 
     protected KeyResult(Builder builder) {
         id = builder.id;
+        version = builder.version;
         setObjective(builder.objective);
         setTitle(builder.title);
         setDescription(builder.description);
@@ -171,6 +181,7 @@ public abstract class KeyResult implements WriteableInterface {
 
     public abstract static class Builder<T> {
         private Long id;
+        private int version;
         private Objective objective;
         private String title;
         private String description;
@@ -186,6 +197,11 @@ public abstract class KeyResult implements WriteableInterface {
 
         public T withId(Long id) {
             this.id = id;
+            return (T) this;
+        }
+
+        public T withVersion(int version) {
+            this.version = version;
             return (T) this;
         }
 

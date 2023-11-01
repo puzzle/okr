@@ -45,7 +45,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
-        throwExceptionWhenQuarterIsNotChangable(savedObjective);
+        // throwExceptionWhenQuarterIsNotChangable(savedObjective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }

@@ -51,7 +51,7 @@ export class ActionPlanComponent {
 
   removeAction(index: number) {
     const actions = this.control.getValue()!;
-    if (actions[index].action !== '') {
+    if (actions[index].action !== '' || actions[index].id) {
       this.dialog
         .open(ConfirmDialogComponent, {
           data: {

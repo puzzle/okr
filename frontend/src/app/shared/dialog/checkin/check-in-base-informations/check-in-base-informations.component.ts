@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
-import { KeyResult } from '../../../types/model/KeyResult';
 import { formInputCheck } from '../../../common';
+import { Action } from '../../../types/model/Action';
 
 @Component({
   selector: 'app-check-in-base-informations',
@@ -28,5 +28,9 @@ export class CheckInBaseInformationsComponent {
     const actions = this.dialogForm.value.actionList;
     actions[index] = { ...actions[index], isChecked: event.checked };
     this.dialogForm.patchValue({ actionList: actions });
+  }
+
+  getActionsWithText(): Action[] {
+    return this.dialogForm.controls['actionList'].value.filter((action: Action) => action.action !== '');
   }
 }

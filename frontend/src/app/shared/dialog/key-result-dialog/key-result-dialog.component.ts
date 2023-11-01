@@ -105,7 +105,6 @@ export class KeyResultDialogComponent implements OnInit {
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
-    keyResult.actionList = this.actionList$.getValue();
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,

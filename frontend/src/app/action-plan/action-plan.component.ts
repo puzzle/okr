@@ -14,6 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ActionPlanComponent {
   @Input() control!: BehaviorSubject<Action[] | null>;
+  @Input() keyResultId!: number | null;
 
   constructor(
     private actionService: ActionService,
@@ -44,7 +45,7 @@ export class ActionPlanComponent {
 
   addNewAction() {
     const actions = this.control.getValue()!;
-    actions.push({ action: '', priority: actions.length } as Action);
+    actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
     this.control.next(actions);
   }
 

@@ -165,4 +165,8 @@ export class KeyResultDialogComponent implements OnInit {
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
   }
+
+  getKeyResultId(): number | null {
+    return this.data.keyResult ? this.data.keyResult.id : null;
+  }
 }

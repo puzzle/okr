@@ -59,6 +59,20 @@ export const action2: Action = {
   keyResultId: 2,
 };
 
+export const action3: Action = {
+  id: null,
+  action: '',
+  priority: 3,
+  isChecked: false,
+  keyResultId: null,
+};
+
+export const addedAction: Action = {
+  action: '',
+  priority: 0,
+  keyResultId: 1,
+} as Action;
+
 export const quarterMin: QuarterMin = {
   id: 1,
   label: 'GJ 23/24-Q1',

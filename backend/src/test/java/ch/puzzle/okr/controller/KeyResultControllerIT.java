@@ -1,8 +1,10 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
@@ -48,7 +50,11 @@ class KeyResultControllerIT {
     @MockBean
     CheckInMapper checkInMapper;
     @MockBean
+    ActionMapper actionMapper;
+    @MockBean
     KeyResultAuthorizationService keyResultAuthorizationService;
+    @MockBean
+    ActionAuthorizationService actionAuthorizationService;
     @MockBean
     UserPersistenceService userPersistenceService;
     @MockBean

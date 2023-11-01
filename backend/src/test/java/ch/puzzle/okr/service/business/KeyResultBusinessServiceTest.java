@@ -10,6 +10,7 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
@@ -45,8 +46,9 @@ class KeyResultBusinessServiceTest {
     KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);
     @Mock
     ActionPersistenceService actionPersistenceService = Mockito.mock(ActionPersistenceService.class);
+    @Mock
+    ActionAuthorizationService actionAuthorizationService = Mockito.mock(ActionAuthorizationService.class);
     @InjectMocks
-    @Spy
     private KeyResultBusinessService keyResultBusinessService;
     List<KeyResult> keyResults;
     User user;
@@ -311,13 +313,12 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckIns() {
         when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
-        when(actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(any())).thenReturn(actions);
-        when(actionBusinessService.getActionsByKeyResultId(1L)).thenReturn(actions);
+        when(actionAuthorizationService.getEntitiesByKeyResultId(1L)).thenReturn(actions);
 
         this.keyResultBusinessService.deleteEntityById(1L);
 
         verify(this.checkInBusinessService, times(1)).deleteEntityById(1L);
-        verify(this.keyResultBusinessService, times(1)).deleteEntityById(1L);
+        verify(this.keyResultPersistenceService, times(1)).deleteById(1L);
     }
 
     @Test

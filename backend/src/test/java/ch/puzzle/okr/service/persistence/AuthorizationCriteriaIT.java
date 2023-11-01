@@ -24,7 +24,7 @@ class AuthorizationCriteriaIT {
     OverviewPersistenceService overviewPersistenceService;
 
     @Test
-    void appendObjective_ShouldReturnObjective_WhenFirstLevelRole() {
+    void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
         Long objectiveId = 5L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, reason);
@@ -33,7 +33,7 @@ class AuthorizationCriteriaIT {
     }
 
     @Test
-    void appendObjective_ShouldReturnObjective_WhenSecondLevelRole() {
+    void appendObjectiveShouldReturnObjectiveWhenSecondLevelRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAMS_DRAFT));
@@ -43,7 +43,7 @@ class AuthorizationCriteriaIT {
     }
 
     @Test
-    void appendObjective_ShouldReturnObjective_WhenMemberRole() {
+    void appendObjectiveShouldReturnObjectiveWhenMemberRole() {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAM_DRAFT));
@@ -53,17 +53,17 @@ class AuthorizationCriteriaIT {
     }
 
     @Test
-    void appendOverview_ShouldReturnObjective_WhenFirstLevelRoleAndTeamIdsEmpty() {
+    void appendOverviewShouldReturnObjectiveWhenFirstLevelRoleAndTeamIdsEmpty() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, List.of(), "",
                 authorizationUser);
 
-        assertEquals(17L, overviews.size());
+        assertEquals(18L, overviews.size());
     }
 
     @Test
-    void appendOverview_ShouldReturnObjective_WhenSecondLevelRole() {
+    void appendOverviewShouldReturnObjectiveWhenSecondLevelRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAMS_DRAFT));
@@ -74,7 +74,7 @@ class AuthorizationCriteriaIT {
     }
 
     @Test
-    void appendOverview_ShouldReturnObjective_WhenMemberRole() {
+    void appendOverviewShouldReturnObjectiveWhenMemberRole() {
         Long quarterId = 2L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAM_DRAFT));

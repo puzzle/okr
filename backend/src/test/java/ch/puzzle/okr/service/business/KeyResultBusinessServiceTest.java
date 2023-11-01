@@ -11,7 +11,6 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
-import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -21,7 +20,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -44,8 +42,6 @@ class KeyResultBusinessServiceTest {
     CheckInBusinessService checkInBusinessService;
     @InjectMocks
     KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);
-    @Mock
-    ActionPersistenceService actionPersistenceService = Mockito.mock(ActionPersistenceService.class);
     @Mock
     ActionAuthorizationService actionAuthorizationService = Mockito.mock(ActionAuthorizationService.class);
     @InjectMocks

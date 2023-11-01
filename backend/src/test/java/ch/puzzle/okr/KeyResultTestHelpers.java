@@ -121,7 +121,8 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"FTE"
+               "unit":"FTE",
+               "actionList":[]
             }
             """;
 
@@ -138,7 +139,8 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "commitZone":"Eine Pflanze",
                "targetZone":"Ein Baum",
-               "stretchZone":"Ein Wald"
+               "stretchZone":"Ein Wald",
+               "actionList":[]
             }
             """;
 
@@ -182,7 +184,8 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PERCENT"
+               "unit":"PERCENT",
+               "actionList":[]
             }
             """;
 
@@ -213,7 +216,8 @@ public class KeyResultTestHelpers {
                 "createdByFirstname":"",
                 "createdByLastname":"",
                 "createdOn":null,
-                "modifiedOn":null
+                "modifiedOn":null,
+                "actionList":[]
             }
             """;
 

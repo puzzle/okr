@@ -12,7 +12,6 @@ import { formInputCheck } from '../../../common';
 export class CheckInBaseInformationsComponent {
   @Input()
   dialogForm!: FormGroup;
-  @Input() keyresult!: KeyResult;
   protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
 

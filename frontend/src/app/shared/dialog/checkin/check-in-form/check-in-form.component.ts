@@ -49,6 +49,7 @@ export class CheckInFormComponent implements OnInit {
   }
 
   setDefaultValues() {
+    this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
       this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());

@@ -117,6 +117,44 @@ describe('KeyResultDialogComponent', () => {
     actionList: [],
   };
 
+  let savedKeyResult = {
+    id: undefined,
+    title: 'Neuer Titel',
+    description: 'Description',
+    owner: testUser,
+    objective: fullObjective,
+    baseline: 3,
+    keyResultType: 'metric',
+    stretchGoal: 25,
+    unit: 'CHF',
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
+    actionList: [
+      {
+        id: null,
+        action: '',
+        isChecked: false,
+        keyResultId: null,
+        priority: 0,
+      },
+      {
+        id: null,
+        action: '',
+        isChecked: false,
+        keyResultId: null,
+        priority: 1,
+      },
+      {
+        id: null,
+        action: '',
+        isChecked: false,
+        keyResultId: null,
+        priority: 2,
+      },
+    ],
+  };
+
   const mockUserService = {
     getUsers: jest.fn(),
   };
@@ -266,7 +304,7 @@ describe('KeyResultDialogComponent', () => {
       component.saveKeyResult();
 
       expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(initKeyResult);
+      expect(spy).toHaveBeenCalledWith(savedKeyResult);
     }));
   });
 

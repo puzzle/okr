@@ -48,6 +48,7 @@ export const action1: Action = {
   action: 'Drucker kaufen',
   priority: 0,
   isChecked: false,
+  keyResultId: 1,
 };
 
 export const action2: Action = {
@@ -55,6 +56,7 @@ export const action2: Action = {
   action: 'Blätter kaufen',
   priority: 1,
   isChecked: true,
+  keyResultId: 2,
 };
 
 export const quarterMin: QuarterMin = {

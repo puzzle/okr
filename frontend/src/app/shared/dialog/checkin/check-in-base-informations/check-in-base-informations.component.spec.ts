@@ -80,9 +80,10 @@ describe('CheckInBaseInformationsComponent', () => {
     });
   });
 
-  it('should display action list', () => {
-    let checkBoxes = document.querySelectorAll('mat-checkbox');
-    expect(checkBoxes.length).toEqual(2);
-    expect(checkBoxes[1].getAttribute('checked')).toBeTruthy();
+  it('should display action list', async () => {
+    const checkboxes = fixture.nativeElement.querySelectorAll('mat-checkbox');
+    expect(checkboxes.length).toEqual(component.dialogForm.controls['actionList'].value.length!);
+    expect(checkboxes[0].checked!).toBe(action1.isChecked);
+    expect(checkboxes[1].checked!).toBe(action2.isChecked);
   });
 });

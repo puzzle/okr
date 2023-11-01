@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +35,15 @@ public class ActionAuthorizationService {
 
     public void updateEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
+        actionList.forEach(action -> {
+            hasRoleCreateOrUpdate(action, authorizationUser);
+            setRoleCreateOrUpdate(action, authorizationUser);
+        });
         actionBusinessService.updateEntities(actionList);
     }
 
     protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
-        authorizationService.hasRoleReadByCheckInId(id, authorizationUser);
+        authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
     }
 
     protected void hasRoleCreateOrUpdate(Action entity, AuthorizationUser authorizationUser) {

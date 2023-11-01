@@ -49,6 +49,7 @@ export const quarterMin: QuarterMin = {
 
 export const checkInMetric: CheckInMin = {
   id: 815,
+  version: 1,
   value: 15,
   confidence: 5,
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
@@ -57,6 +58,7 @@ export const checkInMetric: CheckInMin = {
 } as CheckInMin;
 export const checkInOrdinal: CheckInMin = {
   id: 816,
+  version: 2,
   value: 'COMMIT',
   confidence: 7,
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
@@ -65,6 +67,7 @@ export const checkInOrdinal: CheckInMin = {
 } as CheckInMin;
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
+  version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
   unit: '%',
@@ -76,6 +79,7 @@ export const keyResultMetricMin: KeyResultMetricMin = {
 
 export const keyResultMetricMinScoring: KeyResultMetricMin = {
   id: 201,
+  version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
   unit: '%',
@@ -83,6 +87,7 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
   stretchGoal: 75.0,
   lastCheckIn: {
     id: 800,
+    version: 1,
     value: 50,
     confidence: 4,
     createdOn: new Date(),
@@ -95,6 +100,7 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
 
 export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
   id: 306,
+  version: 1,
   title: 'Achieve 20% Increase in Daily Active Users',
   keyResultType: 'metric',
   unit: '%',
@@ -102,6 +108,7 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
   stretchGoal: 0.0,
   lastCheckIn: {
     id: 800,
+    version: 1,
     value: 12.5,
     confidence: 4,
     createdOn: new Date(),
@@ -114,6 +121,7 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
 
 export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
   id: 202,
+  version: 1,
   title: 'We want to bake 10 cakes',
   keyResultType: 'ordinal',
   commitZone: '5 cakes',
@@ -121,6 +129,7 @@ export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
   stretchGoal: '13 cakes',
   lastCheckIn: {
     id: 830,
+    version: 1,
     value: 'COMMIT',
     confidence: 8,
     createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
@@ -131,6 +140,7 @@ export const keyResultOrdinalMinScoring: KeyResultOrdinalMin = {
 
 export const keyResultOrdinalMin: KeyResultOrdinalMin = {
   id: 202,
+  version: 1,
   title: 'Reduce Bounce Rate',
   keyResultType: 'ordinal',
   commitZone: '3 Birnen',
@@ -141,6 +151,7 @@ export const keyResultOrdinalMin: KeyResultOrdinalMin = {
 
 export const objectiveMin: ObjectiveMin = {
   id: 101,
+  version: 1,
   title: 'Increase User Engagement',
   state: State.ONGOING,
   quarter: quarterMin,
@@ -166,6 +177,7 @@ export const keyResultObjective: KeyResultObjective = {
 
 export const keyResultMetricWithIdEight: KeyResultMetricMin = {
   id: 8,
+  version: 1,
   title: 'KeyResult Title',
   unit: 'CHF',
   baseline: 5.0,
@@ -176,6 +188,7 @@ export const keyResultMetricWithIdEight: KeyResultMetricMin = {
 
 export const objective: Objective = {
   id: 5,
+  version: 1,
   title: 'title',
   description: 'description',
   teamId: 2,
@@ -185,6 +198,7 @@ export const objective: Objective = {
 
 export const firstCheckIn: CheckInMin = {
   id: 1,
+  version: 1,
   value: 77,
   confidence: 5,
   changeInfo: '',
@@ -194,6 +208,7 @@ export const firstCheckIn: CheckInMin = {
 
 export const secondCheckIn: CheckInMin = {
   id: 2,
+  version: 1,
   value: 89,
   confidence: 5,
   changeInfo: '',
@@ -226,6 +241,7 @@ export const users: User[] = [
 
 export const keyResult: KeyResultOrdinal = {
   id: 101,
+  version: 1,
   title: 'Ausbauen des Früchtesortiments',
   description: 'Dient zur Gesunderhaltung der Members',
   commitZone: 'Äpfel',
@@ -235,6 +251,7 @@ export const keyResult: KeyResultOrdinal = {
   keyResultType: 'ordinal',
   objective: {
     id: 301,
+    version: 1,
     state: State.DRAFT,
     quarter: {
       id: 1,
@@ -245,6 +262,7 @@ export const keyResult: KeyResultOrdinal = {
   } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
+    version: 1,
     value: 'FAIL',
     confidence: 8,
     createdOn: new Date(),
@@ -258,6 +276,7 @@ export const keyResult: KeyResultOrdinal = {
 
 export const keyResultOrdinal: KeyResultOrdinal = {
   id: 101,
+  version: 1,
   title: 'Bauen eines Hauses',
   description: 'Ein neues Haus für die Puzzle Members',
   commitZone: 'Grundriss steht',
@@ -267,6 +286,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   keyResultType: 'ordinal',
   objective: {
     id: 301,
+    version: 1,
     state: State.DRAFT,
     quarter: {
       id: 1,
@@ -277,6 +297,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
+    version: 1,
     value: 'FAIL',
     confidence: 3,
     createdOn: new Date(),
@@ -290,6 +311,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
 
 export const keyResultMetric: KeyResultMetric = {
   id: 102,
+  version: 1,
   title: '100% aller Schweizer Kunden betreuen',
   description: 'Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.',
   baseline: 30,
@@ -299,6 +321,7 @@ export const keyResultMetric: KeyResultMetric = {
   keyResultType: 'metric',
   objective: {
     id: 302,
+    version: 1,
     state: State.DRAFT,
     quarter: {
       id: 1,
@@ -309,6 +332,7 @@ export const keyResultMetric: KeyResultMetric = {
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
+    version: 1,
     value: 45,
     confidence: 7,
     createdOn: new Date(),

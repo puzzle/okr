@@ -35,6 +35,7 @@ export class ObjectiveFormComponent implements OnInit {
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
+  version!: number;
   protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
 
@@ -60,6 +61,7 @@ export class ObjectiveFormComponent implements OnInit {
     const state = this.data.objective.objectiveId == null ? event.submitter.getAttribute('submitType') : this.state;
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
+      version: this.version,
       quarterId: value.quarter,
       description: value.description,
       title: value.title,
@@ -85,7 +87,7 @@ export class ObjectiveFormComponent implements OnInit {
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[0].id)[0];
       this.state = objective.state;
-
+      this.version = objective.version;
       this.teams$.subscribe((value) => {
         this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });

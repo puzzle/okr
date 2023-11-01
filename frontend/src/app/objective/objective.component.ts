@@ -37,6 +37,7 @@ export class ObjectiveComponent implements OnInit {
   set objective(objective: ObjectiveMin) {
     this.objective$.next(objective);
   }
+
   public objective$ = new BehaviorSubject<ObjectiveMin>({} as ObjectiveMin);
 
   ngOnInit() {
@@ -154,6 +155,7 @@ export class ObjectiveComponent implements OnInit {
     objective.state = result.endState as State;
     const completed: Completed = {
       id: null,
+      version: objective.version,
       objective: objective,
       comment: result.comment,
     };

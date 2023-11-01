@@ -4,6 +4,7 @@ import { State } from '../enums/State';
 
 export interface ObjectiveMin {
   id: number;
+  version: number;
   title: string;
   state: State;
   quarter: QuarterMin;

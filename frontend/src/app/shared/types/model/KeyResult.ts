@@ -4,6 +4,7 @@ import { User } from './User';
 
 export interface KeyResult {
   id: number;
+  version: number;
   keyResultType: string;
   title: string;
   description: string;

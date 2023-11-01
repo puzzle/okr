@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -45,16 +46,18 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
-        // throwExceptionWhenQuarterIsNotChangable(savedObjective);
+        throwExceptionWhenQuarterIsNotChangable(objective, savedObjective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }
 
-    private void throwExceptionWhenQuarterIsNotChangable(Objective objective) {
-        if (keyResultBusinessService.getAllKeyResultsByObjective(objective.getId()).stream()
+    private void throwExceptionWhenQuarterIsNotChangable(Objective objective, Objective savedObjective) {
+        if (!Objects.equals(objective.getQuarter(), savedObjective.getQuarter()) && keyResultBusinessService
+                .getAllKeyResultsByObjective(savedObjective.getId()).stream()
                 .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent()) {
             throw new ResponseStatusException(BAD_REQUEST,
-                    format("Not allowed to change the quarter of objective %s", objective.getTitle()));
+                    format("Not allowed to change the quarter of objective %s (id=%s)", savedObjective.getTitle(),
+                            savedObjective.getId()));
         }
     }
 

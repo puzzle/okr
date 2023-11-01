@@ -93,6 +93,8 @@ export class KeyresultDetailComponent implements OnInit {
         if (result?.closeState === CloseState.DELETED) {
           this.refreshDataService.markDataRefresh();
           this.router.navigate(['/']);
+        } else {
+          this.loadKeyResult();
         }
       });
   }

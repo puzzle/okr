@@ -3,5 +3,5 @@ export interface Action {
   action: string;
   priority: number;
   isChecked: boolean;
-  keyResultId: number | undefined;
+  keyResultId: number | null;
 }

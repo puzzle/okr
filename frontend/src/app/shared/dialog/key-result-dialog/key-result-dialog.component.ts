@@ -54,6 +54,12 @@ export class KeyResultDialogComponent implements OnInit {
   ) {
     if (this.data.keyResult) {
       this.actionList$ = new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
+    } else {
+      this.actionList$ = new BehaviorSubject<Action[] | null>([
+        { id: null, action: '', priority: 0, keyResultId: null, isChecked: false },
+        { id: null, action: '', priority: 1, keyResultId: null, isChecked: false },
+        { id: null, action: '', priority: 2, keyResultId: null, isChecked: false },
+      ]);
     }
   }
 

@@ -94,14 +94,21 @@ describe('OverviewComponent', () => {
     expect(component.loadOverview).toHaveBeenLastCalledWith();
   });
 
-  it('should filter out the state param so it doesnt make the overview reload on login', async () => {
+  it('should call loadOverviewWithParams', async () => {
     jest.spyOn(component, 'loadOverviewWithParams');
     const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/quarter=1');
+
+    await routerHarness.navigateByUrl('/?quarter=1');
     routerHarness.detectChanges();
     fixture.detectChanges();
     expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(1);
-    await routerHarness.navigateByUrl('/state=asdf');
+  });
+
+  it('should filter out the state param so it doesnt make the overview reload on login', async () => {
+    jest.spyOn(component, 'loadOverviewWithParams');
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/?state=asdf');
     routerHarness.detectChanges();
     fixture.detectChanges();
     expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(0);

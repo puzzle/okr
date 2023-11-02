@@ -156,6 +156,7 @@ class ObjectiveControllerIT {
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willReturn(objective);
+        BDDMockito.given(objectiveAuthorizationService.isImUsed(any())).willReturn(false);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
@@ -175,9 +176,11 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveMapper.toObjective(any())).willReturn(objectiveImUsed);
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjectiveDto);
         BDDMockito.given(objectiveAuthorizationService.updateEntity(anyLong(), any())).willReturn(objectiveImUsed);
+        BDDMockito.given(objectiveAuthorizationService.isImUsed(any())).willReturn(true);
 
         mvc.perform(put(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON).content(JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isImUsed());
     }
 
     @Test

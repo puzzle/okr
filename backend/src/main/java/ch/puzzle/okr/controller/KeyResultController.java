@@ -14,11 +14,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("api/v2/keyresults")
@@ -70,7 +71,7 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
         KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultAuthorizationService.createEntity(keyResult));
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdKeyResult);
+        return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
     @Operation(summary = "Update KeyResult", description = "Update a KeyResult by ID.")
@@ -78,6 +79,8 @@ public class KeyResultController {
             @ApiResponse(responseCode = "200", description = "Updated KeyResult in db.", content = {
                     @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultDto.class,
                             KeyResultOrdinalDto.class })) }),
+            @ApiResponse(responseCode = "226", description = "Updated KeyResult in db but keyResultType was not changed", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = KeyResultDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to update a KeyResult", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content),
             @ApiResponse(responseCode = "422", description = "Can't update KeyResult since KeyResult was updated or deleted by another user.", content = @Content) })
@@ -89,8 +92,7 @@ public class KeyResultController {
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, mappedKeyResult);
         KeyResultDto updatedKeyResult = keyResultMapper
                 .toDto(keyResultAuthorizationService.updateEntity(id, mappedKeyResult));
-        return isKeyResultImUsed ? ResponseEntity.status(HttpStatus.IM_USED).body(updatedKeyResult)
-                : ResponseEntity.status(HttpStatus.OK).body(updatedKeyResult);
+        return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")

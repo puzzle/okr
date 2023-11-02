@@ -9,6 +9,8 @@ import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -24,7 +26,6 @@ import static ch.puzzle.okr.models.State.DRAFT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
@@ -99,41 +100,33 @@ class ObjectiveBusinessServiceTest {
         assertEquals("Bob", savedObjective.getCreatedBy().getFirstname());
     }
 
-    @Test
-    void shouldUpdateObjective() {
-        Objective objective = spy(
-                Objective.Builder.builder().withTitle("Received Objective").withTeam(team1).withQuarter(quarter)
-                        .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build());
-
-        doNothing().when(objective).setModifiedOn(any());
-        Mockito.when(objectivePersistenceService.findById(any())).thenReturn(objective);
-
-        objectiveBusinessService.updateEntity(objective.getId(), objective, authorizationUser);
-
-        verify(objectivePersistenceService).save(objective);
-        assertEquals(user, objective.getModifiedBy());
-        assertNull(objective.getModifiedOn());
-    }
-
-    @Test
-    void updateEntityShouldThrowExceptionWhenQuarterHasChanged() {
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void updateEntityShouldHandleQuarterCorrectly(boolean hasKeyResultAnyCheckIns) {
         Long id = 27L;
         String title = "Received Objective";
         String description = "The description";
+        Quarter changedQuarter = Quarter.Builder.builder().withId(2L).withLabel("another quarter").build();
         Objective savedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
-                .withQuarter(quarter).withDescription(description).withModifiedOn(null).withModifiedBy(null).build();
-        Objective updatedObjective = Objective.Builder.builder().withId(27L).withTitle(title).withTeam(team1)
-                .withQuarter(Quarter.Builder.builder().withId(2L).withLabel("another quarter").build())
-                .withDescription(description).withModifiedOn(null).withModifiedBy(null).build();
+                .withQuarter(quarter).withDescription(null).withModifiedOn(null).withModifiedBy(null).build();
+        Objective changedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
+                .withQuarter(changedQuarter).withDescription(description).withModifiedOn(null).withModifiedBy(null)
+                .build();
+        Objective updatedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
+                .withQuarter(hasKeyResultAnyCheckIns ? quarter : changedQuarter).withDescription(description)
+                .withModifiedOn(null).withModifiedBy(null).build();
 
-        Mockito.when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
+        when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
-        when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(Boolean.TRUE);
+        when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(hasKeyResultAnyCheckIns);
+        when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveBusinessService
-                .updateEntity(updatedObjective.getId(), updatedObjective, authorizationUser));
-        assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("Not allowed to change the quarter of objective '" + title + "'.", exception.getReason());
+        Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
+                authorizationUser);
+        assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
+                updatedEntity.getQuarter());
+        assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
+        assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
     }
 
     @Test
@@ -160,8 +153,8 @@ class ObjectiveBusinessServiceTest {
         KeyResult keyResultMetric2 = KeyResultMetric.Builder.builder().withTitle("Metric2").withUnit(Unit.CHF).build();
         List<KeyResult> keyResults = List.of(keyResultOrdinal, keyResultOrdinal2, keyResultMetric, keyResultMetric2);
 
-        Mockito.when(objectivePersistenceService.save(any())).thenReturn(objective);
-        Mockito.when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
+        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
 
         objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
         verify(keyResultBusinessService, times(4)).createEntity(any(), any());

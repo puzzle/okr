@@ -1,9 +1,12 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.CompletedDto;
+import ch.puzzle.okr.mapper.CompletedMapper;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.authorization.CompletedAuthorizationService;
 import org.hamcrest.core.Is;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
@@ -40,12 +43,23 @@ class CompletedControllerIT {
             """;
     @MockBean
     CompletedAuthorizationService completedAuthorizationService;
+    @MockBean
+    private CompletedMapper completedMapper;
+
     Completed successfulCompleted = Completed.Builder.builder().withId(1L)
             .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
             .withComment("Wir haben es gut geschafft").build();
+    CompletedDto completedDto = new CompletedDto(22L,
+            Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build(), "Wir haben es gut geschafft");
     String baseUrl = "/api/v2/completed";
     @Autowired
     private MockMvc mvc;
+
+    @BeforeEach
+    void setUp() {
+        BDDMockito.given(completedMapper.toDto(any())).willReturn(completedDto);
+        BDDMockito.given(completedMapper.toCompleted(any())).willReturn(successfulCompleted);
+    }
 
     @Test
     void createSuccessfulCompleted() throws Exception {
@@ -53,8 +67,8 @@ class CompletedControllerIT {
 
         mvc.perform(post(baseUrl).content(SUCCESSFUL_CREATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(1)))
-                .andExpect(jsonPath("$.objective.id", Is.is(3)))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
+                .andExpect(jsonPath(JSON_PATH_ID, Is.is(22))).andExpect(jsonPath("$.objective.id", Is.is(3)))
                 .andExpect(jsonPath("$.comment", Is.is("Wir haben es gut geschafft")));
     }
 

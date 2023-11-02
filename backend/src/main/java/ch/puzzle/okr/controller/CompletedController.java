@@ -1,5 +1,7 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.CompletedDto;
+import ch.puzzle.okr.mapper.CompletedMapper;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.service.authorization.CompletedAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,9 +18,12 @@ import org.springframework.web.bind.annotation.*;
 public class CompletedController {
 
     private final CompletedAuthorizationService completedAuthorizationService;
+    private final CompletedMapper completedMapper;
 
-    public CompletedController(CompletedAuthorizationService completedAuthorizationService) {
+    public CompletedController(CompletedAuthorizationService completedAuthorizationService,
+            CompletedMapper completedMapper) {
         this.completedAuthorizationService = completedAuthorizationService;
+        this.completedMapper = completedMapper;
     }
 
     @Operation(summary = "Create Completed", description = "Create a new Completed Reference.")
@@ -28,9 +33,10 @@ public class CompletedController {
             @ApiResponse(responseCode = "401", description = "Not authorized to create Completed Reference", content = @Content),
             @ApiResponse(responseCode = "404", description = "Could not create Completed Reference", content = @Content) })
     @PostMapping
-    public ResponseEntity<Completed> createCompleted(@RequestBody Completed completed) {
+    public ResponseEntity<CompletedDto> createCompleted(@RequestBody CompletedDto completedDto) {
+        Completed completed = completedMapper.toCompleted(completedDto);
         Completed createdCompleted = completedAuthorizationService.createCompleted(completed);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCompleted);
+        return ResponseEntity.status(HttpStatus.CREATED).body(completedMapper.toDto(createdCompleted));
     }
 
     @Operation(summary = "Delete Completed by Objective Id", description = "Delete Completed Reference by Objective Id")

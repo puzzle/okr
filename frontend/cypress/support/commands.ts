@@ -29,6 +29,7 @@
 //
 Cypress.Commands.add('loginAsUser', (user: any) => {
   loginWithCredentials(user.username, user.password);
+  overviewIsLoaded();
 });
 
 Cypress.Commands.add('getByTestId', (testId: string) => {
@@ -52,6 +53,10 @@ function loginWithCredentials(username: string, password: string) {
     expect(currentUrl.pathname).equal(baseURL.pathname);
   });
 }
+
+const overviewIsLoaded = () =>
+  cy.get('mat-chip').should('have.length.at.least', 2) && cy.get('.team-title').should('have.length.at.least', 1);
+
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
 //

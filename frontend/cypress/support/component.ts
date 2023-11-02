@@ -13,11 +13,8 @@ declare global {
   namespace Cypress {
     interface Chainable {
       mount: typeof mount;
-    }
-
-    interface Chainable<Subject = any> {
-      loginAsUser(user: any): Chainable<any>;
-      getByTestId(testsId: string): Chainable<any>;
+      loginAsUser(user: any): Chainable;
+      getByTestId(testsId: string): Chainable;
     }
   }
 }

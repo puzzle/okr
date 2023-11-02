@@ -14,7 +14,7 @@ public class Action implements WriteableInterface {
     private Long id;
 
     @NotNull(message = "Action must not be null")
-    @Size(max = 4096, message = "Attribute Action has a max length of 4096 characters when creating new Action")
+    @Size(max = 4096, message = "Attribute Action has a max length of 4096 characters")
     private String action;
 
     @NotNull(message = "Priority must not be null")

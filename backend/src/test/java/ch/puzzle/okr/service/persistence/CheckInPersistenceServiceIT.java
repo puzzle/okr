@@ -89,7 +89,7 @@ class CheckInPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInPersistenceService.save(updateCheckIn));
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
-        assertTrue(exception.getReason().contains("optimistic locking failed"));
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

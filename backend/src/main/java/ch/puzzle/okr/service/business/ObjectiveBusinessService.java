@@ -52,13 +52,20 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     }
 
     private void throwExceptionWhenQuarterIsNotChangable(Objective objective, Objective savedObjective) {
-        if (!Objects.equals(objective.getQuarter(), savedObjective.getQuarter()) && keyResultBusinessService
-                .getAllKeyResultsByObjective(savedObjective.getId()).stream()
-                .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent()) {
+        if (hasQuaterChanged(objective, savedObjective) && hasAlreadyCheckIns(savedObjective)) {
             throw new ResponseStatusException(BAD_REQUEST,
                     format("Not allowed to change the quarter of objective %s (id=%s)", savedObjective.getTitle(),
                             savedObjective.getId()));
         }
+    }
+
+    private boolean hasAlreadyCheckIns(Objective savedObjective) {
+        return keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId()).stream()
+                .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent();
+    }
+
+    private static boolean hasQuaterChanged(Objective objective, Objective savedObjective) {
+        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
     }
 
     @Transactional

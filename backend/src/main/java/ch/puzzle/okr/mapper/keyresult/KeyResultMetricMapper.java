@@ -7,20 +7,20 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import ch.puzzle.okr.service.persistence.UserPersistenceService;
+import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class KeyResultMetricMapper {
 
-    private final UserPersistenceService userPersistenceService;
+    private final UserBusinessService userBusinessService;
     private final ObjectiveBusinessService objectiveBusinessService;
 
     private final CheckInBusinessService checkInBusinessService;
 
-    public KeyResultMetricMapper(UserPersistenceService userPersistenceService,
+    public KeyResultMetricMapper(UserBusinessService userBusinessService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService) {
-        this.userPersistenceService = userPersistenceService;
+        this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
     }
@@ -47,7 +47,7 @@ public class KeyResultMetricMapper {
                 .withId(keyResultMetricDto.id()).withVersion(keyResultMetricDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
-                .withOwner(userPersistenceService.findById(keyResultMetricDto.owner().id()))
+                .withOwner(userBusinessService.getOwnerById(keyResultMetricDto.owner().id()))
                 .withModifiedOn(keyResultMetricDto.modifiedOn()).build();
     }
 

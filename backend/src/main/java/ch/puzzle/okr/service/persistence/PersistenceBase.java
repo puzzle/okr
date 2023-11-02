@@ -54,12 +54,14 @@ public abstract class PersistenceBase<T, ID, R> {
         return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
     }
 
-    public T save(T model) {
+    public T save(T model) throws ResponseStatusException {
         try {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
-            logger.info("optimistic locking while saving {}", model, ex);
-            throw new ResponseStatusException(UNPROCESSABLE_ENTITY, ex.getLocalizedMessage());
+            logger.info("optimistic locking exception while saving {}", model, ex);
+            throw new ResponseStatusException(UNPROCESSABLE_ENTITY,
+                    String.format("The data of %s has been updated or deleted by another user."
+                            + "\nPlease reload the data and apply your changes again.", getModelName()));
         }
     }
 

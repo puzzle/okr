@@ -7,7 +7,6 @@ import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
@@ -34,10 +33,10 @@ class OverviewPersistenceServiceIT {
             OverviewId.of(6L, 9L, 16L, 17L), // 14
             OverviewId.of(6L, 9L, 17L, 16L), // 15
             OverviewId.of(6L, 10L, -1L, -1L), // 16
-            OverviewId.of(4L, -1L, -1L, -1L), // 17
+            OverviewId.of(8L, -1L, -1L, -1L), // 17
             OverviewId.of(5L, -1L, -1L, -1L), // 18
             OverviewId.of(6L, -1L, -1L, -1L), // 19
-            OverviewId.of(8L, -1L, -1L, -1L)); // 20
+            OverviewId.of(4L, -1L, -1L, -1L)); // 20
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     @Autowired
@@ -48,18 +47,14 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(5L, 6L, 8L), "",
                 authorizationUser);
 
-        List<OverviewId> expected = new ArrayList<>(expectedOverviewIds.subList(5, 17));
-        expected.add(expectedOverviewIds.get(20));
-        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(expectedOverviewIds.subList(5, 18)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenTeamIdsEmpty() {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(2L, List.of(), "", authorizationUser);
 
-        List<OverviewId> expected = new ArrayList<>(expectedOverviewIds.subList(0, 17));
-        expected.add(expectedOverviewIds.get(20));
-        assertThat(expected).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(expectedOverviewIds.subList(0, 18)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @Test
@@ -75,7 +70,7 @@ class OverviewPersistenceServiceIT {
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(3L, List.of(5L, 6L, 8L), null,
                 authorizationUser);
 
-        assertThat(expectedOverviewIds.subList(18, 21)).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(expectedOverviewIds.subList(17, 20)).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     @Test

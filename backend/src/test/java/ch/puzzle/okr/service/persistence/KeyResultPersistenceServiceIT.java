@@ -186,7 +186,7 @@ class KeyResultPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultPersistenceService.updateEntity(updateKeyResult));
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
-        assertTrue(exception.getReason().contains("optimistic locking failed"));
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

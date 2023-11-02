@@ -3,7 +3,7 @@ package ch.puzzle.okr.mapper;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.service.business.QuarterBusinessService;
-import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @Component
 public class ObjectiveMapper {
 
-    private final TeamPersistenceService teamPersistenceService;
+    private final TeamBusinessService teamBusinessService;
     private final QuarterBusinessService quarterBusinessService;
 
-    public ObjectiveMapper(TeamPersistenceService teamPersistenceService,
-            QuarterBusinessService quarterBusinessService) {
-        this.teamPersistenceService = teamPersistenceService;
+    public ObjectiveMapper(TeamBusinessService teamBusinessService, QuarterBusinessService quarterBusinessService) {
+        this.teamBusinessService = teamBusinessService;
         this.quarterBusinessService = quarterBusinessService;
     }
 
@@ -28,7 +27,7 @@ public class ObjectiveMapper {
 
     public Objective toObjective(ObjectiveDto objectiveDto) {
         return Objective.Builder.builder().withId(objectiveDto.id()).withVersion(objectiveDto.version())
-                .withTitle(objectiveDto.title()).withTeam(teamPersistenceService.findById(objectiveDto.teamId()))
+                .withTitle(objectiveDto.title()).withTeam(teamBusinessService.getTeamById(objectiveDto.teamId()))
                 .withDescription(objectiveDto.description()).withModifiedOn(LocalDateTime.now())
                 .withState(objectiveDto.state()).withCreatedOn(objectiveDto.createdOn())
                 .withQuarter(quarterBusinessService.getQuarterById(objectiveDto.quarterId())).build();

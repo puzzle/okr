@@ -144,6 +144,39 @@ public class KeyResultTestHelpers {
             }
             """;
 
+    public static final String CREATE_BODY_ORDINAL_ACTION_LIST = """
+            {
+                "id":null,
+                "objectiveId":5,
+                "title":"",
+                "description":"",
+                "ownerId":5,
+               "keyResultType":"ordinal",
+               "createdById":5,
+               "createdOn":null,
+               "modifiedOn":null,
+               "commitZone":"Eine Pflanze",
+               "targetZone":"Ein Baum",
+               "stretchZone":"Ein Wald",
+               "actionList":[
+               {
+                        "id":null,
+                        "action":"Neue Katze",
+                        "priority":0,
+                        "isChecked":true,
+                        "keyResultId":null
+                    },
+                    {
+                        "id":null,
+                        "action":"Neuer Hund",
+                        "priority":1,
+                        "isChecked":false,
+                        "keyResultId":null
+                    }
+                    ]
+            }
+            """;
+
     public static final String CREATE_BODY_KEY_RESULT_TYPE_MISSING = """
             {
                "objectiveId":5,

@@ -82,7 +82,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void getOrCreateUser_ShouldReturnSingleUserWhenUserFound() {
+    void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(any())).thenReturn(newUser);
@@ -97,7 +97,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void getOrCreateUser_ShouldReturnSavedUserWhenUserNotFound() {
+    void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.getOrCreateUser(newUser)).thenReturn(newUser);
@@ -112,7 +112,7 @@ class UserBusinessServiceTest {
     }
 
     @Test
-    void getOrCreateUser_ShouldThrowResponseStatusExceptionWhenInvalidUser() {
+    void getOrCreateUserShouldThrowResponseStatusExceptionWhenInvalidUser() {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))

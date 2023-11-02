@@ -133,7 +133,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidUserId() {
+    void validateOnGetShouldBeSuccessfulWhenValidUserId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -141,7 +141,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfUserIdIsNull() {
+    void validateOnGetShouldThrowExceptionIfUserIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -150,7 +150,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenUserIsValid() {
+    void validateOnCreateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnCreate(userMinimal);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(userMinimal);
@@ -158,7 +158,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -166,7 +166,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(user));
 
@@ -175,7 +175,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("userNameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname("lastname").withUsername(name).build();
 
@@ -196,7 +196,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("firstNameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname(name).withLastname("lastname")
                 .withUsername("username").build();
 
@@ -217,7 +217,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("lastNameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname").withLastname(name)
                 .withUsername("username").build();
 
@@ -238,7 +238,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("emailValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
         User user2 = User.Builder.builder().withEmail(email).withFirstname("firstname").withLastname("lastname")
                 .withUsername("username").build();
 
@@ -260,7 +260,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder.builder().withId(null).withUsername("Username").withLastname("Lastname")
                 .withFirstname("firstname").withEmail("falseemail").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -270,7 +270,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldBeSuccessfulWhenUserIsValid() {
+    void validateOnUpdateShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnUpdate(user.getId(), user);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(user);
@@ -280,7 +280,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
@@ -288,7 +288,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, userMinimal));
 
@@ -298,7 +298,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(7L, user));
 
@@ -310,7 +310,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("userNameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname("lastname").withUsername(name).build();
 
@@ -331,7 +331,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("firstNameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname(name)
                 .withLastname("lastname").withUsername("username").build();
 
@@ -352,7 +352,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("lastNameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname(name).withUsername("username").build();
 
@@ -373,7 +373,7 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("emailValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail(email).withFirstname("firstname")
                 .withLastname("lastname").withUsername("username").build();
 
@@ -395,7 +395,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         User userInvalid = User.Builder.builder().withId(3L).withUsername("Username").withLastname("Lastname")
                 .withFirstname("firstname").withEmail("falseemail").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -405,14 +405,14 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateAuthorisationToken_ShouldNotThrowError() {
+    void validateAuthorisationTokenShouldNotThrowError() {
         assertDoesNotThrow(() -> validator.validateAuthorisationToken(mockJwt));
 
         verify(validator).validateAuthorisationToken(mockJwt);
     }
 
     @Test
-    void validateAuthorisationToken_ShouldThrowErrorWhenNull() {
+    void validateAuthorisationTokenShouldThrowErrorWhenNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateAuthorisationToken(null));
 
@@ -420,7 +420,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidObjectiveId() {
+    void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -428,7 +428,7 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfObjectiveIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

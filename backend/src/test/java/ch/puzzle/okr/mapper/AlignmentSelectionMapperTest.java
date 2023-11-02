@@ -14,7 +14,7 @@ class AlignmentSelectionMapperTest {
     private final AlignmentSelectionMapper alignmentSelectionMapper = new AlignmentSelectionMapper();
 
     @Test
-    void toDto_ShouldReturnEmptyList_WhenNoObjectiveFound() {
+    void toDtoShouldReturnEmptyListWhenNoObjectiveFound() {
         List<AlignmentSelection> alignmentSelections = List.of();
         List<AlignmentObjectiveDto> alignmentObjectiveDtos = alignmentSelectionMapper.toDto(alignmentSelections);
 
@@ -22,7 +22,7 @@ class AlignmentSelectionMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveFound() {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(AlignmentSelectionId.Builder.builder().withObjectiveId(1L).build())
                 .withTeamId(2L).withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").build());
@@ -33,7 +33,7 @@ class AlignmentSelectionMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
         List<AlignmentSelection> alignmentSelections = List.of(AlignmentSelection.Builder.builder()
                 .withAlignmentSelectionId(
                         AlignmentSelectionId.Builder.builder().withObjectiveId(1L).withKeyResultId(3L).build())
@@ -46,7 +46,7 @@ class AlignmentSelectionMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultsFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultsFound() {
         List<AlignmentSelection> alignmentSelections = List.of(
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(
@@ -65,7 +65,7 @@ class AlignmentSelectionMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultsFound() {
+    void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultsFound() {
         List<AlignmentSelection> alignmentSelections = List.of(
                 AlignmentSelection.Builder.builder()
                         .withAlignmentSelectionId(

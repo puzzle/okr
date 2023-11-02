@@ -106,7 +106,7 @@ class TeamPersistenceServiceIT {
 
     @ParameterizedTest
     @MethodSource("findTeamIdsByOrganisationNamesArguments")
-    void findTeamIdsByOrganisationNames_ShouldReturnFirstLevelTeams(List<String> organisationNames,
+    void findTeamIdsByOrganisationNamesShouldReturnFirstLevelTeams(List<String> organisationNames,
             List<Long> expectedIds, String useCase) {
         logger.info(useCase);
         List<Long> teamIds = teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);

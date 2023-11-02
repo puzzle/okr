@@ -14,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.IM_USED;
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping("api/v2/objectives")
 public class ObjectiveController {
@@ -91,8 +94,9 @@ public class ObjectiveController {
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The objective as json to update an existing Objective.", required = true) @RequestBody ObjectiveDto objectiveDTO) {
         Objective objective = objectiveMapper.toObjective(objectiveDTO);
+        boolean isObjectiveImUsed = objectiveAuthorizationService.isImUsed(objective);
         ObjectiveDto updatedObjective = objectiveMapper
                 .toDto(objectiveAuthorizationService.updateEntity(id, objective));
-        return ResponseEntity.status(HttpStatus.OK).body(updatedObjective);
+        return ResponseEntity.status(isObjectiveImUsed ? IM_USED : OK).body(updatedObjective);
     }
 }

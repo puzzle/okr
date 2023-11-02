@@ -38,4 +38,8 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     protected boolean isWriteable(Objective entity, AuthorizationUser authorizationUser) {
         return getAuthorizationService().isWriteable(entity, authorizationUser);
     }
+
+    public boolean isImUsed(Objective objective) {
+        return getBusinessService().isImUsed(objective);
+    }
 }

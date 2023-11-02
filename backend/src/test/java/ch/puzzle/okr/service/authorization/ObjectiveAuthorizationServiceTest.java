@@ -30,7 +30,7 @@ class ObjectiveAuthorizationServiceTest {
     private final Objective newObjective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
 
     @Test
-    void createEntity_ShouldReturnObjective_WhenAuthorized() {
+    void createEntityShouldReturnObjectiveWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.createEntity(newObjective, authorizationUser)).thenReturn(newObjective);
 
@@ -39,7 +39,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void createEntity_ShouldThrowException_WhenNotAuthorized() {
+    void createEntityShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -52,7 +52,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnObjective_WhenAuthorized() {
+    void getEntityByIdShouldReturnObjectiveWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
@@ -62,7 +62,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnObjectiveWritable_WhenAuthorized() {
+    void getEntityByIdShouldReturnObjectiveWritableWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(authorizationService.isWriteable(newObjective, authorizationUser)).thenReturn(true);
@@ -73,7 +73,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldThrowException_WhenNotAuthorized() {
+    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
@@ -87,7 +87,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void updateEntity_ShouldReturnUpdatedObjective_WhenAuthorized() {
+    void updateEntityShouldReturnUpdatedObjectiveWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(objectiveBusinessService.updateEntity(id, newObjective, authorizationUser)).thenReturn(newObjective);
@@ -97,7 +97,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void updateEntity_ShouldThrowException_WhenNotAuthorized() {
+    void updateEntityShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
@@ -111,7 +111,14 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void deleteEntityById_ShouldPassThrough_WhenAuthorized() {
+    void isImUsedShouldReturnTrueWhenQuarterChanged() {
+        when(objectiveBusinessService.isImUsed(newObjective)).thenReturn(true);
+
+        assertTrue(objectiveAuthorizationService.isImUsed(newObjective));
+    }
+
+    @Test
+    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
@@ -119,7 +126,7 @@ class ObjectiveAuthorizationServiceTest {
     }
 
     @Test
-    void deleteEntityById_ShouldThrowException_WhenNotAuthorized() {
+    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);

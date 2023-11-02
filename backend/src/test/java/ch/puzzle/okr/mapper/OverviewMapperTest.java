@@ -20,7 +20,7 @@ class OverviewMapperTest {
     private final OverviewMapper overviewMapper = new OverviewMapper();
 
     @Test
-    void toDto_ShouldReturnEmptyList_WhenNoTeamFound() {
+    void toDtoShouldReturnEmptyListWhenNoTeamFound() {
         List<Overview> overviews = List.of();
         List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
 
@@ -28,7 +28,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnEmptyList_WhenTeamFound() {
+    void toDtoShouldReturnEmptyListWhenTeamFound() {
         List<Overview> overviews = List
                 .of(Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build())
                         .withTeamName("Puzzle ITC").build());
@@ -39,7 +39,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").build());
@@ -51,7 +51,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(
                         OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L).build())
@@ -65,7 +65,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithKeyResultAndCheckInsFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveWithKeyResultAndCheckInsFound() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())
@@ -79,7 +79,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenObjectiveWithTwoKeyResultAndCheckInFound() {
+    void toDtoShouldReturnOneElementWhenObjectiveWithTwoKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -99,7 +99,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenTwoObjectivesWithKeyResultAndCheckInFound() {
+    void toDtoShouldReturnOneElementWhenTwoObjectivesWithKeyResultAndCheckInFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -137,7 +137,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldReturnOneElement_WhenTwoTeamsWithObjectivesAndKeyResultsFound() {
+    void toDtoShouldReturnOneElementWhenTwoTeamsWithObjectivesAndKeyResultsFound() {
         List<Overview> overviews = List.of(
                 Overview.Builder.builder()
                         .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L)
@@ -164,7 +164,7 @@ class OverviewMapperTest {
     }
 
     @Test
-    void toDto_ShouldThrowException_WhenKeyResultTypeNotSupported() {
+    void toDtoShouldThrowExceptionWhenKeyResultTypeNotSupported() {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L)
                         .withCheckInId(4L).build())

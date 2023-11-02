@@ -71,7 +71,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenCompletedIsValid() {
+    void validateOnCreateShouldBeSuccessfulWhenCompletedIsValid() {
         validator.validateOnCreate(this.validCompleted);
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(this.validCompleted);
@@ -79,7 +79,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -87,7 +87,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         Completed completed = Completed.Builder.builder().withId(300L).withObjective(this.objective)
                 .withComment("Not valid").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -98,7 +98,7 @@ class CompletedValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenCommentIsInvalid(String comment, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<String> errors) {
         Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -117,7 +117,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Completed completedInvalid = Completed.Builder.builder().withId(null).withComment("Valid comment")
                 .withObjective(null).build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -127,7 +127,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidCompletedId() {
+    void validateOnDeleteShouldBeSuccessfulWhenValidCompletedId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -135,7 +135,7 @@ class CompletedValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfCompletedIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfCompletedIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

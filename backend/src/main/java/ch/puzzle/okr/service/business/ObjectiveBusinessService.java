@@ -9,23 +9,23 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static java.lang.String.format;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
+
+    private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
             ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
@@ -46,24 +46,31 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
-        throwExceptionWhenQuarterIsNotChangable(objective, savedObjective);
+        String not = " ";
+        if (isImUsed(objective, savedObjective)) {
+            objective.setQuarter(savedObjective.getQuarter());
+            not = " NOT ";
+        }
+        logger.debug("quarter has changed and is{}changeable, {}", not, objective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
     }
 
-    private void throwExceptionWhenQuarterIsNotChangable(Objective objective, Objective savedObjective) {
-        if (hasQuaterChanged(objective, savedObjective) && hasAlreadyCheckIns(savedObjective)) {
-            throw new ResponseStatusException(BAD_REQUEST,
-                    format("Not allowed to change the quarter of objective '%s'.", savedObjective.getTitle()));
-        }
+    public boolean isImUsed(Objective objective) {
+        Objective savedObjective = objectivePersistenceService.findById(objective.getId());
+        return isImUsed(objective, savedObjective);
+    }
+
+    private boolean isImUsed(Objective objective, Objective savedObjective) {
+        return (hasQuarterChanged(objective, savedObjective) && hasAlreadyCheckIns(savedObjective));
     }
 
     private boolean hasAlreadyCheckIns(Objective savedObjective) {
         return keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId()).stream()
-                .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent();
+                .anyMatch(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId()));
     }
 
-    private static boolean hasQuaterChanged(Objective objective, Objective savedObjective) {
+    private static boolean hasQuarterChanged(Objective objective, Objective savedObjective) {
         return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
     }
 

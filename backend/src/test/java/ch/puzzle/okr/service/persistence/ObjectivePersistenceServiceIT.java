@@ -89,7 +89,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByKeyResultId_ShouldReturnObjectiveProperly() {
+    void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, reason);
 
         assertEquals(3L, objective.getId());
@@ -97,7 +97,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByKeyResultId_ShouldThrowExceptionWhenObjectiveNotFound() {
+    void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, reason));
 
@@ -106,7 +106,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByKeyResultId_ShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, reason));
 
@@ -115,7 +115,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByCheckInId_ShouldReturnObjectiveProperly() {
+    void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
         Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, reason);
 
         assertEquals(3L, objective.getId());
@@ -123,7 +123,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByCheckInId_ShouldThrowExceptionWhenObjectiveNotFound() {
+    void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, reason));
 
@@ -132,7 +132,7 @@ public class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void findObjectiveByCheckInId_ShouldThrowExceptionWhenObjectiveIdIsNull() {
+    void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, reason));
 

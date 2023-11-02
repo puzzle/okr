@@ -21,8 +21,12 @@ jobs:
 
       - name: Run unit tests
         run: npm test
+
   e2e:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        browser: ['chrome', "firefox"]
     services:
       postgres:
         image: postgres:12
@@ -43,22 +47,13 @@ jobs:
           distribution: 'adopt'
 
       - name: start backend
-        run:  cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=dev &
+        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=dev &
 
-      - name: Cypress run firefox
+      - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: frontend
           start: npm start
           wait-on: 'http://localhost:8080/config, http://localhost:4200'
           wait-on-timeout: 120
-          browser: firefox
-
-      - name: Cypress run chrome
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: frontend
-          start: npm start
-          wait-on: 'http://localhost:8080/config, http://localhost:4200'
-          wait-on-timeout: 120
-          browser: chrome
+          browser: ${{ matrix.browser }}

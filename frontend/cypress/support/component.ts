@@ -17,6 +17,8 @@ declare global {
       getByTestId(testsId: string): Chainable;
       tabForward(): void;
       tabBackward(): void;
+      tabForwardUntil(selector: string, limit?: number): void;
+      tabBackwardUntil(selector: string, limit?: number): void;
     }
   }
 }

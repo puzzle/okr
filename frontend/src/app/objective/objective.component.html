@@ -52,6 +52,7 @@
         class="fw-bold"
         (click)="openAddKeyResultDialog(); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"
+        [attr.data-testId]="'add-keyResult'"
       >
         <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
         Key Result hinzufügen

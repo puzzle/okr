@@ -44,6 +44,26 @@ Cypress.Commands.add('tabBackward', () => {
   cy.realPress(['Shift', 'Tab']);
 });
 
+Cypress.Commands.add('tabForwardUntil', (selector: string, limit?: number) => {
+  doUntil(selector, cy.tabForward, limit);
+});
+
+Cypress.Commands.add('tabBackwardUntil', (selector: string, limit?: number) => {
+  doUntil(selector, cy.tabBackward, limit);
+});
+
+function doUntil(selector: string, tab: () => void, limit: number = 100) {
+  for (let i = 0; i < limit; i++) {
+    cy.focused().then((element) => {
+      if (element.get(0).matches(selector)) {
+        return;
+      } else {
+        tab();
+      }
+    });
+  }
+}
+
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.origin(

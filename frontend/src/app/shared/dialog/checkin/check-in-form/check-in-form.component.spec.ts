@@ -23,7 +23,6 @@ import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-v
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
-import { compareNumbers } from '@angular/compiler-cli/src/version_helpers';
 
 const dialogMock = {
   close: jest.fn(),
@@ -154,5 +153,16 @@ describe('CheckInFormComponent', () => {
       initiatives: '',
       actionList: [action1, action2],
     });
+  }));
+
+  it('should call actionService when saving CheckIn', waitForAsync(async () => {
+    checkInServiceMock.saveCheckIn.mockReturnValue(of(true));
+    actionServiceMock.updateActions.mockReturnValue(of(true));
+
+    component.keyResult = keyResultActions;
+    component.ngOnInit();
+    component.setDefaultValues();
+    component.saveCheckIn();
+    expect(actionServiceMock.updateActions).toHaveBeenCalled();
   }));
 });

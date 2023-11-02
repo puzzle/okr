@@ -30,6 +30,7 @@ public class AuthorizationService {
     private static final String NOT_AUTHORIZED_TO_WRITE_CHECK_IN = "not authorized to create or update check in";
     private static final String NOT_AUTHORIZED_TO_DELETE_OBJECTIVE = "not authorized to delete objective";
     private static final String NOT_AUTHORIZED_TO_DELETE_KEY_RESULT = "not authorized to delete key result";
+    private static final String NOT_AUTHORIZED_TO_DELETE_ACTION = "not authorized to delete action";
     private static final String NOT_AUTHORIZED_TO_DELETE_CHECK_IN = "not authorized to delete check in";
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
@@ -148,7 +149,7 @@ public class AuthorizationService {
     public void hasRoleDeleteByActionId(Long actionId, AuthorizationUser authorizationUser) {
         Action action = actionPersistenceService.findById(actionId);
         hasRoleWrite(authorizationUser, action.getKeyResult().getObjective().getTeam(),
-                NOT_AUTHORIZED_TO_DELETE_KEY_RESULT);
+                NOT_AUTHORIZED_TO_DELETE_ACTION);
     }
 
     public void hasRoleDeleteByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {

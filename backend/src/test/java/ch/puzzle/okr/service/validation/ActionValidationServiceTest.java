@@ -60,7 +60,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidActionId() {
+    void validateOnGetShouldBeSuccessfulWhenValidActionId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -68,7 +68,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfActionIsNull() {
+    void validateOnGetShouldThrowExceptionIfActionIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -77,7 +77,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenActionIsValid() {
+    void validateOnCreateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnCreate(this.action1);
 
         verify(validator, times(1)).throwExceptionIfModelIsNull(this.action1);
@@ -85,7 +85,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -93,7 +93,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(this.action2));
 
@@ -102,7 +102,7 @@ class ActionValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("actionValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenActionIsInvalid(String actionText, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenActionIsInvalid(String actionText, List<String> errors) {
         Action action = Action.Builder.builder().withId(null).withAction(actionText).withIsChecked(false)
                 .withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build()).build();
@@ -125,7 +125,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Action actionInvalid = Action.Builder.builder().withIsChecked(true).build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(actionInvalid));
@@ -135,7 +135,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldBeSuccessfulWhenActionIsValid() {
+    void validateOnUpdateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnUpdate(this.action2.getId(), this.action2);
 
         verify(validator, times(1)).throwExceptionIfModelIsNull(this.action2);
@@ -145,7 +145,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
@@ -153,7 +153,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, this.action1));
 
@@ -163,7 +163,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, this.action2));
 
@@ -175,7 +175,7 @@ class ActionValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("actionValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String actionText, List<String> errors) {
         Action action = Action.Builder.builder().withId(3L).withAction(actionText).withIsChecked(false).withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build()).build();
 
@@ -195,7 +195,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
         Action actionInvalid = Action.Builder.builder().withId(11L).withIsChecked(true).build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(11L, actionInvalid));
@@ -205,7 +205,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidActionId() {
+    void validateOnDeleteShouldBeSuccessfulWhenValidActionId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -213,7 +213,7 @@ class ActionValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfActionIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfActionIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

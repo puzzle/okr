@@ -48,7 +48,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnActions_WhenAuthorized() {
+    void getEntityByIdShouldReturnActionsWhenAuthorized() {
         Long keyResultId = 10L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(actionBusinessService.getActionsByKeyResultId(keyResultId)).thenReturn(actionList);
@@ -59,7 +59,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldReturnActionWritable_WhenAuthorized() {
+    void getEntityByIdShouldReturnActionWritableWhenAuthorized() {
         Long keyResultId = 10L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(actionBusinessService.getActionsByKeyResultId(keyResultId)).thenReturn(actionList);
@@ -73,7 +73,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void getEntityById_ShouldThrowException_WhenNotAuthorized() {
+    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long keyResultId = 10L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
@@ -87,7 +87,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void createEntity_ShouldReturnCreatedAction_WhenAuthorized() {
+    void createEntityShouldReturnCreatedActionWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
         action1.setWriteable(false);
@@ -101,7 +101,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void createEntity_ShouldThrowException_WhenNotAuthorized() {
+    void createEntityShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -114,7 +114,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void updateEntity_ShouldUpdateAction_WhenAuthorized() {
+    void updateEntityShouldUpdateActionWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
         actionAuthorizationService.updateEntities(actionList);
@@ -123,7 +123,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void updateEntity_ShouldThrowException_WhenNotAuthorized() {
+    void updateEntityShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -136,7 +136,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void deleteEntityById_ShouldPassThrough_WhenAuthorized() {
+    void deleteEntityByIdShouldPassThroughWhenAuthorized() {
         Long id = 5L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
@@ -146,7 +146,7 @@ class ActionAuthorizationServiceTest {
     }
 
     @Test
-    void deleteEntityById_ShouldThrowException_WhenNotAuthorized() {
+    void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long id = 8L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);

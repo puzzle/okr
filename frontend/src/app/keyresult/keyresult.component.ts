@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
-import { MatDialog } from '@angular/material/dialog';
-import { CheckInHistoryDialogComponent } from '../shared/dialog/check-in-history-dialog/check-in-history-dialog.component';
 import { Router } from '@angular/router';
 import { DATE_FORMAT } from '../shared/constantLibary';
 

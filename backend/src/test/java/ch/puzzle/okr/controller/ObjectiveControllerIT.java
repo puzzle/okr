@@ -38,8 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ObjectiveController.class)
 class ObjectiveControllerIT {
-
-    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private static final String OBJECTIVE_TITLE_1 = "Objective 1";
     private static final String OBJECTIVE_TITLE_2 = "Objective 2";
     private static final String DESCRIPTION = "This is our description";

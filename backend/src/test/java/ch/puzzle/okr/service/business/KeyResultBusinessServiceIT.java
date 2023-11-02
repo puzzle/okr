@@ -103,7 +103,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntity_shouldUpdateKeyResultWithSameTypeMetric() {
+    void updateEntityShouldUpdateKeyResultWithSameTypeMetric() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
@@ -114,7 +114,7 @@ class KeyResultBusinessServiceIT {
     }
 
     @Test
-    void updateEntity_shouldUpdateKeyResultWithSameTypeOrdinal() {
+    void updateEntityShouldUpdateKeyResultWithSameTypeOrdinal() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 

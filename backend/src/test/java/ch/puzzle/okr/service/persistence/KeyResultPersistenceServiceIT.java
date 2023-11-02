@@ -120,7 +120,7 @@ class KeyResultPersistenceServiceIT {
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, this::execute);
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -148,9 +148,9 @@ class KeyResultPersistenceServiceIT {
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
+                () -> keyResultPersistenceService.findById(keyResultId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;

@@ -25,7 +25,7 @@ class JwtUserConverterTest {
     }
 
     @Test
-    void convert_shouldReturnUser_whenValidJwt() {
+    void convertShouldReturnUserWhenValidJwt() {
         User user = converter.convert(jwt);
 
         assertEquals(User.Builder.builder().withUsername("bkaufmann").withFirstname("Bob").withLastname("Kaufmann")
@@ -33,7 +33,7 @@ class JwtUserConverterTest {
     }
 
     @Test
-    void convert_shouldThrowException_whenClaimNameDoesNotMatch() {
+    void convertShouldThrowExceptionWhenClaimNameDoesNotMatch() {
         setUsername("foo_name");
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> converter.convert(jwt));

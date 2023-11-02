@@ -8,8 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class ActionValidationService extends ValidationBase<Action, Long, ActionRepository, ActionPersistenceService> {
 
-    public ActionValidationService(ActionPersistenceService actionPersistenceService) {
+    private final KeyResultValidationService keyResultValidationService;
+
+    public ActionValidationService(ActionPersistenceService actionPersistenceService, KeyResultValidationService keyResultValidationService) {
         super(actionPersistenceService);
+        this.keyResultValidationService = keyResultValidationService;
+    }
+
+    public void validateOnGetByKeyResultId(Long keyResultId) {
+        keyResultValidationService.validateOnGet(keyResultId);
     }
 
     @Override

@@ -1,5 +1,5 @@
 create sequence if not exists sequence_action;
-
+ALTER SEQUENCE sequence_action RESTART WITH 500;
 create table if not exists action
 (
     id                   bigint       not null primary key,

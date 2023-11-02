@@ -20,11 +20,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
@@ -51,7 +49,7 @@ class KeyResultBusinessServiceIT {
     @Mock
     private ActionAuthorizationService actionAuthorizationService;
 
-    @MockBean
+    @Mock
     private AuthorizationService authorizationService;
 
     private static KeyResult createKeyResultMetric(Long id) {

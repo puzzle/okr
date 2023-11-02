@@ -19,6 +19,7 @@ public class ActionBusinessService {
     }
 
     public List<Action> getActionsByKeyResultId(Long keyResultId) {
+        validator.validateOnGetByKeyResultId(keyResultId);
         return actionPersistenceService.getActionsByKeyResultIdOrderByPriorityAsc(keyResultId);
     }
 

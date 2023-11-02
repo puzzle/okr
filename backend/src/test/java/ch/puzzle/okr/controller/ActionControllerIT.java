@@ -8,10 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -61,12 +61,13 @@ class ActionControllerIT {
                 }
             ]
             """;
-    @MockBean
+    @Mock
     ActionAuthorizationService actionAuthorizationService;
-    @MockBean
+    @Mock
     ActionMapper actionMapper;
     @Autowired
     private MockMvc mvc;
+    private static final String BASEURL = "/api/v2/action";
 
     @BeforeEach
     void setUp() {
@@ -77,7 +78,7 @@ class ActionControllerIT {
 
     @Test
     void updateSuccessfulActions() throws Exception {
-        mvc.perform(put("/api/v2/action").content(SUCCESSFUL_UPDATE_BODY).contentType(MediaType.APPLICATION_JSON)
+        mvc.perform(put(BASEURL).content(SUCCESSFUL_UPDATE_BODY).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 
@@ -87,7 +88,7 @@ class ActionControllerIT {
 
     @Test
     void updateSuccessfulOnlyOneAction() throws Exception {
-        mvc.perform(put("/api/v2/action").content(SUCCESSFUL_UPDATE_BODY_SINGLE_ACTION)
+        mvc.perform(put(BASEURL).content(SUCCESSFUL_UPDATE_BODY_SINGLE_ACTION)
                 .contentType(MediaType.APPLICATION_JSON).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 
@@ -97,7 +98,7 @@ class ActionControllerIT {
 
     @Test
     void shouldDeleteAction() throws Exception {
-        mvc.perform(delete("/api/v2/action/1").with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(delete(BASEURL).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 

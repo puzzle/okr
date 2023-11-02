@@ -14,6 +14,7 @@ import { State } from '../shared/types/enums/State';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { DATE_FORMAT } from '../shared/constantLibary';
 import { isInValid } from '../shared/common';
+import { Action } from '../shared/types/model/Action';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -26,6 +27,7 @@ export class KeyresultDetailComponent implements OnInit {
 
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
   isComplete: boolean = false;
+  passedActionList: Action[] | null = null;
   protected readonly DATE_FORMAT = DATE_FORMAT;
   protected readonly isInValid = isInValid;
 
@@ -45,6 +47,9 @@ export class KeyresultDetailComponent implements OnInit {
       .getFullKeyResult(this.keyResultId)
       .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => {
+        if (this.passedActionList) {
+          keyResult.actionList = this.passedActionList;
+        }
         this.keyResult$.next(keyResult);
         const state = keyResult.objective.state;
         this.isComplete = state === ('SUCCESSFUL' as State) || state === ('NOTSUCCESSFUL' as State);
@@ -107,6 +112,7 @@ export class KeyresultDetailComponent implements OnInit {
       width: '719px',
     });
     dialogRef.afterClosed().subscribe((result) => {
+      this.passedActionList = result;
       this.loadKeyResult();
       this.refreshDataService.markDataRefresh();
     });

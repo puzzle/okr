@@ -10,7 +10,8 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     private final KeyResultValidationService keyResultValidationService;
 
-    public ActionValidationService(ActionPersistenceService actionPersistenceService, KeyResultValidationService keyResultValidationService) {
+    public ActionValidationService(ActionPersistenceService actionPersistenceService,
+            KeyResultValidationService keyResultValidationService) {
         super(actionPersistenceService);
         this.keyResultValidationService = keyResultValidationService;
     }
@@ -21,7 +22,7 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     @Override
     public void validateOnCreate(Action model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
 
         validate(model);
@@ -29,7 +30,7 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     @Override
     public void validateOnUpdate(Long id, Action model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
         throwExceptionWhenIdHasChanged(id, model.getId());
 

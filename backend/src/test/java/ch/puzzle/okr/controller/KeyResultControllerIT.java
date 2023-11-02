@@ -16,10 +16,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -47,19 +47,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(KeyResultController.class)
 class KeyResultControllerIT {
 
-    @Mock
+    @MockBean
     KeyResultMapper keyResultMapper;
-    @Mock
+    @MockBean
     CheckInMapper checkInMapper;
-    @Mock
+    @MockBean
     ActionMapper actionMapper;
-    @Mock
+    @MockBean
     KeyResultAuthorizationService keyResultAuthorizationService;
-    @Mock
+    @MockBean
     ActionAuthorizationService actionAuthorizationService;
-    @Mock
+    @MockBean
     UserPersistenceService userPersistenceService;
-    @Mock
+    @MockBean
     ObjectivePersistenceService objectivePersistenceService;
     @Autowired
     private MockMvc mvc;
@@ -208,11 +208,11 @@ class KeyResultControllerIT {
 
     @Test
     void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
-        ActionDto actionDto1 = new ActionDto(null, "Neue Katze", 0, true, 3L);
-        ActionDto actionDto2 = new ActionDto(null, "Neuer Hund", 1, false, 3L);
-        Action action1 = Action.Builder.builder().withAction("Neue Katze").withPriority(0)
+        ActionDto actionDto1 = new ActionDto(null, 0, "Neue Katze", 0, true, 3L);
+        ActionDto actionDto2 = new ActionDto(null, 0, "Neuer Hund", 1, false, 3L);
+        Action action1 = Action.Builder.builder().withVersion(1).withAction("Neue Katze").withPriority(0)
                 .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
-        Action action2 = Action.Builder.builder().withAction("Neuer Hund").withPriority(1)
+        Action action2 = Action.Builder.builder().withVersion(1).withAction("Neuer Hund").withPriority(1)
                 .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
         action1.setWriteable(false);
         action2.setWriteable(false);

@@ -30,7 +30,7 @@ export class CheckInBaseInformationsComponent {
     this.dialogForm.patchValue({ actionList: actions });
   }
 
-  getActionsWithText(): Action[] {
-    return this.dialogForm.controls['actionList'].value.filter((action: Action) => action.action !== '');
+  getActions(): Action[] {
+    return this.dialogForm.controls['actionList'].value;
   }
 }

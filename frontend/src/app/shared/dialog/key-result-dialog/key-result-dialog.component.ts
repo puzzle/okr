@@ -56,9 +56,9 @@ export class KeyResultDialogComponent implements OnInit {
       this.actionList$ = new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
     } else {
       this.actionList$ = new BehaviorSubject<Action[] | null>([
-        { id: null, action: '', priority: 0, keyResultId: null, isChecked: false },
-        { id: null, action: '', priority: 1, keyResultId: null, isChecked: false },
-        { id: null, action: '', priority: 2, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: '', priority: 0, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: '', priority: 1, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
       ]);
     }
   }
@@ -105,7 +105,7 @@ export class KeyResultDialogComponent implements OnInit {
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
-    keyResult.actionList = this.actionList$.getValue();
+    keyResult.actionList = this.actionList$.getValue()!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,

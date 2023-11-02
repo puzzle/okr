@@ -45,6 +45,7 @@ export const teamList = [team1, team2, team3];
 
 export const action1: Action = {
   id: 33,
+  version: 1,
   action: 'Drucker kaufen',
   priority: 0,
   isChecked: false,
@@ -53,6 +54,7 @@ export const action1: Action = {
 
 export const action2: Action = {
   id: 44,
+  version: 1,
   action: 'Blätter kaufen',
   priority: 1,
   isChecked: true,
@@ -61,6 +63,7 @@ export const action2: Action = {
 
 export const action3: Action = {
   id: null,
+  version: 1,
   action: '',
   priority: 3,
   isChecked: false,
@@ -380,6 +383,7 @@ export const keyResultMetric: KeyResultMetric = {
 
 export const keyResultActions: KeyResultMetric = {
   id: 334,
+  version: 1,
   title: 'Das Büro ist modern und vollständig',
   description: 'Puzzle ITC hat schöne Büros, wo es alles hat.',
   baseline: 10,

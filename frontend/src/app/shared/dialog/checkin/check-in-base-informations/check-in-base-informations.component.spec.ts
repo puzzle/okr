@@ -25,7 +25,7 @@ describe('CheckInBaseInformationsComponent', () => {
   let changeInfoText = 'ChangeInfo';
   let initiativesText = 'Initiatives';
 
-  let action3: Action = { id: 3, action: '', priority: 3, isChecked: true, keyResultId: 1 };
+  let action3: Action = { id: 3, version: 1, action: '', priority: 3, isChecked: true, keyResultId: 1 };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -104,11 +104,5 @@ describe('CheckInBaseInformationsComponent', () => {
     event = { checked: false };
     component.changeIsChecked(event, 0);
     expect(component.dialogForm.value.actionList[0].isChecked).toBeFalsy();
-  });
-
-  it('should filter actions with empty text', async () => {
-    expect(component.dialogForm.value.actionList.length).toEqual(3);
-    let filteredActionList = component.getActionsWithText();
-    expect(filteredActionList.length).toEqual(2);
   });
 });

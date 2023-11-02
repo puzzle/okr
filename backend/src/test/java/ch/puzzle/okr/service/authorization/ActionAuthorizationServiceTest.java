@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,6 @@ import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -45,45 +43,6 @@ class ActionAuthorizationServiceTest {
         this.action2 = Action.Builder.builder().withId(2L).withAction("Neues Lama").withIsChecked(true).withPriority(1)
                 .withKeyResult(KeyResultMetric.Builder.builder().withId(10L).withTitle("KR Title").build()).build();
         this.actionList = List.of(action1, action2);
-    }
-
-    @Test
-    void getEntityByIdShouldReturnActionsWhenAuthorized() {
-        Long keyResultId = 10L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(actionBusinessService.getActionsByKeyResultId(keyResultId)).thenReturn(actionList);
-
-        List<Action> actions = actionAuthorizationService.getEntitiesByKeyResultId(keyResultId);
-
-        assertEquals(actionList, actions);
-    }
-
-    @Test
-    void getEntityByIdShouldReturnActionWritableWhenAuthorized() {
-        Long keyResultId = 10L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(actionBusinessService.getActionsByKeyResultId(keyResultId)).thenReturn(actionList);
-        when(authorizationService.isWriteable((KeyResult) any(), any())).thenReturn(true);
-
-        List<Action> actions = actionAuthorizationService.getEntitiesByKeyResultId(keyResultId);
-
-        actions.forEach(action -> {
-            assertTrue(action.isWriteable());
-        });
-    }
-
-    @Test
-    void getEntityByIdShouldThrowExceptionWhenNotAuthorized() {
-        Long keyResultId = 10L;
-        String reason = "junit test reason";
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
-                .hasRoleReadByKeyResultId(keyResultId, authorizationUser);
-
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> actionAuthorizationService.getEntitiesByKeyResultId(keyResultId));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
     }
 
     @Test

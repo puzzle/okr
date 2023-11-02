@@ -13,6 +13,9 @@ public class Action implements WriteableInterface {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
     private Long id;
 
+    @Version
+    private int version;
+
     @NotNull(message = "Action must not be null")
     @Size(max = 4096, message = "Attribute Action has a max length of 4096 characters")
     private String action;
@@ -34,6 +37,7 @@ public class Action implements WriteableInterface {
 
     private Action(Builder builder) {
         id = builder.id;
+        version = builder.version;
         action = builder.action;
         priority = builder.priority;
         isChecked = builder.isChecked;
@@ -76,6 +80,14 @@ public class Action implements WriteableInterface {
         this.keyResult = keyResult;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -88,8 +100,8 @@ public class Action implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Action{" + "id=" + id + ", action='" + action + '\'' + ", priority=" + priority + ", isChecked="
-                + isChecked + ", keyResult=" + keyResult + '}';
+        return "Action{" + "id=" + id + ", version=" + version + ", action='" + action + '\'' + ", priority=" + priority
+                + ", isChecked=" + isChecked + ", keyResult=" + keyResult + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -99,17 +111,19 @@ public class Action implements WriteableInterface {
         if (o == null || getClass() != o.getClass())
             return false;
         Action action1 = (Action) o;
-        return priority == action1.priority && isChecked == action1.isChecked && Objects.equals(id, action1.id)
+        return version == action1.version && priority == action1.priority && isChecked == action1.isChecked
+                && writeable == action1.writeable && Objects.equals(id, action1.id)
                 && Objects.equals(action, action1.action) && Objects.equals(keyResult, action1.keyResult);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, action, priority, isChecked, keyResult);
+        return Objects.hash(id, version, action, priority, isChecked, keyResult, writeable);
     }
 
     public static final class Builder {
         private Long id;
+        private int version;
         private String action;
         private int priority;
         private boolean isChecked;
@@ -124,6 +138,11 @@ public class Action implements WriteableInterface {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withVersion(int version) {
+            this.version = version;
             return this;
         }
 

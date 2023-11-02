@@ -144,6 +144,7 @@ create table action
 (
     id            bigint        not null
         primary key,
+        version int not null,
     action        varchar(4096) not null,
     priority      integer       not null,
     is_checked    boolean       not null,

@@ -80,7 +80,7 @@ class ActionValidationServiceTest {
     void validateOnCreateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnCreate(this.action1);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.action1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(this.action1);
         verify(validator, times(1)).validate(this.action1);
     }
 
@@ -138,7 +138,7 @@ class ActionValidationServiceTest {
     void validateOnUpdateShouldBeSuccessfulWhenActionIsValid() {
         validator.validateOnUpdate(this.action2.getId(), this.action2);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.action2);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(this.action2);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(this.action2.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(this.action2.getId(), this.action2.getId());
         verify(validator, times(1)).validate(this.action2);
@@ -157,7 +157,7 @@ class ActionValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, this.action1));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.action1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(this.action1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
@@ -167,7 +167,7 @@ class ActionValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, this.action2));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.action2);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(this.action2);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(this.action2.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, this.action2.getId());
         assertEquals("Id 1 has changed to 2 during update", exception.getReason());

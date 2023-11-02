@@ -10,7 +10,6 @@ import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
@@ -40,10 +39,10 @@ class KeyResultBusinessServiceTest {
     KeyResultPersistenceService keyResultPersistenceService;
     @Mock
     CheckInBusinessService checkInBusinessService;
-    @InjectMocks
-    KeyResultValidationService validator = Mockito.mock(KeyResultValidationService.class);
     @Mock
-    ActionAuthorizationService actionAuthorizationService = Mockito.mock(ActionAuthorizationService.class);
+    KeyResultValidationService validator;
+    @Mock
+    ActionBusinessService actionBusinessService;
     @InjectMocks
     private KeyResultBusinessService keyResultBusinessService;
     List<KeyResult> keyResults;
@@ -113,7 +112,7 @@ class KeyResultBusinessServiceTest {
         keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(0)).getCheckInsByKeyResultId(1L);
-        verify(actionAuthorizationService, times(0)).getEntitiesByKeyResultId(any());
+        verify(actionBusinessService, times(0)).getActionsByKeyResultId(any());
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
@@ -130,7 +129,7 @@ class KeyResultBusinessServiceTest {
         keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(0)).getCheckInsByKeyResultId(1L);
-        verify(actionAuthorizationService, times(0)).getEntitiesByKeyResultId(any());
+        verify(actionBusinessService, times(0)).getActionsByKeyResultId(any());
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
@@ -143,14 +142,14 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.ordinalKeyResult);
         Mockito.when(keyResultPersistenceService.recreateEntity(any(), any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
-        Mockito.when(actionAuthorizationService.getEntitiesByKeyResultId(any())).thenReturn(actions);
+        Mockito.when(actionBusinessService.getActionsByKeyResultId(any())).thenReturn(actions);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).recreateEntity(1L, newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
-        verify(actionAuthorizationService, times(1)).getEntitiesByKeyResultId(any());
-        verify(actionAuthorizationService, times(1)).updateEntities(actions);
+        verify(actionBusinessService, times(1)).getActionsByKeyResultId(any());
+        verify(actionBusinessService, times(1)).updateEntities(actions);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
@@ -163,14 +162,14 @@ class KeyResultBusinessServiceTest {
         Mockito.when(keyResultPersistenceService.findById(1L)).thenReturn(this.metricKeyResult);
         Mockito.when(keyResultPersistenceService.recreateEntity(any(), any())).thenReturn(newKeyresult);
         Mockito.when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(emptyList);
-        Mockito.when(actionAuthorizationService.getEntitiesByKeyResultId(any())).thenReturn(actions);
+        Mockito.when(actionBusinessService.getActionsByKeyResultId(any())).thenReturn(actions);
         doNothing().when(newKeyresult).setModifiedOn(any());
 
         keyResultBusinessService.updateEntity(newKeyresult.getId(), newKeyresult, authorizationUser);
         verify(keyResultPersistenceService, times(1)).recreateEntity(1L, newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
-        verify(actionAuthorizationService, times(1)).getEntitiesByKeyResultId(any());
-        verify(actionAuthorizationService, times(1)).updateEntities(actions);
+        verify(actionBusinessService, times(1)).getActionsByKeyResultId(any());
+        verify(actionBusinessService, times(1)).updateEntities(actions);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
@@ -189,7 +188,7 @@ class KeyResultBusinessServiceTest {
         verify(keyResultPersistenceService, times(1)).updateEntity(ordinalKeyResult);
         verify(keyResultPersistenceService, times(0)).updateEntity(newKeyresult);
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
-        verify(actionAuthorizationService, times(0)).getEntitiesByKeyResultId(any());
+        verify(actionBusinessService, times(0)).getActionsByKeyResultId(any());
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
@@ -318,12 +317,12 @@ class KeyResultBusinessServiceTest {
     @Test
     void shouldDeleteKeyResultAndAssociatedCheckInsAndActions() {
         when(checkInBusinessService.getCheckInsByKeyResultId(1L)).thenReturn(checkIns);
-        when(actionAuthorizationService.getEntitiesByKeyResultId(1L)).thenReturn(actions);
+        when(actionBusinessService.getActionsByKeyResultId(1L)).thenReturn(actions);
 
         this.keyResultBusinessService.deleteEntityById(1L);
 
         verify(this.checkInBusinessService, times(1)).deleteEntityById(1L);
-        verify(this.actionAuthorizationService, times(2)).deleteActionByActionId(3L);
+        verify(this.actionBusinessService, times(2)).deleteEntityById(3L);
         verify(this.keyResultPersistenceService, times(1)).deleteById(1L);
     }
 

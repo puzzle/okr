@@ -19,14 +19,6 @@ public class ActionAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public List<Action> getEntitiesByKeyResultId(Long keyResultId) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        hasRoleReadById(keyResultId, authorizationUser);
-        List<Action> actionList = actionBusinessService.getActionsByKeyResultId(keyResultId);
-        actionList.forEach(action -> setRoleCreateOrUpdate(action, authorizationUser));
-        return actionList;
-    }
-
     public void createEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
@@ -40,10 +32,6 @@ public class ActionAuthorizationService {
             setRoleCreateOrUpdate(action, authorizationUser);
         });
         actionBusinessService.updateEntities(actionList);
-    }
-
-    protected void hasRoleReadById(Long id, AuthorizationUser authorizationUser) {
-        authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
     }
 
     protected void hasRoleCreateOrUpdate(Action entity, AuthorizationUser authorizationUser) {

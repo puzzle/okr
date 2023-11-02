@@ -103,7 +103,8 @@ public class KeyResultTestHelpers {
             keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true, List.of());
     public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, 1,
             KEY_RESULT_TYPE_ORDINAL, TITLE, DESCRIPTION, COMMIT_ZONE, TARGET_ZONE, STRETCH_ZONE, keyResultUserDto,
-            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true, List.of());
+            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true,
+            List.of());
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
             .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();

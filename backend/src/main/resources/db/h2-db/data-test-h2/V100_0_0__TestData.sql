@@ -134,15 +134,15 @@ insert into team_organisation (team_id, organisation_id) values
        (8, 2),
        (8, 5);
 
-insert into action (id, action, priority, is_checked, key_result_id) values
-                                                      (1, 'Neues Haus', 1, true, 8),
-                                                      (2, 'Neue Katze', 2, true, 8),
-                                                      (3, 'Neuer Garten', 3, true, 10),
-                                                      (4, 'Essen kaufen', 1, true, 10),
-                                                      (5, 'Mehr Licht', 2, true, 10),
-                                                      (6, 'Neue Pflanzen', 1, true, 6),
-                                                      (7, 'Mehr Getränke', 3, true, 6),
-                                                      (8, 'Ein Buch', 2, true, 6),
-                                                      (9, 'Lenovo Laptop', 1, true, 19),
-                                                      (10, 'Türen säubern', 2, true, 19),
-                                                      (11, 'Stühle ölen', 3, true, 19);
+insert into action (id, version, action, priority, is_checked, key_result_id) values
+                                                      (1,  1, 'Neues Haus', 1, true, 8),
+                                                      (2,  1, 'Neue Katze', 2, true, 8),
+                                                      (3,  1, 'Neuer Garten', 3, true, 10),
+                                                      (4,  1, 'Essen kaufen', 1, true, 10),
+                                                      (5,  1, 'Mehr Licht', 2, true, 10),
+                                                      (6,  1, 'Neue Pflanzen', 1, true, 6),
+                                                      (7,  1, 'Mehr Getränke', 3, true, 6),
+                                                      (8,  1, 'Ein Buch', 2, true, 6),
+                                                      (9,  1, 'Lenovo Laptop', 1, true, 19),
+                                                      (10, 1,  'Türen säubern', 2, true, 19),
+                                                      (11, 1,  'Stühle ölen', 3, true, 19);

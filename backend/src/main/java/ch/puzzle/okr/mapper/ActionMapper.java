@@ -17,8 +17,8 @@ public class ActionMapper {
     }
 
     public ActionDto toDto(Action action) {
-        return new ActionDto(action.getId(), action.getAction(), action.getPriority(), action.isChecked(),
-                action.getKeyResult().getId());
+        return new ActionDto(action.getId(), action.getVersion(), action.getAction(), action.getPriority(),
+                action.isChecked(), action.getKeyResult().getId());
     }
 
     public List<Action> toActions(List<ActionDto> actionDtos) {
@@ -26,8 +26,8 @@ public class ActionMapper {
     }
 
     public Action toAction(ActionDto actionDto) {
-        return Action.Builder.builder().withId(actionDto.id()).withAction(actionDto.action())
-                .withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
+        return Action.Builder.builder().withId(actionDto.id()).withVersion(actionDto.version())
+                .withAction(actionDto.action()).withPriority(actionDto.priority()).withIsChecked(actionDto.isChecked())
                 .withKeyResult(
                         keyResultAuthorizationService.getBusinessService().getEntityById(actionDto.keyResultId()))
                 .build();

@@ -7,7 +7,7 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
-import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
+import ch.puzzle.okr.service.business.ActionBusinessService;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.business.UserBusinessService;
@@ -20,17 +20,17 @@ public class KeyResultMetricMapper {
 
     private final UserBusinessService userBusinessService;
     private final ObjectiveBusinessService objectiveBusinessService;
-    private final ActionAuthorizationService actionAuthorizationService;
+    private final ActionBusinessService actionBusinessService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionMapper actionMapper;
 
     public KeyResultMetricMapper(UserBusinessService userBusinessService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-                                 ActionAuthorizationService actionAuthorizationService, ActionMapper actionMapper) {
+            ActionBusinessService actionBusinessService, ActionMapper actionMapper) {
         this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
-        this.actionAuthorizationService = actionAuthorizationService;
+        this.actionBusinessService = actionBusinessService;
         this.actionMapper = actionMapper;
     }
 
@@ -43,12 +43,13 @@ public class KeyResultMetricMapper {
         KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInMetricDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
-        List<Action> actionList = actionAuthorizationService.getEntitiesByKeyResultId(keyResult.getId());
+        List<Action> actionList = actionBusinessService.getActionsByKeyResultId(keyResult.getId());
 
         return new KeyResultMetricDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getBaseline(), keyResult.getStretchGoal(),
                 keyResult.getUnit(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
-                keyResult.getModifiedOn(), keyResult.isWriteable(), actionList.stream().map(actionMapper::toDto).toList());
+                keyResult.getModifiedOn(), keyResult.isWriteable(),
+                actionList.stream().map(actionMapper::toDto).toList());
     }
 
     public KeyResult toKeyResultMetric(KeyResultMetricDto keyResultMetricDto) {

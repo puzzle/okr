@@ -12,7 +12,6 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -47,7 +46,7 @@ class KeyResultBusinessServiceIT {
     private CheckInBusinessService checkInBusinessService;
 
     @Mock
-    private ActionAuthorizationService actionAuthorizationService;
+    private ActionBusinessService actionBusinessService;
 
     @Mock
     private AuthorizationService authorizationService;
@@ -86,7 +85,7 @@ class KeyResultBusinessServiceIT {
                 .withPriority(1).withKeyResult(ordinalKeyResult).build();
         List<Action> actionList = List.of(action1, action2);
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(actionAuthorizationService.getEntitiesByKeyResultId(any())).thenReturn(actionList);
+        when(actionBusinessService.getActionsByKeyResultId(any())).thenReturn(actionList);
     }
 
     @AfterEach

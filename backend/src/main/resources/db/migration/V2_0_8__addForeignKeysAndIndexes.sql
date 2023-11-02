@@ -88,7 +88,7 @@ alter table person
     add constraint uk_person_username
         unique (username);
 
-create unique index if not exists idx_person_username
+create unique index if not exists uk_person_username
     on person (username);
 
 -- table quarter
@@ -101,5 +101,5 @@ alter table quarter
     add constraint uk_quarter_label
         unique (label);
 
-create unique index if not exists idx_quarter_label
+create unique index if not exists uk_quarter_label
     on quarter (label);

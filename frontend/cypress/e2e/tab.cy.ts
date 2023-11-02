@@ -12,23 +12,15 @@ describe('Tab workflow tests', () => {
     cy.focused().contains('Hilfe');
   });
 
-  // not working
-  it.skip('After mouseclick on overview first element after tab should be the first objective', () => {
-    cy.get('.overviewContainer').realClick();
-    cy.realPress('Tab');
-    cy.realPress('Tab');
-    cy.focused().contains('Wir wollen die Zusammenarbeit im Team steigern.');
-  });
-
   it('Tab forward and then tab backwards with tab+shift', () => {
-    cy.realPress('Tab');
-    cy.realPress('Tab');
-    cy.realPress('Tab');
-    cy.realPress('Tab');
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
     cy.focused().contains('GJ');
-    cy.realPress(['Shift', 'Tab']);
-    cy.realPress(['Shift', 'Tab']);
-    cy.realPress(['Shift', 'Tab']);
+    cy.tabBackward();
+    cy.tabBackward();
+    cy.tabBackward();
     cy.focused().contains('Hilfe');
   });
 });

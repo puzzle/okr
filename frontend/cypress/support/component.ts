@@ -15,6 +15,8 @@ declare global {
       mount: typeof mount;
       loginAsUser(user: any): Chainable;
       getByTestId(testsId: string): Chainable;
+      tabForward(): void;
+      tabBackward(): void;
     }
   }
 }

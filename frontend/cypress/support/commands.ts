@@ -36,6 +36,14 @@ Cypress.Commands.add('getByTestId', (testId: string) => {
   return cy.get(`*[data-testId=${testId}]`);
 });
 
+Cypress.Commands.add('tabForward', () => {
+  cy.realPress('Tab');
+});
+
+Cypress.Commands.add('tabBackward', () => {
+  cy.realPress(['Shift', 'Tab']);
+});
+
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
   cy.origin(

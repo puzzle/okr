@@ -29,7 +29,11 @@ public class ObjectivePersistenceServiceIT {
     private QuarterPersistenceService quarterPersistenceService;
 
     private static Objective createObjective(Long id) {
-        return Objective.Builder.builder().withId(id).withTitle("title")
+        return createObjective(id, 1);
+    }
+
+    private static Objective createObjective(Long id, int version) {
+        return Objective.Builder.builder().withId(id).withVersion(version).withTitle("title")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withTeam(Team.Builder.builder().withId(5L).build())
                 .withQuarter(Quarter.Builder.builder().withId(1L).build()).withDescription("This is our description")
@@ -150,14 +154,26 @@ public class ObjectivePersistenceServiceIT {
 
     @Test
     void updateObjectiveShouldUpdateObjective() {
-        Objective objective = createObjective(null);
-        createdObjective = objectivePersistenceService.save(objective);
-        createdObjective.setState(State.ONGOING);
+        createdObjective = objectivePersistenceService.save(createObjective(null));
+        Objective updateObjective = createObjective(createdObjective.getId(), createdObjective.getVersion());
+        updateObjective.setState(State.ONGOING);
 
-        Objective updatedObjective = objectivePersistenceService.save(createdObjective);
+        Objective updatedObjective = objectivePersistenceService.save(updateObjective);
 
         assertEquals(createdObjective.getId(), updatedObjective.getId());
         assertEquals(State.ONGOING, updatedObjective.getState());
+    }
+
+    @Test
+    void updateObjectiveShouldThrowExceptionWhenAlreadyUpdated() {
+        createdObjective = objectivePersistenceService.save(createObjective(null));
+        Objective updateObjective = createObjective(createdObjective.getId(), 0);
+        updateObjective.setState(State.ONGOING);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> objectivePersistenceService.save(updateObjective));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

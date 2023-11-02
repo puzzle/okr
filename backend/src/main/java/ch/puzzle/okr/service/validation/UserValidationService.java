@@ -17,14 +17,14 @@ public class UserValidationService extends ValidationBase<User, Long, UserReposi
 
     @Override
     public void validateOnCreate(User model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         validate(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, User model) {
-        throwExceptionIfModelIsNull(model);
+        throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
         throwExceptionWhenIdHasChanged(id, model.getId());
 

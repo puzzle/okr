@@ -79,7 +79,8 @@ public class KeyResultController {
                     @Content(mediaType = "application/json", schema = @Schema(allOf = { KeyResultDto.class,
                             KeyResultOrdinalDto.class })) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to update a KeyResult", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Did not find a KeyResult with a specified ID to update.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Can't update KeyResult since KeyResult was updated or deleted by another user.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,

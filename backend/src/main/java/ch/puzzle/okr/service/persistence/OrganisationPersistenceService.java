@@ -17,15 +17,16 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         return "Organisation";
     }
 
-    public void saveIfNotExists(Organisation org) {
+    public Organisation saveIfNotExists(Organisation org) {
         if (!getRepository().existsOrganisationByOrgName(org.getOrgName())) {
-            repository.save(org);
+            return getRepository().save(org);
         }
+        return null;
     }
 
     public void updateOrganisationStateToInactive(String orgName) {
         Organisation orgInactive = getRepository().findByOrgName(orgName);
         orgInactive.setState(OrganisationState.INACTIVE);
-        repository.save(orgInactive);
+        getRepository().save(orgInactive);
     }
 }

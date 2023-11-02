@@ -153,7 +153,7 @@ class UserValidationServiceTest {
     void validateOnCreate_ShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnCreate(userMinimal);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(userMinimal);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(userMinimal);
         verify(validator, times(1)).validate(userMinimal);
     }
 
@@ -273,7 +273,7 @@ class UserValidationServiceTest {
     void validateOnUpdate_ShouldBeSuccessfulWhenUserIsValid() {
         validator.validateOnUpdate(user.getId(), user);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(user);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(user);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(user.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(user.getId(), user.getId());
         verify(validator, times(1)).validate(user);
@@ -292,7 +292,7 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, userMinimal));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(userMinimal);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(userMinimal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
@@ -302,7 +302,7 @@ class UserValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(7L, user));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(user);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(user);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(user.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(7L, user.getId());
         assertEquals("Id 7 has changed to 1 during update", exception.getReason());

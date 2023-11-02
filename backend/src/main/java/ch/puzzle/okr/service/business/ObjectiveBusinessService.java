@@ -11,10 +11,15 @@ import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.validation.ObjectiveValidationService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
+import static java.lang.String.format;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
@@ -41,8 +46,25 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedOn(savedObjective.getCreatedOn());
         objective.setModifiedBy(authorizationUser.user());
         objective.setModifiedOn(LocalDateTime.now());
+        throwExceptionWhenQuarterIsNotChangable(objective, savedObjective);
         validator.validateOnUpdate(id, objective);
         return objectivePersistenceService.save(objective);
+    }
+
+    private void throwExceptionWhenQuarterIsNotChangable(Objective objective, Objective savedObjective) {
+        if (hasQuaterChanged(objective, savedObjective) && hasAlreadyCheckIns(savedObjective)) {
+            throw new ResponseStatusException(BAD_REQUEST,
+                    format("Not allowed to change the quarter of objective '%s'.", savedObjective.getTitle()));
+        }
+    }
+
+    private boolean hasAlreadyCheckIns(Objective savedObjective) {
+        return keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId()).stream()
+                .filter(kr -> keyResultBusinessService.hasKeyResultAnyCheckIns(kr.getId())).findAny().isPresent();
+    }
+
+    private static boolean hasQuaterChanged(Objective objective, Objective savedObjective) {
+        return !Objects.equals(objective.getQuarter(), savedObjective.getQuarter());
     }
 
     @Transactional

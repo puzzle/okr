@@ -48,24 +48,44 @@ class ObjectiveControllerIT {
     private static final String URL_BASE_OBJECTIVE = "/api/v2/objectives";
     private static final String URL_OBJECTIVE_5 = "/api/v2/objectives/5";
     private static final String URL_OBJECTIVE_10 = "/api/v2/objectives/10";
-    private static final String JSON = "{\"title\": \"FullObjective\", \"ownerId\": 1, \"ownerFirstname\": \"Bob\", "
-            + "\"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", "
-            + "\"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, "
-            + "\"description\": \"This is our description\", \"progress\": 33.3}";
+    private static final String JSON = """
+            {
+               "title": "FullObjective", "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
+               "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
+               "description": "This is our description", "progress": 33.3
+            }
+            """;
+    private static final String CREATE_NEW_OBJECTIVE = """
+            {
+               "title": "FullObjective", "ownerId": 1, "teamId": 1, "teamName": "Team1",
+               "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020, "description": "This is our description"
+            }
+            """;
+    private static final String CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES = """
+            {
+               "title": null, "ownerId": 1, "ownerFirstname": "Bob", "ownerLastname": "Kaufmann",
+               "teamId": 1, "teamName": "Team1", "quarterId": 1, "quarterNumber": 3, "quarterYear": 2020,
+               "description": "This is our description", "progress": 33.3
+            }
+            """;
+    private static final String RESPONSE_NEW_OBJECTIVE = """
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
 
-    static Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1).build();
-    static Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2).build();
-    static User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+    private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
+            .build();
+    private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
+            .build();
+    private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-    static Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
-    static Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-    static Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
+    private static final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
+    private static final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+    private static final Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION)
             .withModifiedOn(LocalDateTime.MAX).build();
-    static ObjectiveDto objective1Dto = new ObjectiveDto(5L, OBJECTIVE_TITLE_1, 1L, 1L, DESCRIPTION, State.DRAFT,
-            LocalDateTime.MAX, LocalDateTime.MAX, true);
-    static ObjectiveDto objective2Dto = new ObjectiveDto(7L, OBJECTIVE_TITLE_2, 1L, 1L, DESCRIPTION, State.DRAFT,
-            LocalDateTime.MIN, LocalDateTime.MIN, true);
+    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, DESCRIPTION,
+            State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true);
+    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, DESCRIPTION,
+            State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true);
 
     @Autowired
     private MockMvc mvc;
@@ -104,18 +124,16 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT,
+        ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT,
                 null, null, true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
 
         mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
-                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(
-                        "{\"title\": \"FullObjective\", \"ownerId\": 1, \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\"}"))
+                .with(SecurityMockMvcRequestPostProcessors.csrf()).content(CREATE_NEW_OBJECTIVE))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
-                .andExpect(MockMvcResultMatchers.content().string(
-                        "{\"id\":null,\"title\":\"Program Faster\",\"teamId\":1,\"quarterId\":1,\"description\":\"Just be faster\",\"state\":\"DRAFT\",\"createdOn\":null,\"modifiedOn\":null,\"writeable\":true}"));
+                .andExpect(MockMvcResultMatchers.content().string(RESPONSE_NEW_OBJECTIVE));
         verify(objectiveAuthorizationService, times(1)).createEntity(any());
     }
 
@@ -124,15 +142,14 @@ class ObjectiveControllerIT {
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing attribute title when creating objective"));
 
-        mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON).content(
-                "{\"title\": null, \"ownerId\": 1, \"ownerFirstname\": \"Bob\", \"ownerLastname\": \"Kaufmann\", \"teamId\": 1, \"teamName\": \"Team1\", \"quarterId\": 1, \"quarterNumber\": 3, \"quarterYear\": 2020, \"description\": \"This is our description\", \"progress\": 33.3}")
-                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+        mvc.perform(post(URL_BASE_OBJECTIVE).contentType(MediaType.APPLICATION_JSON)
+                .content(CREATE_NEW_OBJECTIVE_WITH_NULL_VALUES).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
                 State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withTitle(TITLE).build();
@@ -149,7 +166,7 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
                 State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
         Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)

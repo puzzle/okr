@@ -13,14 +13,14 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class AlignmentPersistenceServiceIT {
-    Alignment createdAlignment;
     @Autowired
     private AlignmentPersistenceService alignmentPersistenceService;
+    private Alignment createdAlignment;
 
     private static ObjectiveAlignment createObjectiveAlignment(Long id) {
         return ObjectiveAlignment.Builder.builder().withId(id)
@@ -29,7 +29,11 @@ class AlignmentPersistenceServiceIT {
     }
 
     private static KeyResultAlignment createKeyResultAlignment(Long id) {
-        return KeyResultAlignment.Builder.builder().withId(id)
+        return createKeyResultAlignment(id, 1);
+    }
+
+    private static KeyResultAlignment createKeyResultAlignment(Long id, int version) {
+        return KeyResultAlignment.Builder.builder().withId(id).withVersion(version)
                 .withAlignedObjective(Objective.Builder.builder().withId(5L).build())
                 .withTargetKeyResult(KeyResultMetric.Builder.builder().withId(8L).build()).build();
     }
@@ -68,6 +72,30 @@ class AlignmentPersistenceServiceIT {
         assertNotNull(createdAlignment.getId());
         assertEquals(5L, createdAlignment.getAlignedObjective().getId());
         assertEquals(8L, ((KeyResultAlignment) createdAlignment).getAlignmentTarget().getId());
+    }
+
+    @Test
+    void updateAlignmentShouldSaveKeyResultAlignment() {
+        createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
+        Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), createdAlignment.getVersion());
+        updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
+
+        Alignment updatedAlignment = alignmentPersistenceService.save(updateAlignment);
+
+        assertEquals(createdAlignment.getId(), updatedAlignment.getId());
+        assertEquals(createdAlignment.getVersion() + 1, updatedAlignment.getVersion());
+    }
+
+    @Test
+    void updateAlignmentShouldThrowExceptionWhenAlreadyUpdated() {
+        createdAlignment = alignmentPersistenceService.save(createKeyResultAlignment(null));
+        Alignment updateAlignment = createKeyResultAlignment(createdAlignment.getId(), 0);
+        updateAlignment.setAlignedObjective(Objective.Builder.builder().withId(8L).build());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> alignmentPersistenceService.save(updateAlignment));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

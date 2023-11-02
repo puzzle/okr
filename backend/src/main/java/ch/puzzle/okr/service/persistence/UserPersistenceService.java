@@ -23,6 +23,6 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
     @Cacheable(value = USER_CACHE, key = "#user.username")
     public synchronized User getOrCreateUser(User user) {
         Optional<User> savedUser = getRepository().findByUsername(user.getUsername());
-        return savedUser.orElseGet(() -> repository.save(user));
+        return savedUser.orElseGet(() -> getRepository().save(user));
     }
 }

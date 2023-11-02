@@ -13,7 +13,7 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
     }
 
     public void validateOnGetActiveObjectives(Team team) {
-        throwExceptionIfModelIsNull(team);
+        throwExceptionWhenModelIsNull(team);
         throwExceptionWhenIdIsNull(team.getId());
         doesEntityExist(team.getId());
     }

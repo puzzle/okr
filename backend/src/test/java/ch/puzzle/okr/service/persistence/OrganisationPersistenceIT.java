@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.repository.OrganisationRepository;
 import ch.puzzle.okr.test.SpringIntegrationTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,30 @@ public class OrganisationPersistenceIT {
     @Spy
     OrganisationRepository repository;
 
-    Organisation org = Organisation.Builder.builder().withOrgName("org_test").withState(OrganisationState.ACTIVE)
-            .build();
-    @Autowired
-    private OrganisationRepository organisationRepository;
+    private Organisation createdOrganisation;
+
+    private Organisation createOrganisation(Long id) {
+        return createOrganisation(id, 0);
+    }
+
+    private Organisation createOrganisation(Long id, int version) {
+        return Organisation.Builder.builder().withId(id).withVersion(version).withOrgName("org_test")
+                .withState(OrganisationState.ACTIVE).build();
+    }
+
+    @AfterEach
+    void tearDown() {
+        try {
+            if (createdOrganisation != null) {
+                organisationPersistenceService.findById(createdOrganisation.getId());
+                organisationPersistenceService.deleteById(createdOrganisation.getId());
+            }
+        } catch (ResponseStatusException ex) {
+            // created alignment already deleted
+        } finally {
+            createdOrganisation = null;
+        }
+    }
 
     @Test
     void shouldReturnSingleOrganisationWhenFindingByValidId() {
@@ -55,8 +76,22 @@ public class OrganisationPersistenceIT {
 
     @Test
     void shouldReturnTrueIfOrgWithNameAlreadyExists() {
-        organisationPersistenceService.saveIfNotExists(org);
+        Organisation org = createOrganisation(null);
+        createdOrganisation = organisationPersistenceService.saveIfNotExists(org);
         assertTrue(organisationPersistenceService.findAll().contains(org));
+    }
+
+    @Test
+    void updateOrganisationShouldSaveOrganisation() {
+        createdOrganisation = organisationPersistenceService.saveIfNotExists(createOrganisation(null));
+        Organisation updateOrganisation = createOrganisation(createdOrganisation.getId());
+        updateOrganisation.setOrgName("Updated organisation");
+
+        Organisation updatedOrganisation = organisationPersistenceService.save(updateOrganisation);
+
+        assertEquals(createdOrganisation.getId(), updatedOrganisation.getId());
+        assertEquals(createdOrganisation.getVersion() + 1, updatedOrganisation.getVersion());
+        assertEquals(updateOrganisation.getOrgName(), updatedOrganisation.getOrgName());
     }
 
     @Test

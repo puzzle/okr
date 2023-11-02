@@ -8,7 +8,6 @@ import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -16,12 +15,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,15 +42,6 @@ class TeamBusinessServiceTest {
     @InjectMocks
     private TeamBusinessService teamBusinessService;
 
-    private static Stream<Arguments> shouldGetTeamsByIds() {
-        return Stream.of(Arguments.of(List.of(1L, 2L),
-                List.of(Team.Builder.builder().withId(1L).build(), Team.Builder.builder().withId(2L).build()), 2
-
-        ), Arguments.of(List.of(1L, 5L), List.of(Team.Builder.builder().withId(1L).build()), 2
-
-        ), Arguments.of(List.of(5L), Collections.emptyList(), 1));
-    }
-
     @BeforeEach
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
@@ -64,16 +52,26 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void getAllTeams_ShouldBeSuccessful() {
+    void getTeamByIdShouldBeSuccessful() {
+        Long id = team1.getId();
+        Mockito.when(teamPersistenceService.findById(id)).thenReturn(team1);
+
+        Team team = teamBusinessService.getTeamById(id);
+
+        assertEquals(team1, team);
+    }
+
+    @Test
+    void getAllTeamsShouldBeSuccessful() {
         Mockito.when(teamPersistenceService.findAll()).thenReturn(List.of(team1, team2));
 
         List<Team> teams = teamBusinessService.getAllTeams();
 
-        assertIterableEquals(List.of(team1, team2), teams);
+        assertThat(List.of(team1, team2)).hasSameElementsAs(teams);
     }
 
     @Test
-    void activeObjectivesAmountOfTeam_ShouldBeSuccessful() throws ResponseStatusException {
+    void activeObjectivesAmountOfTeamShouldBeSuccessful() throws ResponseStatusException {
         Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
         Mockito.when(quarterService.getQuarterById(any())).thenReturn(quarter);
         Mockito.when(objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);

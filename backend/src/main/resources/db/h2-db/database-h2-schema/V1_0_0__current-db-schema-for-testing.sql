@@ -16,7 +16,7 @@ create table if not exists person
     lastname  varchar(50)  not null,
     username  varchar(20)  not null,
     primary key (id),
-    constraint uk_n0i6d7rc1hqkjivk494g8j2qd
+    constraint uk_person_username
         unique (username)
 );
 
@@ -28,7 +28,7 @@ create table if not exists quarter
     start_date date         not null,
     end_date   date         not null,
     primary key (id),
-    constraint uk_dgtrbsqpu1pdfxob0kkw6y44a
+    constraint uk_quarter_label
         unique (label)
 );
 
@@ -44,6 +44,7 @@ create table if not exists team
 create table if not exists objective
 (
     id             bigint       not null,
+    version        int          not null,
     description    varchar(4096),
     modified_on    timestamp    not null,
     progress       bigint,
@@ -55,38 +56,27 @@ create table if not exists objective
     modified_by_id bigint,
     created_on     timestamp    not null,
     primary key (id),
-    constraint fkei78u3nle5h56t0duejtav8t5
+    constraint fk_objective_created_by_person
         foreign key (created_by_id) references person,
-    constraint fkh6d9qidc5dtgvdv7y3muxoabd
+    constraint fk_objective_quarter
         foreign key (quarter_id) references quarter,
-    constraint fk8h2m4kk8wt96ran9rgxn9n3to
+    constraint fk_objective_team
         foreign key (team_id) references team
 );
 
-
+create index if not exists idx_objective_created_by_person
+    on objective (created_by_id);
+create index if not exists idx_objective_quarter
+    on objective (quarter_id);
+create index if not exists idx_objective_team
+    on objective (team_id);
 create index if not exists idx_objective_title
     on objective (title);
-
-create table if not exists check_in
-(
-    id            bigint    not null
-        constraint measure_pkey
-            primary key,
-    change_info   varchar(4096),
-    created_on    timestamp not null,
-    initiatives   varchar(4096),
-    modified_on   timestamp,
-    value_metric  double precision,
-    created_by_id bigint    not null,
-    key_result_id bigint    not null,
-    confidence    integer,
-    check_in_type varchar(255),
-    zone          text
-);
 
 create table if not exists key_result
 (
     id              bigint    not null,
+    version         int       not null,
     baseline        double precision,
     description     varchar(4096),
     modified_on     timestamp,
@@ -101,7 +91,6 @@ create table if not exists key_result
     commit_zone     varchar(1024),
     target_zone     varchar(1024),
     stretch_zone    varchar(1024),
-
     primary key (id),
     constraint fk4ba6rgbr8mrkc8vvyqd5il4v9
         foreign key (created_by_id) references person,
@@ -111,26 +100,58 @@ create table if not exists key_result
         foreign key (owner_id) references person
 );
 
+create index if not exists idx_key_result_owner_person
+    on key_result (owner_id);
+create index if not exists idx_key_result_created_by_person
+    on key_result (created_by_id);
+create index if not exists idx_key_result_objective
+    on key_result (objective_id);
+
+create table if not exists check_in
+(
+    id            bigint    not null,
+    version       int       not null,
+    change_info   varchar(4096),
+    created_on    timestamp not null,
+    initiatives   varchar(4096),
+    modified_on   timestamp,
+    value_metric  double precision,
+    created_by_id bigint    not null,
+    key_result_id bigint    not null,
+    confidence    integer,
+    check_in_type varchar(255),
+    zone          text,
+    primary key (id),
+    constraint fk_check_in_key_result
+        foreign key (key_result_id) references key_result
+);
+
+create index if not exists idx_check_in_key_result
+    on check_in (key_result_id);
+
 create table if not exists completed
 (
     id           bigint not null primary key,
+    version      int    not null,
     objective_id bigint not null
         constraint fk_completed_objective
             references objective,
     comment      varchar(4096)
 );
 
+create index if not exists idx_completed_objective
+    on completed (objective_id);
 
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
-SELECT T.ID                AS "TEAM_ID",
-       T.NAME              AS "TEAM_NAME",
+SELECT TQ.TEAM_ID          AS "TEAM_ID",
+       TQ.NAME             AS "TEAM_NAME",
+       TQ.QUATER_ID        AS "QUARTER_ID",
+       TQ.LABEL            AS "QUARTER_LABEL",
        COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
        O.STATE             AS "OBJECTIVE_STATE",
        O.CREATED_ON        AS "OBJECTIVE_CREATED_ON",
-       Q.ID                AS "QUARTER_ID",
-       Q.LABEL             AS "QUARTER_LABEL",
        COALESCE(KR.ID, -1) AS "KEY_RESULT_ID",
        KR.TITLE            AS "KEY_RESULT_TITLE",
        KR.KEY_RESULT_TYPE  AS "KEY_RESULT_TYPE",
@@ -145,9 +166,10 @@ SELECT T.ID                AS "TEAM_ID",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
        C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
-FROM TEAM T
-         LEFT JOIN OBJECTIVE O ON T.ID = O.TEAM_ID
-         LEFT JOIN QUARTER Q ON O.QUARTER_ID = Q.ID
+FROM (SELECT T.ID AS TEAM_ID, T.NAME, Q.ID AS QUATER_ID, Q.LABEL
+      FROM TEAM T,
+           QUARTER Q) TQ
+         LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC
@@ -155,6 +177,7 @@ FROM TEAM T
 create table if not exists alignment
 (
     id                   bigint       not null,
+    version              int          not null,
     aligned_objective_id bigint       not null,
     alignment_type       varchar(255) not null,
     target_key_result_id bigint,
@@ -186,6 +209,7 @@ FROM OBJECTIVE O
 create table if not exists organisation
 (
     id       bigint       not null,
+    version  int          not null,
     org_name varchar(255) not null,
     state    text         not null,
     primary key (id)

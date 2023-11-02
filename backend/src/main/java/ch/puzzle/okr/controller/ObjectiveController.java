@@ -84,7 +84,8 @@ public class ObjectiveController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Objective, attributes are not set or tried to set quarter", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authorized to update an Objective", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Given ID of Objective wasn't found", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Can't update Objective since Objective was updated or deleted by another user.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<ObjectiveDto> updateObjective(
             @Parameter(description = "The ID for updating an Objective.", required = true) @PathVariable Long id,

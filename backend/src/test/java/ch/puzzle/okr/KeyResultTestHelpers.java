@@ -82,27 +82,27 @@ public class KeyResultTestHelpers {
     public static final CheckIn checkIn2 = CheckInMetric.Builder.builder().withValue(12D).withId(4L)
             .withKeyResult(metricKeyResult).withCreatedBy(user).withCreatedOn(LocalDateTime.MAX)
             .withChangeInfo(CHANGE_INFO_2).withInitiatives(INITIATIVES_2).build();
-    public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L, CHANGE_INFO_1, INITIATIVES_1, 6,
+    public static final CheckInDto checkInDto1 = new CheckInMetricDto(1L, 1, CHANGE_INFO_1, INITIATIVES_1, 6,
             metricKeyResult.getId(), LocalDateTime.MAX, LocalDateTime.MAX, 23D, true);
-    public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L, CHANGE_INFO_2, INITIATIVES_2, 5,
+    public static final CheckInDto checkInDto2 = new CheckInMetricDto(4L, 1, CHANGE_INFO_2, INITIATIVES_2, 5,
             metricKeyResult.getId(), LocalDateTime.MAX, LocalDateTime.MAX, 12D, true);
 
     public static final KeyResultUserDto keyResultUserDto = new KeyResultUserDto(1L, FIRSTNAME, LASTNAME);
     public static final KeyResultQuarterDto keyResultQuarterDto = new KeyResultQuarterDto(1L, QUARTER_LABEL,
             LocalDate.MIN, LocalDate.MAX);
-    public static final KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L,
+    public static final KeyResultLastCheckInMetricDto keyResultLastCheckInDto = new KeyResultLastCheckInMetricDto(1L, 1,
             4.0, 6, LocalDateTime.MIN, CHANGE_INFO_1, INITIATIVES_1);
     public static final KeyResultLastCheckInOrdinalDto keyResultLastCheckInOrdinalDto = new KeyResultLastCheckInOrdinalDto(
-            1L, LAST_CHECK_IN_ZONE, 6, LocalDateTime.MIN, CHANGE_INFO_2, INITIATIVES_2);
+            1L, 1, LAST_CHECK_IN_ZONE, 6, LocalDateTime.MIN, CHANGE_INFO_2, INITIATIVES_2);
     public static final KeyResultObjectiveDto keyResultObjectiveDto = new KeyResultObjectiveDto(1L,
             OBJECTIVE_STATE_ONGOING, keyResultQuarterDto);
 
-    public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, KEY_RESULT_TYPE_METRIC,
+    public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, 1, KEY_RESULT_TYPE_METRIC,
             TITLE, DESCRIPTION, 1.0, 5.0, KEY_RESULT_UNIT, keyResultUserDto, keyResultObjectiveDto,
             keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
-    public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, KEY_RESULT_TYPE_ORDINAL,
-            TITLE, DESCRIPTION, COMMIT_ZONE, TARGET_ZONE, STRETCH_ZONE, keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
+    public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, 1,
+            KEY_RESULT_TYPE_ORDINAL, TITLE, DESCRIPTION, COMMIT_ZONE, TARGET_ZONE, STRETCH_ZONE, keyResultUserDto,
+            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
             .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();

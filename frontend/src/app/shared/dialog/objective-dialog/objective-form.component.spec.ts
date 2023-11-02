@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ObjectiveFormComponent } from './objective-form.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -156,6 +156,7 @@ describe('ObjectiveDialogComponent', () => {
       objective: {
         description: description,
         id: 5,
+        version: 1,
         quarterId: 2,
         state: State[state as keyof typeof State],
         teamId: 2,

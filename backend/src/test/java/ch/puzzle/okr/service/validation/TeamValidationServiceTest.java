@@ -93,7 +93,7 @@ class TeamValidationServiceTest {
 
         verify(validator, times(1)).validateOnGetActiveObjectives(team1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-        verify(validator, times(1)).throwExceptionIfModelIsNull(team1);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(team1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(team1.getId());
         verify(validator, times(1)).doesEntityExist(team1.getId());
     }
@@ -103,7 +103,7 @@ class TeamValidationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(teamWithIdNull);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }

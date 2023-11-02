@@ -4,6 +4,7 @@ import { CheckIn } from '../model/CheckIn';
 
 export interface KeyResultDTO {
   id: number | undefined;
+  version: number;
   keyResultType: string | undefined;
   title: string;
   description: string;

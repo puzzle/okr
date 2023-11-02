@@ -28,6 +28,11 @@ public class TeamBusinessService {
         this.validator = validator;
     }
 
+    public Team getTeamById(Long teamId) {
+        validator.validateOnGet(teamId);
+        return teamPersistenceService.findById(teamId);
+    }
+
     public List<Team> getAllTeams() {
         return teamPersistenceService.findAll();
     }

@@ -70,6 +70,7 @@ describe('CheckInFormComponent', () => {
 
     expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
       id: checkInMetric.id,
+      version: checkInMetric.version,
       confidence: checkInMetric.confidence,
       value: checkInMetric.value,
       changeInfo: checkInMetric.changeInfo,
@@ -91,6 +92,7 @@ describe('CheckInFormComponent', () => {
 
     expect(checkInServiceMock.saveCheckIn).toHaveBeenCalledWith({
       id: checkInOrdinal.id,
+      version: checkInOrdinal.version,
       confidence: checkInOrdinal.confidence,
       value: checkInOrdinal.value,
       changeInfo: checkInOrdinal.changeInfo,

@@ -44,7 +44,8 @@ public class CheckInController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = CheckInDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't create new Check-in, attributes are not set", content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authorized to update Check-in", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Given ID of Check-in wasn't found.", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Given ID of Check-in wasn't found.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Can't update Check-in since Check-in was updated or deleted by another user.", content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<CheckInDto> updateCheckIn(
             @Parameter(description = "The ID for updating a Check-in.", required = true) @PathVariable Long id,

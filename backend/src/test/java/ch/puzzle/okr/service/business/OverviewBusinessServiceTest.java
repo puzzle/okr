@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
@@ -45,9 +44,6 @@ class OverviewBusinessServiceTest {
 
     @Mock
     OverviewValidationService overviewValidationService;
-
-    @Mock
-    TeamBusinessService teamBusinessService;
 
     private static List<Overview> createOverviews() {
         return createOverviews(authorizationUser);
@@ -149,31 +145,26 @@ class OverviewBusinessServiceTest {
 
     @Test
     void getFilteredOverviewShouldReturnListOfOverviewsWhenTeamIdsAreNull() {
-        when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, List.of(5L), "", authorizationUser))
+        when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser))
                 .thenReturn(createOverviews());
-
-        when(teamBusinessService.getAllTeams()).thenReturn(List.of(Team.Builder.builder().withId(5L).build()));
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
 
         assertEquals(5, overviews.size());
         verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, List.of(5L), "",
-                authorizationUser);
-        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, List.of(5L));
+        verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser);
+        verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, List.of());
         verify(overviewPersistenceService, times(1)).getFilteredOverview(anyLong(), anyList(), anyString(),
                 eq(authorizationUser));
     }
 
     @Test
     void getFilteredOverviewShouldReturnExceptionWhenQuarterIdIsNonExistent() {
-        when(teamBusinessService.getAllTeams()).thenReturn(List.of(Team.Builder.builder().withId(1L).build()));
-
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND)).when(overviewValidationService)
                 .validateOnGet(eq(QUARTER_ID), anyList());
 
         assertThrows(ResponseStatusException.class,
-                () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser));
+                () -> overviewBusinessService.getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser));
 
         verify(quarterBusinessService, never()).getCurrentQuarter();
         verify(overviewValidationService, never()).validateOnGet(QUARTER_ID, teamIds);

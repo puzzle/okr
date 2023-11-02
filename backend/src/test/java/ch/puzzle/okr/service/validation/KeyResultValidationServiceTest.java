@@ -35,40 +35,28 @@ class KeyResultValidationServiceTest {
     @MockBean
     KeyResultPersistenceService keyResultPersistenceService = Mockito.mock(KeyResultPersistenceService.class);
 
-    KeyResult keyResultMetric;
-    KeyResult keyResultOrdinal;
-    KeyResult fullKeyResult;
-    User user;
-    Quarter quarter;
-    Team team;
-    Objective objective;
+    private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
+            .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+    private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+    private final Team team = Team.Builder.builder().withId(1L).withName("Team1").build();
+    private final Objective objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1")
+            .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
+            .withCreatedOn(LocalDateTime.MAX).build();
+    private final KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
+            .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+            .build();
+    private final KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Ein Baum")
+            .withTargetZone("Zwei Bäume").withTitle("Keyresult Ordinal").withObjective(objective).withOwner(user)
+            .build();
+    private final KeyResult fullKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
+            .withUnit(Unit.FTE).withId(null).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+            .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
+            .withCreatedBy(user).build();
 
     @BeforeEach
     void setUp() {
-        this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-        this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
-        this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
-
-        this.objective = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
-                .withTeam(team).withQuarter(quarter).withDescription("This is our description")
-                .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(user)
-                .withCreatedOn(LocalDateTime.MAX).build();
-
-        this.keyResultMetric = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-                .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(this.objective)
-                .withOwner(this.user).build();
-
-        this.keyResultOrdinal = KeyResultOrdinal.Builder.builder().withCommitZone("Ein Baum")
-                .withTargetZone("Zwei Bäume").withTitle("Keyresult Ordinal").withObjective(this.objective)
-                .withOwner(this.user).build();
-
-        this.fullKeyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0).withUnit(Unit.FTE)
-                .withId(null).withTitle("Keyresult Metric").withObjective(this.objective).withOwner(this.user)
-                .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
-                .withCreatedBy(this.user).build();
-
-        when(keyResultPersistenceService.findById(1L)).thenReturn(this.keyResultMetric);
+        when(keyResultPersistenceService.findById(1L)).thenReturn(keyResultMetric);
         when(keyResultPersistenceService.getModelName()).thenReturn("KeyResult");
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", keyResultPersistenceService.getModelName(), 2L)))
@@ -94,7 +82,7 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidKeyResultId() {
+    void validateOnGetShouldBeSuccessfulWhenValidKeyResultId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -102,7 +90,7 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfKeyResultIdIsNull() {
+    void validateOnGetShouldThrowExceptionIfKeyResultIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -111,15 +99,15 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldBeSuccessfulWhenKeyResultIsValid() {
-        validator.validateOnCreate(this.fullKeyResult);
+    void validateOnCreateShouldBeSuccessfulWhenKeyResultIsValid() {
+        validator.validateOnCreate(fullKeyResult);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.fullKeyResult);
-        verify(validator, times(1)).validate(this.fullKeyResult);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(fullKeyResult);
+        verify(validator, times(1)).validate(fullKeyResult);
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
@@ -127,19 +115,19 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenIdIsNotNull() {
+    void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnCreate(this.keyResultMetric));
+                () -> validator.validateOnCreate(keyResultMetric));
 
         assertEquals("Model KeyResult cannot have id while create. Found id 5", exception.getReason());
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
-                .withUnit(Unit.FTE).withId(null).withTitle(title).withOwner(this.user).withObjective(this.objective)
-                .withCreatedBy(this.user).withCreatedOn(LocalDateTime.MIN).build();
+                .withUnit(Unit.FTE).withId(null).withTitle(title).withOwner(user).withObjective(objective)
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResult));
@@ -159,7 +147,7 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowExceptionWhenAttrsAreMissing() {
+    void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(null).withTitle("Title").build();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultInvalid));
@@ -172,22 +160,24 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldBeSuccessfulWhenKeyResultIsValid() {
+    void validateOnUpdateShouldBeSuccessfulWhenKeyResultIsValid() {
+        Long id = 5L;
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-                .withUnit(Unit.NUMBER).withId(5L).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+                .withUnit(Unit.NUMBER).withId(id).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
                 .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
                 .withCreatedBy(user).build();
+        when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
-        validator.validateOnUpdate(keyResult.getId(), keyResult);
+        validator.validateOnUpdate(id, keyResult);
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(keyResult);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResult);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResult.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(keyResult.getId(), keyResult.getId());
         verify(validator, times(1)).validate(keyResult);
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenModelIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
@@ -195,21 +185,21 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(null, this.keyResultOrdinal));
+                () -> validator.validateOnUpdate(null, keyResultOrdinal));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(this.keyResultOrdinal);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenIdHasChanged() {
+    void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, keyResultMetric));
 
-        verify(validator, times(1)).throwExceptionIfModelIsNull(keyResultMetric);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultMetric);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResultMetric.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, keyResultMetric.getId());
         assertEquals("Id 1 has changed to 5 during update", exception.getReason());
@@ -217,13 +207,15 @@ class KeyResultValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnUpdate_ShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+        Long id = 3L;
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
-                .withUnit(Unit.FTE).withId(3L).withTitle(title).withOwner(this.user).withObjective(this.objective)
-                .withCreatedBy(this.user).withCreatedOn(LocalDateTime.MIN).build();
+                .withUnit(Unit.FTE).withId(id).withTitle(title).withOwner(user).withObjective(objective)
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
+        when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(3L, keyResult));
+                () -> validator.validateOnUpdate(id, keyResult));
 
         String[] exceptionParts = exception.getReason().split("\\.");
         String[] errorArray = new String[errors.size()];
@@ -238,10 +230,14 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowExceptionWhenAttrsAreMissing() {
-        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(11L).withTitle("Title").build();
+    void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
+        Long id = 11L;
+        KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(id).withTitle("Title")
+                .withObjective(objective).build();
+        when(keyResultPersistenceService.findById(id)).thenReturn(keyResultInvalid);
+
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnUpdate(11L, keyResultInvalid));
+                () -> validator.validateOnUpdate(id, keyResultInvalid));
 
         assertThat(exception.getReason().strip()).contains("Baseline must not be null.");
         assertThat(exception.getReason().strip()).contains("StretchGoal must not be null.");
@@ -251,7 +247,7 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidKeyResultId() {
+    void validateOnDeleteShouldBeSuccessfulWhenValidKeyResultId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -259,7 +255,7 @@ class KeyResultValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfKeyResultIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 

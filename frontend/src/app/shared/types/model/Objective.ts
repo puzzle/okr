@@ -3,6 +3,7 @@ import { User } from './User';
 
 export interface Objective {
   id: number;
+  version: number;
   title: string;
   description: string;
   state: State;

@@ -15,7 +15,7 @@ public class CheckInMetricMapper {
     }
 
     public CheckInMetricDto toDto(CheckInMetric checkInMetric) {
-        return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getChangeInfo(),
+        return new CheckInMetricDto(checkInMetric.getId(), checkInMetric.getVersion(), checkInMetric.getChangeInfo(),
                 checkInMetric.getInitiatives(), checkInMetric.getConfidence(), checkInMetric.getKeyResult().getId(),
                 checkInMetric.getCreatedOn(), checkInMetric.getModifiedOn(), checkInMetric.getValue(),
                 checkInMetric.isWriteable());
@@ -23,8 +23,8 @@ public class CheckInMetricMapper {
 
     public CheckIn toCheckInMetric(CheckInMetricDto checkInMetricDto) {
         return CheckInMetric.Builder.builder().withValue(checkInMetricDto.value()).withId(checkInMetricDto.id())
-                .withChangeInfo(checkInMetricDto.changeInfo()).withInitiatives(checkInMetricDto.initiatives())
-                .withConfidence(checkInMetricDto.confidence())
+                .withVersion(checkInMetricDto.version()).withChangeInfo(checkInMetricDto.changeInfo())
+                .withInitiatives(checkInMetricDto.initiatives()).withConfidence(checkInMetricDto.confidence())
                 .withKeyResult(keyResultBusinessService.getEntityById(checkInMetricDto.keyResultId())).build();
     }
 }

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class KeyResultPersistenceServiceIT {
@@ -33,8 +34,12 @@ class KeyResultPersistenceServiceIT {
     }
 
     private static KeyResult createKeyResultOrdinal(Long id) {
+        return createKeyResultOrdinal(id, 1);
+    }
+
+    private static KeyResult createKeyResultOrdinal(Long id, int version) {
         return KeyResultOrdinal.Builder.builder().withCommitZone("Hamster").withTargetZone("Katze")
-                .withStretchZone("ZOO").withId(id).withTitle("Ordinal KeyResult")
+                .withStretchZone("ZOO").withId(id).withVersion(version).withTitle("Ordinal KeyResult")
                 .withCreatedBy(User.Builder.builder().withId(1L).build())
                 .withOwner(User.Builder.builder().withId(1L).build())
                 .withObjective(Objective.Builder.builder().withId(4L).build()).withCreatedOn(LocalDateTime.now())
@@ -155,17 +160,33 @@ class KeyResultPersistenceServiceIT {
     void updateEntityShouldUpdateKeyResult() {
         KeyResult keyResult = createKeyResultOrdinal(null);
         createdKeyResult = keyResultPersistenceService.save(keyResult);
-        createdKeyResult.setTitle(KEY_RESULT_UPDATED);
-        createdKeyResult.setDescription("This is a new description");
+        KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), createdKeyResult.getVersion());
+        updateKeyResult.setTitle(KEY_RESULT_UPDATED);
+        updateKeyResult.setDescription("This is a new description");
 
-        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(createdKeyResult);
+        KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(updateKeyResult);
 
         assertEquals(createdKeyResult.getId(), updatedKeyResult.getId());
+        assertEquals(createdKeyResult.getVersion() + 1, updatedKeyResult.getVersion());
         assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
         assertEquals("This is a new description", updatedKeyResult.getDescription());
         assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
         assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
+    }
+
+    @Test
+    void updateEntityShouldThrowExceptionWhenAlreadyUpdated() {
+        KeyResult keyResult = createKeyResultOrdinal(null);
+        createdKeyResult = keyResultPersistenceService.save(keyResult);
+        KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), 0);
+        updateKeyResult.setTitle(KEY_RESULT_UPDATED);
+        updateKeyResult.setDescription("This is a new description");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> keyResultPersistenceService.updateEntity(updateKeyResult));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

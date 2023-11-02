@@ -34,8 +34,8 @@ public class KeyResultOrdinalMapper {
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInOrdinalDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
 
-        return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getKeyResultType(), keyResult.getTitle(),
-                keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
+        return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
+                keyResult.getTitle(), keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),
                 keyResult.getStretchZone(), ownerDto, objectiveDto, lastCheckInDto, keyResult.getCreatedOn(),
                 keyResult.getModifiedOn(), keyResult.isWriteable());
     }
@@ -43,7 +43,7 @@ public class KeyResultOrdinalMapper {
     public KeyResult toKeyResultOrdinal(KeyResultOrdinalDto keyResultOrdinalDto) {
         return KeyResultOrdinal.Builder.builder().withCommitZone(keyResultOrdinalDto.commitZone())
                 .withTargetZone(keyResultOrdinalDto.targetZone()).withStretchZone(keyResultOrdinalDto.stretchZone())
-                .withId(keyResultOrdinalDto.id())
+                .withId(keyResultOrdinalDto.id()).withVersion(keyResultOrdinalDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
                 .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
@@ -56,7 +56,7 @@ public class KeyResultOrdinalMapper {
         if (lastCheckIn == null) {
             lastCheckInDto = null;
         } else {
-            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(),
+            lastCheckInDto = new KeyResultLastCheckInOrdinalDto(lastCheckIn.getId(), lastCheckIn.getVersion(),
                     ((CheckInOrdinal) lastCheckIn).getZone(), lastCheckIn.getConfidence(), lastCheckIn.getCreatedOn(),
                     lastCheckIn.getChangeInfo(), lastCheckIn.getInitiatives());
         }

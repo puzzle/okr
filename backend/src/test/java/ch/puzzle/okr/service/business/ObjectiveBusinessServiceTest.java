@@ -117,12 +117,14 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void updateEntityShouldThrowExceptionWhenQuarterHasChanged() {
-        Objective savedObjective = Objective.Builder.builder().withId(27L).withTitle("Received Objective")
-                .withTeam(team1).withQuarter(quarter).withDescription("The description").withModifiedOn(null)
-                .withModifiedBy(null).build();
-        Objective updatedObjective = Objective.Builder.builder().withId(27L).withTitle("Received Objective")
-                .withTeam(team1).withQuarter(Quarter.Builder.builder().withId(2L).withLabel("an other quarter").build())
-                .withDescription("The description").withModifiedOn(null).withModifiedBy(null).build();
+        Long id = 27L;
+        String title = "Received Objective";
+        String description = "The description";
+        Objective savedObjective = Objective.Builder.builder().withId(id).withTitle(title).withTeam(team1)
+                .withQuarter(quarter).withDescription(description).withModifiedOn(null).withModifiedBy(null).build();
+        Objective updatedObjective = Objective.Builder.builder().withId(27L).withTitle(title).withTeam(team1)
+                .withQuarter(Quarter.Builder.builder().withId(2L).withLabel("another quarter").build())
+                .withDescription(description).withModifiedOn(null).withModifiedBy(null).build();
 
         Mockito.when(objectivePersistenceService.findById(any())).thenReturn(savedObjective);
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
@@ -131,8 +133,7 @@ class ObjectiveBusinessServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> objectiveBusinessService
                 .updateEntity(updatedObjective.getId(), updatedObjective, authorizationUser));
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("Not allowed to change the quarter of objective Received Objective (id=27)",
-                exception.getReason());
+        assertEquals("Not allowed to change the quarter of objective '" + title + "'.", exception.getReason());
     }
 
     @Test

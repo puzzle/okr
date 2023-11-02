@@ -54,8 +54,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private void throwExceptionWhenQuarterIsNotChangable(Objective objective, Objective savedObjective) {
         if (hasQuaterChanged(objective, savedObjective) && hasAlreadyCheckIns(savedObjective)) {
             throw new ResponseStatusException(BAD_REQUEST,
-                    format("Not allowed to change the quarter of objective %s (id=%s)", savedObjective.getTitle(),
-                            savedObjective.getId()));
+                    format("Not allowed to change the quarter of objective '%s'.", savedObjective.getTitle()));
         }
     }
 

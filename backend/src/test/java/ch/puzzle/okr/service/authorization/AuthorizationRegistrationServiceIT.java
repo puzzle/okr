@@ -55,7 +55,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldAddAuthorizationUserToCache() {
+    void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL));
         authorizationRegistrationService.registerAuthorizationUser(user, token);
 
@@ -69,7 +69,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetFirstLeveOrganisations() {
+    void registerAuthorizationUserShouldSetFirstLeveOrganisations() {
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
@@ -77,7 +77,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldThrowException_WhenFirstLevelOrganisationsNotFound() {
+    void registerAuthorizationUserShouldThrowExceptionWhenFirstLevelOrganisationsNotFound() {
         try {
             setFirstLevelOrganisation("org_unknown");
             Jwt token = mockJwtToken(user, List.of("org_gl"));
@@ -92,7 +92,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetSecondLevelOrganisations() {
+    void registerAuthorizationUserShouldSetSecondLevelOrganisations() {
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_SECOND_LEVEL, ORGANISATION_TEAM));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
@@ -100,7 +100,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldSetTeamOrganisations() {
+    void registerAuthorizationUserShouldSetTeamOrganisations() {
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_TEAM));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
@@ -108,7 +108,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldThrowException_WhenTeamsNotFound() {
+    void registerAuthorizationUserShouldThrowExceptionWhenTeamsNotFound() {
         Jwt token = mockJwtToken(user, List.of("org_azubi", "xxx_bar"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
@@ -118,7 +118,7 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUser_ShouldThrowException_WhenNoOrganisationsFound() {
+    void registerAuthorizationUserShouldThrowExceptionWhenNoOrganisationsFound() {
         Jwt token = mockJwtToken(user, List.of());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> authorizationRegistrationService.registerAuthorizationUser(user, token));

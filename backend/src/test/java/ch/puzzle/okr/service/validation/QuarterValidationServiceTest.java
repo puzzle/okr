@@ -24,13 +24,13 @@ class QuarterValidationServiceTest {
     private QuarterValidationService validator;
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidId() {
+    void validateOnGetShouldBeSuccessfulWhenValidId() {
         assertDoesNotThrow(() -> validator.validateOnGet(1L));
         verify(validator, times(1)).validateOnGet(anyLong());
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnGetShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -39,13 +39,13 @@ class QuarterValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowException() {
+    void validateOnCreateShouldThrowException() {
         Exception exception = assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(any()));
         assertEquals("This method must not be called", exception.getMessage());
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowException() {
+    void validateOnUpdateShouldThrowException() {
         Exception exception = assertThrows(IllegalCallerException.class,
                 () -> validator.validateOnUpdate(anyLong(), any()));
         assertEquals("This method must not be called because there is no update of quarters", exception.getMessage());

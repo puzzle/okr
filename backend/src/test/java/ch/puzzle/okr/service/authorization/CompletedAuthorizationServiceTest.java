@@ -34,7 +34,7 @@ class CompletedAuthorizationServiceTest {
             .withObjective(Objective.Builder.builder().withId(objectiveId).withTitle("Completed 1").build()).build();
 
     @Test
-    void createCompleted_ShouldReturnObjective_WhenAuthorized() {
+    void createCompletedShouldReturnObjectiveWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         when(completedBusinessService.createCompleted(newCompleted)).thenReturn(newCompleted);
 
@@ -43,7 +43,7 @@ class CompletedAuthorizationServiceTest {
     }
 
     @Test
-    void createCompleted_ShouldThrowException_WhenNotAuthorized() {
+    void createCompletedShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)
@@ -56,14 +56,14 @@ class CompletedAuthorizationServiceTest {
     }
 
     @Test
-    void deleteCompletedByObjectiveId_ShouldPassThrough_WhenAuthorized() {
+    void deleteCompletedByObjectiveIdShouldPassThroughWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
         completedAuthorizationService.deleteCompletedByObjectiveId(13L);
     }
 
     @Test
-    void deleteCompletedByObjectiveId_ShouldThrowException_WhenNotAuthorized() {
+    void deleteCompletedByObjectiveIdShouldThrowExceptionWhenNotAuthorized() {
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason)).when(authorizationService)

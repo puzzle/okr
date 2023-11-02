@@ -48,91 +48,91 @@ class AuthorizationServiceTest {
     private final User user = defaultUser(null);
 
     @Test
-    void hasRoleReadTeamsDraft_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleReadTeamsDraftShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_TEAMS_DRAFT));
         assertTrue(hasRoleReadTeamsDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleReadTeamsDraft_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleReadTeamsDraftShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_TEAM_DRAFT));
         assertFalse(hasRoleReadTeamsDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleReadTeamDraft_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleReadTeamDraftShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_TEAM_DRAFT));
         assertTrue(hasRoleReadTeamDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleReadTeamDraft_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleReadTeamDraftShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_ALL_PUBLISHED));
         assertFalse(hasRoleReadTeamDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleReadAllPublished_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleReadAllPublishedShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_ALL_PUBLISHED));
         assertTrue(hasRoleReadAllPublished(authorizationUser));
     }
 
     @Test
-    void hasRoleReadAllPublished_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleReadAllPublishedShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of());
         assertFalse(hasRoleReadAllPublished(authorizationUser));
     }
 
     @Test
-    void hasRoleReadAllDraft_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleReadAllDraftShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(READ_ALL_DRAFT));
         assertTrue(hasRoleReadAllDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleReadAllDraft_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleReadAllDraftShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of());
         assertFalse(hasRoleReadAllDraft(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteAll_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleWriteAllShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(WRITE_ALL));
         assertTrue(hasRoleWriteAll(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteAll_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleWriteAllShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(WRITE_ALL_TEAMS));
         assertFalse(hasRoleWriteAll(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteAllTeams_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleWriteAllTeamsShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(WRITE_ALL_TEAMS));
         assertTrue(hasRoleWriteAllTeams(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteAllTeams_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleWriteAllTeamsShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(WRITE_TEAM));
         assertFalse(hasRoleWriteAllTeams(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteTeam_ShouldReturnTrue_WhenContainsRole() {
+    void hasRoleWriteTeamShouldReturnTrueWhenContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of(WRITE_TEAM));
         assertTrue(hasRoleWriteTeam(authorizationUser));
     }
 
     @Test
-    void hasRoleWriteTeam_ShouldReturnFalse_WhenDoesNotContainsRole() {
+    void hasRoleWriteTeamShouldReturnFalseWhenDoesNotContainsRole() {
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(1L), 5L, List.of());
         assertFalse(hasRoleWriteTeam(authorizationUser));
     }
 
     @Test
-    void getAuthorizationUser_ShouldReturnAuthorizationUser() {
+    void getAuthorizationUserShouldReturnAuthorizationUser() {
         User user = defaultUser(null);
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL));
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
@@ -145,7 +145,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleReadByObjectiveId_ShouldPassThrough_WhenPermitted() {
+    void hasRoleReadByObjectiveIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         String reason = "not authorized to read objective";
@@ -155,7 +155,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleReadByKeyResultId_ShouldThrowException_WhenObjectiveNotFound() {
+    void hasRoleReadByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         String reason = "not authorized to read key result";
@@ -169,7 +169,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleReadByKeyResultId_ShouldPassThrough_WhenPermitted() {
+    void hasRoleReadByKeyResultIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         String reason = "not authorized to read key result";
@@ -180,7 +180,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleReadByCheckInId_ShouldThrowException_WhenObjectiveNotFound() {
+    void hasRoleReadByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         String reason = "not authorized to read check in";
@@ -194,7 +194,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleReadByCheckInId_ShouldPassThrough_WhenPermitted() {
+    void hasRoleReadByCheckInIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         String reason = "not authorized to read check in";
@@ -205,7 +205,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdate_ShouldPassThrough_WhenAuthorizedForAllObjectives() {
+    void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedForAllObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
@@ -213,7 +213,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdate_ShouldPassThrough_WhenAuthorizedForAllTeamsKeyResults() {
+    void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedForAllTeamsKeyResults() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
@@ -226,7 +226,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdate_ShouldPassThrough_WhenAuthorizedForTeamCheckIns() {
+    void hasRoleCreateOrUpdateShouldPassThroughWhenAuthorizedForTeamCheckIns() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -240,7 +240,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdate_ShouldThrowException_WhenNotAuthorizedForFirstLevelObjectives() {
+    void hasRoleCreateOrUpdateShouldThrowExceptionWhenNotAuthorizedForFirstLevelObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_ALL_TEAMS));
@@ -252,7 +252,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdate_ShouldThrowException_WhenNotAuthorizedForOtherTeamObjectives() {
+    void hasRoleCreateOrUpdateShouldThrowExceptionWhenNotAuthorizedForOtherTeamObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
@@ -264,7 +264,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleCreateOrUpdateByObjectiveId_ShouldPassThrough_WhenAuthorizedForAllObjectives() {
+    void hasRoleCreateOrUpdateByObjectiveIdShouldPassThroughWhenAuthorizedForAllObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
@@ -275,7 +275,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnTrue_WhenAuthorizedToWriteAllObjectives() {
+    void isWriteableShouldReturnTrueWhenAuthorizedToWriteAllObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
@@ -283,7 +283,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnFalse_WhenNotAuthorizedToWriteObjectives() {
+    void isWriteableShouldReturnFalseWhenNotAuthorizedToWriteObjectives() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(4L), 13L, List.of(WRITE_TEAM));
 
@@ -291,7 +291,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnTrue_WhenAuthorizedToWriteAllKeyResults() {
+    void isWriteableShouldReturnTrueWhenAuthorizedToWriteAllKeyResults() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(4L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
@@ -303,7 +303,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnFalse_WhenNotAuthorizedToWriteKeyResults() {
+    void isWriteableShouldReturnFalseWhenNotAuthorizedToWriteKeyResults() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(4L), 13L, List.of(WRITE_TEAM));
@@ -315,7 +315,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnTrue_WhenAuthorizedToWriteAllCheckIns() {
+    void isWriteableShouldReturnTrueWhenAuthorizedToWriteAllCheckIns() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -328,7 +328,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void isWriteable_ShouldReturnFalse_WhenNotAuthorizedToWriteCheckIns() {
+    void isWriteableShouldReturnFalseWhenNotAuthorizedToWriteCheckIns() {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
@@ -341,7 +341,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByObjectiveId_ShouldPassThrough_WhenAuthorizedForAllObjectives() {
+    void hasRoleDeleteByObjectiveIdShouldPassThroughWhenAuthorizedForAllObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
@@ -352,7 +352,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByKeyResultId_ShouldPassThrough_WhenAuthorizedForAllTeamsKeyResults() {
+    void hasRoleDeleteByKeyResultIdShouldPassThroughWhenAuthorizedForAllTeamsKeyResults() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
@@ -365,7 +365,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByCheckInId_ShouldPassThrough_WhenAuthorizedForTeamCheckIns() {
+    void hasRoleDeleteByCheckInIdShouldPassThroughWhenAuthorizedForTeamCheckIns() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(1L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
@@ -377,7 +377,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByKeyResultId_ShouldThrowException_WhenNotAuthorizedForFirstLevelObjectives() {
+    void hasRoleDeleteByKeyResultIdShouldThrowExceptionWhenNotAuthorizedForFirstLevelObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
@@ -393,7 +393,7 @@ class AuthorizationServiceTest {
     }
 
     @Test
-    void hasRoleDeleteByCheckInId_ShouldThrowException_WhenNotAuthorizedForOtherTeamObjectives() {
+    void hasRoleDeleteByCheckInIdShouldThrowExceptionWhenNotAuthorizedForOtherTeamObjectives() {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,

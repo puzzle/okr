@@ -190,7 +190,7 @@ class KeyResultPersistenceServiceIT {
     }
 
     @Test
-    void getKeyResultsByObjective_ShouldReturnListOfKeyResults() {
+    void getKeyResultsByObjectiveShouldReturnListOfKeyResults() {
         List<KeyResult> keyResultsByObjective = keyResultPersistenceService.getKeyResultsByObjective(3L);
 
         assertEquals(3, keyResultsByObjective.size());

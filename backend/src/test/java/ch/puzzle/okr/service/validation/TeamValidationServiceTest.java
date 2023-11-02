@@ -44,7 +44,7 @@ class TeamValidationServiceTest {
     private TeamValidationService validator;
 
     @Test
-    void validateOnGet_ShouldBeSuccessfulWhenValidTeamId() {
+    void validateOnGetShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -52,7 +52,7 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGet_ShouldThrowExceptionIfTeamIdIsNull() {
+    void validateOnGetShouldThrowExceptionIfTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -61,17 +61,17 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnCreate_ShouldThrowIllegalCallerException() {
+    void validateOnCreateShouldThrowIllegalCallerException() {
         assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(teamWithIdNull));
     }
 
     @Test
-    void validateOnUpdate_ShouldThrowIllegalCallerException() {
+    void validateOnUpdateShouldThrowIllegalCallerException() {
         assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
     }
 
     @Test
-    void validateOnDelete_ShouldBeSuccessfulWhenValidTeamId() {
+    void validateOnDeleteShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGet(1L);
 
         verify(validator, times(1)).validateOnGet(1L);
@@ -79,7 +79,7 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnDelete_ShouldThrowExceptionIfTeamIdIsNull() {
+    void validateOnDeleteShouldThrowExceptionIfTeamIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
@@ -88,7 +88,7 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGetActiveObjectives_ShouldBeSuccessfulWhenValidTeamId() {
+    void validateOnGetActiveObjectivesShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGetActiveObjectives(team1);
 
         verify(validator, times(1)).validateOnGetActiveObjectives(team1);
@@ -99,7 +99,7 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGetActiveObjectives_ShouldThrowExceptionWhenIdIsNull() {
+    void validateOnGetActiveObjectivesShouldThrowExceptionWhenIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
 

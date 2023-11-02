@@ -23,21 +23,21 @@ class OverviewValidationServiceTest {
     OverviewValidationService validator;
 
     @Test
-    void validateOnGet_ShouldCallQuarterValidator() {
+    void validateOnGetShouldCallQuarterValidator() {
         validator.validateQuarter(QUARTER_ID);
         verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);
     }
 
     @Test
-    void validateOnGet_ShouldCallTeamValidator() {
+    void validateOnGetShouldCallTeamValidator() {
         validator.validateTeam(TEAM_ID);
         verify(teamValidationService, times(1)).validateOnGet(TEAM_ID);
         verify(teamValidationService, times(1)).doesEntityExist(TEAM_ID);
     }
 
     @Test
-    void validateOnGet_ShouldCallQuarterValidatorAndTeamValidator() {
+    void validateOnGetShouldCallQuarterValidatorAndTeamValidator() {
         validator.validateOnGet(QUARTER_ID, teamIds);
         verify(quarterValidationService, times(1)).validateOnGet(QUARTER_ID);
         verify(quarterValidationService, times(1)).doesEntityExist(QUARTER_ID);

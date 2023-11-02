@@ -210,8 +210,10 @@ class KeyResultControllerIT {
     void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
         ActionDto actionDto1 = new ActionDto(null, "Neue Katze", 0, true, 3L);
         ActionDto actionDto2 = new ActionDto(null, "Neuer Hund", 1, false, 3L);
-        Action action1 = Action.Builder.builder().withAction("Neue Katze").withPriority(0).withKeyResult(ordinalKeyResult).withIsChecked(false).build();
-        Action action2 = Action.Builder.builder().withAction("Neuer Hund").withPriority(1).withKeyResult(ordinalKeyResult).withIsChecked(false).build();
+        Action action1 = Action.Builder.builder().withAction("Neue Katze").withPriority(0)
+                .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
+        Action action2 = Action.Builder.builder().withAction("Neuer Hund").withPriority(1)
+                .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
         action1.setWriteable(false);
         action2.setWriteable(false);
         BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
@@ -220,7 +222,7 @@ class KeyResultControllerIT {
         BDDMockito.given(this.actionMapper.toActions(any())).willReturn(List.of(action1, action2));
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL_ACTION_LIST).contentType(MediaType.APPLICATION_JSON)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
                 .andExpect(jsonPath(JSON_PATH_COMMIT_ZONE, Is.is(COMMIT_ZONE)))
                 .andExpect(jsonPath(JSON_PATH_DESCRIPTION, Is.is(DESCRIPTION)))

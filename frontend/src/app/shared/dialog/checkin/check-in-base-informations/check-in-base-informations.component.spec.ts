@@ -25,6 +25,8 @@ describe('CheckInBaseInformationsComponent', () => {
   let changeInfoText = 'ChangeInfo';
   let initiativesText = 'Initiatives';
 
+  let action3: Action = { id: 3, action: '', priority: 3, isChecked: true, keyResultId: 1 };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -42,7 +44,7 @@ describe('CheckInBaseInformationsComponent', () => {
     component.dialogForm = new FormGroup({
       changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
       initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
-      actionList: new FormControl<Action[]>([action1, action2]),
+      actionList: new FormControl<Action[]>([action1, action2, action3]),
     });
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);
@@ -82,8 +84,31 @@ describe('CheckInBaseInformationsComponent', () => {
 
   it('should display action list', async () => {
     const checkboxes = fixture.nativeElement.querySelectorAll('mat-checkbox');
-    expect(checkboxes.length).toEqual(component.dialogForm.controls['actionList'].value.length!);
     expect(checkboxes[0].checked!).toBe(action1.isChecked);
     expect(checkboxes[1].checked!).toBe(action2.isChecked);
+  });
+
+  it('should display only action with text', async () => {
+    const checkboxes = fixture.nativeElement.querySelectorAll('mat-checkbox');
+    expect(checkboxes.length).toEqual(2);
+    expect(checkboxes[0].checked!).toBe(action1.isChecked);
+    expect(checkboxes[1].checked!).toBe(action2.isChecked);
+  });
+
+  it('should change state of action isChecked', async () => {
+    expect(component.dialogForm.value.actionList[0].isChecked).toBeFalsy();
+    let event = { checked: true };
+    component.changeIsChecked(event, 0);
+    expect(component.dialogForm.value.actionList[0].isChecked).toBeTruthy();
+
+    event = { checked: false };
+    component.changeIsChecked(event, 0);
+    expect(component.dialogForm.value.actionList[0].isChecked).toBeFalsy();
+  });
+
+  it('should filter actions with empty text', async () => {
+    expect(component.dialogForm.value.actionList.length).toEqual(3);
+    let filteredActionList = component.getActionsWithText();
+    expect(filteredActionList.length).toEqual(2);
   });
 });

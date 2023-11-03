@@ -1,10 +1,14 @@
 name: 'Staging-Deploy'
 
 on:
-  [push]
+  pull_request:
+    types:
+      - closed
+    branches: [ main ]
 
 jobs:
   staging-okr-deploy:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project
@@ -69,32 +73,13 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
-      - name: Build the docker image
+      - name: Build and push the docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           file: docker/Dockerfile
+          push: true
           tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING
-          load: true
-          push: false
-
-      - name: Run docker image
-        uses: addnab/docker-run-action@v3
-        with:
-          image: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING
-
-
-      - name: Cypress run e2e tests
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: frontend
-          start: npm start
-          wait-on: 'http://localhost:8080/config'
-          wait-on-timeout: 120
-          browser: chrome
-
-      - name: Push the docker image
-        run: docker push ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3

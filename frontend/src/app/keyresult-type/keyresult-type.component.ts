@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KeyResult } from '../shared/types/model/KeyResult';
 import { FormGroup, Validators } from '@angular/forms';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
@@ -15,6 +15,7 @@ import { formInputCheck } from '../shared/common';
 export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
   @Input() keyresult!: KeyResult;
+  @Output() formValidityEmitter = new EventEmitter<boolean>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
   protected readonly errorMessages: any = errorMessages;
@@ -50,6 +51,12 @@ export class KeyresultTypeComponent implements OnInit {
       this.clearValidatorsMetric();
       this.keyResultForm.updateValueAndValidity();
     }
+    this.updateFormValidity();
+  }
+
+  async updateFormValidity() {
+    await new Promise((r) => setTimeout(r, 100));
+    this.formValidityEmitter.emit(this.keyResultForm.invalid);
   }
 
   setValidatorsMetric() {

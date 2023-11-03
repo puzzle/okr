@@ -77,7 +77,7 @@ describe('ObjectiveFilterComponent', () => {
     const routerPromise = RouterTestingHarness.create();
 
     Promise.all([searchPromise, routerPromise]).then(([search, router]: [MatInputHarness, RouterTestingHarness]) => {
-      router.navigateByUrl('/?objectiveQuery=this%2520is%2520a%2520test');
+      router.navigateByUrl('/?objectiveQuery=this%20is%20a%20test');
       tick(500);
       fixture.detectChanges();
       expect(component.query).toBe('this is a test');

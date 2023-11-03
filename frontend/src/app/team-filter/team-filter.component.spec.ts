@@ -109,16 +109,19 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
   }));
 
-  it('change filter params and reload', fakeAsync(() => {
+  it('change filter params and reload', fakeAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
+    const routerHarness = await RouterTestingHarness.create();
     jest.spyOn(component, 'changeTeamFilterParams');
     jest.spyOn(refreshDataServiceMock, 'markDataRefresh');
 
+    component.activeTeams = [8, 5, 10];
     fixture.detectChanges();
-    component.changeTeamFilterParams();
-    tick(500);
+    await component.changeTeamFilterParams();
+    routerHarness.detectChanges();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(refreshDataServiceMock.markDataRefresh).toBeCalledTimes(0);
+    expect(refreshDataServiceMock.markDataRefresh).toHaveBeenCalledTimes(0);
+    expect(router.url).toBe('/?teams=8,5,10');
   }));
 
   it.each([

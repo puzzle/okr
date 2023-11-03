@@ -85,14 +85,14 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING
+          tags: ${{ secrets.TAG }}:${{ needs.update-version.store-version.outputs.version}}-STAGING
           load: true
           push: false
 
 
   e2e-docker:
     runs-on: ubuntu-22.04
-    needs: build-docker-image
+    needs: [build-docker-image,update-version]
     strategy:
       matrix:
         browser: [ 'chrome', "firefox" ]
@@ -114,7 +114,7 @@ jobs:
           -e SPRING_DATASOURCE_USERNAME=user \
           -e SPRING_DATASOURCE_PASSWORD=sa \
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING &
+          ${{ secrets.TAG }}:${{ needs.update-version.store-version.outputs.version}}-STAGING &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
@@ -128,7 +128,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: e2e-docker
+    needs: [e2e-docker,update-version]
     steps:
       - name: Log in to Quay registry
         uses: docker/login-action@v2
@@ -143,7 +143,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-STAGING
+          tags: ${{ secrets.TAG }}:${{ needs.update-version.store-version.outputs.version}}-STAGING
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3
@@ -158,7 +158,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-STAGING
+          NEWVALUE: ${{ secrets.TAG }}:${{ needs.update-version.store-version.outputs.version}}-STAGING
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

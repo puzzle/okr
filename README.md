@@ -18,3 +18,30 @@ Start docker container in docker folder.
 Path to folder from repository root `cd docker`
 
 Type `docker-compose up` in terminal to start up the docker container, `docker-compose down` to shut the container down.
+
+## Users
+All users 
+```json
+{
+  "gl": {
+    "username": "gl",
+    "password": "gl",
+    "name": "Jaya Norris"
+  },
+  "bl": {
+    "username": "bl",
+    "password": "bl",
+    "name": "Esha Harris"
+  },
+  "bbt": {
+    "username": "bbt",
+    "password": "bbt",
+    "name": "Ashleigh Russell"
+  },
+  "member": {
+    "username": "member",
+    "password": "member",
+    "name": "Abraham Woodard"
+  }
+}
+```

@@ -15,7 +15,7 @@
             {{ getUserName() }}
           </div>
           <div slot="items">
-            <pzsh-menu-dropdown-item (click)="logOut()">
+            <pzsh-menu-dropdown-item (click)="logOut()" [attr.data-testId]="'logout'">
               <pzsh-icon name="sign-out-alt"></pzsh-icon>
               Logout
             </pzsh-menu-dropdown-item>

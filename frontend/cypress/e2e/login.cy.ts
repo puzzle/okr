@@ -1,19 +1,22 @@
+import * as users from '../fixtures/users.json';
+
 describe('OKR Login', () => {
   beforeEach(() => {
-    cy.loginWithCredentials('johnny', '123'); // Call the custom login command before each test
+    cy.loginAsUser(users.gl);
   });
 
-  it('Logs in with user johnny and has right overview and teams', () => {
-    cy.contains('Objectives und Key Results');
-    cy.contains('Overview');
-    cy.contains('Team');
-    cy.contains('Puzzle ITC');
-    cy.contains('/BBT');
-    cy.wait(500);
-    cy.get('pzsh-nav-item:last').click();
-    cy.contains('Teams');
-    cy.contains('Team erstellen');
-    cy.contains('Puzzle ITC');
-    cy.contains('/BBT');
+  it('Login and check correct name is displayed', () => {
+    cy.title().should('equal', 'Puzzle OKR');
+    cy.get("pzsh-menu-dropdown > div[slot='toggle']").contains(users.gl.name);
+  });
+
+  it('Login  and logout', () => {
+    cy.title().should('equal', 'Puzzle OKR');
+    cy.get("pzsh-menu-dropdown > div[slot='toggle']").click();
+    cy.getByTestId('logout').click();
+    cy.origin(Cypress.env('login_url'), () => {
+      cy.url().should('include', Cypress.env('login_url'));
+      cy.get('#kc-page-title').contains('Sign in to your account');
+    });
   });
 });

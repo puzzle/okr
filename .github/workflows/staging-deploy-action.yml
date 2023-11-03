@@ -89,7 +89,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ secrets.TAG }}:${{ needs.update-version.outputs.version}}-STAGING
+          tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
           load: true
           push: false
 
@@ -121,7 +121,7 @@ jobs:
           -e SPRING_DATASOURCE_USERNAME=user \
           -e SPRING_DATASOURCE_PASSWORD=sa \
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ secrets.TAG }}:${{ needs.update-version.outputs.version}}-STAGING &
+          ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
@@ -155,7 +155,7 @@ jobs:
           context: .
           file: docker/Dockerfile
           push: true
-          tags: ${{ secrets.TAG }}:${{ needs.update-version.outputs.version}}-STAGING
+          tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3
@@ -170,7 +170,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ secrets.TAG }}:${{ needs.update-version.outputs.version}}-STAGING
+          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

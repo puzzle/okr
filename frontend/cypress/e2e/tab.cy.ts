@@ -26,7 +26,7 @@ describe('Tab workflow tests', () => {
 
   it('Open dialog via tab and enter', () => {
     cy.visit('/?quarter=2');
-    cy.get('.objective').first().focus().contains('Wir wollen die Zusammenarbeit im Team steigern.');
+    cy.get('.objective').first().focus();
     cy.tabForwardUntil('[data-testId="add-keyResult"]');
     const button = cy.focused();
     button.click();

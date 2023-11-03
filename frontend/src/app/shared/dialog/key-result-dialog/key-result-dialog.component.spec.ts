@@ -49,6 +49,30 @@ describe('KeyResultDialogComponent', () => {
 
   let fullKeyResultMetric = {
     id: 3,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -61,6 +85,30 @@ describe('KeyResultDialogComponent', () => {
 
   let receivedKeyResultMetric = {
     id: 3,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -76,6 +124,30 @@ describe('KeyResultDialogComponent', () => {
 
   let fullKeyResultOrdinal = {
     id: 6,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -88,6 +160,30 @@ describe('KeyResultDialogComponent', () => {
 
   let receivedKeyResultOrdinal = {
     id: 6,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -119,6 +215,7 @@ describe('KeyResultDialogComponent', () => {
 
   let savedKeyResult = {
     id: undefined,
+    version: undefined,
     title: 'Neuer Titel',
     description: 'Description',
     owner: testUser,
@@ -130,29 +227,7 @@ describe('KeyResultDialogComponent', () => {
     commitZone: null,
     targetZone: null,
     stretchZone: null,
-    actionList: [
-      {
-        id: null,
-        action: '',
-        isChecked: false,
-        keyResultId: null,
-        priority: 0,
-      },
-      {
-        id: null,
-        action: '',
-        isChecked: false,
-        keyResultId: null,
-        priority: 1,
-      },
-      {
-        id: null,
-        action: '',
-        isChecked: false,
-        keyResultId: null,
-        priority: 2,
-      },
-    ],
+    actionList: [],
   };
 
   const mockUserService = {

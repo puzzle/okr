@@ -84,13 +84,7 @@ describe('CheckInBaseInformationsComponent', () => {
 
   it('should display action list', async () => {
     const checkboxes = fixture.nativeElement.querySelectorAll('mat-checkbox');
-    expect(checkboxes[0].checked!).toBe(action1.isChecked);
-    expect(checkboxes[1].checked!).toBe(action2.isChecked);
-  });
-
-  it('should display only action with text', async () => {
-    const checkboxes = fixture.nativeElement.querySelectorAll('mat-checkbox');
-    expect(checkboxes.length).toEqual(2);
+    expect(checkboxes.length).toEqual(3);
     expect(checkboxes[0].checked!).toBe(action1.isChecked);
     expect(checkboxes[1].checked!).toBe(action2.isChecked);
   });

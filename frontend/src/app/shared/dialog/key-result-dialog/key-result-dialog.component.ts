@@ -175,4 +175,6 @@ export class KeyResultDialogComponent implements OnInit {
   getKeyResultId(): number | null {
     return this.data.keyResult ? this.data.keyResult.id : null;
   }
+
+  updateFormValidity() {}
 }

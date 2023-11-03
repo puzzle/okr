@@ -21,7 +21,10 @@ public class ActionAuthorizationService {
 
     public void createEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
+        actionList.forEach(action -> {
+            hasRoleCreateOrUpdate(action, authorizationUser);
+            action.setWriteable(true);
+        });
         actionBusinessService.createEntities(actionList);
     }
 

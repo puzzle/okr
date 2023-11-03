@@ -36,6 +36,7 @@ class ActionControllerIT {
             [
                 {
                     "id":1,
+                    "version":1,
                     "action":"Neuer Drucker",
                     "priority":0,
                     "isChecked":true,
@@ -43,6 +44,7 @@ class ActionControllerIT {
                 },
                 {
                     "id":2,
+                    "version":1,
                     "action":"Neues Papier",
                     "priority":1,
                     "isChecked":false,
@@ -54,6 +56,7 @@ class ActionControllerIT {
             [
                 {
                     "id":1,
+                    "version":1,
                     "action":"Neuer Drucker",
                     "priority":0,
                     "isChecked":true,

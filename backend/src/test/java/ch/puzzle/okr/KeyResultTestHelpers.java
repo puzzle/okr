@@ -162,6 +162,7 @@ public class KeyResultTestHelpers {
                "actionList":[
                {
                         "id":null,
+                        "version":1,
                         "action":"Neue Katze",
                         "priority":0,
                         "isChecked":true,
@@ -169,6 +170,7 @@ public class KeyResultTestHelpers {
                     },
                     {
                         "id":null,
+                        "version":1,
                         "action":"Neuer Hund",
                         "priority":1,
                         "isChecked":false,

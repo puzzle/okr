@@ -48,7 +48,8 @@ jobs:
           push: false
 
       - name: Run docker image
-        run:  docker run --network=host \
+        run: | 
+          docker run --network=host \
               -p 8080:8080 \
               -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=https://idp-mock-okr.ocp.cloudscale.puzzle.ch/realms/pitc \
               -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://idp-mock-okr.ocp.cloudscale.puzzle.ch/realms/pitc/protocol/openid-connect/certs \

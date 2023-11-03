@@ -93,7 +93,15 @@ jobs:
   e2e-docker:
     runs-on: ubuntu-22.04
     needs: build-docker-image
+    strategy:
+      matrix:
+        browser: [ 'chrome', "firefox" ]
     steps:
+      - uses: abhi1693/setup-browser@v0.3.4
+        with:
+          browser: ${{ matrix.browser }}
+          version: latest
+
       - name: Run docker image
         run: |
           docker run --network=host \
@@ -114,7 +122,7 @@ jobs:
           install: false
           wait-on: 'http://localhost:8080/config'
           wait-on-timeout: 120
-          browser: chrome
+          browser: ${{ matrix.browser }}
           working-directory: frontend
           config: baseUrl=http://localhost:8080
 

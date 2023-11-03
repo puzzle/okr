@@ -29,7 +29,7 @@ export class QuarterFilterComponent implements OnInit {
         this.quarterId = quarterId;
         this.changeDisplayedQuarter();
       } else {
-        if (quarterId !== undefined) {
+        if (quarterQuery !== undefined) {
           this.quarterId = quarters[0].id;
           this.changeDisplayedQuarter();
         } else {

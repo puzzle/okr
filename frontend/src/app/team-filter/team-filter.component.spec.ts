@@ -180,6 +180,7 @@ describe('TeamFilterComponent', () => {
 
   it('should refresh teams on data refresh', () => {
     component.ngOnInit();
+    component.activeTeams = [team2.id, team3.id];
     fixture.detectChanges();
     expect(component.teams$.value).toStrictEqual(teamList);
     teamServiceMock.getAllTeams.mockReturnValue(of([team2, team1]));
@@ -188,5 +189,6 @@ describe('TeamFilterComponent', () => {
     refreshDataServiceMock.reloadOverviewSubject.next(null);
     fixture.detectChanges();
     expect(component.teams$.value).toStrictEqual([team2, team1]);
+    expect(component.activeTeams).toStrictEqual([team2.id]);
   });
 });

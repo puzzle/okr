@@ -54,9 +54,7 @@ jobs:
               -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=https://idp-mock-okr.ocp.cloudscale.puzzle.ch/realms/pitc \
               -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=https://idp-mock-okr.ocp.cloudscale.puzzle.ch/realms/pitc/protocol/openid-connect/certs \
               -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_OPAQUETOKEN_CLIENT-ID=pitc_okr_staging \
-              registry.puzzle.ch/puzzle/okr:1.0.122-STAGING &
-
-
+              okr-e2e-test:latest &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
@@ -67,3 +65,11 @@ jobs:
           browser: chrome
           working-directory: frontend
           config: baseUrl=http://localhost:8080
+
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@latest
+        if: failure()
+        with:
+          name: cypress-snapshots
+          path: frontend/cypress/snapshots

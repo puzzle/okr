@@ -51,10 +51,11 @@ jobs:
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
+          install: false
           wait-on: 'http://localhost:8080/config'
           wait-on-timeout: 120
           browser: chrome
-
+          working-directory: frontend
 
       - name: Log in to Quay registry
         uses: docker/login-action@v2

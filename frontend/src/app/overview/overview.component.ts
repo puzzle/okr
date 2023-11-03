@@ -49,7 +49,6 @@ export class OverviewComponent implements OnDestroy {
           .pipe(
             //State is filtered so on login the overview is not loaded twice. This would happen because the login process changes
             //query params which then results in a reloaded overview.
-            filter((value) => !value['state']),
             takeUntil(this.destroyed$),
           )
           .subscribe(() => {

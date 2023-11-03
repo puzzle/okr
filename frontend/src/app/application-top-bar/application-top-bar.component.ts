@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { map } from 'rxjs';
-import { ConfigService } from '../config.service';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {map} from 'rxjs';
+import {ConfigService} from '../config.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -13,6 +14,7 @@ export class ApplicationTopBarComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -27,10 +29,15 @@ export class ApplicationTopBarComponent implements OnInit {
       .subscribe();
   }
   logOut() {
-    this.oauthService.logOut();
+    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
+    this.router.navigateByUrl(currentUrlTree).then(() => {
+      this.oauthService.logOut();
+    });
   }
 
   getUserName() {
-    return this.oauthService.getIdentityClaims()['name'];
+    if (this.oauthService.getIdentityClaims()) {
+      return this.oauthService.getIdentityClaims()['name'];
+    }
   }
 }

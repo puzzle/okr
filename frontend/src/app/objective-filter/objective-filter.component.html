@@ -11,7 +11,7 @@
       [type]="'text'"
       [placeholder]="'Nach Objectives suchen'"
       [(ngModel)]="query"
-      (selectionchange)="this.refresh.next()"
+      (input)="this.refresh.next()"
       [ngModelOptions]="{ standalone: true }"
     />
   </mat-form-field>

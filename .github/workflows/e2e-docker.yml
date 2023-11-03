@@ -5,6 +5,15 @@ on:
 jobs:
   test-and-push:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:12
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pwd
+          POSTGRES_DB: okr
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -46,6 +55,7 @@ jobs:
         uses: addnab/docker-run-action@v3
         with:
           image: puzzle/okr:1.0.120-STAGING
+          docker_network: host
 
 
       - name: Cypress run e2e tests

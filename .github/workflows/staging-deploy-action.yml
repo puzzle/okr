@@ -84,6 +84,9 @@ jobs:
       - name: Build backend with Maven
         run: mvn -B clean package --file pom.xml -P staging
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build the docker image
         uses: docker/build-push-action@v5
         with:

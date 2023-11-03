@@ -27,15 +27,6 @@ jobs:
     strategy:
       matrix:
         browser: ['chrome', "firefox"]
-    services:
-      postgres:
-        image: postgres:12
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: pwd
-          POSTGRES_DB: okr
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,7 +43,7 @@ jobs:
           version: latest
 
       - name: start backend
-        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=dev &
+        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6

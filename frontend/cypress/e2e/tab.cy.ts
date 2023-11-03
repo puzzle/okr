@@ -8,7 +8,7 @@ describe('Tab workflow tests', () => {
   });
 
   it('First tabbable element is help element', () => {
-    cy.realPress('Tab');
+    cy.tabForward();
     cy.focused().contains('Hilfe');
   });
 

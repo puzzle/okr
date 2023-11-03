@@ -170,6 +170,8 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/okr-docker-image.tar
 
+      - name: show images
+        run: docker image ls -a
       - name: Log in to Quay registry
         uses: docker/login-action@v2
         with:
@@ -177,10 +179,14 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
+
+      - name: Push
+        run: docker push ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
+
       - name: Build and push the docker image
         uses: docker/build-push-action@v3
+        if: failure()
         with:
-          context: .
           push: true
           tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
 

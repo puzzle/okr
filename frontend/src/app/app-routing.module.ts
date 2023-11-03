@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angula
 import { OverviewComponent } from './overview/overview.component';
 import { EMPTY, of } from 'rxjs';
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
+import { authGuard } from './auth.guard';
 
 /**
  * Resolver for get the id from url like `/objective/42` or `/keyresult/42`.
@@ -35,6 +36,7 @@ const routes: Routes = [
         data: { type: 'KeyResult' },
       },
     ],
+    canActivate: [authGuard],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

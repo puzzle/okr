@@ -181,7 +181,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: docker/Dockerfile
           push: true
           tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
 

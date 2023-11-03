@@ -25,9 +25,6 @@ export class TeamFilterComponent implements OnInit {
     this.refreshDataService.reloadOverviewSubject.subscribe(() => {
       this.teamService.getAllTeams().subscribe((teams) => {
         this.teams$.next(teams);
-        this.activeTeams = this.activeTeams.filter((teamId) =>
-          this.teams$.value.map((team) => team.id).includes(teamId),
-        );
       });
     });
   }

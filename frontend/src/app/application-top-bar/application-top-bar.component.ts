@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {OAuthService} from 'angular-oauth2-oidc';
-import {map} from 'rxjs';
+import {map, Subject} from 'rxjs';
 import {ConfigService} from '../config.service';
 import {Router} from '@angular/router';
 
@@ -11,6 +11,9 @@ import {Router} from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
+  @Input()
+  username!: Subject<string>;
+
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
@@ -33,11 +36,5 @@ export class ApplicationTopBarComponent implements OnInit {
     this.router.navigateByUrl(currentUrlTree).then(() => {
       this.oauthService.logOut();
     });
-  }
-
-  getUserName() {
-    if (this.oauthService.getIdentityClaims()) {
-      return this.oauthService.getIdentityClaims()['name'];
-    }
   }
 }

@@ -30,17 +30,11 @@ describe('ApplicationHeaderComponent', () => {
 
     fixture = TestBed.createComponent(ApplicationTopBarComponent);
     component = fixture.componentInstance;
-    oAuthMock.getIdentityClaims.mockReturnValue({ name: 'Firstname Lastname' });
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should display name correctly', () => {
-    const name = document.querySelector("pzsh-menu-dropdown>div[slot='toggle']")?.textContent;
-    expect(name).toContain('Firstname Lastname');
   });
 
   it('logout function should get called on button click', () => {

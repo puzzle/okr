@@ -67,7 +67,8 @@ describe('ObjectiveFilterComponent', () => {
       tick(200);
       expect(component.updateURL).toHaveBeenCalledTimes(0);
       tick(200);
-      expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this%20is%20a%20test' } });
+      expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this is a test' } });
+      expect(router.url).toBe('/?objectiveQuery=this%20is%20a%20test');
     });
   }));
 

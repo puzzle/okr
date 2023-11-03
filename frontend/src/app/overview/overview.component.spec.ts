@@ -8,7 +8,6 @@ import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../shared/guards/auth.guard';
-import { query } from '@angular/animations';
 
 const overviewService = {
   getOverview: jest.fn(),

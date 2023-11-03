@@ -36,6 +36,7 @@ export class QuarterFilterComponent implements OnInit {
           this.changeDisplayedQuarter();
         } else {
           this.quarterId = quarters[0].id;
+          this.refreshDataService.quarterFilterReady.next();
         }
       }
     });

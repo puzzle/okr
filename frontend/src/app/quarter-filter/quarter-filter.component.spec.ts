@@ -15,6 +15,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { Router } from '@angular/router';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -36,6 +37,7 @@ describe('QuarterFilterComponent', () => {
   let component: QuarterFilterComponent;
   let fixture: ComponentFixture<QuarterFilterComponent>;
   let loader: HarnessLoader;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -56,6 +58,7 @@ describe('QuarterFilterComponent', () => {
     fixture = TestBed.createComponent(QuarterFilterComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -97,7 +100,7 @@ describe('QuarterFilterComponent', () => {
     const quarterSelect = await loader.getHarness(MatSelectHarness);
 
     const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/?quarter=10');
+    await routerHarness.navigateByUrl('/?quarter=1000');
 
     expect(quarterSelect).toBeTruthy();
     routerHarness.detectChanges();
@@ -106,5 +109,6 @@ describe('QuarterFilterComponent', () => {
     expect(component.quarterId).toBe(quarters[0].id);
     expect(await quarterSelect.getValueText()).toBe(quarters[0].label);
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
+    expect(router.url).toBe('/?quarter=' + quarters[0].id);
   });
 });

@@ -48,7 +48,9 @@ export class TeamFilterComponent implements OnInit {
   changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
-    return this.router.navigate([], { queryParams: optionalParams });
+    return this.router
+      .navigate([], { queryParams: optionalParams })
+      .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
   toggleSelection(id: number) {

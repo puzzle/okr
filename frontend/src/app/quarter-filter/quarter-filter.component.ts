@@ -4,6 +4,7 @@ import { Quarter } from '../shared/types/model/Quarter';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getValueFromQuery } from '../shared/common';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -18,6 +19,7 @@ export class QuarterFilterComponent implements OnInit {
     private quarterService: QuarterService,
     private router: Router,
     private route: ActivatedRoute,
+    private refreshDataService: RefreshDataService,
   ) {}
 
   ngOnInit() {
@@ -41,6 +43,8 @@ export class QuarterFilterComponent implements OnInit {
 
   changeDisplayedQuarter() {
     const id = this.quarterId;
-    this.router.navigate([], { queryParams: { quarter: id } });
+    this.router
+      .navigate([], { queryParams: { quarter: id } })
+      .then(() => this.refreshDataService.quarterFilterReady.next());
   }
 }

@@ -13,6 +13,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { authGuard } from '../shared/guards/auth.guard';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -81,6 +82,3 @@ describe('ObjectiveFilterComponent', () => {
     });
   }));
 });
-import { authGuard } from '../shared/guards/auth.guard';
-
-import any = jasmine.any;

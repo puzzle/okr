@@ -14,6 +14,7 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 export class TeamFilterComponent implements OnInit {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   activeTeams: number[] = [];
+  protected readonly trackByFn = trackByFn;
 
   constructor(
     private teamService: TeamService,
@@ -82,6 +83,4 @@ export class TeamFilterComponent implements OnInit {
     this.activeTeams = [];
     this.changeTeamFilterParams();
   }
-
-  protected readonly trackByFn = trackByFn;
 }

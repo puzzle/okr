@@ -36,9 +36,7 @@ describe('Tab workflow tests', () => {
     cy.focused().click();
     cy.wait(500);
     button.then((buttonBefore) => {
-      console.log(buttonBefore.get(0));
       cy.focused().then((buttonAfter) => {
-        console.log(buttonAfter.get(0));
         expect(buttonBefore.get(0)).to.eql(buttonAfter.get(0));
       });
     });

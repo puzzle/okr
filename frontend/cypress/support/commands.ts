@@ -66,15 +66,11 @@ function doUntil(selector: string, tab: () => void, limit: number = 100) {
 
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
-  cy.origin(
-    'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch',
-    { args: { username, password } },
-    ({ username, password }) => {
-      cy.get('input[name="username"]').type(username);
-      cy.get('input[name="password"]').type(password);
-      cy.get('input[type="submit"]').click();
-    },
-  );
+  cy.origin(Cypress.env('login_url'), { args: { username, password } }, ({ username, password }) => {
+    cy.get('input[name="username"]').type(username);
+    cy.get('input[name="password"]').type(password);
+    cy.get('input[type="submit"]').click();
+  });
   cy.url().then((url) => {
     const currentUrl = new URL(url);
     const baseURL = new URL(Cypress.config().baseUrl!);

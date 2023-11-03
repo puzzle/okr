@@ -14,8 +14,8 @@ describe('OKR Login', () => {
     cy.title().should('equal', 'Puzzle OKR');
     cy.get("pzsh-menu-dropdown > div[slot='toggle']").click();
     cy.getByTestId('logout').click();
-    cy.origin('https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch', () => {
-      cy.url().should('include', 'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch');
+    cy.origin(Cypress.env('login_url'), () => {
+      cy.url().should('include', Cypress.env('login_url'));
       cy.get('#kc-page-title').contains('Sign in to your account');
     });
   });

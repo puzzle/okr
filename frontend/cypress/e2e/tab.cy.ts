@@ -24,7 +24,7 @@ describe('Tab workflow tests', () => {
     cy.focused().contains('Hilfe');
   });
 
-  it.only('Open dialog via tab and enter', () => {
+  it('Open dialog via tab and enter', () => {
     cy.get('.objective').first().focus().contains('Wir wollen die Zusammenarbeit im Team steigern.');
     cy.tabForwardUntil('[data-testId="add-keyResult"]');
     const button = cy.focused();
@@ -33,6 +33,7 @@ describe('Tab workflow tests', () => {
     cy.get('.mat-mdc-dialog-content').contains('Key Result erfassen');
     cy.tabBackward();
     cy.focused().click();
+    cy.wait(500);
     button.then((buttonBefore) => {
       console.log(buttonBefore.get(0));
       cy.focused().then((buttonAfter) => {

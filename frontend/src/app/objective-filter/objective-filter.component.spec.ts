@@ -20,9 +20,19 @@ describe('ObjectiveFilterComponent', () => {
   let loader: HarnessLoader;
   let router: Router;
 
+  const authGuardMock = () => {
+    return Promise.resolve(true);
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ObjectiveFilterComponent],
+      providers: [
+        {
+          provide: authGuard,
+          useValue: authGuardMock,
+        },
+      ],
       imports: [
         HttpClientTestingModule,
         AppRoutingModule,
@@ -71,3 +81,6 @@ describe('ObjectiveFilterComponent', () => {
     });
   }));
 });
+import { authGuard } from '../shared/guards/auth.guard';
+
+import any = jasmine.any;

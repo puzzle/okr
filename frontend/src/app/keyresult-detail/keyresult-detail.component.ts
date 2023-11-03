@@ -14,7 +14,6 @@ import { State } from '../shared/types/enums/State';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { DATE_FORMAT } from '../shared/constantLibary';
 import { isInValid } from '../shared/common';
-import { Action } from '../shared/types/model/Action';
 
 @Component({
   selector: 'app-keyresult-detail',

@@ -45,7 +45,7 @@ insert into team (id, name)
 values (4, '/BBT'),
        (8, 'we are cube.³'),
        (5, 'Puzzle ITC'),
-       (6, 'Puzzle BL');
+       (6, 'LoremIpsum');
 
 insert into objective (id, version, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)

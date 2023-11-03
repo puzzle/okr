@@ -52,7 +52,7 @@ jobs:
           push: false
 
       - name: Run docker image
-        run: docker run --network=host  -p 8080:8080 puzzle/okr:1.0.120-STAGING
+        run: docker run --network=host  -p 8080:8080 puzzle/okr:1.0.120-STAGING &
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6

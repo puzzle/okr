@@ -208,8 +208,8 @@ class KeyResultControllerIT {
 
     @Test
     void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
-        ActionDto actionDto1 = new ActionDto(null, 0, "Neue Katze", 0, true, 3L);
-        ActionDto actionDto2 = new ActionDto(null, 0, "Neuer Hund", 1, false, 3L);
+        ActionDto actionDto1 = new ActionDto(null, 1, "Neue Katze", 0, true, 3L);
+        ActionDto actionDto2 = new ActionDto(null, 1, "Neuer Hund", 1, false, 3L);
         Action action1 = Action.Builder.builder().withVersion(1).withAction("Neue Katze").withPriority(0)
                 .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
         Action action2 = Action.Builder.builder().withVersion(1).withAction("Neuer Hund").withPriority(1)

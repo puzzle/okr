@@ -92,7 +92,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, REASON);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -118,7 +118,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, REASON);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());

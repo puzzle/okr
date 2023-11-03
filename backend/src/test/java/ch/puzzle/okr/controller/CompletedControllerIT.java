@@ -45,12 +45,13 @@ class CompletedControllerIT {
     CompletedAuthorizationService completedAuthorizationService;
     @MockBean
     private CompletedMapper completedMapper;
+    private static final String WELL_DONE = "Wir haben es gut geschafft";
 
     Completed successfulCompleted = Completed.Builder.builder().withId(1L)
             .withObjective(Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build())
-            .withComment("Wir haben es gut geschafft").build();
+            .withComment(WELL_DONE).build();
     CompletedDto completedDto = new CompletedDto(22L,
-            Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build(), "Wir haben es gut geschafft");
+            Objective.Builder.builder().withId(3L).withTitle("Gute Lernende").build(), WELL_DONE);
     String baseUrl = "/api/v2/completed";
     @Autowired
     private MockMvc mvc;
@@ -69,7 +70,7 @@ class CompletedControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andExpect(jsonPath(JSON_PATH_ID, Is.is(22))).andExpect(jsonPath("$.objective.id", Is.is(3)))
-                .andExpect(jsonPath("$.comment", Is.is("Wir haben es gut geschafft")));
+                .andExpect(jsonPath("$.comment", Is.is(WELL_DONE)));
     }
 
     @Test

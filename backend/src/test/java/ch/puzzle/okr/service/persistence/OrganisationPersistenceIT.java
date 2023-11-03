@@ -16,7 +16,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringIntegrationTest
-public class OrganisationPersistenceIT {
+class OrganisationPersistenceIT {
 
     @Autowired
     private OrganisationPersistenceService organisationPersistenceService;

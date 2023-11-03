@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
 class AuthorizationCriteriaIT {
-    private final String reason = "not authorized to read objective";
-    private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
+    private static final String REASON = "not authorized to read objective";
 
     @Autowired
     ObjectivePersistenceService objectivePersistenceService;
@@ -27,7 +26,7 @@ class AuthorizationCriteriaIT {
     void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
         Long objectiveId = 5L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
 
         assertEquals(objectiveId, objective.getId());
     }
@@ -37,7 +36,7 @@ class AuthorizationCriteriaIT {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAMS_DRAFT));
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
 
         assertEquals(objectiveId, objective.getId());
     }
@@ -47,7 +46,7 @@ class AuthorizationCriteriaIT {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAM_DRAFT));
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
 
         assertEquals(objectiveId, objective.getId());
     }

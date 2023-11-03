@@ -15,13 +15,18 @@ public class TestHelper {
     private TestHelper() {
     }
 
+    private static final String FIRSTNAME = "Bob";
+    private static final String LASTNAME = "Kaufmann";
+    private static final String USERNAME = "bkaufmann";
+    private static final String EMAIL = "kaufmann@puzzle.ch";
+
     public static User defaultUser(Long id) {
-        return User.Builder.builder().withId(id).withFirstname("Bob").withLastname("Kaufmann").withUsername("bkaufmann")
-                .withEmail("kaufmann@puzzle.ch").build();
+        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withUsername(USERNAME)
+                .withEmail(EMAIL).build();
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
-        return mockAuthorizationUser(1L, "bkaufmann", "Bob", "Kaufmann", "kaufmann@puzzle.ch", List.of(5L), 5L,
+        return mockAuthorizationUser(1L, USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
     }
 
@@ -38,7 +43,7 @@ public class TestHelper {
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken("bkaufmann", "Bob", "Kaufmann", "kaufmann@puzzle.ch", List.of("org_gl"));
+        return mockJwtToken(USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"));
     }
 
     public static Jwt mockJwtToken(String username, String firstname, String lastname, String email) {

@@ -16,8 +16,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
-public class ObjectivePersistenceServiceIT {
-    private final String reason = "not authorized to read objective";
+class ObjectivePersistenceServiceIT {
+    private static final String REASON = "not authorized to read objective";
+    private static final String MISSING_IDENTIFIER = "Missing identifier for Objective";
+    private static final String HIGHER_CUSTOMER_HAPPINESS = "Wir wollen die Kundenzufriedenheit steigern";
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
 
@@ -64,80 +66,80 @@ public class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, REASON);
 
         assertEquals(3L, objective.getId());
-        assertEquals("Wir wollen die Kundenzufriedenheit steigern", objective.getTitle());
+        assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
     }
 
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, REASON));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to read objective", exception.getReason());
+        assertEquals(REASON, exception.getReason());
     }
 
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, REASON));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for Objective", exception.getReason());
+        assertEquals(MISSING_IDENTIFIER, exception.getReason());
     }
 
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, REASON);
 
         assertEquals(3L, objective.getId());
-        assertEquals("Wir wollen die Kundenzufriedenheit steigern", objective.getTitle());
+        assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
     }
 
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, REASON));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to read objective", exception.getReason());
+        assertEquals(REASON, exception.getReason());
     }
 
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, REASON));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for Objective", exception.getReason());
+        assertEquals(MISSING_IDENTIFIER, exception.getReason());
     }
 
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, reason);
+        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, REASON);
 
         assertEquals(3L, objective.getId());
-        assertEquals("Wir wollen die Kundenzufriedenheit steigern", objective.getTitle());
+        assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
     }
 
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, REASON));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to read objective", exception.getReason());
+        assertEquals(REASON, exception.getReason());
     }
 
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, reason));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, REASON));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for Objective", exception.getReason());
+        assertEquals(MISSING_IDENTIFIER, exception.getReason());
     }
 
     @Test
@@ -184,7 +186,7 @@ public class ObjectivePersistenceServiceIT {
 
         Long objectiveId = createdObjective.getId();
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findById(createdObjective.getId()));
+                () -> objectivePersistenceService.findById(objectiveId));
         assertEquals(NOT_FOUND, exception.getStatus());
         assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
     }
@@ -208,7 +210,7 @@ public class ObjectivePersistenceServiceIT {
         Quarter quarterId2 = quarterPersistenceService.findById(2L);
         ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
-                        quarterPersistenceService.findById(2L)));
+                        quarterId2));
         assertEquals(NOT_FOUND, exceptionTeam.getStatus());
         assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
 

@@ -47,6 +47,7 @@ class KeyResultPersistenceServiceIT {
     }
 
     private static final String KEY_RESULT_UPDATED = "Updated Key Result";
+    private static final String THIS_IS_DESCRIPTION = "This is a new description";
 
     @AfterEach
     void tearDown() {
@@ -120,7 +121,7 @@ class KeyResultPersistenceServiceIT {
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, this::execute);
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -148,9 +149,9 @@ class KeyResultPersistenceServiceIT {
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultPersistenceService.findById(createdKeyResult.getId()));
+                () -> keyResultPersistenceService.findById(keyResultId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + createdKeyResult.getId() + " not found", exception.getReason());
+        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -162,14 +163,14 @@ class KeyResultPersistenceServiceIT {
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), createdKeyResult.getVersion());
         updateKeyResult.setTitle(KEY_RESULT_UPDATED);
-        updateKeyResult.setDescription("This is a new description");
+        updateKeyResult.setDescription(THIS_IS_DESCRIPTION);
 
         KeyResult updatedKeyResult = keyResultPersistenceService.updateEntity(updateKeyResult);
 
         assertEquals(createdKeyResult.getId(), updatedKeyResult.getId());
         assertEquals(createdKeyResult.getVersion() + 1, updatedKeyResult.getVersion());
         assertEquals(KEY_RESULT_UPDATED, updatedKeyResult.getTitle());
-        assertEquals("This is a new description", updatedKeyResult.getDescription());
+        assertEquals(THIS_IS_DESCRIPTION, updatedKeyResult.getDescription());
         assertEquals(createdKeyResult.getOwner().getId(), updatedKeyResult.getOwner().getId());
         assertEquals(createdKeyResult.getObjective().getId(), updatedKeyResult.getObjective().getId());
         assertEquals(createdKeyResult.getModifiedOn(), updatedKeyResult.getModifiedOn());
@@ -181,7 +182,7 @@ class KeyResultPersistenceServiceIT {
         createdKeyResult = keyResultPersistenceService.save(keyResult);
         KeyResult updateKeyResult = createKeyResultOrdinal(createdKeyResult.getId(), 0);
         updateKeyResult.setTitle(KEY_RESULT_UPDATED);
-        updateKeyResult.setDescription("This is a new description");
+        updateKeyResult.setDescription(THIS_IS_DESCRIPTION);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultPersistenceService.updateEntity(updateKeyResult));

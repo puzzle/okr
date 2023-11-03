@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringIntegrationTest
-public class AlignmentSelectionPersistenceServiceIT {
+class AlignmentSelectionPersistenceServiceIT {
     @Autowired
     private AlignmentSelectionPersistenceService alignmentSelectionPersistenceService;
 

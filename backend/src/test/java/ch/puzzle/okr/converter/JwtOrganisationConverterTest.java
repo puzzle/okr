@@ -22,14 +22,14 @@ class JwtOrganisationConverterTest {
     }
 
     @Test
-    void convert_shouldReturnOrganisations_whenValidJwt() {
+    void convertShouldReturnOrganisationsWhenValidJwt() {
         List<String> organisations = converter.convert(jwt);
 
         assertThat(List.of("org_gl")).hasSameElementsAs(organisations);
     }
 
     @Test
-    void convert_shouldReturnEmptyList_whenNoClaimRealmSection() {
+    void convertShouldReturnEmptyListWhenNoClaimRealmSection() {
         setClaimRealm("foo");
 
         List<String> organisations = converter.convert(jwt);
@@ -38,7 +38,7 @@ class JwtOrganisationConverterTest {
     }
 
     @Test
-    void convert_shouldReturnEmptyList_whenNoClaimOrganisationsSection() {
+    void convertShouldReturnEmptyListWhenNoClaimOrganisationsSection() {
         setClaimOrganisations("bar");
 
         List<String> organisations = converter.convert(jwt);
@@ -47,7 +47,7 @@ class JwtOrganisationConverterTest {
     }
 
     @Test
-    void convert_shouldReturnEmptyList_whenNoRoleNameMatch() {
+    void convertShouldReturnEmptyListWhenNoRoleNameMatch() {
         setOrganisationNamePrefix("foo_");
 
         List<String> organisations = converter.convert(jwt);

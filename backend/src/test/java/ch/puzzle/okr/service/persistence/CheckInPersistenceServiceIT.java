@@ -28,6 +28,8 @@ class CheckInPersistenceServiceIT {
         return createCheckIn(id, 1);
     }
 
+    private static final String UPDATED_CHECKIN = "Updated CheckIn";
+
     private static CheckIn createCheckIn(Long id, int version) {
         return CheckInMetric.Builder.builder().withValue(30D).withId(id).withVersion(version)
                 .withCreatedBy(User.Builder.builder().withId(1L).withFirstname("Frank").build())
@@ -71,20 +73,20 @@ class CheckInPersistenceServiceIT {
     void updateKeyResultShouldUpdateKeyResult() {
         createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
         CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), createdCheckIn.getVersion());
-        updateCheckIn.setChangeInfo("Updated CheckIn");
+        updateCheckIn.setChangeInfo(UPDATED_CHECKIN);
 
         CheckIn updatedCheckIn = checkInPersistenceService.save(updateCheckIn);
 
         assertEquals(createdCheckIn.getId(), updatedCheckIn.getId());
         assertEquals(createdCheckIn.getVersion() + 1, updatedCheckIn.getVersion());
-        assertEquals("Updated CheckIn", updatedCheckIn.getChangeInfo());
+        assertEquals(UPDATED_CHECKIN, updatedCheckIn.getChangeInfo());
     }
 
     @Test
     void updateKeyResultShouldThrowExceptionWhenAlreadyUpdated() {
         createdCheckIn = checkInPersistenceService.save(createCheckIn(null));
         CheckIn updateCheckIn = createCheckIn(createdCheckIn.getId(), 0);
-        updateCheckIn.setChangeInfo("Updated CheckIn");
+        updateCheckIn.setChangeInfo(UPDATED_CHECKIN);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInPersistenceService.save(updateCheckIn));

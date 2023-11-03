@@ -327,7 +327,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperly_False1() {
+    void shouldReturnImUsedProperlyFalse1() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.metricKeyResult);
@@ -336,7 +336,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperly_False2() {
+    void shouldReturnImUsedProperlyFalse2() {
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(Collections.emptyList());
 
         boolean returnValue = this.keyResultBusinessService.isImUsed(1L, this.ordinalKeyResult);
@@ -345,7 +345,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperly_False3() {
+    void shouldReturnImUsedProperlyFalse3() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 
@@ -355,7 +355,7 @@ class KeyResultBusinessServiceTest {
     }
 
     @Test
-    void shouldReturnImUsedProperly_True1() {
+    void shouldReturnImUsedProperlyTrue1() {
         when(keyResultPersistenceService.findById(any())).thenReturn(this.metricKeyResult);
         when(checkInBusinessService.getCheckInsByKeyResultId(any())).thenReturn(checkIns);
 

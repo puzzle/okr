@@ -4,6 +4,7 @@ import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../shared/common';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -18,7 +19,14 @@ export class TeamFilterComponent implements OnInit {
     private teamService: TeamService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private refreshDataService: RefreshDataService,
+  ) {
+    this.refreshDataService.reloadOverviewSubject.subscribe(() => {
+      this.teamService.getAllTeams().subscribe((teams) => {
+        this.teams$.next(teams);
+      });
+    });
+  }
 
   ngOnInit(): void {
     this.teamService.getAllTeams().subscribe((teams: Team[]) => {
@@ -39,10 +47,6 @@ export class TeamFilterComponent implements OnInit {
     return this.router.navigate([], { queryParams: optionalParams });
   }
 
-  changeTeamFilterParamsAndReload() {
-    this.changeTeamFilterParams();
-  }
-
   toggleSelection(id: number) {
     if (this.areAllTeamsShown()) {
       this.activeTeams = this.teams$
@@ -59,7 +63,7 @@ export class TeamFilterComponent implements OnInit {
       this.activeTeams = [];
     }
 
-    this.changeTeamFilterParamsAndReload();
+    this.changeTeamFilterParams();
   }
 
   areAllTeamsShown() {
@@ -76,7 +80,7 @@ export class TeamFilterComponent implements OnInit {
       return;
     }
     this.activeTeams = [];
-    this.changeTeamFilterParamsAndReload();
+    this.changeTeamFilterParams();
   }
 
   protected readonly trackByFn = trackByFn;

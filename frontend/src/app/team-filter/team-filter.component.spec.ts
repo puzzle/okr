@@ -115,7 +115,7 @@ describe('TeamFilterComponent', () => {
     jest.spyOn(refreshDataServiceMock, 'markDataRefresh');
 
     fixture.detectChanges();
-    component.changeTeamFilterParamsAndReload();
+    component.changeTeamFilterParams();
     tick(500);
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
     expect(refreshDataServiceMock.markDataRefresh).toBeCalledTimes(0);
@@ -130,11 +130,11 @@ describe('TeamFilterComponent', () => {
   ])('toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
     component.activeTeams = activeTeams;
     jest.spyOn(component, 'areAllTeamsShown');
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
 
     component.toggleSelection(selected);
     fixture.detectChanges();
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
     expect(component.areAllTeamsShown).toBeCalledTimes(2);
     expect(component.activeTeams).toStrictEqual(expected);
   });
@@ -162,16 +162,16 @@ describe('TeamFilterComponent', () => {
 
   it('select all', () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
     component.selectAll();
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 
   it('select all should do nothing', () => {
     component.activeTeams = [];
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
     component.selectAll();
 
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(0);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(0);
   });
 });

@@ -22,8 +22,7 @@ export class ObjectiveFilterComponent implements OnInit {
 
   updateURL() {
     const sanitizedQuery = sanitize(this.query);
-    const encoded = encodeURI(sanitizedQuery);
-    const params = { objectiveQuery: encoded };
+    const params = { objectiveQuery: sanitizedQuery };
     const optionalParams = optionalReplaceWithNulls(params);
     this.router.navigate([], { queryParams: optionalParams });
   }

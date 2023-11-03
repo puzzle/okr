@@ -29,7 +29,7 @@ public class ActionAuthorizationService {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         actionList.forEach(action -> {
             hasRoleCreateOrUpdate(action, authorizationUser);
-            setRoleCreateOrUpdate(action, authorizationUser);
+            action.setWriteable(true);
         });
         actionBusinessService.updateEntities(actionList);
     }
@@ -42,10 +42,6 @@ public class ActionAuthorizationService {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         authorizationService.hasRoleDeleteByActionId(actionId, authorizationUser);
         actionBusinessService.deleteEntityById(actionId);
-    }
-
-    private void setRoleCreateOrUpdate(Action entity, AuthorizationUser authorizationUser) {
-        entity.setWriteable(isWriteable(entity, authorizationUser));
     }
 
     protected boolean isWriteable(Action entity, AuthorizationUser authorizationUser) {

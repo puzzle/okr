@@ -8,8 +8,10 @@ import {
   EMPTY,
   filter,
   forkJoin,
+  Observable,
   ReplaySubject,
   Subject,
+  take,
   takeUntil,
 } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
@@ -37,18 +39,23 @@ export class OverviewComponent implements OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
 
-    combineLatest([refreshDataService.teamFilterReady, refreshDataService.quarterFilterReady]).subscribe(() => {
-      this.activatedRoute.queryParams
-        .pipe(
-          //State is filtered so on login the overview is not loaded twice. This would happen because the login process changes
-          //query params which then results in a reloaded overview.
-          filter((value) => !value['state']),
-          takeUntil(this.destroyed$),
-        )
-        .subscribe(() => {
-          this.loadOverviewWithParams();
-        });
-    });
+    combineLatest([
+      <Observable<void>>refreshDataService.teamFilterReady,
+      <Observable<void>>refreshDataService.quarterFilterReady,
+    ])
+      .pipe(take(1))
+      .subscribe(() => {
+        this.activatedRoute.queryParams
+          .pipe(
+            //State is filtered so on login the overview is not loaded twice. This would happen because the login process changes
+            //query params which then results in a reloaded overview.
+            filter((value) => !value['state']),
+            takeUntil(this.destroyed$),
+          )
+          .subscribe(() => {
+            this.loadOverviewWithParams();
+          });
+      });
   }
 
   loadOverviewWithParams() {

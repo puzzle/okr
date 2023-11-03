@@ -177,4 +177,16 @@ describe('TeamFilterComponent', () => {
 
     expect(component.changeTeamFilterParams).toBeCalledTimes(0);
   });
+
+  it('should refresh teams on data refresh', () => {
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual(teamList);
+    teamServiceMock.getAllTeams.mockReturnValue(of([team2, team1]));
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual(teamList);
+    refreshDataServiceMock.reloadOverviewSubject.next(null);
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual([team2, team1]);
+  });
 });

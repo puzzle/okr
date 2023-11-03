@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
@@ -19,13 +20,16 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
+    private final ActionBusinessService actionBusinessService;
     private final KeyResultValidationService validator;
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
-            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService) {
+            KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
+            ActionBusinessService actionBusinessService) {
         this.keyResultPersistenceService = keyResultPersistenceService;
         this.checkInBusinessService = checkInBusinessService;
+        this.actionBusinessService = actionBusinessService;
         this.validator = validator;
     }
 
@@ -57,7 +61,10 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return keyResultPersistenceService.recreateEntity(id, keyResult);
+                List<Action> actionList = actionBusinessService.getActionsByKeyResultId(id);
+                KeyResult createdKeyResult = keyResultPersistenceService.recreateEntity(id, keyResult);
+                actionBusinessService.updateEntities(actionList);
+                return createdKeyResult;
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());
@@ -75,6 +82,8 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         validator.validateOnDelete(id);
         checkInBusinessService.getCheckInsByKeyResultId(id)
                 .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
+        actionBusinessService.getActionsByKeyResultId(id)
+                .forEach(action -> actionBusinessService.deleteEntityById(action.getId()));
         keyResultPersistenceService.deleteById(id);
     }
 

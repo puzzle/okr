@@ -1,12 +1,16 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultOrdinalDto;
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,14 +30,19 @@ import static org.springframework.http.HttpStatus.*;
 public class KeyResultController {
 
     private final KeyResultAuthorizationService keyResultAuthorizationService;
+    private final ActionAuthorizationService actionAuthorizationService;
     private final KeyResultMapper keyResultMapper;
     private final CheckInMapper checkInMapper;
+    private final ActionMapper actionMapper;
 
     public KeyResultController(KeyResultAuthorizationService keyResultAuthorizationService,
-            KeyResultMapper keyResultMapper, CheckInMapper checkInMapper) {
+            ActionAuthorizationService actionAuthorizationService, KeyResultMapper keyResultMapper,
+            CheckInMapper checkInMapper, ActionMapper actionMapper) {
         this.keyResultAuthorizationService = keyResultAuthorizationService;
+        this.actionAuthorizationService = actionAuthorizationService;
         this.keyResultMapper = keyResultMapper;
         this.checkInMapper = checkInMapper;
+        this.actionMapper = actionMapper;
     }
 
     @Operation(summary = "Get KeyResult by Id", description = "Get KeyResult by Id")
@@ -69,8 +78,12 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find an Objective on which the KeyResult tries to refer to.", content = @Content) })
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
-        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
-        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResultAuthorizationService.createEntity(keyResult));
+        KeyResult keyResult = keyResultAuthorizationService.createEntity(keyResultMapper.toKeyResult(keyResultDto));
+        List<ActionDto> actionDTOs = keyResultDto.getActionList().stream()
+                .map(actionDto -> actionDto.withKeyResultId(keyResult.getId())).toList();
+        List<Action> actionList = actionMapper.toActions(actionDTOs);
+        actionAuthorizationService.createEntities(actionList);
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
@@ -88,10 +101,12 @@ public class KeyResultController {
     public ResponseEntity<KeyResultDto> updateKeyResult(
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
-        KeyResult mappedKeyResult = keyResultMapper.toKeyResult(keyResultDto);
-        boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, mappedKeyResult);
-        KeyResultDto updatedKeyResult = keyResultMapper
-                .toDto(keyResultAuthorizationService.updateEntity(id, mappedKeyResult));
+        KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
+        boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
+        keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
+        actionAuthorizationService.updateEntities(actionList);
+        KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
         return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
     }
 

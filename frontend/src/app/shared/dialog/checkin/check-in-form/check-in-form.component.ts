@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -7,7 +7,9 @@ import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { CheckInMin } from '../../../types/model/CheckInMin';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
+import { Action } from '../../../types/model/Action';
 import { DATE_FORMAT } from '../../../constantLibary';
+import { ActionService } from '../../../services/action.service';
 
 @Component({
   selector: 'app-check-in-form',
@@ -15,7 +17,7 @@ import { DATE_FORMAT } from '../../../constantLibary';
   styleUrls: ['./check-in-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckInFormComponent {
+export class CheckInFormComponent implements OnInit {
   keyResult: KeyResult;
   checkIn!: CheckInMin;
   currentDate: Date;
@@ -27,6 +29,7 @@ export class CheckInFormComponent {
     confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
+    actionList: new FormControl<Action[]>([]),
   });
 
   constructor(
@@ -34,13 +37,19 @@ export class CheckInFormComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public parserPipe: ParseUnitValuePipe,
     private checkInService: CheckInService,
+    private actionService: ActionService,
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
     this.setDefaultValues();
   }
 
+  ngOnInit() {
+    this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
+  }
+
   setDefaultValues() {
+    this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
       this.checkIn = this.data.checkIn;
       this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
@@ -79,7 +88,9 @@ export class CheckInFormComponent {
     }
 
     this.checkInService.saveCheckIn(checkIn).subscribe(() => {
-      this.dialogRef.close();
+      this.actionService.updateActions(this.dialogForm.value.actionList!).subscribe(() => {
+        this.dialogRef.close();
+      });
     });
   }
 

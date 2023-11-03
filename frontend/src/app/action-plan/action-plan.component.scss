@@ -1,0 +1,69 @@
+.action-points-list {
+  overflow: hidden;
+  display: block;
+}
+
+.action-point-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 32px;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow:
+    0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.action-point-item:last-child {
+  border: none;
+}
+
+.action-points-list.cdk-drop-list-dragging .action-point-item:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.icons {
+  height: 20px;
+  width: 20px;
+}
+
+.drag-drop-dots {
+  background-color: #ddd;
+  height: 100%;
+  width: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bin-icon {
+  margin-left: 8px;
+}
+
+.action-input {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #dddddd;
+  padding-left: 5px;
+  outline: none;
+}
+
+label {
+  margin-bottom: 3px;
+}

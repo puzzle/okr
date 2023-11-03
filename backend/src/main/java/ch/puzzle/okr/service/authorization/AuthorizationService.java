@@ -1,12 +1,14 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.converter.JwtUserConverter;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,14 +30,18 @@ public class AuthorizationService {
     private static final String NOT_AUTHORIZED_TO_WRITE_CHECK_IN = "not authorized to create or update check in";
     private static final String NOT_AUTHORIZED_TO_DELETE_OBJECTIVE = "not authorized to delete objective";
     private static final String NOT_AUTHORIZED_TO_DELETE_KEY_RESULT = "not authorized to delete key result";
+    private static final String NOT_AUTHORIZED_TO_DELETE_ACTION = "not authorized to delete action";
     private static final String NOT_AUTHORIZED_TO_DELETE_CHECK_IN = "not authorized to delete check in";
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
+    private final ActionPersistenceService actionPersistenceService;
     private final JwtUserConverter jwtUserConverter;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
-            ObjectivePersistenceService objectivePersistenceService, JwtUserConverter jwtUserConverter) {
+            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
+            JwtUserConverter jwtUserConverter) {
         this.authorizationRegistrationService = authorizationRegistrationService;
+        this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.jwtUserConverter = jwtUserConverter;
     }
@@ -138,6 +144,12 @@ public class AuthorizationService {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(keyResultId, authorizationUser,
                 NOT_AUTHORIZED_TO_READ_KEY_RESULT);
         hasRoleWrite(authorizationUser, objective.getTeam(), NOT_AUTHORIZED_TO_DELETE_KEY_RESULT);
+    }
+
+    public void hasRoleDeleteByActionId(Long actionId, AuthorizationUser authorizationUser) {
+        Action action = actionPersistenceService.findById(actionId);
+        hasRoleWrite(authorizationUser, action.getKeyResult().getObjective().getTeam(),
+                NOT_AUTHORIZED_TO_DELETE_ACTION);
     }
 
     public void hasRoleDeleteByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {

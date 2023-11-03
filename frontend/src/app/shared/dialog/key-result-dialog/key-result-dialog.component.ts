@@ -11,9 +11,10 @@ import { Objective } from '../../types/model/Objective';
 import { KeyResultOrdinalDTO } from '../../types/DTOs/KeyResultOrdinalDTO';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
-import { filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { CloseState } from '../../types/enums/CloseState';
+import { Action } from '../../types/model/Action';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 
@@ -26,12 +27,14 @@ import { formInputCheck } from '../../common';
 export class KeyResultDialogComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
+  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
   protected readonly formInputCheck = formInputCheck;
 
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     owner: new FormControl<User | string | null>(null, [Validators.required, Validators.nullValidator]),
+    actionList: new FormControl<Action[]>([]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),
@@ -48,7 +51,17 @@ export class KeyResultDialogComponent implements OnInit {
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
     public userService: UserService,
-  ) {}
+  ) {
+    if (this.data.keyResult) {
+      this.actionList$ = new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
+    } else {
+      this.actionList$ = new BehaviorSubject<Action[] | null>([
+        { id: null, version: 1, action: '', priority: 0, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: '', priority: 1, keyResultId: null, isChecked: false },
+        { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
+      ]);
+    }
+  }
 
   ngOnInit(): void {
     this.users$ = this.userService.getUsers();
@@ -58,6 +71,7 @@ export class KeyResultDialogComponent implements OnInit {
       switchMap((value) => this.filter(value as string)),
     );
     if (this.data.keyResult) {
+      this.keyResultForm.patchValue({ actionList: this.data.keyResult.actionList });
       this.keyResultForm.controls.title.setValue(this.data.keyResult.title);
       this.keyResultForm.controls.description.setValue(this.data.keyResult.description);
       this.keyResultForm.controls.owner.setValue(this.data.keyResult.owner);
@@ -91,6 +105,7 @@ export class KeyResultDialogComponent implements OnInit {
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
+    keyResult.actionList = this.actionList$.getValue()!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,
@@ -155,5 +170,9 @@ export class KeyResultDialogComponent implements OnInit {
       !!this.isTouchedOrDirty('owner') &&
       (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
     );
+  }
+
+  getKeyResultId(): number | null {
+    return this.data.keyResult ? this.data.keyResult.id : null;
   }
 }

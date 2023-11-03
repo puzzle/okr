@@ -8,6 +8,7 @@ truncate table quarter;
 truncate table team;
 truncate table alignment;
 truncate table completed;
+truncate table action;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
@@ -20,6 +21,7 @@ ALTER SEQUENCE sequence_check_in RESTART WITH 200;
 ALTER SEQUENCE sequence_alignment RESTART WITH 200;
 ALTER SEQUENCE sequence_completed RESTART WITH 200;
 ALTER SEQUENCE sequence_organisation RESTART WITH 200;
+ALTER SEQUENCE sequence_action RESTART WITH 200;
 
 insert into person (id, email, firstname, lastname, username)
 values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
@@ -131,3 +133,16 @@ insert into team_organisation (team_id, organisation_id) values
        (6, 2),
        (8, 2),
        (8, 5);
+
+insert into action (id, version, action, priority, is_checked, key_result_id) values
+                                                      (1,  1, 'Neues Haus', 1, true, 8),
+                                                      (2,  1, 'Neue Katze', 2, true, 8),
+                                                      (3,  1, 'Neuer Garten', 3, true, 10),
+                                                      (4,  1, 'Essen kaufen', 1, true, 10),
+                                                      (5,  1, 'Mehr Licht', 2, true, 10),
+                                                      (6,  1, 'Neue Pflanzen', 1, true, 6),
+                                                      (7,  1, 'Mehr Getränke', 3, true, 6),
+                                                      (8,  1, 'Ein Buch', 2, true, 6),
+                                                      (9,  1, 'Lenovo Laptop', 1, true, 19),
+                                                      (10, 1,  'Türen säubern', 2, true, 19),
+                                                      (11, 1,  'Stühle ölen', 3, true, 19);

@@ -7,6 +7,7 @@ create sequence if not exists sequence_team;
 create sequence if not exists sequence_alignment;
 create sequence if not exists sequence_completed;
 create sequence if not exists sequence_organisation;
+create sequence if not exists sequence_action;
 
 create table if not exists person
 (
@@ -139,6 +140,19 @@ create table if not exists completed
     comment      varchar(4096)
 );
 
+create table action
+(
+    id            bigint        not null
+        primary key,
+        version int not null,
+    action        varchar(4096) not null,
+    priority      integer       not null,
+    is_checked    boolean       not null,
+    key_result_id bigint        not null
+        constraint fk_completed_key_result
+            references key_result
+);
+
 create index if not exists idx_completed_objective
     on completed (objective_id);
 
@@ -146,7 +160,7 @@ DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
 SELECT TQ.TEAM_ID          AS "TEAM_ID",
        TQ.NAME             AS "TEAM_NAME",
-       TQ.QUATER_ID        AS "QUARTER_ID",
+       TQ.QUARTER_ID       AS "QUARTER_ID",
        TQ.LABEL            AS "QUARTER_LABEL",
        COALESCE(O.ID, -1)  AS "OBJECTIVE_ID",
        O.TITLE             AS "OBJECTIVE_TITLE",
@@ -166,10 +180,10 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
        C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
-FROM (SELECT T.ID AS TEAM_ID, T.NAME, Q.ID AS QUATER_ID, Q.LABEL
+FROM (SELECT T.ID AS TEAM_ID, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
       FROM TEAM T,
            QUARTER Q) TQ
-         LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUATER_ID = O.QUARTER_ID
+         LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID
          LEFT JOIN KEY_RESULT KR ON O.ID = KR.OBJECTIVE_ID
          LEFT JOIN CHECK_IN C ON KR.ID = C.KEY_RESULT_ID AND C.MODIFIED_ON = (SELECT MAX(CC.MODIFIED_ON)
                                                                               FROM CHECK_IN CC

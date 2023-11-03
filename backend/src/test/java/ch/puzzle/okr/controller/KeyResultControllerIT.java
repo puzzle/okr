@@ -1,8 +1,12 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ActionDto;
+import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
+import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
@@ -33,7 +37,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static ch.puzzle.okr.KeyResultTestHelpers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +52,11 @@ class KeyResultControllerIT {
     @MockBean
     CheckInMapper checkInMapper;
     @MockBean
+    ActionMapper actionMapper;
+    @MockBean
     KeyResultAuthorizationService keyResultAuthorizationService;
+    @MockBean
+    ActionAuthorizationService actionAuthorizationService;
     @MockBean
     UserPersistenceService userPersistenceService;
     @MockBean
@@ -169,6 +177,9 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
                 .andExpect(jsonPath(JSON_PATH_ID_LAST_CHECK_IN_VALUE, Is.is(4.0)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
+
+        verify(actionMapper, times(1)).toActions(any());
+        verify(actionAuthorizationService, times(1)).createEntities(List.of());
     }
 
     @Test
@@ -190,6 +201,42 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_OBJECTIVE_STATE, Is.is(OBJECTIVE_STATE_ONGOING)))
                 .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
+
+        verify(actionMapper, times(1)).toActions(any());
+        verify(actionAuthorizationService, times(1)).createEntities(List.of());
+    }
+
+    @Test
+    void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
+        ActionDto actionDto1 = new ActionDto(null, 1, "Neue Katze", 0, true, 3L);
+        ActionDto actionDto2 = new ActionDto(null, 1, "Neuer Hund", 1, false, 3L);
+        Action action1 = Action.Builder.builder().withVersion(1).withAction("Neue Katze").withPriority(0)
+                .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
+        Action action2 = Action.Builder.builder().withVersion(1).withAction("Neuer Hund").withPriority(1)
+                .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
+        action1.setWriteable(false);
+        action2.setWriteable(false);
+        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(this.actionMapper.toActions(any())).willReturn(List.of(action1, action2));
+
+        mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL_ACTION_LIST).contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
+                .andExpect(jsonPath(JSON_PATH_COMMIT_ZONE, Is.is(COMMIT_ZONE)))
+                .andExpect(jsonPath(JSON_PATH_DESCRIPTION, Is.is(DESCRIPTION)))
+                .andExpect(jsonPath(JSON_PATH_KEY_RESULT_TYPE, Is.is(KEY_RESULT_TYPE_ORDINAL)))
+                .andExpect(jsonPath(JSON_PATH_TARGET_ZONE, Is.is(TARGET_ZONE)))
+                .andExpect(jsonPath(JSON_PATH_STRETCH_ZONE, Is.is(STRETCH_ZONE)))
+                .andExpect(jsonPath(JSON_PATH_OWNER_FIRSTNAME, Is.is(FIRSTNAME)))
+                .andExpect(jsonPath(JSON_PATH_OBJECTIVE_ID, Is.is(OBJECTIVE_ID)))
+                .andExpect(jsonPath(JSON_PATH_OBJECTIVE_STATE, Is.is(OBJECTIVE_STATE_ONGOING)))
+                .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
+                .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
+
+        verify(actionMapper, times(1)).toActions(List.of(actionDto1, actionDto2));
+        verify(actionAuthorizationService, times(1)).createEntities(List.of(action1, action2));
     }
 
     @Test
@@ -255,6 +302,9 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_ID, Is.is(LAST_CHECK_IN_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
                 .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT.toString()))).andReturn();
+
+        verify(actionMapper, times(1)).toActions(any());
+        verify(actionAuthorizationService, times(1)).updateEntities(List.of());
     }
 
     @Test
@@ -275,6 +325,9 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_ID, Is.is(LAST_CHECK_IN_ID)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
                 .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT.toString()))).andReturn();
+
+        verify(actionMapper, times(1)).toActions(any());
+        verify(actionAuthorizationService, times(1)).updateEntities(List.of());
     }
 
     @Test

@@ -49,6 +49,30 @@ describe('KeyResultDialogComponent', () => {
 
   let fullKeyResultMetric = {
     id: 3,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -61,6 +85,30 @@ describe('KeyResultDialogComponent', () => {
 
   let receivedKeyResultMetric = {
     id: 3,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -76,6 +124,30 @@ describe('KeyResultDialogComponent', () => {
 
   let fullKeyResultOrdinal = {
     id: 6,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -88,6 +160,30 @@ describe('KeyResultDialogComponent', () => {
 
   let receivedKeyResultOrdinal = {
     id: 6,
+    version: 2,
+    actionList: [
+      {
+        id: 1,
+        action: 'Test',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 0,
+      },
+      {
+        id: 2,
+        action: 'Katze',
+        isChecked: false,
+        keyResultId: 3,
+        priority: 1,
+      },
+      {
+        id: 3,
+        action: 'Hund',
+        isChecked: true,
+        keyResultId: 3,
+        priority: 2,
+      },
+    ],
     title: 'Der Titel ist hier',
     description: 'Die Beschreibung',
     owner: testUser,
@@ -114,6 +210,24 @@ describe('KeyResultDialogComponent', () => {
     commitZone: null,
     targetZone: null,
     stretchZone: null,
+    actionList: [],
+  };
+
+  let savedKeyResult = {
+    id: undefined,
+    version: undefined,
+    title: 'Neuer Titel',
+    description: 'Description',
+    owner: testUser,
+    objective: fullObjective,
+    baseline: 3,
+    keyResultType: 'metric',
+    stretchGoal: 25,
+    unit: 'CHF',
+    commitZone: null,
+    targetZone: null,
+    stretchZone: null,
+    actionList: [],
   };
 
   const mockUserService = {
@@ -163,17 +277,20 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
     it('should be able to set title and description', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -197,6 +314,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -218,6 +336,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,
@@ -242,6 +361,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Neuer Titel',
         baseline: 3,
         stretchZone: null,
@@ -259,7 +379,7 @@ describe('KeyResultDialogComponent', () => {
       component.saveKeyResult();
 
       expect(spy).toBeCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(initKeyResult);
+      expect(spy).toHaveBeenCalledWith(savedKeyResult);
     }));
   });
 
@@ -306,11 +426,13 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
@@ -327,6 +449,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -350,6 +473,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -369,6 +493,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,
@@ -438,11 +563,13 @@ describe('KeyResultDialogComponent', () => {
       const textareas = document.querySelectorAll('textarea');
       const inputs = document.querySelectorAll('input');
       const keyResultTypes = document.querySelectorAll('app-keyresult-type');
+      const actionPlans = document.querySelectorAll('app-action-plan');
       const buttons = document.querySelectorAll('button');
       expect(labels.length).toEqual(3);
       expect(textareas.length).toEqual(2);
       expect(inputs.length).toEqual(1);
       expect(keyResultTypes.length).toEqual(1);
+      expect(actionPlans.length).toEqual(1);
       expect(buttons.length).toEqual(4);
     }));
 
@@ -459,6 +586,7 @@ describe('KeyResultDialogComponent', () => {
 
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'Title',
         baseline: null,
         stretchZone: null,
@@ -482,6 +610,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of too short input', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: 'T',
         baseline: null,
         stretchZone: null,
@@ -501,6 +630,7 @@ describe('KeyResultDialogComponent', () => {
     it('should display error message of required', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: testUser,
+        actionList: [],
         title: null,
         baseline: null,
         stretchZone: null,

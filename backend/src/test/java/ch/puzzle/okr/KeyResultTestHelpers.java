@@ -15,6 +15,7 @@ import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
@@ -99,10 +100,11 @@ public class KeyResultTestHelpers {
 
     public static final KeyResultMetricDto keyResultMetricDto = new KeyResultMetricDto(5L, 1, KEY_RESULT_TYPE_METRIC,
             TITLE, DESCRIPTION, 1.0, 5.0, KEY_RESULT_UNIT, keyResultUserDto, keyResultObjectiveDto,
-            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
+            keyResultLastCheckInDto, LocalDateTime.MIN, LocalDateTime.MAX, true, List.of());
     public static final KeyResultOrdinalDto keyResultOrdinalDto = new KeyResultOrdinalDto(5L, 1,
             KEY_RESULT_TYPE_ORDINAL, TITLE, DESCRIPTION, COMMIT_ZONE, TARGET_ZONE, STRETCH_ZONE, keyResultUserDto,
-            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true);
+            keyResultObjectiveDto, keyResultLastCheckInOrdinalDto, LocalDateTime.MIN, LocalDateTime.MAX, true,
+            List.of());
     public static final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     public static final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withId(3L)
             .withTitle("Keyresult 2").withOwner(user).withObjective(objective).build();
@@ -120,7 +122,8 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"FTE"
+               "unit":"FTE",
+               "actionList":[]
             }
             """;
 
@@ -137,7 +140,43 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "commitZone":"Eine Pflanze",
                "targetZone":"Ein Baum",
-               "stretchZone":"Ein Wald"
+               "stretchZone":"Ein Wald",
+               "actionList":[]
+            }
+            """;
+
+    public static final String CREATE_BODY_ORDINAL_ACTION_LIST = """
+            {
+                "id":null,
+                "objectiveId":5,
+                "title":"",
+                "description":"",
+                "ownerId":5,
+               "keyResultType":"ordinal",
+               "createdById":5,
+               "createdOn":null,
+               "modifiedOn":null,
+               "commitZone":"Eine Pflanze",
+               "targetZone":"Ein Baum",
+               "stretchZone":"Ein Wald",
+               "actionList":[
+               {
+                        "id":null,
+                        "version":1,
+                        "action":"Neue Katze",
+                        "priority":0,
+                        "isChecked":true,
+                        "keyResultId":null
+                    },
+                    {
+                        "id":null,
+                        "version":1,
+                        "action":"Neuer Hund",
+                        "priority":1,
+                        "isChecked":false,
+                        "keyResultId":null
+                    }
+                    ]
             }
             """;
 
@@ -181,7 +220,8 @@ public class KeyResultTestHelpers {
                "modifiedOn":null,
                "baseline":2.0,
                "stretchGoal":5.0,
-               "unit":"PERCENT"
+               "unit":"PERCENT",
+               "actionList":[]
             }
             """;
 
@@ -212,7 +252,8 @@ public class KeyResultTestHelpers {
                 "createdByFirstname":"",
                 "createdByLastname":"",
                 "createdOn":null,
-                "modifiedOn":null
+                "modifiedOn":null,
+                "actionList":[]
             }
             """;
 

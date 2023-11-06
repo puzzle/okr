@@ -66,7 +66,14 @@
       </div>
       <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
         <div class="d-flex p-0">
-          <button [disabled]="objectiveForm.invalid" color="primary" mat-flat-button type="submit" submitType="ONGOING">
+          <button
+            [disabled]="objectiveForm.invalid"
+            color="primary"
+            mat-flat-button
+            type="submit"
+            submitType="ONGOING"
+            [attr.data-testId]="'safe'"
+          >
             Speichern
           </button>
           <button
@@ -76,10 +83,12 @@
             mat-stroked-button
             submitType="DRAFT"
             type="submit"
+            [attr.data-testId]="'safe-draft'"
           >
             Als Draft speichern
           </button>
-          <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+
+          <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
         </div>
         <button
           color="primary"
@@ -87,6 +96,7 @@
           type="button"
           mat-button
           (click)="deleteObjective()"
+          [attr.data-testId]="'delete'"
         >
           Objective Löschen
         </button>

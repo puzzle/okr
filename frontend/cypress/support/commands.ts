@@ -3,8 +3,11 @@ Cypress.Commands.add('loginAsUser', (user: any) => {
   overviewIsLoaded();
 });
 
-Cypress.Commands.add('getByTestId', (testId: string) => {
-  return cy.get(`*[data-testId=${testId}]`);
+Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, testId: string) => {
+  if (subject) {
+    return cy.wrap(subject).find(`[data-testId=${testId}]`);
+  }
+  return cy.get(`[data-testId=${testId}]`);
 });
 
 Cypress.Commands.add('tabForward', () => {

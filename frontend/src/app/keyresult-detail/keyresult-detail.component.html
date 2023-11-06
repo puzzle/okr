@@ -117,12 +117,14 @@
           color="primary"
           mat-flat-button
           (click)="openCheckInForm()"
+          [attr.data-testId]="'add-check-in'"
         >
           Check-in erfassen
         </button>
         <button
           *ngIf="!isComplete && keyResult.writeable"
           (click)="openEditKeyResultDialog(keyResult)"
+          [attr.data-testId]="'edit-keyResult'"
           color="primary"
           mat-button
         >

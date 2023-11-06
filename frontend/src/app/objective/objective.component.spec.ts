@@ -73,4 +73,17 @@ describe('ObjectiveColumnComponent', () => {
     let statusIndicatorSrc = image.attributes['src'];
     expect(statusIndicatorSrc).toBe(path);
   });
+
+  test('Mat-menu should not be present if writeable is false', async () => {
+    component.isWritable = false;
+    fixture.detectChanges();
+    const menu = fixture.debugElement.query(By.css('[data-testid="objective-menu"]'));
+    expect(menu).toBeFalsy();
+  });
+
+  test('Create keyresult button should not be present if writeable is false', async () => {
+    component.isWritable = false;
+    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
+    expect(button).toBeFalsy();
+  });
 });

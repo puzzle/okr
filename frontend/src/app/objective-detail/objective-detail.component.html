@@ -16,6 +16,7 @@
         <button
           *ngIf="objective.writeable"
           (click)="openAddKeyResultDialog()"
+          [attr.data-testId]="'add-keyResult-objective-detail'"
           mat-button
           color="primary"
           disableRipple="true"

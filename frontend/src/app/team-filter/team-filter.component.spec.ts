@@ -19,6 +19,7 @@ const teamServiceMock = {
 
 const refreshDataServiceMock = {
   reloadOverviewSubject: new Subject(),
+  teamFilterReady: new Subject(),
   markDataRefresh: jest.fn,
 };
 
@@ -52,7 +53,7 @@ describe('TeamFilterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should select all chips per default', waitForAsync(async () => {
+  it('should select all chips per default', waitForAsync(async () => {
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
     component.ngOnInit();
@@ -63,7 +64,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  xit('should select the right chips', waitForAsync(async () => {
+  it('should select the right chips', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id).filter((e, i) => i < 2);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -80,7 +81,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  xit('activeTeams array should be empty when all teams are shown', waitForAsync(async () => {
+  it('activeTeams array should be empty when all teams are shown', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -97,7 +98,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  xit('change filter params', waitForAsync(async () => {
+  it('change filter params', waitForAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     jest.spyOn(router, 'navigate');
 
@@ -108,7 +109,7 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
   }));
 
-  xit('change filter params and reload', fakeAsync(async () => {
+  it('change filter params and reload', fakeAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     const routerHarness = await RouterTestingHarness.create();
     jest.spyOn(component, 'changeTeamFilterParams');

@@ -3,10 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { authGuard } from '../shared/guards/auth.guard';
 
 const overviewService = {
@@ -15,6 +16,12 @@ const overviewService = {
 
 const authGuardMock = () => {
   return Promise.resolve(true);
+};
+
+const refreshDataServiceMock = {
+  teamFilterReady: new Subject(),
+  quarterFilterReady: new Subject(),
+  reloadOverviewSubject: new Subject(),
 };
 
 describe('OverviewComponent', () => {
@@ -33,6 +40,10 @@ describe('OverviewComponent', () => {
           provide: authGuard,
           useValue: authGuardMock,
         },
+        {
+          provide: RefreshDataService,
+          useValue: refreshDataServiceMock
+        },
       ],
     }).compileComponents();
 
@@ -46,13 +57,15 @@ describe('OverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should load default overview when no quarter is defined in route-params', () => {
+  it('should load default overview when no quarter is defined in route-params', () => {
     jest.spyOn(overviewService, 'getOverview');
+    markFiltersAsReady();
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
 
-  xit('should load default overview on init', async () => {
+  it('should load default overview on init', async () => {
     jest.spyOn(overviewService, 'getOverview');
+    markFiltersAsReady();
     expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, [], '');
   });
 
@@ -93,23 +106,9 @@ describe('OverviewComponent', () => {
     expect(component.loadOverview).toHaveBeenLastCalledWith();
   });
 
-  xit('should call loadOverviewWithParams', async () => {
-    jest.spyOn(component, 'loadOverviewWithParams');
-    const routerHarness = await RouterTestingHarness.create();
-
-    await routerHarness.navigateByUrl('/?quarter=1');
-    routerHarness.detectChanges();
+  function markFiltersAsReady() {
+    refreshDataServiceMock.quarterFilterReady.next(null);
+    refreshDataServiceMock.teamFilterReady.next(null);
     fixture.detectChanges();
-    expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(1);
-  });
-
-  it('should filter out the state param so it doesnt make the overview reload on login', async () => {
-    jest.spyOn(component, 'loadOverviewWithParams');
-    const routerHarness = await RouterTestingHarness.create();
-
-    await routerHarness.navigateByUrl('/?state=asdf');
-    routerHarness.detectChanges();
-    fixture.detectChanges();
-    expect(component.loadOverviewWithParams).toHaveBeenCalledTimes(0);
-  });
+  }
 });

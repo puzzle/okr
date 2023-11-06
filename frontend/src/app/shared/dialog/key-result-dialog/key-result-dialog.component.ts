@@ -17,6 +17,7 @@ import { CloseState } from '../../types/enums/CloseState';
 import { Action } from '../../types/model/Action';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -51,6 +52,7 @@ export class KeyResultDialogComponent implements OnInit {
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
     public userService: UserService,
+    private oauthService: OAuthService,
   ) {
     if (this.data.keyResult) {
       this.actionList$ = new BehaviorSubject<Action[] | null>(this.data.keyResult.actionList);
@@ -80,6 +82,13 @@ export class KeyResultDialogComponent implements OnInit {
         ? this.setMetricValuesInForm(this.data.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.data.keyResult as KeyResultOrdinal);
     }
+    this.users$.subscribe((users) => {
+      users.forEach((user) => {
+        if (user.firstname + ' ' + user.lastname === this.getUserName()) {
+          this.keyResultForm.controls.owner.setValue(user);
+        }
+      });
+    });
   }
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {
@@ -177,4 +186,8 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   updateFormValidity() {}
+
+  getUserName() {
+    return this.oauthService.getIdentityClaims()['name'];
+  }
 }

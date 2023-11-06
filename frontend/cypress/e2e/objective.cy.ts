@@ -36,7 +36,7 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it(`Delete existing objective`, () => {
-      cy.get('app-objective-column').first().getByTestId('three-dot-menu').click();
+      cy.get('.objective').first().getByTestId('three-dot-menu').click();
       cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
       cy.getByTestId('delete').click();
       cy.get("button[type='submit']").contains('Ja').click();

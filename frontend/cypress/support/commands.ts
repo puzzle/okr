@@ -78,7 +78,7 @@ Cypress.Commands.add(
   },
 );
 
-function doUntil(selector: string, tab: () => void, limit: number = 100) {
+function doUntil(selector: string, tab: () => void, limit: number = 20) {
   for (let i = 0; i < limit; i++) {
     cy.focused().then((element) => {
       if (element.get(0).matches(selector)) {

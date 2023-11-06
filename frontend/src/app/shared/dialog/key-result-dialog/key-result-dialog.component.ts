@@ -18,6 +18,7 @@ import { Action } from '../../types/model/Action';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { keyResult } from '../../testData';
 
 @Component({
   selector: 'app-key-result-dialog',

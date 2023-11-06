@@ -166,10 +166,10 @@ export class KeyResultDialogComponent implements OnInit {
   }
 
   invalidOwner(): boolean {
-    return (
-      !!this.isTouchedOrDirty('owner') &&
-      (typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner)
-    );
+    if (this.isTouchedOrDirty('owner') as boolean) {
+      return typeof this.keyResultForm.value.owner === 'string' || !this.keyResultForm.value.owner;
+    }
+    return false;
   }
 
   getKeyResultId(): number | null {

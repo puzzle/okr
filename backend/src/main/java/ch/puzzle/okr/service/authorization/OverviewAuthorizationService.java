@@ -38,12 +38,12 @@ public class OverviewAuthorizationService {
     }
 
     private void setRoleCreateOrUpdateObjective(Overview overview, AuthorizationUser authorizationUser,
-            Map<Long, Boolean> objectiveAccess) {
+            Map<Long, Boolean> teamAccess) {
         if (overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
                 && overview.getOverviewId().getTeamId() != null) {
-            Long objectiveId = overview.getOverviewId().getObjectiveId();
-            objectiveAccess.putIfAbsent(objectiveId, isWriteable(authorizationUser, overview));
-            overview.setWriteable(objectiveAccess.get(objectiveId));
+            Long teamId = overview.getOverviewId().getTeamId();
+            teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
+            overview.setWriteable(teamAccess.get(teamId));
         }
     }
 

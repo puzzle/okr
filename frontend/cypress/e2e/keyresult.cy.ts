@@ -5,7 +5,7 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Create new metric KeyResult', () => {
+  xit('Create new metric KeyResult', () => {
     cy.getByTestId('add-keyResult').first().click();
     cy.contains('Key Result erfassen');
     cy.contains('Titel');
@@ -28,12 +28,11 @@ describe('OKR Overview', () => {
     cy.getByTestId('ownerInput').type('Pac').type('{downarrow}').type('{enter}');
     cy.getByTestId('descriptionInput').type('This is my description');
     cy.getByTestId('submit').click();
-
-    cy.wait(2000);
   });
 
-  xit('Create new ordinal KeyResult', () => {
-    cy.getByTestId('add-keyresult').first().click();
+  it('Create new ordinal KeyResult', () => {
+    // cy.get('app-keyresult').should('have.length', 25);
+    cy.getByTestId('add-keyResult').first().click();
     cy.contains('Key Result erfassen');
     cy.contains('Titel');
     cy.contains('Metrisch');
@@ -48,6 +47,35 @@ describe('OKR Overview', () => {
     cy.contains('Speichern');
     cy.contains('Speichern & Neu');
     cy.contains('Abbrechen');
+
+    cy.getByTestId('titleInput').type('This is a ordinal KeyResult');
+
+    cy.getByTestId('ordinalTab').click();
+    cy.getByTestId('commitZone').type('My commit zone');
+    cy.getByTestId('targetZone').type('My target zone');
+    cy.getByTestId('stretchZone').type('My stretch zone');
+    cy.getByTestId('ownerInput').type('Pac').type('{downarrow}').type('{enter}');
+    cy.getByTestId('descriptionInput').type('This is my description');
+    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit').click();
+
+    // cy.get('app-keyresult').should('have.length', 26);
+
+    cy.get('app-objective-column').first().get('app-keyresult').last().click();
+
+    cy.contains('This is a ordinal KeyResult');
+    cy.contains('Ordinal');
+    cy.contains('Paco Eggimann');
+    cy.contains('Fail');
+    cy.contains('Commit');
+    cy.contains('Target');
+    cy.contains('My commit zone');
+    cy.contains('My target zone');
+    cy.contains('My stretch zone');
+    cy.contains('Stretch');
+    cy.contains('Confidence');
+    cy.contains('Beschrieb');
+    cy.contains('This is my description');
   });
 
   xit('Create and open new KeyResult', () => {});

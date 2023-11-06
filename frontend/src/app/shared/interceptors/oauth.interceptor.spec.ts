@@ -4,7 +4,6 @@ import { OauthInterceptor } from './oauth.interceptor';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DateTimeProvider, OAuthLogger, OAuthModule, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 
-// FixMe: Fix this test!
 describe('OauthInterceptor', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({

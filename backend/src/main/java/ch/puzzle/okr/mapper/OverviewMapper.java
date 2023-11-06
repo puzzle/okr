@@ -60,8 +60,8 @@ public class OverviewMapper {
         if (isValidId(overview.getOverviewId().getObjectiveId())) {
             objectives.add(createObjectiveDto(overview));
         }
-        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
-                objectives);
+        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName(),
+                overview.isWriteable()), objectives);
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {
@@ -71,8 +71,7 @@ public class OverviewMapper {
         }
         return new OverviewObjectiveDto(overview.getOverviewId().getObjectiveId(), overview.getObjectiveTitle(),
                 overview.getObjectiveState(),
-                new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()), overview.isWriteable(),
-                keyResults);
+                new OverviewQuarterDto(overview.getQuarterId(), overview.getQuarterLabel()), keyResults);
     }
 
     private OverviewKeyResultDto createKeyResultDto(Overview overview) {

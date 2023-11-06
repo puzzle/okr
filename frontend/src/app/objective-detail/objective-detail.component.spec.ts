@@ -4,7 +4,7 @@ import { ObjectiveDetailComponent } from './objective-detail.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { ObjectiveService } from '../shared/services/objective.service';
-import { objective } from '../shared/testData';
+import { objective, objectiveWriteableFalse } from '../shared/testData';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -39,5 +39,18 @@ describe('ObjectiveDetailComponent', () => {
     const description = fixture.debugElement.query(By.css('[data-test-id="description"]')).nativeElement.innerHTML;
     expect(title).toContain(objective.title);
     expect(description).toContain(objective.description);
+  });
+
+  it('should display add keyresult button if writeable is true', async () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
+    expect(button).toBeTruthy();
+  });
+
+  it('should not display add keyresult button if writeable is false', async () => {
+    objectiveService.getFullObjective.mockReturnValue(of(objectiveWriteableFalse));
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult-objective-detail"]'));
+    expect(button).toBeFalsy();
   });
 });

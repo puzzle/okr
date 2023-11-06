@@ -22,6 +22,9 @@ import { trackByFn } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveComponent implements OnInit {
+  @Input()
+  isWritable!: boolean;
+
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
   protected readonly trackByFn = trackByFn;

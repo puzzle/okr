@@ -1,7 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { map } from 'rxjs';
-import { ConfigService } from './config.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,21 +6,4 @@ import { ConfigService } from './config.service';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent implements OnInit {
-  constructor(
-    public router: Router,
-    private configService: ConfigService,
-  ) {}
-
-  ngOnInit(): void {
-    this.configService.config$
-      .pipe(
-        map((config) => {
-          if (config.activeProfile === 'staging') {
-            document.getElementById('pzsh-topbar')!.style.backgroundColor = '#ab31ad';
-          }
-        }),
-      )
-      .subscribe();
-  }
-}
+export class AppComponent {}

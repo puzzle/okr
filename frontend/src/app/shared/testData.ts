@@ -21,6 +21,13 @@ import { Action } from './types/model/Action';
 export const teamMin1: TeamMin = {
   id: 1,
   name: 'Marketing Team',
+  writable: true,
+} as TeamMin;
+
+export const teamMin2: TeamMin = {
+  id: 1,
+  name: 'Marketing Team',
+  writable: false,
 } as TeamMin;
 
 export const team1: Team = {
@@ -89,7 +96,20 @@ export const checkInMetric: CheckInMin = {
   createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
   initiatives: 'Initiatives metric',
   changeInfo: 'Changeinfo metric',
+  writeable: true,
 } as CheckInMin;
+
+export const checkInMetricWriteableFalse: CheckInMin = {
+  id: 815,
+  version: 1,
+  value: 15,
+  confidence: 6,
+  createdOn: '2023-07-20T12:34:56Z' as unknown as Date,
+  initiatives: 'Initiatives metric writeable false',
+  changeInfo: 'Changeinfo metric writeable false',
+  writeable: false,
+} as CheckInMin;
+
 export const checkInOrdinal: CheckInMin = {
   id: 816,
   version: 2,
@@ -98,7 +118,9 @@ export const checkInOrdinal: CheckInMin = {
   createdOn: '2023-07-22T08:45:21Z' as unknown as Date,
   initiatives: 'Initiatives ordinal',
   changeInfo: 'Changeinfo ordinal',
+  writeable: true,
 } as CheckInMin;
+
 export const keyResultMetricMin: KeyResultMetricMin = {
   id: 201,
   version: 1,
@@ -128,6 +150,7 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'Half way through',
     initiatives: 'Quality before quantity',
+    writeable: true,
   },
   type: 'keyResult',
 } as KeyResultMetricMin;
@@ -149,6 +172,7 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'More Changes',
     initiatives: 'Some initatives',
+    writeable: true,
   },
   type: 'keyResult',
 } as KeyResultMetricMin;
@@ -196,6 +220,11 @@ export const overViewEntity1: OverviewEntity = {
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
 };
 
+export const overViewEntity2: OverviewEntity = {
+  team: teamMin2,
+  objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+};
+
 export const quarter: Quarter = {
   id: 1,
   label: '23.02.2025',
@@ -228,6 +257,18 @@ export const objective: Objective = {
   teamId: 2,
   quarterId: 2,
   state: State.SUCCESSFUL,
+  writeable: true,
+};
+
+export const objectiveWriteableFalse: Objective = {
+  id: 6,
+  version: 1,
+  title: 'titleWriteableFalse',
+  description: 'descriptionWriteableFalse',
+  teamId: 2,
+  quarterId: 2,
+  state: State.NOTSUCCESSFUL,
+  writeable: false,
 };
 
 export const firstCheckIn: CheckInMin = {
@@ -238,6 +279,7 @@ export const firstCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+  writeable: true,
 };
 
 export const secondCheckIn: CheckInMin = {
@@ -248,6 +290,7 @@ export const secondCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+  writeable: true,
 };
 
 export const testUser: User = {
@@ -293,6 +336,7 @@ export const keyResult: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
@@ -303,10 +347,12 @@ export const keyResult: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'info',
     initiatives: 'some',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: null,
+  writeable: true,
 };
 
 export const keyResultOrdinal: KeyResultOrdinal = {
@@ -329,6 +375,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -339,10 +386,51 @@ export const keyResultOrdinal: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'Does not look good',
     initiatives: 'We have to be faster',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
+  writeable: true,
+};
+
+export const keyResultWriteableFalse: KeyResultOrdinal = {
+  id: 101,
+  version: 1,
+  title: 'This is not writeable',
+  description: 'Still not writeable',
+  commitZone: 'Not writeable',
+  targetZone: 'Not writeable',
+  stretchZone: 'Not writeable',
+  owner: { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
+  keyResultType: 'ordinal',
+  objective: {
+    id: 301,
+    version: 1,
+    state: State.DRAFT,
+    quarter: {
+      id: 1,
+      label: 'GJ 23/24-Q1',
+      startDate: new Date(),
+      endDate: new Date(),
+    } as Quarter,
+    writeable: false,
+  } as KeyResultObjective,
+  lastCheckIn: {
+    id: 746,
+    version: 1,
+    value: 'FAIL',
+    confidence: 3,
+    createdOn: new Date(),
+    modifiedOn: new Date(),
+    changeInfo: 'Also not writeable',
+    initiatives: 'Perhaps make it writeable',
+    writeable: false,
+  } as CheckIn,
+  createdOn: new Date(),
+  modifiedOn: new Date(),
+  actionList: [],
+  writeable: false,
 };
 
 export const keyResultMetric: KeyResultMetric = {
@@ -365,6 +453,7 @@ export const keyResultMetric: KeyResultMetric = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -375,10 +464,12 @@ export const keyResultMetric: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],
+  writeable: true,
 };
 
 export const keyResultActions: KeyResultMetric = {
@@ -400,6 +491,7 @@ export const keyResultActions: KeyResultMetric = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -409,8 +501,10 @@ export const keyResultActions: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],
+  writeable: true,
 };

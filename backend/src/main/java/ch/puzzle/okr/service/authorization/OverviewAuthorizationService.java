@@ -26,24 +26,24 @@ public class OverviewAuthorizationService {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
-        setRoleCreateOrUpdateObjective(overviews, authorizationUser);
+        setRoleCreateOrUpdateTeam(overviews, authorizationUser);
         return overviews;
     }
 
-    private void setRoleCreateOrUpdateObjective(List<Overview> overviews, AuthorizationUser authorizationUser) {
+    private void setRoleCreateOrUpdateTeam(List<Overview> overviews, AuthorizationUser authorizationUser) {
         if (!CollectionUtils.isEmpty(overviews)) {
-            Map<Long, Boolean> objectiveAccess = new HashMap<>(overviews.size());
-            overviews.forEach(o -> setRoleCreateOrUpdateObjective(o, authorizationUser, objectiveAccess));
+            Map<Long, Boolean> teamAccess = new HashMap<>(overviews.size());
+            overviews.forEach(o -> setRoleCreateOrUpdateTeam(o, authorizationUser, teamAccess));
         }
     }
 
-    private void setRoleCreateOrUpdateObjective(Overview overview, AuthorizationUser authorizationUser,
-            Map<Long, Boolean> objectiveAccess) {
+    private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser,
+            Map<Long, Boolean> teamAccess) {
         if (overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
                 && overview.getOverviewId().getTeamId() != null) {
-            Long objectiveId = overview.getOverviewId().getObjectiveId();
-            objectiveAccess.putIfAbsent(objectiveId, isWriteable(authorizationUser, overview));
-            overview.setWriteable(objectiveAccess.get(objectiveId));
+            Long teamId = overview.getOverviewId().getTeamId();
+            teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
+            overview.setWriteable(teamAccess.get(teamId));
         }
     }
 

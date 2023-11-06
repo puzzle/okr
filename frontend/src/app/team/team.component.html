@@ -9,11 +9,14 @@
         id="objective-column"
         *ngFor="let objective of OVEntity.objectives; trackBy: trackByFn"
         [objective]="objective"
+        [isWritable]="OVEntity.team.writable"
         class="col-xs-12 col-md-4 p-0 column-width"
         data-testid="objective"
       ></app-objective-column>
 
       <button
+        [attr.data-testId]="'add-objective'"
+        *ngIf="OVEntity.team.writable"
         class="bg-white border border-1 border-pz-dark-blue column-width flex-nowrap col-xs-12 col-md-4 px-0 py-4"
         mat-stroked-button
         color="primary"

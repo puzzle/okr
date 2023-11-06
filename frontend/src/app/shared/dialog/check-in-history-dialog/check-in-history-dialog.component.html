@@ -18,7 +18,7 @@
                 class="d-flex align-items-center justify-content-center"
                 mat-icon-button
                 (click)="openCheckInDialogForm(checkIn)"
-                *ngIf="!isComplete"
+                *ngIf="!isComplete && checkIn.writeable"
               >
                 <img class="edit-check-in cursor-pointer m-1" src="assets/icons/edit.svg" alt="edit check-in" />
               </button>

@@ -13,6 +13,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { authGuard } from '../shared/guards/auth.guard';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -20,9 +21,19 @@ describe('ObjectiveFilterComponent', () => {
   let loader: HarnessLoader;
   let router: Router;
 
+  const authGuardMock = () => {
+    return Promise.resolve(true);
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ObjectiveFilterComponent],
+      providers: [
+        {
+          provide: authGuard,
+          useValue: authGuardMock,
+        },
+      ],
       imports: [
         HttpClientTestingModule,
         AppRoutingModule,

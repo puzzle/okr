@@ -1,3 +1,5 @@
+@import "_variables";
+
 .overviewContainer {
   overflow-x: hidden;
   padding-left: 2rem;
@@ -9,4 +11,9 @@
     padding-left: 0;
     padding-right: 0;
   }
+}
+
+.mt-header-height {
+  padding-top: $header-height;
+  background-color: $overview-bg;
 }

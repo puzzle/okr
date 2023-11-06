@@ -3,13 +3,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { of, throwError } from 'rxjs';
+import { of } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { authGuard } from '../shared/guards/auth.guard';
 
 const overviewService = {
   getOverview: jest.fn(),
+};
+
+const authGuardMock = () => {
+  return Promise.resolve(true);
 };
 
 describe('OverviewComponent', () => {
@@ -19,7 +24,16 @@ describe('OverviewComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, AppRoutingModule],
       declarations: [OverviewComponent],
-      providers: [{ provide: OverviewService, useValue: overviewService }],
+      providers: [
+        {
+          provide: OverviewService,
+          useValue: overviewService,
+        },
+        {
+          provide: authGuard,
+          useValue: authGuardMock,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OverviewComponent);

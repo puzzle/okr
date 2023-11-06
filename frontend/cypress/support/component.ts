@@ -20,6 +20,7 @@ declare global {
         owner: string | null,
         description: string,
       ): void;
+      createObjective(objectiveTitle: string, quarter: string, button: string, createKeyResults?: boolean): void;
     }
   }
 }

@@ -10,16 +10,29 @@ describe('OKR Objective e2e tests', () => {
       ['ongoing objective title', 'safe', 'ongoing-icon.svg'],
       ['draft objective title', 'safe-draft', 'draft-icon.svg'],
     ].forEach(([objectiveTitle, buttonTestId, icon]) => {
-      it(`Create ${buttonTestId} objective, no keyresults`, () => {
-        cy.getByTestId('create-objective').first().click();
-        cy.getByTestId('title').first().type(objectiveTitle);
-        cy.getByTestId('description').first().type('This is the description of the new Objective');
-        cy.get('select#quarter').select('GJ 22/23-Q3');
-        cy.getByTestId(buttonTestId).click();
+      it(`Create objective, no keyresults`, () => {
+        cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId);
         cy.visit('/?quarter=3');
         const objective = cy.contains(objectiveTitle).first().parentsUntil('#objective-column').last();
         objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/${icon}`);
       });
+    });
+
+    [
+      ['ongoing objective title', 'safe', 'ongoing-icon.svg'],
+      ['draft objective title', 'safe-draft', 'draft-icon.svg'],
+    ].forEach(([objectiveTitle, buttonTestId, icon]) => {
+      it(`Create objective, no keyresults`, () => {
+        cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId, true);
+        cy.contains('Key Result erfassen');
+      });
+    });
+
+    it(`Create objective, cancel`, () => {
+      const objectiveTitle = 'this is a canceled objective';
+      cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', 'cancel');
+      cy.visit('/?quarter=3');
+      cy.contains(objectiveTitle).should('not.exist');
     });
   });
 

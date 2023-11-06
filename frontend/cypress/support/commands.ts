@@ -10,6 +10,27 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
   return cy.get(`[data-testId=${testId}]`);
 });
 
+Cypress.Commands.add(
+  'createObjective',
+  { prevSubject: 'optional' },
+  (subject: any, objectiveTitle: string, quarter: string, button: string, createKeyResults: boolean = false) => {
+    if (subject) {
+      cy.wrap(subject).getByTestId('create-objective').first().click();
+    } else {
+      cy.getByTestId('create-objective').first().click();
+    }
+
+    cy.getByTestId('title').first().type(objectiveTitle);
+    cy.getByTestId('description').first().type('This is the description of the new Objective');
+    cy.get('select#quarter').select(quarter);
+
+    if (createKeyResults) {
+      cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
+    }
+    cy.getByTestId(button).click();
+  },
+);
+
 Cypress.Commands.add('tabForward', () => {
   cy.realPress('Tab');
 });

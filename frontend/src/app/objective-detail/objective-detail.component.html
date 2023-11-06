@@ -13,7 +13,14 @@
         class="py-3"
         *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
       >
-        <button (click)="openAddKeyResultDialog()" mat-button color="primary" disableRipple="true" cdkInitialFocus>
+        <button
+          *ngIf="objective.writeable"
+          (click)="openAddKeyResultDialog()"
+          mat-button
+          color="primary"
+          disableRipple="true"
+          cdkInitialFocus
+        >
           <mat-icon>add</mat-icon>
           Key Result hinzufügen
         </button>

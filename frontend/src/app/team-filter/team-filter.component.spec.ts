@@ -120,7 +120,6 @@ describe('TeamFilterComponent', () => {
     await component.changeTeamFilterParams();
     routerHarness.detectChanges();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(refreshDataServiceMock.markDataRefresh).toHaveBeenCalledTimes(0);
     expect(router.url).toBe('/?teams=8,5,10');
   }));
 

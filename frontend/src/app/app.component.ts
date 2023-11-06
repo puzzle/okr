@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Subject } from 'rxjs';
+import { map, ReplaySubject, Subject } from 'rxjs';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { ConfigService } from './config.service';
+import { username } from './shared/common';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,6 @@ import { ConfigService } from './config.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  username: Subject<string> = new Subject();
   constructor(
     public router: Router,
     private oauthService: OAuthService,
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       })
       .then(() => {
         if (this.oauthService.hasValidIdToken()) {
-          this.username.next(this.oauthService.getIdentityClaims()['name']);
+          username.next(this.oauthService.getIdentityClaims()['name']);
         }
       });
   }

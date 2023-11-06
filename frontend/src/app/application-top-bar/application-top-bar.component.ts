@@ -3,6 +3,7 @@ import {OAuthService} from 'angular-oauth2-oidc';
 import {map, Subject} from 'rxjs';
 import {ConfigService} from '../config.service';
 import {Router} from '@angular/router';
+import { username } from '../shared/common';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -37,4 +38,6 @@ export class ApplicationTopBarComponent implements OnInit {
       this.oauthService.logOut();
     });
   }
+
+  protected readonly username = username;
 }

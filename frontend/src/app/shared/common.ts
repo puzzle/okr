@@ -1,5 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
+import { ReplaySubject, Subject } from 'rxjs';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {
@@ -87,3 +88,5 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
     return 'dialog-form-field';
   }
 }
+
+export const username: ReplaySubject<string> = new ReplaySubject();

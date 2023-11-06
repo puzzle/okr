@@ -42,7 +42,7 @@ describe('OverviewComponent', () => {
         },
         {
           provide: RefreshDataService,
-          useValue: refreshDataServiceMock
+          useValue: refreshDataServiceMock,
         },
       ],
     }).compileComponents();

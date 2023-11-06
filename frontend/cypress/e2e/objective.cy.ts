@@ -34,11 +34,18 @@ describe('OKR Objective e2e tests', () => {
       cy.visit('/?quarter=3');
       cy.contains(objectiveTitle).should('not.exist');
     });
-  });
 
-  describe('tests via tab', () => {
-    beforeEach(() => {
-      cy.loginAsUser(users.gl);
+    it(`Delete existing objective`, () => {
+      cy.get('#objective-column').first().getByTestId('three-dot-menu').click();
+      cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
+      cy.getByTestId('delete').click();
+      cy.get("button[type='submit']").contains('Ja').click();
     });
+  });
+});
+
+describe('tests via tab', () => {
+  beforeEach(() => {
+    cy.loginAsUser(users.gl);
   });
 });

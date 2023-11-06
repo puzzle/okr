@@ -31,6 +31,7 @@
         (click)="$event.stopPropagation(); getMenu()"
         data-testid="objective-menu"
         (keydown.enter)="$event.stopPropagation()"
+        [attr.data-testId]="'three-dot-menu'"
       >
         <mat-icon>more_vert</mat-icon>
       </button>

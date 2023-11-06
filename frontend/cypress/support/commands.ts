@@ -27,6 +27,7 @@ Cypress.Commands.add(
     if (createKeyResults) {
       cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
     }
+    cy.getByTestId('delete').should('not.exist');
     cy.getByTestId(button).click();
   },
 );

@@ -50,6 +50,7 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test('Mat-menu should open and close', async () => {
+    component.isWritable = true;
     fixture.detectChanges();
 
     const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="objective-menu"]' }));

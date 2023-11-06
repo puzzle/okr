@@ -128,6 +128,7 @@ export const keyResultMetricMinScoring: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'Half way through',
     initiatives: 'Quality before quantity',
+    writeable: true,
   },
   type: 'keyResult',
 } as KeyResultMetricMin;
@@ -149,6 +150,7 @@ export const keyResultMetricMinScoringInversion: KeyResultMetricMin = {
     modifiedOn: new Date(),
     changeInfo: 'More Changes',
     initiatives: 'Some initatives',
+    writeable: true,
   },
   type: 'keyResult',
 } as KeyResultMetricMin;
@@ -228,6 +230,7 @@ export const objective: Objective = {
   teamId: 2,
   quarterId: 2,
   state: State.SUCCESSFUL,
+  writeable: true,
 };
 
 export const firstCheckIn: CheckInMin = {
@@ -238,6 +241,7 @@ export const firstCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+  writeable: true,
 };
 
 export const secondCheckIn: CheckInMin = {
@@ -248,6 +252,7 @@ export const secondCheckIn: CheckInMin = {
   changeInfo: '',
   initiatives: '',
   createdOn: new Date(),
+  writeable: true,
 };
 
 export const testUser: User = {
@@ -293,6 +298,7 @@ export const keyResult: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 745,
@@ -303,10 +309,12 @@ export const keyResult: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'info',
     initiatives: 'some',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: null,
+  writeable: true,
 };
 
 export const keyResultOrdinal: KeyResultOrdinal = {
@@ -329,6 +337,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -339,10 +348,12 @@ export const keyResultOrdinal: KeyResultOrdinal = {
     modifiedOn: new Date(),
     changeInfo: 'Does not look good',
     initiatives: 'We have to be faster',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [],
+  writeable: true,
 };
 
 export const keyResultMetric: KeyResultMetric = {
@@ -365,6 +376,7 @@ export const keyResultMetric: KeyResultMetric = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -375,10 +387,12 @@ export const keyResultMetric: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],
+  writeable: true,
 };
 
 export const keyResultActions: KeyResultMetric = {
@@ -400,6 +414,7 @@ export const keyResultActions: KeyResultMetric = {
       startDate: new Date(),
       endDate: new Date(),
     } as Quarter,
+    writeable: true,
   } as KeyResultObjective,
   lastCheckIn: {
     id: 746,
@@ -409,8 +424,10 @@ export const keyResultActions: KeyResultMetric = {
     modifiedOn: new Date(),
     changeInfo: 'So far so good',
     initiatives: 'Work a bit harder',
+    writeable: true,
   } as CheckIn,
   createdOn: new Date(),
   modifiedOn: new Date(),
   actionList: [action1, action2],
+  writeable: true,
 };

@@ -53,8 +53,8 @@ const quarterService = {
 const teamService = {
   getAllTeams(): Observable<Team[]> {
     return of([
-      { id: 1, name: teamMin1.name, activeObjectives: 10 },
-      { id: 4, name: 'team2', activeObjectives: 4 },
+      { id: 1, name: teamMin1.name, activeObjectives: 10, writeable: true },
+      { id: 4, name: 'team2', activeObjectives: 4, writeable: true },
     ]);
   },
 };
@@ -161,6 +161,7 @@ describe('ObjectiveDialogComponent', () => {
         state: State[state as keyof typeof State],
         teamId: 2,
         title: title,
+        writeable: true,
       },
       teamId: 1,
     });

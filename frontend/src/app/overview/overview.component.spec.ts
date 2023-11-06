@@ -72,10 +72,10 @@ describe('OverviewComponent', () => {
   it.each([
     ['?quarter=7', 7, [], ''],
     ['?teams=1,2', undefined, [1, 2], ''],
-    ['?objectiveQuery=a%2520a', undefined, [], 'a a'],
-    ['?teams=1,2&objectiveQuery=a%2520a', undefined, [1, 2], 'a a'],
+    ['?objectiveQuery=a%20a', undefined, [], 'a a'],
+    ['?teams=1,2&objectiveQuery=a%20a', undefined, [1, 2], 'a a'],
     ['?teams=1,2&quarter=7', 7, [1, 2], ''],
-    ['?quarter=7&objectiveQuery=a%2520a', 7, [], 'a a'],
+    ['?quarter=7&objectiveQuery=a%20a', 7, [], 'a a'],
   ])(
     'should load overview based on queryparams',
     async (query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string) => {

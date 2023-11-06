@@ -18,6 +18,7 @@ import { Action } from '../../types/model/Action';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { formInputCheck } from '../../common';
 import { OAuthService } from 'angular-oauth2-oidc';
+import {keyResult} from "../../testData";
 
 @Component({
   selector: 'app-key-result-dialog',
@@ -82,13 +83,15 @@ export class KeyResultDialogComponent implements OnInit {
         ? this.setMetricValuesInForm(this.data.keyResult as KeyResultMetric)
         : this.setOrdinalValuesInForm(this.data.keyResult as KeyResultOrdinal);
     }
-    this.users$.subscribe((users) => {
-      users.forEach((user) => {
-        if (user.firstname + ' ' + user.lastname === this.getUserName()) {
-          this.keyResultForm.controls.owner.setValue(user);
-        }
+    if (!this.data.keyResult) {
+      this.users$.subscribe((users) => {
+        users.forEach((user) => {
+          if (user.firstname + ' ' + user.lastname === this.getUserName()) {
+            this.keyResultForm.controls.owner.setValue(user);
+          }
+        });
       });
-    });
+    }
   }
 
   setMetricValuesInForm(keyResultMetric: KeyResultMetric) {

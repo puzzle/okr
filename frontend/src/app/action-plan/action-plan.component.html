@@ -22,7 +22,13 @@
 </div>
 
 <section class="py-3">
-  <button mat-button color="primary" class="fw-bold" (click)="addNewAction()">
+  <button
+    mat-button
+    color="primary"
+    class="fw-bold"
+    (click)="addNewAction()"
+    [attr.data-testId]="'add-action-plan-line'"
+  >
     <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
     Weitere Action hinzufügen
   </button>

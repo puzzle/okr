@@ -30,6 +30,10 @@ export class ApplicationTopBarComponent implements OnInit {
         }),
       )
       .subscribe();
+
+    if (this.oauthService.hasValidIdToken()) {
+      username.next(this.oauthService.getIdentityClaims()['name']);
+    }
   }
   logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });

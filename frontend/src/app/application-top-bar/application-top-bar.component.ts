@@ -1,8 +1,8 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {map, Subject} from 'rxjs';
-import {ConfigService} from '../config.service';
-import {Router} from '@angular/router';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { map, Subject } from 'rxjs';
+import { ConfigService } from '../config.service';
+import { Router } from '@angular/router';
 import { username } from '../shared/common';
 
 @Component({
@@ -12,9 +12,6 @@ import { username } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
-  @Input()
-  username!: Subject<string>;
-
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,

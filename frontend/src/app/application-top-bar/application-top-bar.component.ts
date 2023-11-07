@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ export class ApplicationTopBarComponent implements OnInit {
   username: ReplaySubject<string> = new ReplaySubject();
   menuIsOpen = false;
 
+  private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
@@ -46,12 +47,14 @@ export class ApplicationTopBarComponent implements OnInit {
   }
 
   openTeamManagement() {
-    const dialog = this.dialog.open(TeamManagementComponent, {
-      width: '45em',
-      height: 'auto',
-    });
-    dialog.afterClosed().subscribe(() => {
-      console.log('In after Closed');
-    });
+    if (!this.dialogRef) {
+      this.dialogRef = this.dialog.open(TeamManagementComponent, {
+        width: '45em',
+        height: 'auto',
+      });
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.dialogRef = undefined;
+      });
+    }
   }
 }

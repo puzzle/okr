@@ -12,6 +12,8 @@ import { username } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
+  protected readonly username = username;
+
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
@@ -35,6 +37,4 @@ export class ApplicationTopBarComponent implements OnInit {
       this.oauthService.logOut();
     });
   }
-
-  protected readonly username = username;
 }

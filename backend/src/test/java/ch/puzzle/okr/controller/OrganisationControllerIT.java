@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
+import ch.puzzle.okr.service.authorization.OrganisationAuthorizationService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class OrganisationControllerIT {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private OrganisationBusinessService organisationBusinessService;
+    private OrganisationAuthorizationService organisationAuthorizationService;
 
     @Test
     void shouldReturnIsOk() throws Exception {
@@ -48,7 +48,7 @@ class OrganisationControllerIT {
 
     @Test
     void shouldReturnOrganisationsOfBusinessService() throws Exception {
-        BDDMockito.given(organisationBusinessService.getOrganisations())
+        BDDMockito.given(organisationAuthorizationService.getEntities())
                 .willReturn(List.of(organisationPuzzle, organisationBBT));
         mvc.perform(get(URL_ORGANISATION).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Is.is(organisationPuzzle)));

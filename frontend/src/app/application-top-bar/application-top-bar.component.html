@@ -12,10 +12,10 @@
     </pzsh-topbar>
     <pzsh-menu>
       <div slot="actions">
-        <pzsh-menu-action>
-          <pzsh-icon name="sliders-v-alt"></pzsh-icon>
-          Teamverwaltung
-        </pzsh-menu-action>
+        <div class="d-flex cursor-pointer header-text" (click)="openTeamManagement()">
+          <mat-icon class="header-icon me-2">group</mat-icon>
+          <span class="text-white">Teamverwaltung</span>
+        </div>
         <pzsh-menu-action href="https://wiki.puzzle.ch/Puzzle/OKRs">
           <pzsh-icon name="question-circle"></pzsh-icon>
           Hilfe

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map, Subject } from 'rxjs';
+import { map } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { Router } from '@angular/router';
 import { username } from '../shared/common';

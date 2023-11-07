@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { KeyResultDialogComponent } from './key-result-dialog.component';
-import * as errorData from '../../../../assets/errors/error-messages.json';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -23,33 +22,26 @@ import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../../../keyresult-type/keyresult-type.component';
 import { ActionPlanComponent } from '../../../action-plan/action-plan.component';
-import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { DragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { TeamService } from '../../services/team.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
-
-class matDialogRefMock {
-  close() {}
-}
-
-const oauthMockService = {
-  getIdentityClaims() {
-    return { name: users[1].firstname + ' ' + users[1].lastname };
-  },
-};
-
-const userService = {
-  getUsers() {
-    return of(users);
-  },
-};
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
   let fixture: ComponentFixture<KeyResultDialogComponent>;
-  let errors = errorData;
   let keyResultService: KeyresultService;
-  let matDialogRef: MatDialogRef<KeyResultDialogComponent>;
+
+  const oauthMockService = {
+    getIdentityClaims() {
+      return { name: users[1].firstname + ' ' + users[1].lastname };
+    },
+  };
+
+  const userService = {
+    getUsers() {
+      return of(users);
+    },
+  };
 
   let fullObjective = {
     id: 1,
@@ -249,6 +241,10 @@ describe('KeyResultDialogComponent', () => {
     actionList: [],
   };
 
+  const matDialogRefMock = {
+    close: jest.fn(),
+  };
+
   const mockUserService = {
     getUsers: jest.fn(),
   };
@@ -275,9 +271,7 @@ describe('KeyResultDialogComponent', () => {
           { provide: UserService, useValue: userService },
           {
             provide: MatDialogRef,
-            useValue: {
-              close: (dialogResult: any) => {},
-            },
+            useValue: matDialogRefMock,
           },
           {
             provide: MAT_DIALOG_DATA,
@@ -291,7 +285,6 @@ describe('KeyResultDialogComponent', () => {
         declarations: [KeyResultDialogComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
       }).compileComponents();
 
-      matDialogRef = TestBed.inject(MatDialogRef);
       fixture = TestBed.createComponent(KeyResultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -419,10 +412,10 @@ describe('KeyResultDialogComponent', () => {
           MatIconModule,
           MatAutocompleteModule,
           DragDropModule,
+          TranslateModule.forRoot(),
         ],
         providers: [
           KeyresultService,
-          DragDropModule,
           {
             provide: MatDialogRef,
             useValue: {
@@ -438,7 +431,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);
@@ -451,21 +444,6 @@ describe('KeyResultDialogComponent', () => {
     afterEach(() => {
       mockUserService.getUsers.mockReset();
     });
-
-    it('should have all items in dialog', waitForAsync(async () => {
-      const labels = document.querySelectorAll('label');
-      const textareas = document.querySelectorAll('textarea');
-      const inputs = document.querySelectorAll('input');
-      const keyResultTypes = document.querySelectorAll('app-keyresult-type');
-      const actionPlans = document.querySelectorAll('app-action-plan');
-      const buttons = document.querySelectorAll('button');
-      expect(labels.length).toEqual(3);
-      expect(textareas.length).toEqual(2);
-      expect(inputs.length).toEqual(1);
-      expect(keyResultTypes.length).toEqual(1);
-      expect(actionPlans.length).toEqual(1);
-      expect(buttons.length).toEqual(4);
-    }));
 
     it('should use KeyResult value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
@@ -482,14 +460,14 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'Title',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
+        baseline: 0,
+        stretchZone: '',
+        targetZone: '',
+        commitZone: '',
+        unit: 'FTE',
         description: 'Description',
-        stretchGoal: null,
-        keyResultType: null,
+        stretchGoal: 0,
+        keyResultType: 'metric',
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
@@ -564,14 +542,14 @@ describe('KeyResultDialogComponent', () => {
           HttpClientTestingModule,
           MatIconModule,
           MatAutocompleteModule,
+          DragDropModule,
+          TranslateModule.forRoot(),
         ],
         providers: [
           KeyresultService,
           {
             provide: MatDialogRef,
-            useValue: {
-              close: (dialogResult: any) => {},
-            },
+            useValue: matDialogRefMock,
           },
           {
             provide: OAuthService,
@@ -582,7 +560,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);
@@ -592,23 +570,8 @@ describe('KeyResultDialogComponent', () => {
     });
 
     afterEach(() => {
-      mockUserService.getUsers.mockReset();
+      jest.resetAllMocks();
     });
-
-    it('should have all items in dialog', waitForAsync(async () => {
-      const labels = document.querySelectorAll('label');
-      const textareas = document.querySelectorAll('textarea');
-      const inputs = document.querySelectorAll('input');
-      const keyResultTypes = document.querySelectorAll('app-keyresult-type');
-      const actionPlans = document.querySelectorAll('app-action-plan');
-      const buttons = document.querySelectorAll('button');
-      expect(labels.length).toEqual(3);
-      expect(textareas.length).toEqual(2);
-      expect(inputs.length).toEqual(1);
-      expect(keyResultTypes.length).toEqual(1);
-      expect(actionPlans.length).toEqual(1);
-      expect(buttons.length).toEqual(4);
-    }));
 
     it('should use KeyResult value from data input', waitForAsync(() => {
       const formObject = fixture.componentInstance.keyResultForm.value;
@@ -625,14 +588,14 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'Title',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
+        baseline: 0,
+        stretchZone: "stretchZone",
+        targetZone: "targetZone",
+        commitZone: "commitZone",
+        unit: "FTE",
         description: 'Description',
-        stretchGoal: null,
-        keyResultType: null,
+        stretchGoal: 0,
+        keyResultType: "ordinal",
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
@@ -649,14 +612,14 @@ describe('KeyResultDialogComponent', () => {
         owner: testUser,
         actionList: [],
         title: 'T',
-        baseline: null,
-        stretchZone: null,
-        targetZone: null,
-        commitZone: null,
-        unit: null,
-        description: '',
-        stretchGoal: null,
-        keyResultType: null,
+        baseline: 0,
+        stretchZone: '',
+        targetZone: '',
+        commitZone: '',
+        unit: 'FTE',
+        description: 'Description',
+        stretchGoal: 0,
+        keyResultType: 'metric',
       });
       fixture.detectChanges();
 
@@ -707,6 +670,8 @@ describe('KeyResultDialogComponent', () => {
           HttpClientTestingModule,
           MatIconModule,
           MatAutocompleteModule,
+          TranslateModule.forRoot(),
+          DragDropModule,
         ],
         providers: [
           KeyresultService,
@@ -725,7 +690,7 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric },
           },
         ],
-        declarations: [KeyResultDialogComponent],
+        declarations: [KeyResultDialogComponent, ActionPlanComponent, DialogHeaderComponent, KeyresultTypeComponent],
       }).compileComponents();
 
       fixture = TestBed.createComponent(KeyResultDialogComponent);

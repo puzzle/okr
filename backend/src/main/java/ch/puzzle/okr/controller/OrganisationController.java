@@ -28,8 +28,8 @@ public class OrganisationController {
     @Operation(summary = "Get all Organisations", description = "Get all Organisations")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned all Organisations", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class))}),
-            @ApiResponse(responseCode = "401", description = "Not authorized to read all Organisations", content = @Content)})
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to read all Organisations", content = @Content) })
     @GetMapping
     public ResponseEntity<List<Organisation>> getOrganisations() {
         return ResponseEntity.status(HttpStatus.OK).body(organisationBusinessService.getOrganisations());

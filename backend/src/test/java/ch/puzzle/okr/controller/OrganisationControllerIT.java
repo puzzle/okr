@@ -27,20 +27,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(OrganisationController.class)
 class OrganisationControllerIT {
     private static final Team PUZZLE = Team.Builder.builder().withId(1L).withName("PUZZLE ITC").build();
-    private static final Organisation organisationPuzzle = Organisation.Builder.builder()
-            .withId(1L)
-            .withState(OrganisationState.ACTIVE)
-            .withTeams(List.of(PUZZLE))
-            .withVersion(1)
-            .withOrgName("org_puzzle")
+    private static final Organisation organisationPuzzle = Organisation.Builder.builder().withId(1L)
+            .withState(OrganisationState.ACTIVE).withTeams(List.of(PUZZLE)).withVersion(1).withOrgName("org_puzzle")
             .build();
 
-    private static final Organisation organisationBBT = Organisation.Builder.builder()
-            .withId(1L)
-            .withState(OrganisationState.ACTIVE)
-            .withTeams(List.of(PUZZLE))
-            .withVersion(1)
-            .withOrgName("org_bbt")
+    private static final Organisation organisationBBT = Organisation.Builder.builder().withId(1L)
+            .withState(OrganisationState.ACTIVE).withTeams(List.of(PUZZLE)).withVersion(1).withOrgName("org_bbt")
             .build();
     private static final String URL_ORGANISATION = "/api/v2/organisations";
     @Autowired
@@ -56,9 +48,9 @@ class OrganisationControllerIT {
 
     @Test
     void shouldReturnOrganisationsOfBusinessService() throws Exception {
-        BDDMockito.given(organisationBusinessService.getOrganisations()).willReturn(List.of(organisationPuzzle, organisationBBT));
+        BDDMockito.given(organisationBusinessService.getOrganisations())
+                .willReturn(List.of(organisationPuzzle, organisationBBT));
         mvc.perform(get(URL_ORGANISATION).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$", Is.is(organisationPuzzle)));
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Is.is(organisationPuzzle)));
     }
 }

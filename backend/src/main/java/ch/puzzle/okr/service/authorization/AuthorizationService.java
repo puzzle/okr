@@ -26,6 +26,7 @@ public class AuthorizationService {
     private static final String NOT_AUTHORIZED_TO_READ_OBJECTIVE = "not authorized to read objective";
     private static final String NOT_AUTHORIZED_TO_READ_KEY_RESULT = "not authorized to read key result";
     private static final String NOT_AUTHORIZED_TO_READ_CHECK_IN = "not authorized to read check in";
+    private static final String NOT_AUTHORIZED_TO_READ_ORGANISATION = "not authorized to read organisation";
     private static final String NOT_AUTHORIZED_TO_WRITE_OBJECTIVE = "not authorized to create or update objective";
     private static final String NOT_AUTHORIZED_TO_WRITE_KEY_RESULT = "not authorized to create or update key result";
     private static final String NOT_AUTHORIZED_TO_WRITE_CHECK_IN = "not authorized to create or update check in";
@@ -100,7 +101,8 @@ public class AuthorizationService {
     }
 
     public void hasRoleReadByOrganisation(Long organisationId, AuthorizationUser authorizationUser) {
-        organisationPersistenceService.findById(organisationId, authorizationUser);
+        organisationPersistenceService.findOrganisationById(organisationId, authorizationUser,
+                NOT_AUTHORIZED_TO_READ_ORGANISATION);
     }
 
     public void hasRoleCreateOrUpdate(Objective objective, AuthorizationUser authorizationUser) {

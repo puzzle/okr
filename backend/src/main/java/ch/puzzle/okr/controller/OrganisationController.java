@@ -2,7 +2,7 @@ package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.models.Organisation;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
+import ch.puzzle.okr.service.authorization.OrganisationAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,10 +19,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v2/organisations")
 public class OrganisationController {
-    private final OrganisationBusinessService organisationBusinessService;
+    private final OrganisationAuthorizationService organisationAuthorizationService;
 
-    public OrganisationController(OrganisationBusinessService organisationBusinessService) {
-        this.organisationBusinessService = organisationBusinessService;
+    public OrganisationController(OrganisationAuthorizationService organisationAuthorizationService) {
+        this.organisationAuthorizationService = organisationAuthorizationService;
     }
 
     @Operation(summary = "Get all Organisations", description = "Get all Organisations")
@@ -32,6 +32,6 @@ public class OrganisationController {
             @ApiResponse(responseCode = "401", description = "Not authorized to read all Organisations", content = @Content) })
     @GetMapping
     public ResponseEntity<List<Organisation>> getOrganisations() {
-        return ResponseEntity.status(HttpStatus.OK).body(organisationBusinessService.getOrganisations());
+        return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntities());
     }
 }

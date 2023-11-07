@@ -1,7 +1,8 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.ObjectiveDto;
-import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.dto.OrganisationDto;
+import ch.puzzle.okr.mapper.OrganisationMapper;
 import ch.puzzle.okr.service.authorization.OrganisationAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,9 +21,12 @@ import java.util.List;
 @RequestMapping("api/v2/organisations")
 public class OrganisationController {
     private final OrganisationAuthorizationService organisationAuthorizationService;
+    private final OrganisationMapper organisationMapper;
 
-    public OrganisationController(OrganisationAuthorizationService organisationAuthorizationService) {
+    public OrganisationController(OrganisationAuthorizationService organisationAuthorizationService,
+            OrganisationMapper organisationMapper) {
         this.organisationAuthorizationService = organisationAuthorizationService;
+        this.organisationMapper = organisationMapper;
     }
 
     @Operation(summary = "Get all Organisations", description = "Get all Organisations")
@@ -31,7 +35,8 @@ public class OrganisationController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to read all Organisations", content = @Content) })
     @GetMapping
-    public ResponseEntity<List<Organisation>> getOrganisations() {
-        return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntities());
+    public ResponseEntity<List<OrganisationDto>> getOrganisations() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                organisationAuthorizationService.getEntities().stream().map(this.organisationMapper::toDto).toList());
     }
 }

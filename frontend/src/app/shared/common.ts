@@ -88,5 +88,3 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
     return 'dialog-form-field';
   }
 }
-
-export const username: ReplaySubject<string> = new ReplaySubject();

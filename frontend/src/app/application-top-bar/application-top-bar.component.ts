@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map } from 'rxjs';
+import { map, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { Router } from '@angular/router';
-import { username } from '../shared/common';
-
 @Component({
   selector: 'app-application-top-bar',
   templateUrl: './application-top-bar.component.html',
@@ -12,7 +10,7 @@ import { username } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
-  protected readonly username = username;
+  username: ReplaySubject<string> = new ReplaySubject();
 
   constructor(
     private oauthService: OAuthService,
@@ -32,7 +30,7 @@ export class ApplicationTopBarComponent implements OnInit {
       .subscribe();
 
     if (this.oauthService.hasValidIdToken()) {
-      username.next(this.oauthService.getIdentityClaims()['name']);
+      this.username.next(this.oauthService.getIdentityClaims()['name']);
     }
   }
   logOut() {

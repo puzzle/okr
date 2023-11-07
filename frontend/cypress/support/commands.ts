@@ -15,9 +15,9 @@ Cypress.Commands.add(
   { prevSubject: 'optional' },
   (subject: any, objectiveTitle: string, quarter: string, button: string, createKeyResults: boolean = false) => {
     if (subject) {
-      cy.wrap(subject).getByTestId('create-objective').first().click();
+      cy.wrap(subject).getByTestId('add-objective').first().click();
     } else {
-      cy.getByTestId('create-objective').first().click();
+      cy.getByTestId('add-objective').first().click();
     }
 
     cy.getByTestId('title').first().type(objectiveTitle);

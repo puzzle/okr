@@ -1,4 +1,5 @@
 import * as users from '../fixtures/users.json';
+import { onlyOn } from '@cypress/skip-test';
 
 describe('OKR Objective e2e tests', () => {
   describe('tests via click', () => {
@@ -41,11 +42,29 @@ describe('OKR Objective e2e tests', () => {
       cy.getByTestId('delete').click();
       cy.get("button[type='submit']").contains('Ja').click();
     });
+
+    it(`Open objective aside via click`, () => {
+      cy.getByTestId('objective').first().find('.title').click();
+      cy.url().should('include', 'objective');
+    });
+
+    it(`update objective`, () => {
+      cy.getByTestId('objective').first().focus();
+      cy.realPress('Enter');
+      cy.url().should('include', 'objective');
+    });
   });
 });
 
-describe('tests via tab', () => {
+describe('tests via keyboard', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    onlyOn('chrome');
+  });
+
+  it(`Open objective aside via enter`, () => {
+    cy.getByTestId('objective').first().focus();
+    cy.realPress('Enter');
+    cy.url().should('include', 'objective');
   });
 });

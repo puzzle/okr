@@ -8,6 +8,7 @@ import { HttpClient, HttpHandler } from '@angular/common/http';
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
   logOut: jest.fn(),
+  hasValidIdToken: jest.fn(),
 };
 
 describe('ApplicationHeaderComponent', () => {

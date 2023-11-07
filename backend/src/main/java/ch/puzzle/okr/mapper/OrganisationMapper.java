@@ -17,20 +17,14 @@ public class OrganisationMapper {
     }
 
     public OrganisationDto toDto(Organisation organisation) {
-        List<TeamDto> teamDtoList = organisation.getTeams().stream().map(team -> teamMapper.toDto(team, null))
-                .toList();
+        List<TeamDto> teamDtoList = organisation.getTeams().stream().map(team -> teamMapper.toDto(team, null)).toList();
         return new OrganisationDto(organisation.getId(), organisation.getVersion(), organisation.getOrgName(),
                 teamDtoList, organisation.getState());
     }
 
     public Organisation toOrganisation(OrganisationDto organisationDto) {
         List<Team> teams = organisationDto.teams().stream().map(this.teamMapper::toTeam).toList();
-        return Organisation.Builder.builder()
-                .withId(organisationDto.id())
-                .withVersion(organisationDto.version())
-                .withOrgName(organisationDto.orgName())
-                .withTeams(teams)
-                .withState(organisationDto.state())
-                .build();
+        return Organisation.Builder.builder().withId(organisationDto.id()).withVersion(organisationDto.version())
+                .withOrgName(organisationDto.orgName()).withTeams(teams).withState(organisationDto.state()).build();
     }
 }

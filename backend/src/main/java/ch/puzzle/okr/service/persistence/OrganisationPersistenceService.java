@@ -1,10 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.repository.OrganisationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,9 +17,11 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 public class OrganisationPersistenceService extends PersistenceBase<Organisation, Long, OrganisationRepository> {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrganisationPersistenceService.class);
+    private static final String SELECT_ORGANISATION_BY_ID = "SELECT o FROM Organisation o WHERE o.id=:id";
     private final EntityManager entityManager;
     private final AuthorizationCriteria<Organisation> authorizationCriteria;
-    private static final String SELECT_ORGANISATION_BY_ID = "SELECT o FROM Organisation o WHERE o.id=:id";
 
     protected OrganisationPersistenceService(OrganisationRepository repository, EntityManager entityManager,
             AuthorizationCriteria<Organisation> authorizationCriteria) {
@@ -27,20 +30,20 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         this.authorizationCriteria = authorizationCriteria;
     }
 
-    public Organisation findOrganisationById(Long organisationId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(organisationId, authorizationUser, SELECT_ORGANISATION_BY_ID, reason);
-    }
-
     @Override
     public String getModelName() {
         return "Organisation";
     }
 
+    public Organisation findOrganisationById(Long organisationId, AuthorizationUser authorizationUser, String reason) {
+        return findByAnyId(organisationId, authorizationUser, SELECT_ORGANISATION_BY_ID, reason);
+    }
+
     private Organisation findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString, String reason) {
         checkIdNull(id);
         String fullQueryString = queryString + authorizationCriteria.appendObjective(authorizationUser);
-        logger.debug("select objective by id={}: {}", id, fullQueryString);
-        TypedQuery<Objective> typedQuery = entityManager.createQuery(fullQueryString, Objective.class);
+        logger.debug("select organisation by id={}: {}", id, fullQueryString);
+        TypedQuery<Organisation> typedQuery = entityManager.createQuery(fullQueryString, Organisation.class);
         typedQuery.setParameter("id", id);
         authorizationCriteria.setParameters(typedQuery, authorizationUser);
         try {

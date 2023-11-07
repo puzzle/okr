@@ -1,23 +1,23 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {User} from '../../types/model/User';
-import {KeyResult} from '../../types/model/KeyResult';
-import {KeyresultService} from '../../services/keyresult.service';
-import {KeyResultMetricDTO} from '../../types/DTOs/KeyResultMetricDTO';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../../types/model/User';
+import { KeyResult } from '../../types/model/KeyResult';
+import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResultMetricDTO } from '../../types/DTOs/KeyResultMetricDTO';
 import errorMessages from '../../../../assets/errors/error-messages.json';
-import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
-import {Objective} from '../../types/model/Objective';
-import {KeyResultOrdinalDTO} from '../../types/DTOs/KeyResultOrdinalDTO';
-import {KeyResultMetric} from '../../types/model/KeyResultMetric';
-import {KeyResultOrdinal} from '../../types/model/KeyResultOrdinal';
-import {BehaviorSubject, filter, map, Observable, of, startWith, switchMap} from 'rxjs';
-import {UserService} from '../../services/user.service';
-import {CloseState} from '../../types/enums/CloseState';
-import {Action} from '../../types/model/Action';
-import {CONFIRM_DIALOG_WIDTH} from '../../constantLibary';
-import {formInputCheck} from '../../common';
-import {OAuthService} from 'angular-oauth2-oidc';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Objective } from '../../types/model/Objective';
+import { KeyResultOrdinalDTO } from '../../types/DTOs/KeyResultOrdinalDTO';
+import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
+import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { UserService } from '../../services/user.service';
+import { CloseState } from '../../types/enums/CloseState';
+import { Action } from '../../types/model/Action';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { formInputCheck } from '../../common';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-key-result-dialog',

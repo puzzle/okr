@@ -1,49 +1,48 @@
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {KeyResultDialogComponent} from './key-result-dialog.component';
+import { KeyResultDialogComponent } from './key-result-dialog.component';
 import * as errorData from '../../../../assets/errors/error-messages.json';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {MatInputModule} from '@angular/material/input';
-import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {MatIconModule} from '@angular/material/icon';
-import {By} from '@angular/platform-browser';
-import {testUser, users} from '../../testData';
-import {State} from '../../types/enums/State';
-import {KeyresultService} from '../../services/keyresult.service';
-import {KeyResult} from '../../types/model/KeyResult';
-import {Observable, of} from 'rxjs';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatSelectModule} from '@angular/material/select';
-import {MatRadioModule} from '@angular/material/radio';
-import {KeyResultObjective} from '../../types/model/KeyResultObjective';
-import {User} from '../../types/model/User';
-import {DialogHeaderComponent} from '../../custom/dialog-header/dialog-header.component';
-import {OAuthService} from "angular-oauth2-oidc";
-import {KeyresultTypeComponent} from "../../../keyresult-type/keyresult-type.component";
-import {ActionPlanComponent} from "../../../action-plan/action-plan.component";
-import {TranslateModule, TranslatePipe, TranslateService} from "@ngx-translate/core";
-import {DragDrop, DragDropModule} from "@angular/cdk/drag-drop";
-import {TeamService} from "../../services/team.service";
-import {UserService} from "../../services/user.service";
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+import { testUser, users } from '../../testData';
+import { State } from '../../types/enums/State';
+import { KeyresultService } from '../../services/keyresult.service';
+import { KeyResult } from '../../types/model/KeyResult';
+import { Observable, of } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { KeyResultObjective } from '../../types/model/KeyResultObjective';
+import { User } from '../../types/model/User';
+import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { KeyresultTypeComponent } from '../../../keyresult-type/keyresult-type.component';
+import { ActionPlanComponent } from '../../../action-plan/action-plan.component';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { DragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { TeamService } from '../../services/team.service';
+import { UserService } from '../../services/user.service';
 
 class matDialogRefMock {
-  close() {
-  }
+  close() {}
 }
 
 const oauthMockService = {
   getIdentityClaims() {
-    return {name: (users[1].firstname + ' ' + users[1].lastname)}
-  }
-}
+    return { name: users[1].firstname + ' ' + users[1].lastname };
+  },
+};
 
 const userService = {
   getUsers() {
     return of(users);
-  }
-}
+  },
+};
 
 describe('KeyResultDialogComponent', () => {
   let component: KeyResultDialogComponent;
@@ -57,14 +56,14 @@ describe('KeyResultDialogComponent', () => {
     title: 'Das ist ein Objective',
     description: 'Das ist die Beschreibung',
     state: State.ONGOING,
-    team: {id: 1, name: 'Das Puzzle Team'},
-    quarter: {id: 1, label: 'GJ 22/23-Q2'},
+    team: { id: 1, name: 'Das Puzzle Team' },
+    quarter: { id: 1, label: 'GJ 22/23-Q2' },
   };
 
   let keyResultObjective: KeyResultObjective = {
     id: 2,
     state: State.ONGOING,
-    quarter: {id: 1, label: 'GJ 22/23-Q2', endDate: new Date(), startDate: new Date()},
+    quarter: { id: 1, label: 'GJ 22/23-Q2', endDate: new Date(), startDate: new Date() },
   };
 
   let fullKeyResultMetric = {
@@ -268,29 +267,28 @@ describe('KeyResultDialogComponent', () => {
           MatAutocompleteModule,
           MatIconModule,
           TranslateModule.forRoot(),
-          DragDropModule
+          DragDropModule,
         ],
         providers: [
           KeyresultService,
           TranslateService,
-          {provide: UserService, useValue: userService},
+          { provide: UserService, useValue: userService },
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {
-              }
+              close: (dialogResult: any) => {},
             },
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: {objective: fullObjective, keyResult: undefined},
+            useValue: { objective: fullObjective, keyResult: undefined },
           },
           {
             provide: OAuthService,
             useValue: oauthMockService,
-          }
+          },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent,],
+        declarations: [KeyResultDialogComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
       }).compileComponents();
 
       matDialogRef = TestBed.inject(MatDialogRef);
@@ -374,7 +372,7 @@ describe('KeyResultDialogComponent', () => {
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
-      spy.mockImplementation(() => of({id: 2} as KeyResult));
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       component.keyResultForm.setValue({
         owner: testUser,
@@ -399,14 +397,13 @@ describe('KeyResultDialogComponent', () => {
       expect(spy).toHaveBeenCalledWith(savedKeyResult);
     }));
 
-    it('should display logged in user', waitForAsync( () => {
+    it('should display logged in user', waitForAsync(() => {
       const userServiceSpy = jest.spyOn(userService, 'getUsers');
       component.ngOnInit();
       fixture.detectChanges();
       expect(userServiceSpy).toHaveBeenCalled();
       expect(component.keyResultForm.controls.owner.value).toBe(users[1]);
     }));
-
   });
 
   describe('Edit KeyResult Metric', () => {
@@ -421,7 +418,7 @@ describe('KeyResultDialogComponent', () => {
           HttpClientTestingModule,
           MatIconModule,
           MatAutocompleteModule,
-          DragDropModule
+          DragDropModule,
         ],
         providers: [
           KeyresultService,
@@ -429,8 +426,7 @@ describe('KeyResultDialogComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {
-              }
+              close: (dialogResult: any) => {},
             },
           },
           {
@@ -439,7 +435,7 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: {keyResult: fullKeyResultMetric, objective: keyResultObjective},
+            useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
         declarations: [KeyResultDialogComponent, DialogHeaderComponent],
@@ -547,7 +543,7 @@ describe('KeyResultDialogComponent', () => {
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
-      spy.mockImplementation(() => of({id: 2} as KeyResult));
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       component.saveKeyResult();
 
@@ -574,8 +570,7 @@ describe('KeyResultDialogComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {
-              }
+              close: (dialogResult: any) => {},
             },
           },
           {
@@ -584,7 +579,7 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: {keyResult: fullKeyResultOrdinal, objective: keyResultObjective},
+            useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
         declarations: [KeyResultDialogComponent, DialogHeaderComponent],
@@ -691,7 +686,7 @@ describe('KeyResultDialogComponent', () => {
 
     it('should call service save method', waitForAsync(() => {
       const spy = jest.spyOn(keyResultService, 'saveKeyResult');
-      spy.mockImplementation(() => of({id: 2} as KeyResult));
+      spy.mockImplementation(() => of({ id: 2 } as KeyResult));
 
       component.saveKeyResult();
 
@@ -718,8 +713,7 @@ describe('KeyResultDialogComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {
-              }
+              close: (dialogResult: any) => {},
             },
           },
           {
@@ -728,7 +722,7 @@ describe('KeyResultDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: {keyResult: fullKeyResultMetric},
+            useValue: { keyResult: fullKeyResultMetric },
           },
         ],
         declarations: [KeyResultDialogComponent],

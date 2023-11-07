@@ -35,11 +35,11 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         return "Organisation";
     }
 
-    public Organisation findOrganisationById(Long organisationId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(organisationId, authorizationUser, SELECT_ORGANISATION_BY_ID, reason);
+    public void findOrganisationById(Long organisationId, AuthorizationUser authorizationUser, String reason) {
+        findByAnyId(organisationId, authorizationUser, SELECT_ORGANISATION_BY_ID, reason);
     }
 
-    private Organisation findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString, String reason) {
+    private void findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString, String reason) {
         checkIdNull(id);
         String fullQueryString = queryString + authorizationCriteria.appendObjective(authorizationUser);
         logger.debug("select organisation by id={}: {}", id, fullQueryString);
@@ -47,7 +47,7 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         typedQuery.setParameter("id", id);
         authorizationCriteria.setParameters(typedQuery, authorizationUser);
         try {
-            return typedQuery.getSingleResult();
+            typedQuery.getSingleResult();
         } catch (NoResultException exception) {
             throw new ResponseStatusException(UNAUTHORIZED, reason);
         }

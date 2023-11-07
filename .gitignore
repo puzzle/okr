@@ -28,3 +28,4 @@ parent.iml
 backend/backend.iml
 sonar-project.properties
 .scannerwork
+/frontend/cypress/downloads/

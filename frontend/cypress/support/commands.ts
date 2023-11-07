@@ -11,23 +11,15 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
 });
 
 Cypress.Commands.add(
-  'createObjective',
-  { prevSubject: 'optional' },
-  (subject: any, objectiveTitle: string, quarter: string, button: string, createKeyResults: boolean = false) => {
-    if (subject) {
-      cy.wrap(subject).getByTestId('add-objective').first().click();
-    } else {
-      cy.getByTestId('add-objective').first().click();
-    }
-
-    cy.getByTestId('title').first().type(objectiveTitle);
-    cy.getByTestId('description').first().type('This is the description of the new Objective');
+  'fillOutObjective',
+  (objectiveTitle: string, quarter: string, button: string, createKeyResults: boolean = false) => {
+    cy.getByTestId('title').first().clear().type(objectiveTitle);
+    cy.getByTestId('description').first().clear().type('This is the description of the new Objective');
     cy.get('select#quarter').select(quarter);
 
     if (createKeyResults) {
       cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
     }
-    cy.getByTestId('delete').should('not.exist');
     cy.getByTestId(button).click();
   },
 );

@@ -12,7 +12,8 @@ describe('OKR Objective e2e tests', () => {
       ['draft objective title', 'safe-draft', 'draft-icon.svg'],
     ].forEach(([objectiveTitle, buttonTestId, icon]) => {
       it(`Create objective, no keyresults`, () => {
-        cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId);
+        cy.getByTestId('add-objective').first().click();
+        cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId);
         cy.visit('/?quarter=3');
         const objective = cy.contains(objectiveTitle).first().parentsUntil('#objective-column').last();
         objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/${icon}`);
@@ -24,14 +25,16 @@ describe('OKR Objective e2e tests', () => {
       ['draft objective title', 'safe-draft', 'draft-icon.svg'],
     ].forEach(([objectiveTitle, buttonTestId, icon]) => {
       it(`Create objective, no keyresults`, () => {
-        cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId, true);
+        cy.getByTestId('add-objective').first().click();
+        cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId, true);
         cy.contains('Key Result erfassen');
       });
     });
 
     it(`Create objective, cancel`, () => {
       const objectiveTitle = 'this is a canceled objective';
-      cy.createObjective(objectiveTitle, 'GJ 22/23-Q3', 'cancel');
+      cy.getByTestId('add-objective').first().click();
+      cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', 'cancel');
       cy.visit('/?quarter=3');
       cy.contains(objectiveTitle).should('not.exist');
     });
@@ -52,6 +55,15 @@ describe('OKR Objective e2e tests', () => {
       cy.getByTestId('objective').first().focus();
       cy.realPress('Enter');
       cy.url().should('include', 'objective');
+    });
+
+    it.only(`update objective`, () => {
+      const updatedTitle = 'This is an updated title';
+      cy.get('.objective').first().getByTestId('three-dot-menu').click();
+      cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
+      cy.fillOutObjective(updatedTitle, 'GJ 22/23-Q3', 'safe');
+      cy.visit('/?quarter=3');
+      cy.contains(updatedTitle).first();
     });
   });
 });

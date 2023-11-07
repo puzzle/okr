@@ -9,6 +9,7 @@ declare global {
       tabBackward(): void;
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
+      fillOutObjective(objectiveTitle: string, quarter: string, button: string, createKeyResults?: boolean): void;
       fillOutKeyResult(
         title: string,
         unit: string | null,
@@ -20,7 +21,6 @@ declare global {
         owner: string | null,
         description: string,
       ): void;
-      createObjective(objectiveTitle: string, quarter: string, button: string, createKeyResults?: boolean): void;
     }
   }
 }

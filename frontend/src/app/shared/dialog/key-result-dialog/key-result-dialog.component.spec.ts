@@ -570,7 +570,7 @@ describe('KeyResultDialogComponent', () => {
     });
 
     afterEach(() => {
-      jest.resetAllMocks();
+      mockUserService.getUsers.mockReset();
     });
 
     it('should use KeyResult value from data input', waitForAsync(() => {

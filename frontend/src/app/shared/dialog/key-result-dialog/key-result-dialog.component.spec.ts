@@ -589,13 +589,13 @@ describe('KeyResultDialogComponent', () => {
         actionList: [],
         title: 'Title',
         baseline: 0,
-        stretchZone: "stretchZone",
-        targetZone: "targetZone",
-        commitZone: "commitZone",
-        unit: "FTE",
+        stretchZone: 'stretchZone',
+        targetZone: 'targetZone',
+        commitZone: 'commitZone',
+        unit: 'FTE',
         description: 'Description',
         stretchGoal: 0,
-        keyResultType: "ordinal",
+        keyResultType: 'ordinal',
       });
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));

@@ -10,6 +10,7 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
+import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,14 +36,16 @@ public class AuthorizationService {
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
+    private final OrganisationPersistenceService organisationPersistenceService;
     private final JwtUserConverter jwtUserConverter;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
             ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtUserConverter jwtUserConverter) {
+            JwtUserConverter jwtUserConverter, OrganisationPersistenceService organisationPersistenceService) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
+        this.organisationPersistenceService = organisationPersistenceService;
         this.jwtUserConverter = jwtUserConverter;
     }
 
@@ -94,6 +97,10 @@ public class AuthorizationService {
     public void hasRoleReadByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {
         objectivePersistenceService.findObjectiveByCheckInId(checkInId, authorizationUser,
                 NOT_AUTHORIZED_TO_READ_CHECK_IN);
+    }
+
+    public void hasRoleReadByOrganisation(Long organisationId, AuthorizationUser authorizationUser) {
+        organisationPersistenceService.findById(organisationId, authorizationUser);
     }
 
     public void hasRoleCreateOrUpdate(Objective objective, AuthorizationUser authorizationUser) {

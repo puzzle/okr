@@ -526,6 +526,7 @@ describe('KeyResultDialogComponent', () => {
     }));
 
     it('should not display logged in user when editing', waitForAsync(() => {
+      jest.resetAllMocks();
       const userServiceSpy = jest.spyOn(userService, 'getUsers');
       component.ngOnInit();
       fixture.detectChanges();

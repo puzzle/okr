@@ -3,10 +3,12 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { formInputCheck } from '../../common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
-import { Unit } from '../../types/enums/Unit';
 import { Organisation } from '../../types/model/Organisation';
 import { OrganisationService } from '../../services/organisation.service';
 import { Observable } from 'rxjs';
+import { TeamService } from '../../services/team.service';
+import { Team } from '../../types/model/Team';
+import { RefreshDataService } from '../../services/refresh-data.service';
 
 @Component({
   selector: 'app-team-management',
@@ -26,6 +28,8 @@ export class TeamManagementComponent implements OnInit {
     public dialogRef: MatDialogRef<TeamManagementComponent>,
     private dialog: MatDialog,
     private organisationService: OrganisationService,
+    private teamService: TeamService,
+    private refreshDataService: RefreshDataService,
   ) {}
 
   ngOnInit(): void {
@@ -33,7 +37,12 @@ export class TeamManagementComponent implements OnInit {
   }
 
   saveTeam() {
-    console.log(this.teamForm.value);
+    let newTeam: Team = { ...this.teamForm.value, activeObjectives: 0 } as Team;
+    this.teamService.createTeam(newTeam).subscribe((result) => {
+      this.refreshDataService.markDataRefresh();
+      console.log(result);
+      this.dialogRef.close(result);
+    });
   }
 
   isTouchedOrDirty(name: string) {

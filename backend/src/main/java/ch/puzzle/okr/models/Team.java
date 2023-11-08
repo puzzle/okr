@@ -18,7 +18,7 @@ public class Team {
     @Size(min = 2, max = 250, message = "Attribute name must have size between 2 and 250 characters when saving team")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "team_organisation", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "organisation_id"))
     private List<Organisation> authorizationOrganisation;
 

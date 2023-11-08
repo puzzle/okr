@@ -33,6 +33,11 @@ public class TeamBusinessService {
         return teamPersistenceService.findById(teamId);
     }
 
+    public Team createTeam(Team team) {
+        validator.validateOnCreate(team);
+        return teamPersistenceService.save(team);
+    }
+
     public List<Team> getAllTeams() {
         return teamPersistenceService.findAll();
     }

@@ -20,7 +20,9 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     @Override
     public void validateOnCreate(Team model) {
-        throw new IllegalCallerException("This method must not be called");
+        throwExceptionWhenIdIsNotNull(model.getId());
+        throwExceptionWhenModelIsNull(model);
+        validate(model);
     }
 
     @Override

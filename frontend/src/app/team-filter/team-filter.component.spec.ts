@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { TeamFilterComponent } from './team-filter.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -6,7 +6,6 @@ import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testi
 import { MatChipsModule } from '@angular/material/chips';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { MatChipListboxHarness } from '@angular/material/chips/testing';
 import { TeamService } from '../shared/services/team.service';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { of, Subject } from 'rxjs';
@@ -20,6 +19,7 @@ const teamServiceMock = {
 
 const refreshDataServiceMock = {
   reloadOverviewSubject: new Subject(),
+  teamFilterReady: new Subject(),
   markDataRefresh: jest.fn,
 };
 
@@ -109,16 +109,18 @@ describe('TeamFilterComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
   }));
 
-  it('change filter params and reload', fakeAsync(() => {
+  it('change filter params and reload', fakeAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
+    const routerHarness = await RouterTestingHarness.create();
     jest.spyOn(component, 'changeTeamFilterParams');
     jest.spyOn(refreshDataServiceMock, 'markDataRefresh');
 
+    component.activeTeams = [8, 5, 10];
     fixture.detectChanges();
-    component.changeTeamFilterParamsAndReload();
-    tick(500);
+    await component.changeTeamFilterParams();
+    routerHarness.detectChanges();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(refreshDataServiceMock.markDataRefresh).toBeCalledTimes(1);
+    expect(router.url).toBe('/?teams=8,5,10');
   }));
 
   it.each([
@@ -130,11 +132,11 @@ describe('TeamFilterComponent', () => {
   ])('toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
     component.activeTeams = activeTeams;
     jest.spyOn(component, 'areAllTeamsShown');
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
 
     component.toggleSelection(selected);
     fixture.detectChanges();
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
     expect(component.areAllTeamsShown).toBeCalledTimes(2);
     expect(component.activeTeams).toStrictEqual(expected);
   });
@@ -162,16 +164,30 @@ describe('TeamFilterComponent', () => {
 
   it('select all', () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
     component.selectAll();
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 
   it('select all should do nothing', () => {
     component.activeTeams = [];
-    jest.spyOn(component, 'changeTeamFilterParamsAndReload');
+    jest.spyOn(component, 'changeTeamFilterParams');
     component.selectAll();
 
-    expect(component.changeTeamFilterParamsAndReload).toBeCalledTimes(0);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(0);
+  });
+
+  it('should refresh teams on data refresh', () => {
+    component.ngOnInit();
+    component.activeTeams = [team2.id, team3.id];
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual(teamList);
+    teamServiceMock.getAllTeams.mockReturnValue(of([team2, team1]));
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual(teamList);
+    refreshDataServiceMock.reloadOverviewSubject.next(null);
+    fixture.detectChanges();
+    expect(component.teams$.value).toStrictEqual([team2, team1]);
+    expect(component.activeTeams).toStrictEqual([team2.id]);
   });
 });

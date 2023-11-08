@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs';
 import { Team } from '../shared/types/model/Team';
 import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../shared/common';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-team-filter',
@@ -14,6 +14,7 @@ import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from
 export class TeamFilterComponent implements OnInit {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   activeTeams: number[] = [];
+  protected readonly trackByFn = trackByFn;
 
   constructor(
     private teamService: TeamService,
@@ -24,6 +25,9 @@ export class TeamFilterComponent implements OnInit {
     this.refreshDataService.reloadOverviewSubject.subscribe(() => {
       this.teamService.getAllTeams().subscribe((teams) => {
         this.teams$.next(teams);
+        this.activeTeams = this.activeTeams.filter((teamId) =>
+          this.teams$.value.map((team) => team.id).includes(teamId),
+        );
       });
     });
   }
@@ -44,13 +48,9 @@ export class TeamFilterComponent implements OnInit {
   changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
-    return this.router.navigate([], { queryParams: optionalParams });
-  }
-
-  changeTeamFilterParamsAndReload() {
-    this.changeTeamFilterParams().then(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    return this.router
+      .navigate([], { queryParams: optionalParams })
+      .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
   toggleSelection(id: number) {
@@ -69,7 +69,7 @@ export class TeamFilterComponent implements OnInit {
       this.activeTeams = [];
     }
 
-    this.changeTeamFilterParamsAndReload();
+    this.changeTeamFilterParams();
   }
 
   areAllTeamsShown() {
@@ -86,8 +86,6 @@ export class TeamFilterComponent implements OnInit {
       return;
     }
     this.activeTeams = [];
-    this.changeTeamFilterParamsAndReload();
+    this.changeTeamFilterParams();
   }
-
-  protected readonly trackByFn = trackByFn;
 }

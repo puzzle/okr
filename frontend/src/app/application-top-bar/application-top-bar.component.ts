@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map } from 'rxjs';
+import { map, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-application-top-bar',
   templateUrl: './application-top-bar.component.html',
@@ -10,9 +10,12 @@ import { ConfigService } from '../config.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
+  username: ReplaySubject<string> = new ReplaySubject();
+
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -25,12 +28,15 @@ export class ApplicationTopBarComponent implements OnInit {
         }),
       )
       .subscribe();
+
+    if (this.oauthService.hasValidIdToken()) {
+      this.username.next(this.oauthService.getIdentityClaims()['name']);
+    }
   }
   logOut() {
-    this.oauthService.logOut();
-  }
-
-  getUserName() {
-    return this.oauthService.getIdentityClaims()['name'];
+    const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
+    this.router.navigateByUrl(currentUrlTree).then(() => {
+      this.oauthService.logOut();
+    });
   }
 }

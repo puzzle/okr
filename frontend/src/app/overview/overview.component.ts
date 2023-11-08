@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, EMPTY, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import {
+  catchError,
+  combineAll,
+  combineLatest,
+  combineLatestAll,
+  EMPTY,
+  filter,
+  forkJoin,
+  Observable,
+  ReplaySubject,
+  Subject,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -12,10 +25,10 @@ import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnInit, OnDestroy {
+export class OverviewComponent implements OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   protected readonly trackByFn = trackByFn;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   constructor(
     private overviewService: OverviewService,
@@ -25,10 +38,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
-  }
 
-  ngOnInit(): void {
-    this.loadOverview();
+    combineLatest([
+      <Observable<void>>refreshDataService.teamFilterReady,
+      <Observable<void>>refreshDataService.quarterFilterReady,
+    ])
+      .pipe(take(1))
+      .subscribe(() => {
+        this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+          this.loadOverviewWithParams();
+        });
+      });
   }
 
   loadOverviewWithParams() {

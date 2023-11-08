@@ -12,7 +12,7 @@
         <pzsh-menu-dropdown href="#">
           <div slot="toggle" role="button">
             <pzsh-icon name="user"></pzsh-icon>
-            {{ getUserName() }}
+            {{ username | async }}
           </div>
           <div slot="items">
             <pzsh-menu-dropdown-item (click)="logOut()" [attr.data-testId]="'logout'">

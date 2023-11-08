@@ -14,6 +14,7 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../shared/guards/auth.guard';
+import { OverviewComponent } from '../overview/overview.component';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -27,7 +28,7 @@ describe('ObjectiveFilterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ObjectiveFilterComponent],
+      declarations: [ObjectiveFilterComponent, OverviewComponent],
       providers: [
         {
           provide: authGuard,
@@ -66,7 +67,8 @@ describe('ObjectiveFilterComponent', () => {
       tick(200);
       expect(component.updateURL).toHaveBeenCalledTimes(0);
       tick(200);
-      expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this%20is%20a%20test' } });
+      expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { objectiveQuery: 'this is a test' } });
+      expect(router.url).toBe('/?objectiveQuery=this%20is%20a%20test');
     });
   }));
 
@@ -75,7 +77,7 @@ describe('ObjectiveFilterComponent', () => {
     const routerPromise = RouterTestingHarness.create();
 
     Promise.all([searchPromise, routerPromise]).then(([search, router]: [MatInputHarness, RouterTestingHarness]) => {
-      router.navigateByUrl('/?objectiveQuery=this%2520is%2520a%2520test');
+      router.navigateByUrl('/?objectiveQuery=this%20is%20a%20test');
       tick(500);
       fixture.detectChanges();
       expect(component.query).toBe('this is a test');

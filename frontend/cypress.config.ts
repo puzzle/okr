@@ -5,6 +5,6 @@ export default defineConfig({
     baseUrl: 'http://localhost:4200',
   },
   env: {
-    login_url: 'https://idp-mock-okr.ocp.cloudscale.puzzle.ch',
+    login_url: 'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch',
   },
 });

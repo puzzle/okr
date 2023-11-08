@@ -3,8 +3,8 @@ import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getValueFromQuery } from '../shared/common';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-quarter-filter',
@@ -31,9 +31,12 @@ export class QuarterFilterComponent implements OnInit {
         this.quarterId = quarterId;
         this.changeDisplayedQuarter();
       } else {
-        this.quarterId = quarters[0].id;
-        if (this.router.url !== '/') {
+        if (quarterQuery !== undefined) {
+          this.quarterId = quarters[0].id;
           this.changeDisplayedQuarter();
+        } else {
+          this.quarterId = quarters[0].id;
+          this.refreshDataService.quarterFilterReady.next();
         }
       }
     });
@@ -41,8 +44,8 @@ export class QuarterFilterComponent implements OnInit {
 
   changeDisplayedQuarter() {
     const id = this.quarterId;
-    this.router.navigate([], { queryParams: { quarter: id } }).then(() => {
-      this.refreshDataService.markDataRefresh();
-    });
+    this.router
+      .navigate([], { queryParams: { quarter: id } })
+      .then(() => this.refreshDataService.quarterFilterReady.next());
   }
 }

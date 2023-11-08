@@ -3,10 +3,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { authGuard } from '../shared/guards/auth.guard';
 
 const overviewService = {
@@ -15,6 +16,12 @@ const overviewService = {
 
 const authGuardMock = () => {
   return Promise.resolve(true);
+};
+
+const refreshDataServiceMock = {
+  teamFilterReady: new Subject(),
+  quarterFilterReady: new Subject(),
+  reloadOverviewSubject: new Subject(),
 };
 
 describe('OverviewComponent', () => {
@@ -33,6 +40,10 @@ describe('OverviewComponent', () => {
           provide: authGuard,
           useValue: authGuardMock,
         },
+        {
+          provide: RefreshDataService,
+          useValue: refreshDataServiceMock,
+        },
       ],
     }).compileComponents();
 
@@ -48,27 +59,23 @@ describe('OverviewComponent', () => {
 
   it('should load default overview when no quarter is defined in route-params', () => {
     jest.spyOn(overviewService, 'getOverview');
-
-    component.ngOnInit();
+    markFiltersAsReady();
     expect(overviewService.getOverview).toHaveBeenCalled();
   });
 
   it('should load default overview on init', async () => {
     jest.spyOn(overviewService, 'getOverview');
-    const routerHarness = await RouterTestingHarness.create();
-    await routerHarness.navigateByUrl('/?quarter=7');
-    routerHarness.detectChanges();
-    component.ngOnInit();
-    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, undefined, undefined);
+    markFiltersAsReady();
+    expect(overviewService.getOverview).toHaveBeenCalledWith(undefined, [], '');
   });
 
   it.each([
     ['?quarter=7', 7, [], ''],
     ['?teams=1,2', undefined, [1, 2], ''],
-    ['?objectiveQuery=a%2520a', undefined, [], 'a a'],
-    ['?teams=1,2&objectiveQuery=a%2520a', undefined, [1, 2], 'a a'],
+    ['?objectiveQuery=a%20a', undefined, [], 'a a'],
+    ['?teams=1,2&objectiveQuery=a%20a', undefined, [1, 2], 'a a'],
     ['?teams=1,2&quarter=7', 7, [1, 2], ''],
-    ['?quarter=7&objectiveQuery=a%2520a', 7, [], 'a a'],
+    ['?quarter=7&objectiveQuery=a%20a', 7, [], 'a a'],
   ])(
     'should load overview based on queryparams',
     async (query: string, quarterParam?: number, teamsParam?: number[], objectiveQueryParam?: string) => {
@@ -83,7 +90,7 @@ describe('OverviewComponent', () => {
     },
   );
 
-  it('should refresh overview Entities after getOVerview is called', async () => {
+  it('should refresh overview Entities after getOverview is called', async () => {
     jest.spyOn(component.overviewEntities$, 'next');
     jest.spyOn(component, 'loadOverview');
     component.loadOverview();
@@ -98,4 +105,10 @@ describe('OverviewComponent', () => {
     component.loadOverview();
     expect(component.loadOverview).toHaveBeenLastCalledWith();
   });
+
+  function markFiltersAsReady() {
+    refreshDataServiceMock.quarterFilterReady.next(null);
+    refreshDataServiceMock.teamFilterReady.next(null);
+    fixture.detectChanges();
+  }
 });

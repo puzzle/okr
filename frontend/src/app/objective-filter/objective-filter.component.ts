@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, optionalReplaceWithNulls, sanitize } from '../shared/common';
 import { debounceTime, map, Subject } from 'rxjs';
 
@@ -16,7 +15,6 @@ export class ObjectiveFilterComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private refreshService: RefreshDataService,
     private route: ActivatedRoute,
   ) {
     this.refresh.pipe(debounceTime(300)).subscribe(() => this.updateURL());
@@ -24,10 +22,9 @@ export class ObjectiveFilterComponent implements OnInit {
 
   updateURL() {
     const sanitizedQuery = sanitize(this.query);
-    const encoded = encodeURI(sanitizedQuery);
-    const params = { objectiveQuery: encoded };
+    const params = { objectiveQuery: sanitizedQuery };
     const optionalParams = optionalReplaceWithNulls(params);
-    this.router.navigate([], { queryParams: optionalParams }).then(() => this.refreshService.markDataRefresh());
+    this.router.navigate([], { queryParams: optionalParams });
   }
 
   ngOnInit() {
@@ -35,7 +32,6 @@ export class ObjectiveFilterComponent implements OnInit {
       const objectiveQuery = getQueryString(query);
       if (sanitize(this.query) !== objectiveQuery) {
         this.query = objectiveQuery;
-        this.updateURL();
       }
     });
   }

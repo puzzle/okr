@@ -25,10 +25,11 @@
           multiple
           id="organisations"
           class="d-flex flex-column input-fields p-2"
-          [ngClass]="formInputCheck(teamForm, 'organisations')">
+          [ngClass]="formInputCheck(teamForm, 'organisations')"
+        >
           <mat-option *ngFor="let organisation of organisations$ | async" [value]="organisation">{{
             organisation.orgName
-            }}</mat-option>
+          }}</mat-option>
         </mat-select>
 
         <div *ngIf="isTouchedOrDirty('organisations')">

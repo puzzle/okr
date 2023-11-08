@@ -1,6 +1,5 @@
 import { FormGroup } from '@angular/forms';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
-import { ReplaySubject } from 'rxjs';
 
 export function getNumberOrNull(str: string | null | undefined): number | null {
   if (str === null || str === undefined || str.toString().trim() === '') {

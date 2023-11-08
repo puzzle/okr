@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map, ReplaySubject } from 'rxjs';
-import { map, Observable } from 'rxjs';
+import { map, Observable, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { OrganisationService } from '../shared/services/organisation.service';
 
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-application-top-bar',
   templateUrl: './application-top-bar.component.html',

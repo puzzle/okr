@@ -40,7 +40,6 @@ export class TeamManagementComponent implements OnInit {
     let newTeam: Team = { ...this.teamForm.value, activeObjectives: 0 } as Team;
     this.teamService.createTeam(newTeam).subscribe((result) => {
       this.refreshDataService.markDataRefresh();
-      console.log(result);
       this.dialogRef.close(result);
     });
   }

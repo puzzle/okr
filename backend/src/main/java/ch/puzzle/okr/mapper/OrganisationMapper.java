@@ -17,9 +17,10 @@ public class OrganisationMapper {
     }
 
     public OrganisationDto toDto(Organisation organisation) {
-        List<TeamDto> teamDtoList = organisation.getTeams().stream().map(team -> teamMapper.toDto(team, null)).toList();
-        return new OrganisationDto(organisation.getId(), organisation.getVersion(), organisation.getOrgName(),
-                teamDtoList, organisation.getState());
+        List<TeamDto> teamDTOs = organisation.getTeams().stream().map(team -> this.teamMapper.toDto(team, null))
+                .toList();
+        return new OrganisationDto(organisation.getId(), organisation.getVersion(), organisation.getOrgName(), teamDTOs,
+                organisation.getState());
     }
 
     public Organisation toOrganisation(OrganisationDto organisationDto) {

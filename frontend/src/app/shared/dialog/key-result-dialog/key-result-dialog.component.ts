@@ -85,8 +85,9 @@ export class KeyResultDialogComponent implements OnInit {
     }
     if (!this.data.keyResult) {
       this.users$.subscribe((users) => {
+        const loggedInUser = this.getUserName();
         users.forEach((user) => {
-          if (user.firstname + ' ' + user.lastname === this.getUserName()) {
+          if (user.firstname + ' ' + user.lastname === loggedInUser) {
             this.keyResultForm.controls.owner.setValue(user);
           }
         });

@@ -295,27 +295,31 @@ describe('KeyResultDialogComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should be able to set title and description', waitForAsync(async () => {
+    it('should be able to set title and have logged in user as owner', waitForAsync(async () => {
+      const userServiceSpy = jest.spyOn(userService, 'getUsers');
       component.keyResultForm.setValue({
-        owner: testUser,
+        owner: null,
         actionList: [],
         title: 'Title',
         baseline: 0,
-        stretchZone: '',
-        targetZone: '',
-        commitZone: '',
+        stretchZone: null,
+        targetZone: null,
+        commitZone: null,
         unit: 'FTE',
-        description: 'Description',
+        description: null,
         stretchGoal: 0,
         keyResultType: 'metric',
       });
+      component.ngOnInit();
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
       expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
 
       const formObject = component.keyResultForm.value;
       expect(formObject.title).toBe('Title');
-      expect(formObject.description).toBe('Description');
+      expect(formObject.description).toBe(null);
+      expect(userServiceSpy).toHaveBeenCalled();
+      expect(component.keyResultForm.controls.owner.value).toBe(users[1]);
       expect(component.keyResultForm.invalid).toBeFalsy();
     }));
 
@@ -388,14 +392,6 @@ describe('KeyResultDialogComponent', () => {
 
       expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(savedKeyResult);
-    }));
-
-    it('should display logged in user', waitForAsync(() => {
-      const userServiceSpy = jest.spyOn(userService, 'getUsers');
-      component.ngOnInit();
-      fixture.detectChanges();
-      expect(userServiceSpy).toHaveBeenCalled();
-      expect(component.keyResultForm.controls.owner.value).toBe(users[1]);
     }));
   });
 
@@ -527,6 +523,14 @@ describe('KeyResultDialogComponent', () => {
 
       expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(receivedKeyResultMetric);
+    }));
+
+    it('should not display logged in user when editing', waitForAsync(() => {
+      const userServiceSpy = jest.spyOn(userService, 'getUsers');
+      component.ngOnInit();
+      fixture.detectChanges();
+      expect(userServiceSpy).toHaveBeenCalledTimes(0);
+      expect(component.keyResultForm.controls.owner.value).toBe(testUser);
     }));
   });
 

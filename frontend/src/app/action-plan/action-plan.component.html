@@ -11,7 +11,13 @@
     <div class="drag-drop-dots">
       <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
     </div>
-    <input class="action-input" type="text" [value]="action.action" (change)="changeActionText($event, i)" />
+    <input
+      class="action-input"
+      type="text"
+      [value]="action.action"
+      (change)="changeActionText($event, i)"
+      [attr.data-testId]="'actionInput'"
+    />
     <img
       class="icons bin-icon cursor-pointer"
       src="../assets/icons/delete-icon.svg"

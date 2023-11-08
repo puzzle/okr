@@ -32,6 +32,10 @@ export class TeamManagementComponent implements OnInit {
     this.organisations$ = this.organisationService.getOrganisations();
   }
 
+  saveTeam() {
+    console.log(this.teamForm.value);
+  }
+
   isTouchedOrDirty(name: string) {
     return this.teamForm.get(name)?.dirty || this.teamForm.get(name)?.touched;
   }

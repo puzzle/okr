@@ -38,6 +38,21 @@
           </mat-error>
         </div>
       </div>
+      <div class="d-flex justify-content-between p-0" mat-dialog-actions>
+        <span>
+          <button
+            [attr.data-testId]="'submit'"
+            type="submit"
+            (click)="saveTeam()"
+            [disabled]="teamForm.invalid"
+            color="primary"
+            mat-flat-button
+          >
+            Speichern
+          </button>
+          <button mat-button mat-dialog-close color="primary">Abbrechen</button>
+        </span>
+      </div>
     </form>
   </div>
 </div>

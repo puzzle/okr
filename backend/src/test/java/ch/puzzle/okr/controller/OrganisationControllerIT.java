@@ -21,6 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,8 +35,6 @@ class OrganisationControllerIT {
     /* Team test objects */
     private static final Team PUZZLE = Team.Builder.builder().withId(1L).withName("PUZZLE ITC").build();
     private static final Team BBT = Team.Builder.builder().withId(1L).withName("/BBT").build();
-    private static final TeamDto PUZZLE_DTO = new TeamDto(1L, "PUZZLE ITC", 3);
-    private static final TeamDto BBT_DTO = new TeamDto(1L, "/BBT", 7);
 
     /* Organisation test objects */
     private static final Organisation organisationPuzzle = Organisation.Builder.builder().withId(1L)
@@ -46,9 +45,9 @@ class OrganisationControllerIT {
             .withState(OrganisationState.ACTIVE).withTeams(List.of(BBT)).withVersion(1).withOrgName("org_bbt").build();
 
     private static final OrganisationDto organisationPuzzleDto = new OrganisationDto(1L, 1, "org_puzzle",
-            List.of(PUZZLE_DTO), OrganisationState.ACTIVE);
+            OrganisationState.ACTIVE);
 
-    private static final OrganisationDto organisationBBTDto = new OrganisationDto(1L, 1, "org_bbt", List.of(BBT_DTO),
+    private static final OrganisationDto organisationBBTDto = new OrganisationDto(1L, 1, "org_bbt",
             OrganisationState.ACTIVE);
     private static final String URL_ORGANISATION = "/api/v1/organisations";
     @Autowired

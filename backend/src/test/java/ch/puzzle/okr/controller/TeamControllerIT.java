@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.business.TeamBusinessService;
+import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,12 +36,12 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, PUZZLE, 1);
-    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", 0);
+    static TeamDto teamPuzzleDto = new TeamDto(5L, PUZZLE, 1, new ArrayList<>());
+    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", 0, new ArrayList<>());
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private TeamBusinessService teamBusinessService;
+    private TeamAuthorizationService teamAuthorizationService;
     @MockBean
     private TeamMapper teamMapper;
 
@@ -52,7 +53,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(teamList);
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -63,7 +64,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
-        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(teamList);
         mvc.perform(get("/api/v2/teams").contentType(MediaType.APPLICATION_JSON)).andExpectAll();
         BDDMockito.verify(teamMapper).toDto(teamOKR, null);
         BDDMockito.verify(teamMapper).toDto(teamPuzzle, null);
@@ -71,7 +72,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
-        BDDMockito.given(teamBusinessService.getAllTeams()).willReturn(Collections.emptyList());
+        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));

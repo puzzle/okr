@@ -61,11 +61,6 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnCreateShouldThrowIllegalCallerException() {
-        assertThrows(IllegalCallerException.class, () -> validator.validateOnCreate(teamWithIdNull));
-    }
-
-    @Test
     void validateOnUpdateShouldThrowIllegalCallerException() {
         assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
     }

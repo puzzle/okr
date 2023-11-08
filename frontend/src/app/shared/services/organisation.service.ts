@@ -12,4 +12,8 @@ export class OrganisationService {
   getOrganisations(): Observable<Organisation[]> {
     return this.http.get<Organisation[]>('/api/v1/organisations');
   }
+
+  hasAccess(): Observable<boolean> {
+    return this.http.get<boolean>('/api/v1/organisations/access');
+  }
 }

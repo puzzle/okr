@@ -30,13 +30,21 @@ public class OrganisationController {
     }
 
     @Operation(summary = "Get all Organisations", description = "Get all Organisations")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Organisations", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveDto.class)) }),
-            @ApiResponse(responseCode = "401", description = "Not authorized to read all Organisations", content = @Content) })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Organisations", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to read organisations", content = @Content) })
     @GetMapping
     public ResponseEntity<List<OrganisationDto>> getOrganisations() {
         return ResponseEntity.status(HttpStatus.OK).body(
                 organisationAuthorizationService.getEntities().stream().map(this.organisationMapper::toDto).toList());
+    }
+
+    @Operation(summary = "Has access to read organisations", description = "Has access to read organisations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned boolean if user has access", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }) })
+    @GetMapping("/access")
+    public ResponseEntity<Boolean> hasAccess() {
+        return ResponseEntity.ok(organisationAuthorizationService.hasAccess());
     }
 }

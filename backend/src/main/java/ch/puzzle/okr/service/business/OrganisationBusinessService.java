@@ -51,6 +51,6 @@ public class OrganisationBusinessService {
     }
 
     public List<Organisation> getOrganisations() {
-        return this.persistenceService.findAll();
+        return persistenceService.findAll();
     }
 }

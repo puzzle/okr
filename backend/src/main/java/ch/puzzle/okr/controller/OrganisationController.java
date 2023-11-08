@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v2/organisations")
+@RequestMapping("api/v1/organisations")
 public class OrganisationController {
     private final OrganisationAuthorizationService organisationAuthorizationService;
     private final OrganisationMapper organisationMapper;

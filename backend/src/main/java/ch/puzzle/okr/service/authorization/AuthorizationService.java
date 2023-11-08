@@ -10,7 +10,6 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
-import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +25,6 @@ public class AuthorizationService {
     private static final String NOT_AUTHORIZED_TO_READ_OBJECTIVE = "not authorized to read objective";
     private static final String NOT_AUTHORIZED_TO_READ_KEY_RESULT = "not authorized to read key result";
     private static final String NOT_AUTHORIZED_TO_READ_CHECK_IN = "not authorized to read check in";
-    private static final String NOT_AUTHORIZED_TO_READ_ORGANISATION = "not authorized to read organisation";
     private static final String NOT_AUTHORIZED_TO_WRITE_OBJECTIVE = "not authorized to create or update objective";
     private static final String NOT_AUTHORIZED_TO_WRITE_KEY_RESULT = "not authorized to create or update key result";
     private static final String NOT_AUTHORIZED_TO_WRITE_CHECK_IN = "not authorized to create or update check in";
@@ -37,16 +35,14 @@ public class AuthorizationService {
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
-    private final OrganisationPersistenceService organisationPersistenceService;
     private final JwtUserConverter jwtUserConverter;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
             ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtUserConverter jwtUserConverter, OrganisationPersistenceService organisationPersistenceService) {
+            JwtUserConverter jwtUserConverter) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.organisationPersistenceService = organisationPersistenceService;
         this.jwtUserConverter = jwtUserConverter;
     }
 
@@ -98,11 +94,6 @@ public class AuthorizationService {
     public void hasRoleReadByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {
         objectivePersistenceService.findObjectiveByCheckInId(checkInId, authorizationUser,
                 NOT_AUTHORIZED_TO_READ_CHECK_IN);
-    }
-
-    public void hasRoleReadByOrganisation(Long organisationId, AuthorizationUser authorizationUser) {
-        organisationPersistenceService.findOrganisationById(organisationId, authorizationUser,
-                NOT_AUTHORIZED_TO_READ_ORGANISATION);
     }
 
     public void hasRoleCreateOrUpdate(Objective objective, AuthorizationUser authorizationUser) {

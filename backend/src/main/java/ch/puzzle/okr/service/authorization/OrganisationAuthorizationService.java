@@ -1,9 +1,12 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.OrganisationBusinessService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,13 +23,9 @@ public class OrganisationAuthorizationService {
 
     public List<Organisation> getEntities() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        List<Organisation> organisations = organisationBusinessService.getOrganisations();
-        organisations.forEach(organisation -> hasRoleReadById(organisation, authorizationUser));
-        return organisations;
+        if (!authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not authorized to read organisations");
+        }
+        return organisationBusinessService.getOrganisations();
     }
-
-    protected void hasRoleReadById(Organisation entity, AuthorizationUser authorizationUser) {
-        authorizationService.hasRoleReadByOrganisation(entity.getId(), authorizationUser);
-    }
-
 }

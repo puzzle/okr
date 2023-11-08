@@ -1,6 +1,36 @@
 <div mat-dialog-content class="dialog-padding">
   <app-dialog-header [dialogTitle]="'Teamverwaltung'"></app-dialog-header>
   <div class="w-100 d-flex justify-content-between align-items-center">
-    <form class="d-flex flex-column flex-wrap container p-0"></form>
+    <form class="d-flex flex-column flex-wrap container p-0">
+      <div class="d-flex flex-column gap-2 col-12 mb-3">
+        <label class="text-black" for="name">Teamname</label>
+        <textarea
+          [attr.data-testId]="'name'"
+          class="big-dialog-form-field"
+          [ngClass]="formInputCheck(teamForm, 'name')"
+          cdkFocusInitial
+          formControlName="name"
+          id="name"
+        ></textarea>
+        <span *ngIf="isTouchedOrDirty('name')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </span>
+      </div>
+      <div>
+        <label>Organisationen</label>
+        <mat-select formControlName="organisations" multiple>
+          <mat-option *ngFor="let organisation of organisations$ | async" [value]="organisation">{{
+            organisation.orgName
+          }}</mat-option>
+        </mat-select>
+        <div *ngIf="isTouchedOrDirty('organisations')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('organisations')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

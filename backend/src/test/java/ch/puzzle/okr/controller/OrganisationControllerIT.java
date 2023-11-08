@@ -50,7 +50,7 @@ class OrganisationControllerIT {
 
     private static final OrganisationDto organisationBBTDto = new OrganisationDto(1L, 1, "org_bbt", List.of(BBT_DTO),
             OrganisationState.ACTIVE);
-    private static final String URL_ORGANISATION = "/api/v2/organisations";
+    private static final String URL_ORGANISATION = "/api/v1/organisations";
     @Autowired
     private MockMvc mvc;
     @MockBean

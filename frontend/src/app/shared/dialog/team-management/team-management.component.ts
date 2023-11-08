@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-team-management',
   templateUrl: './team-management.component.html',
-  styleUrls: ['./team-management.component.css'],
+  styleUrls: ['./team-management.component.scss'],
 })
 export class TeamManagementComponent implements OnInit {
   teamForm = new FormGroup({

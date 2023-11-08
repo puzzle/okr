@@ -1,5 +1,5 @@
-import {Team} from "./Team";
-import {OrganisationState} from "../enums/OrganisationState";
+import { Team } from './Team';
+import { OrganisationState } from '../enums/OrganisationState';
 
 export interface Organisation {
   id: number;

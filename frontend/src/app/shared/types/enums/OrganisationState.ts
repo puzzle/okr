@@ -1,4 +1,4 @@
 export enum OrganisationState {
   ACTIVE,
-  INACTIVE
+  INACTIVE,
 }

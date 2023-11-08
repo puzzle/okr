@@ -15,7 +15,8 @@ public class TeamAuthorizationService {
     private final TeamBusinessService teamBusinessService;
     private final AuthorizationService authorizationService;
 
-    public TeamAuthorizationService(TeamBusinessService teamBusinessService, AuthorizationService authorizationService) {
+    public TeamAuthorizationService(TeamBusinessService teamBusinessService,
+            AuthorizationService authorizationService) {
         this.teamBusinessService = teamBusinessService;
         this.authorizationService = authorizationService;
     }

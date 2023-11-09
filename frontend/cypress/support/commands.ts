@@ -3,9 +3,36 @@ Cypress.Commands.add('loginAsUser', (user: any) => {
   overviewIsLoaded();
 });
 
-Cypress.Commands.add('getByTestId', (testId: string) => {
-  return cy.get(`*[data-testId=${testId}]`);
+Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, testId: string) => {
+  if (subject) {
+    return cy.wrap(subject).find(`[data-testId=${testId}]`);
+  }
+  return cy.get(`[data-testId=${testId}]`);
 });
+
+Cypress.Commands.add(
+  'fillOutObjective',
+  (
+    objectiveTitle: string,
+    button: string,
+    quarter?: string,
+    description?: string,
+    createKeyResults: boolean = false,
+  ) => {
+    cy.getByTestId('title').first().clear().type(objectiveTitle);
+    cy.getByTestId('description')
+      .first()
+      .clear()
+      .type(description || 'This is the description of the new Objective');
+    if (quarter) {
+      cy.get('select#quarter').select(quarter);
+    }
+    if (createKeyResults) {
+      cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
+    }
+    cy.getByTestId(button).click();
+  },
+);
 
 Cypress.Commands.add('tabForward', () => {
   cy.realPress('Tab');
@@ -53,7 +80,7 @@ Cypress.Commands.add(
   },
 );
 
-function doUntil(selector: string, tab: () => void, limit: number = 100) {
+function doUntil(selector: string, tab: () => void, limit: number = 20) {
   for (let i = 0; i < limit; i++) {
     cy.focused().then((element) => {
       if (element.get(0).matches(selector)) {

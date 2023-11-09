@@ -14,6 +14,11 @@ import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScoringComponent } from '../shared/custom/scoring/scoring.component';
+import { ConfidenceComponent } from '../confidence/confidence.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
@@ -26,7 +31,7 @@ describe('ObjectiveColumnComponent', () => {
     overviewServiceMock.getObjectiveWithKeyresults.mockReset();
 
     TestBed.configureTestingModule({
-      declarations: [ObjectiveComponent, KeyresultComponent],
+      declarations: [ObjectiveComponent, KeyresultComponent, ScoringComponent, ConfidenceComponent, KeyresultComponent],
       imports: [
         MatMenuModule,
         MatCardModule,
@@ -34,6 +39,9 @@ describe('ObjectiveColumnComponent', () => {
         RouterTestingModule,
         MatDialogModule,
         HttpClientTestingModule,
+        MatIconModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
       ],
       providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
     }).compileComponents();
@@ -53,7 +61,7 @@ describe('ObjectiveColumnComponent', () => {
     component.isWritable = true;
     fixture.detectChanges();
 
-    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="objective-menu"]' }));
+    const menu = await loader.getHarness(MatMenuHarness.with({ selector: '[data-testid="three-dot-menu"]' }));
     expect(await menu.isOpen()).toBeFalsy();
     await menu.open();
     expect(await menu.isOpen()).toBeTruthy();

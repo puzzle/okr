@@ -57,13 +57,22 @@ describe('OKR Objective e2e tests', () => {
       cy.url().should('include', 'objective');
     });
 
-    it.only(`update objective`, () => {
+    it(`update objective`, () => {
       const updatedTitle = 'This is an updated title';
       cy.get('.objective').first().getByTestId('three-dot-menu').click();
       cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
       cy.fillOutObjective(updatedTitle, 'GJ 22/23-Q3', 'safe');
       cy.visit('/?quarter=3');
       cy.contains(updatedTitle).first();
+    });
+
+    it(`Duplicate objective`, () => {
+      const duplicatedTitle = 'This is a duplicated objective';
+      cy.get('.objective').first().getByTestId('three-dot-menu').click();
+      cy.get('.mat-mdc-menu-content').contains('Objective duplizieren').click();
+      cy.fillOutObjective(duplicatedTitle, 'GJ 22/23-Q3', 'safe');
+      cy.visit('/?quarter=3');
+      cy.contains(duplicatedTitle).first();
     });
   });
 });

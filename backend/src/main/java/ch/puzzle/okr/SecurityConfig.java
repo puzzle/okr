@@ -36,13 +36,11 @@ public class SecurityConfig {
     }
 
     private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
-        http.headers()
-                .contentSecurityPolicy("default-src 'self';" + "        script-src 'self';"
-                        + "        style-src 'self';" + "        object-src 'none';" + "        base-uri 'self';"
-                        + "        connect-src 'self';" + "        font-src 'self';" + "        frame-src 'self';"
-                        + "        img-src 'self';" + "        manifest-src 'self';" + "        media-src 'self';"
-                        + "        worker-src 'none';")
-                .and()
+        http.headers().contentSecurityPolicy("default-src 'self';" + "        script-src 'self';"
+                + "        style-src 'self' unsafe-inline;" + "        object-src 'none';" + "        base-uri 'self';"
+                + "        connect-src 'self' https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch; https://sso.puzzle.ch;"
+                + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self';"
+                + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';").and()
                 .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer
                         .policy(CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP).and()
                         .crossOriginOpenerPolicy(coopCustomizer -> coopCustomizer

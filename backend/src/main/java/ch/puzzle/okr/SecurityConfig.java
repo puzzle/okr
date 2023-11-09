@@ -31,17 +31,27 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
         logger.debug("*** SecurityHeader reached");
-        return http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN))
+        return http.headers(
+                headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                .referrerPolicy(
+                        referrer ->
+                                referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN))
                 .permissionsPolicy(
-                        permissions -> permissions.policy("accelerometer=(), ambient-light-sensor=(), autoplay=(), "
+                        permissions ->
+                                permissions.policy("accelerometer=(), ambient-light-sensor=(), autoplay=(), "
                                 + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
                                 + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
                                 + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
                                 + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
-                .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
+                .and().xssProtection().block(false)
+                                .and().contentSecurityPolicy(
+                                        "default-src 'self' http://maven.apache.org/ http://www.w3.org/ https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch/ https://sso.puzzle.ch/;" +
+                                                "script-src 'self'; style-src 'self' unsafe-inline; base-uri 'self';"
+                                )
+                                .and().httpStrictTransportSecurity().includeSubDomains(true)
                 .maxAgeInSeconds(31536000)).build();
     }
 }

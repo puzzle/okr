@@ -42,6 +42,7 @@
         (click)="$event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"
         [keyResult]="keyResult"
+        [attr.data-testId]="'keyresult'"
       ></app-keyresult>
     </section>
     <section class="py-3">

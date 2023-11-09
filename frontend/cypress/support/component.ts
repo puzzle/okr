@@ -9,6 +9,17 @@ declare global {
       tabBackward(): void;
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
+      fillOutKeyResult(
+        title: string,
+        unit: string | null,
+        baseline: string | null,
+        stretchGoal: string | null,
+        commitZone: string | null,
+        targetZone: string | null,
+        stretchZone: string | null,
+        owner: string | null,
+        description: string,
+      ): void;
     }
   }
 }

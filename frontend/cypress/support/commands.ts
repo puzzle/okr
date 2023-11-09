@@ -23,6 +23,36 @@ Cypress.Commands.add('tabBackwardUntil', (selector: string, limit?: number) => {
   doUntil(selector, cy.tabBackward, limit);
 });
 
+Cypress.Commands.add(
+  'fillOutKeyResult',
+  (
+    title: string,
+    unit: string | null,
+    baseline: string | null,
+    stretchGoal: string | null,
+    commitZone: string | null,
+    targetZone: string | null,
+    stretchZone: string | null,
+    owner: string | null,
+    description: string,
+  ) => {
+    cy.getByTestId('titleInput').clear().type(title);
+    if (commitZone == null) {
+      cy.getByTestId('unit').select(unit!);
+      cy.getByTestId('baseline').clear().type(baseline!);
+      cy.getByTestId('stretchGoal').clear().type(stretchGoal!);
+    } else {
+      cy.getByTestId('commitZone').clear().type(commitZone!);
+      cy.getByTestId('targetZone').clear().type(targetZone!);
+      cy.getByTestId('stretchZone').clear().type(stretchZone!);
+    }
+    if (owner != null) {
+      cy.getByTestId('ownerInput').clear().type(owner).type('{downarrow}').type('{enter}');
+    }
+    cy.getByTestId('descriptionInput').clear().type(description);
+  },
+);
+
 function doUntil(selector: string, tab: () => void, limit: number = 100) {
   for (let i = 0; i < limit; i++) {
     cy.focused().then((element) => {

@@ -13,7 +13,7 @@ describe('OKR Objective e2e tests', () => {
     ].forEach(([objectiveTitle, buttonTestId, icon]) => {
       it(`Create objective, no keyresults`, () => {
         cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId);
+        cy.fillOutObjective(objectiveTitle, buttonTestId, '3');
         cy.visit('/?quarter=3');
         const objective = cy.contains(objectiveTitle).first().parentsUntil('#objective-column').last();
         objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/${icon}`);
@@ -26,15 +26,21 @@ describe('OKR Objective e2e tests', () => {
     ].forEach(([objectiveTitle, buttonTestId, icon]) => {
       it(`Create objective, no keyresults`, () => {
         cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', buttonTestId, true);
+        cy.fillOutObjective(objectiveTitle, buttonTestId, '3', '', true);
         cy.contains('Key Result erfassen');
       });
+    });
+
+    it(`Create objective, should display error message`, () => {
+      cy.getByTestId('add-objective').first().click();
+      cy.getByTestId('description').first().clear().type('description');
+      cy.contains('Dieses Feld muss ausgefüllt sein');
     });
 
     it(`Create objective, cancel`, () => {
       const objectiveTitle = 'this is a canceled objective';
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective(objectiveTitle, 'GJ 22/23-Q3', 'cancel');
+      cy.fillOutObjective(objectiveTitle, 'cancel', '3');
       cy.visit('/?quarter=3');
       cy.contains(objectiveTitle).should('not.exist');
     });
@@ -61,8 +67,7 @@ describe('OKR Objective e2e tests', () => {
       const updatedTitle = 'This is an updated title';
       cy.get('.objective').first().getByTestId('three-dot-menu').click();
       cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();
-      cy.fillOutObjective(updatedTitle, 'GJ 22/23-Q3', 'safe');
-      cy.visit('/?quarter=3');
+      cy.fillOutObjective(updatedTitle, 'safe');
       cy.contains(updatedTitle).first();
     });
 
@@ -70,8 +75,7 @@ describe('OKR Objective e2e tests', () => {
       const duplicatedTitle = 'This is a duplicated objective';
       cy.get('.objective').first().getByTestId('three-dot-menu').click();
       cy.get('.mat-mdc-menu-content').contains('Objective duplizieren').click();
-      cy.fillOutObjective(duplicatedTitle, 'GJ 22/23-Q3', 'safe');
-      cy.visit('/?quarter=3');
+      cy.fillOutObjective(duplicatedTitle, 'safe');
       cy.contains(duplicatedTitle).first();
     });
   });

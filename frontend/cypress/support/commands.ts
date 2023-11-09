@@ -12,11 +12,21 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
 
 Cypress.Commands.add(
   'fillOutObjective',
-  (objectiveTitle: string, quarter: string, button: string, createKeyResults: boolean = false) => {
+  (
+    objectiveTitle: string,
+    button: string,
+    quarter?: string,
+    description?: string,
+    createKeyResults: boolean = false,
+  ) => {
     cy.getByTestId('title').first().clear().type(objectiveTitle);
-    cy.getByTestId('description').first().clear().type('This is the description of the new Objective');
-    cy.get('select#quarter').select(quarter);
-
+    cy.getByTestId('description')
+      .first()
+      .clear()
+      .type(description || 'This is the description of the new Objective');
+    if (quarter) {
+      cy.get('select#quarter').select(quarter);
+    }
     if (createKeyResults) {
       cy.getByTestId('keyResult-checkbox').find("[type='checkbox']").check();
     }

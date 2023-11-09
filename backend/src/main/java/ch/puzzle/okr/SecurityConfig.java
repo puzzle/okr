@@ -20,7 +20,22 @@ public class SecurityConfig {
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        setHeaders(http);
         logger.debug("*** apiSecurityFilterChain reached");
+        return http.antMatcher("/api/**")
+                .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt).build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
+        logger.debug("*** SecurityHeader reached");
+        return setHeaders(http).build();
+    }
+
+    private HttpSecurity setHeaders(HttpSecurity http) throws Exception {
         http.headers()
                 .contentSecurityPolicy("default-src 'self';" + "        script-src 'self';"
                         + "        style-src 'self';" + "        object-src 'none';" + "        base-uri 'self';"
@@ -36,16 +51,6 @@ public class SecurityConfig {
                                         CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN)
                                         .and().addHeaderWriter(new StaticHeadersWriter(
                                                 "X-Permitted-Cross-Domain-Policies", "none")))));
-        return http.antMatcher("/api/**")
-                .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt).build();
-    }
-
-    @Bean
-    @Order(2)
-    public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
-        logger.debug("*** SecurityHeader reached");
         return http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
                 .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
                 .permissionsPolicy(
@@ -57,6 +62,6 @@ public class SecurityConfig {
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
                 .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
-                .maxAgeInSeconds(31536000)).build();
+                .maxAgeInSeconds(31536000));
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.*;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -21,6 +21,21 @@ public class SecurityConfig {
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         logger.debug("*** apiSecurityFilterChain reached");
+        http.headers()
+                .contentSecurityPolicy("default-src 'self';" + "        script-src 'self';"
+                        + "        style-src 'self';" + "        object-src 'none';" + "        base-uri 'self';"
+                        + "        connect-src 'self';" + "        font-src 'self';" + "        frame-src 'self';"
+                        + "        img-src 'self';" + "        manifest-src 'self';" + "        media-src 'self';"
+                        + "        worker-src 'none';")
+                .and()
+                .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer
+                        .policy(CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP).and()
+                        .crossOriginOpenerPolicy(coopCustomizer -> coopCustomizer
+                                .policy(CrossOriginOpenerPolicyHeaderWriter.CrossOriginOpenerPolicy.SAME_ORIGIN).and()
+                                .crossOriginResourcePolicy(corpCustomizer -> corpCustomizer.policy(
+                                        CrossOriginResourcePolicyHeaderWriter.CrossOriginResourcePolicy.SAME_ORIGIN)
+                                        .and().addHeaderWriter(new StaticHeadersWriter(
+                                                "X-Permitted-Cross-Domain-Policies", "none")))));
         return http.antMatcher("/api/**")
                 .authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
@@ -31,27 +46,17 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
         logger.debug("*** SecurityHeader reached");
-        return http.headers(
-                headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                .referrerPolicy(
-                        referrer ->
-                                referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN))
+        return http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::deny)
+                .referrerPolicy(referrer -> referrer.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
                 .permissionsPolicy(
-                        permissions ->
-                                permissions.policy("accelerometer=(), ambient-light-sensor=(), autoplay=(), "
+                        permissions -> permissions.policy("accelerometer=(), ambient-light-sensor=(), autoplay=(), "
                                 + "battery=(), camera=(), cross-origin-isolated=(), display-capture=(), document-domain=(), encrypted-media=(), "
                                 + "execution-while-not-rendered=(), execution-while-out-of-viewport=(), fullscreen=(),"
                                 + " geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), "
                                 + "midi=(), navigation-override=(), payment=(), picture-in-picture=(),"
                                 + " publickey-credentials-get=(), screen-wake-lock=(), sync-xhr=(self), "
                                 + "usb=(), web-share=(), xr-spatial-tracking=()"))
-                .and().xssProtection().block(false)
-                                .and().contentSecurityPolicy(
-                                        "default-src 'self' http://maven.apache.org/ http://www.w3.org/ https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch/ https://sso.puzzle.ch/;" +
-                                                "script-src 'self'; style-src 'self' unsafe-inline; base-uri 'self';"
-                                )
-                                .and().httpStrictTransportSecurity().includeSubDomains(true)
+                .and().xssProtection().block(false).and().httpStrictTransportSecurity().includeSubDomains(true)
                 .maxAgeInSeconds(31536000)).build();
     }
 }

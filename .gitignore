@@ -29,3 +29,4 @@ backend/backend.iml
 sonar-project.properties
 .scannerwork
 /frontend/cypress/downloads/
+/frontend/cypress/screenshots/

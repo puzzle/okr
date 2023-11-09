@@ -58,12 +58,6 @@ describe('OKR Objective e2e tests', () => {
     });
 
     it(`update objective`, () => {
-      cy.getByTestId('objective').first().focus();
-      cy.realPress('Enter');
-      cy.url().should('include', 'objective');
-    });
-
-    it(`update objective`, () => {
       const updatedTitle = 'This is an updated title';
       cy.get('.objective').first().getByTestId('three-dot-menu').click();
       cy.get('.mat-mdc-menu-content').contains('Objective bearbeiten').click();

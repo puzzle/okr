@@ -5,10 +5,11 @@ describe('OKR Overview', () => {
     cy.loginAsUser(users.gl);
   });
 
-  xit('Create new metric KeyResult', () => {
-    cy.getByTestId('add-keyResult').first().click();
+  it('Create new metric KeyResult', () => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
     checkForDialogText();
 
     cy.fillOutKeyResult(
@@ -24,50 +25,27 @@ describe('OKR Overview', () => {
     );
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('submit').click();
-    cy.getByTestId('objective').first().get('app-keyresult:last').click();
 
-    cy.contains('This is a metric KeyResult');
+    cy.getByTestId('keyresult').contains('I am a metric keyresult').click();
+
+    cy.contains('I am a metric keyresult');
     cy.contains('Metrisch');
     cy.contains('Paco Eggimann');
-    cy.contains('21');
-    cy.contains('21');
+    cy.contains('21%');
+    cy.contains('52%');
     cy.contains('Stretch');
     cy.contains('Confidence');
     cy.contains('Beschrieb');
     cy.contains('This is my description');
+    cy.contains('Check-in erfassen');
+    cy.contains('Key Result bearbeiten');
   });
 
-  xit('Create new ordinal KeyResult', () => {
-    // cy.get('app-keyresult').should('have.length', 25);
-    cy.getByTestId('add-keyResult').first().click();
-    cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Key Result erfassen');
-    checkForDialogText();
-    cy.contains('Jaya Norris');
-    cy.getByTestId('titleInput').type('Title');
+  it('Create new ordinal KeyResult', () => {
+    createOrdinalKeyResult(null, 'Pac');
 
-    cy.getByTestId('ordinalTab').click();
-
-    cy.fillOutKeyResult(
-      'I am a ordinal keyresult',
-      null,
-      null,
-      null,
-      'My commit zone',
-      'My target zone',
-      'My stretch zone',
-      'Pac',
-      'This is my description',
-    );
-
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('submit').click();
-
-    // cy.get('app-keyresult').should('have.length', 26);
-
-    cy.getByTestId('objective').first().get('app-keyresult:last').click();
-
-    cy.contains('This is a ordinal keyresult');
+    cy.getByTestId('keyresult').contains('I am a ordinal keyresult').click();
+    cy.contains('I am a ordinal keyresult');
     cy.contains('Ordinal');
     cy.contains('Paco Eggimann');
     cy.contains('Fail');
@@ -80,12 +58,15 @@ describe('OKR Overview', () => {
     cy.contains('Confidence');
     cy.contains('Beschrieb');
     cy.contains('This is my description');
+    cy.contains('Check-in erfassen');
+    cy.contains('Key Result bearbeiten');
   });
 
-  xit('Create new KeyResult and Save and New', () => {
-    cy.getByTestId('add-keyResult').first().click();
+  it('Create new KeyResult and Save and New', () => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
     checkForDialogText();
 
     cy.fillOutKeyResult(
@@ -96,36 +77,39 @@ describe('OKR Overview', () => {
       null,
       null,
       null,
-      'Pac',
+      null,
       'This is my description when creating and then open a new',
     );
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('saveAndNew').click();
 
-    cy.contains('Key Result erfassen');
     cy.getByTestId('submit').should('be.disabled');
+    cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
     checkForDialogText();
   });
 
-  xit('Create and edit KeyResult with Action Plan', () => {
-    cy.getByTestId('add-keyResult').first().click();
+  it('Create and edit KeyResult with Action Plan', () => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
     cy.getByTestId('titleInput').type('Title');
 
     cy.getByTestId('ordinalTab').click();
     cy.fillOutKeyResult(
-      'I am a ordinal keyresult',
+      'This is a keyresult with an action plan',
       null,
       null,
       null,
       'My commit zone',
       'My target zone',
       'My stretch zone',
-      'Pac',
+      null,
       'This is my description',
     );
 
     cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('actionInput').should('have.length', 3);
 
     cy.getByTestId('actionInput').first().type('A new car');
     cy.getByTestId('actionInput').last().type('A new house');
@@ -134,102 +118,105 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('actionInput').first().should('have.value', 'A new car');
     cy.getByTestId('actionInput').last().should('have.value', 'A new company');
+    cy.getByTestId('actionInput').should('have.length', 4);
 
     cy.getByTestId('submit').click();
 
-    // KR detail should contain action plan
+    cy.getByTestId('keyresult').contains('This is a keyresult with an action plan').click();
 
-    // Edit should change row on kr detail
+    cy.contains('This is a keyresult with an action plan');
+    cy.contains('Ordinal');
+    cy.contains('My commit zone');
+    cy.contains('My target zone');
+    cy.contains('My stretch zone');
+    cy.contains('A new car');
+    cy.contains('A new house');
+    cy.contains('A new company');
+    cy.getByTestId('edit-keyResult').click();
+
+    cy.getByTestId('actionInput').should('have.length', 3);
   });
 
-  xit('Edit a KeyResult without type change', () => {
-    cy.getByTestId('objective').first().get('app-keyresult:first').click();
+  it('Edit a KeyResult without type change', () => {
+    createOrdinalKeyResult('We want not to change keyresult title');
+
+    cy.getByTestId('keyresult').contains('We want not to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
     cy.getByTestId('submit').should('not.be.disabled');
 
     cy.contains('Key Result bearbeiten');
-    checkForDialogText();
 
-    cy.getByTestId('titleInput').should(
-      'have.value',
-      'Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.',
-    );
-    cy.getByTestId('unit').should('have.value', 'PERCENT');
-    cy.getByTestId('baseline').should('have.value', '21');
-    cy.getByTestId('stretchGoal').should('have.value', '15052');
-    cy.getByTestId('ownerInput').should('have.value', 'Paco Eggimann');
-    cy.getByTestId('descriptionInput').should(
-      'have.value',
-      '' +
-        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-    );
+    cy.getByTestId('titleInput').should('have.value', 'We want not to change keyresult title');
+    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
+    cy.getByTestId('targetZone').should('have.value', 'My target zone');
+    cy.getByTestId('stretchZone').should('have.value', 'My stretch zone');
+    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
+    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
 
     cy.fillOutKeyResult(
       'This is the new title',
-      'CHF',
-      '22',
-      '33',
       null,
       null,
       null,
-      'Pac',
+      'New commit',
+      'New target',
+      'New stretch',
+      null,
       'This is my new description',
     );
     cy.getByTestId('submit').click();
 
     cy.contains('This is the new title');
-    cy.contains('22');
-    cy.contains('33');
-    cy.contains('Paco Eggimann');
+    cy.contains('New commit');
+    cy.contains('New target');
+    cy.contains('New stretch');
+    cy.contains('Jaya Norris');
     cy.contains('This is my new description');
   });
 
-  xit('Edit a KeyResult with type change', () => {
-    cy.getByTestId('objective').first().get('app-keyresult:first').click();
+  it('Edit a KeyResult with type change', () => {
+    createOrdinalKeyResult('Here we want to change keyresult title');
+
+    cy.getByTestId('keyresult').contains('Here we want to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
     cy.getByTestId('submit').should('not.be.disabled');
 
     cy.contains('Key Result bearbeiten');
 
-    checkForDialogText();
+    cy.getByTestId('titleInput').should('have.value', 'Here we want to change keyresult title');
+    cy.getByTestId('commitZone').should('have.value', 'My commit zone');
+    cy.getByTestId('targetZone').should('have.value', 'My target zone');
+    cy.getByTestId('stretchZone').should('have.value', 'My stretch zone');
+    cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
+    cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
 
-    cy.getByTestId('titleInput').should(
-      'have.value',
-      'Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.',
-    );
-    cy.getByTestId('unit').should('have.value', 'PERCENT');
-    cy.getByTestId('baseline').should('have.value', '21');
-    cy.getByTestId('stretchGoal').should('have.value', '15052');
-    cy.getByTestId('ownerInput').should('have.value', 'Paco Eggimann');
-    cy.getByTestId('descriptionInput').should(
-      'have.value',
-      '' +
-        'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lore',
-    );
+    cy.getByTestId('metricTab').click();
 
-    cy.getByTestId('titleInput').clear();
-    cy.getByTestId('titleInput').type('This is the new title');
-    cy.getByTestId('ordinalTab').click();
-    cy.getByTestId('commitZone').type('My commit zone');
-    cy.getByTestId('targetZone').type('My target zone');
-    cy.getByTestId('stretchZone').type('My stretch zone');
-    cy.getByTestId('ownerInput').clear();
-    cy.getByTestId('ownerInput').type('Pac').type('{downarrow}').type('{enter}');
-    cy.getByTestId('descriptionInput').clear();
-    cy.getByTestId('descriptionInput').type('This is my new description');
+    cy.fillOutKeyResult(
+      'This is my new title for the new metric keyresult',
+      'PERCENT',
+      '21',
+      '56',
+      null,
+      null,
+      null,
+      null,
+      'This is my new description',
+    );
 
     cy.getByTestId('submit').click();
+    cy.getByTestId('keyresult').contains('This is my new title for the new metric keyresult').first().click();
 
-    cy.contains('This is the new title');
-    cy.contains('My commit zone');
-    cy.contains('My target zone');
-    cy.contains('My stretch zone');
-    cy.contains('Paco Eggimann');
+    cy.contains('This is my new title for the new metric keyresult');
+    cy.contains('21%');
+    cy.contains('56%');
+    cy.contains('Metrisch');
+    cy.contains('Jaya Norris');
     cy.contains('This is my new description');
   });
 
-  xit('Check validation in keyresult dialog', () => {
-    cy.getByTestId('add-keyResult').first().click();
+  it('Check validation in keyresult dialog', () => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
     checkForDialogText();
@@ -242,7 +229,7 @@ describe('OKR Overview', () => {
       null,
       null,
       null,
-      'Pac',
+      null,
       'This is my description',
     );
     cy.getByTestId('submit').should('not.be.disabled');
@@ -305,21 +292,46 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('not.be.disabled');
   });
 
-  xit('Delete existing keyresult', () => {
-    cy.get('app-keyresult').should('have.length', 30);
+  it('Delete existing keyresult', () => {
+    createOrdinalKeyResult('A keyresult to delete');
 
-    cy.getByTestId('objective').first().get('app-keyresult:first').click();
+    cy.getByTestId('keyresult').contains('A keyresult to delete').last().click();
+
     cy.getByTestId('edit-keyResult').click();
-
-    checkForDialogText();
 
     cy.getByTestId('delete').click();
     cy.getByTestId('confirmYes').click();
 
     cy.contains('Puzzle ITC');
-    cy.get('app-keyresult').should('have.length', 29);
+    cy.get('A keyresult to delete').should('not.exist');
   });
 });
+
+function createOrdinalKeyResult(title: string | null = null, owner: string | null = null) {
+  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+  cy.getByTestId('submit').should('be.disabled');
+  cy.contains('Key Result erfassen');
+  cy.contains('Jaya Norris');
+  checkForDialogText();
+  cy.getByTestId('titleInput').type('Title');
+
+  cy.getByTestId('ordinalTab').click();
+
+  cy.fillOutKeyResult(
+    title == null ? 'I am a ordinal keyresult' : title,
+    null,
+    null,
+    null,
+    'My commit zone',
+    'My target zone',
+    'My stretch zone',
+    owner,
+    'This is my description',
+  );
+
+  cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
+}
 
 function checkForDialogText() {
   cy.contains('Titel');

@@ -33,7 +33,7 @@ Cypress.Commands.add(
     commitZone: string | null,
     targetZone: string | null,
     stretchZone: string | null,
-    owner: string,
+    owner: string | null,
     description: string,
   ) => {
     cy.getByTestId('titleInput').clear().type(title);
@@ -46,7 +46,9 @@ Cypress.Commands.add(
       cy.getByTestId('targetZone').clear().type(targetZone!);
       cy.getByTestId('stretchZone').clear().type(stretchZone!);
     }
-    cy.getByTestId('ownerInput').clear().type(owner).type('{downarrow}').type('{enter}');
+    if (owner != null) {
+      cy.getByTestId('ownerInput').clear().type(owner).type('{downarrow}').type('{enter}');
+    }
     cy.getByTestId('descriptionInput').clear().type(description);
   },
 );

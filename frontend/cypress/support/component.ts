@@ -17,7 +17,7 @@ declare global {
         commitZone: string | null,
         targetZone: string | null,
         stretchZone: string | null,
-        owner: string,
+        owner: string | null,
         description: string,
       ): void;
     }

@@ -9,7 +9,12 @@
 >
   <div class="action-point-item" *ngFor="let action of (control | async)!; index as i" cdkDrag>
     <div class="drag-drop-dots">
-      <img class="icons" src="../assets/icons/drag_indicator.svg" alt="Drag indicator" />
+      <img
+        class="icons"
+        src="../assets/icons/drag_indicator.svg"
+        alt="Drag indicator"
+        [attr.data-testId]="'dragIcon'"
+      />
     </div>
     <input
       class="action-input"

@@ -9,9 +9,9 @@ declare global {
       tabBackward(): void;
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
-      fillOrdinalKeyresult(title: string | null, owner: string | null): void;
-      fillMetricKeyResult(title: string | null): void;
-      submitKeyresultForm(): void;
+      createOrdinalKeyresult(title: string | null, owner: string | null): void;
+      createMetricKeyresult(title: string | null): void;
+      checkForDialogText(): void;
       fillOutObjective(
         objectiveTitle: string,
         button: string,

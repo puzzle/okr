@@ -100,7 +100,7 @@ Cypress.Commands.add('tabBackwardUntil', (selector: string, limit?: number) => {
   doUntil(selector, cy.tabBackward, limit);
 });
 
-Cypress.Commands.add('fillOrdinalKeyresult', (title: string | null = null, owner: string | null = null) => {
+Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, owner: string | null = null) => {
   cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
   cy.getByTestId('submit').should('be.disabled');
   cy.contains('Key Result erfassen');
@@ -133,9 +133,10 @@ Cypress.Commands.add('fillOrdinalKeyresult', (title: string | null = null, owner
   );
 
   cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
 });
 
-Cypress.Commands.add('fillMetricKeyResult', (title: string | null) => {
+Cypress.Commands.add('createMetricKeyresult', (title: string | null) => {
   cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
   cy.getByTestId('submit').should('be.disabled');
   cy.contains('Key Result erfassen');
@@ -165,10 +166,22 @@ Cypress.Commands.add('fillMetricKeyResult', (title: string | null) => {
     'This is my description',
   );
   cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
 });
 
-Cypress.Commands.add('submitKeyresultForm', () => {
-  cy.getByTestId('submit').click();
+Cypress.Commands.add('checkForDialogText', () => {
+  cy.contains('Titel');
+  cy.contains('Metrisch');
+  cy.contains('Ordinal');
+  cy.contains('Einheit');
+  cy.contains('Baseline');
+  cy.contains('Stretch Goal');
+  cy.contains('Owner');
+  cy.contains('Beschreibung (optional)');
+  cy.contains('Action Plan (optional)');
+  cy.contains('Weitere Action hinzufügen');
+  cy.contains('Speichern');
+  cy.contains('Abbrechen');
 });
 
 Cypress.Commands.add(

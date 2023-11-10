@@ -2,7 +2,7 @@ import { TeamManagementComponent } from './team-management.component';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -38,7 +38,16 @@ describe('TeamManagementComponent', () => {
         RouterTestingModule,
       ],
       declarations: [TeamManagementComponent, DialogHeaderComponent],
-      providers: [{ provide: MatDialogRef, useValue: dialogMock }],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: dialogMock,
+        },
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: null,
+        },
+      ],
     });
     fixture = TestBed.createComponent(TeamManagementComponent);
     component = fixture.componentInstance;

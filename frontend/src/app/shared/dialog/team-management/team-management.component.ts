@@ -37,9 +37,7 @@ export class TeamManagementComponent implements OnInit {
   ngOnInit(): void {
     this.organisations$ = this.organisationService.getOrganisations();
     if (this.data) {
-      console.log(this.data.team.id);
       this.organisationService.getOrganisationsByTeamId(this.data.team.id).subscribe((result) => {
-        console.log(result);
         this.teamForm.setValue({
           name: this.data.team.name,
           organisations: result,

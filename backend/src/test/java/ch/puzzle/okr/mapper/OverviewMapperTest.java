@@ -22,7 +22,7 @@ class OverviewMapperTest {
     @Test
     void toDtoShouldReturnEmptyListWhenNoTeamFound() {
         List<Overview> overviews = List.of();
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertTrue(overviewDtos.isEmpty());
     }
@@ -32,7 +32,7 @@ class OverviewMapperTest {
         List<Overview> overviews = List
                 .of(Overview.Builder.builder().withOverviewId(OverviewId.Builder.builder().withTeamId(2L).build())
                         .withTeamName("Puzzle ITC").build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(0, overviewDtos.get(0).objectives().size());
@@ -43,7 +43,7 @@ class OverviewMapperTest {
         List<Overview> overviews = List.of(Overview.Builder.builder()
                 .withOverviewId(OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(1, overviewDtos.get(0).objectives().size());
@@ -57,7 +57,7 @@ class OverviewMapperTest {
                         OverviewId.Builder.builder().withObjectiveId(1L).withTeamId(2L).withKeyResultId(3L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(1, overviewDtos.get(0).objectives().size());
@@ -71,7 +71,7 @@ class OverviewMapperTest {
                         .withCheckInId(4L).build())
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType(KEY_RESULT_TYPE_METRIC).withCheckInValue(27.5).withConfidence(5).build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(1, overviewDtos.get(0).objectives().size());
@@ -91,7 +91,7 @@ class OverviewMapperTest {
                                 .withKeyResultId(5L).build())
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 5")
                         .withKeyResultType(KEY_RESULT_TYPE_METRIC).build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(1, overviewDtos.get(0).objectives().size());
@@ -113,7 +113,7 @@ class OverviewMapperTest {
                         .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 6")
                         .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).withCommitZone("commit").withTargetZone("target")
                         .withStretchZone("stretch").withCheckInZone("checkIn").build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(1, overviewDtos.size());
         assertEquals(2, overviewDtos.get(0).objectives().size());
@@ -154,7 +154,7 @@ class OverviewMapperTest {
                                 .withKeyResultId(8L).build())
                         .withTeamName("/BBT").withObjectiveTitle("Objective 5").withKeyResultTitle("Key Result 8")
                         .withKeyResultType(KEY_RESULT_TYPE_ORDINAL).build());
-        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews);
+        List<OverviewDto> overviewDtos = overviewMapper.toDto(overviews, true);
 
         assertEquals(2, overviewDtos.size());
         assertEquals(1, overviewDtos.get(0).objectives().size());
@@ -172,7 +172,7 @@ class OverviewMapperTest {
                 .withKeyResultType("unknown").withCheckInZone("TARGET").build());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> overviewMapper.toDto(overviews));
+                () -> overviewMapper.toDto(overviews, true));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertEquals("The key result type unknown can not be converted to a metric or ordinal DTO",

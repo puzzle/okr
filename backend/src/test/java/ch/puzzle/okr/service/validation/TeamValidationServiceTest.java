@@ -61,11 +61,6 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnUpdateShouldThrowIllegalCallerException() {
-        assertThrows(IllegalCallerException.class, () -> validator.validateOnUpdate(null, teamWithIdNull));
-    }
-
-    @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidTeamId() {
         validator.validateOnGet(1L);
 

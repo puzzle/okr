@@ -63,7 +63,13 @@
     </section>
   </div>
 </div>
-<mat-menu class="pt-2 pb-2" #objectiveMenu="matMenu" xPosition="before" yPosition="below">
+<mat-menu
+  class="pt-2 pb-2"
+  #objectiveMenu="matMenu"
+  xPosition="before"
+  yPosition="below"
+  [class]="'objective-three-dot-menu'"
+>
   <button
     mat-menu-item
     class="objective-menu-option"

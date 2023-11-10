@@ -16,5 +16,6 @@ describe('Scoring component e2e tests', () => {
     cy.getByTestId('changeInfo').click().type('Testveränderungen');
     cy.getByTestId('initiatives').click().type('Testmassnahmen');
     cy.getByTestId('create-checkin').click();
+    const failZone = cy.getByTestId('fail-container').invoke('width').should('be.greaterThan', 1);
   });
 });

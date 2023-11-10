@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { formInputCheck } from '../../common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { RefreshDataService } from '../../services/refresh-data.service';
+import { TeamMin } from '../../types/model/TeamMin';
 
 @Component({
   selector: 'app-team-management',
@@ -30,10 +31,21 @@ export class TeamManagementComponent implements OnInit {
     private organisationService: OrganisationService,
     private teamService: TeamService,
     private refreshDataService: RefreshDataService,
+    @Inject(MAT_DIALOG_DATA) public data: { team: TeamMin },
   ) {}
 
   ngOnInit(): void {
     this.organisations$ = this.organisationService.getOrganisations();
+    if (this.data) {
+      console.log(this.data.team.id);
+      this.organisationService.getOrganisationsByTeamId(this.data.team.id).subscribe((result) => {
+        console.log(result);
+        this.teamForm.setValue({
+          name: this.data.team.name,
+          organisations: result,
+        });
+      });
+    }
   }
 
   saveTeam() {
@@ -51,5 +63,9 @@ export class TeamManagementComponent implements OnInit {
   getErrorKeysOfFormField(name: string) {
     const errors = this.teamForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
+  }
+
+  compareWithFunc(a: Organisation, b: Organisation) {
+    return a.orgName === b.orgName;
   }
 }

@@ -5,6 +5,8 @@ import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.repository.OrganisationRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrganisationPersistenceService extends PersistenceBase<Organisation, Long, OrganisationRepository> {
 
@@ -28,5 +30,9 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
         Organisation orgInactive = getRepository().findByOrgName(orgName);
         orgInactive.setState(OrganisationState.INACTIVE);
         getRepository().save(orgInactive);
+    }
+
+    public List<Organisation> getOrganisationsByTeamId(Long teamId) {
+        return getRepository().findOrganisationsByTeamId(teamId);
     }
 }

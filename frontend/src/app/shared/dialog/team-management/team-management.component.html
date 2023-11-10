@@ -21,11 +21,12 @@
       <div class="d-flex flex-column gap-2 col-12 mb-3">
         <label class="text-black" for="organisations">Organisationen</label>
         <mat-select
-          formControlName="organisations"
+          [formControl]="teamForm.controls.organisations"
           multiple
           id="organisations"
           class="d-flex flex-column input-fields p-2"
           [ngClass]="formInputCheck(teamForm, 'organisations')"
+          [compareWith]="compareWithFunc"
         >
           <mat-option *ngFor="let organisation of organisations$ | async" [value]="organisation">{{
             organisation.orgName

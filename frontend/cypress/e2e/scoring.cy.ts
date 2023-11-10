@@ -5,5 +5,16 @@ describe('Scoring component e2e tests', () => {
     cy.loginAsUser(users.gl);
   });
 
-  it('Creates metric checkin', () => {});
+  it('Creates metric checkin', () => {
+    cy.createMetricKeyresult('Metric scoring keyresult');
+    cy.getByTestId('keyresult').contains('Metric scoring keyresult').last().click();
+    cy.getByTestId('add-check-in').click();
+    cy.getByTestId('key-result-metric-value').click().type('30');
+    cy.tabForward();
+    cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
+    cy.getByTestId('continue-checkin').click();
+    cy.getByTestId('changeInfo').click().type('Testveränderungen');
+    cy.getByTestId('initiatives').click().type('Testmassnahmen');
+    cy.getByTestId('create-checkin').click();
+  });
 });

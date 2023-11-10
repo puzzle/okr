@@ -48,10 +48,28 @@
       color="primary"
       [attr.data-testId]="'submit-check-in'"
     >
-      <span *ngIf="checkIn.id">Speichern</span>
-      <span *ngIf="!checkIn.id">Check-in erfassen</span>
+      <span [attr.data-testId]="'save-checkin'" *ngIf="checkIn.id">Speichern</span>
+      <span [attr.data-testId]="'create-checkin'" *ngIf="!checkIn.id">Check-in erfassen</span>
     </button>
-    <button mat-button color="primary" *ngIf="!continued" mat-dialog-close class="ms-2">Abbrechen</button>
-    <button mat-button color="primary" *ngIf="continued" (click)="continued = false" class="ms-2">Zurück</button>
+    <button
+      [attr.data-testId]="'cancel-checkin'"
+      mat-button
+      color="primary"
+      *ngIf="!continued"
+      mat-dialog-close
+      class="ms-2"
+    >
+      Abbrechen
+    </button>
+    <button
+      [attr.data-testId]="'back-in-checkin'"
+      mat-button
+      color="primary"
+      *ngIf="continued"
+      (click)="continued = false"
+      class="ms-2"
+    >
+      Zurück
+    </button>
   </div>
 </div>

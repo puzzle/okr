@@ -64,7 +64,12 @@
   </div>
 </div>
 <mat-menu class="pt-2 pb-2" #objectiveMenu="matMenu" xPosition="before" yPosition="below">
-  <button mat-menu-item class="menu-option" (click)="redirect(menuEntry)" *ngFor="let menuEntry of menuEntries">
+  <button
+    mat-menu-item
+    class="objective-menu-option"
+    (click)="redirect(menuEntry)"
+    *ngFor="let menuEntry of menuEntries"
+  >
     {{ menuEntry.displayName }}
   </button>
 </mat-menu>

@@ -2,6 +2,8 @@
 
 <app-application-top-bar></app-application-top-bar>
 <app-application-banner id="bannerComponent"></app-application-banner>
+<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="help"></mat-icon>
+
 <div class="overviewContainer bg-grey mt-header-height">
   <app-team
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"

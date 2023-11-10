@@ -70,15 +70,12 @@ export class TeamComponent {
   }
 
   openEditTeamDialog(team: TeamMin) {
-    const dialogRef = this.dialog.open(TeamManagementComponent, {
+    this.dialog.open(TeamManagementComponent, {
       width: '45em',
       height: 'auto',
       data: {
         team: team,
       },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
     });
   }
 }

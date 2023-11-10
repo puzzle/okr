@@ -1,19 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import {
-  catchError,
-  combineAll,
-  combineLatest,
-  combineLatestAll,
-  EMPTY,
-  filter,
-  forkJoin,
-  Observable,
-  ReplaySubject,
-  Subject,
-  take,
-  takeUntil,
-} from 'rxjs';
+import { catchError, combineLatest, EMPTY, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -29,6 +16,7 @@ export class OverviewComponent implements OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
+  hasWriteAllAccess: boolean = false;
 
   constructor(
     private overviewService: OverviewService,
@@ -71,7 +59,10 @@ export class OverviewComponent implements OnDestroy {
           return EMPTY;
         }),
       )
-      .subscribe((overviews) => this.overviewEntities$.next(overviews));
+      .subscribe((overviews) => {
+        this.overviewEntities$.next(overviews);
+        this.hasWriteAllAccess = overviews.filter((overview) => overview.writable!).length > 0;
+      });
   }
 
   ngOnDestroy(): void {

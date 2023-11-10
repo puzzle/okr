@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
@@ -45,6 +46,11 @@ public class OverviewAuthorizationService {
             teamAccess.putIfAbsent(teamId, isWriteable(authorizationUser, overview));
             overview.setWriteable(teamAccess.get(teamId));
         }
+    }
+
+    public boolean hasWriteAllAccess() {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        return authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL);
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Overview overview) {

@@ -12,11 +12,7 @@
     </pzsh-topbar>
     <pzsh-menu>
       <div slot="actions">
-        <div
-          class="d-flex cursor-pointer header-text"
-          (click)="openTeamManagement()"
-          *ngIf="teamManagementAccess$ | async"
-        >
+        <div class="d-flex cursor-pointer header-text" (click)="openTeamManagement()" *ngIf="hasWriteAllAccess">
           <mat-icon class="header-icon me-2">group</mat-icon>
           <span class="text-white">Teamverwaltung</span>
         </div>

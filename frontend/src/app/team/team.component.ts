@@ -7,6 +7,8 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { trackByFn } from '../shared/common';
+import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
+import { TeamMin } from '../shared/types/model/TeamMin';
 
 @Component({
   selector: 'app-team',
@@ -65,5 +67,18 @@ export class TeamComponent {
         }
         this.refreshDataService.markDataRefresh();
       });
+  }
+
+  openEditTeamDialog(team: TeamMin) {
+    const dialogRef = this.dialog.open(TeamManagementComponent, {
+      width: '45em',
+      height: 'auto',
+      data: {
+        team: team,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
   }
 }

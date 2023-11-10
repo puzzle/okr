@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,8 +34,9 @@ public class OrganisationController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to read organisations", content = @Content) })
     @GetMapping
-    public ResponseEntity<List<OrganisationDto>> getOrganisations() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                organisationAuthorizationService.getEntities().stream().map(this.organisationMapper::toDto).toList());
+    public ResponseEntity<List<OrganisationDto>> getOrganisations(
+            @RequestParam(required = false, defaultValue = "", name = "team") Long teamId) {
+        return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntities(teamId).stream()
+                .map(this.organisationMapper::toDto).toList());
     }
 }

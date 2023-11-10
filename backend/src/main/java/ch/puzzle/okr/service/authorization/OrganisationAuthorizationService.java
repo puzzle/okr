@@ -21,11 +21,11 @@ public class OrganisationAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public List<Organisation> getEntities() {
+    public List<Organisation> getEntities(Long teamId) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not authorized to read organisations");
         }
-        return organisationBusinessService.getOrganisations();
+        return organisationBusinessService.getOrganisations(teamId);
     }
 }

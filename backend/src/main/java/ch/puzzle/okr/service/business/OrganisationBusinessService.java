@@ -50,7 +50,10 @@ public class OrganisationBusinessService {
         }
     }
 
-    public List<Organisation> getOrganisations() {
+    public List<Organisation> getOrganisations(Long teamId) {
+        if (teamId != null) {
+            return persistenceService.getOrganisationsByTeamId(teamId);
+        }
         return persistenceService.findAll();
     }
 }

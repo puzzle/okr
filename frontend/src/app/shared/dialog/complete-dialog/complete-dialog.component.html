@@ -9,6 +9,7 @@
         'non-active': completeForm.value.isSuccessful === false
       }"
       (click)="switchSuccessState('successful')"
+      [attr.data-testId]="'successful'"
     >
       Objective erfolgreich
     </div>
@@ -19,6 +20,7 @@
         'non-active': completeForm.value.isSuccessful == true
       }"
       (click)="switchSuccessState('notSuccessful')"
+      [attr.data-testId]="'not-successful'"
     >
       Objective nicht erfolgreich
     </div>

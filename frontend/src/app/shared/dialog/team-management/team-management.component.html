@@ -19,7 +19,12 @@
         </span>
       </div>
       <div class="d-flex flex-column gap-2 col-12 mb-3">
-        <label class="text-black" for="organisations">Organisationen</label>
+        <div class="d-flex flex-row">
+          <label class="text-black" for="organisations">Organisationen</label>
+          <mat-icon class="ms-2" *ngIf="hasInActiveOrganisations" [matTooltip]="'This team has inactive teams'"
+            >report_problem</mat-icon
+          >
+        </div>
         <mat-select
           [formControl]="teamForm.controls.organisations"
           multiple
@@ -28,9 +33,13 @@
           [ngClass]="formInputCheck(teamForm, 'organisations')"
           [compareWith]="compareWithFunc"
         >
-          <mat-option *ngFor="let organisation of organisations$ | async" [value]="organisation">{{
-            organisation.orgName
-          }}</mat-option>
+          <mat-option
+            *ngFor="let organisation of organisations$ | async"
+            [value]="organisation"
+            [ngStyle]="getMatOptionStyle(organisation)"
+          >
+            {{ organisation.orgName }} <span *ngIf="organisation.state == OrganisationState.INACTIVE">in-active</span>
+          </mat-option>
         </mat-select>
 
         <div *ngIf="isTouchedOrDirty('organisations')">

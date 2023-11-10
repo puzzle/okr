@@ -218,11 +218,13 @@ export const objectiveMin: ObjectiveMin = {
 export const overViewEntity1: OverviewEntity = {
   team: teamMin1,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+  writable: true,
 };
 
 export const overViewEntity2: OverviewEntity = {
   team: teamMin2,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+  writable: true,
 };
 
 export const quarter: Quarter = {

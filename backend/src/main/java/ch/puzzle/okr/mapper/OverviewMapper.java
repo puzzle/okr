@@ -17,9 +17,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Component
 public class OverviewMapper {
 
-    public List<OverviewDto> toDto(List<Overview> overviews) {
+    public List<OverviewDto> toDto(List<Overview> overviews, Boolean isWritable) {
         List<OverviewDto> overviewDtos = new ArrayList<>();
-        overviews.forEach(overview -> processTeams(overviewDtos, overview));
+        overviews.forEach(overview -> processTeams(overviewDtos, overview, isWritable));
         return overviewDtos;
     }
 
@@ -32,12 +32,12 @@ public class OverviewMapper {
         return objectives.stream().filter(objectiveDto -> Objects.equals(objectiveId, objectiveDto.id())).findFirst();
     }
 
-    private void processTeams(List<OverviewDto> overviewDtos, Overview overview) {
+    private void processTeams(List<OverviewDto> overviewDtos, Overview overview, Boolean hasWriteAllAccess) {
         Optional<OverviewDto> overviewDto = getMatchingOverviewDto(overview.getOverviewId().getTeamId(), overviewDtos);
         if (overviewDto.isPresent()) {
             processObjectives(overviewDto.get(), overview);
         } else {
-            overviewDtos.add(createOverviewDto(overview));
+            overviewDtos.add(createOverviewDto(overview, hasWriteAllAccess));
         }
     }
 
@@ -55,13 +55,13 @@ public class OverviewMapper {
         overviewObjectiveDto.keyResults().add(createKeyResultDto(overview));
     }
 
-    private OverviewDto createOverviewDto(Overview overview) {
+    private OverviewDto createOverviewDto(Overview overview, Boolean hasWriteAllAccess) {
         List<OverviewObjectiveDto> objectives = new ArrayList<>();
         if (isValidId(overview.getOverviewId().getObjectiveId())) {
             objectives.add(createObjectiveDto(overview));
         }
         return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName(),
-                overview.isWriteable()), objectives);
+                overview.isWriteable()), objectives, hasWriteAllAccess);
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {

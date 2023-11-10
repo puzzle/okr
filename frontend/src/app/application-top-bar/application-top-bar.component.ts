@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import {map, Observable, ReplaySubject} from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
-import { OrganisationService } from '../shared/services/organisation.service';
 
 import { Router } from '@angular/router';
 
@@ -19,18 +18,20 @@ export class ApplicationTopBarComponent implements OnInit {
   teamManagementAccess$: Observable<boolean> = new Observable<boolean>();
   menuIsOpen = false;
 
+
+  @Input()
+  hasWriteAllAccess!: boolean;
+
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
 
   constructor(
     private oauthService: OAuthService,
     private configService: ConfigService,
-    private organisationService: OrganisationService,
     private dialog: MatDialog,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.teamManagementAccess$ = this.organisationService.hasAccess();
     this.configService.config$
       .pipe(
         map((config) => {

@@ -65,4 +65,14 @@ public class TeamController {
         Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
         return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam, null));
     }
+
+    @Operation(summary = "Delete Team by ID", description = "Delete Team by ID")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Deleted Team by ID"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to delete an Team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })
+    @DeleteMapping("/{id}")
+    public void deleteTeamById(
+            @Parameter(description = "The ID of an Team to delete it.", required = true) @PathVariable long id) {
+        teamAuthorizationService.deleteEntity(id);
+    }
 }

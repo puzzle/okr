@@ -39,20 +39,14 @@
           </mat-error>
         </div>
       </div>
-      <div class="d-flex justify-content-between p-0" mat-dialog-actions>
-        <span>
-          <button
-            [attr.data-testId]="'submit'"
-            type="submit"
-            (click)="saveTeam()"
-            [disabled]="teamForm.invalid"
-            color="primary"
-            mat-flat-button
-          >
+      <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+        <div class="d-flex p-0">
+          <button [disabled]="teamForm.invalid" color="primary" mat-flat-button type="submit" (click)="saveTeam()">
             Speichern
           </button>
-          <button mat-button mat-dialog-close color="primary">Abbrechen</button>
-        </span>
+          <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+        </div>
+        <button (click)="deleteTeam()" color="primary" *ngIf="data" type="button" mat-button>Team Löschen</button>
       </div>
     </form>
   </div>

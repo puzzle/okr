@@ -31,6 +31,11 @@ public class TeamAuthorizationService {
         return teamBusinessService.updateTeam(entity, id);
     }
 
+    public void deleteEntity(Long id) {
+        checkUserAuthorization("not authorized to delete team");
+        teamBusinessService.deleteTeam(id);
+    }
+
     public void checkUserAuthorization(String message) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL)) {

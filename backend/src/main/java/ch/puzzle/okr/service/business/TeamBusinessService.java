@@ -43,6 +43,11 @@ public class TeamBusinessService {
         return teamPersistenceService.save(team);
     }
 
+    public void deleteTeam(Long id) {
+        validator.validateOnDelete(id);
+        teamPersistenceService.deleteById(id);
+    }
+
     public List<Team> getAllTeams() {
         return teamPersistenceService.findAll();
     }

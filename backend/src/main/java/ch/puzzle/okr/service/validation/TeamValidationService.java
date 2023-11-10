@@ -27,6 +27,10 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     @Override
     public void validateOnUpdate(Long id, Team model) {
-        throw new IllegalCallerException("This method must not be called because there is no update of teams");
+        throwExceptionWhenIdIsNull(id);
+        throwExceptionWhenModelIsNull(model);
+        throwExceptionWhenIdHasChanged(id, model.getId());
+        doesEntityExist(model.getId());
+        validate(model);
     }
 }

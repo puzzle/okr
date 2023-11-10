@@ -22,11 +22,20 @@ public class TeamAuthorizationService {
     }
 
     public Team createEntity(Team entity) {
+        checkUserAuthorization("not authorized to create teams");
+        return teamBusinessService.createTeam(entity);
+    }
+
+    public Team updateEntity(Team entity, Long id) {
+        checkUserAuthorization("not authorized to update team");
+        return teamBusinessService.updateTeam(entity, id);
+    }
+
+    public void checkUserAuthorization(String message) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "not authorized to create teams");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, message);
         }
-        return teamBusinessService.createTeam(entity);
     }
 
     public List<Team> getEntities() {

@@ -16,4 +16,8 @@ export class TeamService {
   createTeam(team: Team): Observable<Team> {
     return this.http.post<Team>('/api/v2/teams', team);
   }
+
+  updateTeam(team: Team): Observable<Team> {
+    return this.http.put<Team>(`/api/v2/teams/${team.id}`, team);
+  }
 }

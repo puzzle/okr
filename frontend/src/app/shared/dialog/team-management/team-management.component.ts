@@ -47,11 +47,19 @@ export class TeamManagementComponent implements OnInit {
   }
 
   saveTeam() {
-    let newTeam: Team = { ...this.teamForm.value, activeObjectives: 0 } as Team;
-    this.teamService.createTeam(newTeam).subscribe((result) => {
-      this.refreshDataService.markDataRefresh();
-      this.dialogRef.close(result);
-    });
+    if (!this.data) {
+      let newTeam: Team = { ...this.teamForm.value, activeObjectives: 0 } as Team;
+      this.teamService.createTeam(newTeam).subscribe((result) => {
+        this.refreshDataService.markDataRefresh();
+        this.dialogRef.close(result);
+      });
+    } else {
+      let updatedTeam: Team = { ...this.teamForm.value, id: this.data.team.id } as Team;
+      this.teamService.updateTeam(updatedTeam).subscribe((result) => {
+        this.refreshDataService.markDataRefresh();
+        this.dialogRef.close(result);
+      });
+    }
   }
 
   isTouchedOrDirty(name: string) {

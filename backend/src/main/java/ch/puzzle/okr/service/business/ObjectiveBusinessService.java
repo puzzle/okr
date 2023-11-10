@@ -39,6 +39,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         return objectivePersistenceService.findById(id);
     }
 
+    public List<Objective> getEntitiesByTeamId(Long id) {
+        validator.validateOnGet(id);
+        return objectivePersistenceService.findObjectiveByTeamId(id);
+    }
+
     @Transactional
     public Objective updateEntity(Long id, Objective objective, AuthorizationUser authorizationUser) {
         Objective savedObjective = objectivePersistenceService.findById(id);

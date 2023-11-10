@@ -20,4 +20,8 @@ export class TeamService {
   updateTeam(team: Team): Observable<Team> {
     return this.http.put<Team>(`/api/v2/teams/${team.id}`, team);
   }
+
+  deleteTeam(id: number): void {
+    this.http.delete(`/api/v2/teams/${id}`).subscribe();
+  }
 }

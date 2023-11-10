@@ -10,6 +10,8 @@ import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { TeamMin } from '../../types/model/TeamMin';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 
 @Component({
   selector: 'app-team-management',
@@ -56,10 +58,25 @@ export class TeamManagementComponent implements OnInit {
     } else {
       let updatedTeam: Team = { ...this.teamForm.value, id: this.data.team.id } as Team;
       this.teamService.updateTeam(updatedTeam).subscribe((result) => {
-        this.refreshDataService.markDataRefresh();
         this.dialogRef.close(result);
       });
     }
+  }
+
+  deleteTeam() {
+    const dialog = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Team',
+      },
+      width: CONFIRM_DIALOG_WIDTH,
+      height: 'auto',
+    });
+    dialog.afterClosed().subscribe((result) => {
+      if (result) {
+        this.teamService.deleteTeam(this.data.team.id);
+        this.dialogRef.close();
+      }
+    });
   }
 
   isTouchedOrDirty(name: string) {

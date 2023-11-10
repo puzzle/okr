@@ -28,10 +28,10 @@
             <mat-icon>person_outline</mat-icon>
           </span>
 
-          <p>{{ username | async }}</p>
+          <p class="fw-normal fs-6">{{ username | async }}</p>
           <span class="mt-1">
-            <mat-icon *ngIf="menuIsOpen">expand_more</mat-icon>
-            <mat-icon *ngIf="!menuIsOpen">expand_less</mat-icon>
+            <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
+            <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>
           </span>
         </span>
       </button>

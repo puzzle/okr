@@ -50,6 +50,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
     cy.contains('Jaya Norris');
+    cy.checkForDialogText();
 
     cy.fillOutKeyResult(
       'I am a metric keyresult with a new one',
@@ -68,6 +69,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
     cy.contains('Jaya Norris');
+    cy.checkForDialogText();
   });
 
   it('Create and edit KeyResult with Action Plan', () => {
@@ -200,6 +202,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
+    cy.checkForDialogText();
 
     cy.fillOutKeyResult(
       'I am a metric keyresult',

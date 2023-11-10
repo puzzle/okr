@@ -16,6 +16,9 @@ describe('Scoring component e2e tests', () => {
     cy.getByTestId('changeInfo').click().type('Testveränderungen');
     cy.getByTestId('initiatives').click().type('Testmassnahmen');
     cy.getByTestId('create-checkin').click();
+    //ToDo: Implement checking of scoring component value in keyresult detail
+    cy.getByTestId('close-drawer').click();
+    //ToDo: Implement checking of scoring component value on overview
   });
 
   it('Create ordinal checkin and validate value of scoring component', () => {
@@ -31,5 +34,8 @@ describe('Scoring component e2e tests', () => {
     cy.getByTestId('changeInfo').click().type('Testveränderungen');
     cy.getByTestId('initiatives').click().type('Testmassnahmen');
     cy.getByTestId('create-checkin').click();
+    //ToDo: Implement checking of scoring component value in keyresult detail
+    cy.getByTestId('close-drawer').click();
+    //ToDo: Implement checking of scoring component value on overview
   });
 });

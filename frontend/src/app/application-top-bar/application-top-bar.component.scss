@@ -24,8 +24,17 @@
   height: 100%;
   gap: 5px;
   font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
 
   mat-icon {
     transform: scale(0.95);
+  }
+
+  &:focus {
+    background-color: #1a4e83 !important;
+  }
+  &:hover {
+    background-color: #1a4e83 !important;
   }
 }

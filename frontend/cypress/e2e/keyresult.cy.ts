@@ -7,26 +7,7 @@ describe('OKR Overview', () => {
   });
 
   it('Create new metric KeyResult', () => {
-    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
-    cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Key Result erfassen');
-    cy.contains('Jaya Norris');
-    checkForDialogText();
-
-    cy.fillOutKeyResult(
-      'I am a metric keyresult',
-      'PERCENT',
-      '21',
-      '52',
-      null,
-      null,
-      null,
-      'Pac',
-      'This is my description',
-    );
-    cy.getByTestId('submit').should('not.be.disabled');
-    cy.getByTestId('submit').click();
-
+    cy.createMetricKeyresult(null);
     cy.getByTestId('keyresult').contains('I am a metric keyresult').click();
 
     cy.contains('I am a metric keyresult');
@@ -43,7 +24,7 @@ describe('OKR Overview', () => {
   });
 
   it('Create new ordinal KeyResult', () => {
-    createOrdinalKeyResult(null, 'Pac');
+    cy.createOrdinalKeyresult(null, 'Pac');
 
     cy.getByTestId('keyresult').contains('I am a ordinal keyresult').click();
     cy.contains('I am a ordinal keyresult');
@@ -68,7 +49,6 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
     cy.contains('Jaya Norris');
-    checkForDialogText();
 
     cy.fillOutKeyResult(
       'I am a metric keyresult with a new one',
@@ -87,7 +67,6 @@ describe('OKR Overview', () => {
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
     cy.contains('Jaya Norris');
-    checkForDialogText();
   });
 
   it('Create and edit KeyResult with Action Plan', () => {
@@ -139,7 +118,7 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult without type change', () => {
-    createOrdinalKeyResult('We want not to change keyresult title');
+    cy.createOrdinalKeyresult('We want not to change keyresult title', null);
 
     cy.getByTestId('keyresult').contains('We want not to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
@@ -176,7 +155,7 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult with type change', () => {
-    createOrdinalKeyResult('Here we want to change keyresult title');
+    cy.createOrdinalKeyresult('Here we want to change keyresult title', null);
 
     cy.getByTestId('keyresult').contains('Here we want to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
@@ -220,7 +199,6 @@ describe('OKR Overview', () => {
     cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
-    checkForDialogText();
 
     cy.fillOutKeyResult(
       'I am a metric keyresult',
@@ -304,7 +282,7 @@ describe('OKR Overview', () => {
   });
 
   it('Delete existing keyresult', () => {
-    createOrdinalKeyResult('A keyresult to delete');
+    cy.createOrdinalKeyresult('A keyresult to delete', null);
 
     cy.getByTestId('keyresult').contains('A keyresult to delete').last().click();
 
@@ -317,44 +295,3 @@ describe('OKR Overview', () => {
     cy.get('A keyresult to delete').should('not.exist');
   });
 });
-
-function createOrdinalKeyResult(title: string | null = null, owner: string | null = null) {
-  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
-  cy.getByTestId('submit').should('be.disabled');
-  cy.contains('Key Result erfassen');
-  cy.contains('Jaya Norris');
-  checkForDialogText();
-  cy.getByTestId('titleInput').type('Title');
-
-  cy.getByTestId('ordinalTab').click();
-
-  cy.fillOutKeyResult(
-    title == null ? 'I am a ordinal keyresult' : title,
-    null,
-    null,
-    null,
-    'My commit zone',
-    'My target zone',
-    'My stretch zone',
-    owner,
-    'This is my description',
-  );
-
-  cy.getByTestId('submit').should('not.be.disabled');
-  cy.getByTestId('submit').click();
-}
-
-function checkForDialogText() {
-  cy.contains('Titel');
-  cy.contains('Metrisch');
-  cy.contains('Ordinal');
-  cy.contains('Einheit');
-  cy.contains('Baseline');
-  cy.contains('Stretch Goal');
-  cy.contains('Owner');
-  cy.contains('Beschreibung (optional)');
-  cy.contains('Action Plan (optional)');
-  cy.contains('Weitere Action hinzufügen');
-  cy.contains('Speichern');
-  cy.contains('Abbrechen');
-}

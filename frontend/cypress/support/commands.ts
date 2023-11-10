@@ -100,6 +100,75 @@ Cypress.Commands.add('tabBackwardUntil', (selector: string, limit?: number) => {
   doUntil(selector, cy.tabBackward, limit);
 });
 
+Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, owner: string | null = null) => {
+  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+  cy.getByTestId('submit').should('be.disabled');
+  cy.contains('Key Result erfassen');
+  cy.contains('Jaya Norris');
+  cy.contains('Titel');
+  cy.getByTestId('titleInput').type('Title');
+  cy.getByTestId('ordinalTab').click();
+  cy.contains('Metrisch');
+  cy.contains('Ordinal');
+  cy.contains('Commit Zone');
+  cy.contains('Target Zone');
+  cy.contains('Stretch Zone');
+  cy.contains('Owner');
+  cy.contains('Beschreibung (optional)');
+  cy.contains('Action Plan (optional)');
+  cy.contains('Weitere Action hinzufügen');
+  cy.contains('Speichern');
+  cy.contains('Abbrechen');
+
+  cy.fillOutKeyResult(
+    title == null ? 'I am a ordinal keyresult' : title,
+    null,
+    null,
+    null,
+    'My commit zone',
+    'My target zone',
+    'My stretch zone',
+    owner,
+    'This is my description',
+  );
+
+  cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
+});
+
+Cypress.Commands.add('createMetricKeyresult', (title: string | null) => {
+  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+  cy.getByTestId('submit').should('be.disabled');
+  cy.contains('Key Result erfassen');
+  cy.contains('Jaya Norris');
+  cy.contains('Titel');
+  cy.contains('Metrisch');
+  cy.contains('Ordinal');
+  cy.contains('Einheit');
+  cy.contains('Baseline');
+  cy.contains('Stretch Goal');
+  cy.contains('Owner');
+  cy.contains('Beschreibung (optional)');
+  cy.contains('Action Plan (optional)');
+  cy.contains('Weitere Action hinzufügen');
+  cy.contains('Speichern');
+  cy.contains('Abbrechen');
+
+  cy.fillOutKeyResult(
+    title == null ? 'I am a metric keyresult' : title,
+    'PERCENT',
+    '21',
+    '52',
+    null,
+    null,
+    null,
+    'Pac',
+    'This is my description',
+  );
+  cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
+});
+
 Cypress.Commands.add(
   'fillOutKeyResult',
   (

@@ -67,6 +67,13 @@ export class TeamManagementComponent implements OnInit {
     }
   }
 
+  checkIfInActiveAdded() {
+    this.hasInActiveOrganisations =
+      this.teamForm.controls.organisations.value!.filter(
+        (organisation) => organisation.state != OrganisationState.ACTIVE,
+      ).length > 0;
+  }
+
   deleteTeam() {
     const dialog = this.dialog.open(ConfirmDialogComponent, {
       data: {

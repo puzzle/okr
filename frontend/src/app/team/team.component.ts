@@ -18,6 +18,9 @@ export class TeamComponent {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
   protected readonly trackByFn = trackByFn;
 
+  @Input()
+  hasWriteAllAccess!: boolean;
+
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,

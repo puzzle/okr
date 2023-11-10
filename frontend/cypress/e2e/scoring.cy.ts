@@ -7,9 +7,9 @@ describe('Scoring component e2e tests', () => {
 
   it('Creates metric checkin', () => {
     cy.createMetricKeyresult('Metric scoring keyresult');
-    cy.getByTestId('keyresult').contains('Metric scoring keyresult').last().click();
+    cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
     cy.getByTestId('add-check-in').click();
-    cy.getByTestId('key-result-metric-value').click().type('30');
+    cy.getByTestId('key-result-metric-value').clear().type('30');
     cy.tabForward();
     cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
     cy.getByTestId('continue-checkin').click();

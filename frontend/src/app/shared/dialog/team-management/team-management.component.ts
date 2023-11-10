@@ -12,6 +12,7 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { TeamMin } from '../../types/model/TeamMin';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { OrganisationState } from '../../types/enums/OrganisationState';
 
 @Component({
   selector: 'app-team-management',
@@ -24,6 +25,7 @@ export class TeamManagementComponent implements OnInit {
     organisations: new FormControl<Organisation[]>([], [Validators.required]),
   });
   organisations$: Observable<Organisation[]> = new Observable<Organisation[]>();
+  public hasInActiveOrganisations: boolean = false;
   protected readonly formInputCheck = formInputCheck;
   protected readonly errorMessages: any = errorMessages;
 
@@ -44,6 +46,8 @@ export class TeamManagementComponent implements OnInit {
           name: this.data.team.name,
           organisations: result,
         });
+        this.hasInActiveOrganisations =
+          result.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0;
       });
     }
   }
@@ -79,6 +83,11 @@ export class TeamManagementComponent implements OnInit {
     });
   }
 
+  getMatOptionStyle(organisation: Organisation) {
+    let isInActive = organisation.state == OrganisationState.INACTIVE;
+    return { 'text-decoration': isInActive ? 'line-through' : 'none' };
+  }
+
   isTouchedOrDirty(name: string) {
     return this.teamForm.get(name)?.dirty || this.teamForm.get(name)?.touched;
   }
@@ -91,4 +100,6 @@ export class TeamManagementComponent implements OnInit {
   compareWithFunc(a: Organisation, b: Organisation) {
     return a.orgName === b.orgName;
   }
+
+  protected readonly OrganisationState = OrganisationState;
 }

@@ -4,6 +4,7 @@
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div class="overviewContainer bg-grey mt-header-height">
   <app-team
+    [hasWriteAllAccess]="hasWriteAllAccess"
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
     [overviewEntity]="overviewEntity"
   >

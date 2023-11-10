@@ -7,7 +7,9 @@ describe('OKR Overview', () => {
   });
 
   it('Create new metric KeyResult', () => {
-    cy.createMetricKeyresult(null);
+    cy.fillMetricKeyResult(null);
+    cy.submitKeyresultForm();
+
     cy.getByTestId('keyresult').contains('I am a metric keyresult').click();
 
     cy.contains('I am a metric keyresult');
@@ -24,7 +26,8 @@ describe('OKR Overview', () => {
   });
 
   it('Create new ordinal KeyResult', () => {
-    cy.createOrdinalKeyresult(null, 'Pac');
+    cy.fillOrdinalKeyresult(null, 'Pac');
+    cy.submitKeyresultForm();
 
     cy.getByTestId('keyresult').contains('I am a ordinal keyresult').click();
     cy.contains('I am a ordinal keyresult');
@@ -118,7 +121,8 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult without type change', () => {
-    cy.createOrdinalKeyresult('We want not to change keyresult title', null);
+    cy.fillOrdinalKeyresult('We want not to change keyresult title', null);
+    cy.submitKeyresultForm();
 
     cy.getByTestId('keyresult').contains('We want not to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
@@ -155,7 +159,8 @@ describe('OKR Overview', () => {
   });
 
   it('Edit a KeyResult with type change', () => {
-    cy.createOrdinalKeyresult('Here we want to change keyresult title', null);
+    cy.fillOrdinalKeyresult('Here we want to change keyresult title', null);
+    cy.submitKeyresultForm();
 
     cy.getByTestId('keyresult').contains('Here we want to change keyresult title').last().click();
     cy.getByTestId('edit-keyResult').click();
@@ -282,7 +287,8 @@ describe('OKR Overview', () => {
   });
 
   it('Delete existing keyresult', () => {
-    cy.createOrdinalKeyresult('A keyresult to delete', null);
+    cy.fillOrdinalKeyresult('A keyresult to delete', null);
+    cy.submitKeyresultForm();
 
     cy.getByTestId('keyresult').contains('A keyresult to delete').last().click();
 

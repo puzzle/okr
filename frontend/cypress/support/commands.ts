@@ -141,18 +141,7 @@ Cypress.Commands.add('createMetricKeyresult', (title: string | null) => {
   cy.getByTestId('submit').should('be.disabled');
   cy.contains('Key Result erfassen');
   cy.contains('Jaya Norris');
-  cy.contains('Titel');
-  cy.contains('Metrisch');
-  cy.contains('Ordinal');
-  cy.contains('Einheit');
-  cy.contains('Baseline');
-  cy.contains('Stretch Goal');
-  cy.contains('Owner');
-  cy.contains('Beschreibung (optional)');
-  cy.contains('Action Plan (optional)');
-  cy.contains('Weitere Action hinzufügen');
-  cy.contains('Speichern');
-  cy.contains('Abbrechen');
+  cy.checkForDialogText();
 
   cy.fillOutKeyResult(
     title == null ? 'I am a metric keyresult' : title,

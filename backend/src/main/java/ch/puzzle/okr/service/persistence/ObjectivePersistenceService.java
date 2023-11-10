@@ -14,6 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
@@ -45,6 +47,10 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
 
     public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser, String reason) {
         return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, reason);
+    }
+
+    public List<Objective> findObjectiveByTeamId(Long teamId) {
+        return getRepository().findObjectivesByTeamId(teamId);
     }
 
     public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser, String reason) {

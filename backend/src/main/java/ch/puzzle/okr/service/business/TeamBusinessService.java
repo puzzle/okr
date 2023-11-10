@@ -38,6 +38,11 @@ public class TeamBusinessService {
         return teamPersistenceService.save(team);
     }
 
+    public Team updateTeam(Team team, Long id) {
+        validator.validateOnUpdate(id, team);
+        return teamPersistenceService.save(team);
+    }
+
     public List<Team> getAllTeams() {
         return teamPersistenceService.findAll();
     }

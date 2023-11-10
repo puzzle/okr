@@ -5,6 +5,7 @@ import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("api/v2/teams")
@@ -46,5 +49,20 @@ public class TeamController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
         Team createdTeam = teamAuthorizationService.createEntity(teamMapper.toTeam(teamDto));
         return ResponseEntity.status(HttpStatus.OK).body(teamMapper.toDto(createdTeam, null));
+    }
+
+    @Operation(summary = "Update Team", description = "Update a Team by ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Updated Team in db.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(allOf = { TeamDto.class })) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to update a Team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find a Team with a specified ID to update.", content = @Content),
+            @ApiResponse(responseCode = "422", description = "Can't update Team since Team was updated or deleted by another user.", content = @Content) })
+    @PutMapping("/{id}")
+    public ResponseEntity<TeamDto> updateTeam(
+            @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
+            @RequestBody TeamDto teamDto) {
+        Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
+        return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam, null));
     }
 }

@@ -4,7 +4,7 @@ describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
-      cy.visit('/?quarter=2')
+      cy.visit('/?quarter=2');
     });
 
     it(`Create checkin metric`, () => {
@@ -180,6 +180,51 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait(200);
       cy.contains('CHF 200.-');
       cy.contains('We bought a new sheep');
+    });
+
+    it('Edit ordinal checkin', () => {
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.getByTestId('submit').should('be.disabled');
+
+      cy.getByTestId('titleInput').type('Title');
+      cy.getByTestId('ordinalTab').click();
+
+      cy.fillOutKeyResult(
+        'For editing ordinal checkin',
+        null,
+        null,
+        null,
+        'New house',
+        'New car',
+        'New pool',
+        null,
+        'This is my description',
+      );
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('For editing ordinal checkin').click();
+      cy.getByTestId('add-check-in').first().click();
+      cy.fillOutCheckInOrdinal(0, 3, 'There is a new car', 'Buy now a new pool');
+      cy.getByTestId('show-all-checkins').click();
+
+      cy.wait(500);
+      cy.contains('Check-in History');
+      cy.getByTestId('edit-check-in').click();
+      cy.contains('For editing ordinal checkin');
+      cy.contains('Confidence um Target zu erreichen');
+      cy.contains('3/10');
+      cy.getByTestId('stretchZone').click();
+      cy.getByTestId('confidence-slider').realMouseDown();
+      cy.getByTestId('check-in-next').click();
+      cy.contains('There is a new car');
+      cy.contains('Buy now a new pool');
+      cy.getByTestId('changeInfo').clear().type('We bought a new dog');
+      cy.getByTestId('submit-check-in').click();
+
+      cy.wait(200);
+      cy.contains('We bought a new dog');
+      cy.contains('Buy now a new pool');
+      cy.contains('STRETCH');
     });
   });
 });

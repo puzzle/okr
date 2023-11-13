@@ -25,4 +25,8 @@ public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepo
     public List<Long> findTeamIdsByOrganisationNames(List<String> organisationNames) {
         return getRepository().findTeamIdsByOrganisationNames(organisationNames);
     }
+
+    public List<Team> findTeamsByName(String name) {
+        return getRepository().findTeamsByName(name);
+    }
 }

@@ -3,7 +3,7 @@
 #okrBanner {
   position: fixed;
   width: 100%;
-  height: min-content;
+  height: $header-height;
   z-index: 100;
   transition: 0.5s;
 }

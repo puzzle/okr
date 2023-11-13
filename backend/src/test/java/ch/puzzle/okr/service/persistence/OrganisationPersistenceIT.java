@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -113,4 +115,15 @@ class OrganisationPersistenceIT {
         assertEquals(OrganisationState.INACTIVE, organisationPersistenceService.findById(5L).getState());
     }
 
+    @Test
+    void getOrganisationByTeamId() {
+        assertEquals(List.of(1L),
+                organisationPersistenceService.getOrganisationsByTeamId(5L).stream().map(Organisation::getId).toList());
+    }
+
+    @Test
+    void getEmptyListIfNoTeamWithIdFound() {
+        assertEquals(List.of(), organisationPersistenceService.getOrganisationsByTeamId(90L).stream()
+                .map(Organisation::getId).toList());
+    }
 }

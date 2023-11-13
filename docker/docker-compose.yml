@@ -11,3 +11,22 @@ services:
       POSTGRES_DB: okr
     ports:
       - 5432:5432
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.0
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=keycloak
+    volumes:
+       - ./config/realm-export.json:/opt/keycloak/data/import/realm.json
+    networks:
+      - local
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8544:8080"
+networks:
+  local:
+    name: local
+    driver: bridge

@@ -9,7 +9,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDialogModule} from "@angular/material/dialog";
+import { MatDialogModule } from '@angular/material/dialog';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),

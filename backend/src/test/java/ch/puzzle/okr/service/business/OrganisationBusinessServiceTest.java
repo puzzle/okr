@@ -78,5 +78,4 @@ class OrganisationBusinessServiceTest {
         organisationBusinessService.getOrganisations(1L);
         verify(organisationPersistenceService, times(1)).getOrganisationsByTeamId(1L);
     }
-
 }

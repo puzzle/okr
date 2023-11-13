@@ -152,3 +152,10 @@ body pzsh-backdrop {
 .dialog-padding {
   padding: 1.62rem !important;
 }
+
+.objective-three-dot-menu {
+  border-radius: 0.5rem !important;
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
+}

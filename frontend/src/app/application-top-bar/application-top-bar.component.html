@@ -1,27 +1,42 @@
 <div id="topBarHeight">
   <div id="okrTopbar">
-    <pzsh-topbar id="pzsh-topbar">
-      <img ngSrc="assets/images/okr-logo.svg" alt="okr-logo" height="32" width="214" />
-    </pzsh-topbar>
-    <pzsh-menu>
-      <div slot="actions">
-        <pzsh-menu-action href="https://wiki.puzzle.ch/Puzzle/OKRs">
-          <pzsh-icon name="question-circle"></pzsh-icon>
+    <span class="d-flex h-100 align-items-center px-4">
+      <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="214" />
+    </span>
+    <div class="d-flex align-items-center">
+      <div class="px-3">
+        <a class="topBarEntry" href="https://wiki.puzzle.ch/Puzzle/OKRs">
+          <mat-icon aria-hidden="false" aria-label="Help icon" class="text-white" fontIcon="help_outline"></mat-icon>
           Hilfe
-        </pzsh-menu-action>
-        <pzsh-menu-dropdown href="#">
-          <div slot="toggle" role="button">
-            <pzsh-icon name="user"></pzsh-icon>
-            {{ username | async }}
-          </div>
-          <div slot="items">
-            <pzsh-menu-dropdown-item (click)="logOut()" [attr.data-testId]="'logout'">
-              <pzsh-icon name="sign-out-alt"></pzsh-icon>
-              Logout
-            </pzsh-menu-dropdown-item>
-          </div>
-        </pzsh-menu-dropdown>
+        </a>
       </div>
-    </pzsh-menu>
+
+      <button
+        (menuClosed)="menuIsOpen = false"
+        (menuOpened)="menuIsOpen = true"
+        [matMenuTriggerFor]="menu"
+        class="topBarEntry text-white me-5"
+        mat-button
+      >
+        <span class="d-flex align-items-center gap-1">
+          <span class="mt-1">
+            <mat-icon>person_outline</mat-icon>
+          </span>
+
+          <p class="fw-normal fs-6">{{ username | async }}</p>
+          <span class="mt-1">
+            <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
+            <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+      <button mat-menu-item (click)="logOut()" [attr.data-testId]="'logout'" class="py-2">
+        <mat-icon class="scale-9">exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
   </div>
 </div>

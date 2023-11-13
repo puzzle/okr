@@ -13,8 +13,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -128,8 +126,8 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutName);
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(teamWithoutName.getId());
         verify(validator, times(1)).validate(teamWithoutName);
-        assertThat(exception.getReason().strip())
-                .contains("Missing attribute name when saving team. Attribute name can not be null when saving team.");
+        assertThat(exception.getReason()).contains("Missing attribute name when saving team.");
+        assertThat(exception.getReason()).contains("Attribute name can not be null when saving team.");
     }
 
     @Test
@@ -156,7 +154,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());
         verify(validator, times(1)).validate(teamWithoutNameWithId);
-        assertThat(Objects.requireNonNull(exception.getReason()).strip())
-                .contains("Missing attribute name when saving team. Attribute name can not be null when saving team.");
+        assertThat(exception.getReason()).contains("Missing attribute name when saving team.");
+        assertThat(exception.getReason()).contains("Attribute name can not be null when saving team.");
     }
 }

@@ -3,6 +3,7 @@ import * as users from '../fixtures/users.json';
 describe('OKR Overview', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    cy.visit('/?quarter=2');
   });
 
   it('Create new metric KeyResult', () => {
@@ -309,7 +310,7 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('edit-keyResult').click();
 
-    cy.getByTestId('delete').click();
+    cy.getByTestId('delete-keyresult').click();
     cy.getByTestId('confirmYes').click();
 
     cy.contains('Puzzle ITC');

@@ -6,6 +6,7 @@ describe('OKR Objective e2e tests', () => {
     describe('CRUD operations', () => {
       beforeEach(() => {
         cy.loginAsUser(users.gl);
+        cy.visit('/?quarter=2');
       });
 
       [
@@ -81,6 +82,7 @@ describe('OKR Objective e2e tests', () => {
     describe('Functionality', () => {
       beforeEach(() => {
         cy.loginAsUser(users.gl);
+        cy.visit('/?quarter=2');
       });
 
       it(`Release Objective from Draft to Ongoing`, () => {
@@ -266,6 +268,7 @@ describe('OKR Objective e2e tests', () => {
 describe('tests via keyboard', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    cy.visit('/?quarter=2');
     onlyOn('chrome');
   });
 

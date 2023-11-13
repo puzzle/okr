@@ -48,7 +48,7 @@ public class TeamController {
     public ResponseEntity<TeamDto> createTeam(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
         Team createdTeam = teamAuthorizationService.createEntity(teamMapper.toTeam(teamDto));
-        return ResponseEntity.status(HttpStatus.OK).body(teamMapper.toDto(createdTeam, null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamMapper.toDto(createdTeam, null));
     }
 
     @Operation(summary = "Update Team", description = "Update a Team by ID.")

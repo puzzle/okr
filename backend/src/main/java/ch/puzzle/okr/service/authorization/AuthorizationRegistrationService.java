@@ -45,20 +45,10 @@ public class AuthorizationRegistrationService {
     }
 
     private List<Long> getTeamIds(List<String> organisationNames) {
-        List<Long> teamIds = teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
-        if (teamIds.isEmpty()) {
-            throw new ResponseStatusException(UNAUTHORIZED,
-                    "no team found for given organisations " + organisationNames);
-        }
-        return teamIds;
+        return teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
     }
 
     private List<Long> getFirstLevelTeamIds() {
-        List<Long> teamIds = teamPersistenceService.findTeamIdsByOrganisationName(firstLevelOrganisationName);
-        if (teamIds.isEmpty()) {
-            throw new ResponseStatusException(UNAUTHORIZED,
-                    "no team found for given organisation " + firstLevelOrganisationName);
-        }
-        return teamIds;
+        return teamPersistenceService.findTeamIdsByOrganisationName(firstLevelOrganisationName);
     }
 }

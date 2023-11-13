@@ -59,9 +59,9 @@ export class OverviewComponent implements OnDestroy {
           return EMPTY;
         }),
       )
-      .subscribe((overviews) => {
-        this.overviewEntities$.next(overviews);
-        this.hasWriteAllAccess = overviews.filter((overview) => overview.writable!).length > 0;
+      .subscribe((dashboard) => {
+        this.overviewEntities$.next(dashboard.overviews);
+        this.hasWriteAllAccess = dashboard.adminAccess;
       });
   }
 

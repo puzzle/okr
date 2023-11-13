@@ -1,5 +1,10 @@
 <mat-form-field appearance="outline" class="bg-white header-form-field" subscriptSizing="dynamic">
-  <mat-select [(ngModel)]="quarterId" (ngModelChange)="changeDisplayedQuarter()" ngDefaultControl>
+  <mat-select
+    [(ngModel)]="quarterId"
+    (ngModelChange)="changeDisplayedQuarter()"
+    ngDefaultControl
+    [attr.data-testId]="'quarterFilter'"
+  >
     <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">{{ quarter.label }}</mat-option>
   </mat-select>
 </mat-form-field>

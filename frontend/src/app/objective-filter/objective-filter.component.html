@@ -13,6 +13,7 @@
       [(ngModel)]="query"
       (input)="this.refresh.next()"
       [ngModelOptions]="{ standalone: true }"
+      [attr.data-testId]="'objectiveSearch'"
     />
   </mat-form-field>
 

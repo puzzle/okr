@@ -4,7 +4,6 @@
   class="objective rounded-3 bg-white"
   tabindex="0"
   *ngIf="objective$ | async as objective"
-  [attr.data-testId]="'objective'"
 >
   <span class="col">
     <img
@@ -20,7 +19,7 @@
         (click)="$event.stopPropagation()"
         matTooltip="The objectives state is {{ objective.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
-        data-testid="objective-state"
+        [attr.data-testId]="'objective-state'"
         class="icon col-1 mt-1 ms-1 me-2"
         [src]="'assets/icons/' + objective.state"
       />

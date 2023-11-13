@@ -28,9 +28,4 @@ public class OrganisationAuthorizationService {
         }
         return organisationBusinessService.getOrganisations(teamId);
     }
-
-    public boolean hasAccess() {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        return authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL);
-    }
 }

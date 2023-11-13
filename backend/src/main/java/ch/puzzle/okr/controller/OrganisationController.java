@@ -39,13 +39,4 @@ public class OrganisationController {
         return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntities(teamId).stream()
                 .map(this.organisationMapper::toDto).toList());
     }
-
-    @Operation(summary = "Has access to read organisations", description = "Has access to read organisations")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned boolean if user has access", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)) }) })
-    @GetMapping("/access")
-    public ResponseEntity<Boolean> hasAccess() {
-        return ResponseEntity.ok(organisationAuthorizationService.hasAccess());
-    }
 }

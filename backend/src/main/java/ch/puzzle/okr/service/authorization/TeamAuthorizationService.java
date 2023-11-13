@@ -22,7 +22,7 @@ public class TeamAuthorizationService {
     }
 
     public Team createEntity(Team entity) {
-        checkUserAuthorization("not authorized to create teams");
+        checkUserAuthorization("not authorized to create team");
         return teamBusinessService.createTeam(entity);
     }
 

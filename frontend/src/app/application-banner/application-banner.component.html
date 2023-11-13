@@ -1,16 +1,28 @@
 <pzsh-banner id="okrBanner">
-  <img slot="tangram" ngSrc="assets/images/triangles-okr-header.svg" alt="okr-tangram" height="140" width="274" />
-  <div slot="content" class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
-    <div>
-      <!--     TODO second header-->
+  <img alt="okr-tangram" height="140" ngSrc="assets/images/triangles-okr-header.svg" slot="tangram" width="274" />
+  <section slot="content" class="d-sm-none d-md-flex">
+    <div class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
+      <div class="d-flex align-items-end gap-2">
+        <span class="d-flex flex-column">
+          <p class="mb-2">Quartal</p>
+          <app-quarter-filter></app-quarter-filter>
+        </span>
+        <app-objective-filter></app-objective-filter>
+      </div>
+      <app-team-filter></app-team-filter>
     </div>
-    <div class="d-flex align-items-end gap-2">
-      <span class="d-flex flex-column">
-        <p class="mb-2">Quartal</p>
+  </section>
+
+  <section class="m-0 d-sm-flex d-md-none" slot="content">
+    <mat-accordion class="w-100">
+      <mat-expansion-panel id="header-accordion">
+        <mat-expansion-panel-header>
+          <mat-panel-title> GJ 22/23-Q1 </mat-panel-title>
+        </mat-expansion-panel-header>
         <app-quarter-filter></app-quarter-filter>
-      </span>
-      <app-objective-filter></app-objective-filter>
-    </div>
-    <app-team-filter></app-team-filter>
-  </div>
+        <app-objective-filter></app-objective-filter>
+        <app-team-filter></app-team-filter>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </section>
 </pzsh-banner>

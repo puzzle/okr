@@ -60,3 +60,7 @@ $scale-gap: 0.1;
     transform: scale(#{$scale-value});
   }
 }
+
+#header-accordion.mat-expansion-panel {
+  background: transparent;
+}

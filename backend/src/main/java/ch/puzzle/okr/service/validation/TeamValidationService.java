@@ -20,15 +20,15 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
 
     @Override
     public void validateOnCreate(Team model) {
-        throwExceptionWhenIdIsNotNull(model.getId());
         throwExceptionWhenModelIsNull(model);
+        throwExceptionWhenIdIsNotNull(model.getId());
         validate(model);
     }
 
     @Override
     public void validateOnUpdate(Long id, Team model) {
-        throwExceptionWhenIdIsNull(id);
         throwExceptionWhenModelIsNull(model);
+        throwExceptionWhenIdIsNull(id);
         throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(model.getId());
         validate(model);

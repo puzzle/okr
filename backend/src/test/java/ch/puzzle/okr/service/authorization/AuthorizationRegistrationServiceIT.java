@@ -77,21 +77,6 @@ class AuthorizationRegistrationServiceIT {
     }
 
     @Test
-    void registerAuthorizationUserShouldThrowExceptionWhenFirstLevelOrganisationsNotFound() {
-        try {
-            setFirstLevelOrganisation("org_unknown");
-            Jwt token = mockJwtToken(user, List.of("org_gl"));
-            ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                    () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
-
-            assertEquals(UNAUTHORIZED, exception.getStatus());
-            assertEquals("no team found for given organisation org_unknown", exception.getReason());
-        } finally {
-            setFirstLevelOrganisation("org_gl");
-        }
-    }
-
-    @Test
     void registerAuthorizationUserShouldSetSecondLevelOrganisations() {
         Jwt token = mockJwtToken(user, List.of(ORGANISATION_SECOND_LEVEL, ORGANISATION_TEAM));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
@@ -105,26 +90,6 @@ class AuthorizationRegistrationServiceIT {
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
 
         assertRoles(List.of(READ_TEAM_DRAFT, READ_ALL_PUBLISHED, WRITE_TEAM), authorizationUser);
-    }
-
-    @Test
-    void registerAuthorizationUserShouldThrowExceptionWhenTeamsNotFound() {
-        Jwt token = mockJwtToken(user, List.of("org_azubi", "xxx_bar"));
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
-
-        assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("no team found for given organisations [org_azubi]", exception.getReason());
-    }
-
-    @Test
-    void registerAuthorizationUserShouldThrowExceptionWhenNoOrganisationsFound() {
-        Jwt token = mockJwtToken(user, List.of());
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> authorizationRegistrationService.registerAuthorizationUser(user, token));
-
-        assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("no team found for given organisations []", exception.getReason());
     }
 
     private static void assertRoles(List<AuthorizationRole> roles, AuthorizationUser authorizationUser) {

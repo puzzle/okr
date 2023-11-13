@@ -1,9 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { MatMenuModule } from '@angular/material/menu';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatMenuHarness } from '@angular/material/menu/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
@@ -14,9 +19,11 @@ const oAuthMock = {
 describe('ApplicationHeaderComponent', () => {
   let component: ApplicationTopBarComponent;
   let fixture: ComponentFixture<ApplicationTopBarComponent>;
+  let loader: HarnessLoader;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [MatMenuModule, NoopAnimationsModule],
       declarations: [ApplicationTopBarComponent],
       providers: [
         { provide: OAuthService, useValue: oAuthMock },
@@ -31,19 +38,20 @@ describe('ApplicationHeaderComponent', () => {
 
     fixture = TestBed.createComponent(ApplicationTopBarComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    loader = TestbedHarnessEnvironment.loader(fixture);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('logout function should get called on button click', () => {
-    const dropdown: HTMLElement = document.querySelector('pzsh-menu-dropdown')!;
-    dropdown.click();
+  it('logout function should get called on button click', async () => {
+    const harness = await loader.getHarness(MatMenuHarness);
+    await harness.open();
     fixture.detectChanges();
-    const logOutButton: HTMLElement = document.querySelector('pzsh-menu-dropdown-item')!;
-    logOutButton.click();
-    expect(oAuthMock.logOut).toBeCalledTimes(1);
+    harness.getItems().then((items) => {
+      items[0].click();
+      expect(oAuthMock.logOut).toBeCalledTimes(1);
+    });
   });
 });

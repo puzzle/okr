@@ -4,20 +4,16 @@
       <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="214" />
     </span>
     <div class="d-flex align-items-center">
+      <div class="px-3 cursor-pointer" (click)="openTeamManagement()" *ngIf="hasWriteAllAccess">
+        <a class="topBarEntry">
+          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white">group</mat-icon>
+          Teamverwaltung
+        </a>
+      </div>
+
       <div class="px-3">
         <a class="topBarEntry" href="https://wiki.puzzle.ch/Puzzle/OKRs">
           <mat-icon aria-hidden="false" aria-label="Help icon" class="text-white" fontIcon="help_outline"></mat-icon>
-    <pzsh-topbar id="pzsh-topbar">
-      <img ngSrc="assets/images/okr-logo.svg" alt="okr-logo" height="32" width="214" />
-    </pzsh-topbar>
-    <pzsh-menu>
-      <div slot="actions">
-        <div class="d-flex cursor-pointer header-text" (click)="openTeamManagement()" *ngIf="hasWriteAllAccess">
-          <mat-icon class="header-icon me-2">group</mat-icon>
-          <span class="text-white">Teamverwaltung</span>
-        </div>
-        <pzsh-menu-action href="https://wiki.puzzle.ch/Puzzle/OKRs">
-          <pzsh-icon name="question-circle"></pzsh-icon>
           Hilfe
         </a>
       </div>

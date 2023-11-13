@@ -3,7 +3,7 @@ import { onlyOn } from '@cypress/skip-test';
 
 describe('OKR Objective e2e tests', () => {
   describe('tests via click', () => {
-    xdescribe('CRUD operations', () => {
+    describe('CRUD operations', () => {
       beforeEach(() => {
         cy.loginAsUser(users.gl);
       });
@@ -87,24 +87,33 @@ describe('OKR Objective e2e tests', () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('A objective in state draft', 'safe-draft', undefined, '', false);
 
-        let objective = cy.contains('A objective in state draft').last().parentsUntil('#objective-column').last();
-        objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/draft-icon.svg`);
-        objective.click();
+        cy.getByTestId('objective')
+          .filter(':contains(A objective in state draft)')
+          .last()
+          .getByTestId('objective-state')
+          .should('have.attr', 'src', `assets/icons/draft-icon.svg`);
 
-        objective.getByTestId('three-dot-menu').click();
+        cy.getByTestId('objective')
+          .filter(':contains(A objective in state draft)')
+          .last()
+          .getByTestId('three-dot-menu')
+          .click();
         cy.get('.mat-mdc-menu-content').contains('Objective freigeben').click();
         cy.getByTestId('confirmYes').click();
 
-        objective = cy.contains('A objective in state draft').first().parentsUntil('#objective-column').last();
-        objective.getByTestId('objective-state').should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
+        cy.getByTestId('objective')
+          .filter(':contains(A objective in state draft)')
+          .last()
+          .getByTestId('objective-state')
+          .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
       });
 
-      xit(`Complete Objective with Successful`, () => {
+      it(`Complete Objective with Successful`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('We want to complete this successful', 'safe', undefined, '', false);
 
         cy.getByTestId('objective')
-          .get(':contains("We want to complete this successful")')
+          .filter(':contains("We want to complete this successful")')
           .last()
           .getByTestId('three-dot-menu')
           .click();
@@ -121,19 +130,19 @@ describe('OKR Objective e2e tests', () => {
         cy.getByTestId('submit').click();
 
         cy.getByTestId('objective')
-          .get(':contains("We want to complete this successful")')
+          .filter(':contains("We want to complete this successful")')
           .last()
           .getByTestId('objective-state')
           .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
       });
 
-      xit(`Complete Objective with Not-Successful`, () => {
+      it(`Complete Objective with Not-Successful`, () => {
         cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('A not successful objective', 'safe', '3', '', false);
+        cy.fillOutObjective('A not successful objective', 'safe', undefined, '', false);
 
         cy.getByTestId('objective')
-          .contains('A not successful objective')
-          .first()
+          .filter(':contains("A not successful objective")')
+          .last()
           .getByTestId('three-dot-menu')
           .click();
         cy.get('.mat-mdc-menu-content').contains('Objective abschliessen').click();
@@ -146,43 +155,46 @@ describe('OKR Objective e2e tests', () => {
         cy.contains('Abbrechen');
 
         cy.getByTestId('not-successful').click();
-
         cy.getByTestId('submit').click();
 
         cy.getByTestId('objective')
-          .contains('A not successful objective')
-          .getByTestId('objectiveState')
-          .contains('successful');
+          .filter(':contains("A not successful objective")')
+          .last()
+          .getByTestId('objective-state')
+          .should('have.attr', 'src', `assets/icons/not-successful-icon.svg`);
       });
 
-      xit(`Reopen Successful Objective`, () => {
+      it(`Reopen Successful Objective`, () => {
         cy.getByTestId('add-objective').first().click();
-        cy.fillOutObjective('This objective will be reopened after', 'safe', '3', '', false);
+        cy.fillOutObjective('This objective will be reopened after', 'safe', undefined, '', false);
 
         cy.getByTestId('objective')
-          .contains('This objective will be reopened after')
-          .first()
+          .filter(':contains("This objective will be reopened after")')
+          .last()
           .getByTestId('three-dot-menu')
           .click();
         cy.get('.mat-mdc-menu-content').contains('Objective abschliessen').click();
+
         cy.getByTestId('successful').click();
         cy.getByTestId('submit').click();
 
+        cy.wait(500);
+
         cy.getByTestId('objective')
-          .contains('This objective will be reopened after')
-          .first()
+          .filter(':contains("This objective will be reopened after")')
+          .last()
           .getByTestId('three-dot-menu')
           .click();
         cy.get('.mat-mdc-menu-content').contains('Objective wiedereröffnen').click();
 
         cy.getByTestId('objective')
-          .get(':contains("This objective will be reopened after")')
+          .filter(':contains("This objective will be reopened after")')
           .last()
           .getByTestId('objective-state')
           .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
       });
 
-      xit(`Search for Objective`, () => {
+      it(`Search for Objective`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('Search after this objective', 'safe', undefined, '', false);
 
@@ -217,7 +229,7 @@ describe('OKR Objective e2e tests', () => {
         cy.get('Search after this objective').should('not.exist');
       });
 
-      xit(`Create Objective in other quarter`, () => {
+      it(`Create Objective in other quarter`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('Objective in quarter 2', 'safe', '2', '', false);
 
@@ -228,14 +240,12 @@ describe('OKR Objective e2e tests', () => {
         cy.contains('Objective in quarter 2');
       });
 
-      xit(`Edit Objective and move to other quarter`, () => {
+      it(`Edit Objective and move to other quarter`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('Move to another quarter on edit', 'safe', undefined, '', false);
 
-        cy.contains('Move to another quarter on edit');
-
         cy.getByTestId('objective')
-          .contains('Move to another quarter on edit')
+          .filter(':contains("Move to another quarter on edit")')
           .last()
           .getByTestId('three-dot-menu')
           .click();
@@ -253,7 +263,7 @@ describe('OKR Objective e2e tests', () => {
   });
 });
 
-xdescribe('tests via keyboard', () => {
+describe('tests via keyboard', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     onlyOn('chrome');

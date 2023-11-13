@@ -114,6 +114,14 @@ class TeamPersistenceServiceIT {
         assertThat(expectedIds).hasSameElementsAs(teamIds);
     }
 
+    @Test
+    void shouldFindTeamsByName() {
+        Team team = Team.Builder.builder().withName("New Team").build();
+        createdTeam = teamPersistenceService.save(team);
+        List<Team> teams = teamPersistenceService.findTeamsByName("New Team");
+        assertThat(teams).contains(createdTeam);
+    }
+
     private static Stream<Arguments> findTeamIdsByOrganisationNamesArguments() {
         return Stream.of(arguments(List.of("org_gl"), List.of(5L), "get 1st level team"), //
                 arguments(List.of("org_bl"), List.of(6L, 8L), "get 2nd level teams"), //

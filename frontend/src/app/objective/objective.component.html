@@ -3,6 +3,7 @@
   (keydown.enter)="openObjectiveDetail()"
   class="objective rounded-3 bg-white"
   tabindex="0"
+  [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
 >
   <span class="col">

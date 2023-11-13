@@ -270,7 +270,7 @@ describe('tests via keyboard', () => {
   });
 
   it(`Open objective aside via enter`, () => {
-    cy.getByTestId('objective').first().focus();
+    cy.getByTestId('objective').first().find('[tabindex]').first().focus();
     cy.realPress('Enter');
     cy.url().should('include', 'objective');
   });

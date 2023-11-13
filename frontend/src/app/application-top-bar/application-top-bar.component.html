@@ -4,11 +4,13 @@
       <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="214" />
     </span>
     <div class="d-flex align-items-center">
-      <div class="px-3 cursor-pointer" (click)="openTeamManagement()" *ngIf="hasWriteAllAccess">
-        <a class="topBarEntry">
-          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white">group</mat-icon>
+      <div class="px-3 cursor-pointer" *ngIf="hasWriteAllAccess">
+        <button class="topBarEntry btn" tabindex="0" (click)="openTeamManagement()">
+          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white" (click)="openTeamManagement()"
+            >group</mat-icon
+          >
           Teamverwaltung
-        </a>
+        </button>
       </div>
 
       <div class="px-3">

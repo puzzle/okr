@@ -1,6 +1,6 @@
-import {OverviewEntity} from "./OverviewEntity";
+import { OverviewEntity } from './OverviewEntity';
 
 export interface Dashboard {
-  adminAccess: boolean
-  overviews: OverviewEntity[]
+  adminAccess: boolean;
+  overviews: OverviewEntity[];
 }

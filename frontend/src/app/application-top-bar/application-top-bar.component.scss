@@ -31,10 +31,8 @@
     transform: scale(0.95);
   }
 
-  &:focus {
-    background-color: #1a4e83 !important;
-  }
+  &:focus,
   &:hover {
-    background-color: #1a4e83 !important;
+    background-color: #1a4e83;
   }
 }

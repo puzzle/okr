@@ -128,15 +128,13 @@ Cypress.Commands.add(
 function changeConfidence(confidence: number) {
   if (confidence > 5) {
     cy.getByTestId('confidence-slider').realMouseDown();
-    for (let i = 0; i < confidence - 5; i++) {
-      cy.getByTestId('confidence-slider').type('{rightarrow');
-    }
+    cy.getByTestId('confidence-slider').type('{rightArrow}');
+    // cy.getByTestId('confidence-slider').realMouseMove(20, 0);
     cy.getByTestId('confidence-slider').realMouseUp();
   } else {
     cy.getByTestId('confidence-slider').realMouseDown();
-    for (let i = 0; i < 5 - confidence; i++) {
-      cy.getByTestId('confidence-slider').type('{leftarrow');
-    }
+    cy.getByTestId('confidence-slider').type('{leftArrow}');
+    // cy.getByTestId('confidence-slider').realMouseMove(60, 0);
     cy.getByTestId('confidence-slider').realMouseUp();
   }
 }

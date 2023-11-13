@@ -5,6 +5,7 @@ import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -12,6 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -109,6 +112,14 @@ class TeamValidationServiceTest {
                 () -> validator.validateOnCreate(team1));
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(team1.getId());
         assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
+    }
+
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenTeamAlreadyExists() {
+        BDDMockito.given(teamPersistenceService.findTeamsByName(anyString())).willReturn(List.of(team1));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnCreate(teamWithIdNull));
+        assertEquals("Can't create team with already existing name", exception.getReason());
     }
 
     @Test

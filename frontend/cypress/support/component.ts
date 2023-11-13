@@ -27,6 +27,18 @@ declare global {
         owner: string | null,
         description: string,
       ): void;
+      fillOutCheckInMetric(
+        currentValue: number,
+        confidence: number,
+        changeInfo: string | null,
+        initiatives: string | null,
+      ): void;
+      fillOutCheckInOrdinal(
+        currentZoneIndex: number,
+        confidence: number,
+        changeInfo: string | null,
+        initiatives: string | null,
+      ): void;
     }
   }
 }

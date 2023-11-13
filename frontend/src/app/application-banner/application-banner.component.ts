@@ -11,7 +11,6 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
-  panelOpenState = false;
 
   resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
     this.updateScrollEventListeners(entries[0].contentRect.height);

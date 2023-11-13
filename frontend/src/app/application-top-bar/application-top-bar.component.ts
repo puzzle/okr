@@ -6,6 +6,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 
 import { Router } from '@angular/router';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -29,6 +30,7 @@ export class ApplicationTopBarComponent implements OnInit {
     private configService: ConfigService,
     private dialog: MatDialog,
     private router: Router,
+    private refreshDataService: RefreshDataService,
   ) {}
 
   ngOnInit(): void {
@@ -61,6 +63,7 @@ export class ApplicationTopBarComponent implements OnInit {
       });
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = undefined;
+        this.refreshDataService.markDataRefresh();
       });
     }
   }

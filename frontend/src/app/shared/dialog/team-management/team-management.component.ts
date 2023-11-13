@@ -8,7 +8,6 @@ import { OrganisationService } from '../../services/organisation.service';
 import { Observable } from 'rxjs';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
-import { RefreshDataService } from '../../services/refresh-data.service';
 import { TeamMin } from '../../types/model/TeamMin';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
@@ -34,7 +33,6 @@ export class TeamManagementComponent implements OnInit {
     private dialog: MatDialog,
     private organisationService: OrganisationService,
     private teamService: TeamService,
-    private refreshDataService: RefreshDataService,
     @Inject(MAT_DIALOG_DATA) public data: { team: TeamMin },
   ) {}
 
@@ -56,7 +54,6 @@ export class TeamManagementComponent implements OnInit {
     if (!this.data) {
       let newTeam: Team = { ...this.teamForm.value, activeObjectives: 0 } as Team;
       this.teamService.createTeam(newTeam).subscribe((result) => {
-        this.refreshDataService.markDataRefresh();
         this.dialogRef.close(result);
       });
     } else {

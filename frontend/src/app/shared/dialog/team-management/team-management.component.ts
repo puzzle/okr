@@ -81,8 +81,9 @@ export class TeamManagementComponent implements OnInit {
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {
-        this.teamService.deleteTeam(this.data.team.id);
-        this.dialogRef.close();
+        this.teamService.deleteTeam(this.data.team.id).subscribe(() => {
+          this.dialogRef.close();
+        });
       }
     });
   }

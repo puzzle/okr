@@ -21,7 +21,7 @@ export class TeamService {
     return this.http.put<Team>(`/api/v2/teams/${team.id}`, team);
   }
 
-  deleteTeam(id: number): void {
-    this.http.delete(`/api/v2/teams/${id}`).subscribe();
+  deleteTeam(id: number): Observable<any> {
+    return this.http.delete(`/api/v2/teams/${id}`);
   }
 }

@@ -67,4 +67,16 @@ class OrganisationBusinessServiceTest {
         verify(organisationPersistenceService, times(1)).updateOrganisationStateToInactive(anyString());
     }
 
+    @Test
+    void getAllOrganisations() {
+        organisationBusinessService.getOrganisations(null);
+        verify(organisationPersistenceService, times(1)).findAll();
+    }
+
+    @Test
+    void getOrganisationsByTeamId() {
+        organisationBusinessService.getOrganisations(1L);
+        verify(organisationPersistenceService, times(1)).getOrganisationsByTeamId(1L);
+    }
+
 }

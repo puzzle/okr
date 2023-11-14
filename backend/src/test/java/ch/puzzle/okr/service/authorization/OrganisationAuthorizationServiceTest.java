@@ -35,22 +35,20 @@ class OrganisationAuthorizationServiceTest {
     void getEntityIfAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
 
-        organizationAuthorizationService.getEntities(1L);
-        verify(organisationBusinessService, times(1)).getOrganisations(1L);
+        organizationAuthorizationService.getEntities();
+        verify(organisationBusinessService, times(1)).getActiveOrganisations();
     }
 
     @Test
     void getErrorIfNotAuthorized() {
-        AuthorizationUser notAuthorizedUser = mockAuthorizationUser(defaultUser(1L), List.of(5L), 5L,
-                List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT));
-        when(authorizationService.getAuthorizationUser()).thenReturn(notAuthorizedUser);
+        when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> organizationAuthorizationService.getEntities(1L));
+                () -> organizationAuthorizationService.getEntities());
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to read organisations", exception.getReason());
-        verify(organisationBusinessService, never()).getOrganisations(1L);
+        assertEquals("Not authorized to read organisations", exception.getReason());
+        verify(organisationBusinessService, never()).getActiveOrganisations();
 
     }
 }

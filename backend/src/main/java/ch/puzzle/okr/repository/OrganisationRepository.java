@@ -1,6 +1,7 @@
 package ch.puzzle.okr.repository;
 
 import ch.puzzle.okr.models.Organisation;
+import ch.puzzle.okr.models.OrganisationState;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,6 @@ public interface OrganisationRepository extends CrudRepository<Organisation, Lon
 
     @Query(value = "SELECT * FROM organisation LEFT JOIN team_organisation ON organisation.id=team_organisation.organisation_id WHERE team_organisation.team_id = :id", nativeQuery = true)
     List<Organisation> findOrganisationsByTeamId(@Param("id") Long id);
+
+    List<Organisation> findOrganisationsByState(OrganisationState state);
 }

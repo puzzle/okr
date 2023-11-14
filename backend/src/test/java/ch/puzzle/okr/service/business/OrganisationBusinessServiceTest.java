@@ -69,13 +69,13 @@ class OrganisationBusinessServiceTest {
 
     @Test
     void getAllOrganisations() {
-        organisationBusinessService.getOrganisations(null);
-        verify(organisationPersistenceService, times(1)).findAll();
+        organisationBusinessService.getActiveOrganisations();
+        verify(organisationPersistenceService, times(1)).getActiveOrganisations();
     }
 
     @Test
     void getOrganisationsByTeamId() {
-        organisationBusinessService.getOrganisations(1L);
+        organisationBusinessService.getOrganisationsByTeam(1L);
         verify(organisationPersistenceService, times(1)).getOrganisationsByTeamId(1L);
     }
 }

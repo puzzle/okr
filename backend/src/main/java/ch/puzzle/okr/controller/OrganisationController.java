@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,14 +26,25 @@ public class OrganisationController {
         this.organisationMapper = organisationMapper;
     }
 
-    @Operation(summary = "Get all Organisations", description = "Get all Organisations")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Organisations", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationDto.class)) }),
+    @Operation(summary = "Get all active Organisations", description = "Get all active Organisations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all active Organisations", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationDto.class)) }),
             @ApiResponse(responseCode = "401", description = "Not authorized to read organisations", content = @Content) })
     @GetMapping
-    public ResponseEntity<List<OrganisationDto>> getOrganisations(
-            @RequestParam(required = false, defaultValue = "", name = "team") Long teamId) {
-        return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntities(teamId).stream()
+    public ResponseEntity<List<OrganisationDto>> getActiveOrganisations() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                organisationAuthorizationService.getEntities().stream().map(this.organisationMapper::toDto).toList());
+    }
+
+    @Operation(summary = "Get Organisations of team", description = "Get all Organisations of team")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all Organisations of team", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = OrganisationDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to read organisations of team", content = @Content) })
+    @GetMapping("/{id}")
+    public ResponseEntity<List<OrganisationDto>> getOrganisationsByTeam(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(organisationAuthorizationService.getEntitiesByTeam(id).stream()
                 .map(this.organisationMapper::toDto).toList());
     }
 }

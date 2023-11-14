@@ -35,4 +35,8 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
     public List<Organisation> getOrganisationsByTeamId(Long teamId) {
         return getRepository().findOrganisationsByTeamId(teamId);
     }
+
+    public List<Organisation> getActiveOrganisations() {
+        return getRepository().findOrganisationsByState(OrganisationState.ACTIVE);
+    }
 }

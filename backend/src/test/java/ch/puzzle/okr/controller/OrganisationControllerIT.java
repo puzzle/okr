@@ -65,7 +65,7 @@ class OrganisationControllerIT {
 
     @Test
     void shouldReturnOrganisationsOfBusinessService() throws Exception {
-        BDDMockito.given(organisationAuthorizationService.getEntities(null))
+        BDDMockito.given(organisationAuthorizationService.getEntities())
                 .willReturn(List.of(organisationPuzzle, organisationBBT));
 
         mvc.perform(get(URL_ORGANISATION).contentType(MediaType.APPLICATION_JSON))

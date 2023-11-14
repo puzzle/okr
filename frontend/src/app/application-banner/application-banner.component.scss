@@ -3,11 +3,11 @@
 #okrBanner {
   position: fixed;
   width: 100%;
-  height: $header-height;
+  height: min-content;
   z-index: 100;
   transition: 0.5s;
 }
 
 .header-content {
-  padding-left: 32px;
+  padding-left: 1.5rem;
 }

@@ -1,13 +1,34 @@
 <pzsh-banner id="okrBanner">
-  <img slot="tangram" ngSrc="assets/images/triangles-okr-header.svg" alt="okr-tangram" height="140" width="274" />
-  <div slot="content" class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
-    <div class="d-flex align-items-end gap-2">
-      <span class="d-flex flex-column">
-        <p class="mb-2">Quartal</p>
-        <app-quarter-filter></app-quarter-filter>
-      </span>
-      <app-objective-filter></app-objective-filter>
-    </div>
-    <app-team-filter></app-team-filter>
+  <img alt="okr-tangram" height="140" ngSrc="assets/images/triangles-okr-header.svg" slot="tangram" width="274" />
+  <div class="h-100 m-0 d-flex" slot="content">
+    <section class="d-none d-md-flex">
+      <div class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
+        <div class="d-flex align-items-end gap-2">
+          <span class="d-flex flex-column">
+            <p class="mb-2">Quartal</p>
+            <app-quarter-filter></app-quarter-filter>
+          </span>
+          <app-objective-filter></app-objective-filter>
+        </div>
+        <app-team-filter></app-team-filter>
+      </div>
+    </section>
+
+    <section class="m-0 d-sm-flex d-md-none w-100">
+      <mat-accordion [displayMode]="'flat'" class="w-100">
+        <mat-expansion-panel (closed)="panelOpenState = false" (opened)="panelOpenState = true" id="header-accordion">
+          <mat-expansion-panel-header>
+            <mat-panel-title *ngIf="!panelOpenState"
+              >{{ (quarterLabel$ | async) || quarterLabel$.getValue() }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="d-flex gap-2 flex-column">
+            <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)"></app-quarter-filter>
+            <app-objective-filter></app-objective-filter>
+            <app-team-filter></app-team-filter>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </section>
   </div>
 </pzsh-banner>

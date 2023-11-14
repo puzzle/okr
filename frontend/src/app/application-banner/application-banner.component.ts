@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-application-banner',
@@ -11,6 +12,8 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
+  quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  panelOpenState = false;
 
   resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
     this.updateScrollEventListeners(entries[0].contentRect.height);

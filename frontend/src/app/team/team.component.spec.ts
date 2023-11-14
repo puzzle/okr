@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamComponent } from './team.component';
 import { MatIcon } from '@angular/material/icon';
-import { overViewEntity1, overViewEntity2 } from '../shared/testData';
+import { organisationActive, organisationInActive, overViewEntity1, overViewEntity2 } from '../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,6 +9,12 @@ import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
+import { OrganisationService } from '../shared/services/organisation.service';
+import { of } from 'rxjs';
+
+const organisationServiceMock = {
+  getOrganisationsByTeamId: jest.fn(),
+};
 
 describe('TeamComponent', () => {
   let component: TeamComponent;
@@ -18,6 +24,12 @@ describe('TeamComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, MatMenuModule, MatDialogModule, HttpClientTestingModule],
       declarations: [TeamComponent, MatIcon, ObjectiveComponent, KeyresultComponent],
+      providers: [
+        {
+          provide: OrganisationService,
+          useValue: organisationServiceMock,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TeamComponent);
@@ -42,5 +54,21 @@ describe('TeamComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button).toBeFalsy();
+  });
+
+  it('should set has inactive teams to true', async () => {
+    jest
+      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
+      .mockReturnValue(of([organisationInActive, organisationInActive]));
+    component.checkIfTeamHasInActiveOrganisations();
+    expect(component.hasInActiveOrganisation.value).toBeTruthy();
+  });
+
+  it('should set has inactive teams to false', async () => {
+    jest
+      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
+      .mockReturnValue(of([organisationActive, organisationActive]));
+    component.checkIfTeamHasInActiveOrganisations();
+    expect(component.hasInActiveOrganisation.value).toBeFalsy();
   });
 });

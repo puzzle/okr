@@ -26,7 +26,6 @@ describe('Scoring component e2e tests', () => {
     cy.getByTestId('keyresult').get(':contains("Ordinal scoring keyresult")').last().click();
     cy.getByTestId('add-check-in').click();
     cy.tabForward();
-    cy.realPress('{downarrow}').realPress('{downarrow}');
     cy.getByTestId('target-zone').click();
     cy.tabForward();
     cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');

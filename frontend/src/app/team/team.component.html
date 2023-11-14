@@ -1,9 +1,13 @@
 <div class="row w-auto bg-grey mt-4" *ngIf="overviewEntity | async as OVEntity">
-  <div class="d-flex flex-row">
+  <div class="d-flex flex-row align-items-center">
     <p class="team-title">{{ OVEntity.team.name }}</p>
-    <mat-icon *ngIf="hasWriteAllAccess" (click)="openEditTeamDialog(OVEntity.team)" class="ms-2 mt-1 cursor-pointer"
-      >edit</mat-icon
-    >
+    <img
+      class="edit-team cursor-pointer ms-2"
+      src="assets/icons/edit.svg"
+      alt="edit check-in"
+      *ngIf="hasWriteAllAccess"
+      (click)="openEditTeamDialog(OVEntity.team)"
+    />
   </div>
   <div class="d-flex justify-content-center">
     <div

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getValueFromQuery } from '../shared/common';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -39,7 +39,7 @@ export class QuarterFilterComponent implements OnInit {
           this.refreshDataService.quarterFilterReady.next();
         }
       }
-      const quarterLabel = quarters.find((e) => e.id == quarterId)?.label || '';
+      const quarterLabel = quarters.find((e) => e.id == this.quarterId)?.label || '';
       this.quarterLabel$.next(quarterLabel);
     });
   }

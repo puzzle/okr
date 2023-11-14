@@ -60,6 +60,7 @@ describe('TeamComponent', () => {
     jest
       .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
       .mockReturnValue(of([organisationInActive, organisationInActive]));
+    component.hasWriteAllAccess = true;
     component.checkIfTeamHasInActiveOrganisations();
     expect(component.hasInActiveOrganisation.value).toBeTruthy();
   });
@@ -68,6 +69,7 @@ describe('TeamComponent', () => {
     jest
       .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
       .mockReturnValue(of([organisationActive, organisationActive]));
+    component.hasWriteAllAccess = true;
     component.checkIfTeamHasInActiveOrganisations();
     expect(component.hasInActiveOrganisation.value).toBeFalsy();
   });

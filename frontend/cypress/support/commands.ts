@@ -136,27 +136,30 @@ Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, own
   cy.getByTestId('submit').click();
 });
 
-Cypress.Commands.add('createMetricKeyresult', (title: string | null) => {
-  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
-  cy.getByTestId('submit').should('be.disabled');
-  cy.contains('Key Result erfassen');
-  cy.contains('Jaya Norris');
-  cy.checkForDialogText();
+Cypress.Commands.add(
+  'createMetricKeyresult',
+  (title: string | null, baseline: string | null, stretchGoal: string | null) => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+    cy.getByTestId('submit').should('be.disabled');
+    cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
+    cy.checkForDialogText();
 
-  cy.fillOutKeyResult(
-    title == null ? 'I am a metric keyresult' : title,
-    'PERCENT',
-    '21',
-    '52',
-    null,
-    null,
-    null,
-    'Pac',
-    'This is my description',
-  );
-  cy.getByTestId('submit').should('not.be.disabled');
-  cy.getByTestId('submit').click();
-});
+    cy.fillOutKeyResult(
+      title == null ? 'I am a metric keyresult' : title,
+      'PERCENT',
+      baseline === null ? '21' : baseline,
+      stretchGoal === null ? '52' : stretchGoal,
+      null,
+      null,
+      null,
+      'Pac',
+      'This is my description',
+    );
+    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit').click();
+  },
+);
 
 Cypress.Commands.add('checkForDialogText', () => {
   cy.contains('Titel');

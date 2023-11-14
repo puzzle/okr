@@ -10,7 +10,7 @@ declare global {
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
       createOrdinalKeyresult(title: string | null, owner: string | null): void;
-      createMetricKeyresult(title: string | null): void;
+      createMetricKeyresult(title: string | null, baseline: string | null, stretchGoal: string | null): void;
       checkForDialogText(): void;
       fillOutObjective(
         objectiveTitle: string,

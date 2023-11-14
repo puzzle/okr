@@ -7,7 +7,7 @@ describe('OKR Overview', () => {
   });
 
   it('Create new metric KeyResult', () => {
-    cy.createMetricKeyresult(null);
+    cy.createMetricKeyresult(null, null, null);
 
     cy.getByTestId('keyresult').contains('I am a metric keyresult').click();
 

@@ -9,6 +9,8 @@ import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key
 import { trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
+import { OrganisationService } from '../shared/services/organisation.service';
+import { OrganisationState } from '../shared/types/enums/OrganisationState';
 
 @Component({
   selector: 'app-team',
@@ -22,11 +24,27 @@ export class TeamComponent {
 
   @Input()
   hasWriteAllAccess!: boolean;
+  hasInActiveOrganisation = new BehaviorSubject<boolean>(false);
 
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
-  ) {}
+    private organisationService: OrganisationService,
+  ) {
+    this.checkIfTeamHasInActiveOrganisations();
+  }
+
+  checkIfTeamHasInActiveOrganisations() {
+    this.overviewEntity$.subscribe((result) => {
+      if (result.team) {
+        this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
+          this.hasInActiveOrganisation.next(
+            organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
+          );
+        });
+      }
+    });
+  }
 
   @Input()
   get overviewEntity(): BehaviorSubject<OverviewEntity> {

@@ -8,7 +8,10 @@
       *ngIf="hasWriteAllAccess"
       (click)="openEditTeamDialog(OVEntity.team)"
     />
-    <mat-icon class="team-actions cursor-pointer ms-2 text-danger" [matTooltip]="'This team has inactive organisations'"
+    <mat-icon
+      *ngIf="this.hasInActiveOrganisation | async"
+      class="team-actions cursor-pointer ms-2 text-danger"
+      [matTooltip]="'This team has inactive organisations'"
       >error_outline</mat-icon
     >
   </div>

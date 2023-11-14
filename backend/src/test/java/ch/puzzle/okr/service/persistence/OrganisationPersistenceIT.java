@@ -126,4 +126,12 @@ class OrganisationPersistenceIT {
         assertEquals(List.of(), organisationPersistenceService.getOrganisationsByTeamId(90L).stream()
                 .map(Organisation::getId).toList());
     }
+
+    @Test
+    void getActiveOrganisations() {
+        List<Organisation> organisations = organisationPersistenceService.getActiveOrganisations();
+        organisations.forEach(organisation -> {
+            assertNotSame(OrganisationState.INACTIVE, organisation.getState());
+        });
+    }
 }

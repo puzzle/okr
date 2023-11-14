@@ -1,7 +1,6 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.OrganisationDto;
-import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.mapper.OrganisationMapper;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
@@ -21,7 +20,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -72,5 +70,15 @@ class OrganisationControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$[0].orgName", Is.is(organisationPuzzleDto.orgName())))
                 .andExpect(jsonPath("$[1].orgName", Is.is(organisationBBTDto.orgName())));
+    }
+
+    @Test
+    void shouldReturnOrganisationsOfTeam() throws Exception {
+        BDDMockito.given(organisationAuthorizationService.getEntitiesByTeam(1L))
+                .willReturn(List.of(organisationPuzzle));
+
+        mvc.perform(get(URL_ORGANISATION + "/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$[0].orgName", Is.is(organisationPuzzleDto.orgName())));
     }
 }

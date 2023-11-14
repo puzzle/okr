@@ -90,6 +90,22 @@ describe('Scoring component e2e tests', () => {
     validateScoringColor('target', rgbCode, isOverview);
   }
 
+  it('Create ordinal checkin and validate value of scoring component', () => {
+    cy.createOrdinalKeyresult('Ordinal scoring keyresult', null);
+    cy.getByTestId('keyresult').get(':contains("Ordinal scoring keyresult")').last().click();
+    cy.getByTestId('add-check-in').click();
+    cy.getByTestId('target-zone').click();
+    cy.getByTestId('confidence-slider').click();
+    cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
+    cy.getByTestId('continue-checkin').click();
+    cy.getByTestId('changeInfo').click().type('Testveränderungen');
+    cy.getByTestId('initiatives').click().type('Testmassnahmen');
+    cy.getByTestId('create-checkin').click();
+    //ToDo: Implement checking of scoring component value in keyresult detail
+    cy.getByTestId('close-drawer').click();
+    //ToDo: Implement checking of scoring component value on overview
+  });
+
   function validateScoringWidth(zone: string, percent: number, isOverview: boolean) {
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId(zone)
@@ -111,20 +127,4 @@ describe('Scoring component e2e tests', () => {
       .invoke('css', 'background-color')
       .should('equal', rgbCode);
   }
-
-  it('Create ordinal checkin and validate value of scoring component', () => {
-    cy.createOrdinalKeyresult('Ordinal scoring keyresult', null);
-    cy.getByTestId('keyresult').get(':contains("Ordinal scoring keyresult")').last().click();
-    cy.getByTestId('add-check-in').click();
-    cy.getByTestId('target-zone').click();
-    cy.getByTestId('confidence-slider').click();
-    cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
-    cy.getByTestId('continue-checkin').click();
-    cy.getByTestId('changeInfo').click().type('Testveränderungen');
-    cy.getByTestId('initiatives').click().type('Testmassnahmen');
-    cy.getByTestId('create-checkin').click();
-    //ToDo: Implement checking of scoring component value in keyresult detail
-    cy.getByTestId('close-drawer').click();
-    //ToDo: Implement checking of scoring component value on overview
-  });
 });

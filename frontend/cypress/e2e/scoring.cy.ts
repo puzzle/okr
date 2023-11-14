@@ -23,13 +23,13 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('changeInfo').click().type('Testveränderungen');
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
-      validateScoringWidthsAndColor('side-panel', +baseline, +stretchgoal, +value);
+      validateScoringWidthsAndColor(false, +baseline, +stretchgoal, +value);
       cy.getByTestId('close-drawer').click();
-      //ToDo: Implement checking of scoring component value on overview
+      validateScoringWidthsAndColor(true, +baseline, +stretchgoal, +value);
     });
   });
 
-  function validateScoringWidthsAndColor(subSelect: string, baseline: number, stretchGoal: number, value: number) {
+  function validateScoringWidthsAndColor(isOverview: boolean, baseline: number, stretchGoal: number, value: number) {
     let percentage = -1;
     if (!isInValid(baseline, stretchGoal, value)) {
       percentage = (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
@@ -72,48 +72,57 @@ describe('Scoring component e2e tests', () => {
         failPercent = (100 / 30) * percentage;
     }
 
-    cy.getByTestId(subSelect)
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('fail')
       .parent()
       .invoke('width')
       .then((width) => {
         if (width !== undefined) {
-          cy.getByTestId(subSelect)
+          (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
             .getByTestId('fail')
             .invoke('width')
             .should('be.within', width * (failPercent / 100) - 2, width * (failPercent / 100) + 2);
         }
       });
 
-    cy.getByTestId(subSelect)
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('commit')
       .parent()
       .invoke('width')
       .then((width) => {
         if (width !== undefined) {
-          cy.getByTestId(subSelect)
+          (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
             .getByTestId('commit')
             .invoke('width')
             .should('be.within', width * (commitPercent / 100) - 2, width * (commitPercent / 100) + 2);
         }
       });
 
-    cy.getByTestId(subSelect)
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('target')
       .parent()
       .invoke('width')
       .then((width) => {
         if (width !== undefined) {
-          cy.getByTestId(subSelect)
+          (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
             .getByTestId('target')
             .invoke('width')
             .should('be.within', width * (targetPercent / 100) - 2, width * (targetPercent / 100) + 2);
         }
       });
 
-    cy.getByTestId(subSelect).getByTestId('fail').invoke('css', 'background-color').should('equal', rgbCode);
-    cy.getByTestId(subSelect).getByTestId('commit').invoke('css', 'background-color').should('equal', rgbCode);
-    cy.getByTestId(subSelect).getByTestId('target').invoke('css', 'background-color').should('equal', rgbCode);
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
+      .getByTestId('fail')
+      .invoke('css', 'background-color')
+      .should('equal', rgbCode);
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
+      .getByTestId('commit')
+      .invoke('css', 'background-color')
+      .should('equal', rgbCode);
+    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
+      .getByTestId('target')
+      .invoke('css', 'background-color')
+      .should('equal', rgbCode);
   }
 
   it('Create ordinal checkin and validate value of scoring component', () => {

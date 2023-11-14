@@ -1,6 +1,6 @@
 <pzsh-banner id="okrBanner">
-  <img slot="tangram" ngSrc="assets/images/triangles-okr-header.svg" width="274" alt="okr-tangram" height="140" />
-  <div slot="content" class="h-100 m-0 d-flex">
+  <img alt="okr-tangram" height="140" ngSrc="assets/images/triangles-okr-header.svg" slot="tangram" width="274" />
+  <div class="h-100 m-0 d-flex" slot="content">
     <section class="d-none d-md-flex">
       <div class="header-content h-100 m-0 pt-3 pb-3 d-flex gap-2 flex-column container-fluid">
         <div class="d-flex align-items-end gap-2">
@@ -15,10 +15,12 @@
     </section>
 
     <section class="m-0 d-sm-flex d-md-none w-100">
-      <mat-accordion class="w-100">
-        <mat-expansion-panel id="header-accordion">
+      <mat-accordion [displayMode]="'flat'" class="w-100">
+        <mat-expansion-panel (closed)="panelOpenState = false" (opened)="panelOpenState = true" id="header-accordion">
           <mat-expansion-panel-header>
-            <mat-panel-title> {{ quarterLabel$ | async }} </mat-panel-title>
+            <mat-panel-title *ngIf="!panelOpenState"
+              >{{ (quarterLabel$ | async) || quarterLabel$.getValue() }}
+            </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="d-flex gap-2 flex-column">
             <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)"></app-quarter-filter>

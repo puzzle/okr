@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { Organisation } from '../../types/model/Organisation';
 import { OrganisationService } from '../../services/organisation.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { TeamMin } from '../../types/model/TeamMin';
@@ -39,14 +39,17 @@ export class TeamManagementComponent implements OnInit {
   ngOnInit(): void {
     this.organisations$ = this.organisationService.getOrganisations();
     if (this.data) {
-      this.organisationService.getOrganisationsByTeamId(this.data.team.id).subscribe((result) => {
-        this.teamForm.setValue({
-          name: this.data.team.name,
-          organisations: result,
+      this.organisationService
+        .getOrganisationsByTeamId(this.data.team.id)
+        .subscribe((organisationsOfTeam: Organisation[]) => {
+          this.mergeOrganisations(organisationsOfTeam);
+          this.teamForm.setValue({
+            name: this.data.team.name,
+            organisations: organisationsOfTeam,
+          });
+          this.hasInActiveOrganisations =
+            organisationsOfTeam.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0;
         });
-        this.hasInActiveOrganisations =
-          result.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0;
-      });
     }
   }
 
@@ -62,6 +65,12 @@ export class TeamManagementComponent implements OnInit {
         this.dialogRef.close(result);
       });
     }
+  }
+
+  mergeOrganisations(organisationsOfTeam: Organisation[]) {
+    this.organisations$.subscribe((activeOrganisations) => {
+      this.organisations$ = of([...organisationsOfTeam, ...activeOrganisations]);
+    });
   }
 
   checkIfInActiveAdded() {

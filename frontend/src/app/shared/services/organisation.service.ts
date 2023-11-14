@@ -15,9 +15,6 @@ export class OrganisationService {
   }
 
   getOrganisationsByTeamId(teamId: number): Observable<Organisation[]> {
-    const params = optionalValue({
-      team: teamId,
-    });
-    return this.http.get<Organisation[]>('/api/v1/organisations', { params: params });
+    return this.http.get<Organisation[]>('/api/v1/organisations/' + teamId);
   }
 }

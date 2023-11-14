@@ -11,6 +11,7 @@ describe('Scoring component e2e tests', () => {
     ['0', '100', '10'],
     ['0', '100', '31'],
     ['0', '100', '71'],
+    ['0', '100', '100'],
   ].forEach(([baseline, stretchgoal, value]) => {
     it.only('Create metric checkin and validate value of scoring component', () => {
       cy.createMetricKeyresult('Metric scoring keyresult', baseline, stretchgoal);
@@ -38,6 +39,9 @@ describe('Scoring component e2e tests', () => {
     let rgbCode;
 
     switch (true) {
+      case percentage >= 100:
+        rgbCode = 'rgba(0, 0, 0, 0)';
+        break;
       case percentage > 70:
         rgbCode = 'rgb(30, 138, 41)';
         break;

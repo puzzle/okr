@@ -31,19 +31,16 @@ export class QuarterFilterComponent implements OnInit {
       if (quarters.map((quarter) => quarter.id).includes(quarterId)) {
         this.quarterId = quarterId;
         this.changeDisplayedQuarter();
-        const quarterLabel = quarters.find((e) => e.id == quarterId)?.label || '';
-        this.quarterLabel$.next(quarterLabel);
       } else {
+        this.quarterId = quarters[0].id;
         if (quarterQuery !== undefined) {
-          this.quarterId = quarters[0].id;
           this.changeDisplayedQuarter();
-          this.quarterLabel$.next(quarters[0].label);
         } else {
-          this.quarterId = quarters[0].id;
           this.refreshDataService.quarterFilterReady.next();
-          this.quarterLabel$.next(quarters[0].label);
         }
       }
+      const quarterLabel = quarters.find((e) => e.id == quarterId)?.label || '';
+      this.quarterLabel$.next(quarterLabel);
     });
   }
 

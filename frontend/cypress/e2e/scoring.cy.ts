@@ -69,7 +69,7 @@ describe('Scoring component e2e tests', () => {
       .parent()
       .invoke('width')
       .then((width) => {
-        if (width) {
+        if (width !== undefined) {
           cy.getByTestId(subSelect)
             .getByTestId('fail')
             .invoke('width')
@@ -82,7 +82,7 @@ describe('Scoring component e2e tests', () => {
       .parent()
       .invoke('width')
       .then((width) => {
-        if (width) {
+        if (width !== undefined) {
           cy.getByTestId(subSelect)
             .getByTestId('commit')
             .invoke('width')
@@ -95,7 +95,7 @@ describe('Scoring component e2e tests', () => {
       .parent()
       .invoke('width')
       .then((width) => {
-        if (width) {
+        if (width !== undefined) {
           cy.getByTestId(subSelect)
             .getByTestId('target')
             .invoke('width')

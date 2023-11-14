@@ -73,7 +73,7 @@
   <button
     mat-menu-item
     class="objective-menu-option"
-    [attr.data-testId]='"objective-menu"'
+    [attr.data-testId]="'objective-menu'"
     (click)="redirect(menuEntry)"
     *ngFor="let menuEntry of menuEntries"
   >

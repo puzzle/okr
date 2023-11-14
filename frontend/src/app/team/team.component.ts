@@ -35,15 +35,17 @@ export class TeamComponent {
   }
 
   checkIfTeamHasInActiveOrganisations() {
-    this.overviewEntity$.subscribe((result) => {
-      if (result.team) {
-        this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
-          this.hasInActiveOrganisation.next(
-            organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
-          );
-        });
-      }
-    });
+    if (this.hasWriteAllAccess) {
+      this.overviewEntity$.subscribe((result) => {
+        if (result.team) {
+          this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
+            this.hasInActiveOrganisation.next(
+              organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
+            );
+          });
+        }
+      });
+    }
   }
 
   @Input()

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getValueFromQuery } from '../shared/common';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -12,7 +12,8 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuarterFilterComponent implements OnInit {
-  quarters: Subject<Quarter[]> = new Subject<Quarter[]>();
+  quarters: BehaviorSubject<Quarter[]> = new BehaviorSubject<Quarter[]>([]);
+  @Output() quarterLabel$ = new EventEmitter<string>();
   quarterId: number = -1;
 
   constructor(
@@ -30,13 +31,17 @@ export class QuarterFilterComponent implements OnInit {
       if (quarters.map((quarter) => quarter.id).includes(quarterId)) {
         this.quarterId = quarterId;
         this.changeDisplayedQuarter();
+        const quarterLabel = quarters.find((e) => e.id == quarterId)?.label || '';
+        this.quarterLabel$.next(quarterLabel);
       } else {
         if (quarterQuery !== undefined) {
           this.quarterId = quarters[0].id;
           this.changeDisplayedQuarter();
+          this.quarterLabel$.next(quarters[0].label);
         } else {
           this.quarterId = quarters[0].id;
           this.refreshDataService.quarterFilterReady.next();
+          this.quarterLabel$.next(quarters[0].label);
         }
       }
     });
@@ -44,6 +49,9 @@ export class QuarterFilterComponent implements OnInit {
 
   changeDisplayedQuarter() {
     const id = this.quarterId;
+    const quarterLabel = this.quarters.getValue().find((e) => e.id == id)?.label || '';
+    this.quarterLabel$.next(quarterLabel);
+
     this.router
       .navigate([], { queryParams: { quarter: id } })
       .then(() => this.refreshDataService.quarterFilterReady.next());

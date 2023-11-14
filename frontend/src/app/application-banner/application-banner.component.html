@@ -18,10 +18,10 @@
       <mat-accordion class="w-100">
         <mat-expansion-panel id="header-accordion">
           <mat-expansion-panel-header>
-            <mat-panel-title> GJ 22/23-Q1 </mat-panel-title>
+            <mat-panel-title> {{ quarterLabel$ | async }} </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="d-flex gap-2 flex-column">
-            <app-quarter-filter></app-quarter-filter>
+            <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)"></app-quarter-filter>
             <app-objective-filter></app-objective-filter>
             <app-team-filter></app-team-filter>
           </div>

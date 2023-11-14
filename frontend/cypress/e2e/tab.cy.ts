@@ -69,7 +69,21 @@ describe('Tab workflow tests', () => {
     cy.tabBackward();
     cy.focused().contains("Speichern");
     cy.realPress("Enter")
+  }
 
+  function openKeyresultDetail() {
+    cy.get('.objective').first().focus();
+    cy.tabForwardUntil('[data-testId="key-result"]')
+    cy.focused().contains("Fail");
+    cy.focused().contains("Commit");
+    cy.focused().contains("Target");
+    cy.focused().contains("Stretch");
+    cy.focused().contains("Confidence");
+    cy.realPress("Enter")
+    cy.url().should('include', 'keyresult');
+    cy.contains("Alle Check-ins anzeigen");
+    cy.contains("Check-in erfassen");
+    cy.contains("Key Result bearbeiten");
   }
 
   // Header from here
@@ -121,7 +135,7 @@ describe('Tab workflow tests', () => {
     closeDialogWithCross();
   });
 
-  it('Edit objective in three dot menu', () => {
+  it('Edit objective with tab', () => {
     openThreeDotMenu();
     cy.focused().contains("Objective bearbeiten");
     cy.realPress("Enter")
@@ -133,7 +147,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Edited by Cypress")
   });
 
-  it('Duplicate objective in three dot menu', () => {
+  it('Duplicate objective with tab', () => {
     openThreeDotMenu();
     cy.realPress("ArrowDown")
     cy.focused().contains("Objective duplizieren")
@@ -152,7 +166,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Duplicated by Cypress");
   });
 
-  it.skip('Complete objective dialog in three dot menu', () => {
+  it.skip('Complete objective dialog with tab', () => {
     openThreeDotMenu();
     cy.realPress("ArrowDown")
     cy.realPress("ArrowDown")
@@ -161,7 +175,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Objective abschliessen") // Does not work yet. It's not possible to select Objective successful or unsuccessful with tab.
   });
 
-  it('Create new objective', () => {
+  it('Create new objective with tab', () => {
     openCreateObjective();
     cy.focused().type("Objective by Cypress")
     cy.tabForward();
@@ -173,7 +187,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Objective by Cypress");
   });
 
-  it('Delete objective with edit in three dot menu', () => {
+  it('Delete objective with tab', () => {
     openThreeDotMenu();
     cy.focused().contains("Objective bearbeiten");
     cy.realPress("Enter")
@@ -186,7 +200,7 @@ describe('Tab workflow tests', () => {
     cy.realPress("Enter");
   });
 
-  it('Close create objective with cross or close button', () => {
+  it('Close create objective with tab', () => {
     openCreateObjective();
     closeDialogWithCloseButton();
     openCreateObjective();
@@ -194,22 +208,28 @@ describe('Tab workflow tests', () => {
   });
 
   it('Tab to key result, open detail view and close', () => {
-    cy.get('.objective').first().focus();
-    cy.tabForwardUntil('[data-testId="key-result"]')
-    cy.focused().contains("Fail");
-    cy.focused().contains("Commit");
-    cy.focused().contains("Target");
-    cy.focused().contains("Stretch");
-    cy.focused().contains("Confidence");
-    cy.realPress("Enter")
-    cy.url().should('include', 'keyresult');
-    cy.contains("Alle Check-ins anzeigen");
-    cy.contains("Check-in erfassen");
-    cy.contains("Key Result bearbeiten");
+    openKeyresultDetail();
     closeDialogWithCross();
   });
 
-  it('Create new key result metric', () => {
+  it.only('Edit key result with tab', () => {
+    openKeyresultDetail();
+    cy.tabForward();
+    cy.tabForwardUntil('[data-testId="edit-keyResult"]');
+    cy.focused().contains("Key Result bearbeiten")
+  });
+
+  it('Create check-in with tab', () => {
+    openKeyresultDetail();
+    closeDialogWithCross();
+  });
+
+  it('Open check-in history with tab', () => {
+    openKeyresultDetail();
+    closeDialogWithCross();
+  });
+
+  it('Create new key result metric with tab', () => {
     openCreateKeyResult();
     cy.focused().type("KeyResult metric by Cypress")
     cy.contains("Einheit")
@@ -225,7 +245,7 @@ describe('Tab workflow tests', () => {
     cy.contains("KeyResult metric by Cypress");
   });
 
-  it('Create new key result ordinal', () => {
+  it('Create new key result ordinal with tab', () => {
     openCreateKeyResult();
     cy.focused().type("KeyResult ordinal by Cypress")
     cy.tabForward();
@@ -242,7 +262,7 @@ describe('Tab workflow tests', () => {
     cy.contains("KeyResult ordinal by Cypress");
   });
 
-  it('Close create keyResult with cross or close button', () => {
+  it('Close create keyResult with tab', () => {
     openCreateKeyResult();
     closeDialogWithCloseButton();
     openCreateKeyResult();

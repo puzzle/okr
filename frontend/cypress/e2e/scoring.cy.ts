@@ -24,13 +24,18 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('changeInfo').click().type('Testveränderungen');
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
-      validateScoringWidthsAndColor(false, +baseline, +stretchgoal, +value);
+      validateMetricScoringWidthsAndColor(false, +baseline, +stretchgoal, +value);
       cy.getByTestId('close-drawer').click();
-      validateScoringWidthsAndColor(true, +baseline, +stretchgoal, +value);
+      validateMetricScoringWidthsAndColor(true, +baseline, +stretchgoal, +value);
     });
   });
 
-  function validateScoringWidthsAndColor(isOverview: boolean, baseline: number, stretchGoal: number, value: number) {
+  function validateMetricScoringWidthsAndColor(
+    isOverview: boolean,
+    baseline: number,
+    stretchGoal: number,
+    value: number,
+  ) {
     let percentage = -1;
     if (!isInValid(baseline, stretchGoal, value)) {
       percentage = (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;

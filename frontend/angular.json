@@ -31,7 +31,7 @@
               "src/style/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/style", "src/assets"]
+              "includePaths": ["src/style", "src/assets", "node_modules"]
             },
             "scripts": [
               "node_modules/@puzzleitc/puzzle-shell/dist/bundle.js",

@@ -1,5 +1,9 @@
 @import "_variables";
 
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 .overviewContainer {
   overflow-x: hidden;
   padding-left: 2rem;
@@ -14,6 +18,9 @@
 }
 
 .mt-header-height {
-  padding-top: $header-height;
+  padding-top: $default-header-height;
   background-color: $overview-bg;
+  @include media-breakpoint-down(md) {
+    padding-top: $mobile-header-height;
+  }
 }

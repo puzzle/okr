@@ -15,6 +15,7 @@
         (menuClosed)="menuIsOpen = false"
         (menuOpened)="menuIsOpen = true"
         [matMenuTriggerFor]="menu"
+        [attr.data-testId]="'user-options'"
         class="topBarEntry text-white me-md-5 me-1"
         mat-button
       >
@@ -23,7 +24,7 @@
             <mat-icon>person_outline</mat-icon>
           </span>
 
-          <p class="fw-normal fs-6 d-none d-md-flex">{{ username | async }}</p>
+          <p class="fw-normal fs-6 d-none d-md-flex" [attr.data-testId]="'user-name'">{{ username | async }}</p>
           <span class="mt-1">
             <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
             <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>

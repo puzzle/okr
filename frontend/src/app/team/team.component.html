@@ -2,12 +2,15 @@
   <div class="d-flex flex-row align-items-center">
     <p class="team-title">{{ OVEntity.team.name }}</p>
     <img
-      class="edit-team cursor-pointer ms-2"
+      class="team-icons team-actions cursor-pointer ms-2"
       src="assets/icons/edit.svg"
-      alt="edit check-in"
+      alt="edit team"
       *ngIf="hasWriteAllAccess"
       (click)="openEditTeamDialog(OVEntity.team)"
     />
+    <mat-icon class="team-actions cursor-pointer ms-2 text-danger" [matTooltip]="'This team has inactive organisations'"
+      >error_outline</mat-icon
+    >
   </div>
   <div class="d-flex justify-content-center">
     <div

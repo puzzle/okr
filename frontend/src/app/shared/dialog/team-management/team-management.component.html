@@ -21,8 +21,11 @@
       <div class="d-flex flex-column gap-2 col-12 mb-3">
         <div class="d-flex flex-row">
           <label class="text-black" for="organisations">Organisationen</label>
-          <mat-icon class="ms-2" *ngIf="hasInActiveOrganisations" [matTooltip]="'This team has inactive organisations'"
-            >report_problem</mat-icon
+          <mat-icon
+            class="ms-2 text-danger"
+            *ngIf="hasInActiveOrganisations"
+            [matTooltip]="'This team has inactive organisations'"
+            >error_outline</mat-icon
           >
         </div>
         <mat-select

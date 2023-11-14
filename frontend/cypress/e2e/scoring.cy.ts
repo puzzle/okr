@@ -72,55 +72,33 @@ describe('Scoring component e2e tests', () => {
         failPercent = (100 / 30) * percentage;
     }
 
+    validateScoringWidth('fail', failPercent, isOverview);
+    validateScoringWidth('commit', commitPercent, isOverview);
+    validateScoringWidth('target', targetPercent, isOverview);
+
+    validateScoringColor('fail', rgbCode, isOverview);
+    validateScoringColor('commit', rgbCode, isOverview);
+    validateScoringColor('target', rgbCode, isOverview);
+  }
+
+  function validateScoringWidth(zone: string, percent: number, isOverview: boolean) {
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('fail')
+      .getByTestId(zone)
       .parent()
       .invoke('width')
       .then((width) => {
         if (width !== undefined) {
           (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-            .getByTestId('fail')
+            .getByTestId(zone)
             .invoke('width')
-            .should('be.within', width * (failPercent / 100) - 2, width * (failPercent / 100) + 2);
+            .should('be.within', width * (percent / 100) - 2, width * (percent / 100) + 2);
         }
       });
+  }
 
+  function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('commit')
-      .parent()
-      .invoke('width')
-      .then((width) => {
-        if (width !== undefined) {
-          (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-            .getByTestId('commit')
-            .invoke('width')
-            .should('be.within', width * (commitPercent / 100) - 2, width * (commitPercent / 100) + 2);
-        }
-      });
-
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('target')
-      .parent()
-      .invoke('width')
-      .then((width) => {
-        if (width !== undefined) {
-          (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-            .getByTestId('target')
-            .invoke('width')
-            .should('be.within', width * (targetPercent / 100) - 2, width * (targetPercent / 100) + 2);
-        }
-      });
-
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('fail')
-      .invoke('css', 'background-color')
-      .should('equal', rgbCode);
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('commit')
-      .invoke('css', 'background-color')
-      .should('equal', rgbCode);
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('target')
+      .getByTestId(zone)
       .invoke('css', 'background-color')
       .should('equal', rgbCode);
   }

@@ -10,7 +10,7 @@ describe('Scoring component e2e tests', () => {
     cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
     cy.getByTestId('add-check-in').click();
     cy.getByTestId('key-result-metric-value').clear().type('30');
-    cy.tabForward();
+    cy.getByTestId('confidence-slider').click();
     cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
     cy.getByTestId('continue-checkin').click();
     cy.getByTestId('changeInfo').click().type('Testveränderungen');
@@ -25,9 +25,8 @@ describe('Scoring component e2e tests', () => {
     cy.createOrdinalKeyresult('Ordinal scoring keyresult', null);
     cy.getByTestId('keyresult').get(':contains("Ordinal scoring keyresult")').last().click();
     cy.getByTestId('add-check-in').click();
-    cy.tabForward();
     cy.getByTestId('target-zone').click();
-    cy.tabForward();
+    cy.getByTestId('confidence-slider').click();
     cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
     cy.getByTestId('continue-checkin').click();
     cy.getByTestId('changeInfo').click().type('Testveränderungen');

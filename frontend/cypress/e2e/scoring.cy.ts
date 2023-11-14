@@ -8,10 +8,10 @@ describe('Scoring component e2e tests', () => {
   });
 
   [
-    ['0', '100', '10', 'rgb(186, 56, 56)'],
-    ['0', '100', '31', 'rgb(255, 214, 0)'],
-    ['0', '100', '71', 'rgb(30, 138, 41)'],
-  ].forEach(([baseline, stretchgoal, value, rgbCode]) => {
+    ['0', '100', '10'],
+    ['0', '100', '31'],
+    ['0', '100', '71'],
+  ].forEach(([baseline, stretchgoal, value]) => {
     it.only('Create metric checkin and validate value of scoring component', () => {
       cy.createMetricKeyresult('Metric scoring keyresult', baseline, stretchgoal);
       cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
@@ -23,24 +23,32 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('changeInfo').click().type('Testveränderungen');
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
-      //ToDo: Implement checking of scoring component value in keyresult detail
-      validateScoringWidthsAndColor('side-panel', +baseline, +stretchgoal, +value, rgbCode);
+      validateScoringWidthsAndColor('side-panel', +baseline, +stretchgoal, +value);
       cy.getByTestId('close-drawer').click();
       //ToDo: Implement checking of scoring component value on overview
     });
   });
 
-  function validateScoringWidthsAndColor(
-    subSelect: string,
-    baseline: number,
-    stretchGoal: number,
-    value: number,
-    rgbCode: string,
-  ) {
+  function validateScoringWidthsAndColor(subSelect: string, baseline: number, stretchGoal: number, value: number) {
     let percentage = -1;
     if (!isInValid(baseline, stretchGoal, value)) {
       percentage = (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
     }
+
+    let rgbCode;
+
+    switch (true) {
+      case percentage > 70:
+        rgbCode = 'rgb(30, 138, 41)';
+        break;
+      case percentage > 30:
+        rgbCode = 'rgb(255, 214, 0)';
+        break;
+      default:
+        rgbCode = 'rgb(186, 56, 56)';
+        break;
+    }
+
     let failPercent = -1;
     let commitPercent = -1;
     let targetPercent = -1;

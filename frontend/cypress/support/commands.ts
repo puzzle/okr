@@ -128,7 +128,8 @@ Cypress.Commands.add(
 function changeConfidence(confidence: number) {
   if (confidence > 5) {
     cy.getByTestId('confidence-slider').realMouseDown();
-    cy.getByTestId('confidence-slider').type('{rightArrow}');
+    // cy.getByTestId('confidence-slider').type('{rightArrow}');
+    cy.getByTestId('confidence-slider').invoke("val", 8).trigger('change');
     // cy.getByTestId('confidence-slider').realMouseMove(20, 0);
     cy.getByTestId('confidence-slider').realMouseUp();
   } else {

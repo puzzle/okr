@@ -234,28 +234,28 @@ describe('Tab workflow tests', () => {
   it('Edit key result with tab', () => {
     openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="edit-keyResult"]');
-    cy.focused().contains("Key Result bearbeiten")
-    cy.realPress("Enter");
-    editInputFields("This has been edited by Cypress");
+    cy.focused().contains('Key Result bearbeiten');
+    cy.realPress('Enter');
+    editInputFields('This has been edited by Cypress');
     cy.tabForwardUntil('[data-testId="descriptionInput"]');
-    editInputFields("Description of Cypress");
+    editInputFields('Description of Cypress');
     cy.tabForwardUntil('[data-testId="submit"]');
-    cy.focused().contains("Speichern")
-    cy.realPress("Enter");
-    cy.contains("This has been edited by Cypress")
+    cy.focused().contains('Speichern');
+    cy.realPress('Enter');
+    cy.contains('This has been edited by Cypress');
   });
 
   it('Delete key result with tab', () => {
     openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="edit-keyResult"]');
-    cy.focused().contains("Key Result bearbeiten")
-    cy.realPress("Enter");
+    cy.focused().contains('Key Result bearbeiten');
+    cy.realPress('Enter');
     cy.tabForwardUntil('[data-testId="delete-keyResult"]');
-    cy.focused().contains("Key Result löschen")
-    cy.realPress("Enter")
-    cy.focused().contains("Ja")
-    cy.realPress("Enter");
-    cy.contains("This has been edited by Cypress").should('not.exist');
+    cy.focused().contains('Key Result löschen');
+    cy.realPress('Enter');
+    cy.focused().contains('Ja');
+    cy.realPress('Enter');
+    cy.contains('This has been edited by Cypress').should('not.exist');
   });
 
   it('Create new key result metric with tab', () => {

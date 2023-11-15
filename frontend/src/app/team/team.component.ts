@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
@@ -18,7 +18,7 @@ import { OrganisationState } from '../shared/types/enums/OrganisationState';
   styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamComponent {
+export class TeamComponent implements AfterViewInit {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
   protected readonly trackByFn = trackByFn;
 
@@ -30,8 +30,14 @@ export class TeamComponent {
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
     private organisationService: OrganisationService,
-  ) {
-    this.checkIfTeamHasInActiveOrganisations();
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.hasAdminAccess.subscribe((result) => {
+      if (result) {
+        this.checkIfTeamHasInActiveOrganisations();
+      }
+    });
   }
 
   checkIfTeamHasInActiveOrganisations() {

@@ -79,17 +79,36 @@ describe('Tab workflow tests', () => {
     cy.focused().contains('Confidence');
     cy.realPress('Enter');
     cy.url().should('include', 'keyresult');
-    cy.contains('Alle Check-ins anzeigen');
     cy.contains('Check-in erfassen');
     cy.contains('Key Result bearbeiten');
   }
 
+  function openAddCheckIn() {
+    openKeyresultDetail();
+    cy.tabForwardUntil('[data-testId="add-check-in"]');
+    cy.focused().contains("Check-in erfassen");
+    cy.realPress("Enter");
+  }
+
+  function openCheckInHistory() {
+    openKeyresultDetail();
+    cy.tabForwardUntil('[data-testId="show-check-ins"]');
+    cy.focused().contains("Alle Check-ins anzeigen")
+    cy.realPress("Enter");
+  }
+
   // Header from here
-  it('Tab to help element', () => {
+  it('Tab to help element and user menu', () => {
     cy.tabForward();
     cy.focused().contains('Hilfe');
     cy.tabForward();
     cy.focused().contains('Jaya Norris');
+  });
+
+  it.only('Tab to help element and visit link', () => {
+    cy.tabForward();
+    cy.focused().contains('Hilfe');
+    cy.realPress("Enter"); // Can't check the url since it's keeps localhost as the url for some reason
   });
 
   it('Tab to user menu and log out', () => {
@@ -226,7 +245,7 @@ describe('Tab workflow tests', () => {
     cy.contains("This has been edited by Cypress")
   });
 
-  it.only('Delete key result with tab', () => {
+  it('Delete key result with tab', () => {
     openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="edit-keyResult"]');
     cy.focused().contains("Key Result bearbeiten")
@@ -237,16 +256,6 @@ describe('Tab workflow tests', () => {
     cy.focused().contains("Ja")
     cy.realPress("Enter");
     cy.contains("This has been edited by Cypress").should('not.exist');
-  });
-
-  it('Create check-in with tab', () => {
-    openKeyresultDetail();
-    closeDialogWithCross();
-  });
-
-  it('Open check-in history with tab', () => {
-    openKeyresultDetail();
-    closeDialogWithCross();
   });
 
   it('Create new key result metric with tab', () => {
@@ -280,6 +289,71 @@ describe('Tab workflow tests', () => {
     cy.focused().type('Stretch Zone');
     fillInNewKeyResult();
     cy.contains('KeyResult ordinal by Cypress');
+  });
+
+  it('Create metric check-in with tab', () => {
+    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
+    openAddCheckIn();
+    cy.tabForward();
+    editInputFields("5")
+    cy.realPress("ArrowRight");
+    cy.tabForward();
+    cy.focused().contains("Weiter");
+    cy.realPress("Enter");
+    cy.tabForward();
+    cy.tabForwardUntil('[data-testId="changeInfo"]');
+    editInputFields("Check-in by Cypress");
+    cy.tabForward();
+    cy.focused().contains("Check-in erfassen");
+    cy.realPress("Enter")
+  });
+
+  it.only('Create ordinal check-in with tab', () => {
+    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
+    openAddCheckIn();
+    cy.tabForward();
+    cy.realPress("ArrowDown")
+    cy.realPress("ArrowDown")
+    cy.tabForward();
+    cy.realPress("ArrowRight");
+    cy.tabForward();
+    cy.focused().contains("Weiter");
+    cy.realPress("Enter");
+    cy.tabForward();
+    cy.tabForwardUntil('[data-testId="changeInfo"]');
+    editInputFields("Check-in by Cypress");
+    cy.tabForward();
+    cy.tabForwardUntil('[data-testId="save-check-in"]');
+    cy.focused().contains("Check-in erfassen");
+    cy.realPress("Enter");
+  });
+
+  it('Open check-in history with tab', () => {
+    openCheckInHistory();
+    cy.contains("Check-in by Cypress")
+  });
+
+  it('Edit metric check-in with tab', () => {
+    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
+    openCheckInHistory();
+    cy.tabForward(); cy.tabForward();
+    cy.realPress("Enter");
+    cy.tabForward(); cy.tabForward(); cy.tabForward();
+    editInputFields("8");
+    cy.realPress("ArrowRight");
+    cy.tabForward();
+    cy.focused().contains("Weiter");
+    cy.realPress("Enter");
+    cy.tabBackward(); cy.tabBackward();
+    editInputFields("Check-in by Cypress (edited)");
+    cy.tabForward();
+    cy.focused().contains("Speichern")
+    cy.realPress("Enter");
+    cy.contains("Check-in by Cypress (edited)");
+  });
+
+  it('Edit ordinal check-in with tab', () => {
+    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
   });
 
   it('Close create keyResult with tab', () => {

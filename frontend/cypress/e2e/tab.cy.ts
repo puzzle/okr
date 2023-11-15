@@ -2,11 +2,6 @@ import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
-  beforeEach(() => {
-    cy.loginAsUser(users.gl);
-    onlyOn('chrome');
-  });
-
   function openThreeDotMenu() {
     cy.get('.objective').first().focus();
     cy.tabForwardUntil('[data-testid="three-dot-menu"]');
@@ -83,287 +78,361 @@ describe('Tab workflow tests', () => {
     cy.contains('Key Result bearbeiten');
   }
 
-  function openAddCheckIn() {
-    openKeyresultDetail();
-    cy.tabForwardUntil('[data-testId="add-check-in"]');
-    cy.focused().contains('Check-in erfassen');
-    cy.realPress('Enter');
-  }
-
   function openCheckInHistory() {
-    openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="show-check-ins"]');
     cy.focused().contains('Alle Check-ins anzeigen');
     cy.realPress('Enter');
   }
 
-  // Header from here
-  it('Tab to help element and user menu', () => {
-    cy.tabForward();
-    cy.focused().contains('Hilfe');
-    cy.tabForward();
-    cy.focused().contains('Jaya Norris');
+  describe('Tool functionality without data', () => {
+    beforeEach(() => {
+      cy.loginAsUser(users.gl);
+      onlyOn('chrome');
+    });
+
+    // Header from here
+    it('Tab to help element and user menu', () => {
+      cy.tabForward();
+      cy.focused().contains('Hilfe');
+      cy.tabForward();
+      cy.focused().contains('Jaya Norris');
+    });
+
+    it('Tab to help element and visit link', () => {
+      cy.tabForward();
+      cy.focused().contains('Hilfe');
+      cy.realPress('Enter'); // Can't check the url since it's keeps localhost as the url for some reason
+    });
+
+    it('Tab to user menu and log out', () => {
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Jaya Norris');
+      cy.realPress('Enter');
+      cy.focused().contains('Logout');
+      cy.realPress('Enter');
+    });
+
+    it('Tab to quarter-filter, objective-filter and team-filter', () => {
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('GJ');
+      cy.tabForward();
+      cy.focused().type('Objective'); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
+      cy.url().should('include', 'objectiveQuery=objective');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Alle');
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.url().should('include', 'teams');
+    });
   });
 
-  it('Tab to help element and visit link', () => {
-    cy.tabForward();
-    cy.focused().contains('Hilfe');
-    cy.realPress('Enter'); // Can't check the url since it's keeps localhost as the url for some reason
-  });
+  describe('Tabbing with data', () => {
+    beforeEach(() => {
+      cy.loginAsUser(users.gl);
+      onlyOn('chrome');
+      cy.visit('/?quarter=2');
+    });
 
-  it('Tab to user menu and log out', () => {
-    cy.tabForward();
-    cy.tabForward();
-    cy.focused().contains('Jaya Norris');
-    cy.realPress('Enter');
-    cy.focused().contains('Logout');
-    cy.realPress('Enter');
-  });
+    // Overview from here
+    it('Tab to objective, open detail view and close', () => {
+      cy.get('.objective').first().focus();
+      cy.realPress('Enter');
+      cy.url().should('include', 'objective');
+      cy.contains('Beschrieb');
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Key Result hinzufügen');
+      closeDialogWithCross();
+    });
 
-  it('Tab to quarter-filter, objective-filter and team-filter', () => {
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.focused().contains('GJ');
-    cy.tabForward();
-    cy.focused().type('Objective'); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
-    cy.url().should('include', 'objectiveQuery=objective');
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.focused().contains('Alle');
-    cy.tabForward();
-    cy.realPress('Enter');
-    cy.url().should('include', 'teams');
-  });
-  //to here
+    it('Tab to keyresult, open detail view and close', () => {
+      cy.get('.key-result').first().focus();
+      cy.realPress('Enter');
+      cy.url().should('include', 'keyresult');
+      cy.contains('Beschrieb');
+      cy.contains('Fail');
+      cy.contains('Commit');
+      cy.contains('Target');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Check-in erfassen');
+      cy.tabForward();
+      cy.focused().contains('Key Result bearbeiten');
+      cy.tabBackward();
+      cy.tabBackward();
+      closeDialogWithCross();
+    });
 
-  // Overview from here
-  it('Tab to objective, open detail view and close', () => {
-    cy.tabForward();
-    cy.tabForwardUntil('[data-testId="objective"]');
-    cy.realPress('Enter');
-    cy.url().should('include', 'objective');
-    cy.contains('Beschrieb');
-    cy.tabForward();
-    cy.tabForward();
-    cy.focused().contains('Key Result hinzufügen');
-    closeDialogWithCross();
-  });
+    it('Edit objective with tab', () => {
+      openThreeDotMenu();
+      cy.focused().contains('Objective bearbeiten');
+      cy.realPress('Enter');
+      cy.contains('bearbeiten');
+      editInputFields('Edited by Cypress');
+      editInputFields('Edited by Cypress too');
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.contains('Edited by Cypress');
+    });
 
-  it('Edit objective with tab', () => {
-    openThreeDotMenu();
-    cy.focused().contains('Objective bearbeiten');
-    cy.realPress('Enter');
-    cy.contains('bearbeiten');
-    editInputFields('Edited by Cypress');
-    editInputFields('Edited by Cypress too');
-    cy.tabForward();
-    cy.realPress('Enter');
-    cy.contains('Edited by Cypress');
-  });
+    it('Duplicate objective with tab', () => {
+      openThreeDotMenu();
+      cy.realPress('ArrowDown');
+      cy.focused().contains('Objective duplizieren');
+      cy.realPress('Enter');
+      cy.contains('Objective duplizieren');
+      editInputFields('Duplicated by Cypress');
+      cy.tabForward();
+      cy.focused().contains('GJ');
+      cy.realPress('ArrowDown');
+      cy.tabForward();
+      cy.focused().contains('Speichern');
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('GJ');
+      cy.realPress('ArrowDown');
+      cy.contains('Duplicated by Cypress');
+    });
 
-  it('Duplicate objective with tab', () => {
-    openThreeDotMenu();
-    cy.realPress('ArrowDown');
-    cy.focused().contains('Objective duplizieren');
-    cy.realPress('Enter');
-    cy.contains('Objective duplizieren');
-    editInputFields('Duplicated by Cypress');
-    cy.tabForward();
-    cy.focused().contains('GJ');
-    cy.realPress('ArrowDown');
-    cy.tabForward();
-    cy.focused().contains('Speichern');
-    cy.realPress('Enter');
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.focused().contains('GJ');
-    cy.realPress('ArrowDown');
-    cy.contains('Duplicated by Cypress');
-  });
+    it('Complete objective dialog with tab', () => {
+      openThreeDotMenu();
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.focused().contains('Objective abschliessen');
+      cy.realPress('Enter');
+      cy.contains('Objective abschliessen');
+      cy.contains('Objective erfolgreich');
+      cy.contains('Objective nicht erfolgreich');
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().type('The optional comment');
+      cy.tabForward();
+      cy.realPress('Enter');
 
-  it.skip('Complete objective dialog with tab', () => {
-    openThreeDotMenu();
-    cy.realPress('ArrowDown');
-    cy.realPress('ArrowDown');
-    cy.focused().contains('Objective abschliessen');
-    cy.realPress('Enter');
-    cy.contains('Objective abschliessen'); // Does not work yet. It's not possible to select Objective successful or unsuccessful with tab.
-  });
+      cy.get('.objective')
+        .first()
+        .getByTestId('objective-state')
+        .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
 
-  it('Create new objective with tab', () => {
-    openCreateObjective();
-    cy.focused().type('Objective by Cypress');
-    cy.tabForward();
-    cy.focused().type('Description of Objective...');
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.realPress('Enter');
-    cy.contains('Objective by Cypress');
-  });
+      openThreeDotMenu();
+      cy.focused().contains('Objective wiedereröffnen');
+      cy.realPress('Enter');
+    });
 
-  it('Delete objective with tab', () => {
-    openThreeDotMenu();
-    cy.focused().contains('Objective bearbeiten');
-    cy.realPress('Enter');
-    cy.contains('bearbeiten');
-    cy.tabForwardUntil('[data-testId="delete"]');
-    cy.focused().contains('Objective Löschen');
-    cy.realPress('Enter');
-    cy.contains('Objective löschen');
-    cy.focused().contains('Ja');
-    cy.realPress('Enter');
-  });
+    it('Create new objective with tab', () => {
+      openCreateObjective();
+      cy.focused().type('Objective by Cypress');
+      cy.tabForward();
+      cy.focused().type('Description of Objective...');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.contains('Objective by Cypress');
+    });
 
-  it('Close create objective with tab', () => {
-    openCreateObjective();
-    closeDialogWithCloseButton();
-    openCreateObjective();
-    closeDialogWithCross();
-  });
+    it('Delete objective with tab', () => {
+      openThreeDotMenu();
+      cy.focused().contains('Objective bearbeiten');
+      cy.realPress('Enter');
+      cy.contains('bearbeiten');
+      cy.tabForwardUntil('[data-testId="delete"]');
+      cy.focused().contains('Objective Löschen');
+      cy.realPress('Enter');
+      cy.contains('Objective löschen');
+      cy.focused().contains('Ja');
+      cy.realPress('Enter');
+    });
 
-  it('Tab to key result, open detail view and close', () => {
-    openKeyresultDetail();
-    closeDialogWithCross();
-  });
+    it('Close create objective with tab', () => {
+      openCreateObjective();
+      closeDialogWithCloseButton();
+      openCreateObjective();
+      closeDialogWithCross();
+    });
 
-  it('Edit key result with tab', () => {
-    openKeyresultDetail();
-    cy.tabForwardUntil('[data-testId="edit-keyResult"]');
-    cy.focused().contains('Key Result bearbeiten');
-    cy.realPress('Enter');
-    editInputFields('This has been edited by Cypress');
-    cy.tabForwardUntil('[data-testId="descriptionInput"]');
-    editInputFields('Description of Cypress');
-    cy.tabForwardUntil('[data-testId="submit"]');
-    cy.focused().contains('Speichern');
-    cy.realPress('Enter');
-    cy.contains('This has been edited by Cypress');
-  });
+    it('Tab to key result, open detail view and close', () => {
+      openKeyresultDetail();
+      closeDialogWithCross();
+    });
 
-  it('Delete key result with tab', () => {
-    openKeyresultDetail();
-    cy.tabForwardUntil('[data-testId="edit-keyResult"]');
-    cy.focused().contains('Key Result bearbeiten');
-    cy.realPress('Enter');
-    cy.tabForwardUntil('[data-testId="delete-keyResult"]');
-    cy.focused().contains('Key Result löschen');
-    cy.realPress('Enter');
-    cy.focused().contains('Ja');
-    cy.realPress('Enter');
-    cy.contains('This has been edited by Cypress').should('not.exist');
-  });
+    it('Edit key result with tab', () => {
+      openKeyresultDetail();
+      cy.tabForwardUntil('[data-testId="edit-keyResult"]');
+      cy.focused().contains('Key Result bearbeiten');
+      cy.realPress('Enter');
+      editInputFields('This has been edited by Cypress');
+      cy.tabForwardUntil('[data-testId="descriptionInput"]');
+      editInputFields('Description of Cypress');
+      cy.tabForwardUntil('[data-testId="submit"]');
+      cy.focused().contains('Speichern');
+      cy.realPress('Enter');
+      cy.contains('This has been edited by Cypress');
+    });
 
-  it('Create new key result metric with tab', () => {
-    openCreateKeyResult();
-    cy.focused().type('KeyResult metric by Cypress');
-    cy.contains('Einheit');
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    cy.realPress('ArrowDown'); // -> Entspricht "CHF"
-    cy.tabForward();
-    cy.focused().type('0');
-    cy.tabForward();
-    cy.focused().type('10');
-    fillInNewKeyResult();
-    cy.contains('KeyResult metric by Cypress');
-  });
+    it('Delete key result with tab', () => {
+      openKeyresultDetail();
+      cy.tabForwardUntil('[data-testId="edit-keyResult"]');
+      cy.focused().contains('Key Result bearbeiten');
+      cy.realPress('Enter');
+      cy.tabForwardUntil('[data-testId="delete-keyResult"]');
+      cy.focused().contains('Key Result löschen');
+      cy.realPress('Enter');
+      cy.focused().contains('Ja');
+      cy.realPress('Enter');
+      cy.contains('This has been edited by Cypress').should('not.exist');
+    });
 
-  it('Create new key result ordinal with tab', () => {
-    openCreateKeyResult();
-    cy.focused().type('KeyResult ordinal by Cypress');
-    cy.tabForward();
-    cy.tabForward();
-    cy.realPress('Enter');
-    cy.contains('Commit Zone');
-    cy.tabForward();
-    cy.focused().type('Commit Zone');
-    cy.tabForward();
-    cy.focused().type('Target Zone');
-    cy.tabForward();
-    cy.focused().type('Stretch Zone');
-    fillInNewKeyResult();
-    cy.contains('KeyResult ordinal by Cypress');
-  });
+    it('Create new key result metric with tab', () => {
+      openCreateKeyResult();
+      cy.focused().type('KeyResult metric by Cypress');
+      cy.contains('Einheit');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('ArrowDown'); // -> Entspricht "CHF"
+      cy.tabForward();
+      cy.focused().type('0');
+      cy.tabForward();
+      cy.focused().type('10');
+      fillInNewKeyResult();
+      cy.contains('KeyResult metric by Cypress');
+    });
 
-  it('Create metric check-in with tab', () => {
-    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
-    openAddCheckIn();
-    cy.tabForward();
-    editInputFields('5');
-    cy.realPress('ArrowRight');
-    cy.tabForward();
-    cy.focused().contains('Weiter');
-    cy.realPress('Enter');
-    cy.tabForward();
-    cy.tabForwardUntil('[data-testId="changeInfo"]');
-    editInputFields('Check-in by Cypress');
-    cy.tabForwardUntil('[data-testId="save-check-in"]');
-    cy.focused().contains('Check-in erfassen');
-    cy.realPress('Enter');
-  });
+    it('Create new key result ordinal with tab', () => {
+      openCreateKeyResult();
+      cy.focused().type('KeyResult ordinal by Cypress');
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.contains('Commit Zone');
+      cy.tabForward();
+      cy.focused().type('Commit Zone');
+      cy.tabForward();
+      cy.focused().type('Target Zone');
+      cy.tabForward();
+      cy.focused().type('Stretch Zone');
+      fillInNewKeyResult();
+      cy.contains('KeyResult ordinal by Cypress');
+    });
 
-  it('Create ordinal check-in with tab', () => {
-    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
-    openAddCheckIn();
-    cy.tabForward();
-    cy.realPress('ArrowDown');
-    cy.realPress('ArrowDown');
-    cy.tabForward();
-    cy.realPress('ArrowRight');
-    cy.tabForward();
-    cy.focused().contains('Weiter');
-    cy.realPress('Enter');
-    cy.tabForward();
-    cy.tabForwardUntil('[data-testId="changeInfo"]');
-    editInputFields('Check-in by Cypress');
-    cy.tabForward();
-    cy.tabForwardUntil('[data-testId="save-check-in"]');
-    cy.focused().contains('Check-in erfassen');
-    cy.realPress('Enter');
-  });
+    it('Create metric check-in with tab', () => {
+      cy.getByTestId('keyresult').contains('KeyResult metric by Cypress').click();
+      cy.tabForwardUntil('[data-testId="add-check-in"]');
+      cy.focused().contains('Check-in erfassen');
+      cy.realPress('Enter');
+      cy.tabForward();
+      editInputFields('5');
+      cy.realPress('ArrowRight');
+      cy.tabForward();
+      cy.focused().contains('Weiter');
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.tabForwardUntil('[data-testId="changeInfo"]');
+      editInputFields('Check-in by Cypress');
+      cy.tabForwardUntil('[data-testId="save-check-in"]');
+      cy.focused().contains('Check-in erfassen');
+      cy.realPress('Enter');
+    });
 
-  it.only('Open check-in history with tab', () => {
-    openCheckInHistory();
-    cy.contains('Check-in by Cypress');
-  });
+    it('Create ordinal check-in with tab', () => {
+      cy.getByTestId('keyresult').contains('KeyResult ordinal by Cypress').click();
+      cy.tabForwardUntil('[data-testId="add-check-in"]');
+      cy.focused().contains('Check-in erfassen');
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.tabForward();
+      cy.realPress('ArrowRight');
+      cy.tabForward();
+      cy.focused().contains('Weiter');
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.tabForwardUntil('[data-testId="changeInfo"]');
+      editInputFields('Check-in by Cypress');
+      cy.tabForward();
+      cy.tabForwardUntil('[data-testId="save-check-in"]');
+      cy.focused().contains('Check-in erfassen');
+      cy.realPress('Enter');
+    });
 
-  it('Edit metric check-in with tab', () => {
-    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
-    openCheckInHistory();
-    cy.tabForward();
-    cy.tabForward();
-    cy.realPress('Enter');
-    cy.tabForward();
-    cy.tabForward();
-    cy.tabForward();
-    editInputFields('8');
-    cy.realPress('ArrowRight');
-    cy.tabForward();
-    cy.focused().contains('Weiter');
-    cy.realPress('Enter');
-    cy.tabBackward();
-    cy.tabBackward();
-    editInputFields('Check-in by Cypress (edited)');
-    cy.tabForward();
-    cy.focused().contains('Speichern');
-    cy.realPress('Enter');
-    cy.contains('Check-in by Cypress (edited)');
-  });
+    it('Edit metric check-in with tab', () => {
+      cy.getByTestId('keyresult').contains('KeyResult metric by Cypress').click();
+      openCheckInHistory();
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      editInputFields('8');
+      cy.realPress('ArrowRight');
+      cy.focused().contains('Weiter');
+      cy.realPress('Enter');
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      editInputFields('Check-in by Cypress (edited)');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Speichern');
+      cy.realPress('Enter');
+      cy.contains('Check-in by Cypress (edited)');
+    });
 
-  it('Edit ordinal check-in with tab', () => {
-    // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
-  });
+    it('Edit ordinal check-in with tab', () => {
+      cy.getByTestId('keyresult').contains('KeyResult ordinal by Cypress').click();
+      openCheckInHistory();
+      cy.tabForward();
+      cy.tabForward();
+      cy.realPress('Enter');
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.tabForward();
+      cy.realPress('ArrowRight');
+      cy.tabForward();
+      cy.realPress('ArrowLeft');
+      cy.realPress('ArrowLeft');
+      cy.tabForward();
+      cy.focused().contains('Weiter');
+      cy.realPress('Enter');
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      cy.tabBackward();
+      editInputFields('Check-in by Cypress (edited)');
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Speichern');
+      cy.realPress('Enter');
+      cy.contains('Check-in by Cypress (edited)');
+    });
 
-  it('Close create keyResult with tab', () => {
-    openCreateKeyResult();
-    closeDialogWithCloseButton();
-    openCreateKeyResult();
-    closeDialogWithCross();
+    it('Close create keyResult with tab', () => {
+      openCreateKeyResult();
+      closeDialogWithCloseButton();
+      openCreateKeyResult();
+      closeDialogWithCross();
+    });
   });
 });

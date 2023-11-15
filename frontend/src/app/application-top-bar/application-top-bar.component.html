@@ -3,17 +3,15 @@
     <span class="d-flex h-100 align-items-center ps-4">
       <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="214" />
     </span>
-    <div class="d-flex align-items-center">
-      <div class="px-3 cursor-pointer" *ngIf="hasAdminAccess | async">
-        <button class="topBarEntry btn" tabindex="0" (click)="openTeamManagement()">
-          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white" (click)="openTeamManagement()"
-            >group</mat-icon
-          >
-          Teamverwaltung
+    <div class="d-flex align-items-center" (click)="openTeamManagement()">
+      <div class="px-2" *ngIf="hasAdminAccess | async">
+        <button class="topBarEntry btn">
+          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white">group</mat-icon>
+          <span class="d-none d-md-flex"> Teamverwaltung </span>
         </button>
       </div>
 
-      <div class="px-3">
+      <div class="px-2">
         <a class="topBarEntry" href="https://wiki.puzzle.ch/Puzzle/OKRs">
           <mat-icon aria-hidden="false" aria-label="Help icon" class="text-white" fontIcon="help_outline"></mat-icon>
           <span class="d-none d-md-flex"> Hilfe </span>

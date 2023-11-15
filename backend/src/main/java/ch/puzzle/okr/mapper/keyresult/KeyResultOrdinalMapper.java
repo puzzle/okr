@@ -9,7 +9,7 @@ import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
-import ch.puzzle.okr.service.persistence.UserPersistenceService;
+import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,15 +17,15 @@ import java.util.List;
 @Component
 public class KeyResultOrdinalMapper {
 
-    private final UserPersistenceService userPersistenceService;
+    private final UserBusinessService userBusinessService;
     private final ObjectiveBusinessService objectiveBusinessService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionMapper actionMapper;
 
-    public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
+    public KeyResultOrdinalMapper(UserBusinessService userBusinessService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
             ActionMapper actionMapper) {
-        this.userPersistenceService = userPersistenceService;
+        this.userBusinessService = userBusinessService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
         this.actionMapper = actionMapper;
@@ -54,7 +54,7 @@ public class KeyResultOrdinalMapper {
                 .withId(keyResultOrdinalDto.id()).withVersion(keyResultOrdinalDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
-                .withOwner(userPersistenceService.findById(keyResultOrdinalDto.owner().id()))
+                .withOwner(userBusinessService.getOwnerById(keyResultOrdinalDto.owner().id()))
                 .withModifiedOn(keyResultOrdinalDto.modifiedOn()).build();
     }
 

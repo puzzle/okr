@@ -58,6 +58,8 @@ describe('TeamComponent', () => {
 
     fixture = TestBed.createComponent(TeamComponent);
     component = fixture.componentInstance;
+    component.hasAdminAccess = new ReplaySubject<boolean>(1);
+    component.hasAdminAccess.next(true);
     component.overviewEntity = overViewEntity1;
     fixture.detectChanges();
   });
@@ -80,22 +82,10 @@ describe('TeamComponent', () => {
     expect(button).toBeFalsy();
   });
 
-  it('should set has inactive teams to true', async () => {
-    jest
-      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
-      .mockReturnValue(of([organisationInActive, organisationInActive]));
-    component.hasAdminAccess = new ReplaySubject<boolean>();
-    component.hasAdminAccess.next(true);
-    component.checkIfTeamHasInActiveOrganisations();
-    expect(component.hasInActiveOrganisation.value).toBeTruthy();
-  });
-
   it('should set has inactive teams to false', async () => {
     jest
       .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
       .mockReturnValue(of([organisationActive, organisationActive]));
-    component.hasAdminAccess = new ReplaySubject<boolean>();
-    component.hasAdminAccess.next(true);
     component.checkIfTeamHasInActiveOrganisations();
     expect(component.hasInActiveOrganisation.value).toBeFalsy();
   });
@@ -105,5 +95,13 @@ describe('TeamComponent', () => {
     component.openEditTeamDialog(teamMin1);
     expect(dialogMock.open).toHaveBeenCalled();
     expect(refreshDataServiceMock.markDataRefresh).toHaveBeenCalled();
+  });
+
+  it('should set has inactive teams to true', async () => {
+    jest
+      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
+      .mockReturnValue(of([organisationInActive, organisationInActive]));
+    component.checkIfTeamHasInActiveOrganisations();
+    expect(component.hasInActiveOrganisation.value).toBeTruthy();
   });
 });

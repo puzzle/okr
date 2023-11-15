@@ -86,15 +86,15 @@ describe('Tab workflow tests', () => {
   function openAddCheckIn() {
     openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="add-check-in"]');
-    cy.focused().contains("Check-in erfassen");
-    cy.realPress("Enter");
+    cy.focused().contains('Check-in erfassen');
+    cy.realPress('Enter');
   }
 
   function openCheckInHistory() {
     openKeyresultDetail();
     cy.tabForwardUntil('[data-testId="show-check-ins"]');
-    cy.focused().contains("Alle Check-ins anzeigen")
-    cy.realPress("Enter");
+    cy.focused().contains('Alle Check-ins anzeigen');
+    cy.realPress('Enter');
   }
 
   // Header from here
@@ -108,7 +108,7 @@ describe('Tab workflow tests', () => {
   it('Tab to help element and visit link', () => {
     cy.tabForward();
     cy.focused().contains('Hilfe');
-    cy.realPress("Enter"); // Can't check the url since it's keeps localhost as the url for some reason
+    cy.realPress('Enter'); // Can't check the url since it's keeps localhost as the url for some reason
   });
 
   it('Tab to user menu and log out', () => {
@@ -295,61 +295,65 @@ describe('Tab workflow tests', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
     openAddCheckIn();
     cy.tabForward();
-    editInputFields("5")
-    cy.realPress("ArrowRight");
+    editInputFields('5');
+    cy.realPress('ArrowRight');
     cy.tabForward();
-    cy.focused().contains("Weiter");
-    cy.realPress("Enter");
+    cy.focused().contains('Weiter');
+    cy.realPress('Enter');
     cy.tabForward();
     cy.tabForwardUntil('[data-testId="changeInfo"]');
-    editInputFields("Check-in by Cypress");
+    editInputFields('Check-in by Cypress');
     cy.tabForwardUntil('[data-testId="save-check-in"]');
-    cy.focused().contains("Check-in erfassen");
-    cy.realPress("Enter")
+    cy.focused().contains('Check-in erfassen');
+    cy.realPress('Enter');
   });
 
   it('Create ordinal check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
     openAddCheckIn();
     cy.tabForward();
-    cy.realPress("ArrowDown")
-    cy.realPress("ArrowDown")
+    cy.realPress('ArrowDown');
+    cy.realPress('ArrowDown');
     cy.tabForward();
-    cy.realPress("ArrowRight");
+    cy.realPress('ArrowRight');
     cy.tabForward();
-    cy.focused().contains("Weiter");
-    cy.realPress("Enter");
+    cy.focused().contains('Weiter');
+    cy.realPress('Enter');
     cy.tabForward();
     cy.tabForwardUntil('[data-testId="changeInfo"]');
-    editInputFields("Check-in by Cypress");
+    editInputFields('Check-in by Cypress');
     cy.tabForward();
     cy.tabForwardUntil('[data-testId="save-check-in"]');
-    cy.focused().contains("Check-in erfassen");
-    cy.realPress("Enter");
+    cy.focused().contains('Check-in erfassen');
+    cy.realPress('Enter');
   });
 
   it.only('Open check-in history with tab', () => {
     openCheckInHistory();
-    cy.contains("Check-in by Cypress")
+    cy.contains('Check-in by Cypress');
   });
 
   it('Edit metric check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
     openCheckInHistory();
-    cy.tabForward(); cy.tabForward();
-    cy.realPress("Enter");
-    cy.tabForward(); cy.tabForward(); cy.tabForward();
-    editInputFields("8");
-    cy.realPress("ArrowRight");
     cy.tabForward();
-    cy.focused().contains("Weiter");
-    cy.realPress("Enter");
-    cy.tabBackward(); cy.tabBackward();
-    editInputFields("Check-in by Cypress (edited)");
     cy.tabForward();
-    cy.focused().contains("Speichern")
-    cy.realPress("Enter");
-    cy.contains("Check-in by Cypress (edited)");
+    cy.realPress('Enter');
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
+    editInputFields('8');
+    cy.realPress('ArrowRight');
+    cy.tabForward();
+    cy.focused().contains('Weiter');
+    cy.realPress('Enter');
+    cy.tabBackward();
+    cy.tabBackward();
+    editInputFields('Check-in by Cypress (edited)');
+    cy.tabForward();
+    cy.focused().contains('Speichern');
+    cy.realPress('Enter');
+    cy.contains('Check-in by Cypress (edited)');
   });
 
   it('Edit ordinal check-in with tab', () => {

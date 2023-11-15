@@ -159,4 +159,14 @@ describe('TeamManagementComponent', () => {
     expect(component.teamForm.controls.organisations.value!.toString()).toBe([organisationActive].toString());
     expect(component.hasInActiveOrganisations).toBeFalsy();
   });
+
+  it('should merge Organisations together', (done) => {
+    let organisationsArray = [organisationActive, organisationInActive];
+    component.organisations$ = of([organisationActive]);
+    component.mergeOrganisations(organisationsArray);
+    component.organisations$.subscribe((result) => {
+      expect(result).toStrictEqual([organisationActive, organisationInActive]);
+      done();
+    });
+  }, 1500);
 });

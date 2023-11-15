@@ -69,7 +69,10 @@ export class TeamManagementComponent implements OnInit {
 
   mergeOrganisations(organisationsOfTeam: Organisation[]) {
     this.organisations$.subscribe((activeOrganisations) => {
-      this.organisations$ = of([...organisationsOfTeam, ...activeOrganisations]);
+      organisationsOfTeam
+        .filter((organisation) => organisation.state == OrganisationState.INACTIVE)
+        .forEach((organisation) => activeOrganisations.push(organisation));
+      this.organisations$ = of(activeOrganisations);
     });
   }
 

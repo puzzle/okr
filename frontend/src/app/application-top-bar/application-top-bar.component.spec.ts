@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ApplicationTopBarComponent } from './application-top-bar.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -9,12 +9,18 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import { team1 } from '../shared/testData';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
   logOut: jest.fn(),
   hasValidIdToken: jest.fn(),
+};
+
+const dialogMock = {
+  open: jest.fn(),
 };
 
 describe('ApplicationHeaderComponent', () => {
@@ -33,6 +39,10 @@ describe('ApplicationHeaderComponent', () => {
         { provide: UrlHelperService },
         { provide: OAuthLogger },
         { provide: DateTimeProvider },
+        {
+          provide: MatDialog,
+          useValue: dialogMock,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -54,5 +64,11 @@ describe('ApplicationHeaderComponent', () => {
       items[0].click();
       expect(oAuthMock.logOut).toBeCalledTimes(1);
     });
+  });
+
+  it('should make call to dialog object when opening team management dialog', async () => {
+    jest.spyOn(dialogMock, 'open').mockReturnValue({ afterClosed: () => of(team1) });
+    component.openTeamManagement();
+    expect(dialogMock.open).toHaveBeenCalled();
   });
 });

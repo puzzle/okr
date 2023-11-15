@@ -308,7 +308,7 @@ describe('Tab workflow tests', () => {
     cy.realPress("Enter")
   });
 
-  it.skip('Create ordinal check-in with tab', () => {
+  it('Create ordinal check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
     openAddCheckIn();
     cy.tabForward();
@@ -352,7 +352,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Check-in by Cypress (edited)");
   });
 
-  it.skip('Edit ordinal check-in with tab', () => {
+  it('Edit ordinal check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
   });
 

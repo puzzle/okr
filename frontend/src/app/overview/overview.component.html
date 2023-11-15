@@ -1,10 +1,10 @@
 <router-outlet></router-outlet>
 
-<app-application-top-bar [hasWriteAllAccess]="hasWriteAllAccess"></app-application-top-bar>
+<app-application-top-bar [hasAdminAccess]="hasAdminAccess"></app-application-top-bar>
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div class="overviewContainer">
   <app-team
-    [hasWriteAllAccess]="hasWriteAllAccess"
+    [hasAdminAccess]="hasAdminAccess"
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
     [overviewEntity]="overviewEntity"
   >

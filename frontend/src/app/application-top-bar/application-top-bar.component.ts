@@ -16,12 +16,10 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 })
 export class ApplicationTopBarComponent implements OnInit {
   username: ReplaySubject<string> = new ReplaySubject();
-  teamManagementAccess$: Observable<boolean> = new Observable<boolean>();
   menuIsOpen = false;
 
   @Input()
-  hasWriteAllAccess!: boolean;
-
+  hasAdminAccess!: ReplaySubject<boolean>;
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
 
   constructor(

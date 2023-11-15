@@ -16,7 +16,7 @@ export class OverviewComponent implements OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  hasWriteAllAccess: boolean = false;
+  hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(
     private overviewService: OverviewService,
@@ -60,8 +60,8 @@ export class OverviewComponent implements OnDestroy {
         }),
       )
       .subscribe((dashboard) => {
+        this.hasAdminAccess.next(dashboard.adminAccess);
         this.overviewEntities$.next(dashboard.overviews);
-        this.hasWriteAllAccess = dashboard.adminAccess;
       });
   }
 

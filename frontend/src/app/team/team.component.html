@@ -5,15 +5,17 @@
       class="team-icons team-actions cursor-pointer ms-2"
       src="assets/icons/edit.svg"
       alt="edit team"
-      *ngIf="hasWriteAllAccess"
+      *ngIf="hasAdminAccess | async"
       (click)="openEditTeamDialog(OVEntity.team)"
     />
-    <mat-icon
-      *ngIf="this.hasInActiveOrganisation | async"
-      class="team-actions cursor-pointer ms-2 text-danger"
-      [matTooltip]="'This team has inactive organisations'"
-      >error_outline</mat-icon
-    >
+    <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
+      <mat-icon
+        *ngIf="this.hasInActiveOrganisation | async"
+        class="team-actions cursor-pointer ms-2 text-danger"
+        [matTooltip]="'This team has inactive organisations'"
+        >error_outline</mat-icon
+      >
+    </div>
   </div>
   <div class="d-flex justify-content-center">
     <div

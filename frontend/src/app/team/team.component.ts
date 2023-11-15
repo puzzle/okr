@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
@@ -23,7 +23,7 @@ export class TeamComponent {
   protected readonly trackByFn = trackByFn;
 
   @Input()
-  hasWriteAllAccess!: boolean;
+  hasAdminAccess!: ReplaySubject<boolean>;
   hasInActiveOrganisation = new BehaviorSubject<boolean>(false);
 
   constructor(
@@ -35,17 +35,15 @@ export class TeamComponent {
   }
 
   checkIfTeamHasInActiveOrganisations() {
-    if (this.hasWriteAllAccess) {
-      this.overviewEntity$.subscribe((result) => {
-        if (result.team) {
-          this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
-            this.hasInActiveOrganisation.next(
-              organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
-            );
-          });
-        }
-      });
-    }
+    this.overviewEntity$.subscribe((result) => {
+      if (result.team) {
+        this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
+          this.hasInActiveOrganisation.next(
+            organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
+          );
+        });
+      }
+    });
   }
 
   @Input()

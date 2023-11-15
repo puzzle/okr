@@ -17,7 +17,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { OrganisationService } from '../shared/services/organisation.service';
-import { of } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 const organisationServiceMock = {
@@ -84,7 +84,8 @@ describe('TeamComponent', () => {
     jest
       .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
       .mockReturnValue(of([organisationInActive, organisationInActive]));
-    component.hasWriteAllAccess = true;
+    component.hasAdminAccess = new ReplaySubject<boolean>();
+    component.hasAdminAccess.next(true);
     component.checkIfTeamHasInActiveOrganisations();
     expect(component.hasInActiveOrganisation.value).toBeTruthy();
   });
@@ -93,7 +94,8 @@ describe('TeamComponent', () => {
     jest
       .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
       .mockReturnValue(of([organisationActive, organisationActive]));
-    component.hasWriteAllAccess = true;
+    component.hasAdminAccess = new ReplaySubject<boolean>();
+    component.hasAdminAccess.next(true);
     component.checkIfTeamHasInActiveOrganisations();
     expect(component.hasInActiveOrganisation.value).toBeFalsy();
   });

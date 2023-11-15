@@ -29,13 +29,13 @@ declare global {
       ): void;
       fillOutCheckInMetric(
         currentValue: number,
-        confidence: number,
+        changeConfidence: boolean,
         changeInfo: string | null,
         initiatives: string | null,
       ): void;
       fillOutCheckInOrdinal(
         currentZoneIndex: number,
-        confidence: number,
+        changeConfidence: boolean,
         changeInfo: string | null,
         initiatives: string | null,
       ): void;

@@ -36,9 +36,9 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInMetric',
-  (currentValue: number, confidence: number, changeInfo: string | null, initiatives: string | null) => {
+  (currentValue: number, shouldChangeConfidence: boolean, changeInfo: string | null, initiatives: string | null) => {
     cy.getByTestId('check-in-metric-value').clear().type(currentValue.toString());
-    changeConfidence(confidence);
+    changeConfidence(shouldChangeConfidence);
     cy.getByTestId('check-in-next').click();
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
@@ -52,7 +52,12 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInOrdinal',
-  (currentZoneIndex: number, confidence: number, changeInfo: string | null, initiatives: string | null) => {
+  (
+    currentZoneIndex: number,
+    shouldChangeConfidence: boolean,
+    changeInfo: string | null,
+    initiatives: string | null,
+  ) => {
     switch (currentZoneIndex) {
       case 0:
         cy.getByTestId('failZone').click();
@@ -67,7 +72,7 @@ Cypress.Commands.add(
         cy.getByTestId('stretchZone').click();
         break;
     }
-    changeConfidence(confidence);
+    changeConfidence(shouldChangeConfidence);
     cy.getByTestId('check-in-next').click();
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
@@ -125,17 +130,9 @@ Cypress.Commands.add(
   },
 );
 
-function changeConfidence(confidence: number) {
-  if (confidence > 5) {
+function changeConfidence(changeConfidence: boolean) {
+  if (changeConfidence) {
     cy.getByTestId('confidence-slider').realMouseDown();
-    // cy.getByTestId('confidence-slider').type('{rightArrow}');
-    cy.getByTestId('confidence-slider').invoke("val", 8).trigger('change');
-    // cy.getByTestId('confidence-slider').realMouseMove(20, 0);
-    cy.getByTestId('confidence-slider').realMouseUp();
-  } else {
-    cy.getByTestId('confidence-slider').realMouseDown();
-    cy.getByTestId('confidence-slider').type('{leftArrow}');
-    // cy.getByTestId('confidence-slider').realMouseMove(60, 0);
     cy.getByTestId('confidence-slider').realMouseUp();
   }
 }

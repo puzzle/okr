@@ -28,7 +28,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
-      cy.fillOutCheckInMetric(30, 6, 'We bought a new house', 'We have to buy more PCs');
+      cy.fillOutCheckInMetric(30, true, 'We bought a new house', 'We have to buy more PCs');
 
       cy.contains('30%');
       cy.contains('6/10');
@@ -58,7 +58,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
-      cy.fillOutCheckInMetric(5, 5, null, null);
+      cy.fillOutCheckInMetric(5, false, null, null);
 
       cy.contains('5%');
       cy.contains('!');
@@ -90,9 +90,9 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextOrdinal();
-      cy.fillOutCheckInOrdinal(1, 4, 'There is a new car', 'Buy now a new pool');
+      cy.fillOutCheckInOrdinal(1, true, 'There is a new car', 'Buy now a new pool');
 
-      cy.contains('4/10');
+      cy.contains('6/10');
       cy.contains('There is a new car');
       cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
     });
@@ -117,10 +117,10 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('This will give a checkin list').click();
 
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(30, 6, 'We bought a new house', 'We have to buy more PCs');
+      cy.fillOutCheckInMetric(30, false, 'We bought a new house', 'We have to buy more PCs');
       cy.wait(200);
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(50, 4, 'This was a good idea', 'Will be difficult');
+      cy.fillOutCheckInMetric(50, true, 'This was a good idea', 'Will be difficult');
 
       cy.getByTestId('show-all-checkins').click();
 
@@ -129,8 +129,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains(getCurrentDate());
       cy.contains('Wert: 30%');
       cy.contains('Wert: 50%');
+      cy.contains('Confidence: 5 / 10');
       cy.contains('Confidence: 6 / 10');
-      cy.contains('Confidence: 4 / 10');
       cy.contains('Veränderungen: We bought a new house');
       cy.contains('Veränderungen: This was a good idea');
       cy.contains('Massnahmen: We have to buy more PCs');
@@ -158,7 +158,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('Here we edit a metric checkin').click();
 
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+      cy.fillOutCheckInMetric(30, false, 'Here we are', 'A cat would be great');
       cy.contains('Aktuell: CHF 30.-');
       cy.getByTestId('show-all-checkins').click();
 
@@ -204,7 +204,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('keyresult').contains('For editing ordinal checkin').click();
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInOrdinal(0, 4, 'There is a new car', 'Buy now a new pool');
+      cy.fillOutCheckInOrdinal(0, true, 'There is a new car', 'Buy now a new pool');
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);
@@ -212,7 +212,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('edit-check-in').click();
       cy.contains('For editing ordinal checkin');
       cy.contains('Confidence um Target zu erreichen');
-      cy.contains('3/10');
+      cy.contains('6/10');
       cy.getByTestId('stretchZone').click();
       cy.getByTestId('confidence-slider').realMouseDown();
       cy.getByTestId('check-in-next').click();

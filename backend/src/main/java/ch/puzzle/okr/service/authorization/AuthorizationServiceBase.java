@@ -34,7 +34,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleReadById(id, authorizationUser);
         T entity = businessService.getEntityById(id);
-        setRoleCreateOrUpdate(entity, authorizationUser);
+        entity.setWriteable(isWriteable(entity, authorizationUser));
         return entity;
     }
 
@@ -42,7 +42,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         T savedEntity = businessService.createEntity(entity, authorizationUser);
-        setRoleCreateOrUpdate(savedEntity, authorizationUser);
+        savedEntity.setWriteable(true);
         return savedEntity;
     }
 
@@ -50,7 +50,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         T updatedEntity = businessService.updateEntity(id, entity, authorizationUser);
-        setRoleCreateOrUpdate(updatedEntity, authorizationUser);
+        updatedEntity.setWriteable(true);
         return updatedEntity;
     }
 
@@ -68,7 +68,4 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
         return (BS) businessService;
     }
 
-    private void setRoleCreateOrUpdate(T entity, AuthorizationUser authorizationUser) {
-        entity.setWriteable(isWriteable(entity, authorizationUser));
-    }
 }

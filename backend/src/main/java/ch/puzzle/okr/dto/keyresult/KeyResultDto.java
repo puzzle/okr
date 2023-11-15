@@ -8,5 +8,5 @@ import java.util.List;
 
 @JsonDeserialize(using = KeyResultDeserializer.class)
 public interface KeyResultDto {
-    public List<ActionDto> getActionList();
+    List<ActionDto> getActionList();
 }

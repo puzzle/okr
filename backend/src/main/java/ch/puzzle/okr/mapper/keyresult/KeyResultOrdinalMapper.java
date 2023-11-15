@@ -7,7 +7,6 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInOrdinal;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
-import ch.puzzle.okr.service.business.ActionBusinessService;
 import ch.puzzle.okr.service.business.CheckInBusinessService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
@@ -20,21 +19,19 @@ public class KeyResultOrdinalMapper {
 
     private final UserPersistenceService userPersistenceService;
     private final ObjectiveBusinessService objectiveBusinessService;
-    private final ActionBusinessService actionBusinessService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionMapper actionMapper;
 
     public KeyResultOrdinalMapper(UserPersistenceService userPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, CheckInBusinessService checkInBusinessService,
-            ActionBusinessService actionBusinessService, ActionMapper actionMapper) {
+            ActionMapper actionMapper) {
         this.userPersistenceService = userPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.checkInBusinessService = checkInBusinessService;
-        this.actionBusinessService = actionBusinessService;
         this.actionMapper = actionMapper;
     }
 
-    public KeyResultDto toKeyResultOrdinalDto(KeyResultOrdinal keyResult) {
+    public KeyResultDto toKeyResultOrdinalDto(KeyResultOrdinal keyResult, List<Action> actionList) {
         KeyResultUserDto ownerDto = new KeyResultUserDto(keyResult.getOwner().getId(),
                 keyResult.getOwner().getFirstname(), keyResult.getOwner().getLastname());
         KeyResultQuarterDto quarterDto = new KeyResultQuarterDto(keyResult.getObjective().getQuarter().getId(),
@@ -43,7 +40,6 @@ public class KeyResultOrdinalMapper {
         KeyResultObjectiveDto objectiveDto = new KeyResultObjectiveDto(keyResult.getObjective().getId(),
                 keyResult.getObjective().getState().toString(), quarterDto);
         KeyResultLastCheckInOrdinalDto lastCheckInDto = getLastCheckInDto(keyResult.getId());
-        List<Action> actionList = actionBusinessService.getActionsByKeyResultId(keyResult.getId());
 
         return new KeyResultOrdinalDto(keyResult.getId(), keyResult.getVersion(), keyResult.getKeyResultType(),
                 keyResult.getTitle(), keyResult.getDescription(), keyResult.getCommitZone(), keyResult.getTargetZone(),

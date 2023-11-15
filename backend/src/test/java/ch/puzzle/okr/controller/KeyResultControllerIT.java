@@ -1,11 +1,11 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.mapper.ActionMapper;
 import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.checkin.CheckIn;
+import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
@@ -73,7 +73,7 @@ class KeyResultControllerIT {
     @Test
     void shouldGetMetricKeyResultWithId() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultMetricDto);
 
         mvc.perform(get(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
@@ -93,7 +93,7 @@ class KeyResultControllerIT {
     @Test
     void shouldGetOrdinalKeyResultWithId() throws Exception {
         BDDMockito.given(keyResultAuthorizationService.getEntityById(anyLong())).willReturn(ordinalKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultOrdinalDto);
 
         mvc.perform(get(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath(JSON_PATH_ID, Is.is(5)))
@@ -123,10 +123,9 @@ class KeyResultControllerIT {
     @Test
     void shouldReturnCheckInsFromKeyResult() throws Exception {
         List<CheckIn> checkInList = Arrays.asList(checkIn1, checkIn2);
-        BDDMockito.given(this.keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong()))
-                .willReturn(checkInList);
-        BDDMockito.given(this.checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
-        BDDMockito.given(this.checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
+        BDDMockito.given(keyResultAuthorizationService.getAllCheckInsByKeyResult(anyLong())).willReturn(checkInList);
+        BDDMockito.given(checkInMapper.toDto(checkIn1)).willReturn(checkInDto1);
+        BDDMockito.given(checkInMapper.toDto(checkIn2)).willReturn(checkInDto2);
 
         mvc.perform(get(URL_TO_KEY_RESULT_5_CHECK_IN).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -159,9 +158,9 @@ class KeyResultControllerIT {
 
     @Test
     void createMetricKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultMetricDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -178,15 +177,15 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_ID_LAST_CHECK_IN_VALUE, Is.is(4.0)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
 
-        verify(actionMapper, times(1)).toActions(any());
+        verify(actionMapper, times(1)).toActions(anyList(), any());
         verify(actionAuthorizationService, times(1)).createEntities(List.of());
     }
 
     @Test
     void createOrdinalKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -202,24 +201,24 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
 
-        verify(actionMapper, times(1)).toActions(any());
+        verify(actionMapper, times(1)).toActions(anyList(), any());
         verify(actionAuthorizationService, times(1)).createEntities(List.of());
     }
 
     @Test
     void shouldCreateActionsWhenCreatingKeyResult() throws Exception {
-        ActionDto actionDto1 = new ActionDto(null, 1, "Neue Katze", 0, true, 3L);
-        ActionDto actionDto2 = new ActionDto(null, 1, "Neuer Hund", 1, false, 3L);
         Action action1 = Action.Builder.builder().withVersion(1).withAction("Neue Katze").withPriority(0)
                 .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
         Action action2 = Action.Builder.builder().withVersion(1).withAction("Neuer Hund").withPriority(1)
                 .withKeyResult(ordinalKeyResult).withIsChecked(false).build();
         action1.setWriteable(false);
         action2.setWriteable(false);
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
-        BDDMockito.given(this.actionMapper.toActions(any())).willReturn(List.of(action1, action2));
+        List<Action> actionList = List.of(action1, action2);
+        BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(actionAuthorizationService.createEntities(actionList)).willReturn(actionList);
+        BDDMockito.given(actionMapper.toActions(anyList(), any())).willReturn(actionList);
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL_ACTION_LIST).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -235,8 +234,8 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_QUARTER_START_DATE, Is.is(START_DATE)))
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)));
 
-        verify(actionMapper, times(1)).toActions(List.of(actionDto1, actionDto2));
-        verify(actionAuthorizationService, times(1)).createEntities(List.of(action1, action2));
+        verify(actionMapper, times(1)).toActions(anyList(), any());
+        verify(actionAuthorizationService, times(1)).createEntities(actionList);
     }
 
     @Test
@@ -255,9 +254,9 @@ class KeyResultControllerIT {
 
     @Test
     void createEntityWithEnumKeys() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultOrdinalDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.createEntity(any())).willReturn(ordinalKeyResult);
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultOrdinalDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(ordinalKeyResult);
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_WITH_ENUM_KEYS).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))
@@ -276,7 +275,7 @@ class KeyResultControllerIT {
 
     @Test
     void createEntityShouldThrowErrorWhenInvalidDto() throws Exception {
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any()))
+        BDDMockito.given(keyResultMapper.toKeyResult(any()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Error"));
 
         mvc.perform(post(URL_BASE).content(CREATE_BODY_ORDINAL).contentType(MediaType.APPLICATION_JSON)
@@ -286,10 +285,14 @@ class KeyResultControllerIT {
 
     @Test
     void shouldReturnUpdatedKeyResult() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultAuthorizationService.isImUsed(any(), any())).willReturn(false);
+        BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
+                .willReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultMetricDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.isImUsed(any(), any())).willReturn(false);
+        BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
+                .willReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
+        BDDMockito.given(actionAuthorizationService.getActionsByKeyResult(any())).willReturn(anyList());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
@@ -303,16 +306,17 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
                 .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT.toString()))).andReturn();
 
-        verify(actionMapper, times(1)).toActions(any());
-        verify(actionAuthorizationService, times(1)).updateEntities(List.of());
+        verify(actionMapper, times(1)).toActions(anyList(), any());
+        verify(keyResultAuthorizationService, times(1)).updateEntities(anyLong(), any(), anyList());
     }
 
     @Test
     void shouldReturnUpdatedKeyResultWithImUsed() throws Exception {
-        BDDMockito.given(this.keyResultAuthorizationService.updateEntity(any(), any())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultMapper.toDto(any())).willReturn(keyResultMetricDto);
-        BDDMockito.given(this.keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
-        BDDMockito.given(this.keyResultAuthorizationService.isImUsed(any(), any())).willReturn(true);
+        BDDMockito.given(keyResultAuthorizationService.updateEntities(anyLong(), any(), anyList()))
+                .willReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
+        BDDMockito.given(keyResultMapper.toDto(any(), anyList())).willReturn(keyResultMetricDto);
+        BDDMockito.given(keyResultMapper.toKeyResult(any())).willReturn(metricKeyResult);
+        BDDMockito.given(keyResultAuthorizationService.isImUsed(any(), any())).willReturn(true);
 
         mvc.perform(put(URL_TO_KEY_RESULT_1).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()).content(JSON))
@@ -326,14 +330,14 @@ class KeyResultControllerIT {
                 .andExpect(jsonPath(JSON_PATH_LAST_CHECK_IN_CONFIDENCE, Is.is(CONFIDENCE)))
                 .andExpect(jsonPath(JSON_PATH_UNIT, Is.is(KEY_RESULT_UNIT.toString()))).andReturn();
 
-        verify(actionMapper, times(1)).toActions(any());
-        verify(actionAuthorizationService, times(1)).updateEntities(List.of());
+        verify(actionMapper, times(1)).toActions(anyList(), any());
+        verify(keyResultAuthorizationService, times(1)).updateEntities(anyLong(), any(), anyList());
     }
 
     @Test
     void shouldReturnNotFoundWhenUpdatingKeyResult() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Keyresult not found"))
-                .when(keyResultAuthorizationService).updateEntity(any(), any());
+                .when(keyResultAuthorizationService).updateEntities(any(), any(), anyList());
 
         mvc.perform(put(URL_TO_KEY_RESULT_1000).content(PUT_BODY_METRIC).contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.csrf()))

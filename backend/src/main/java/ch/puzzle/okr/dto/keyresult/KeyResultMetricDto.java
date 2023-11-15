@@ -14,6 +14,6 @@ public record KeyResultMetricDto(Long id, int version, String keyResultType, Str
         List<ActionDto> actionList) implements KeyResultDto {
     @Override
     public List<ActionDto> getActionList() {
-        return this.actionList;
+        return actionList;
     }
 }

@@ -12,6 +12,7 @@ import ch.puzzle.okr.models.checkin.Zone;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.models.keyresult.KeyResultOrdinal;
+import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -26,10 +27,9 @@ import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
-import static ch.puzzle.okr.KeyResultTestHelpers.ordinalKeyResult;
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringIntegrationTest
@@ -38,6 +38,8 @@ class KeyResultBusinessServiceIT {
     private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
 
     private KeyResult createdKeyResult;
+    private Action action1;
+    private Action action2;
 
     @Autowired
     private KeyResultBusinessService keyResultBusinessService;
@@ -45,7 +47,7 @@ class KeyResultBusinessServiceIT {
     @Autowired
     private CheckInBusinessService checkInBusinessService;
 
-    @Mock
+    @Autowired
     private ActionBusinessService actionBusinessService;
 
     @Mock
@@ -77,19 +79,29 @@ class KeyResultBusinessServiceIT {
                 .build();
     }
 
+    private static Action createAction1(KeyResult keyResult) {
+        return Action.Builder.builder().withIsChecked(false).withAction("Neuer Drucker").withPriority(0)
+                .withKeyResult(keyResult).build();
+    }
+
+    private static Action createAction2(KeyResult keyResult) {
+        return Action.Builder.builder().withIsChecked(false).withAction("Neues Papier").withPriority(0)
+                .withKeyResult(keyResult).build();
+    }
+
     @BeforeEach
     void setUp() {
-        Action action1 = Action.Builder.builder().withId(11L).withIsChecked(false).withAction("Neuer Drucker")
-                .withPriority(0).withKeyResult(ordinalKeyResult).build();
-        Action action2 = Action.Builder.builder().withId(22L).withIsChecked(false).withAction("Neues Papier")
-                .withPriority(1).withKeyResult(ordinalKeyResult).build();
-        List<Action> actionList = List.of(action1, action2);
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(actionBusinessService.getActionsByKeyResultId(any())).thenReturn(actionList);
     }
 
     @AfterEach
     void tearDown() {
+        deleteCreatedKeyResult();
+        action1 = deleteCreatedAction(action1);
+        action2 = deleteCreatedAction(action2);
+    }
+
+    private void deleteCreatedKeyResult() {
         try {
             if (createdKeyResult != null) {
                 keyResultBusinessService.getEntityById(createdKeyResult.getId());
@@ -102,78 +114,138 @@ class KeyResultBusinessServiceIT {
         }
     }
 
+    private Action deleteCreatedAction(Action action) {
+        try {
+            if (action != null) {
+                actionBusinessService.getEntityById(action.getId());
+                actionBusinessService.deleteEntityById(action.getId());
+            }
+        } catch (ResponseStatusException ex) {
+            // created action already deleted
+        }
+        return null;
+    }
+
     @Test
-    void updateEntityShouldUpdateKeyResultWithSameTypeMetric() {
+    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetric() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
-        KeyResult updatedKeyResult = keyResultBusinessService.updateEntity(createdKeyResult.getId(), createdKeyResult,
-                authorizationUser);
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
+                createdKeyResult, List.of());
 
-        assertSameKeyResult(createdKeyResult, updatedKeyResult);
+        assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
 
     @Test
-    void updateEntityShouldUpdateKeyResultWithSameTypeOrdinal() {
+    void updateEntitiesShouldUpdateKeyResultWithSameTypeMetricWithActionList() {
+        createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
+        createdKeyResult.setTitle(KEY_RESULT_UPDATED);
+        action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
+        action2 = actionBusinessService.createEntity(createAction2(createdKeyResult));
+
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
+                createdKeyResult, List.of(action1, action2));
+
+        assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
+        assertSameActions(List.of(action1, action2), updatedKeyResult);
+    }
+
+    @Test
+    void updateEntitiesShouldUpdateKeyResultWithSameTypeOrdinal() {
         createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
         createdKeyResult.setTitle(KEY_RESULT_UPDATED);
 
-        KeyResult updatedKeyResult = keyResultBusinessService.updateEntity(createdKeyResult.getId(), createdKeyResult,
-                authorizationUser);
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(createdKeyResult.getId(),
+                createdKeyResult, List.of());
 
-        assertSameKeyResult(createdKeyResult, updatedKeyResult);
+        assertSameKeyResult(createdKeyResult, updatedKeyResult.keyResult());
     }
 
     @Test
-    void updateKeyResultShouldRecreateKeyResultMetric() {
+    void updateEntitiesShouldRecreateKeyResultMetric() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
-        KeyResult updatedKeyResult = createKeyResultMetric(savedKeyResult.getId());
+        KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
-        createdKeyResult = keyResultBusinessService.updateEntity(updatedKeyResult.getId(), updatedKeyResult,
-                authorizationUser);
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of());
+        createdKeyResult = updatedKeyResult.keyResult();
 
-        assertRecreatedKeyResult(updatedKeyResult, createdKeyResult);
+        assertRecreatedKeyResult(changedKeyResult, createdKeyResult);
     }
 
     @Test
-    void updateKeyResultShouldRecreateKeyResultOrdinal() {
-        KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
-                authorizationUser);
-        KeyResult updatedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
-
-        createdKeyResult = keyResultBusinessService.updateEntity(updatedKeyResult.getId(), updatedKeyResult,
-                authorizationUser);
-
-        assertRecreatedKeyResult(updatedKeyResult, createdKeyResult);
-    }
-
-    @Test
-    void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
+    void updateEntitiesShouldRecreateKeyResultMetricWithActionList() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null),
                 authorizationUser);
-        checkInBusinessService.createEntity(createCheckInOrdinal(savedKeyResult), authorizationUser);
+        action1 = actionBusinessService.createEntity(createAction1(savedKeyResult));
+        action2 = actionBusinessService.createEntity(createAction2(savedKeyResult));
+        KeyResult changedKeyResult = createKeyResultMetric(savedKeyResult.getId());
 
-        KeyResult updatedKeyResult = createKeyResultMetric(savedKeyResult.getId());
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of(action1, action2));
+        createdKeyResult = updatedKeyResult.keyResult();
 
-        createdKeyResult = keyResultBusinessService.updateEntity(updatedKeyResult.getId(), updatedKeyResult,
-                authorizationUser);
-
-        assertUpdatedKeyResult(updatedKeyResult, createdKeyResult);
+        assertRecreatedKeyResult(changedKeyResult, createdKeyResult);
+        assertSameActions(List.of(action1, action2), updatedKeyResult);
     }
 
     @Test
-    void updateKeyResultShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
+    void updateEntitiesShouldRecreateKeyResultOrdinal() {
         KeyResult savedKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null),
                 authorizationUser);
-        checkInBusinessService.createEntity(createCheckInMetric(savedKeyResult), authorizationUser);
+        KeyResult changedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
 
-        KeyResult updatedKeyResult = createKeyResultOrdinal(savedKeyResult.getId());
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of());
+        createdKeyResult = updatedKeyResult.keyResult();
 
-        createdKeyResult = keyResultBusinessService.updateEntity(updatedKeyResult.getId(), updatedKeyResult,
-                authorizationUser);
+        assertRecreatedKeyResult(changedKeyResult, createdKeyResult);
+    }
 
-        assertUpdatedKeyResult(updatedKeyResult, createdKeyResult);
+    @Test
+    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetric() {
+        createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
+        checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
+
+        KeyResult changedKeyResult = createKeyResultMetric(createdKeyResult.getId());
+
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of());
+
+        assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
+    }
+
+    @Test
+    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInMetricWithActionList() {
+        createdKeyResult = keyResultBusinessService.createEntity(createKeyResultOrdinal(null), authorizationUser);
+        checkInBusinessService.createEntity(createCheckInOrdinal(createdKeyResult), authorizationUser);
+        action1 = actionBusinessService.createEntity(createAction1(createdKeyResult));
+        action2 = actionBusinessService.createEntity(createAction2(createdKeyResult));
+
+        KeyResult changedKeyResult = createKeyResultMetric(createdKeyResult.getId());
+        action1.setChecked(true);
+        action2.setChecked(true);
+
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of(action1, action2));
+
+        assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
+        assertUpdatedActions(List.of(action1, action2), updatedKeyResult);
+    }
+
+    @Test
+    void updateEntitiesShouldUpdateKeyResultWithDifferentTypeAndCheckInOrdinal() {
+        createdKeyResult = keyResultBusinessService.createEntity(createKeyResultMetric(null), authorizationUser);
+        checkInBusinessService.createEntity(createCheckInMetric(createdKeyResult), authorizationUser);
+
+        KeyResult changedKeyResult = createKeyResultOrdinal(createdKeyResult.getId());
+
+        KeyResultWithActionList updatedKeyResult = keyResultBusinessService.updateEntities(changedKeyResult.getId(),
+                changedKeyResult, List.of());
+
+        assertUpdatedKeyResult(changedKeyResult, updatedKeyResult.keyResult());
     }
 
     private void assertSameKeyResult(KeyResult expected, KeyResult actual) {
@@ -217,5 +289,40 @@ class KeyResultBusinessServiceIT {
         } else {
             throw new IllegalArgumentException("keyResultType not supported, " + expected);
         }
+    }
+
+    private void assertSameActions(List<Action> expected, KeyResultWithActionList actual) {
+        assertSameKeyResultIds(expected, actual);
+        expected.forEach(this::removeKeyResult);
+        actual.actionList().forEach(this::removeKeyResult);
+        assertThat(expected).hasSameElementsAs(actual.actionList());
+    }
+
+    private void assertUpdatedActions(List<Action> expected, KeyResultWithActionList actual) {
+        assertSameKeyResultIds(expected, actual);
+        assertSameActionIds(expected, actual);
+        assertUpdateVersions(expected, actual);
+    }
+
+    private void assertSameKeyResultIds(List<Action> expected, KeyResultWithActionList actual) {
+        List<Long> expectedIds = expected.stream().map(action -> action.getKeyResult().getId()).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(action -> action.getKeyResult().getId()).toList();
+        assertThat(expectedIds).hasSameElementsAs(updatedIds);
+    }
+
+    private void assertSameActionIds(List<Action> expected, KeyResultWithActionList actual) {
+        List<Long> expectedIds = expected.stream().map(Action::getId).toList();
+        List<Long> updatedIds = actual.actionList().stream().map(Action::getId).toList();
+        assertThat(expectedIds).hasSameElementsAs(updatedIds);
+    }
+
+    private void assertUpdateVersions(List<Action> expected, KeyResultWithActionList actual) {
+        List<Integer> expectedVersions = expected.stream().map(action -> action.getVersion() + 1).toList();
+        List<Integer> updatedVerisons = actual.actionList().stream().map(Action::getVersion).toList();
+        assertThat(expectedVersions).hasSameElementsAs(updatedVerisons);
+    }
+
+    private void removeKeyResult(Action action) {
+        action.setKeyResult(null);
     }
 }

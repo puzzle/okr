@@ -1,19 +1,23 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class KeyResultBusinessService implements BusinessServiceInterface<Long, KeyResult> {
@@ -33,6 +37,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         this.validator = validator;
     }
 
+    @Override
     @Transactional
     public KeyResult createEntity(KeyResult keyResult, AuthorizationUser authorizationUser) {
         keyResult.setCreatedOn(LocalDateTime.now());
@@ -41,13 +46,21 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         return keyResultPersistenceService.save(keyResult);
     }
 
+    @Override
     public KeyResult getEntityById(Long id) {
         validator.validateOnGet(id);
         return keyResultPersistenceService.findById(id);
     }
 
+    @Override
+    public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser)
+            throws ResponseStatusException {
+        throw new ResponseStatusException(BAD_REQUEST,
+                "unsupported method in class " + getClass().getSimpleName() + ", use updateEntities() instead");
+    }
+
     @Transactional
-    public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser) {
+    public KeyResultWithActionList updateEntities(Long id, KeyResult keyResult, List<Action> actionList) {
         KeyResult savedKeyResult = keyResultPersistenceService.findById(id);
         keyResult.setCreatedBy(savedKeyResult.getCreatedBy());
         keyResult.setCreatedOn(savedKeyResult.getCreatedOn());
@@ -56,15 +69,14 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         if (Objects.equals(keyResult.getKeyResultType(), savedKeyResult.getKeyResultType())) {
             logger.debug("keyResultType is identically, {}", keyResult);
             validator.validateOnUpdate(id, keyResult);
-            return keyResultPersistenceService.updateEntity(keyResult);
+            return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(keyResult),
+                    actionBusinessService.updateEntities(actionList));
         } else {
             if (isKeyResultTypeChangeable(id)) {
                 logger.debug("keyResultType has changed and is changeable, {}", keyResult);
                 validator.validateOnUpdate(id, keyResult);
-                List<Action> actionList = actionBusinessService.getActionsByKeyResultId(id);
-                KeyResult createdKeyResult = keyResultPersistenceService.recreateEntity(id, keyResult);
-                actionBusinessService.updateEntities(actionList);
-                return createdKeyResult;
+                return new KeyResultWithActionList(recreateEntity(id, keyResult, actionList),
+                        actionBusinessService.createEntities(actionList));
             } else {
                 savedKeyResult.setTitle(keyResult.getTitle());
                 savedKeyResult.setDescription(keyResult.getDescription());
@@ -72,9 +84,20 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 savedKeyResult.setModifiedOn(keyResult.getModifiedOn());
                 logger.debug("keyResultType has changed and is NOT changeable, {}", savedKeyResult);
                 validator.validateOnUpdate(id, keyResult);
-                return keyResultPersistenceService.updateEntity(savedKeyResult);
+                return new KeyResultWithActionList(keyResultPersistenceService.updateEntity(savedKeyResult),
+                        actionBusinessService.updateEntities(actionList));
             }
         }
+    }
+
+    private KeyResult recreateEntity(Long id, KeyResult keyResult, List<Action> actionList) {
+        actionBusinessService.deleteEntitiesByKeyResultId(id);
+        KeyResult recreatedEntity = keyResultPersistenceService.recreateEntity(id, keyResult);
+        actionList.forEach(action -> {
+            action.resetId();
+            action.setKeyResult(recreatedEntity);
+        });
+        return recreatedEntity;
     }
 
     @Transactional
@@ -96,10 +119,6 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
         return keyResultPersistenceService.getKeyResultsByObjective(objectiveId);
     }
 
-    private boolean isKeyResultTypeChangeable(Long id) {
-        return !hasKeyResultAnyCheckIns(id);
-    }
-
     public boolean hasKeyResultAnyCheckIns(Long id) {
         return !checkInBusinessService.getCheckInsByKeyResultId(id).isEmpty();
     }
@@ -107,5 +126,9 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     public boolean isImUsed(Long id, KeyResult keyResult) {
         return hasKeyResultAnyCheckIns(id)
                 && !keyResultPersistenceService.findById(id).getKeyResultType().equals(keyResult.getKeyResultType());
+    }
+
+    private boolean isKeyResultTypeChangeable(Long id) {
+        return !hasKeyResultAnyCheckIns(id);
     }
 }

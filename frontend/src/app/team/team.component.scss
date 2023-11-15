@@ -1,17 +1,6 @@
-.team-title {
-  font-size: 1.5rem;
-  padding-bottom: 16px;
-}
-
 .column-width {
   flex-grow: 1;
   min-width: 320px;
-  max-width: 500px;
+  max-width: 576px;
   flex-wrap: wrap;
-}
-
-@media screen and (max-width: 500px) {
-  .team-title {
-    padding-left: 31px;
-  }
 }

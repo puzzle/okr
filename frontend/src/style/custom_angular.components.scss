@@ -1,12 +1,4 @@
 @import "variables";
-//Applied since all menus have the same styling
-.mat-mdc-menu-panel {
-  border-radius: 0.5rem !important;
-}
-
-.mat-mdc-menu-content {
-  padding: 0 !important;
-}
 
 .mdc-button {
   border-radius: 0.5rem !important;
@@ -20,7 +12,7 @@
   }
 }
 
-.mat-mdc-menu-item {
+.mat-mdc-menu-item.objective-menu-option {
   line-height: normal !important;
   font-size: 1rem;
   height: 2rem !important;
@@ -54,4 +46,21 @@
 
 .cdk-overlay-backdrop.cdk-overlay-dark-backdrop.cdk-overlay-backdrop-showing {
   margin-top: $top-bar-height;
+}
+
+$scale-start: 0.5;
+$scale-end: 2;
+$scale-gap: 0.1;
+
+@for $i from calc($scale-start / $scale-gap) through calc($scale-end / $scale-gap) {
+  $scale-value: $i * $scale-gap;
+  $selector: ".scale-#{$scale-value * 10}";
+
+  #{$selector} {
+    transform: scale(#{$scale-value});
+  }
+}
+
+#header-accordion.mat-expansion-panel {
+  background: transparent;
 }

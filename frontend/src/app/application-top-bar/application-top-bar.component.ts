@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class ApplicationTopBarComponent implements OnInit {
   username: ReplaySubject<string> = new ReplaySubject();
+  menuIsOpen = false;
 
   constructor(
     private oauthService: OAuthService,
@@ -23,7 +24,7 @@ export class ApplicationTopBarComponent implements OnInit {
       .pipe(
         map((config) => {
           if (config.activeProfile === 'staging') {
-            document.getElementById('pzsh-topbar')!.style.backgroundColor = '#ab31ad';
+            document.getElementById('okrTopbar')!.style.backgroundColor = '#ab31ad';
           }
         }),
       )

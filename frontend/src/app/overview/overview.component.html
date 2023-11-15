@@ -2,7 +2,7 @@
 
 <app-application-top-bar></app-application-top-bar>
 <app-application-banner id="bannerComponent"></app-application-banner>
-<div class="overviewContainer bg-grey mt-header-height">
+<div class="overviewContainer">
   <app-team
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
     [overviewEntity]="overviewEntity"

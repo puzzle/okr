@@ -40,8 +40,8 @@ export class OverviewComponent implements OnDestroy {
       .subscribe(() => this.loadOverviewWithParams());
 
     combineLatest([
-      <Observable<void>>refreshDataService.teamFilterReady,
-      <Observable<void>>refreshDataService.quarterFilterReady,
+      refreshDataService.teamFilterReady.asObservable(),
+      refreshDataService.quarterFilterReady.asObservable(),
     ])
       .pipe(take(1))
       .subscribe(() => {

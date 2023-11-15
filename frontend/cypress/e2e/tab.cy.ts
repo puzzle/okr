@@ -105,7 +105,7 @@ describe('Tab workflow tests', () => {
     cy.focused().contains('Jaya Norris');
   });
 
-  it.only('Tab to help element and visit link', () => {
+  it('Tab to help element and visit link', () => {
     cy.tabForward();
     cy.focused().contains('Hilfe');
     cy.realPress("Enter"); // Can't check the url since it's keeps localhost as the url for some reason
@@ -303,12 +303,12 @@ describe('Tab workflow tests', () => {
     cy.tabForward();
     cy.tabForwardUntil('[data-testId="changeInfo"]');
     editInputFields("Check-in by Cypress");
-    cy.tabForward();
+    cy.tabForwardUntil('[data-testId="save-check-in"]');
     cy.focused().contains("Check-in erfassen");
     cy.realPress("Enter")
   });
 
-  it.only('Create ordinal check-in with tab', () => {
+  it.skip('Create ordinal check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
     openAddCheckIn();
     cy.tabForward();
@@ -328,7 +328,7 @@ describe('Tab workflow tests', () => {
     cy.realPress("Enter");
   });
 
-  it('Open check-in history with tab', () => {
+  it.only('Open check-in history with tab', () => {
     openCheckInHistory();
     cy.contains("Check-in by Cypress")
   });
@@ -352,7 +352,7 @@ describe('Tab workflow tests', () => {
     cy.contains("Check-in by Cypress (edited)");
   });
 
-  it('Edit ordinal check-in with tab', () => {
+  it.skip('Edit ordinal check-in with tab', () => {
     // Unterscheidung zwischen metric und ordinal muss noch gemacht werden
   });
 

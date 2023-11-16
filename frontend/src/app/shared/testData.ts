@@ -17,6 +17,29 @@ import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
+import { OrganisationState } from './types/enums/OrganisationState';
+import { Organisation } from './types/model/Organisation';
+
+export const organisationActive = {
+  id: 1,
+  version: 1,
+  orgName: 'org_bbt',
+  teams: [],
+  state: OrganisationState.ACTIVE,
+} as Organisation;
+
+export const organisationInActive = {
+  id: 1,
+  version: 1,
+  orgName: 'org_mobility',
+  teams: [],
+  state: OrganisationState.INACTIVE,
+} as Organisation;
+
+export const teamFormObject = {
+  name: 'newTeamName',
+  organisations: [organisationActive],
+};
 
 export const teamMin1: TeamMin = {
   id: 1,
@@ -218,11 +241,13 @@ export const objectiveMin: ObjectiveMin = {
 export const overViewEntity1: OverviewEntity = {
   team: teamMin1,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+  writable: true,
 };
 
 export const overViewEntity2: OverviewEntity = {
   team: teamMin2,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
+  writable: true,
 };
 
 export const quarter: Quarter = {

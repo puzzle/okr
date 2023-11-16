@@ -20,7 +20,7 @@ public class Organisation {
     @NotBlank
     private String orgName;
 
-    @ManyToMany(mappedBy = "authorizationOrganisation")
+    @ManyToMany(mappedBy = "authorizationOrganisation", fetch = FetchType.EAGER)
     private List<Team> teams;
 
     @Enumerated(EnumType.STRING)

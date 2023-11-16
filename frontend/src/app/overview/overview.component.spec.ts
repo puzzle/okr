@@ -49,7 +49,7 @@ describe('OverviewComponent', () => {
 
     fixture = TestBed.createComponent(OverviewComponent);
     component = fixture.componentInstance;
-    overviewService.getOverview.mockReturnValue(of([overViewEntity1]));
+    overviewService.getOverview.mockReturnValue(of({ overviews: [overViewEntity1], adminAccess: true }));
     fixture.detectChanges();
   });
 

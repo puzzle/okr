@@ -3,7 +3,6 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
-import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
 import ch.puzzle.okr.service.business.ObjectiveBusinessService;
@@ -27,7 +26,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;

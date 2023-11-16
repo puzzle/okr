@@ -1,0 +1,18 @@
+@import "_variables";
+
+.input-fields {
+  margin-bottom: 0.5rem;
+}
+
+mat-select {
+  outline: 1px solid #a4a4af;
+}
+
+*:focus {
+  outline: $pz-dark-blue solid 2px;
+}
+
+mat-select:hover {
+  outline: 1px solid #5d6974;
+  overflow-y: visible;
+}

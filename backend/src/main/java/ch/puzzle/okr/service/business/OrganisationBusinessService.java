@@ -6,7 +6,6 @@ import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.service.persistence.OrganisationPersistenceService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ldap.core.LdapTemplate;
-import org.springframework.ldap.query.ContainerCriteria;
 import org.springframework.ldap.query.LdapQuery;
 import org.springframework.ldap.query.LdapQueryBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class OrganisationBusinessService {
@@ -50,5 +48,13 @@ public class OrganisationBusinessService {
         for (String orgName : existingOrganisationNames) {
             persistenceService.updateOrganisationStateToInactive(orgName);
         }
+    }
+
+    public List<Organisation> getActiveOrganisations() {
+        return persistenceService.getActiveOrganisations();
+    }
+
+    public List<Organisation> getOrganisationsByTeam(Long teamId) {
+        return persistenceService.getOrganisationsByTeamId(teamId);
     }
 }

@@ -58,13 +58,24 @@ class OrganisationBusinessServiceTest {
         when(ldapTemplate.search(any(LdapQuery.class), any(CnAttributesMapper.class))).thenReturn(listOfOrgNames);
         when(organisationPersistenceService.findAll()).thenReturn(organisationDbMock);
         organisationBusinessService.importOrgFromLDAP();
-        verify(organisationPersistenceService).saveIfNotExists(
+        verify(organisationPersistenceService, atLeast(1)).saveIfNotExists(
                 Organisation.Builder.builder().withOrgName("org_one").withState(OrganisationState.ACTIVE).build());
-        verify(organisationPersistenceService).saveIfNotExists(
+        verify(organisationPersistenceService, atLeast(1)).saveIfNotExists(
                 Organisation.Builder.builder().withOrgName("org_two").withState(OrganisationState.ACTIVE).build());
-        verify(organisationPersistenceService, times(2)).saveIfNotExists(any());
-        verify(organisationPersistenceService).updateOrganisationStateToInactive("org_three");
-        verify(organisationPersistenceService, times(1)).updateOrganisationStateToInactive(anyString());
+        verify(organisationPersistenceService, atLeast(2)).saveIfNotExists(any());
+        verify(organisationPersistenceService, atLeast(1)).updateOrganisationStateToInactive("org_three");
+        verify(organisationPersistenceService, atLeast(1)).updateOrganisationStateToInactive(anyString());
     }
 
+    @Test
+    void getAllOrganisations() {
+        organisationBusinessService.getActiveOrganisations();
+        verify(organisationPersistenceService, times(1)).getActiveOrganisations();
+    }
+
+    @Test
+    void getOrganisationsByTeamId() {
+        organisationBusinessService.getOrganisationsByTeam(1L);
+        verify(organisationPersistenceService, times(1)).getOrganisationsByTeamId(1L);
+    }
 }

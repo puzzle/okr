@@ -10,6 +10,10 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
   return cy.get(`[data-testId=${testId}]`);
 });
 
+Cypress.Commands.add('getZone', (zone: string, onOverview: boolean) => {
+  return (onOverview ? cy.focused() : cy.getByTestId('side-panel')).getByTestId(zone);
+});
+
 Cypress.Commands.add(
   'fillOutObjective',
   (

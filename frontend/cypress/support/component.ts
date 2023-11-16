@@ -11,6 +11,7 @@ declare global {
       tabBackwardUntil(selector: string, limit?: number): void;
       createOrdinalKeyresult(title: string | null, owner: string | null): void;
       createMetricKeyresult(title: string | null, baseline: string | null, stretchGoal: string | null): void;
+      getZone(zone: string, onOverview: boolean): Chainable;
       checkForDialogText(): void;
       fillOutObjective(
         objectiveTitle: string,

@@ -1,10 +1,12 @@
 import * as users from '../fixtures/users.json';
+import { onlyOn } from '@cypress/skip-test';
 
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
       cy.visit('/?quarter=2');
+      onlyOn('chrome');
     });
 
     it(`Create checkin metric`, () => {

@@ -130,14 +130,7 @@ Cypress.Commands.add(
   },
 );
 
-function changeConfidence(changeConfidence: boolean) {
-  if (changeConfidence) {
-    cy.getByTestId('confidence-slider').realMouseDown();
-    cy.getByTestId('confidence-slider').realMouseUp();
-  }
-}
-
-function doUntil(selector: string, tab: () => void, limit: number = 20) {
+function doUntil(selector: string, tab: () => void, limit: number = 100) {
   for (let i = 0; i < limit; i++) {
     cy.focused().then((element) => {
       if (element.get(0).matches(selector)) {
@@ -146,6 +139,13 @@ function doUntil(selector: string, tab: () => void, limit: number = 20) {
         tab();
       }
     });
+  }
+}
+
+function changeConfidence(changeConfidence: boolean) {
+  if (changeConfidence) {
+    cy.getByTestId('confidence-slider').realMouseDown();
+    cy.getByTestId('confidence-slider').realMouseUp();
   }
 }
 

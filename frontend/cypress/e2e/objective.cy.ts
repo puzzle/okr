@@ -209,23 +209,23 @@ describe('OKR Objective e2e tests', () => {
         cy.scrollTo(0, 0);
         cy.wait(500);
 
-        cy.getByTestId('objectiveSearch').click({ force: true });
-        cy.getByTestId('objectiveSearch').type('Search after');
+        cy.getByTestId('objectiveSearch').first().click();
+        cy.getByTestId('objectiveSearch').first().type('Search after');
 
         cy.contains('Search after this objective');
         cy.get('We dont want to search for this').should('not.exist');
 
-        cy.getByTestId('objectiveSearch').clear().type('this');
+        cy.getByTestId('objectiveSearch').first().clear().type('this');
 
         cy.contains('Search after this objective');
         cy.contains('We dont want to search for this');
 
-        cy.getByTestId('objectiveSearch').clear().type('dont want to');
+        cy.getByTestId('objectiveSearch').first().clear().type('dont want to');
 
         cy.contains('We dont want to search for this');
         cy.get('Search after this objective').should('not.exist');
 
-        cy.getByTestId('objectiveSearch').clear().type('there is no objective');
+        cy.getByTestId('objectiveSearch').first().clear().type('there is no objective');
 
         cy.get('We dont want to search for this').should('not.exist');
         cy.get('Search after this objective').should('not.exist');

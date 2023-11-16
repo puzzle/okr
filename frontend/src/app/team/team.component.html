@@ -32,9 +32,9 @@
       ></app-objective-column>
 
       <button
-        [attr.data-testId]="'add-objective'"
         *ngIf="OVEntity.team.writable"
         class="bg-white border border-1 border-pz-dark-blue column-width flex-nowrap col-xs-12 col-md-4 px-0 py-4"
+        [attr.data-testId]="'add-objective'"
         mat-stroked-button
         color="primary"
         (click)="createObjective()"

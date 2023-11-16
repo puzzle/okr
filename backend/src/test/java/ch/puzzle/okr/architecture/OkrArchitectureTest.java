@@ -42,8 +42,7 @@ class OkrArchitectureTest {
     void authorizationServiceAccessedByControllerOrAuthorization() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.authorization..").should().onlyBeAccessed()
-                .byAnyPackage("..controller..", "..authorization..").orShould()
-                .haveSimpleNameStartingWith("Authorization");
+                .byAnyPackage("..controller..", "..authorization..");
 
         rule.check(importedClasses);
     }
@@ -52,7 +51,7 @@ class OkrArchitectureTest {
     void businessServiceAccessedByControllerOrAuthorizationServiceOrMapper() {
         JavaClasses importedClasses = getMainSourceClasses();
         ArchRule rule = classes().that().resideInAPackage("..service.business..").should().onlyBeAccessed()
-                .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..deserializer..", "..business");
+                .byAnyPackage("..controller..", "..authorization..", "..mapper..", "..business");
 
         rule.check(importedClasses);
     }

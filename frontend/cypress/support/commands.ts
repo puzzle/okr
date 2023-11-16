@@ -1,3 +1,5 @@
+import { validateScoring } from './scoringSupport';
+
 Cypress.Commands.add('loginAsUser', (user: any) => {
   loginWithCredentials(user.username, user.password);
   overviewIsLoaded();
@@ -12,6 +14,10 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
 
 Cypress.Commands.add('getZone', (zone: string, onOverview: boolean) => {
   return (onOverview ? cy.focused() : cy.getByTestId('side-panel')).getByTestId(zone);
+});
+
+Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number) => {
+  validateScoring(isOverview, percentage);
 });
 
 Cypress.Commands.add(

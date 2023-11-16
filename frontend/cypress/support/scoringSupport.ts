@@ -1,12 +1,12 @@
 import { isInValid } from '../../src/app/shared/common';
 
-export interface ScoringValue {
+interface ScoringValue {
   failPercent: number;
   commitPercent: number;
   targetPercent: number;
 }
 
-export function validateScoringWidthsAndColor(isOverview: boolean, percentage: number) {
+export function validateScoring(isOverview: boolean, percentage: number) {
   let rgbCode = colorFromPercentage(percentage);
   let scoringValue = scoringValueFromPercentage(percentage);
 
@@ -21,25 +21,6 @@ export function validateScoringWidthsAndColor(isOverview: boolean, percentage: n
   validateScoringColor('fail', rgbCode, isOverview);
   validateScoringColor('commit', rgbCode, isOverview);
   validateScoringColor('target', rgbCode, isOverview);
-}
-
-export function validateScoringWidth(zone: string, percent: number, isOverview: boolean) {
-  cy.getZone(zone, isOverview)
-    .parent()
-    .invoke('width')
-    .then((parentWidth) => {
-      expect(parentWidth).not.to.be.undefined;
-      cy.getZone(zone, isOverview)
-        .invoke('width')
-        .should('be.within', parentWidth! * (percent / 100) - 3, parentWidth! * (percent / 100) + 3);
-    });
-}
-
-export function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
-  cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
-  if (rgbCode == 'rgba(0, 0, 0, 0)') {
-    cy.getZone(zone, isOverview).invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
-  }
 }
 
 export function getPercentageMetric(baseline: number, stretchGoal: number, value: number) {
@@ -57,14 +38,33 @@ export function getPercentageOrdinal(zone: string) {
   return 0;
 }
 
-export function colorFromPercentage(percentage: number) {
+function validateScoringWidth(zone: string, percent: number, isOverview: boolean) {
+  cy.getZone(zone, isOverview)
+    .parent()
+    .invoke('width')
+    .then((parentWidth) => {
+      expect(parentWidth).not.to.be.undefined;
+      cy.getZone(zone, isOverview)
+        .invoke('width')
+        .should('be.within', parentWidth! * (percent / 100) - 3, parentWidth! * (percent / 100) + 3);
+    });
+}
+
+function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
+  cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
+  if (rgbCode == 'rgba(0, 0, 0, 0)') {
+    cy.getZone(zone, isOverview).invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
+  }
+}
+
+function colorFromPercentage(percentage: number) {
   if (percentage >= 100) return 'rgba(0, 0, 0, 0)';
   if (percentage > 70) return 'rgb(30, 138, 41)';
   if (percentage > 30) return 'rgb(255, 214, 0)';
   return 'rgb(186, 56, 56)';
 }
 
-export function scoringValueFromPercentage(percentage: number): ScoringValue {
+function scoringValueFromPercentage(percentage: number): ScoringValue {
   if (percentage >= 100) {
     return { failPercent: 100, commitPercent: 100, targetPercent: 101 };
   } else if (percentage > 70) {

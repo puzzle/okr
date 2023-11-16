@@ -1,9 +1,5 @@
 import * as users from '../fixtures/users.json';
-import {
-  getPercentageMetric,
-  getPercentageOrdinal,
-  validateScoringWidthsAndColor,
-} from 'cypress/support/scoringSupport';
+import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/scoringSupport';
 
 describe('Scoring component e2e tests', () => {
   beforeEach(() => {
@@ -28,9 +24,9 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
       const percentage = getPercentageMetric(baseline, stretchgoal, value);
-      validateScoringWidthsAndColor(false, percentage);
+      cy.validateScoring(false, percentage);
       cy.getByTestId('close-drawer').click();
-      validateScoringWidthsAndColor(true, percentage);
+      cy.validateScoring(true, percentage);
     });
   });
 
@@ -47,9 +43,9 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
       const percentage = getPercentageOrdinal(zoneName);
-      validateScoringWidthsAndColor(false, percentage);
+      cy.validateScoring(false, percentage);
       cy.getByTestId('close-drawer').click();
-      validateScoringWidthsAndColor(true, percentage);
+      cy.validateScoring(true, percentage);
     });
   });
 });

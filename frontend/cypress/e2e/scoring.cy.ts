@@ -1,9 +1,11 @@
 import * as users from '../fixtures/users.json';
 import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/scoringSupport';
+import { onlyOn } from '@cypress/skip-test';
 
 describe('Scoring component e2e tests', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
+    onlyOn('chrome');
   });
 
   [

@@ -28,7 +28,12 @@
 
     <div class="okr-stretch d-flex flex-column align-items-center mt-1">
       <span class="text-center text-small">Stretch</span>
-      <img [src]="'../../../../assets/icons/star-' + iconPath + '-icon.svg'" alt="Star-Icon" class="starIcon" />
+      <img
+        [src]="'../../../../assets/icons/star-' + iconPath + '-icon.svg'"
+        [attr.data-testId]="'stretch'"
+        alt="Star-Icon"
+        class="starIcon"
+      />
     </div>
   </div>
 </div>

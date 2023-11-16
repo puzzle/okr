@@ -33,6 +33,7 @@ describe('Scoring component e2e tests', () => {
       validateScoringWidthsAndColor(true, percentage);
     });
   });
+
   [['fail'], ['commit'], ['target'], ['stretch']].forEach(([zoneName]) => {
     it('Create ordinal checkin and validate value of scoring component', () => {
       cy.createOrdinalKeyresult('Ordinal scoring keyresult', null);

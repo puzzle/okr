@@ -60,7 +60,12 @@ public class KeyResultTestHelpers {
     public static final String JSON_PATH_LAST_CHECK_IN_ZONE = "$.lastCheckIn.value";
     public static final String JSON_PATH_QUARTER_LABEL = "$.objective.keyResultQuarterDto.label";
     public static final String JSON_PATH_QUARTER_START_DATE = "$.objective.keyResultQuarterDto.startDate";
-    public static final String JSON = "{\"title\":  \"Keyresult 1\",\"keyResultType\":  \"metric\"}";
+    public static final String JSON = """
+            {"title":  "Keyresult 1",
+            "keyResultType":  "metric",
+            "actionList": []
+            }";
+            """;
     public static final String URL_BASE = "/api/v2/keyresults";
     public static final String URL_TO_KEY_RESULT_1 = "/api/v2/keyresults/1";
     public static final String URL_TO_KEY_RESULT_10 = "/api/v2/keyresults/10";

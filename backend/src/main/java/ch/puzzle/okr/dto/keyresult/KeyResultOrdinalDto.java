@@ -13,6 +13,6 @@ public record KeyResultOrdinalDto(Long id, int version, String keyResultType, St
         LocalDateTime modifiedOn, boolean writeable, List<ActionDto> actionList) implements KeyResultDto {
     @Override
     public List<ActionDto> getActionList() {
-        return this.actionList;
+        return actionList;
     }
 }

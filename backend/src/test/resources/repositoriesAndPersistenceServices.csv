@@ -1,4 +1,5 @@
 repository,persistenceService,validationService
+ActionRepository,ActionPersistenceService,ActionValidationService
 AlignmentRepository,AlignmentPersistenceService,""
 AlignmentSelectionRepository,AlignmentSelectionPersistenceService,""
 CheckInRepository,CheckInPersistenceService,CheckInValidationService

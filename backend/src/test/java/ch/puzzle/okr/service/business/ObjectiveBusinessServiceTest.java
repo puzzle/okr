@@ -121,8 +121,11 @@ class ObjectiveBusinessServiceTest {
         when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(hasKeyResultAnyCheckIns);
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
 
+        boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
         Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
                 authorizationUser);
+
+        assertEquals(hasKeyResultAnyCheckIns, isImUsed);
         assertEquals(hasKeyResultAnyCheckIns ? savedObjective.getQuarter() : changedObjective.getQuarter(),
                 updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());

@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.authorization;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
@@ -91,17 +93,19 @@ class KeyResultAuthorizationServiceTest {
     }
 
     @Test
-    void updateEntityShouldReturnUpdatedKeyResultWhenAuthorized() {
+    void updateEntitiesShouldReturnUpdatedKeyResultWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(keyResultBusinessService.updateEntity(id, metricKeyResult, authorizationUser)).thenReturn(metricKeyResult);
+        when(keyResultBusinessService.updateEntities(id, metricKeyResult, List.of()))
+                .thenReturn(new KeyResultWithActionList(metricKeyResult, List.of()));
 
-        KeyResult KeyResult = keyResultAuthorizationService.updateEntity(id, metricKeyResult);
-        assertEquals(metricKeyResult, KeyResult);
+        KeyResultWithActionList KeyResult = keyResultAuthorizationService.updateEntities(id, metricKeyResult,
+                List.of());
+        assertEquals(metricKeyResult, KeyResult.keyResult());
     }
 
     @Test
-    void updateEntityShouldThrowExceptionWhenNotAuthorized() {
+    void updateEntitiesShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
         String reason = "junit test reason";
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
@@ -109,9 +113,18 @@ class KeyResultAuthorizationServiceTest {
                 .hasRoleCreateOrUpdate(metricKeyResult, authorizationUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> keyResultAuthorizationService.updateEntity(id, metricKeyResult));
+                () -> keyResultAuthorizationService.updateEntities(id, metricKeyResult, List.of()));
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(reason, exception.getReason());
+    }
+
+    @Test
+    void updateEntityShouldThrowException() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> keyResultAuthorizationService.updateEntity(1L, metricKeyResult));
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName()
+                + ", use updateEntities() instead", exception.getReason());
     }
 
     @Test

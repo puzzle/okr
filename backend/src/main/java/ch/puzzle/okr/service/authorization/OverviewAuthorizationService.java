@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OverviewBusinessService;
@@ -10,6 +9,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
 
 @Service
 public class OverviewAuthorizationService {
@@ -50,7 +51,7 @@ public class OverviewAuthorizationService {
 
     public boolean hasWriteAllAccess() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        return authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL);
+        return hasRoleWriteAll(authorizationUser);
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Overview overview) {

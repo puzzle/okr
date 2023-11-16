@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.dto.ActionDto;
 import ch.puzzle.okr.dto.checkin.CheckInDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultDto;
 import ch.puzzle.okr.dto.keyresult.KeyResultMetricDto;
@@ -10,6 +9,7 @@ import ch.puzzle.okr.mapper.checkin.CheckInMapper;
 import ch.puzzle.okr.mapper.keyresult.KeyResultMapper;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.models.keyresult.KeyResultWithActionList;
 import ch.puzzle.okr.service.authorization.ActionAuthorizationService;
 import ch.puzzle.okr.service.authorization.KeyResultAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +54,9 @@ public class KeyResultController {
             @ApiResponse(responseCode = "404", description = "Did not find the KeyResult with requested id", content = @Content) })
     @GetMapping("/{id}")
     public KeyResultDto getKeyResultById(@PathVariable long id) {
-        return keyResultMapper.toDto(keyResultAuthorizationService.getEntityById(id));
+        KeyResult keyResult = keyResultAuthorizationService.getEntityById(id);
+        List<Action> actionList = actionAuthorizationService.getActionsByKeyResult(keyResult);
+        return keyResultMapper.toDto(keyResult, actionList);
     }
 
     @Operation(summary = "Get Check-ins from KeyResult", description = "Get all Check-ins from one KeyResult by keyResultId.")
@@ -79,11 +81,9 @@ public class KeyResultController {
     @PostMapping
     public ResponseEntity<KeyResultDto> createKeyResult(@RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultAuthorizationService.createEntity(keyResultMapper.toKeyResult(keyResultDto));
-        List<ActionDto> actionDTOs = keyResultDto.getActionList().stream()
-                .map(actionDto -> actionDto.withKeyResultId(keyResult.getId())).toList();
-        List<Action> actionList = actionMapper.toActions(actionDTOs);
-        actionAuthorizationService.createEntities(actionList);
-        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult);
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
+        List<Action> savedActions = actionAuthorizationService.createEntities(actionList);
+        KeyResultDto createdKeyResult = keyResultMapper.toDto(keyResult, savedActions);
         return ResponseEntity.status(CREATED).body(createdKeyResult);
     }
 
@@ -102,12 +102,12 @@ public class KeyResultController {
             @Parameter(description = "The ID for updating a KeyResult.", required = true) @PathVariable long id,
             @RequestBody KeyResultDto keyResultDto) {
         KeyResult keyResult = keyResultMapper.toKeyResult(keyResultDto);
+        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList(), keyResult);
         boolean isKeyResultImUsed = keyResultAuthorizationService.isImUsed(id, keyResult);
-        keyResult = keyResultAuthorizationService.updateEntity(id, keyResult);
-        List<Action> actionList = actionMapper.toActions(keyResultDto.getActionList());
-        actionAuthorizationService.updateEntities(actionList);
-        KeyResultDto updatedKeyResult = keyResultMapper.toDto(keyResult);
-        return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK).body(updatedKeyResult);
+        KeyResultWithActionList updatedKeyResult = keyResultAuthorizationService.updateEntities(id, keyResult,
+                actionList);
+        return ResponseEntity.status(isKeyResultImUsed ? IM_USED : OK)
+                .body(keyResultMapper.toDto(updatedKeyResult.keyResult(), updatedKeyResult.actionList()));
     }
 
     @Operation(summary = "Delete KeyResult by Id", description = "Delete KeyResult by Id")

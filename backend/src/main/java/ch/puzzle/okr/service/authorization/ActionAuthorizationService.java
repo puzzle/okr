@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.business.ActionBusinessService;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +20,26 @@ public class ActionAuthorizationService {
         this.authorizationService = authorizationService;
     }
 
-    public void createEntities(List<Action> actionList) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> {
-            hasRoleCreateOrUpdate(action, authorizationUser);
-            action.setWriteable(true);
-        });
-        actionBusinessService.createEntities(actionList);
+    public List<Action> getActionsByKeyResult(KeyResult keyResult) {
+        List<Action> actionList = actionBusinessService.getActionsByKeyResultId(keyResult.getId());
+        actionList.forEach(action -> action.setWriteable(keyResult.isWriteable()));
+        return actionList;
     }
 
-    public void updateEntities(List<Action> actionList) {
+    public List<Action> createEntities(List<Action> actionList) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        actionList.forEach(action -> {
-            hasRoleCreateOrUpdate(action, authorizationUser);
-            action.setWriteable(true);
-        });
-        actionBusinessService.updateEntities(actionList);
+        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
+        List<Action> savedActions = actionBusinessService.createEntities(actionList);
+        savedActions.forEach(action -> action.setWriteable(true));
+        return savedActions;
     }
 
-    protected void hasRoleCreateOrUpdate(Action entity, AuthorizationUser authorizationUser) {
-        authorizationService.hasRoleCreateOrUpdate(entity.getKeyResult(), authorizationUser);
+    public List<Action> updateEntities(List<Action> actionList) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        actionList.forEach(action -> hasRoleCreateOrUpdate(action, authorizationUser));
+        List<Action> updatedActions = actionBusinessService.updateEntities(actionList);
+        updatedActions.forEach(action -> action.setWriteable(true));
+        return updatedActions;
     }
 
     public void deleteActionByActionId(Long actionId) {
@@ -47,7 +48,7 @@ public class ActionAuthorizationService {
         actionBusinessService.deleteEntityById(actionId);
     }
 
-    protected boolean isWriteable(Action entity, AuthorizationUser authorizationUser) {
-        return authorizationService.isWriteable(entity.getKeyResult(), authorizationUser);
+    private void hasRoleCreateOrUpdate(Action entity, AuthorizationUser authorizationUser) {
+        authorizationService.hasRoleCreateOrUpdate(entity.getKeyResult(), authorizationUser);
     }
 }

@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
 
 @Service
 public class TeamAuthorizationService {
@@ -38,7 +39,7 @@ public class TeamAuthorizationService {
 
     public void checkUserAuthorization(String message) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        if (!authorizationUser.roles().contains(AuthorizationRole.WRITE_ALL)) {
+        if (!hasRoleWriteAll(authorizationUser)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, message);
         }
     }

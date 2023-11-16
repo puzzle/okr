@@ -6,6 +6,7 @@ import ch.puzzle.okr.service.validation.ActionValidationService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,22 +41,24 @@ public class ActionBusinessService {
     }
 
     @Transactional
-    public void updateEntities(List<Action> actionList) {
+    public List<Action> updateEntities(List<Action> actionList) {
+        List<Action> savedActions = new ArrayList<>();
         actionList.forEach(action -> {
             if (action.getKeyResult() == null) {
                 action.setKeyResult(actionPersistenceService.findById(action.getId()).getKeyResult());
             }
             if (action.getId() == null) {
-                this.createEntity(action);
+                savedActions.add(createEntity(action));
             } else {
-                this.updateEntity(action.getId(), action);
+                savedActions.add(updateEntity(action.getId(), action));
             }
         });
+        return savedActions;
     }
 
     @Transactional
     public Action updateEntity(Long id, Action action) {
-        validator.validateOnUpdate(action.getId(), action);
+        validator.validateOnUpdate(id, action);
         return actionPersistenceService.save(action);
     }
 
@@ -63,5 +66,10 @@ public class ActionBusinessService {
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         actionPersistenceService.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteEntitiesByKeyResultId(Long keyResultId) {
+        getActionsByKeyResultId(keyResultId).forEach(action -> deleteEntityById(action.getId()));
     }
 }

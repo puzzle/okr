@@ -48,6 +48,10 @@ public class Action implements WriteableInterface {
         return id;
     }
 
+    public void resetId() {
+        id = null;
+    }
+
     public String getAction() {
         return action;
     }

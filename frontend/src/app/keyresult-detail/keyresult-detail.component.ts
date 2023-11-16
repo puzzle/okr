@@ -11,9 +11,9 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
-import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { DATE_FORMAT } from '../shared/constantLibary';
 import { isInValid } from '../shared/common';
+import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -77,7 +77,7 @@ export class KeyresultDetailComponent implements OnInit {
 
   openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialog
-      .open(KeyResultDialogComponent, {
+      .open(KeyresultFormComponent, {
         width: '45em',
         height: 'auto',
         data: {

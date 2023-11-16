@@ -1,14 +1,11 @@
-<div mat-dialog-content class="dialog dialog-padding">
-  <app-dialog-header
-    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
-  ></app-dialog-header>
-  <form (ngSubmit)="saveKeyResult()" [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
-    <div class="d-flex flex-column gap-2 col-12">
-      <label for="title" class="text-black">Titel</label>
+<div class="d-flex justify-content-between align-items-center p-2">
+  <form [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
+    <div class="d-flex flex-column gap-2 col-12 mb-3">
+      <label class="text-black" for="title">Titel</label>
       <textarea
         [attr.data-testId]="'titleInput'"
+        class="big-dialog-form-field"
         [ngClass]="formInputCheck(keyResultForm, 'title')"
-        class="input-fields big-dialog-form-field"
         formControlName="title"
         id="title"
         cdkFocusInitial
@@ -20,23 +17,24 @@
       </span>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-2 mb-3">
       <app-keyresult-type
         (formValidityEmitter)="updateFormValidity()"
-        [keyresult]="data.keyResult"
+        [keyresult]="keyResult"
         [keyResultForm]="keyResultForm"
       ></app-keyresult-type>
     </div>
 
-    <div class="d-flex flex-column gap-2 col-12">
-      <label>Owner</label>
+    <div class="d-flex flex-column gap-2 col-12 mb-3">
+      <label class="text-black" for="owner">Owner</label>
       <input
         (keydown.enter)="$event.preventDefault()"
         [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
-        class="input-fields owner-input"
+        class="owner-input"
         [attr.data-testId]="'ownerInput'"
         [matAutocomplete]="auto"
         formControlName="owner"
+        id="owner"
       />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
         <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
@@ -48,55 +46,21 @@
       </div>
     </div>
 
-    <div class="d-flex flex-column gap-2 col-12">
-      <label for="title" class="text-black">Beschreibung (optional)</label>
+    <div class="d-flex flex-column gap-2 col-12 mb-3">
+      <label for="description" class="text-black">Beschreibung (optional)</label>
       <textarea
         [attr.data-testId]="'descriptionInput'"
-        class="input-fields big-dialog-form-field"
+        class="big-dialog-form-field"
         [ngClass]="formInputCheck(keyResultForm, 'description')"
         formControlName="description"
+        id="description"
       ></textarea>
-      <div *ngIf="isTouchedOrDirty('description')">
+      <span *ngIf="isTouchedOrDirty('description')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
           <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
         </mat-error>
-      </div>
+      </span>
     </div>
+    <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
   </form>
-
-  <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
-
-  <div class="d-flex justify-content-between p-0" mat-dialog-actions>
-    <span>
-      <button
-        [attr.data-testId]="'submit'"
-        type="submit"
-        (click)="saveKeyResult()"
-        [disabled]="keyResultForm.invalid || invalidOwner()"
-        color="primary"
-        mat-flat-button
-      >
-        Speichern
-      </button>
-      <button
-        *ngIf="!data.keyResult"
-        [attr.data-testId]="'saveAndNew'"
-        (click)="openNew()"
-        mat-stroked-button
-        [disabled]="keyResultForm.invalid"
-      >
-        Speichern & Neu
-      </button>
-      <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
-    </span>
-    <button
-      *ngIf="this.data.keyResult"
-      [attr.data-testId]="'delete-keyResult'"
-      mat-button
-      color="primary"
-      (click)="deleteKeyResult()"
-    >
-      Key Result löschen
-    </button>
-  </div>
 </div>

@@ -1,0 +1,49 @@
+<div mat-dialog-content class="dialog dialog-padding">
+  <app-dialog-header
+    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
+  ></app-dialog-header>
+
+  <div class="w-100 d-flex flex-column parent-container">
+    <div class="form-content">
+      <app-key-result-dialog
+        [keyResultForm]="keyResultForm"
+        [keyResult]="data.keyResult"
+        [actionList$]="actionList$"
+      ></app-key-result-dialog>
+    </div>
+
+    <div class="d-flex justify-content-between p-0" mat-dialog-actions>
+      <span>
+        <button
+          [attr.data-testId]="'submit'"
+          type="submit"
+          (click)="saveKeyResult()"
+          [disabled]="keyResultForm.invalid || invalidOwner()"
+          color="primary"
+          mat-flat-button
+        >
+          Speichern
+        </button>
+        <button
+          *ngIf="!data.keyResult"
+          [attr.data-testId]="'saveAndNew'"
+          (click)="openNew()"
+          mat-stroked-button
+          [disabled]="keyResultForm.invalid"
+        >
+          Speichern & Neu
+        </button>
+        <button mat-button mat-dialog-close color="primary">Abbrechen</button>
+      </span>
+      <button
+        *ngIf="this.data.keyResult"
+        [attr.data-testId]="'delete-keyresult'"
+        mat-button
+        color="primary"
+        (click)="deleteKeyResult()"
+      >
+        Key Result löschen
+      </button>
+    </div>
+  </div>
+</div>

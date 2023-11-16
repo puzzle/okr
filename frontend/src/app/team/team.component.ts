@@ -5,10 +5,12 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
-import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
+import { OrganisationService } from '../shared/services/organisation.service';
+import { OrganisationState } from '../shared/types/enums/OrganisationState';
+import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
 
 @Component({
   selector: 'app-team',
@@ -57,7 +59,7 @@ export class TeamComponent {
 
   openAddKeyResultDialog(objective: Objective) {
     this.dialog
-      .open(KeyResultDialogComponent, {
+      .open(KeyresultFormComponent, {
         width: '45em',
         height: 'auto',
         data: {

@@ -71,6 +71,7 @@ import { ObjectiveFilterComponent } from './objective-filter/objective-filter.co
 import { ActionPlanComponent } from './action-plan/action-plan.component';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
+import { KeyresultFormComponent } from './shared/dialog/keyresult-form/keyresult-form.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -135,6 +136,7 @@ export const MY_FORMATS = {
     ObjectiveFilterComponent,
     ActionPlanComponent,
     TeamManagementComponent,
+    KeyresultFormComponent,
   ],
   imports: [
     CommonModule,

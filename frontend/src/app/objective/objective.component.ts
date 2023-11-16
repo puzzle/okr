@@ -11,9 +11,9 @@ import { ObjectiveService } from '../shared/services/objective.service';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../shared/types/model/Completed';
-import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { Objective } from '../shared/types/model/Objective';
 import { trackByFn } from '../shared/common';
+import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
 
 @Component({
   selector: 'app-objective-column',
@@ -199,7 +199,7 @@ export class ObjectiveComponent implements OnInit {
 
   openAddKeyResultDialog() {
     this.matDialog
-      .open(KeyResultDialogComponent, {
+      .open(KeyresultFormComponent, {
         width: '45em',
         height: 'auto',
         data: {

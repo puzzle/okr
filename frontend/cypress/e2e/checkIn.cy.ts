@@ -143,7 +143,6 @@ describe('OKR Check-in e2e tests', () => {
     it('Edit metric checkin', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
-      cy.debug();
       cy.fillOutKeyResult(
         'Here we edit a metric checkin',
         'CHF',
@@ -155,13 +154,10 @@ describe('OKR Check-in e2e tests', () => {
         null,
         'This is my description',
       );
-      cy.debug();
 
       cy.getByTestId('submit').click();
-      cy.debug();
 
       cy.getByTestId('keyresult').contains('Here we edit a metric checkin').click();
-      cy.debug();
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, false, 'Here we are', 'A cat would be great');
@@ -188,7 +184,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('We bought a new sheep');
     });
 
-    it.only('Edit ordinal checkin', () => {
+    it('Edit ordinal checkin', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 

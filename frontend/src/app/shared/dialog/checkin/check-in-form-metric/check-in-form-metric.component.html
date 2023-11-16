@@ -13,6 +13,7 @@
         [formControlNameGiven]="'value'"
         (focusout)="formatValue()"
         (focusin)="resetValue()"
+        [attr.data-testId]="'check-in-metric-value'"
       ></app-custom-input>
       <div *ngIf="isTouchedOrDirty('value')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">

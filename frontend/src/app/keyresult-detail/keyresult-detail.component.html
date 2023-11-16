@@ -87,7 +87,14 @@
         <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</p>
         <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
         <span class="d-flex justify-content-start">
-          <button (click)="checkInHistory()" class="px-0" color="primary" disableRipple="true" mat-button>
+          <button
+            (click)="checkInHistory()"
+            class="px-0"
+            color="primary"
+            disableRipple="true"
+            mat-button
+            [attr.data-testId]="'show-all-checkins'"
+          >
             Alle Check-ins anzeigen
           </button>
         </span>

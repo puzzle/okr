@@ -1,0 +1,72 @@
+<div mat-dialog-content class="dialog-padding">
+  <app-dialog-header [dialogTitle]="'Teamverwaltung'"></app-dialog-header>
+  <div class="w-100 d-flex justify-content-between align-items-center">
+    <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
+      <div class="d-flex flex-column gap-2 col-12 mb-3">
+        <label class="text-black" for="name">Teamname</label>
+        <textarea
+          [attr.data-testId]="'name'"
+          class="big-dialog-form-field"
+          [ngClass]="formInputCheck(teamForm, 'name')"
+          cdkFocusInitial
+          formControlName="name"
+          id="name"
+        ></textarea>
+        <span *ngIf="isTouchedOrDirty('name')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </span>
+      </div>
+      <div class="d-flex flex-column gap-2 col-12 mb-3">
+        <div class="d-flex flex-row">
+          <label class="text-black" for="organisations">Organisationen</label>
+          <mat-icon
+            class="ms-2 text-danger"
+            *ngIf="hasInActiveOrganisations"
+            [matTooltip]="'This team has inactive organisations'"
+            >error_outline</mat-icon
+          >
+        </div>
+        <mat-select
+          [formControl]="teamForm.controls.organisations"
+          multiple
+          id="organisations"
+          class="d-flex flex-column input-fields select-style pt-2 pb-2 pe-2"
+          [ngClass]="formInputCheck(teamForm, 'organisations')"
+          [compareWith]="compareWithFunc"
+        >
+          <mat-option
+            (click)="checkIfInActiveAdded()"
+            *ngFor="let organisation of organisations$ | async"
+            [value]="organisation"
+            [ngStyle]="getMatOptionStyle(organisation)"
+          >
+            {{ organisation.orgName }}
+          </mat-option>
+        </mat-select>
+
+        <div *ngIf="isTouchedOrDirty('organisations')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('organisations')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+        <div class="d-flex p-0">
+          <button
+            [disabled]="teamForm.invalid || this.hasInActiveOrganisations"
+            color="primary"
+            mat-flat-button
+            type="submit"
+            (click)="saveTeam()"
+          >
+            Speichern
+          </button>
+          <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
+        </div>
+        <button (click)="deleteTeam()" color="primary" *ngIf="data" type="button" mat-button>Team Löschen</button>
+      </div>
+    </form>
+  </div>
+</div>

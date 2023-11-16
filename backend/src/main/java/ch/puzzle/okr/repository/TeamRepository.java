@@ -15,4 +15,6 @@ public interface TeamRepository extends CrudRepository<Team, Long> {
             where o.org_name in (:organisationNames)
             """, nativeQuery = true)
     List<Long> findTeamIdsByOrganisationNames(@Param("organisationNames") List<String> organisationNames);
+
+    List<Team> findTeamsByName(String name);
 }

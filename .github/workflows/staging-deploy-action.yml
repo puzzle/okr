@@ -156,7 +156,7 @@ jobs:
   upload-to-quay:
     runs-on: ubuntu-latest
 #    as soon as e2e gets activated again job also needs e2e-docker
-    needs: [update-version]
+    needs: build-docker-image
     steps:
       - uses: actions/checkout@v3
         with:

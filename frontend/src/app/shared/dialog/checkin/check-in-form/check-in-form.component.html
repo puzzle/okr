@@ -30,7 +30,15 @@
   </div>
   <!--    Buttons to submit the check-in-->
   <div class="d-flex flex-row buttons">
-    <button mat-flat-button color="primary" *ngIf="!continued" (click)="continued = true">Weiter</button>
+    <button
+      mat-flat-button
+      color="primary"
+      *ngIf="!continued"
+      (click)="continued = true"
+      [attr.data-testId]="'check-in-next'"
+    >
+      Weiter
+    </button>
     <button
       [disabled]="!this.dialogForm.valid"
       (click)="saveCheckIn()"
@@ -38,6 +46,7 @@
       type="submit"
       mat-flat-button
       color="primary"
+      [attr.data-testId]="'submit-check-in'"
     >
       <span *ngIf="checkIn.id">Speichern</span>
       <span *ngIf="!checkIn.id">Check-in erfassen</span>

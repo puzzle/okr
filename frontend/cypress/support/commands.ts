@@ -34,6 +34,56 @@ Cypress.Commands.add(
   },
 );
 
+Cypress.Commands.add(
+  'fillOutCheckInMetric',
+  (currentValue: number, shouldChangeConfidence: boolean, changeInfo: string | null, initiatives: string | null) => {
+    cy.getByTestId('check-in-metric-value').clear().type(currentValue.toString());
+    changeConfidence(shouldChangeConfidence);
+    cy.getByTestId('check-in-next').click();
+    if (changeInfo) {
+      cy.getByTestId('changeInfo').clear().type(changeInfo!);
+    }
+    if (initiatives) {
+      cy.getByTestId('initiatives').clear().type(initiatives!);
+    }
+    cy.getByTestId('submit-check-in').click();
+  },
+);
+
+Cypress.Commands.add(
+  'fillOutCheckInOrdinal',
+  (
+    currentZoneIndex: number,
+    shouldChangeConfidence: boolean,
+    changeInfo: string | null,
+    initiatives: string | null,
+  ) => {
+    switch (currentZoneIndex) {
+      case 0:
+        cy.getByTestId('failZone').click();
+        break;
+      case 1:
+        cy.getByTestId('commitZone').click();
+        break;
+      case 2:
+        cy.getByTestId('targetZone').click();
+        break;
+      case 3:
+        cy.getByTestId('stretchZone').click();
+        break;
+    }
+    changeConfidence(shouldChangeConfidence);
+    cy.getByTestId('check-in-next').click();
+    if (changeInfo) {
+      cy.getByTestId('changeInfo').clear().type(changeInfo!);
+    }
+    if (initiatives) {
+      cy.getByTestId('initiatives').clear().type(initiatives!);
+    }
+    cy.getByTestId('submit-check-in').click();
+  },
+);
+
 Cypress.Commands.add('tabForward', () => {
   cy.realPress('Tab');
 });
@@ -80,7 +130,7 @@ Cypress.Commands.add(
   },
 );
 
-function doUntil(selector: string, tab: () => void, limit: number = 20) {
+function doUntil(selector: string, tab: () => void, limit: number = 100) {
   for (let i = 0; i < limit; i++) {
     cy.focused().then((element) => {
       if (element.get(0).matches(selector)) {
@@ -89,6 +139,13 @@ function doUntil(selector: string, tab: () => void, limit: number = 20) {
         tab();
       }
     });
+  }
+}
+
+function changeConfidence(changeConfidence: boolean) {
+  if (changeConfidence) {
+    cy.getByTestId('confidence-slider').realMouseDown();
+    cy.getByTestId('confidence-slider').realMouseUp();
   }
 }
 

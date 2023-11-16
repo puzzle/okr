@@ -12,4 +12,16 @@ export class TeamService {
   getAllTeams(): Observable<Team[]> {
     return this.http.get<Team[]>('/api/v2/teams');
   }
+
+  createTeam(team: Team): Observable<Team> {
+    return this.http.post<Team>('/api/v2/teams', team);
+  }
+
+  updateTeam(team: Team): Observable<Team> {
+    return this.http.put<Team>(`/api/v2/teams/${team.id}`, team);
+  }
+
+  deleteTeam(id: number): Observable<any> {
+    return this.http.delete(`/api/v2/teams/${id}`);
+  }
 }

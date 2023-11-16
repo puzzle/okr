@@ -3,6 +3,7 @@
   (keydown.enter)="openObjectiveDetail()"
   class="objective rounded-3 bg-white"
   tabindex="0"
+  [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
 >
   <span class="col">
@@ -52,9 +53,9 @@
         mat-button
         color="primary"
         class="fw-bold"
+        [attr.data-testId]="'add-keyResult'"
         (click)="openAddKeyResultDialog(); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"
-        [attr.data-testId]="'add-keyResult'"
       >
         <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
         Key Result hinzufügen
@@ -72,6 +73,7 @@
   <button
     mat-menu-item
     class="objective-menu-option"
+    [attr.data-testId]="'objective-menu'"
     (click)="redirect(menuEntry)"
     *ngFor="let menuEntry of menuEntries"
   >

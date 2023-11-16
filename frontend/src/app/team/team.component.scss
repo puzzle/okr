@@ -4,3 +4,17 @@
   max-width: 576px;
   flex-wrap: wrap;
 }
+
+@media screen and (max-width: 500px) {
+  .team-title {
+    padding-left: 31px;
+  }
+}
+.team-actions {
+  margin-bottom: 16px;
+}
+
+.team-icons {
+  width: 20px;
+  height: 20px;
+}

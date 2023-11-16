@@ -5,7 +5,15 @@
     </p>
   </div>
 
-  <mat-slider *ngIf="edit" [max]="max" [min]="min" [step]="1" [showTickMarks]="true" color="accent">
+  <mat-slider
+    *ngIf="edit"
+    [max]="max"
+    [min]="min"
+    [step]="1"
+    [showTickMarks]="true"
+    color="accent"
+    [attr.data-testId]="'confidence-slider'"
+  >
     <input matSliderThumb [(ngModel)]="checkIn.confidence" />
   </mat-slider>
 </div>

@@ -143,7 +143,6 @@ describe('OKR Check-in e2e tests', () => {
     it('Edit metric checkin', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
-
       cy.fillOutKeyResult(
         'Here we edit a metric checkin',
         'CHF',
@@ -155,6 +154,7 @@ describe('OKR Check-in e2e tests', () => {
         null,
         'This is my description',
       );
+
       cy.getByTestId('submit').click();
 
       cy.getByTestId('keyresult').contains('Here we edit a metric checkin').click();
@@ -166,7 +166,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.getByTestId('edit-check-in').click();
+      cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
       cy.contains('CHF 30.-');
       cy.contains('Confidence um Target (CHF 213.-) zu erreichen');
@@ -211,11 +211,11 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.getByTestId('edit-check-in').click();
+      cy.getByTestId('edit-check-in').first().click();
       cy.contains('For editing ordinal checkin');
       cy.contains('Confidence um Target zu erreichen');
       cy.contains('6/10');
-      cy.getByTestId('stretchZone').click();
+      cy.getByTestId('stretch-radio').click();
       cy.getByTestId('confidence-slider').realMouseDown();
       cy.getByTestId('check-in-next').click();
       cy.contains('There is a new car');

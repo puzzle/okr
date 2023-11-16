@@ -1,3 +1,5 @@
+import { validateScoring } from './scoringSupport';
+
 Cypress.Commands.add('loginAsUser', (user: any) => {
   loginWithCredentials(user.username, user.password);
   overviewIsLoaded();
@@ -8,6 +10,14 @@ Cypress.Commands.add('getByTestId', { prevSubject: 'optional' }, (subject: any, 
     return cy.wrap(subject).find(`[data-testId=${testId}]`);
   }
   return cy.get(`[data-testId=${testId}]`);
+});
+
+Cypress.Commands.add('getZone', (zone: string, onOverview: boolean) => {
+  return (onOverview ? cy.focused() : cy.getByTestId('side-panel')).getByTestId(zone);
+});
+
+Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number) => {
+  validateScoring(isOverview, percentage);
 });
 
 Cypress.Commands.add(
@@ -60,16 +70,16 @@ Cypress.Commands.add(
   ) => {
     switch (currentZoneIndex) {
       case 0:
-        cy.getByTestId('failZone').click();
+        cy.getByTestId('fail-radio').click();
         break;
       case 1:
-        cy.getByTestId('commitZone').click();
+        cy.getByTestId('commit-radio').click();
         break;
       case 2:
-        cy.getByTestId('targetZone').click();
+        cy.getByTestId('target-radio').click();
         break;
       case 3:
-        cy.getByTestId('stretchZone').click();
+        cy.getByTestId('stretch-radio').click();
         break;
     }
     changeConfidence(shouldChangeConfidence);
@@ -98,6 +108,82 @@ Cypress.Commands.add('tabForwardUntil', (selector: string, limit?: number) => {
 
 Cypress.Commands.add('tabBackwardUntil', (selector: string, limit?: number) => {
   doUntil(selector, cy.tabBackward, limit);
+});
+
+Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, owner: string | null = null) => {
+  cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+  cy.getByTestId('submit').should('be.disabled');
+  cy.contains('Key Result erfassen');
+  cy.contains('Jaya Norris');
+  cy.contains('Titel');
+  cy.getByTestId('titleInput').type('Title');
+  cy.getByTestId('ordinalTab').click();
+  cy.contains('Metrisch');
+  cy.contains('Ordinal');
+  cy.contains('Commit Zone');
+  cy.contains('Target Zone');
+  cy.contains('Stretch Zone');
+  cy.contains('Owner');
+  cy.contains('Beschreibung (optional)');
+  cy.contains('Action Plan (optional)');
+  cy.contains('Weitere Action hinzufügen');
+  cy.contains('Speichern');
+  cy.contains('Abbrechen');
+
+  cy.fillOutKeyResult(
+    title == null ? 'I am a ordinal keyresult' : title,
+    null,
+    null,
+    null,
+    'My commit zone',
+    'My target zone',
+    'My stretch zone',
+    owner,
+    'This is my description',
+  );
+
+  cy.getByTestId('submit').should('not.be.disabled');
+  cy.getByTestId('submit').click();
+});
+
+Cypress.Commands.add(
+  'createMetricKeyresult',
+  (title: string | null, baseline: string | null, stretchGoal: string | null) => {
+    cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+    cy.getByTestId('submit').should('be.disabled');
+    cy.contains('Key Result erfassen');
+    cy.contains('Jaya Norris');
+    cy.checkForDialogText();
+
+    cy.fillOutKeyResult(
+      title == null ? 'I am a metric keyresult' : title,
+      'PERCENT',
+      baseline === null ? '21' : baseline,
+      stretchGoal === null ? '52' : stretchGoal,
+      null,
+      null,
+      null,
+      'Pac',
+      'This is my description',
+    );
+    cy.getByTestId('submit').should('not.be.disabled');
+    cy.getByTestId('submit').click();
+  },
+);
+
+Cypress.Commands.add('checkForDialogText', () => {
+  cy.contains('Titel');
+  cy.contains('Metrisch');
+  cy.contains('Ordinal');
+  cy.contains('Einheit');
+  cy.contains('Baseline');
+  cy.contains('Stretch Goal');
+  cy.contains('Owner');
+  cy.contains('Beschreibung (optional)');
+  cy.contains('Action Plan (optional)');
+  cy.contains('Weitere Action hinzufügen');
+  cy.contains('Speichern');
+  cy.contains('Abbrechen');
 });
 
 Cypress.Commands.add(

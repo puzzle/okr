@@ -1,3 +1,7 @@
 <form [formGroup]="formGroup">
-  <input [ngClass]="formInputCheck(formGroup, formControlNameGiven)" formControlName="{{ formControlNameGiven }}" />
+  <input
+    [attr.data-testId]="'key-result-metric-value'"
+    [ngClass]="formInputCheck(formGroup, formControlNameGiven)"
+    formControlName="{{ formControlNameGiven }}"
+  />
 </form>

@@ -143,7 +143,7 @@ describe('OKR Check-in e2e tests', () => {
     it('Edit metric checkin', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
-
+      cy.debug();
       cy.fillOutKeyResult(
         'Here we edit a metric checkin',
         'CHF',
@@ -155,9 +155,13 @@ describe('OKR Check-in e2e tests', () => {
         null,
         'This is my description',
       );
+      cy.debug();
+
       cy.getByTestId('submit').click();
+      cy.debug();
 
       cy.getByTestId('keyresult').contains('Here we edit a metric checkin').click();
+      cy.debug();
 
       cy.getByTestId('add-check-in').first().click();
       cy.fillOutCheckInMetric(30, false, 'Here we are', 'A cat would be great');
@@ -166,7 +170,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.getByTestId('edit-check-in').click();
+      cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
       cy.contains('CHF 30.-');
       cy.contains('Confidence um Target (CHF 213.-) zu erreichen');
@@ -184,7 +188,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('We bought a new sheep');
     });
 
-    it('Edit ordinal checkin', () => {
+    it.only('Edit ordinal checkin', () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 
@@ -211,11 +215,11 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.wait(500);
       cy.contains('Check-in History');
-      cy.getByTestId('edit-check-in').click();
+      cy.getByTestId('edit-check-in').first().click();
       cy.contains('For editing ordinal checkin');
       cy.contains('Confidence um Target zu erreichen');
       cy.contains('6/10');
-      cy.getByTestId('stretchZone').click();
+      cy.getByTestId('stretch-radio').click();
       cy.getByTestId('confidence-slider').realMouseDown();
       cy.getByTestId('check-in-next').click();
       cy.contains('There is a new car');

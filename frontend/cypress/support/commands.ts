@@ -70,16 +70,16 @@ Cypress.Commands.add(
   ) => {
     switch (currentZoneIndex) {
       case 0:
-        cy.getByTestId('failZone').click();
+        cy.getByTestId('fail-radio').click();
         break;
       case 1:
-        cy.getByTestId('commitZone').click();
+        cy.getByTestId('commit-radio').click();
         break;
       case 2:
-        cy.getByTestId('targetZone').click();
+        cy.getByTestId('target-radio').click();
         break;
       case 3:
-        cy.getByTestId('stretchZone').click();
+        cy.getByTestId('stretch-radio').click();
         break;
     }
     changeConfidence(shouldChangeConfidence);

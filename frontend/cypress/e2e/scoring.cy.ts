@@ -6,6 +6,7 @@ describe('Scoring component e2e tests', () => {
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     onlyOn('chrome');
+    cy.visit('/?quarter=2');
   });
 
   [
@@ -21,7 +22,7 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('key-result-metric-value').clear().type(String(value));
       cy.getByTestId('confidence-slider').click();
       cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
-      cy.getByTestId('continue-checkin').click();
+      cy.getByTestId('check-in-next').click();
       cy.getByTestId('changeInfo').click().type('Testveränderungen');
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();
@@ -40,7 +41,7 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId(`${zoneName}-radio`).click();
       cy.getByTestId('confidence-slider').click();
       cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
-      cy.getByTestId('continue-checkin').click();
+      cy.getByTestId('check-in-next').click();
       cy.getByTestId('changeInfo').click().type('Testveränderungen');
       cy.getByTestId('initiatives').click().type('Testmassnahmen');
       cy.getByTestId('create-checkin').click();

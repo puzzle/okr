@@ -310,7 +310,7 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('edit-keyResult').click();
 
-    cy.getByTestId('delete-keyresult').click();
+    cy.getByTestId('delete-keyResult').click();
     cy.getByTestId('confirmYes').click();
 
     cy.contains('Puzzle ITC');

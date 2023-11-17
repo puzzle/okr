@@ -6,7 +6,12 @@ import ch.puzzle.okr.dto.overview.OverviewKeyResultMetricDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
+import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -16,8 +21,13 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
+@ExtendWith(MockitoExtension.class)
 class OverviewMapperTest {
-    private final OverviewMapper overviewMapper = new OverviewMapper();
+    @Mock
+    private OrganisationBusinessService organisationBusinessService;
+
+    @InjectMocks
+    private OverviewMapper overviewMapper;
 
     @Test
     void toDtoShouldReturnEmptyListWhenNoTeamFound() {

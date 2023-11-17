@@ -34,7 +34,9 @@ export class KeyresultDetailComponent implements OnInit {
     private refreshDataService: RefreshDataService,
     private dialog: MatDialog,
     private router: Router,
-  ) {}
+  ) {
+    this.refreshDataService.reloadOverviewSubject.subscribe(() => this.loadKeyResult());
+  }
 
   ngOnInit(): void {
     this.loadKeyResult();
@@ -69,7 +71,6 @@ export class KeyresultDetailComponent implements OnInit {
       width: '721px',
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult();
       this.refreshDataService.markDataRefresh();
     });
   }

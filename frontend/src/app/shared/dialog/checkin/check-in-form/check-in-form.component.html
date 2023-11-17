@@ -62,11 +62,11 @@
 
     <section class="d-flex flex-column justify-content-start">
       <mat-label class="text-black"
-        >Confidence um Target:
+        >Confidence um Target
         <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
           ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
         </span>
-        zu erreichen
+        zu erreichen:
       </mat-label>
       <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
     </section>

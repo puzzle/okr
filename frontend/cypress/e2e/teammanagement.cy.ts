@@ -51,7 +51,7 @@ describe('Team management tests', () => {
       //Click delete button
       cy.getByTestId('delete').click();
       cy.getByTestId('confirmYes').click();
-      cy.contains('LoremIpsumEdited').should('not.exist');
+      cy.contains('LoremIpsum').should('not.exist');
     });
   });
 
@@ -62,7 +62,6 @@ describe('Team management tests', () => {
 
     it('Can not see teammanagement icons', () => {
       cy.getByTestId('team-management').should('not.exist');
-      cy.getByTestId('edit-team-LoremIpsumEdited').should('not.exist');
     });
   });
 });

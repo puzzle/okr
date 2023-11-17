@@ -1,8 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -24,14 +22,17 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
+    private final CompletedBusinessService completedBusinessService;
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
-            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService) {
+            ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
+            CompletedBusinessService completedBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
+        this.completedBusinessService = completedBusinessService;
     }
 
     public Objective getEntityById(Long id) {
@@ -112,6 +113,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     @Transactional
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
+        completedBusinessService.deleteCompletedByObjectiveId(id);
+        // if (objective.getState().equals(State.SUCCESSFUL) || objective.getState().equals(State.NOTSUCCESSFUL)) {
+        // completedBusinessService.deleteCompletedByObjectiveId(objective.getId());
+        // }
         keyResultBusinessService.getAllKeyResultsByObjective(id)
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);

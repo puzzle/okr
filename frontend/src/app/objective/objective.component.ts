@@ -200,10 +200,8 @@ export class ObjectiveComponent implements OnInit {
   openAddKeyResultDialog() {
     this.matDialog
       .open(KeyresultDialogComponent, {
-        maxWidth: '100vw',
-        maxHeight: 'calc(90vh)',
-        width: '100%',
-        height: '100%',
+        width: '45em',
+        height: 'auto',
         data: {
           objective: this.objective$.value,
           keyResult: null,

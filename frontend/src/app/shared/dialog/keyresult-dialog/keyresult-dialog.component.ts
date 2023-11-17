@@ -19,8 +19,6 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./keyresult-dialog.component.scss'],
 })
 export class KeyresultDialogComponent {
-  actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
-
   keyResultForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -53,7 +51,7 @@ export class KeyresultDialogComponent {
       : ({ ...value, objective: this.data.objective, id: this.data.keyResult?.id } as KeyResultOrdinalDTO);
     keyResult.id = this.data.keyResult?.id;
     keyResult.version = this.data.keyResult?.version;
-    keyResult.actionList = this.actionList$.getValue()!.filter((action: Action) => action.action !== '');
+    keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
         id: keyResult.id,

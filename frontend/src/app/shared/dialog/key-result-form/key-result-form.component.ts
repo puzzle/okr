@@ -20,7 +20,6 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class KeyResultFormComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
-  @Input()
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
   protected readonly formInputCheck = formInputCheck;
 
@@ -71,6 +70,10 @@ export class KeyResultFormComponent implements OnInit {
         });
       });
     }
+
+    this.actionList$.subscribe((value) => {
+      this.keyResultForm.patchValue({ actionList: value });
+    });
   }
 
   isMetricKeyResult() {

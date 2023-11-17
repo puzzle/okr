@@ -27,7 +27,9 @@ public class CompletedBusinessService {
     @Transactional
     public void deleteCompletedByObjectiveId(Long objectiveId) {
         Completed completed = completedPersistenceService.getCompletedByObjectiveId(objectiveId);
-        validator.validateOnDelete(completed.getId());
-        completedPersistenceService.deleteById(completed.getId());
+        if (completed != null) {
+            validator.validateOnDelete(completed.getId());
+            completedPersistenceService.deleteById(completed.getId());
+        }
     }
 }

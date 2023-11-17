@@ -1,18 +1,22 @@
-<div mat-dialog-content class="dialog dialog-padding">
-  <app-dialog-header
-    [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
-  ></app-dialog-header>
+<div>
+  <section mat-dialog-title>
+    <app-dialog-header
+      [dialogTitle]="data.keyResult ? 'Key Result bearbeiten' : 'Key Result erfassen'"
+    ></app-dialog-header>
+  </section>
 
-  <div class="w-100 d-flex flex-column parent-container">
-    <div class="form-content">
-      <app-key-result-dialog
+  <section mat-dialog-content>
+    <div class="w-100 d-flex flex-column parent-container">
+      <app-key-result-form
         [keyResultForm]="keyResultForm"
         [keyResult]="data.keyResult"
         [actionList$]="actionList$"
-      ></app-key-result-dialog>
+      ></app-key-result-form>
     </div>
+  </section>
 
-    <div class="d-flex justify-content-between p-0 mt-3" mat-dialog-actions>
+  <section mat-dialog-actions>
+    <div class="mt-3">
       <span>
         <button
           [attr.data-testId]="'submit'"
@@ -45,5 +49,5 @@
         Key Result löschen
       </button>
     </div>
-  </div>
+  </section>
 </div>

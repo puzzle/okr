@@ -14,11 +14,11 @@ import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'app-keyresult-form',
-  templateUrl: './keyresult-form.component.html',
-  styleUrls: ['./keyresult-form.component.scss'],
+  selector: 'app-keyresult-dialog',
+  templateUrl: './keyresult-dialog.component.html',
+  styleUrls: ['./keyresult-dialog.component.scss'],
 })
-export class KeyresultFormComponent {
+export class KeyresultDialogComponent {
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
 
   keyResultForm = new FormGroup({
@@ -39,7 +39,7 @@ export class KeyresultFormComponent {
     @Inject(MAT_DIALOG_DATA) public data: { objective: Objective; keyResult: KeyResult },
     private keyResultService: KeyresultService,
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<KeyresultFormComponent>,
+    public dialogRef: MatDialogRef<KeyresultDialogComponent>,
   ) {}
 
   isMetricKeyResult() {

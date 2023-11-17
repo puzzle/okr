@@ -46,6 +46,19 @@ mat-dialog-actions {
   transform: scale(1.2);
 }
 
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mat-mdc-dialog-surface {
+  padding: 1rem 0 1rem 0;
+}
+
+mat-dialog-content,
+mat-dialog-actions {
+  padding: 0 1.62rem 0 1.62rem !important;
+}
+
 .mat-mdc-standard-chip {
   margin: 0 !important;
   &:not(.mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary) {

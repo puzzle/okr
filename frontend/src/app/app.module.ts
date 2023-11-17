@@ -60,7 +60,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/c
 import { ScoringComponent } from './shared/custom/scoring/scoring.component';
 import { CompleteDialogComponent } from './shared/dialog/complete-dialog/complete-dialog.component';
 import { QuarterFilterComponent } from './quarter-filter/quarter-filter.component';
-import { KeyResultDialogComponent } from './shared/dialog/key-result-dialog/key-result-dialog.component';
+import { KeyResultFormComponent } from './shared/dialog/key-result-form/key-result-form.component';
 import { TeamFilterComponent } from './team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { Router } from '@angular/router';
@@ -71,7 +71,7 @@ import { ObjectiveFilterComponent } from './objective-filter/objective-filter.co
 import { ActionPlanComponent } from './action-plan/action-plan.component';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
-import { KeyresultFormComponent } from './shared/dialog/keyresult-form/keyresult-form.component';
+import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -115,7 +115,7 @@ export const MY_FORMATS = {
     KeyresultDetailComponent,
     ObjectiveDetailComponent,
     ApplicationBannerComponent,
-    KeyResultDialogComponent,
+    KeyResultFormComponent,
     ConfirmDialogComponent,
     CheckInFormComponent,
     CheckInFormMetricComponent,
@@ -136,7 +136,7 @@ export const MY_FORMATS = {
     ObjectiveFilterComponent,
     ActionPlanComponent,
     TeamManagementComponent,
-    KeyresultFormComponent,
+    KeyresultDialogComponent,
   ],
   imports: [
     CommonModule,

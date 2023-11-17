@@ -4,9 +4,9 @@ import { ObjectiveService } from '../shared/services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { Router } from '@angular/router';
-import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
 
 @Component({
   selector: 'app-objective-detail',
@@ -38,7 +38,7 @@ export class ObjectiveDetailComponent {
 
   openAddKeyResultDialog() {
     this.dialog
-      .open(KeyresultFormComponent, {
+      .open(KeyresultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { KeyResultDialogComponent } from './key-result-dialog.component';
+import { KeyResultFormComponent } from './key-result-form.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -26,9 +26,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
 
-describe('KeyResultDialogComponent', () => {
-  let component: KeyResultDialogComponent;
-  let fixture: ComponentFixture<KeyResultDialogComponent>;
+describe('KeyResultFormComponent', () => {
+  let component: KeyResultFormComponent;
+  let fixture: ComponentFixture<KeyResultFormComponent>;
   let keyResultService: KeyresultService;
 
   const oauthMockService = {
@@ -282,10 +282,10 @@ describe('KeyResultDialogComponent', () => {
             useValue: oauthMockService,
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
+        declarations: [KeyResultFormComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -427,10 +427,10 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
+        declarations: [KeyResultFormComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -565,10 +565,10 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
+        declarations: [KeyResultFormComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -695,10 +695,10 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric },
           },
         ],
-        declarations: [KeyResultDialogComponent, ActionPlanComponent, DialogHeaderComponent, KeyresultTypeComponent],
+        declarations: [KeyResultFormComponent, ActionPlanComponent, DialogHeaderComponent, KeyresultTypeComponent],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);

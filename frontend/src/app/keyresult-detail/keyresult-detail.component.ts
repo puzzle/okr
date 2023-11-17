@@ -13,7 +13,7 @@ import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/che
 import { State } from '../shared/types/enums/State';
 import { DATE_FORMAT } from '../shared/constantLibary';
 import { isInValid } from '../shared/common';
-import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -77,7 +77,7 @@ export class KeyresultDetailComponent implements OnInit {
 
   openEditKeyResultDialog(keyResult: KeyResult) {
     this.dialog
-      .open(KeyresultFormComponent, {
+      .open(KeyresultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {

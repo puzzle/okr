@@ -12,12 +12,12 @@ import { formInputCheck } from '../../common';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
-  selector: 'app-key-result-dialog',
-  templateUrl: './key-result-dialog.component.html',
-  styleUrls: ['./key-result-dialog.component.scss'],
+  selector: 'app-key-result-form',
+  templateUrl: './key-result-form.component.html',
+  styleUrls: ['./key-result-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyResultDialogComponent implements OnInit {
+export class KeyResultFormComponent implements OnInit {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
   @Input()

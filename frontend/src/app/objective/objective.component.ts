@@ -13,7 +13,7 @@ import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/comple
 import { Completed } from '../shared/types/model/Completed';
 import { Objective } from '../shared/types/model/Objective';
 import { trackByFn } from '../shared/common';
-import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
   selector: 'app-objective-column',
@@ -199,7 +199,7 @@ export class ObjectiveComponent implements OnInit {
 
   openAddKeyResultDialog() {
     this.matDialog
-      .open(KeyresultFormComponent, {
+      .open(KeyresultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {

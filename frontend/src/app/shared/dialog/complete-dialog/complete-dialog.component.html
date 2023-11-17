@@ -1,37 +1,49 @@
 <form class="dialog-padding" [formGroup]="completeForm">
   <app-dialog-header [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
-  <div>Bewertung</div>
-  <div class="d-flex gap-3 mb-3">
-    <div
-      class="successful w-50 valuation-card card-hover"
-      [ngClass]="{
-        active: completeForm.value.isSuccessful == true,
-        'non-active': completeForm.value.isSuccessful === false
-      }"
-      (click)="switchSuccessState('successful')"
-      (keydown.enter)="switchSuccessState('successful')"
-      [attr.data-testId]="'successful'"
-      tabindex="0"
-    >
-      Objective erfolgreich
-    </div>
-    <div
-      class="not-successful w-50 valuation-card card-hover"
-      [ngClass]="{
-        active: completeForm.value.isSuccessful === false,
-        'non-active': completeForm.value.isSuccessful == true
-      }"
-      (click)="switchSuccessState('notSuccessful')"
-      (keydown.enter)="switchSuccessState('notSuccessful')"
-      [attr.data-testId]="'not-successful'"
-      tabindex="0"
-    >
-      Objective nicht erfolgreich
+
+  <div class="d-flex flex-column gap-2 col-12 mb-3">
+    <label class="text-black">Bewertung</label>
+    <div class="d-flex gap-3">
+      <div
+        class="successful w-50 valuation-card card-hover"
+        [ngClass]="{
+          active: completeForm.value.isSuccessful == true,
+          'non-active': completeForm.value.isSuccessful === false
+        }"
+        (click)="switchSuccessState('successful')"
+        [attr.data-testId]="'successful'"
+      >
+        Objective erfolgreich
+      </div>
+      <div
+        class="not-successful w-50 valuation-card card-hover"
+        [ngClass]="{
+          active: completeForm.value.isSuccessful === false,
+          'non-active': completeForm.value.isSuccessful == true
+        }"
+        (click)="switchSuccessState('notSuccessful')"
+        [attr.data-testId]="'not-successful'"
+      >
+        Objective nicht erfolgreich
+      </div>
     </div>
   </div>
 
-  <div>Kommentar (optional)</div>
-  <textarea class="dialog-form-field commentary-field w-100" formControlName="comment"></textarea>
+  <div class="d-flex flex-column gap-2 col-12 mb-3">
+    <label for="comment" class="text-black">Kommentar (optional)</label>
+    <textarea
+      class="big-dialog-form-field"
+      formControlName="comment"
+      [attr.data-testId]="'completeComment'"
+      [ngClass]="formInputCheck(completeForm, 'comment')"
+      id="comment"
+    ></textarea>
+    <span *ngIf="isTouchedOrDirty('comment')">
+      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('comment')">
+        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+      </mat-error>
+    </span>
+  </div>
 
   <div class="d-flex justify-content-between p-0" mat-dialog-actions>
     <div class="d-flex gap-2 p-0">

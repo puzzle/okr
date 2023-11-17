@@ -10,7 +10,7 @@ import { TeamManagementComponent } from '../shared/dialog/team-management/team-m
 import { TeamMin } from '../shared/types/model/TeamMin';
 import { OrganisationService } from '../shared/services/organisation.service';
 import { OrganisationState } from '../shared/types/enums/OrganisationState';
-import { KeyresultFormComponent } from '../shared/dialog/keyresult-form/keyresult-form.component';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
   selector: 'app-team',
@@ -59,7 +59,7 @@ export class TeamComponent {
 
   openAddKeyResultDialog(objective: Objective) {
     this.dialog
-      .open(KeyresultFormComponent, {
+      .open(KeyresultDialogComponent, {
         width: '45em',
         height: 'auto',
         data: {

@@ -183,3 +183,15 @@ body pzsh-backdrop {
 .select-style .mat-mdc-select-value-text {
   margin-left: 0.5rem !important;
 }
+
+.stretch-div {
+  width: 100%;
+  background-image: url("./../assets/images/scoring-stars.svg");
+  height: 27px;
+}
+
+@media only screen and (max-width: 420px) {
+  .stretch-div {
+    width: 253px;
+  }
+}

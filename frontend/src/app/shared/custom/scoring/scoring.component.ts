@@ -109,16 +109,22 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       case this.targetPercent > 100:
         return 'score-stretch';
       case this.targetPercent > 0:
-        this.targetElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.targetElement!);
         return 'score-green';
       case this.commitPercent > 0:
-        this.commitElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.commitElement!);
         return 'score-yellow';
       case this.failPercent > 0:
-        this.failElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.failElement!);
         return 'score-red';
       default:
         return null;
+    }
+  }
+
+  setBorder(element: ElementRef<HTMLSpanElement>) {
+    if (this.keyResult.keyResultType != 'ordinal') {
+      element.nativeElement.classList.add('border-right');
     }
   }
 

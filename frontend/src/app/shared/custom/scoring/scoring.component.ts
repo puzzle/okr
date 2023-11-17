@@ -30,6 +30,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   commitPercent: number = 0;
   targetPercent: number = 0;
   labelPercentage: Observable<number>;
+  stretched: boolean = false;
 
   @ViewChild('fail')
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
@@ -55,21 +56,22 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   calculatePercentageOrdinal() {
     switch (this.keyResult.lastCheckIn?.value) {
       case Zone.STRETCH:
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = 101;
+        this.stretched = true;
         break;
       case Zone.TARGET:
         this.failPercent = 100;
         this.commitPercent = 100;
         this.targetPercent = 100;
+        this.stretched = false;
         break;
       case Zone.COMMIT:
         this.failPercent = 100;
         this.commitPercent = 100;
+        this.stretched = false;
         break;
       case Zone.FAIL:
         this.failPercent = 100;
+        this.stretched = false;
         break;
     }
   }
@@ -82,20 +84,21 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       this.labelPercentage = of(percentage);
       switch (true) {
         case percentage >= 100:
-          this.failPercent = 100;
-          this.commitPercent = 100;
-          this.targetPercent = 101;
+          this.stretched = true;
           break;
         case percentage > 70:
+          this.stretched = false;
           this.failPercent = 100;
           this.commitPercent = 100;
           this.targetPercent = (100 / 30) * (percentage - 70);
           break;
         case percentage > 30:
+          this.stretched = false;
           this.failPercent = 100;
           this.commitPercent = (100 / 40) * (percentage - 30);
           break;
         default:
+          this.stretched = false;
           this.failPercent = (100 / 30) * percentage;
       }
     }
@@ -106,16 +109,22 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       case this.targetPercent > 100:
         return 'score-stretch';
       case this.targetPercent > 0:
-        this.targetElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.targetElement!);
         return 'score-green';
       case this.commitPercent > 0:
-        this.commitElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.commitElement!);
         return 'score-yellow';
       case this.failPercent > 0:
-        this.failElement!.nativeElement.classList.add('border-right');
+        this.setBorder(this.failElement!);
         return 'score-red';
       default:
         return null;
+    }
+  }
+
+  setBorder(element: ElementRef<HTMLSpanElement>) {
+    if (this.keyResult.keyResultType != 'ordinal') {
+      element.nativeElement.classList.add('border-right');
     }
   }
 
@@ -141,7 +150,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     //Fill out icon if target percent has reached 100 percent or more
-    if (this.targetPercent > 100) {
+    if (this.stretched) {
       this.iconPath = 'filled';
       this.changeDetectionRef.detectChanges();
     }

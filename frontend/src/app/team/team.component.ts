@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
@@ -9,8 +9,6 @@ import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key
 import { trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
-import { OrganisationService } from '../shared/services/organisation.service';
-import { OrganisationState } from '../shared/types/enums/OrganisationState';
 
 @Component({
   selector: 'app-team',
@@ -18,39 +16,17 @@ import { OrganisationState } from '../shared/types/enums/OrganisationState';
   styleUrls: ['./team.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamComponent implements AfterViewInit {
+export class TeamComponent {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
   protected readonly trackByFn = trackByFn;
 
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;
-  hasInActiveOrganisation = new BehaviorSubject<boolean>(false);
 
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
-    private organisationService: OrganisationService,
   ) {}
-
-  ngAfterViewInit(): void {
-    this.hasAdminAccess.subscribe((result) => {
-      if (result) {
-        this.checkIfTeamHasInActiveOrganisations();
-      }
-    });
-  }
-
-  checkIfTeamHasInActiveOrganisations() {
-    this.overviewEntity$.subscribe((result) => {
-      if (result.team) {
-        this.organisationService.getOrganisationsByTeamId(result.team.id).subscribe((organisations) => {
-          this.hasInActiveOrganisation.next(
-            organisations.filter((organisation) => organisation.state != OrganisationState.ACTIVE).length > 0,
-          );
-        });
-      }
-    });
-  }
 
   @Input()
   get overviewEntity(): BehaviorSubject<OverviewEntity> {

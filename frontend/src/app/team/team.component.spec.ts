@@ -82,26 +82,10 @@ describe('TeamComponent', () => {
     expect(button).toBeFalsy();
   });
 
-  it('should set has inactive teams to false', async () => {
-    jest
-      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
-      .mockReturnValue(of([organisationActive, organisationActive]));
-    component.checkIfTeamHasInActiveOrganisations();
-    expect(component.hasInActiveOrganisation.value).toBeFalsy();
-  });
-
   it('should open Teamdialog and make call to dialog object', async () => {
     jest.spyOn(dialogMock, 'open').mockReturnValue({ afterClosed: () => of(team1) });
     component.openEditTeamDialog(teamMin1);
     expect(dialogMock.open).toHaveBeenCalled();
     expect(refreshDataServiceMock.markDataRefresh).toHaveBeenCalled();
-  });
-
-  it('should set has inactive teams to true', async () => {
-    jest
-      .spyOn(organisationServiceMock, 'getOrganisationsByTeamId')
-      .mockReturnValue(of([organisationInActive, organisationInActive]));
-    component.checkIfTeamHasInActiveOrganisations();
-    expect(component.hasInActiveOrganisation.value).toBeTruthy();
   });
 });

@@ -11,7 +11,7 @@
     />
     <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
       <mat-icon
-        *ngIf="this.hasInActiveOrganisation | async"
+        *ngIf="OVEntity.team.hasInActiveOrganisations"
         class="team-actions cursor-pointer ms-2 text-danger"
         [matTooltip]="'This team has inactive organisations'"
         >error_outline</mat-icon

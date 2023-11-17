@@ -54,6 +54,11 @@ public class OrganisationBusinessService {
         return persistenceService.getActiveOrganisations();
     }
 
+    public boolean teamHasInActiveOrganisations(Long teamId) {
+        return !getOrganisationsByTeam(teamId).stream()
+                .filter(organisation -> organisation.getState() == OrganisationState.INACTIVE).toList().isEmpty();
+    }
+
     public List<Organisation> getOrganisationsByTeam(Long teamId) {
         return persistenceService.getOrganisationsByTeamId(teamId);
     }

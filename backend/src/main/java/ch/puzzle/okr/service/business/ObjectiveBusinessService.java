@@ -114,9 +114,6 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     public void deleteEntityById(Long id) {
         validator.validateOnDelete(id);
         completedBusinessService.deleteCompletedByObjectiveId(id);
-        // if (objective.getState().equals(State.SUCCESSFUL) || objective.getState().equals(State.NOTSUCCESSFUL)) {
-        // completedBusinessService.deleteCompletedByObjectiveId(objective.getId());
-        // }
         keyResultBusinessService.getAllKeyResultsByObjective(id)
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);

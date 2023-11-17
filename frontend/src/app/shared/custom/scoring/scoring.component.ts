@@ -30,6 +30,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   commitPercent: number = 0;
   targetPercent: number = 0;
   labelPercentage: Observable<number>;
+  stretched: boolean = false;
 
   @ViewChild('fail')
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;
@@ -58,18 +59,22 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
         this.failPercent = 100;
         this.commitPercent = 100;
         this.targetPercent = 101;
+        this.stretched = true;
         break;
       case Zone.TARGET:
         this.failPercent = 100;
         this.commitPercent = 100;
         this.targetPercent = 100;
+        this.stretched = false;
         break;
       case Zone.COMMIT:
         this.failPercent = 100;
         this.commitPercent = 100;
+        this.stretched = false;
         break;
       case Zone.FAIL:
         this.failPercent = 100;
+        this.stretched = false;
         break;
     }
   }
@@ -82,20 +87,24 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       this.labelPercentage = of(percentage);
       switch (true) {
         case percentage >= 100:
+          this.stretched = true;
           this.failPercent = 100;
           this.commitPercent = 100;
           this.targetPercent = 101;
           break;
         case percentage > 70:
+          this.stretched = false;
           this.failPercent = 100;
           this.commitPercent = 100;
           this.targetPercent = (100 / 30) * (percentage - 70);
           break;
         case percentage > 30:
+          this.stretched = false;
           this.failPercent = 100;
           this.commitPercent = (100 / 40) * (percentage - 30);
           break;
         default:
+          this.stretched = false;
           this.failPercent = (100 / 30) * percentage;
       }
     }

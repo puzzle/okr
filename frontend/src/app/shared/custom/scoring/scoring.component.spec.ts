@@ -1,16 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ScoringComponent } from './scoring.component';
-import {
-  keyResultMetricMinScoring,
-  keyResultMetricMinScoringInversion,
-  keyResultOrdinalMinScoring,
-} from '../../testData';
+import { keyResultMetricMinScoring, keyResultOrdinalMinScoring } from '../../testData';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { By } from '@angular/platform-browser';
 import { Zone } from '../../types/enums/Zone';
-import { KeyresultMin } from '../../types/model/KeyresultMin';
-import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 
 describe('ScoringComponent', () => {
   let component: ScoringComponent;

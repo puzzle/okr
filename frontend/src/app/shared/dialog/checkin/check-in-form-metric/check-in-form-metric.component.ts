@@ -46,6 +46,8 @@ export class CheckInFormMetricComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dialogForm?.controls['value'].reset();
+    if (this.checkIn.id) {
+      this.formatValue();
+    }
   }
 }

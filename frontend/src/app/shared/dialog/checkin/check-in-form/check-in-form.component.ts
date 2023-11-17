@@ -8,7 +8,6 @@ import { CheckInMin } from '../../../types/model/CheckInMin';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../types/model/Action';
-import { DATE_FORMAT } from '../../../constantLibary';
 import { ActionService } from '../../../services/action.service';
 import { formInputCheck } from '../../../common';
 import errorMessages from '../../../../../assets/errors/error-messages.json';
@@ -24,9 +23,6 @@ export class CheckInFormComponent implements OnInit {
   checkIn!: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
-  protected readonly formInputCheck = formInputCheck;
-  protected readonly errorMessages: { [key: string]: string } = errorMessages;
-
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
     confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
@@ -34,6 +30,8 @@ export class CheckInFormComponent implements OnInit {
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([]),
   });
+  protected readonly formInputCheck = formInputCheck;
+  protected readonly errorMessages: { [key: string]: string } = errorMessages;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
@@ -54,6 +52,7 @@ export class CheckInFormComponent implements OnInit {
   isTouchedOrDirty(name: string) {
     return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
   }
+
   getErrorKeysOfFormField(name: string): string[] {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
@@ -72,7 +71,6 @@ export class CheckInFormComponent implements OnInit {
     /* If KeyResult has lastCheckIn set checkIn to this value */
     if (this.keyResult.lastCheckIn != null) {
       this.checkIn = { ...this.keyResult.lastCheckIn, id: undefined };
-      this.dialogForm.controls.value.setValue(this.checkIn.value!.toString());
       this.dialogForm.controls.confidence.setValue(this.checkIn.confidence);
       return;
     }
@@ -125,9 +123,5 @@ export class CheckInFormComponent implements OnInit {
     const actions = this.dialogForm.value.actionList!;
     actions[index] = { ...actions[index], isChecked: event.checked };
     this.dialogForm.patchValue({ actionList: actions });
-  }
-
-  convertToMetric(keyResult: KeyResult) {
-    return keyResult as KeyResultMetric;
   }
 }

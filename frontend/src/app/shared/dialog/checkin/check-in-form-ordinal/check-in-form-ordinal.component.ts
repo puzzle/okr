@@ -9,7 +9,7 @@ import { CheckInMin } from '../../../types/model/CheckInMin';
   templateUrl: './check-in-form-ordinal.component.html',
   styleUrls: ['./check-in-form-ordinal.component.scss'],
 })
-export class CheckInFormOrdinalComponent implements OnInit {
+export class CheckInFormOrdinalComponent {
   @Input()
   keyResult!: KeyResultOrdinal;
   @Input()
@@ -17,8 +17,4 @@ export class CheckInFormOrdinalComponent implements OnInit {
   @Input()
   dialogForm!: FormGroup;
   protected readonly Zone = Zone;
-
-  ngOnInit(): void {
-    this.dialogForm.controls['value'].reset();
-  }
 }

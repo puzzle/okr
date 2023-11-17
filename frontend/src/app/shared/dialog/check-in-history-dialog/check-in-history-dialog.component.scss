@@ -11,6 +11,11 @@
   height: 20px;
 }
 
+.edit-check-in-button {
+  @extend .edit-check-in;
+  margin-right: 5px;
+}
+
 .check-in-box {
   background-color: #f5f5f5;
 }

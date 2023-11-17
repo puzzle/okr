@@ -56,9 +56,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   calculatePercentageOrdinal() {
     switch (this.keyResult.lastCheckIn?.value) {
       case Zone.STRETCH:
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = 101;
         this.stretched = true;
         break;
       case Zone.TARGET:
@@ -88,9 +85,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       switch (true) {
         case percentage >= 100:
           this.stretched = true;
-          this.failPercent = 100;
-          this.commitPercent = 100;
-          this.targetPercent = 101;
           break;
         case percentage > 70:
           this.stretched = false;
@@ -150,7 +144,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     //Fill out icon if target percent has reached 100 percent or more
-    if (this.targetPercent > 100) {
+    if (this.stretched) {
       this.iconPath = 'filled';
       this.changeDetectionRef.detectChanges();
     }

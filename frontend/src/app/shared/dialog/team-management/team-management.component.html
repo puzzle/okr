@@ -67,7 +67,16 @@
           </button>
           <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
         </div>
-        <button (click)="deleteTeam()" color="primary" *ngIf="data" type="button" mat-button>Team Löschen</button>
+        <button
+          [attr.data-testId]="'delete'"
+          (click)="deleteTeam()"
+          color="primary"
+          *ngIf="data"
+          type="button"
+          mat-button
+        >
+          Team Löschen
+        </button>
       </div>
     </form>
   </div>

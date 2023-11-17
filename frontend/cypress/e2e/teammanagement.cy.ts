@@ -45,6 +45,14 @@ describe('Team management tests', () => {
       cy.getByTestId('save').click();
       cy.contains('LoremIpsumEdited');
     });
+
+    it('Delete team', () => {
+      cy.getByTestId('edit-team-LoremIpsumEdited').click();
+      //Click delete button
+      cy.getByTestId('delete').click();
+      cy.getByTestId('confirmYes').click();
+      cy.contains('LoremIpsumEdited').should('not.exist');
+    });
   });
 
   describe('As BL', () => {

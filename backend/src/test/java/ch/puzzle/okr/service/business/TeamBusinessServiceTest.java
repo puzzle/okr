@@ -45,8 +45,6 @@ class TeamBusinessServiceTest {
     ObjectiveBusinessService objectiveBusinessService;
     @Mock
     QuarterBusinessService quarterService;
-    @Mock
-    CompletedBusinessService completedBusinessService;
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);
     @InjectMocks
@@ -113,6 +111,5 @@ class TeamBusinessServiceTest {
 
         verify(teamPersistenceService, times(1)).deleteById(1L);
         verify(objectiveBusinessService, times(objectiveList.size())).deleteEntityById(anyLong());
-        verify(completedBusinessService, times(1)).deleteCompletedByObjectiveId(objectiveCompleted.getId());
     }
 }

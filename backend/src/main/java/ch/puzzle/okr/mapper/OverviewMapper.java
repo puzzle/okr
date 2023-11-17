@@ -69,7 +69,7 @@ public class OverviewMapper {
         return new OverviewDto(
                 new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName(),
                         overview.isWriteable(),
-                        organisationBusinessService.teamHasInactiveOrganisations(overview.getOverviewId().getTeamId())),
+                        organisationBusinessService.teamHasInActiveOrganisations(overview.getOverviewId().getTeamId())),
                 objectives);
     }
 

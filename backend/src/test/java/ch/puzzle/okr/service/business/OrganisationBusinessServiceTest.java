@@ -17,6 +17,8 @@ import org.springframework.ldap.query.LdapQuery;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -33,6 +35,9 @@ class OrganisationBusinessServiceTest {
             .withState(OrganisationState.ACTIVE).build();
     private static final Organisation organisationThree = Organisation.Builder.builder().withId(2L)
             .withOrgName("org_three").withState(OrganisationState.ACTIVE).build();
+
+    private static final Organisation organisationInActive = Organisation.Builder.builder().withId(2L)
+            .withOrgName("org_in_active").withState(OrganisationState.INACTIVE).build();
 
     @Mock
     LdapTemplate ldapTemplate;
@@ -77,5 +82,19 @@ class OrganisationBusinessServiceTest {
     void getOrganisationsByTeamId() {
         organisationBusinessService.getOrganisationsByTeam(1L);
         verify(organisationPersistenceService, times(1)).getOrganisationsByTeamId(1L);
+    }
+
+    @Test
+    void teamHasInActiveOrganisations() {
+        when(organisationPersistenceService.getOrganisationsByTeamId(anyLong()))
+                .thenReturn(List.of(organisationInActive, organisationOne, organisationTwo));
+        assertTrue(organisationBusinessService.teamHasInActiveOrganisations(1L));
+    }
+
+    @Test
+    void teamHasNoInActiveOrganisations() {
+        when(organisationPersistenceService.getOrganisationsByTeamId(anyLong()))
+                .thenReturn(List.of(organisationOne, organisationTwo, organisationThree));
+        assertFalse(organisationBusinessService.teamHasInActiveOrganisations(1L));
     }
 }

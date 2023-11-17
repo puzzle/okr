@@ -20,8 +20,7 @@ describe('Team management tests', () => {
       cy.getByTestId('name').click().type('New Team');
 
       //Select gl as organisation
-      cy.getByTestId('organisation-select').click().get('mat-option')
-        .contains('org_gl').click();
+      cy.getByTestId('organisation-select').click().get('mat-option').contains('org_gl').click();
       cy.realPress('Escape');
 
       //Save team and check if team appears now on overview

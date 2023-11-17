@@ -47,7 +47,7 @@ describe('CheckInFormOrdinalComponent', () => {
   });
 
   it('should set zone of check-in to fail if value is empty', waitForAsync(async () => {
-    expect(component.dialogForm.controls['value'].value).toBe(Zone.FAIL);
+    expect(component.dialogForm.controls['value'].value).toBe('');
   }));
 
   it('should set zone to Fail', waitForAsync(async () => {

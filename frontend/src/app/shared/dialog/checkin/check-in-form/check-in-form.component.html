@@ -1,75 +1,97 @@
-<div mat-dialog-content class="dialog-padding">
-  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen ' + getStepLabel()"></app-dialog-header>
-  <app-dialog-header
-    *ngIf="this.checkIn.id"
-    [dialogTitle]="'Check-in bearbeiten ' + getStepLabel()"
-  ></app-dialog-header>
-  <!--  First part of dialog-->
-  <div *ngIf="!continued">
-    <p class="fs-6 mt-1 text-black">Key Result</p>
-    <p class="ms-2 mt-2 text-black linebreak">{{ keyResult.title }}</p>
-    <form [formGroup]="dialogForm" class="d-flex flex-column mt-3">
-      <!--      Custom input which depends on type of keyResult-->
-      <app-check-in-form-metric
-        *ngIf="keyResult.keyResultType === 'metric'"
-        [keyResult]="getKeyResultMetric()"
-        [checkIn]="checkIn"
-        [dialogForm]="dialogForm"
-      ></app-check-in-form-metric>
-      <app-check-in-form-ordinal
-        *ngIf="keyResult.keyResultType === 'ordinal'"
-        [keyResult]="getKeyResultOrdinal()"
-        [checkIn]="checkIn"
-        [dialogForm]="dialogForm"
-      ></app-check-in-form-ordinal>
-    </form>
-  </div>
-  <!--  Second part of dialog-->
-  <div *ngIf="continued">
-    <app-check-in-base-informations [dialogForm]="dialogForm"></app-check-in-base-informations>
-  </div>
-  <!--    Buttons to submit the check-in-->
+<div class="dialog-padding" mat-dialog-content>
+  <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen'"></app-dialog-header>
+  <app-dialog-header *ngIf="this.checkIn.id" [dialogTitle]="'Check-in bearbeiten'"></app-dialog-header>
+
+  <p class="fs-6 text-black">Key Result</p>
+  <p class="text-black linebreak">{{ keyResult.title }}</p>
+
+  <section *ngIf="getActions()?.length != 0">
+    <mat-label class="text-black">Action Plan</mat-label>
+    <div *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
+      <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
+      <div class="action-list-item flex-fill">
+        {{ action.action }}
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <mat-label class="text-black">Veränderungen seit letztem Check-in (optional)</mat-label>
+    <textarea
+      [attr.data-testId]="'changeInfo'"
+      [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
+      class="w-100 big-dialog-form-field"
+      formControlName="changeInfo"
+    ></textarea>
+    <div *ngIf="isTouchedOrDirty('changeInfo')">
+      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+      </mat-error>
+    </div>
+  </section>
+
+  <form [formGroup]="dialogForm" class="d-flex flex-column">
+    <app-check-in-form-metric
+      *ngIf="keyResult.keyResultType === 'metric'"
+      [checkIn]="checkIn"
+      [dialogForm]="dialogForm"
+      [keyResult]="getKeyResultMetric()"
+    ></app-check-in-form-metric>
+    <app-check-in-form-ordinal
+      *ngIf="keyResult.keyResultType === 'ordinal'"
+      [checkIn]="checkIn"
+      [dialogForm]="dialogForm"
+      [keyResult]="getKeyResultOrdinal()"
+    ></app-check-in-form-ordinal>
+  </form>
+
+  <section>
+    <mat-label class="mt-3 text-black mb-2">Massnahmen (optional)</mat-label>
+    <textarea
+      [attr.data-testId]="'initiatives'"
+      [ngClass]="formInputCheck(dialogForm, 'initiatives')"
+      class="w-100 big-dialog-form-field"
+      formControlName="initiatives"
+    ></textarea>
+    <div *ngIf="isTouchedOrDirty('initiatives')">
+      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+      </mat-error>
+    </div>
+  </section>
+
+  <section class="d-flex flex-column justify-content-start">
+    <mat-label
+      >Confidence um Target
+      <span *ngIf="keyResult.keyResultType === 'metric' && convertToMetric(keyResult) as kr">
+        ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }}
+      </span>
+      zu erreichen
+    </mat-label>
+    <app-confidence [checkIn]="checkIn" [edit]="true" class="bg-keyResult-detail-attribute"></app-confidence>
+  </section>
+
   <div class="d-flex flex-row buttons">
     <button
-      mat-flat-button
-      color="primary"
-      *ngIf="!continued"
-      (click)="continued = true"
-      [attr.data-testId]="'check-in-next'"
-    >
-      Weiter
-    </button>
-    <button
-      [disabled]="!this.dialogForm.valid"
       (click)="saveCheckIn()"
-      *ngIf="continued"
-      type="submit"
-      mat-flat-button
-      color="primary"
       [attr.data-testId]="'submit-check-in'"
+      [disabled]="!this.dialogForm.valid"
+      color="primary"
+      mat-flat-button
+      type="submit"
     >
-      <span [attr.data-testId]="'save-checkin'" *ngIf="checkIn.id">Speichern</span>
-      <span [attr.data-testId]="'create-checkin'" *ngIf="!checkIn.id">Check-in erfassen</span>
+      <span *ngIf="checkIn.id">Speichern</span>
+      <span *ngIf="!checkIn.id">Check-in erfassen</span>
     </button>
     <button
-      [attr.data-testId]="'cancel-checkin'"
-      mat-button
-      color="primary"
       *ngIf="!continued"
-      mat-dialog-close
+      [attr.data-testId]="'cancel-checkin'"
       class="ms-2"
+      color="primary"
+      mat-button
+      mat-dialog-close
     >
       Abbrechen
-    </button>
-    <button
-      [attr.data-testId]="'back-in-checkin'"
-      mat-button
-      color="primary"
-      *ngIf="continued"
-      (click)="continued = false"
-      class="ms-2"
-    >
-      Zurück
     </button>
   </div>
 </div>

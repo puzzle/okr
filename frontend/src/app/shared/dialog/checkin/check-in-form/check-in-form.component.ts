@@ -10,6 +10,8 @@ import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../types/model/Action';
 import { DATE_FORMAT } from '../../../constantLibary';
 import { ActionService } from '../../../services/action.service';
+import { formInputCheck } from '../../../common';
+import errorMessages from '../../../../../assets/errors/error-messages.json';
 
 @Component({
   selector: 'app-check-in-form',
@@ -22,7 +24,8 @@ export class CheckInFormComponent implements OnInit {
   checkIn!: CheckInMin;
   currentDate: Date;
   continued: boolean = false;
-  protected readonly DATE_FORMAT = DATE_FORMAT;
+  protected readonly formInputCheck = formInputCheck;
+  protected readonly errorMessages: { [key: string]: string } = errorMessages;
 
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
@@ -48,6 +51,14 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
   }
 
+  isTouchedOrDirty(name: string) {
+    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
+  }
+  getErrorKeysOfFormField(name: string): string[] {
+    const errors = this.dialogForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
   setDefaultValues() {
     this.dialogForm.controls.actionList.setValue(this.keyResult.actionList);
     if (this.data.checkIn != null) {
@@ -67,6 +78,10 @@ export class CheckInFormComponent implements OnInit {
     }
     /* If Check-in is null set as object with confidence 5 default value */
     this.checkIn = { confidence: 5 } as CheckInMin;
+  }
+
+  calculateTarget(keyResult: KeyResultMetric): number {
+    return keyResult.stretchGoal - (keyResult.stretchGoal - keyResult.baseline) * 0.3;
   }
 
   saveCheckIn() {
@@ -102,10 +117,17 @@ export class CheckInFormComponent implements OnInit {
     return this.keyResult as KeyResultOrdinal;
   }
 
-  getStepLabel(): string {
-    if (this.continued) {
-      return '(2/2)';
-    }
-    return '(1/2)';
+  getActions(): Action[] | null {
+    return this.dialogForm.controls['actionList'].value;
+  }
+
+  changeIsChecked(event: any, index: number) {
+    const actions = this.dialogForm.value.actionList!;
+    actions[index] = { ...actions[index], isChecked: event.checked };
+    this.dialogForm.patchValue({ actionList: actions });
+  }
+
+  convertToMetric(keyResult: KeyResult) {
+    return keyResult as KeyResultMetric;
   }
 }

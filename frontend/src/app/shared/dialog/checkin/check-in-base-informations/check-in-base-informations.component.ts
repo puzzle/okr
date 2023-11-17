@@ -23,14 +23,4 @@ export class CheckInBaseInformationsComponent {
     const errors = this.dialogForm.get(name)?.errors;
     return errors == null ? [] : Object.keys(errors);
   }
-
-  changeIsChecked(event: any, index: number) {
-    const actions = this.dialogForm.value.actionList;
-    actions[index] = { ...actions[index], isChecked: event.checked };
-    this.dialogForm.patchValue({ actionList: actions });
-  }
-
-  getActions(): Action[] {
-    return this.dialogForm.controls['actionList'].value;
-  }
 }

@@ -1,39 +1,5 @@
 <form [formGroup]="dialogForm" class="d-flex flex-column">
   <!--    Changeinfo   -->
-  <mat-label class="mb-2 text-black">Veränderungen seit letztem Check-in (optional)</mat-label>
-  <textarea
-    [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
-    class="w-100 big-dialog-form-field"
-    formControlName="changeInfo"
-    [attr.data-testId]="'changeInfo'"
-  ></textarea>
-  <div *ngIf="isTouchedOrDirty('changeInfo')">
-    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-    </mat-error>
-  </div>
 
   <!--    Initiatives   -->
-  <mat-label class="mt-3 text-black mb-2">Massnahmen (optional)</mat-label>
-  <textarea
-    [ngClass]="formInputCheck(dialogForm, 'initiatives')"
-    class="w-100 big-dialog-form-field"
-    formControlName="initiatives"
-    [attr.data-testId]="'initiatives'"
-  ></textarea>
-  <div *ngIf="isTouchedOrDirty('initiatives')">
-    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-    </mat-error>
-  </div>
-
-  <div *ngIf="getActions().length != 0" class="mt-2">
-    <mat-label class="text-black">Action Plan</mat-label>
-    <div *ngFor="let action of getActions(); let i = index" class="d-flex flex-row mt-2">
-      <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
-      <div class="action-list-item flex-fill">
-        {{ action.action }}
-      </div>
-    </div>
-  </div>
 </form>

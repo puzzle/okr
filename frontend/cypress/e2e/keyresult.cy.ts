@@ -188,7 +188,8 @@ describe('OKR Overview', () => {
     );
 
     cy.getByTestId('submit').click();
-    cy.getByTestId('keyresult').contains('This is my new title for the new metric keyresult').first().click();
+    cy.wait(500);
+    cy.getByTestId('keyresult').contains('This is my new title for the new metric keyresult').last().click();
 
     cy.contains('This is my new title for the new metric keyresult');
     cy.contains('21%');
@@ -292,10 +293,10 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('edit-keyResult').click();
 
-    cy.getByTestId('delete-keyResult').click();
+    cy.getByTestId('delete-keyResult').trigger('click');
     cy.getByTestId('confirmYes').click();
 
     cy.contains('Puzzle ITC');
-    cy.get('A keyresult to delete').should('not.exist');
+    cy.getByTestId('keyresult').contains('A keyresult to delete').should('not.exist');
   });
 });

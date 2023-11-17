@@ -2,6 +2,10 @@ import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
+  beforeEach(() => {
+    cy.visit('/?quarter=2');
+  });
+
   function openThreeDotMenu() {
     cy.get('.objective').first().focus();
     cy.tabForwardUntil('[data-testid="three-dot-menu"]');

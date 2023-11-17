@@ -36,7 +36,7 @@ describe('ScoringComponent', () => {
     });
 
     it('should fill out star if target percentage is over 100', () => {
-      component.targetPercent = 101;
+      component.stretched = true;
       component.ngAfterViewInit();
       expect(component.iconPath).toBe('filled');
     });
@@ -118,7 +118,6 @@ describe('ScoringComponent', () => {
       [{ zoneValue: Zone.FAIL, fail: 100, commit: 0, target: 0 }],
       [{ zoneValue: Zone.COMMIT, fail: 100, commit: 100, target: 0 }],
       [{ zoneValue: Zone.TARGET, fail: 100, commit: 100, target: 100 }],
-      [{ zoneValue: Zone.STRETCH, fail: 100, commit: 100, target: 101 }],
     ])('should set percentages correctly', (object: any) => {
       //Reset component
       component.targetPercent = 0;

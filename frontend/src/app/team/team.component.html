@@ -28,6 +28,7 @@
         *ngFor="let objective of OVEntity.objectives; trackBy: trackByFn"
         [objective]="objective"
         [isWritable]="OVEntity.team.writable"
+        [attr.data-testId]="'objective'"
         class="col-xs-12 col-md-4 p-0 column-width"
       ></app-objective-column>
 

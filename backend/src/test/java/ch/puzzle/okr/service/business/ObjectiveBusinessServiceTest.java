@@ -39,6 +39,8 @@ class ObjectiveBusinessServiceTest {
     @Mock
     KeyResultBusinessService keyResultBusinessService;
     @Mock
+    CompletedBusinessService completedBusinessService;
+    @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
 
     private final Team team1 = Team.Builder.builder().withId(1L).withName("Team1").build();

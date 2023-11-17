@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="OkrApplication-Dev" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
-    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH" value="$USER_HOME$/.sdkman/candidates/java/current" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <module name="backend" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="ch.puzzle.okr.OkrApplication" />

@@ -3,7 +3,7 @@
     <div *ngIf="keyResult" class="d-flex flex-column">
       <div class="w-100 d-flex justify-content-between align-items-start mb-3">
         <span class="title pt-2">{{ keyResult.title }}</span>
-        <button class="d-flex" mat-icon-button [routerLink]="'/'" [attr.data-testId]="'close-drawer'">
+        <button class="d-flex" mat-icon-button (click)="backToOverview()" [attr.data-testId]="'close-drawer'">
           <mat-icon>close</mat-icon>
         </button>
       </div>

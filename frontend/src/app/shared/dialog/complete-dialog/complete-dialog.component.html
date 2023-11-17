@@ -11,7 +11,9 @@
           'non-active': completeForm.value.isSuccessful === false
         }"
         (click)="switchSuccessState('successful')"
+        (keydown.enter)="switchSuccessState('successful')"
         [attr.data-testId]="'successful'"
+        tabindex="0"
       >
         Objective erfolgreich
       </div>
@@ -22,7 +24,9 @@
           'non-active': completeForm.value.isSuccessful == true
         }"
         (click)="switchSuccessState('notSuccessful')"
+        (keydown.enter)="switchSuccessState('notSuccessful')"
         [attr.data-testId]="'not-successful'"
+        tabindex="0"
       >
         Objective nicht erfolgreich
       </div>

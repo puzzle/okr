@@ -5,6 +5,7 @@
       class="team-icons team-actions cursor-pointer ms-2"
       src="assets/icons/edit.svg"
       alt="edit team"
+      [attr.data-testId]="'edit-team-' + OVEntity.team.name"
       *ngIf="hasAdminAccess | async"
       (click)="openEditTeamDialog(OVEntity.team)"
     />

@@ -29,6 +29,7 @@
           >
         </div>
         <mat-select
+          [attr.data-testId]="'organisation-select'"
           [formControl]="teamForm.controls.organisations"
           multiple
           id="organisations"
@@ -55,6 +56,7 @@
       <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
         <div class="d-flex p-0">
           <button
+            [attr.data-testId]="'save'"
             [disabled]="teamForm.invalid || this.hasInActiveOrganisations"
             color="primary"
             mat-flat-button

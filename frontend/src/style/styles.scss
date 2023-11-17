@@ -113,15 +113,21 @@ body pzsh-backdrop {
   color: $error-color;
 }
 
-.big-dialog-form-field {
-  height: 4.375rem !important;
-  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+textarea,
+input:not([type]),
+input[type="text"] {
+  @extend .ps-1;
 }
 
-.dialog-form-field {
-  resize: none;
-  outline: none;
-}
+//.big-dialog-form-field {
+//  height: 4.375rem !important;
+//  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+//}
+//
+//.dialog-form-field {
+//  resize: none;
+//  outline: none;
+//}
 
 .dialog-form-field-error {
   resize: none;
@@ -150,7 +156,7 @@ body pzsh-backdrop {
 }
 
 .dialog-padding {
-  padding: 1.62rem !important;
+  padding: 0 1.62rem 0 1.62rem !important;
 }
 
 .objective-three-dot-menu {

@@ -1,11 +1,12 @@
-<div class="dialog-padding" mat-dialog-content>
+<section mat-dialog-title>
   <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen'"></app-dialog-header>
   <app-dialog-header *ngIf="this.checkIn.id" [dialogTitle]="'Check-in bearbeiten'"></app-dialog-header>
+  <p class="fs-6">Key Result</p>
+  <p class="linebreak bg-display-element py-2 ps-1 fs-6 fw-normal">{{ keyResult.title }}</p>
+</section>
 
-  <p class="fs-6 text-black">Key Result</p>
-  <p class="text-black linebreak bg-display-element py-2 ps-1">{{ keyResult.title }}</p>
-
-  <div class="overflow-scroll">
+<mat-dialog-content>
+  <form [formGroup]="dialogForm">
     <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column">
       <mat-label class="text-black">Action Plan</mat-label>
       <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
@@ -15,8 +16,9 @@
         </span>
       </span>
     </section>
+
     <section>
-      <mat-label class="text-black">Veränderungen seit letztem Check-in (optional)</mat-label>
+      <mat-label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional)</mat-label>
       <textarea
         [attr.data-testId]="'changeInfo'"
         [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
@@ -30,20 +32,18 @@
       </div>
     </section>
 
-    <form [formGroup]="dialogForm" class="d-flex flex-column">
-      <app-check-in-form-metric
-        *ngIf="keyResult.keyResultType === 'metric'"
-        [checkIn]="checkIn"
-        [dialogForm]="dialogForm"
-        [keyResult]="getKeyResultMetric()"
-      ></app-check-in-form-metric>
-      <app-check-in-form-ordinal
-        *ngIf="keyResult.keyResultType === 'ordinal'"
-        [checkIn]="checkIn"
-        [dialogForm]="dialogForm"
-        [keyResult]="getKeyResultOrdinal()"
-      ></app-check-in-form-ordinal>
-    </form>
+    <app-check-in-form-metric
+      *ngIf="keyResult.keyResultType === 'metric'"
+      [checkIn]="checkIn"
+      [dialogForm]="dialogForm"
+      [keyResult]="getKeyResultMetric()"
+    ></app-check-in-form-metric>
+    <app-check-in-form-ordinal
+      *ngIf="keyResult.keyResultType === 'ordinal'"
+      [checkIn]="checkIn"
+      [dialogForm]="dialogForm"
+      [keyResult]="getKeyResultOrdinal()"
+    ></app-check-in-form-ordinal>
 
     <section>
       <mat-label class="mt-3 text-black mb-2">Massnahmen (optional)</mat-label>
@@ -63,36 +63,36 @@
     <section class="d-flex flex-column justify-content-start">
       <mat-label
         >Confidence um Target
-        <span *ngIf="keyResult.keyResultType === 'metric' && convertToMetric(keyResult) as kr">
+        <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
           ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
         </span>
         zu erreichen
       </mat-label>
-      <app-confidence [checkIn]="checkIn" [edit]="true" class="bg-keyResult-detail-attribute"></app-confidence>
+      <app-confidence [checkIn]="checkIn" [edit]="true"></app-confidence>
     </section>
-  </div>
+  </form>
+</mat-dialog-content>
 
-  <div class="d-flex flex-row buttons">
-    <button
-      (click)="saveCheckIn()"
-      [attr.data-testId]="'submit-check-in'"
-      [disabled]="!this.dialogForm.valid"
-      color="primary"
-      mat-flat-button
-      type="submit"
-    >
-      <span *ngIf="checkIn.id">Speichern</span>
-      <span *ngIf="!checkIn.id">Check-in erfassen</span>
-    </button>
-    <button
-      *ngIf="!continued"
-      [attr.data-testId]="'cancel-checkin'"
-      class="ms-2"
-      color="primary"
-      mat-button
-      mat-dialog-close
-    >
-      Abbrechen
-    </button>
-  </div>
-</div>
+<mat-dialog-actions>
+  <button
+    (click)="saveCheckIn()"
+    [attr.data-testId]="'submit-check-in'"
+    [disabled]="!this.dialogForm.valid"
+    color="primary"
+    mat-flat-button
+    type="submit"
+  >
+    <span *ngIf="checkIn.id">Speichern</span>
+    <span *ngIf="!checkIn.id">Check-in speichern</span>
+  </button>
+  <button
+    *ngIf="!continued"
+    [attr.data-testId]="'cancel-checkin'"
+    class="ms-2"
+    color="primary"
+    mat-button
+    mat-dialog-close
+  >
+    Abbrechen
+  </button>
+</mat-dialog-actions>

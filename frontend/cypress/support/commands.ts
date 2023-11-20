@@ -49,7 +49,6 @@ Cypress.Commands.add(
   (currentValue: number, shouldChangeConfidence: boolean, changeInfo: string | null, initiatives: string | null) => {
     cy.getByTestId('check-in-metric-value').clear().type(currentValue.toString());
     changeConfidence(shouldChangeConfidence);
-    cy.getByTestId('check-in-next').click();
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }
@@ -83,7 +82,6 @@ Cypress.Commands.add(
         break;
     }
     changeConfidence(shouldChangeConfidence);
-    cy.getByTestId('check-in-next').click();
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }

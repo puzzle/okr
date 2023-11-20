@@ -1,29 +1,25 @@
 <form [formGroup]="dialogForm">
-  <span class="text-black">Erreichten Bereich wählen</span>
-  <mat-radio-group formControlName="value" class="d-flex flex-column gap-2 mt-2">
-    <mat-radio-button [attr.data-testId]="'fail-radio'" value="{{ Zone.FAIL }}">
+  <span class="text-black">Erreichten Bereich wählen:</span>
+  <mat-radio-group formControlName="value" class="d-flex flex-column gap-2">
+    <mat-radio-button [attr.data-testId]="'fail-radio'" value="{{ Zone.FAIL }}" class="ordinal-zone">
       <div class="radio-text-container d-flex align-items-center p-3 text-black">
         Zone (Commit / Target / Stretch) noch nicht erreicht
       </div>
     </mat-radio-button>
-    <mat-radio-button [attr.data-testId]="'commit-radio'" value="{{ Zone.COMMIT }}">
+    <mat-radio-button [attr.data-testId]="'commit-radio'" value="{{ Zone.COMMIT }}" class="ordinal-zone">
       <div class="radio-text-container d-flex p-3">
         <p class="text-black"><b>Commit:&nbsp; </b> {{ keyResult.commitZone }}</p>
       </div>
     </mat-radio-button>
-    <mat-radio-button [attr.data-testId]="'target-radio'" value="{{ Zone.TARGET }}">
-      <div class="radio-text-container d-flex p-3">
+    <mat-radio-button [attr.data-testId]="'target-radio'" value="{{ Zone.TARGET }}" class="ordinal-zone">
+      <div class="radio-text-container d-flex p-3 w-100">
         <p class="text-black"><b>Target:&nbsp; </b>{{ keyResult.targetZone }}</p>
       </div>
     </mat-radio-button>
-    <mat-radio-button [attr.data-testId]="'stretch-radio'" value="{{ Zone.STRETCH }}">
+    <mat-radio-button [attr.data-testId]="'stretch-radio'" value="{{ Zone.STRETCH }}" class="ordinal-zone">
       <div class="radio-text-container d-flex p-3">
         <p class="text-black"><b>Stretch:&nbsp; </b>{{ keyResult.stretchZone }}</p>
       </div>
     </mat-radio-button>
   </mat-radio-group>
-  <div class="d-flex flex-column w-75 justify-content-start align-items-start mt-3">
-    <mat-label>Confidence um Target zu erreichen</mat-label>
-    <app-confidence [edit]="true" [checkIn]="checkIn" class="bg-keyResult-detail-attribute"></app-confidence>
-  </div>
 </form>

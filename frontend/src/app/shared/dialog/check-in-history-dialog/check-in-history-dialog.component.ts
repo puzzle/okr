@@ -7,6 +7,7 @@ import { KeyResult } from '../../types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
+import { RefreshDataService } from '../../services/refresh-data.service';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -24,6 +25,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
     private checkInService: CheckInService,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<CheckInHistoryDialogComponent>,
+    private refreshDataService: RefreshDataService,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadCheckInHistory();
+      this.refreshDataService.markDataRefresh();
     });
   }
 

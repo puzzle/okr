@@ -50,7 +50,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CheckInFormMetricComponent } from './shared/dialog/checkin/check-in-form-metric/check-in-form-metric.component';
 import { UnitValueTransformationPipe } from './shared/pipes/unit-value-transformation/unit-value-transformation.pipe';
 import { CheckInFormOrdinalComponent } from './shared/dialog/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
-import { CheckInBaseInformationsComponent } from './shared/dialog/checkin/check-in-base-informations/check-in-base-informations.component';
 import { CustomInputComponent } from './shared/custom/custom-input/custom-input.component';
 import { ConfirmDialogComponent } from './shared/dialog/confirm-dialog/confirm-dialog.component';
 import { CheckInFormComponent } from './shared/dialog/checkin/check-in-form/check-in-form.component';
@@ -121,7 +120,6 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     UnitValueTransformationPipe,
     CheckInFormOrdinalComponent,
-    CheckInBaseInformationsComponent,
     CustomInputComponent,
     CheckInFormComponent,
     UnitLabelTransformationPipe,

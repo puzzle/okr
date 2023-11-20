@@ -14,7 +14,8 @@ p {
 }
 
 mat-slider {
-  min-width: 350px;
+  width: 100%;
+  max-width: 350px;
 }
 
 .bg-light-gray {

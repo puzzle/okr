@@ -1,24 +1,31 @@
 package ch.puzzle.okr.mapper;
 
+import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 @Component
 public class RoleMapper {
+    private static final String DELIMITER = ",";
+
     @Value("${okr.organisation.name.1stLevel}")
     private String firstLevelOrganisationName;
     @Value("${okr.organisation.name.2ndLevel}")
     private String secondLevelOrganisationName;
+    @Value("${okr.user.champion.usernames}")
+    private String okrChampionUsernames;
 
-    public List<AuthorizationRole> mapOrganisationNames(List<String> organisationNames) {
+    public List<AuthorizationRole> mapOrganisationNames(List<String> organisationNames, User user) {
         List<AuthorizationRole> roles = new ArrayList<>();
-        if (hasFirstLevelOrganisationName(organisationNames)) {
+        if (hasFirstLevelOrganisationName(organisationNames) || isOkrChampion(user)) {
             roles.addAll(List.of(READ_ALL_DRAFT, WRITE_ALL));
         } else if (hasSecondLevelOrganisationName(organisationNames)) {
             roles.addAll(List.of(READ_TEAMS_DRAFT, WRITE_ALL_TEAMS));
@@ -35,5 +42,10 @@ public class RoleMapper {
 
     private boolean hasSecondLevelOrganisationName(List<String> organisationNames) {
         return organisationNames.contains(secondLevelOrganisationName);
+    }
+
+    private boolean isOkrChampion(User user) {
+        String[] champions = okrChampionUsernames.split(DELIMITER);
+        return Arrays.stream(champions).anyMatch(c -> Objects.equals(c, user.getUsername()));
     }
 }

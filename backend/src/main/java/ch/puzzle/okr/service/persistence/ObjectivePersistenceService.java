@@ -1,14 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
-import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -71,7 +68,8 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         try {
             return typedQuery.getSingleResult();
         } catch (NoResultException exception) {
-            throw new ResponseStatusException(UNAUTHORIZED, reason);
+            throw new OkrResponseStatusException(UNAUTHORIZED, ErrorMsgKey.UNAUTHORIZED,
+                    List.of("Objective", id.toString()));
         }
     }
 }

@@ -46,6 +46,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log('On Init');
     if (this.keyResult.keyResultType === 'metric') {
       this.calculatePercentageMetric();
     } else {
@@ -172,6 +173,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     this.commitPercent = 0;
     this.targetPercent = 0;
     this.failPercent = 0;
+    this.stretched = false;
   }
 
   removeStyleClass() {

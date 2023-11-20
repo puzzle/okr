@@ -9,12 +9,14 @@
       </div>
       <div class="title fs-6">Beschrieb</div>
       <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
-      <section
-        class="py-3"
+
+      <div
+        class="d-flex align-items-center flex-row justify-content-start gap-3 mt-4"
         *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
       >
         <button
           *ngIf="objective.writeable"
+          mat-flat-button
           (click)="openAddKeyResultDialog()"
           [attr.data-testId]="'add-keyResult-objective-detail'"
           mat-button
@@ -22,10 +24,18 @@
           disableRipple="true"
           cdkInitialFocus
         >
-          <mat-icon>add</mat-icon>
           Key Result hinzufügen
         </button>
-      </section>
+        <button
+          (click)="openEditObjectiveDialog()"
+          *ngIf="objective.writeable"
+          [attr.data-testId]="'edit-objective'"
+          color="primary"
+          mat-button
+        >
+          Objective bearbeiten
+        </button>
+      </div>
     </div>
   </ng-container>
 

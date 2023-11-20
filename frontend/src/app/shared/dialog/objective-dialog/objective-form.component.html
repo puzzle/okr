@@ -71,42 +71,41 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <div class="mt-3">
-    <span>
-      <button
-        [disabled]="objectiveForm.invalid"
-        color="primary"
-        mat-flat-button
-        type="submit"
-        submitType="ONGOING"
-        [attr.data-testId]="'safe'"
-      >
-        Speichern
-      </button>
-      <button
-        *ngIf="!data.objective.objectiveId"
-        [disabled]="objectiveForm.invalid"
-        color="dark"
-        mat-stroked-button
-        submitType="DRAFT"
-        type="submit"
-        [attr.data-testId]="'safe-draft'"
-      >
-        Als Draft speichern
-      </button>
-
-      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
-    </span>
+<mat-dialog-actions class="mt-3">
+  <div>
     <button
+      [disabled]="objectiveForm.invalid"
       color="primary"
-      *ngIf="data.objective.objectiveId && data.action != 'duplicate'"
-      type="button"
-      mat-button
-      (click)="deleteObjective()"
-      [attr.data-testId]="'delete'"
+      mat-flat-button
+      type="submit"
+      submitType="ONGOING"
+      [attr.data-testId]="'safe'"
     >
-      Objective Löschen
+      Speichern
     </button>
+    <button
+      *ngIf="!data.objective.objectiveId"
+      [disabled]="objectiveForm.invalid"
+      color="dark"
+      mat-stroked-button
+      submitType="DRAFT"
+      type="submit"
+      [attr.data-testId]="'safe-draft'"
+    >
+      Als Draft speichern
+    </button>
+
+    <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
   </div>
+  <button
+    color="primary"
+    class="delete-button"
+    *ngIf="data.objective.objectiveId && data.action != 'duplicate'"
+    type="button"
+    mat-button
+    (click)="deleteObjective()"
+    [attr.data-testId]="'delete'"
+  >
+    Objective Löschen
+  </button>
 </mat-dialog-actions>

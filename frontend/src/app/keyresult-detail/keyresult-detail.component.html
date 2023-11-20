@@ -15,9 +15,7 @@
           <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
           <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
         </div>
-        <span *ngIf="keyResult?.objective?.quarter as quarter"
-          >{{ quarter.startDate | date: DATE_FORMAT }} - {{ quarter.endDate | date: DATE_FORMAT }}</span
-        >
+        <span *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</span>
       </div>
       <div class="d-flex justify-content-between mb-4 align-items-center">
         <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>

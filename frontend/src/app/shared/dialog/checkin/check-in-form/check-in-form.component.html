@@ -6,7 +6,7 @@
 </section>
 
 <mat-dialog-content>
-  <form [formGroup]="dialogForm">
+  <form [formGroup]="dialogForm" class="d-flex gap-2 flex-column">
     <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column">
       <mat-label class="text-black">Action Plan:</mat-label>
       <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">

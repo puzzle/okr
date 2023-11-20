@@ -89,8 +89,7 @@ class TeamControllerIT {
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
-                .andExpect(jsonPath("$[1].id", Is.is(7)))
-                .andExpect(jsonPath("$[1].name", Is.is("OKR")));
+                .andExpect(jsonPath("$[1].id", Is.is(7))).andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
     @Test

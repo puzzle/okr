@@ -86,27 +86,6 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGetActiveObjectivesShouldBeSuccessfulWhenValidTeamId() {
-        validator.validateOnGetActiveObjectives(team1);
-
-        verify(validator, times(1)).validateOnGetActiveObjectives(team1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(team1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(team1.getId());
-        verify(validator, times(1)).doesEntityExist(team1.getId());
-    }
-
-    @Test
-    void validateOnGetActiveObjectivesShouldThrowExceptionWhenIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
-
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
-    }
-
-    @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> validator.validateOnCreate(team1));

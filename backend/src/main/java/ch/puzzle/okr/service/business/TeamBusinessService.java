@@ -53,10 +53,4 @@ public class TeamBusinessService {
     public List<Team> getAllTeams() {
         return teamPersistenceService.findAll();
     }
-
-    public Integer activeObjectivesAmountOfTeam(Team team, Long quarterId) {
-        validator.validateOnGetActiveObjectives(team);
-        Quarter activeQuarter = quarterBusinessService.getQuarterById(quarterId);
-        return objectiveBusinessService.activeObjectivesAmountOfTeam(team, activeQuarter);
-    }
 }

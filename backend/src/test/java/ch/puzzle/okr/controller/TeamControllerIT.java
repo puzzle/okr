@@ -44,25 +44,25 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, PUZZLE, 1, new ArrayList<>());
-    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", 0, new ArrayList<>());
+    static TeamDto teamPuzzleDto = new TeamDto(5L, PUZZLE, new ArrayList<>());
+    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", new ArrayList<>());
 
     private static final String CREATE_NEW_TEAM = """
             {
-               "id": null, "name": "OKR-Team", "organisations": [], "activeObjectives": 0
+               "id": null, "name": "OKR-Team", "organisations": []
             }
             """;
     private static final String CREATE_NEW_TEAM_WITH_NULL_VALUES = """
             {
-               "id": null, "name": null, "organisations": null, "activeObjectives": null
+               "id": null, "name": null, "organisations": null
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"name":"OKR","activeObjectives":0,"organisations":[]}""";
+            {"id":7,"name":"OKR","organisations":[]}""";
 
     private static final String UPDATE_TEAM = """
             {
-                "id": 1, "name": "OKR-Team", "organisations": [], "activeObjectives": 0
+                "id": 1, "name": "OKR-Team", "organisations": []
             }
             """;
 
@@ -89,8 +89,8 @@ class TeamControllerIT {
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].id", Is.is(5))).andExpect(jsonPath("$[0].name", Is.is(PUZZLE)))
-                .andExpect(jsonPath("$[0].activeObjectives", Is.is(1))).andExpect(jsonPath("$[1].id", Is.is(7)))
-                .andExpect(jsonPath("$[1].name", Is.is("OKR"))).andExpect(jsonPath("$[1].activeObjectives", Is.is(0)));
+                .andExpect(jsonPath("$[1].id", Is.is(7)))
+                .andExpect(jsonPath("$[1].name", Is.is("OKR")));
     }
 
     @Test
@@ -131,7 +131,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, "OKR-Team", 0, new ArrayList<>());
+        TeamDto teamDto = new TeamDto(1L, "OKR-Team", new ArrayList<>());
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team")
                 .withAuthorizationOrganisation(new ArrayList<>()).build();
 
@@ -141,8 +141,7 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(teamDto.id().intValue())))
-                .andExpect(jsonPath("$.name", Is.is(teamDto.name())))
-                .andExpect(jsonPath("$.activeObjectives", Is.is(teamDto.activeObjectives())));
+                .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
     }
 
     @Test

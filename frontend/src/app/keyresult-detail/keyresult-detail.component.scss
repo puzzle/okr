@@ -51,6 +51,7 @@
 
 .metric-label-div {
   flex-direction: row;
+  column-gap: 3.33%;
 }
 
 @media screen and (max-width: 1240px) {
@@ -59,7 +60,7 @@
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 550px) {
   .metric-label-div {
     flex-direction: column;
     align-items: center;

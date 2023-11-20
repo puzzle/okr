@@ -83,8 +83,7 @@ body pzsh-backdrop {
 
 .panel {
   max-width: 800px;
-  @extend .col-sm-12;
-  @extend .col-md-6;
+  @extend .col-md-12;
 }
 
 .backdrop {

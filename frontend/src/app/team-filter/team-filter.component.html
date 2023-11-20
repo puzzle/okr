@@ -11,8 +11,8 @@
     (click)="toggleSelection(team.id)"
     [attr.data-testId]="'team-filter-chip'"
   >
-    <mat-chip color="primary" [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0">{{
-      team.name
-    }}</mat-chip>
+    <mat-chip color="primary" [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
+      >{{ team.name }}</mat-chip
+    >
   </button>
 </mat-chip-listbox>

@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 public class AuthorizationRegistrationService {
@@ -41,7 +39,7 @@ public class AuthorizationRegistrationService {
     public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
         List<String> organisationNames = jwtOrganisationConverter.convert(token);
         return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),
-                getFirstLevelTeamIds(), roleMapper.mapOrganisationNames(organisationNames));
+                getFirstLevelTeamIds(), roleMapper.mapOrganisationNames(organisationNames, user));
     }
 
     private List<Long> getTeamIds(List<String> organisationNames) {

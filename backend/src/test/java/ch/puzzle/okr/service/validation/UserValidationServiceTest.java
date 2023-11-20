@@ -25,7 +25,8 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 
@@ -147,6 +148,23 @@ class UserValidationServiceTest {
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());
+    }
+
+    @Test
+    void validateOnGetOrCreateShouldBeSuccessful() {
+        validator.validateOnGetOrCreate(userMinimal);
+
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(userMinimal);
+        verify(validator, times(1)).validate(userMinimal);
+    }
+
+    @Test
+    void validateOnGetOrCreateShouldThrowExceptionWhenModelIsNull() {
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> validator.validateOnGetOrCreate(null));
+
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
+        assertEquals("Given model User is null", exception.getReason());
     }
 
     @Test
@@ -405,32 +423,17 @@ class UserValidationServiceTest {
     }
 
     @Test
-    void validateAuthorisationTokenShouldNotThrowError() {
-        assertDoesNotThrow(() -> validator.validateAuthorisationToken(mockJwt));
-
-        verify(validator).validateAuthorisationToken(mockJwt);
-    }
-
-    @Test
-    void validateAuthorisationTokenShouldThrowErrorWhenNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateAuthorisationToken(null));
-
-        assertEquals("Received token is null", exception.getReason());
-    }
-
-    @Test
     void validateOnDeleteShouldBeSuccessfulWhenValidObjectiveId() {
-        validator.validateOnGet(1L);
+        validator.validateOnDelete(1L);
 
-        verify(validator, times(1)).validateOnGet(1L);
+        verify(validator, times(1)).validateOnDelete(1L);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
     }
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> validator.validateOnGet(null));
+                () -> validator.validateOnDelete(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         assertEquals("Id is null", exception.getReason());

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,9 +21,7 @@ import static ch.puzzle.okr.TestHelper.defaultUser;
 import static ch.puzzle.okr.TestHelper.mockJwtToken;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.test.util.ReflectionTestUtils.setField;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringIntegrationTest
 class AuthorizationRegistrationServiceIT {
@@ -92,11 +89,17 @@ class AuthorizationRegistrationServiceIT {
         assertRoles(List.of(READ_TEAM_DRAFT, READ_ALL_PUBLISHED, WRITE_TEAM), authorizationUser);
     }
 
-    private static void assertRoles(List<AuthorizationRole> roles, AuthorizationUser authorizationUser) {
-        assertThat(roles).hasSameElementsAs(authorizationUser.roles());
+    @Test
+    void registerAuthorizationUserShouldSetChampions() {
+        User user = User.Builder.builder().withFirstname("firstname").withLastname("lastname").withUsername("peggimann")
+                .withEmail("mail@puzzle.ch").build();
+        Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
+        AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
+
+        assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL), authorizationUser);
     }
 
-    private void setFirstLevelOrganisation(String firstLevelOrganisation) {
-        setField(authorizationRegistrationService, "firstLevelOrganisationName", firstLevelOrganisation);
+    private static void assertRoles(List<AuthorizationRole> roles, AuthorizationUser authorizationUser) {
+        assertThat(roles).hasSameElementsAs(authorizationUser.roles());
     }
 }

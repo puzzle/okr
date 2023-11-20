@@ -53,4 +53,15 @@ export class QuarterFilterComponent implements OnInit {
       .navigate([], { queryParams: { quarter: id } })
       .then(() => this.refreshDataService.quarterFilterReady.next());
   }
+
+
+  getQuarterOptionLabel(quarter: any, index: number): string {
+    if (index == 0) {
+      return quarter.label + ' (Aktuelles)'
+    } else if(index == 1) {
+      return quarter.label + ' (Nächstes)'
+    } else {
+      return quarter.label;
+    }
+  }
 }

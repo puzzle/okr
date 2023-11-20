@@ -5,6 +5,8 @@
     ngDefaultControl
     [attr.data-testId]="'quarterFilter'"
   >
-    <mat-option *ngFor="let quarter of quarters | async" [value]="quarter.id">{{ quarter.label }}</mat-option>
+    <mat-option *ngFor="let quarter of quarters | async let i = index" [value]="quarter.id">
+      {{ getQuarterOptionLabel(quarter, i) }}
+    </mat-option>
   </mat-select>
 </mat-form-field>

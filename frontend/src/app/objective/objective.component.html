@@ -6,15 +6,8 @@
   [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
 >
-  <span class="col">
-    <img
-      class="d-flex"
-      src="assets/icons/objective-indicator.svg"
-      alt="An indicator that indicates, that this is an objective"
-    />
-  </span>
   <div class="row mx-1">
-    <section class="d-flex mb-3">
+    <section class="d-flex mb-3 mt-3">
       <img
         alt="The objectives state"
         (click)="$event.stopPropagation()"

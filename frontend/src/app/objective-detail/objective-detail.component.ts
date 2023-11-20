@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objective-detail',
@@ -21,6 +22,7 @@ export class ObjectiveDetailComponent {
     private objectiveService: ObjectiveService,
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,11 @@ export class ObjectiveDetailComponent {
       })
       .afterClosed()
       .subscribe((result) => {
-        this.loadObjective(this.objective$.value.id);
+        if (result.delete) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadObjective(this.objective$.value.id);
+        }
         this.refreshDataService.markDataRefresh();
       });
   }

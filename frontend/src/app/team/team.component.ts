@@ -5,7 +5,7 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
-import { trackByFn } from '../shared/common';
+import { isMobileDevice, trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
@@ -38,6 +38,18 @@ export class TeamComponent {
   }
 
   createObjective() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     const matDialogRef = this.dialog.open(ObjectiveFormComponent, {
       data: {
         objective: {
@@ -45,7 +57,10 @@ export class TeamComponent {
           teamVersion: this.overviewEntity.value.team.version,
         },
       },
-      width: '45em',
+      height: dialogConfig.height,
+      width: dialogConfig.width,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     matDialogRef.afterClosed().subscribe((result) => {
       if (result?.addKeyResult) {
@@ -56,10 +71,24 @@ export class TeamComponent {
   }
 
   openAddKeyResultDialog(objective: Objective) {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     this.dialog
       .open(KeyresultDialogComponent, {
-        width: '45em',
-        height: 'auto',
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: objective,
           keyResult: null,

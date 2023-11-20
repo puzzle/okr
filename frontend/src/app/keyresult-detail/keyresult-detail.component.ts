@@ -12,7 +12,7 @@ import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
 import { DATE_FORMAT } from '../shared/constantLibary';
-import { isInValid } from '../shared/common';
+import { isInValid, isMobileDevice } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
@@ -76,10 +76,24 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     this.dialog
       .open(KeyresultDialogComponent, {
-        width: '45em',
-        height: 'auto',
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: keyResult.objective,
           keyResult: keyResult,

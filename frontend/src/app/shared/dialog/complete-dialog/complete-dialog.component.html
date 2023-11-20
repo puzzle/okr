@@ -1,56 +1,62 @@
-<form class="dialog-padding" [formGroup]="completeForm">
+<section mat-dialog-title>
   <app-dialog-header [dialogTitle]="'Objective abschliessen'"></app-dialog-header>
+</section>
 
-  <div class="input-style gap-2 col-12">
-    <label class="text-black">Bewertung</label>
-    <div class="d-flex gap-3">
-      <div
-        class="successful w-50 valuation-card card-hover"
-        [ngClass]="{
-          active: completeForm.value.isSuccessful == true,
-          'non-active': completeForm.value.isSuccessful === false
-        }"
-        (click)="switchSuccessState('successful')"
-        (keydown.enter)="switchSuccessState('successful')"
-        [attr.data-testId]="'successful'"
-        tabindex="0"
-      >
-        Objective erfolgreich
-      </div>
-      <div
-        class="not-successful w-50 valuation-card card-hover"
-        [ngClass]="{
-          active: completeForm.value.isSuccessful === false,
-          'non-active': completeForm.value.isSuccessful == true
-        }"
-        (click)="switchSuccessState('notSuccessful')"
-        (keydown.enter)="switchSuccessState('notSuccessful')"
-        [attr.data-testId]="'not-successful'"
-        tabindex="0"
-      >
-        Objective nicht erfolgreich
+<mat-dialog-content>
+  <form [formGroup]="completeForm">
+    <div class="input-style gap-2 col-12">
+      <label class="text-black">Bewertung</label>
+      <div class="d-flex gap-3">
+        <div
+          class="successful w-50 valuation-card card-hover"
+          [ngClass]="{
+            active: completeForm.value.isSuccessful == true,
+            'non-active': completeForm.value.isSuccessful === false
+          }"
+          (click)="switchSuccessState('successful')"
+          (keydown.enter)="switchSuccessState('successful')"
+          [attr.data-testId]="'successful'"
+          tabindex="0"
+        >
+          Objective erfolgreich
+        </div>
+        <div
+          class="not-successful w-50 valuation-card card-hover"
+          [ngClass]="{
+            active: completeForm.value.isSuccessful === false,
+            'non-active': completeForm.value.isSuccessful == true
+          }"
+          (click)="switchSuccessState('notSuccessful')"
+          (keydown.enter)="switchSuccessState('notSuccessful')"
+          [attr.data-testId]="'not-successful'"
+          tabindex="0"
+        >
+          Objective nicht erfolgreich
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="input-style gap-2 col-12">
-    <label for="comment" class="text-black">Kommentar (optional)</label>
-    <textarea
-      class="big-dialog-form-field"
-      formControlName="comment"
-      [attr.data-testId]="'completeComment'"
-      [ngClass]="formInputCheck(completeForm, 'comment')"
-      id="comment"
-    ></textarea>
-    <span *ngIf="isTouchedOrDirty('comment')">
-      <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('comment')">
-        <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-      </mat-error>
-    </span>
-  </div>
+    <div class="input-style gap-2 col-12">
+      <label for="comment" class="text-black">Kommentar (optional)</label>
+      <textarea
+        class="big-dialog-form-field"
+        formControlName="comment"
+        [attr.data-testId]="'completeComment'"
+        [ngClass]="formInputCheck(completeForm, 'comment')"
+        id="comment"
+      ></textarea>
+      <span *ngIf="isTouchedOrDirty('comment')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('comment')">
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+        </mat-error>
+      </span>
+    </div>
+  </form>
+</mat-dialog-content>
 
-  <div class="d-flex justify-content-between p-0" mat-dialog-actions>
-    <div class="d-flex gap-2 p-0">
+<mat-dialog-actions>
+  <div class="mt-3">
+    <div class="d-flex justify-content-between">
       <button
         [attr.data-testId]="'submit'"
         type="submit"
@@ -64,4 +70,4 @@
       <button color="primary" mat-button mat-dialog-close>Abbrechen</button>
     </div>
   </div>
-</form>
+</mat-dialog-actions>

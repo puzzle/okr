@@ -12,7 +12,7 @@ import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-
 import { CompleteDialogComponent } from '../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../shared/types/model/Completed';
 import { Objective } from '../shared/types/model/Objective';
-import { trackByFn } from '../shared/common';
+import { isMobileDevice, trackByFn } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
@@ -117,14 +117,31 @@ export class ObjectiveComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
-      let dialogWidth = menuEntry.action == 'release' ? 'auto' : '45em';
+      const dialogConfig = isMobileDevice()
+        ? {
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            height: '100vh',
+            width: '100vw',
+          }
+        : {
+            width: '45em',
+            height: 'auto',
+          };
+
+      if (menuEntry.action == 'release') {
+        dialogConfig.width = 'auto';
+      }
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
         data: {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
           objective: menuEntry.dialog.data,
         },
-        width: dialogWidth,
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
       });
       matDialogRef.afterClosed().subscribe((result) => {
         if (result) {
@@ -198,9 +215,7 @@ export class ObjectiveComponent implements OnInit {
   }
 
   openAddKeyResultDialog() {
-    const isMobile = window.navigator.userAgent.toLowerCase().includes('mobile');
-
-    const dialogConfig = isMobile
+    const dialogConfig = isMobileDevice()
       ? {
           maxWidth: '100vw',
           maxHeight: '100vh',

@@ -1,6 +1,6 @@
 <form [formGroup]="dialogForm">
-  <span class="text-black">Erreichten Bereich wählen</span>
-  <mat-radio-group formControlName="value" class="d-flex flex-column gap-2 mt-2">
+  <span class="text-black">Erreichten Bereich wählen:</span>
+  <mat-radio-group formControlName="value" class="d-flex flex-column gap-2">
     <mat-radio-button [attr.data-testId]="'fail-radio'" value="{{ Zone.FAIL }}" class="ordinal-zone">
       <div class="radio-text-container d-flex align-items-center p-3 text-black">
         Zone (Commit / Target / Stretch) noch nicht erreicht

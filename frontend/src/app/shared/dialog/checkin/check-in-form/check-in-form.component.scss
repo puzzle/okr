@@ -1,4 +1,4 @@
-@import "../style/variables";
+@import "variables";
 
 .action-list-item {
   background-color: $show-element;
@@ -6,4 +6,8 @@
   padding: 10px;
   margin: auto;
   color: black;
+}
+
+.confidence-label {
+  margin-bottom: -7px;
 }

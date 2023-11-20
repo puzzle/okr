@@ -119,16 +119,6 @@ input[type="text"] {
   @extend .ps-1;
 }
 
-//.big-dialog-form-field {
-//  height: 4.375rem !important;
-//  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
-//}
-//
-//.dialog-form-field {
-//  resize: none;
-//  outline: none;
-//}
-
 .dialog-form-field-error {
   resize: none;
   outline: $error-color 2px solid !important;

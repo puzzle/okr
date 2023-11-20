@@ -6,9 +6,8 @@
         ({{ keyResult.unit | unitLabelTransformation }})</span
       >:
     </mat-label>
-    <div class="d-flex flex-column pt-1">
+    <div class="d-flex flex-column">
       <app-custom-input
-        class="custom-input"
         [formGroup]="dialogForm"
         [formControlNameGiven]="'value'"
         (focusout)="formatValue()"

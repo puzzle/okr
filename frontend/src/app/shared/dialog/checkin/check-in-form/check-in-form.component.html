@@ -22,7 +22,7 @@
       <textarea
         [attr.data-testId]="'changeInfo'"
         [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
-        class="w-100 big-dialog-form-field"
+        class="w-100"
         formControlName="changeInfo"
       ></textarea>
       <div *ngIf="isTouchedOrDirty('changeInfo')">
@@ -61,7 +61,7 @@
     </section>
 
     <section class="d-flex flex-column justify-content-start">
-      <mat-label class="text-black"
+      <mat-label class="text-black confidence-label"
         >Confidence um Target
         <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
           ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})

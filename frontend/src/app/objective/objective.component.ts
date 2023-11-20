@@ -198,10 +198,26 @@ export class ObjectiveComponent implements OnInit {
   }
 
   openAddKeyResultDialog() {
+    const isMobile = window.navigator.userAgent.toLowerCase().includes('mobile');
+
+    const dialogConfig = isMobile
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     this.matDialog
       .open(KeyresultDialogComponent, {
-        width: '45em',
-        height: 'auto',
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: this.objective$.value,
           keyResult: null,

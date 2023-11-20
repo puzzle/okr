@@ -8,8 +8,6 @@ import { Objective } from '../shared/types/model/Objective';
 import { trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
-import { OrganisationService } from '../shared/services/organisation.service';
-import { OrganisationState } from '../shared/types/enums/OrganisationState';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({

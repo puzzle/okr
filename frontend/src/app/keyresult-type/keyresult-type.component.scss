@@ -57,3 +57,23 @@
   border: solid 1px #909090;
   cursor: pointer;
 }
+
+@media only screen and (min-width: 820px) {
+  .input-alignments {
+    display: flex;
+  }
+
+  .input-style {
+    margin-bottom: 0;
+  }
+}
+
+@media only screen and (max-width: 820px) {
+  .metric-fields {
+    width: 100%;
+  }
+
+  .ordinal-input-fields {
+    width: 100%;
+  }
+}

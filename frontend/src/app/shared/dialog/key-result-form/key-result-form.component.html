@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center p-2">
   <form [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
-    <div class="d-flex flex-column gap-2 col-12 mb-3">
+    <div class="input-style gap-2 col-12">
       <label class="text-black" for="title">Titel</label>
       <textarea
         [attr.data-testId]="'titleInput'"
@@ -25,7 +25,7 @@
       ></app-keyresult-type>
     </div>
 
-    <div class="d-flex flex-column gap-2 col-12 mb-3">
+    <div class="input-style gap-2 col-12">
       <label class="text-black" for="owner">Owner</label>
       <input
         (keydown.enter)="$event.preventDefault()"
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="d-flex flex-column gap-2 col-12 mb-3">
+    <div class="input-style gap-2 col-12">
       <label for="description" class="text-black">Beschreibung (optional)</label>
       <textarea
         [attr.data-testId]="'descriptionInput'"

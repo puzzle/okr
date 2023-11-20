@@ -54,6 +54,10 @@ mat-dialog-actions {
   padding: 1rem 0 1rem 0;
 }
 
+mat-dialog-content {
+  max-height: 80vh !important;
+}
+
 mat-dialog-content,
 mat-dialog-actions {
   padding: 0 1.62rem 0 1.62rem !important;

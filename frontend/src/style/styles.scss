@@ -212,3 +212,9 @@ input[type="text"] {
 mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   width: 220px;
 }
+
+.input-style {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}

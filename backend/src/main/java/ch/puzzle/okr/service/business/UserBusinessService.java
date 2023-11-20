@@ -28,7 +28,7 @@ public class UserBusinessService {
     }
 
     public User getOrCreateUser(User user) {
-        validationService.validateOnCreate(user);
+        validationService.validateOnGetOrCreate(user);
         return userPersistenceService.getOrCreateUser(user);
     }
 }

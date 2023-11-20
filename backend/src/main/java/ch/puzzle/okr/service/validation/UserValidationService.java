@@ -3,10 +3,7 @@ package ch.puzzle.okr.service.validation;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserValidationService extends ValidationBase<User, Long, UserRepository, UserPersistenceService> {
@@ -22,18 +19,16 @@ public class UserValidationService extends ValidationBase<User, Long, UserReposi
         validate(model);
     }
 
+    public void validateOnGetOrCreate(User model) {
+        throwExceptionWhenModelIsNull(model);
+        validate(model);
+    }
+
     @Override
     public void validateOnUpdate(Long id, User model) {
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNull(model.getId());
         throwExceptionWhenIdHasChanged(id, model.getId());
-
         validate(model);
-    }
-
-    public void validateAuthorisationToken(Jwt token) {
-        if (token == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Received token is null");
-        }
     }
 }

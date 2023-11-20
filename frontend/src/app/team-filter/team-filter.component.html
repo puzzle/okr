@@ -1,7 +1,7 @@
 <mat-chip-listbox class="d-flex gap-2">
   <button class="icon-button team-button" (click)="selectAll()">
     <mat-chip color="primary" [highlighted]="activeTeams.length == 0" [attr.data-testId]="'team-filter-alle'"
-      >Alle ({{ getAllObjectivesCount((this.teams$ | async)!) }})</mat-chip
+      >Alle</mat-chip
     >
   </button>
 
@@ -12,7 +12,7 @@
     [attr.data-testId]="'team-filter-chip'"
   >
     <mat-chip color="primary" [highlighted]="activeTeams.includes(team.id) || activeTeams.length == 0"
-      >{{ team.name }} ({{ team.activeObjectives }})</mat-chip
+      >{{ team.name }}</mat-chip
     >
   </button>
 </mat-chip-listbox>

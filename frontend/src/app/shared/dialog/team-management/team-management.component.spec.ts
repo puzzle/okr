@@ -127,7 +127,7 @@ describe('TeamManagementComponent', () => {
     fixture.detectChanges();
     component.saveTeam();
     expect(teamServiceMock.createTeam).toHaveBeenCalled();
-    expect(teamServiceMock.createTeam).toHaveBeenCalledWith({ ...teamFormObject, activeObjectives: 0 } as Team);
+    expect(teamServiceMock.createTeam).toHaveBeenCalledWith(teamFormObject as Team);
   });
 
   it('should call service method to update team if data input is not null', async () => {

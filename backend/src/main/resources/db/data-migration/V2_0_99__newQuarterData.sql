@@ -176,35 +176,8 @@ values (21, 1,
 insert into quarter (id, label, start_date, end_date)
 values (8, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');
 
-insert into organisation (id, version, org_name, state)
-values (1, 1, 'org_bl', 'ACTIVE'),
-       (2, 1, 'org_de', 'ACTIVE'),
-       (3, 1, 'org_gl', 'ACTIVE'),
-       (4, 1, 'org_pl', 'ACTIVE'),
-       (5, 1, 'org_pv', 'ACTIVE'),
-       (6, 1, 'org_ux', 'ACTIVE'),
-       (7, 1, 'org_zh', 'ACTIVE'),
-       (8, 1, 'org_sys', 'ACTIVE'),
-       (9, 1, 'org_azubi', 'ACTIVE'),
-       (10, 1, 'org_de_gl', 'ACTIVE'),
-       (11, 1, 'org_de_gs', 'ACTIVE'),
-       (12, 1, 'org_devtre', 'ACTIVE'),
-       (13, 1, 'org_racoon', 'ACTIVE'),
-       (14, 1, 'org_tqm_qm', 'ACTIVE'),
-       (15, 1, 'org_devruby', 'ACTIVE'),
-       (16, 1, 'org_midcicd', 'ACTIVE'),
-       (17, 1, 'org_verkauf', 'ACTIVE'),
-       (18, 1, 'org_finanzen', 'ACTIVE'),
-       (19, 1, 'org_mobility', 'ACTIVE'),
-       (20, 1, 'org_personal', 'ACTIVE'),
-       (21, 1, 'org_security', 'ACTIVE'),
-       (22, 1, 'org_marketing', 'ACTIVE'),
-       (23, 1, 'org_openshift', 'ACTIVE'),
-       (24, 1, 'org_ausbildung', 'ACTIVE'),
-       (25, 1, 'org_backoffice', 'ACTIVE'),
-       (26, 1, 'org_branch_sec', 'ACTIVE'),
-       (27, 1, 'org_standort_zh', 'ACTIVE'),
-       (28, 1, 'org_midcontainer', 'ACTIVE');
+delete
+from team_organisation;
 
 insert into team_organisation (team_id, organisation_id)
 values (5, 3),

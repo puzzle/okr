@@ -1,9 +1,8 @@
-<div
-  class="d-flex align-items-center justify-content-start bg-inherit w-100"
-  id="confidence"
-  *ngIf="checkIn.confidence"
->
-  <div class="bg-inherit" [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'">
+<div class="d-flex align-items-center justify-content-center bg-inherit" id="confidence" *ngIf="checkIn.confidence">
+  <div
+    class="bg-inherit height d-flex align-items-center justify-content-center"
+    [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'"
+  >
     <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" class="text-black" data-testid="confidence">
       {{ checkIn.confidence }}/{{ max }}
     </p>

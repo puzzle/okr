@@ -31,12 +31,6 @@ public class QuarterBusinessService {
     }
 
     public List<Quarter> getQuarters() {
-//        List<Quarter> quarterList = quarterPersistenceService.getMostCurrentQuarters();
-//        Quarter buffer = quarterList.get(0);
-//        quarterList.set(0, quarterList.get(1));
-//        quarterList.set(1, buffer);
-//        quarterList.forEach(quarter -> validator.validateOnGet(quarter.getId()));
-//        return quarterList;
         return quarterPersistenceService.getMostCurrentQuarters();
     }
 

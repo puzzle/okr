@@ -32,7 +32,7 @@ export class QuarterFilterComponent implements OnInit {
         this.quarterId = quarterId;
         this.changeDisplayedQuarter();
       } else {
-        this.quarterId = quarters[0].id;
+        this.quarterId = quarters[1].id;
         if (quarterQuery !== undefined) {
           this.changeDisplayedQuarter();
         } else {
@@ -56,10 +56,6 @@ export class QuarterFilterComponent implements OnInit {
 
 
   getQuarterLabel(quarter: any, index: number): string {
-    if (index == 1) {
-      return quarter.label + ' Aktuell'
-    } else {
-      return quarter.label;
-    }
+    return index == 1 ? quarter.label + ' Aktuell' : quarter.label;
   }
 }

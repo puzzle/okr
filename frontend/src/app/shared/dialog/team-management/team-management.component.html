@@ -1,5 +1,8 @@
-<div mat-dialog-content class="dialog-padding">
+<section mat-dialog-title>
   <app-dialog-header [dialogTitle]="'Teamverwaltung'"></app-dialog-header>
+</section>
+
+<mat-dialog-content>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
       <div class="input-style col-12">
@@ -25,8 +28,8 @@
             class="ms-2 text-danger"
             *ngIf="hasInActiveOrganisations"
             [matTooltip]="'This team has inactive organisations'"
-            >error_outline</mat-icon
-          >
+            >error_outline
+          </mat-icon>
         </div>
         <mat-select
           [attr.data-testId]="'organisation-select'"
@@ -80,4 +83,4 @@
       </div>
     </form>
   </div>
-</div>
+</mat-dialog-content>

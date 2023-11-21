@@ -128,11 +128,25 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openCheckInForm() {
+    const dialogConfig = isMobileDevice()
+      ? {
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100vh',
+        width: '100vw',
+      }
+      : {
+        width: '45em',
+        height: 'auto',
+      };
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
       },
-      width: '719px',
+      height: dialogConfig.height,
+      width: dialogConfig.width,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();

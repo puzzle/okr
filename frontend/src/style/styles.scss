@@ -195,3 +195,8 @@ input[type="text"] {
   border-bottom-right-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
+
+mat-form-field.quarter-filter .mat-mdc-text-field-wrapper{
+  width: 220px;
+}
+

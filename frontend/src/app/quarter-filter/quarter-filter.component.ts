@@ -3,7 +3,7 @@ import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import {getQuarterLabel, getValueFromQuery} from '../shared/common';
+import { getQuarterLabel, getValueFromQuery } from '../shared/common';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({

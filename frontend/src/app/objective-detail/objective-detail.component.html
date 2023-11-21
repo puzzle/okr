@@ -7,34 +7,37 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <p class="sub-title-objective fw-bold mb-1">Beschrieb</p>
-      <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
 
-      <div
-        class="d-flex align-items-center flex-row justify-content-start gap-3 mt-4"
-        *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
-      >
-        <button
-          *ngIf="objective.writeable"
-          mat-flat-button
-          (click)="openAddKeyResultDialog()"
-          [attr.data-testId]="'add-keyResult-objective-detail'"
-          mat-button
-          color="primary"
-          disableRipple="true"
-          cdkInitialFocus
+      <div class="me-3">
+        <p class="sub-title-objective fw-bold mb-1">Beschrieb</p>
+        <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
+
+        <div
+          class="d-flex align-items-center flex-row justify-content-start gap-3 mt-4"
+          *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
         >
-          Key Result hinzufügen
-        </button>
-        <button
-          (click)="openEditObjectiveDialog()"
-          *ngIf="objective.writeable"
-          [attr.data-testId]="'edit-objective'"
-          color="primary"
-          mat-button
-        >
-          Objective bearbeiten
-        </button>
+          <button
+            *ngIf="objective.writeable"
+            mat-flat-button
+            (click)="openAddKeyResultDialog()"
+            [attr.data-testId]="'add-keyResult-objective-detail'"
+            mat-button
+            color="primary"
+            disableRipple="true"
+            cdkInitialFocus
+          >
+            Key Result hinzufügen
+          </button>
+          <button
+            (click)="openEditObjectiveDialog()"
+            *ngIf="objective.writeable"
+            [attr.data-testId]="'edit-objective'"
+            color="primary"
+            mat-button
+          >
+            Objective bearbeiten
+          </button>
+        </div>
       </div>
     </div>
   </ng-container>

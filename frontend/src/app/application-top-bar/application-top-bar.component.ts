@@ -7,6 +7,7 @@ import { TeamManagementComponent } from '../shared/dialog/team-management/team-m
 
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { isMobileDevice } from '../shared/common';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -53,10 +54,23 @@ export class ApplicationTopBarComponent implements OnInit {
   }
 
   openTeamManagement() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
     if (!this.dialogRef) {
       this.dialogRef = this.dialog.open(TeamManagementComponent, {
-        width: '45em',
-        height: 'auto',
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
       });
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = undefined;

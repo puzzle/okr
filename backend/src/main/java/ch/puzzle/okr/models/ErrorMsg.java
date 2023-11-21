@@ -18,4 +18,10 @@ public class ErrorMsg {
     public static final String SIZE_BETWEEN = "SIZE_BETWEEN_{min}_{max}";
     public static final String EMPTY_ATTRIBUTE_ON_MODEL = "EMPTY_ATTRIBUTE_ON_MODEL";
     public static final String NULL_ATTRIBUTE_ON_MODEL = "NULL_ATTRIBUTE_ON_MODEL";
+    public static final String FORBIDDEN_SET_ATTRIBUTE = "FORBIDDEN_SET_ATTRIBUTE";
+    public static final String MODIFIED_BY_NOT_SET = "MODIFIED_BY_NOT_SET";
+    public static final String ATTRIBUTE_CANNOT_CHANGE = "ATTRIBUTE_CANNOT_CHANGE";
+    public static final String MODEL_WITH_ID_NOT_FOUND = "MODEL_WITH_ID_NOT_FOUND";
+    public static final String DATA_HAS_BEEN_UPDATED = "DATA_HAS_BEEN_UPDATED";
+
 }

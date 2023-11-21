@@ -76,7 +76,7 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     protected void throwExceptionWhenIdIsNotNull(ID id) {
         if (id != null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NOT_NULL,
                     List.of(persistenceService.getModelName(), id));
             // Model %s cannot have id while create. Found id %s
         }

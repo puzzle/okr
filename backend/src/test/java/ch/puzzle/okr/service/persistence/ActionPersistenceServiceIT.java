@@ -11,8 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class ActionPersistenceServiceIT {
@@ -21,7 +21,12 @@ class ActionPersistenceServiceIT {
     private ActionPersistenceService actionPersistenceService;
 
     private static Action createAction(Long id) {
-        return Action.Builder.builder().withId(id).withAction("Neue Katze").withPriority(0).withIsChecked(false)
+        return createAction(id, 1);
+    }
+
+    private static Action createAction(Long id, int version) {
+        return Action.Builder.builder().withId(id).withVersion(version).withAction("Neue Katze").withPriority(0)
+                .withIsChecked(false)
                 .withKeyResult(KeyResultMetric.Builder.builder().withBaseline(1.0).withStretchGoal(13.0).withId(8L)
                         .withObjective(Objective.Builder.builder().withId(1L).build()).build())
                 .build();
@@ -66,6 +71,18 @@ class ActionPersistenceServiceIT {
         assertEquals(createdAction.getId(), updateAction.getId());
         assertEquals("Updated Action", updateAction.getAction());
         assertEquals(4, updateAction.getPriority());
+    }
+
+    @Test
+    void updateActionShouldThrowExceptionWhenAlreadyUpdated() {
+        createdAction = actionPersistenceService.save(createAction(null));
+        Action changedAction = createAction(createdAction.getId(), 0);
+        changedAction.setAction("Updated Action");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> actionPersistenceService.save(changedAction));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

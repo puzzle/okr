@@ -43,30 +43,35 @@ export const teamFormObject = {
 
 export const teamMin1: TeamMin = {
   id: 1,
+  version: 2,
   name: 'Marketing Team',
   writable: true,
 } as TeamMin;
 
 export const teamMin2: TeamMin = {
   id: 1,
+  version: 3,
   name: 'Marketing Team',
   writable: false,
 } as TeamMin;
 
 export const team1: Team = {
   id: 1,
+  version: 2,
   name: 'Team2',
   activeObjectives: 1,
 } as Team;
 
 export const team2: Team = {
   id: 2,
+  version: 3,
   name: 'Team2',
   activeObjectives: 2,
 } as Team;
 
 export const team3: Team = {
   id: 3,
+  version: 4,
   name: 'Team3',
   activeObjectives: 3,
 } as Team;

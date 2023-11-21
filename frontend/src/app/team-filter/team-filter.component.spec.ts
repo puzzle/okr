@@ -157,7 +157,7 @@ describe('TeamFilterComponent', () => {
     [[], 0],
   ])('getAllObjectivesCount', (activeObjectivePerTeam: number[], sum: number) => {
     const teams = activeObjectivePerTeam.map((e) => {
-      return { id: 1, name: '', activeObjectives: e } as Team;
+      return { id: 1, version: 2, name: '', activeObjectives: e } as Team;
     });
     expect(component.getAllObjectivesCount(teams)).toBe(sum);
   });

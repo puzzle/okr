@@ -5,6 +5,8 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -37,7 +39,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void createEntityShouldReturnTeamWhenAuthorized() {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(teamAuthorizationService.createEntity(newTeam)).thenReturn(newTeam);
+        when(teamBusinessService.createTeam(newTeam)).thenReturn(newTeam);
 
         Team team = teamAuthorizationService.createEntity(newTeam);
         assertEquals(newTeam, team);
@@ -93,12 +95,19 @@ class TeamAuthorizationServiceTest {
         assertEquals(reason, exception.getReason());
     }
 
-    @Test
-    void getEntitiesShouldReturnTeams() {
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void getAllTeamsShouldReturnAllTeams(boolean isWriteable) {
         List<Team> teamList = List.of(newTeam, newTeam);
+        if (isWriteable) {
+            when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        } else {
+            when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
+        }
         when(teamBusinessService.getAllTeams()).thenReturn(teamList);
 
-        List<Team> teams = teamAuthorizationService.getEntities();
+        List<Team> teams = teamAuthorizationService.getAllTeams();
         assertEquals(teamList, teams);
+        teams.forEach(team -> assertEquals(isWriteable, team.isWriteable()));
     }
 }

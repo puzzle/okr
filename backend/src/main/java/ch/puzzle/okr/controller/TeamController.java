@@ -35,7 +35,7 @@ public class TeamController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
     @GetMapping
     public List<TeamDto> getAllTeams(@RequestParam(value = "quarterId", required = false) Long quarterId) {
-        return teamAuthorizationService.getEntities().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
+        return teamAuthorizationService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
     }
 
     @Operation(summary = "Create Team", description = "Create a new Team")

@@ -3,7 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.service.business.UserBusinessService;
+import ch.puzzle.okr.service.authorization.UserAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,12 +43,12 @@ class UserControllerIT {
     static User userBob = User.Builder.builder().withId(9L).withUsername(USERNAME_2).withFirstname(FIRSTNAME_2)
             .withLastname(LASTNAME_2).withEmail(EMAIL_2).build();
     static List<User> userList = Arrays.asList(userAlice, userBob);
-    static UserDto userAliceDto = new UserDto(2L, USERNAME_1, FIRSTNAME_1, LASTNAME_1, EMAIL_1);
-    static UserDto userBobDto = new UserDto(9L, USERNAME_2, FIRSTNAME_2, LASTNAME_2, EMAIL_2);
+    static UserDto userAliceDto = new UserDto(2L, 3, USERNAME_1, FIRSTNAME_1, LASTNAME_1, EMAIL_1, true);
+    static UserDto userBobDto = new UserDto(9L, 4, USERNAME_2, FIRSTNAME_2, LASTNAME_2, EMAIL_2, false);
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private UserBusinessService userBusinessService;
+    private UserAuthorizationService userAuthorizationService;
     @MockBean
     private UserMapper userMapper;
 
@@ -60,7 +60,7 @@ class UserControllerIT {
 
     @Test
     void shouldGetAllUsers() throws Exception {
-        BDDMockito.given(userBusinessService.getAllUsers()).willReturn(userList);
+        BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(userList);
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -76,7 +76,7 @@ class UserControllerIT {
 
     @Test
     void shouldGetAllUsersIfNoUserExists() throws Exception {
-        BDDMockito.given(userBusinessService.getAllUsers()).willReturn(Collections.emptyList());
+        BDDMockito.given(userAuthorizationService.getAllUsers()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v1/users").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));

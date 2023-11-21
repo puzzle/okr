@@ -10,10 +10,13 @@ import java.util.Objects;
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
 @Table(name = "person")
-public class User {
+public class User implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
     private Long id;
+
+    @Version
+    private int version;
 
     @Column(unique = true)
     @NotBlank(message = "Missing attribute username when saving user")
@@ -37,11 +40,14 @@ public class User {
     @Size(min = 2, max = 250, message = "Attribute email must have size between 2 and 250 characters when saving user")
     private String email;
 
+    private transient boolean writeable;
+
     public User() {
     }
 
     private User(Builder builder) {
         id = builder.id;
+        version = builder.version;
         setUsername(builder.username);
         setFirstname(builder.firstname);
         setLastname(builder.lastname);
@@ -50,6 +56,10 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     public String getUsername() {
@@ -85,9 +95,20 @@ public class User {
     }
 
     @Override
+    public boolean isWriteable() {
+        return writeable;
+    }
+
+    @Override
+    public void setWriteable(boolean writeable) {
+        this.writeable = writeable;
+    }
+
+    @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username='" + username + '\'' + ", firstname='" + firstname + '\''
-                + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", username='" + username + '\'' + ", firstname='"
+                + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", writeable="
+                + writeable + '}';
     }
 
     @Override
@@ -97,18 +118,20 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username)
-                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id) && Objects.equals(version, user.version)
+                && Objects.equals(username, user.username) && Objects.equals(firstname, user.firstname)
+                && Objects.equals(lastname, user.lastname) && Objects.equals(email, user.email)
+                && Objects.equals(writeable, user.writeable);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, firstname, lastname, email);
+        return Objects.hash(id, version, username, firstname, lastname, email, writeable);
     }
 
     public static final class Builder {
         private Long id;
+        private int version;
         private String username;
         private String firstname;
         private String lastname;
@@ -123,6 +146,11 @@ public class User {
 
         public Builder withId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withVersion(int version) {
+            this.version = version;
             return this;
         }
 

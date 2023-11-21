@@ -33,7 +33,10 @@ export class TeamManagementComponent implements OnInit {
     private dialog: MatDialog,
     private organisationService: OrganisationService,
     private teamService: TeamService,
-    @Inject(MAT_DIALOG_DATA) public data: { team: TeamMin },
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      team: TeamMin;
+    },
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +63,12 @@ export class TeamManagementComponent implements OnInit {
         this.dialogRef.close(result);
       });
     } else {
-      let updatedTeam: Team = { ...this.teamForm.value, id: this.data.team.id } as Team;
+      let updatedTeam: Team = {
+        ...this.teamForm.value,
+        id: this.data.team.id,
+        version: this.data.team.version,
+      } as Team;
+      console.log('--------------------------- updated team=' || updatedTeam);
       this.teamService.updateTeam(updatedTeam).subscribe((result) => {
         this.dialogRef.close(result);
       });
@@ -117,6 +125,4 @@ export class TeamManagementComponent implements OnInit {
   compareWithFunc(a: Organisation, b: Organisation) {
     return a.orgName === b.orgName;
   }
-
-  protected readonly OrganisationState = OrganisationState;
 }

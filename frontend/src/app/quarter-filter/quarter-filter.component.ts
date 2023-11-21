@@ -54,7 +54,6 @@ export class QuarterFilterComponent implements OnInit {
       .then(() => this.refreshDataService.quarterFilterReady.next());
   }
 
-
   getQuarterLabel(quarter: any, index: number): string {
     return index == 1 ? quarter.label + ' Aktuell' : quarter.label;
   }

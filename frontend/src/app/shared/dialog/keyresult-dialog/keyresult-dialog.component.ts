@@ -10,8 +10,8 @@ import { KeyResultOrdinalDTO } from '../../types/DTOs/KeyResultOrdinalDTO';
 import { CloseState } from '../../types/enums/CloseState';
 import { KeyresultService } from '../../services/keyresult.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { isMobileDevice } from '../../common';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-keyresult-dialog',
@@ -63,13 +63,26 @@ export class KeyresultDialogComponent {
   }
 
   deleteKeyResult() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: CONFIRM_DIALOG_WIDTH,
+          height: 'auto',
+        };
     this.dialog
       .open(ConfirmDialogComponent, {
         data: {
           title: 'Key Result',
         },
-        width: CONFIRM_DIALOG_WIDTH,
-        height: 'auto',
+        width: dialogConfig.width,
+        height: dialogConfig.height,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
       })
       .afterClosed()
       .subscribe((result) => {

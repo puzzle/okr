@@ -1,14 +1,12 @@
 <div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
   <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
     <div *ngIf="keyResult" class="d-flex flex-column">
-      <!--      Title Section-->
       <div class="w-100 d-flex justify-content-between align-items-start mb-3">
         <span class="title pt-2">{{ keyResult.title }}</span>
         <button class="d-flex" mat-icon-button [routerLink]="'/'" [attr.data-testId]="'close-drawer'">
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <!--      &#45;&#45;&#45;&#45;-->
       <div class="me-3">
         <div class="d-flex justify-content-between mb-3">
           <div>

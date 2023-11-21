@@ -1,10 +1,11 @@
 package ch.puzzle.okr.mapper;
 
 import ch.puzzle.okr.dto.overview.*;
+import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,9 +90,9 @@ public class OverviewMapper {
         } else if (Objects.equals(overview.getKeyResultType(), KEY_RESULT_TYPE_ORDINAL)) {
             return createKeyResultOrdinalDto(overview);
         } else {
-            throw new ResponseStatusException(BAD_REQUEST,
-                    String.format("The key result type %s can not be converted to a metric or ordinal DTO",
-                            overview.getKeyResultType()));
+            throw new OkrResponseStatusException(BAD_REQUEST, ErrorMsg.KEYRESULT_CONVERSION,
+                    List.of(overview.getKeyResultType()));
+            // "The key result type %s can not be converted to a metric or ordinal DTO"
         }
     }
 

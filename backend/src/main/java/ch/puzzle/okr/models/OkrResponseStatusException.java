@@ -7,19 +7,19 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 public class OkrResponseStatusException extends ResponseStatusException {
-    @Transient
-    public final List<String> params;
-    public final ErrorMsgKey errorKey;
 
-    public OkrResponseStatusException(HttpStatus status, ErrorMsgKey errorKey, List<String> params) {
-        super(status, errorKey.toString());
-        this.params = params;
-        this.errorKey = errorKey;
+    public final List<ErrorDto> errors;
+
+    public OkrResponseStatusException(HttpStatus status, String errorKey) {
+        this(status, errorKey, List.of());
     }
 
-    public OkrResponseStatusException(HttpStatus status, ErrorMsgKey errorKey) {
-        super(status, errorKey.toString());
-        this.params = List.of();
-        this.errorKey = errorKey;
+    public OkrResponseStatusException(HttpStatus status, String errorKey, List<Object> objectParams) {
+        this(status, List.of(new ErrorDto(errorKey, objectParams)));
+    }
+
+    public OkrResponseStatusException(HttpStatus status, List<ErrorDto> errors) {
+        super(status);
+        this.errors = errors;
     }
 }

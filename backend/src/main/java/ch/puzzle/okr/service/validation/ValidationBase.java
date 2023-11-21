@@ -1,8 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.models.ErrorDto;
+import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.service.persistence.PersistenceBase;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -11,6 +13,9 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @param <T>
@@ -56,28 +61,33 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     public void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Given model %s is null", persistenceService.getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.MODEL_NULL,
+                    List.of(persistenceService.getModelName()));
+            // Given model %s is null
         }
     }
 
     public void throwExceptionWhenIdIsNull(ID id) {
         if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id is null");
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL, List.of("ID"));
+            // Id is null
         }
     }
 
     protected void throwExceptionWhenIdIsNotNull(ID id) {
         if (id != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(
-                    "Model %s cannot have id while create. Found id %s", persistenceService.getModelName(), id));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+                    List.of(persistenceService.getModelName(), id));
+            // Model %s cannot have id while create. Found id %s
         }
     }
 
     protected void throwExceptionWhenIdHasChanged(ID id, ID modelId) {
         if (!Objects.equals(id, modelId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("Id %s has changed to %s during update", id, modelId));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CHANGED,
+                    List.of(id, modelId));
+
+            // Id %s has changed to %s during update
         }
     }
 
@@ -88,8 +98,10 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
-            List<String> reasons = violations.stream().map(ConstraintViolation::getMessage).toList();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.join(". ", reasons) + ".");
+            List<ErrorDto> list = violations.stream().map(
+                    e -> new ErrorDto(e.getMessage(), List.of(persistenceService.getModelName(), e.getPropertyPath())))
+                    .toList();
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, list);
         }
     }
 }

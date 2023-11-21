@@ -1,6 +1,8 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -9,24 +11,22 @@ import ch.puzzle.okr.service.persistence.KeyResultPersistenceService;
 import ch.puzzle.okr.service.validation.KeyResultValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 @Service
 public class KeyResultBusinessService implements BusinessServiceInterface<Long, KeyResult> {
 
+    private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
     private final KeyResultPersistenceService keyResultPersistenceService;
     private final CheckInBusinessService checkInBusinessService;
     private final ActionBusinessService actionBusinessService;
     private final KeyResultValidationService validator;
-    private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     public KeyResultBusinessService(KeyResultPersistenceService keyResultPersistenceService,
             KeyResultValidationService validator, CheckInBusinessService checkInBusinessService,
@@ -53,10 +53,10 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
     }
 
     @Override
-    public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser)
-            throws ResponseStatusException {
-        throw new ResponseStatusException(BAD_REQUEST,
-                "unsupported method in class " + getClass().getSimpleName() + ", use updateEntities() instead");
+    public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser) {
+        throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.UNSUPPORTED_METHOD_IN_CLASS,
+                List.of(getClass().getSimpleName()));
+        // unsupported method in class {} use updateEntities() instead
     }
 
     @Transactional

@@ -13,13 +13,13 @@ public class Team implements WriteableInterface {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
     private Long id;
 
+    @NotBlank(message = ErrorMsg.EMPTY_ATTRIBUTE_ON_MODEL)
+    @NotNull(message = ErrorMsg.NULL_ATTRIBUTE_ON_MODEL)
+    @Size(min = 2, max = 250, message = ErrorMsg.SIZE_BETWEEN)
+    private String name;
+
     @Version
     private int version;
-
-    @NotBlank(message = "Missing attribute name when saving team")
-    @NotNull(message = "Attribute name can not be null when saving team")
-    @Size(min = 2, max = 250, message = "Attribute name must have size between 2 and 250 characters when saving team")
-    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "team_organisation", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "organisation_id"))

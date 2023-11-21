@@ -190,3 +190,8 @@ input[type="text"] {
 .dialog-detail-button {
   margin-left: -8px;
 }
+
+#objective-form-field .mdc-notched-outline__trailing{
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}

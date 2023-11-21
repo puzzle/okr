@@ -20,4 +20,5 @@ $pz-theme: mat.define-light-theme(
 
 .header-form-field {
   @include mat.private-form-field-density(-4);
+  border-radius: 5px;
 }

@@ -17,10 +17,16 @@
     <section class="m-0 d-sm-flex d-md-none w-100">
       <mat-accordion [displayMode]="'flat'" class="w-100">
         <mat-expansion-panel (closed)="panelOpenState = false" (opened)="panelOpenState = true" id="header-accordion">
-          <mat-expansion-panel-header>
-            <mat-panel-title>{{ (quarterLabel$ | async) || quarterLabel$.getValue() }}
+          <mat-expansion-panel-header >
+            <mat-panel-title>
+
+              <span *ngIf="!panelOpenState; else openedPanel">{{ (quarterLabel$ | async) || quarterLabel$.getValue() }}</span>
+              <ng-template #openedPanel>
+               Filter
+              </ng-template>
             </mat-panel-title>
           </mat-expansion-panel-header>
+
           <div class="d-flex gap-2 flex-column">
             <app-quarter-filter (quarterLabel$)="quarterLabel$.next($event)"></app-quarter-filter>
             <app-objective-filter></app-objective-filter>

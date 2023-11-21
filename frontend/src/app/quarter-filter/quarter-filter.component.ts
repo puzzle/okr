@@ -55,7 +55,7 @@ export class QuarterFilterComponent implements OnInit {
   }
 
 
-  getQuarterOptionLabel(quarter: any, index: number): string {
+  getQuarterLabel(quarter: any, index: number): string {
     if (index == 0) {
       return quarter.label + ' (Aktuelles)'
     } else if(index == 1) {

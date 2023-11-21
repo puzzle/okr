@@ -6,7 +6,7 @@
     [attr.data-testId]="'quarterFilter'"
   >
     <mat-option *ngFor="let quarter of quarters | async let i = index" [value]="quarter.id">
-      {{ getQuarterOptionLabel(quarter, i) }}
+      {{ getQuarterLabel(quarter, i) }}
     </mat-option>
   </mat-select>
 </mat-form-field>

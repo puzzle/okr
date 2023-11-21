@@ -45,11 +45,9 @@ export class CheckInFormMetricComponent implements AfterViewInit {
     return errors === null ? [] : Object.keys(errors!);
   }
 
-  calculateTarget(): number {
-    return this.keyResult.stretchGoal - (this.keyResult.stretchGoal - this.keyResult.baseline) * 0.3;
-  }
-
   ngAfterViewInit(): void {
-    this.formatValue();
+    if (this.checkIn.id) {
+      this.formatValue();
+    }
   }
 }

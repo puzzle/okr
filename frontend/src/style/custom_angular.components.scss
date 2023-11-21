@@ -12,6 +12,24 @@
   }
 }
 
+.mdc-dialog__title::before {
+  display: none !important;
+}
+
+.mat-mdc-dialog-surface {
+  padding: 1rem 0 1rem 0;
+}
+
+.ordinal-zone .mdc-form-field,
+.mdc-label {
+  width: 100% !important;
+}
+
+mat-dialog-content,
+mat-dialog-actions {
+  padding: 0 1.62rem 0 1.62rem !important;
+}
+
 .mat-mdc-menu-item.objective-menu-option {
   line-height: normal !important;
   font-size: 1rem;

@@ -173,7 +173,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('5/10');
       cy.getByTestId('check-in-metric-value').clear().type('200');
       cy.getByTestId('confidence-slider').realMouseDown();
-      cy.getByTestId('check-in-next').click();
       cy.contains('Here we are');
       cy.contains('A cat would be great');
       cy.getByTestId('changeInfo').clear().type('We bought a new sheep');
@@ -217,7 +216,6 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('6/10');
       cy.getByTestId('stretch-radio').click();
       cy.getByTestId('confidence-slider').realMouseDown();
-      cy.getByTestId('check-in-next').click();
       cy.contains('There is a new car');
       cy.contains('Buy now a new pool');
       cy.getByTestId('changeInfo').clear().type('We bought a new dog');
@@ -233,17 +231,16 @@ describe('OKR Check-in e2e tests', () => {
 
 function checkForDialogTextMetric() {
   cy.contains('Very important keyresult');
-  cy.contains('Check-in erfassen (1/2)');
+  cy.contains('Check-in erfassen');
   cy.contains('Key Result');
   cy.contains('Aktueller Wert');
   cy.contains('Confidence um Target (42.7%) zu erreichen');
-  cy.contains('Weiter');
   cy.contains('Abbrechen');
 }
 
 function checkForDialogTextOrdinal() {
   cy.contains('A new ordinal keyresult for our company');
-  cy.contains('Check-in erfassen (1/2)');
+  cy.contains('Check-in erfassen');
   cy.contains('Key Result');
   cy.contains('Zone (Commit / Target / Stretch) noch nicht erreicht ');
   cy.contains('Commit:');
@@ -253,7 +250,6 @@ function checkForDialogTextOrdinal() {
   cy.contains('New house');
   cy.contains('New pool');
   cy.contains('Confidence um Target zu erreichen');
-  cy.contains('Weiter');
   cy.contains('Abbrechen');
 }
 

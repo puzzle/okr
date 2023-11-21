@@ -5,10 +5,11 @@ import { CHAR_REGEX } from '../../regexLibrary';
   name: 'parseUnitValue',
 })
 export class ParseUnitValuePipe implements PipeTransform {
-  transform(value: string): number {
+  transform(param: string | null): number {
+    const value: string = param || '0';
     if (value.toString().at(0) == '-') {
       return +('-' + value.toString().replace(CHAR_REGEX, ''));
     }
-    return +value.toString().replace(CHAR_REGEX, '');
+    return Number(value.toString().replace(CHAR_REGEX, ''));
   }
 }

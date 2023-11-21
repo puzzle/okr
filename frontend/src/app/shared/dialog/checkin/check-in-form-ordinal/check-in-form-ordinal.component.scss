@@ -1,4 +1,4 @@
-@import "../style/variables";
+@import "variables";
 
 .submit {
   background-color: $pz-dark-blue;
@@ -17,8 +17,6 @@ mat-label {
   color: black;
 }
 .radio-text-container {
-  background: #f5f5f5;
+  background: $show-element;
   height: auto;
-  width: 625px;
-  border: 1px solid lightgray;
 }

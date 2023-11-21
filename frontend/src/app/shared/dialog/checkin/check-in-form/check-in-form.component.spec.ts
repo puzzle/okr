@@ -135,7 +135,7 @@ describe('CheckInFormComponent', () => {
     component.setDefaultValues();
     expect(component.dialogForm.value).toStrictEqual({
       confidence: keyResultOrdinal.lastCheckIn!.confidence,
-      value: keyResultOrdinal.lastCheckIn!.value,
+      value: '',
       changeInfo: '',
       initiatives: '',
       actionList: [],
@@ -148,7 +148,7 @@ describe('CheckInFormComponent', () => {
     component.setDefaultValues();
     expect(component.dialogForm.value).toStrictEqual({
       confidence: keyResultActions.lastCheckIn!.confidence,
-      value: keyResultActions.lastCheckIn!.value.toString(),
+      value: '',
       changeInfo: '',
       initiatives: '',
       actionList: [action1, action2],

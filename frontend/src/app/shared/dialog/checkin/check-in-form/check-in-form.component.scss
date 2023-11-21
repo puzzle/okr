@@ -1,19 +1,21 @@
-@import "../style/variables";
+@import "variables";
 
-.submit {
-  background-color: $pz-dark-blue;
-  border-radius: 8px;
+.action-list-item {
+  background-color: $show-element;
+  height: 40px;
+  padding: 10px;
+  margin: auto;
+  color: black;
 }
 
-.cancel {
-  background-color: white;
-  color: $pz-dark-blue;
+.confidence-label {
+  margin-bottom: -7px;
 }
 
-.disabled {
-  background-color: gray;
+section[mat-dialog-title] {
+  margin-bottom: 0.1rem;
 }
 
-.buttons {
-  margin-top: 30px;
+app-check-in-form-ordinal {
+  padding-top: 0.1rem;
 }

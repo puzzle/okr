@@ -116,7 +116,7 @@ class UserBusinessServiceTest {
         User newUser = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         Mockito.doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not allowed to give an id"))
-                .when(validationService).validateOnCreate(newUser);
+                .when(validationService).validateOnGetOrCreate(newUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             userBusinessService.getOrCreateUser(newUser);

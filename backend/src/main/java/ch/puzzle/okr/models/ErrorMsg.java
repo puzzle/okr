@@ -5,7 +5,6 @@ public class ErrorMsg {
     }
 
     public static final String UNAUTHORIZED = "UNAUTHORIZED";
-
     public static final String NOT_FOUND = "NOT_FOUND";
     public static final String KEYRESULT_CONVERSION = "KEYRESULT_CONVERSION";
     public static final String ALREADY_EXISTS_SAME_NAME = "ALREADY_EXISTS_SAME_NAME";

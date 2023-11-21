@@ -4,6 +4,7 @@ import { catchError, filter, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { drawerRoutes } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -11,6 +12,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private toasterService: ToasterService,
+    private translate: TranslateService,
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -26,6 +28,9 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   handleErrorToaster(response: any) {
     if (!this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+      const errors = response.error.errors;
+      console.log(this.translate.instant('TRANSLATIONS.' + errors[0].errorKey));
+      console.log(errors[0].errorKey);
       this.toasterService.showError(response.error.message);
     }
   }

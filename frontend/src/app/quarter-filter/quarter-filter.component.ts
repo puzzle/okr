@@ -3,7 +3,7 @@ import { QuarterService } from '../shared/services/quarter.service';
 import { Quarter } from '../shared/types/model/Quarter';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getValueFromQuery } from '../shared/common';
+import {getQuarterLabel, getValueFromQuery} from '../shared/common';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 
 @Component({
@@ -54,7 +54,5 @@ export class QuarterFilterComponent implements OnInit {
       .then(() => this.refreshDataService.quarterFilterReady.next());
   }
 
-  getQuarterLabel(quarter: any, index: number): string {
-    return index == 1 ? quarter.label + ' Aktuell' : quarter.label;
-  }
+  protected readonly getQuarterLabel = getQuarterLabel;
 }

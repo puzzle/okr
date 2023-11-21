@@ -86,3 +86,8 @@ export function formInputCheck(form: FormGroup, propertyName: string) {
     return 'dialog-form-field';
   }
 }
+
+
+export function getQuarterLabel(quarter: any, index: number): string {
+  return index == 1 ? quarter.label + ' Aktuell' : quarter.label;
+}

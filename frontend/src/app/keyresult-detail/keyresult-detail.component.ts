@@ -62,13 +62,26 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkInHistory() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
         isComplete: this.isComplete,
       },
-      maxHeight: '492px',
-      width: '721px',
+      width: dialogConfig.width,
+      height: dialogConfig.height,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.refreshDataService.markDataRefresh();
@@ -84,7 +97,7 @@ export class KeyresultDetailComponent implements OnInit {
           width: '100vw',
         }
       : {
-          width: '45em',
+          width: '420px',
           height: 'auto',
         };
 

@@ -12,10 +12,10 @@
           class="d-flex flex-column dialog-form-fields p-2 check-in-box border border-1"
         >
           <div class="d-flex flex-row">
-            <span class="w-25 d-flex align-items-center me-1 fw-bold mt-2 mb-2">{{
+            <span class="w-50 d-flex align-items-center me-1 fw-bold mt-2 mb-2">{{
               checkIn.createdOn | date: DATE_FORMAT
             }}</span>
-            <div class="w-75 d-flex justify-content-end align-items-center">
+            <div class="w-50 d-flex justify-content-end align-items-center">
               <button
                 class="d-flex align-items-center justify-content-center edit-check-in-button"
                 mat-icon-button
@@ -35,7 +35,7 @@
               >
               <span *ngIf="keyResult.keyResultType === 'ordinal'"><i>Wert: </i>{{ checkIn.value }}</span>
             </div>
-            <div class="w-25 d-flex justify-content-start">
+            <div class="w-50 d-flex justify-content-start">
               <span><i>Confidence: </i>{{ checkIn.confidence }} / 10</span>
             </div>
           </div>

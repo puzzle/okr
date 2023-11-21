@@ -35,3 +35,9 @@
 .close-button {
   margin-top: 32px;
 }
+
+@media only screen and (max-width: 690px) {
+  .label-width {
+    width: 60%;
+  }
+}

@@ -9,10 +9,6 @@ p {
   font-size: 0.75rem;
 }
 
-.height {
-  height: 21px;
-}
-
 #confidence {
   width: min-content;
 }
@@ -38,4 +34,8 @@ mat-slider {
   --mat-mdc-slider-ripple-color: black;
   --mat-mdc-slider-hover-ripple-color: rgba(33, 33, 33, 0.05);
   --mat-mdc-slider-focus-ripple-color: rgba(33, 33, 33, 0.2);
+}
+
+.height {
+  height: 21px;
 }

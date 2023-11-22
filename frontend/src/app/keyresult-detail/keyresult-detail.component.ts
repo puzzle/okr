@@ -97,7 +97,7 @@ export class KeyresultDetailComponent implements OnInit {
           width: '100vw',
         }
       : {
-          width: '420px',
+          width: '45em',
           height: 'auto',
         };
 

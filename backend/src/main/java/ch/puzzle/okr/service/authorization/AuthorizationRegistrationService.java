@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.converter.JwtOrganisationConverter;
+import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.mapper.RoleMapper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -23,21 +23,21 @@ public class AuthorizationRegistrationService {
 
     private final UserBusinessService userBusinessService;
     private final TeamPersistenceService teamPersistenceService;
-    private final JwtOrganisationConverter jwtOrganisationConverter;
+    private final JwtConverterFactory jwtConverterFactory;
     private final RoleMapper roleMapper;
 
     public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TeamPersistenceService teamPersistenceService, JwtOrganisationConverter jwtOrganisationConverter,
+            TeamPersistenceService teamPersistenceService, JwtConverterFactory jwtConverterFactory,
             RoleMapper roleMapper) {
         this.userBusinessService = userBusinessService;
         this.teamPersistenceService = teamPersistenceService;
-        this.jwtOrganisationConverter = jwtOrganisationConverter;
+        this.jwtConverterFactory = jwtConverterFactory;
         this.roleMapper = roleMapper;
     }
 
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.username")
     public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
-        List<String> organisationNames = jwtOrganisationConverter.convert(token);
+        List<String> organisationNames = jwtConverterFactory.getJwtOrganisationConverter().convert(token);
         return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),
                 getFirstLevelTeamIds(), roleMapper.mapOrganisationNames(organisationNames, user));
     }

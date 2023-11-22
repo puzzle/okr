@@ -37,7 +37,7 @@ public class JwtUserConverter implements Converter<Jwt, User> {
                     .withFirstname(claims.get(firstname).toString()).withLastname(claims.get(lastname).toString())
                     .withEmail(claims.get(email).toString()).build();
         } catch (Exception e) {
-            logger.error("can not convert user from claims {}", claims);
+            logger.warn("can not convert user from claims {}", claims);
             throw new ResponseStatusException(BAD_REQUEST, "can not convert user from token");
         }
     }

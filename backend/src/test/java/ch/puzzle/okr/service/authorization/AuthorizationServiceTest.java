@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.converter.JwtUserConverter;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
@@ -42,6 +43,8 @@ class AuthorizationServiceTest {
     AuthorizationRegistrationService authorizationRegistrationService;
     @Mock
     ObjectivePersistenceService objectivePersistenceService;
+    @Mock
+    JwtConverterFactory jwtConverterFactory;
     @Mock
     JwtUserConverter jwtUserConverter;
 
@@ -138,6 +141,7 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         setSecurityContext(token);
 
+        when(jwtConverterFactory.getJwtUserConverter()).thenReturn(jwtUserConverter);
         when(jwtUserConverter.convert(token)).thenReturn(user);
         when(authorizationRegistrationService.registerAuthorizationUser(user, token)).thenReturn(authorizationUser);
 

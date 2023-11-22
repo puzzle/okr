@@ -72,8 +72,8 @@ describe('QuarterFilterComponent', () => {
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[0].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[0].label);
+    expect(component.quarterId).toBe(quarters[1].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[1].label + ' Aktuell');
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
   });
 
@@ -106,9 +106,9 @@ describe('QuarterFilterComponent', () => {
     routerHarness.detectChanges();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[0].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[0].label);
+    expect(component.quarterId).toBe(quarters[1].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[1].label + ' Aktuell');
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
-    expect(router.url).toBe('/?quarter=' + quarters[0].id);
+    expect(router.url).toBe('/?quarter=' + quarters[1].id);
   });
 });

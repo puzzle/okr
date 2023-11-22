@@ -6,15 +6,8 @@
   [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
 >
-  <span class="col">
-    <img
-      class="d-flex"
-      src="assets/icons/objective-indicator.svg"
-      alt="An indicator that indicates, that this is an objective"
-    />
-  </span>
   <div class="row mx-1">
-    <section class="d-flex mb-3">
+    <section class="d-flex mb-3 mt-3">
       <img
         alt="The objectives state"
         (click)="$event.stopPropagation()"
@@ -24,7 +17,7 @@
         class="icon col-1 mt-1 ms-1 me-2"
         [src]="'assets/icons/' + objective.state"
       />
-      <header class="title col-10 ps-2 me-3">{{ objective.title }}</header>
+      <header class="title col-10 ps-2 me-3 line-height">{{ objective.title }}</header>
       <button
         *ngIf="isWritable"
         class="icon-button three-dot-menu"

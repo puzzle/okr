@@ -17,13 +17,12 @@
     <section class="m-0 d-sm-flex d-md-none w-100">
       <mat-accordion [displayMode]="'flat'" class="w-100">
         <mat-expansion-panel (closed)="panelOpenState = false" (opened)="panelOpenState = true" id="header-accordion">
-          <mat-expansion-panel-header >
+          <mat-expansion-panel-header>
             <mat-panel-title>
-
-              <span *ngIf="!panelOpenState; else openedPanel">{{ (quarterLabel$ | async) || quarterLabel$.getValue() }}</span>
-              <ng-template #openedPanel>
-               Filter
-              </ng-template>
+              <span *ngIf="!panelOpenState; else openedPanel">{{
+                (quarterLabel$ | async) || quarterLabel$.getValue()
+              }}</span>
+              <ng-template #openedPanel> Filter </ng-template>
             </mat-panel-title>
           </mat-expansion-panel-header>
 

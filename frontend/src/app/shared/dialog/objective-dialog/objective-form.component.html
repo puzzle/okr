@@ -1,6 +1,8 @@
 <section mat-dialog-title>
   <div *ngIf="this.data.action == 'duplicate'">
-    <app-dialog-header [dialogTitle]="'Objective duplizieren'"></app-dialog-header>
+    <app-dialog-header
+      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' duplizieren'"
+    ></app-dialog-header>
   </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header

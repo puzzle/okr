@@ -41,3 +41,45 @@
     width: 60%;
   }
 }
+
+@media only screen and (min-height: 600px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 500px;
+  }
+}
+
+@media only screen and (min-height: 700px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 590px;
+  }
+}
+
+@media only screen and (min-height: 800px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 625px;
+  }
+}
+
+@media only screen and (min-height: 850px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 685px;
+  }
+}
+
+@media only screen and (min-height: 875px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 715px;
+  }
+}
+
+@media only screen and (min-height: 900px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 750px;
+  }
+}
+
+@media only screen and (min-height: 1000px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 550px;
+  }
+}

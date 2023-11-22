@@ -2,13 +2,13 @@
   <app-dialog-header *ngIf="!this.checkIn.id" [dialogTitle]="'Check-in erfassen'"></app-dialog-header>
   <app-dialog-header *ngIf="this.checkIn.id" [dialogTitle]="'Check-in bearbeiten'"></app-dialog-header>
   <p class="fs-6">Key Result</p>
-  <p class="linebreak bg-display-element py-2 ps-1 fs-6 fw-normal">{{ keyResult.title }}</p>
+  <p class="linebreak bg-display-element py-2 ps-2 mb-1 fs-6 fw-normal">{{ keyResult.title }}</p>
 </section>
 
 <mat-dialog-content>
-  <div class="overflow-y-scroll overflow-x-hidden dialog-content">
+  <div class="overflow-y-scroll overflow-x-hidden dialog-content p-2">
     <form [formGroup]="dialogForm" class="d-flex gap-2 flex-column">
-      <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column">
+      <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column mb-3">
         <mat-label class="text-black">Action Plan:</mat-label>
         <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
           <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>

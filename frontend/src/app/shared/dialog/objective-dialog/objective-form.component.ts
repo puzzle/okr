@@ -57,9 +57,9 @@ export class ObjectiveFormComponent implements OnInit {
     },
   ) {}
 
-  onSubmit(event: any): void {
+  onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
-    const state = this.data.objective.objectiveId == null ? event.submitter.getAttribute('submitType') : this.state;
+    const state = this.data.objective.objectiveId == null ? submitType : this.state;
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,

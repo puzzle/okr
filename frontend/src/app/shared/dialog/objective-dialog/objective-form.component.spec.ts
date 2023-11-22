@@ -25,15 +25,6 @@ import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 
-const submitEvent = {
-  submitter: {
-    status: 'DRAFT',
-    getAttribute() {
-      return this.status;
-    },
-  },
-};
-
 let objectiveService = {
   getFullObjective: jest.fn(),
   createObjective: jest.fn(),
@@ -146,9 +137,8 @@ describe('ObjectiveDialogComponent', () => {
     expect(rawFormValue.title).toBe(title);
     expect(rawFormValue.createKeyResults).toBe(createKeyresults);
 
-    submitEvent.submitter.status = state;
     objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
-    component.onSubmit(submitEvent);
+    component.onSubmit(state);
 
     expect(dialogMock.close).toHaveBeenCalledWith({
       addKeyResult: createKeyresults,
@@ -178,9 +168,8 @@ describe('ObjectiveDialogComponent', () => {
       createKeyResults: false,
     });
 
-    submitEvent.submitter.status = 'DRAFT';
     objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
-    component.onSubmit(submitEvent);
+    component.onSubmit('DRAFT');
 
     fixture.detectChanges();
 
@@ -205,9 +194,8 @@ describe('ObjectiveDialogComponent', () => {
       createKeyResults: false,
     });
 
-    submitEvent.submitter.status = 'DRAFT';
     objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));
-    component.onSubmit(submitEvent);
+    component.onSubmit('DRAFT');
 
     fixture.detectChanges();
 

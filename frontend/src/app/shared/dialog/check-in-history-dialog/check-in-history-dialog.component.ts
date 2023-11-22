@@ -8,6 +8,7 @@ import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.com
 import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
+import { isMobileDevice } from '../../common';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -35,12 +36,26 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   openCheckInDialogForm(checkIn: CheckInMin) {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,
         checkIn: checkIn,
       },
-      width: '719px',
+      height: dialogConfig.height,
+      width: dialogConfig.width,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadCheckInHistory();

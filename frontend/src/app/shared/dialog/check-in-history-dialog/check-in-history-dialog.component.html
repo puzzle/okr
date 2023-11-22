@@ -1,8 +1,8 @@
 <div>
   <div mat-dialog-content>
-    <app-dialog-header [dialogTitle]="'Check-in History'" class="check-in-history-title"></app-dialog-header>
+    <app-dialog-header [dialogTitle]="'Check-in History'"></app-dialog-header>
     <div
-      class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content overflow-y-scroll text-break"
+      class="d-flex justify-content-start flex-column mb-2 gap-4 text-black dialog-content overflow-y-scroll text-break mt-3"
     >
       <ng-container
         *ngIf="(checkInHistory$ | async)?.length! > 0 && (checkInHistory$ | async) as checkInHistory; else spinner"

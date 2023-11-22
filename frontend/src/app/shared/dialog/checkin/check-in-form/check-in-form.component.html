@@ -6,71 +6,73 @@
 </section>
 
 <mat-dialog-content>
-  <form [formGroup]="dialogForm" class="d-flex gap-2 flex-column">
-    <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column">
-      <mat-label class="text-black">Action Plan:</mat-label>
-      <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
-        <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
-        <span class="action-list-item w-100">
-          {{ action.action }}
+  <div class="overflow-y-scroll overflow-x-hidden dialog-content">
+    <form [formGroup]="dialogForm" class="d-flex gap-2 flex-column">
+      <section *ngIf="getActions()?.length != 0" class="d-flex gap-1 flex-column">
+        <mat-label class="text-black">Action Plan:</mat-label>
+        <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
+          <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
+          <span class="action-list-item w-100">
+            {{ action.action }}
+          </span>
         </span>
-      </span>
-    </section>
+      </section>
 
-    <div class="input-style gap-2 col-12">
-      <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
-      <textarea
-        [attr.data-testId]="'changeInfo'"
-        [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
-        class="big-dialog-form-field"
-        formControlName="changeInfo"
-      ></textarea>
-      <div *ngIf="isTouchedOrDirty('changeInfo')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
+      <div class="input-style gap-2 col-12">
+        <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
+        <textarea
+          [attr.data-testId]="'changeInfo'"
+          [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
+          class="big-dialog-form-field"
+          formControlName="changeInfo"
+        ></textarea>
+        <div *ngIf="isTouchedOrDirty('changeInfo')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </div>
       </div>
-    </div>
 
-    <app-check-in-form-metric
-      *ngIf="keyResult.keyResultType === 'metric'"
-      [checkIn]="checkIn"
-      [dialogForm]="dialogForm"
-      [keyResult]="getKeyResultMetric()"
-    ></app-check-in-form-metric>
-    <app-check-in-form-ordinal
-      *ngIf="keyResult.keyResultType === 'ordinal'"
-      [checkIn]="checkIn"
-      [dialogForm]="dialogForm"
-      [keyResult]="getKeyResultOrdinal()"
-    ></app-check-in-form-ordinal>
+      <app-check-in-form-metric
+        *ngIf="keyResult.keyResultType === 'metric'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultMetric()"
+      ></app-check-in-form-metric>
+      <app-check-in-form-ordinal
+        *ngIf="keyResult.keyResultType === 'ordinal'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultOrdinal()"
+      ></app-check-in-form-ordinal>
 
-    <div class="input-style gap-2 col-12">
-      <label class="text-black">Massnahmen (optional):</label>
-      <textarea
-        [attr.data-testId]="'initiatives'"
-        [ngClass]="formInputCheck(dialogForm, 'initiatives')"
-        class="w-100 big-dialog-form-field"
-        formControlName="initiatives"
-      ></textarea>
-      <div *ngIf="isTouchedOrDirty('initiatives')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
+      <div class="input-style gap-2 col-12">
+        <label class="text-black">Massnahmen (optional):</label>
+        <textarea
+          [attr.data-testId]="'initiatives'"
+          [ngClass]="formInputCheck(dialogForm, 'initiatives')"
+          class="w-100 big-dialog-form-field"
+          formControlName="initiatives"
+        ></textarea>
+        <div *ngIf="isTouchedOrDirty('initiatives')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
+        </div>
       </div>
-    </div>
 
-    <div class="input-style justify-content-start gap-2 col-12">
-      <label class="text-black confidence-label"
-        >Confidence um Target
-        <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
-          ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
-        </span>
-        zu erreichen:
-      </label>
-      <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
-    </div>
-  </form>
+      <div class="input-style justify-content-start gap-2 col-12">
+        <label class="text-black confidence-label"
+          >Confidence um Target
+          <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
+            ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
+          </span>
+          zu erreichen:
+        </label>
+        <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
+      </div>
+    </form>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

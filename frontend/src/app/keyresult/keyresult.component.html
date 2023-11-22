@@ -9,17 +9,17 @@
   <app-scoring [keyResult]="keyResult" [isDetail]="false"></app-scoring>
   <div class="d-flex justify-content-between">
     <div class="d-flex justify-content-center">
-      <span *ngIf="keyResult.lastCheckIn != null" class="d-flex align-items-center sub-title flex-wrap sub-title">
+      <span *ngIf="keyResult.lastCheckIn != null" class="d-flex align-items-center flex-wrap sub-title-confidence-date">
         <span class="me-1 text-nowrap">Letztes Check-in:</span>
         <span>{{ keyResult!.lastCheckIn!.createdOn | date: DATE_FORMAT }}</span>
       </span>
-      <span *ngIf="keyResult.lastCheckIn == null" class="d-flex align-items-center sub-title flex-wrap sub-title">
+      <span *ngIf="keyResult.lastCheckIn == null" class="d-flex align-items-center flex-wrap sub-title-confidence-date">
         <span class="me-1 text-nowrap">Noch kein Check-in vorhanden</span>
       </span>
     </div>
 
     <div class="d-flex align-items-center flex-wrap justify-content-end">
-      <p class="sub-title">Confidence</p>
+      <p class="sub-title-confidence-date">Confidence</p>
       <app-confidence
         [edit]="false"
         [checkIn]="keyResult.lastCheckIn!"

@@ -257,7 +257,11 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 }
 
 .line-height {
-  line-height: 115%;
+  line-height: normal !important;
+}
+
+.sub-title-confidence-date {
+  font-size: 0.9rem !important;
 }
 
 @media only screen and (max-width: 420px) {

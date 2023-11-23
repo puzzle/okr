@@ -91,7 +91,7 @@ public class OverviewMapper {
             return createKeyResultOrdinalDto(overview);
         } else {
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorMsg.KEYRESULT_CONVERSION,
-                    List.of(overview.getKeyResultType()));
+                    overview.getKeyResultType());
         }
     }
 

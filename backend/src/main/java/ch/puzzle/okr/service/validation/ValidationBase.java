@@ -59,7 +59,7 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
     public void throwExceptionWhenModelIsNull(T model) {
         if (model == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.MODEL_NULL,
-                    List.of(persistenceService.getModelName()));
+                    persistenceService.getModelName());
         }
     }
 
@@ -104,7 +104,6 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     private List<String> getAttributes(String message, String messageTemplate) {
         String pattern = messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
-
         return Pattern.compile(pattern).matcher(message).results().map(MatchResult::group).toList();
     }
 }

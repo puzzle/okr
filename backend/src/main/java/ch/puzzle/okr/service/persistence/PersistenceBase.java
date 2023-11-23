@@ -57,7 +57,7 @@ public abstract class PersistenceBase<T, ID, R> {
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
             throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorMsg.DATA_HAS_BEEN_UPDATED,
-                    List.of(getModelName()));
+                    getModelName());
         }
     }
 

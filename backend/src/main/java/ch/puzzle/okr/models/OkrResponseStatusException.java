@@ -18,6 +18,10 @@ public class OkrResponseStatusException extends ResponseStatusException {
         this(status, List.of(new ErrorDto(errorKey, objectParams)));
     }
 
+    public OkrResponseStatusException(HttpStatus status, String errorKey, String param) {
+        this(status, errorKey, List.of(param));
+    }
+
     public OkrResponseStatusException(HttpStatus status, ErrorDto error) {
         this(status, List.of(error));
     }

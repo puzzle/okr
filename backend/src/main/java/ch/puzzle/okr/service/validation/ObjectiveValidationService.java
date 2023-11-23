@@ -52,7 +52,7 @@ public class ObjectiveValidationService
     private static void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
             throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMsg.ATTRIBUTE_NOT_SET,
-                    List.of(model.getModifiedBy()));
+                    model.getModifiedBy().getUsername());
         }
     }
 

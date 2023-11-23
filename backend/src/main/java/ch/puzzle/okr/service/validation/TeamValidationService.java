@@ -34,7 +34,6 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         throwExceptionWhenIdHasChanged(id, model.getId());
         doesEntityExist(model.getId());
         checkIfTeamWithNameAlreadyExists(model.getName(), model.getId());
-        // Can't update to team with already existing name
         validate(model);
     }
 

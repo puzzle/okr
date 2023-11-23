@@ -66,7 +66,8 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     public void throwExceptionWhenIdIsNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL, List.of("ID"));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+                    List.of("ID", persistenceService.getModelName()));
             // Id is null
         }
     }
@@ -82,7 +83,7 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
     protected void throwExceptionWhenIdHasChanged(ID id, ID modelId) {
         if (!Objects.equals(id, modelId)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CHANGED,
-                    List.of(id, modelId));
+                    List.of("ID", id, modelId));
 
             // Id %s has changed to %s during update
         }
@@ -97,7 +98,7 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         if (!violations.isEmpty()) {
             List<ErrorDto> list = violations.stream().map(e -> {
                 List<String> attributes = new ArrayList<>(
-                        List.of(persistenceService.getModelName(), e.getPropertyPath().toString()));
+                        List.of(e.getPropertyPath().toString(), persistenceService.getModelName()));
                 attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate()));
                 String errorKey = e.getMessage().replaceAll("_\\{.*", "");
                 return new ErrorDto(errorKey, Collections.singletonList(attributes));

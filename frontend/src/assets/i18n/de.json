@@ -23,23 +23,22 @@
   },
 
   "ERRORS": {
-    "UNAUTHORIZED": "Du bist nicht autorisiert um das Objekt '{0}' mit der Id {1} zu öffnen",
+    "UNAUTHORIZED": "Du bist nicht autorisiert um das Objekt mit der Id {1} zu öffnen",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden",
     "KEYRESULT_CONVERSION": "Der Keyresulttyp {0} konnte weder zu metrisch noch zu ordinal konvertiert werden",
-    "ALREADY_EXISTS_SAME_NAME": "",
-    "CONVERT_TOKEN": "",
-    "UNSUPPORTED_METHOD_IN_CLASS": "",
-    "MODEL_NULL": "",
-    "ATTRIBUTE_NULL": "",
-    "ATTRIBUTE_NOT_NULL": "",
-    "ATTRIBUTE_CHANGED": "",
-    "SIZE_BETWEEN": "",
-    "EMPTY_ATTRIBUTE_ON_MODEL": "",
-    "NULL_ATTRIBUTE_ON_MODEL": "",
-    "FORBIDDEN_SET_ATTRIBUTE": "",
-    "MODIFIED_BY_NOT_SET": "",
-    "ATTRIBUTE_CANNOT_CHANGE": "",
-    "MODEL_WITH_ID_NOT_FOUND": "",
-    "DATA_HAS_BEEN_UPDATED": ""
+    "ALREADY_EXISTS_SAME_NAME": "{0} mit diesem Namen existiert bereits",
+    "CONVERT_TOKEN": "Benutzer kann nicht aus Token konvertiert werden",
+    "DATA_HAS_BEEN_UPDATED": "Die Daten des {0} wurden bereits von einem anderen Benutzer geändert oder gelöscht",
+    "MODEL_NULL": "Objekt {0} ist null",
+    "MODEL_WITH_ID_NOT_FOUND": "Objekt {0} mit der Id {1} konnte nicht gefunden werden",
+    "ATTRIBUTE_NULL": "Attribut {0} auf dem Objekt {1} ist null",
+    "ATTRIBUTE_NOT_NULL": "Das Attribut {0} auf dem Objekt {0} darf nicht null sein",
+    "ATTRIBUTE_CHANGED": "Das Attribut {0} wurde während des Updated von {1} auf {2} geändert",
+    "ATTRIBUTE_NOT_BLANK": "Das Attribut {0} auf dem Objekt {1} darf nicht leer sein",
+    "ATTRIBUTE_NOT_VALID": "Das Attribut {0} auf dem Objekt {1} ist ungültig",
+    "ATTRIBUTE_SIZE_BETWEEN": "Das Attribut {0} auf dem Objekt {1} muss folgende länge haben: {2}-{3}",
+    "ATTRIBUTE_SET_FORBIDDEN": "Das Attribut {0} darf nicht während dem erstellen gesetzt sein ",
+    "ATTRIBUTE_NOT_SET": "Ein Fehler ist aufgetreten.\n Das Attribut {0} ist nicht gesetzt",
+    "ATTRIBUTE_CANNOT_CHANGE": "Das Attribut {0} auf dem Objekt {1} kann nicht geändert werden"
   }
 }

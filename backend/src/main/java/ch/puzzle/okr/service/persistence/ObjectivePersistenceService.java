@@ -68,7 +68,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         try {
             return typedQuery.getSingleResult();
         } catch (NoResultException exception) {
-            throw new OkrResponseStatusException(UNAUTHORIZED, ErrorMsg.UNAUTHORIZED, List.of("Objective", id));
+            throw new OkrResponseStatusException(UNAUTHORIZED, ErrorMsg.UNAUTHORIZED, List.of(id));
         }
     }
 }

@@ -13,8 +13,8 @@ public class Team implements WriteableInterface {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
     private Long id;
 
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_EMPTY_ON_MODEL)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NULL_ON_MODEL)
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String name;
 

@@ -61,10 +61,6 @@ public abstract class PersistenceBase<T, ID, R> {
             logger.info("optimistic locking exception while saving {}", model, ex);
             throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorMsg.DATA_HAS_BEEN_UPDATED,
                     List.of(getModelName()));
-
-            // throw new ResponseStatusException(UNPROCESSABLE_ENTITY,
-            // String.format("The data of %s has been updated or deleted by another user." +
-            // "Please reload the data and apply your changes again.", getModelName()));
         }
     }
 

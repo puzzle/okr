@@ -45,29 +45,21 @@ public class ObjectiveValidationService
         if (model.getModifiedBy() != null) {
 
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_SET_FORBIDDEN,
-                    List.of("ModifiedBy"));
-            // throw new ResponseStatusException(BAD_REQUEST,
-            // format("Not allowed to set ModifiedBy %s on create", model.getModifiedBy()));
+                    List.of("ModifiedBy", model.getModifiedBy()));
         }
     }
 
     private static void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
-            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    ErrorMsg.ATTRIBUTE_MODIFIEDBY_NOT_SET);
-
-            // throw new ResponseStatusException(INTERNAL_SERVER_ERROR,
-            // format("Something went wrong. ModifiedBy %s is not set.", model.getModifiedBy()));
+            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMsg.ATTRIBUTE_NOT_SET,
+                    List.of(model.getModifiedBy()));
         }
     }
 
     private static void throwExceptionWhenTeamHasChanged(Team team, Team savedTeam) {
         if (!Objects.equals(team, savedTeam)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of(team.getName(), savedTeam.getName()));
-
-            // throw new ResponseStatusException(BAD_REQUEST, format(
-            // "The team can not be changed (new team %s, old team %s)", ));
+                    List.of("Team", "Objective"));
         }
     }
 }

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -19,6 +20,8 @@ import static org.springframework.http.HttpStatus.*;
 class ObjectivePersistenceServiceIT {
     private static final String REASON = "not authorized to read objective";
     private static final String MISSING_IDENTIFIER = "Missing identifier for Objective";
+
+    private static final ErrorDto error = new ErrorDto(REASON, List.of());
     private static final String HIGHER_CUSTOMER_HAPPINESS = "Wir wollen die Kundenzufriedenheit steigern";
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
@@ -66,7 +69,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -74,8 +77,8 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, REASON));
+        ResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -84,7 +87,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, error));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertEquals(MISSING_IDENTIFIER, exception.getReason());
@@ -92,7 +95,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -101,7 +104,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -110,7 +113,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, error));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertEquals(MISSING_IDENTIFIER, exception.getReason());
@@ -118,7 +121,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -127,7 +130,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -136,7 +139,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, error));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertEquals(MISSING_IDENTIFIER, exception.getReason());

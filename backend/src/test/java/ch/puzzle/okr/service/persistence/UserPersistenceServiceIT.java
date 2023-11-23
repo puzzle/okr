@@ -70,7 +70,7 @@ class UserPersistenceServiceIT {
                 () -> userPersistenceService.findById(321L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("User with id 321 not found", exception.getReason());
+        assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
     @Test
@@ -79,7 +79,7 @@ class UserPersistenceServiceIT {
                 () -> userPersistenceService.findById(null));
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for User", exception.getReason());
+        assertEquals("ATTRIBUTE_NULL", exception.getReason());
     }
 
     @Test

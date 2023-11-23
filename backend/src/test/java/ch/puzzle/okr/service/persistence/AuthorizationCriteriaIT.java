@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
@@ -26,7 +27,7 @@ class AuthorizationCriteriaIT {
     void appendObjectiveShouldReturnObjectiveWhenFirstLevelRole() {
         Long objectiveId = 5L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
 
         assertEquals(objectiveId, objective.getId());
     }
@@ -36,7 +37,7 @@ class AuthorizationCriteriaIT {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAMS_DRAFT));
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
 
         assertEquals(objectiveId, objective.getId());
     }
@@ -46,7 +47,7 @@ class AuthorizationCriteriaIT {
         Long objectiveId = 6L;
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_TEAM_DRAFT));
-        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser, null);
 
         assertEquals(objectiveId, objective.getId());
     }

@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -100,8 +101,9 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> keyResultBusinessService
-                .updateEntity(metricKeyResult.getId(), metricKeyResult, authorizationUser));
+        ResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> keyResultBusinessService.updateEntity(metricKeyResult.getId(), metricKeyResult,
+                        authorizationUser));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertEquals("unsupported method in class " + KeyResultBusinessService.class.getSimpleName()

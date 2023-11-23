@@ -17,31 +17,31 @@ public class Objective implements WriteableInterface {
     @Version
     private int version;
 
-    @NotBlank(message = "Missing attribute title when saving objective")
-    @NotNull(message = "Attribute title can not be null when saving objective")
-    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving objective")
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
-    @NotNull(message = "State must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters when saving objective")
+    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(message = "Team must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Team team;
 
-    @NotNull(message = "Quarter must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Quarter quarter;
 
-    @NotNull(message = "CreatedBy must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = "CreatedOn must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;

@@ -8,7 +8,6 @@ import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +44,7 @@ public class ObjectiveValidationService
     private static void throwExceptionWhenModifiedByIsSet(Objective model) {
         if (model.getModifiedBy() != null) {
 
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.FORBIDDEN_SET_ATTRIBUTE,
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_SET_FORBIDDEN,
                     List.of("ModifiedBy"));
             // throw new ResponseStatusException(BAD_REQUEST,
             // format("Not allowed to set ModifiedBy %s on create", model.getModifiedBy()));
@@ -54,7 +53,8 @@ public class ObjectiveValidationService
 
     private static void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
-            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMsg.MODIFIED_BY_NOT_SET);
+            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    ErrorMsg.ATTRIBUTE_MODIFIEDBY_NOT_SET);
 
             // throw new ResponseStatusException(INTERNAL_SERVER_ERROR,
             // format("Something went wrong. ModifiedBy %s is not set.", model.getModifiedBy()));

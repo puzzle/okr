@@ -3,8 +3,13 @@
   height: 56px;
   border-bottom: 1px gray solid;
 }
+
 .custom-text-wrap {
   width: max-content;
+}
+
+.delete-button {
+  margin-left: auto;
 }
 
 .add-keyresult {
@@ -20,6 +25,15 @@
   }
 }
 
-.delete-button {
-  margin-left: auto;
+@media only screen and (max-width: 820px) {
+  .add-keyresult {
+    margin-left: -10px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .mat-mdc-dialog-actions .mat-button-base + .mat-button-base,
+  .mat-mdc-dialog-actions .mat-mdc-button-base + .mat-mdc-button-base {
+    margin-left: 0;
+  }
 }

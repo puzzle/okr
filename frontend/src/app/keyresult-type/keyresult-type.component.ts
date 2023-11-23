@@ -14,7 +14,7 @@ import { formInputCheck } from '../shared/common';
 })
 export class KeyresultTypeComponent implements OnInit {
   @Input() keyResultForm!: FormGroup;
-  @Input() keyresult!: KeyResult;
+  @Input() keyresult!: KeyResult | null;
   @Output() formValidityEmitter = new EventEmitter<boolean>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;

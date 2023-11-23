@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { formInputCheck } from '../../common';
+import { formInputCheck, isMobileDevice } from '../../common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { Organisation } from '../../types/model/Organisation';
@@ -10,8 +10,8 @@ import { TeamService } from '../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { TeamMin } from '../../types/model/TeamMin';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { OrganisationState } from '../../types/enums/OrganisationState';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 
 @Component({
   selector: 'app-team-management',
@@ -91,12 +91,25 @@ export class TeamManagementComponent implements OnInit {
   }
 
   deleteTeam() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: CONFIRM_DIALOG_WIDTH,
+          height: 'auto',
+        };
     const dialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Team',
       },
-      width: CONFIRM_DIALOG_WIDTH,
-      height: 'auto',
+      width: dialogConfig.width,
+      height: dialogConfig.height,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {

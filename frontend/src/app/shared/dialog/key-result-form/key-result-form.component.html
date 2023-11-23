@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-between align-items-center p-2">
+  <form [formGroup]="keyResultForm" class="d-flex flex-column flex-wrap container p-0">
+    <div class="input-style gap-2 col-12">
+      <label class="text-black" for="title">Titel</label>
+      <textarea
+        [attr.data-testId]="'titleInput'"
+        class="big-dialog-form-field"
+        [ngClass]="formInputCheck(keyResultForm, 'title')"
+        formControlName="title"
+        id="title"
+      ></textarea>
+      <span *ngIf="isTouchedOrDirty('title')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+        </mat-error>
+      </span>
+    </div>
+
+    <div class="mb-3">
+      <app-keyresult-type
+        (formValidityEmitter)="updateFormValidity()"
+        [keyresult]="keyResult"
+        [keyResultForm]="keyResultForm"
+      ></app-keyresult-type>
+    </div>
+
+    <div class="input-style gap-2 col-12">
+      <label class="text-black" for="owner">Owner</label>
+      <input
+        (keydown.enter)="$event.preventDefault()"
+        [ngClass]="invalidOwner() ? 'dialog-form-field-error' : 'dialog-form-field'"
+        class="owner-input"
+        [attr.data-testId]="'ownerInput'"
+        [matAutocomplete]="auto"
+        formControlName="owner"
+        id="owner"
+      />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="getUserNameById.bind(this)">
+        <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
+          {{ user.firstname + " " + user.lastname }}
+        </mat-option>
+      </mat-autocomplete>
+      <div *ngIf="invalidOwner()">
+        <mat-error>Du musst einen Owner auswählen</mat-error>
+      </div>
+    </div>
+
+    <div class="input-style gap-2 col-12">
+      <label for="description" class="text-black">Beschreibung (optional)</label>
+      <textarea
+        [attr.data-testId]="'descriptionInput'"
+        class="big-dialog-form-field"
+        [ngClass]="formInputCheck(keyResultForm, 'description')"
+        formControlName="description"
+        id="description"
+      ></textarea>
+      <span *ngIf="isTouchedOrDirty('description')">
+        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
+          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+        </mat-error>
+      </span>
+    </div>
+    <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
+  </form>
+</div>

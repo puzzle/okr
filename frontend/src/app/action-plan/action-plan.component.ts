@@ -4,8 +4,9 @@ import { Action } from '../shared/types/model/Action';
 import { ActionService } from '../shared/services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 import { BehaviorSubject } from 'rxjs';
+import { isMobileDevice } from '../shared/common';
+import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-action-plan',
@@ -52,14 +53,27 @@ export class ActionPlanComponent {
   removeAction(index: number) {
     const actions = this.control.getValue()!;
     if (actions[index].action !== '' || actions[index].id) {
+      const dialogConfig = isMobileDevice()
+        ? {
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            height: '100vh',
+            width: CONFIRM_DIALOG_WIDTH,
+          }
+        : {
+            width: '45em',
+            height: 'auto',
+          };
       this.dialog
         .open(ConfirmDialogComponent, {
           data: {
             title: 'Action',
             isAction: true,
           },
-          width: CONFIRM_DIALOG_WIDTH,
-          height: 'auto',
+          width: dialogConfig.width,
+          height: dialogConfig.height,
+          maxHeight: dialogConfig.maxHeight,
+          maxWidth: dialogConfig.maxWidth,
         })
         .afterClosed()
         .subscribe((result) => {

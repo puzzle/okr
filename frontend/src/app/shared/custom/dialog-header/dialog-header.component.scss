@@ -1,3 +1,9 @@
 .closing-button {
   right: 0;
 }
+
+@media only screen and (min-width: 800px) {
+  .dialog-header {
+    margin-bottom: 1rem;
+  }
+}

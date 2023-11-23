@@ -28,16 +28,17 @@
 
 <div *ngIf="isMetric; else ordinalBlock">
   <form [formGroup]="keyResultForm" class="gap-1">
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex gap-2">
-            <div>
-              <label>Einheit</label>
+          <div class="input-alignments gap-2">
+            <div class="input-style gap-2">
+              <label class="text-black" for="unit">Einheit</label>
               <select
-                class="unit-dropdown bg-white input-fields menu-option"
+                class="unit-dropdown bg-white menu-option"
                 [ngClass]="formInputCheck(keyResultForm, 'unit')"
                 formControlName="unit"
+                id="unit"
                 [attr.data-testId]="'unit'"
               >
                 <option *ngFor="let unit of Unit | keyvalue" value="{{ unit.value }}">
@@ -50,33 +51,37 @@
                 </mat-error>
               </div>
             </div>
-            <div>
-              <label>Baseline</label>
+
+            <div class="input-style gap-2">
+              <label class="text-black" for="baseline">Baseline</label>
               <input
-                class="input-fields metric-fields"
+                [attr.data-testId]="'baseline'"
+                class="metric-fields"
                 [ngClass]="formInputCheck(keyResultForm, 'baseline')"
                 formControlName="baseline"
-                [attr.data-testId]="'baseline'"
+                id="baseline"
               />
-              <div *ngIf="isTouchedOrDirty('baseline')">
+              <span *ngIf="isTouchedOrDirty('baseline')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
                   <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
-              </div>
+              </span>
             </div>
-            <div>
-              <label>Stretch Goal</label>
+
+            <div class="input-style gap-2">
+              <label class="text-black" for="stretchGoal">Stretch Goal</label>
               <input
-                class="input-fields metric-fields"
+                [attr.data-testId]="'stretchGoal'"
+                class="metric-fields"
                 [ngClass]="formInputCheck(keyResultForm, 'stretchGoal')"
                 formControlName="stretchGoal"
-                [attr.data-testId]="'stretchGoal'"
+                id="stretchGoal"
               />
-              <div *ngIf="isTouchedOrDirty('stretchGoal')">
+              <span *ngIf="isTouchedOrDirty('stretchGoal')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
                   <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -87,51 +92,56 @@
 
 <ng-template #ordinalBlock>
   <form [formGroup]="keyResultForm" class="gap-1">
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="d-flex gap-2">
-            <div>
-              <label>Commit Zone</label>
+          <div class="input-alignments gap-2">
+            <div class="input-style gap-2">
+              <label class="text-black" for="commitZone">Commit Zone</label>
               <textarea
-                [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
-                class="input-fields"
-                formControlName="commitZone"
                 [attr.data-testId]="'commitZone'"
+                class="ordinal-input-fields"
+                [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
+                formControlName="commitZone"
+                id="commitZone"
               ></textarea>
-              <div *ngIf="isTouchedOrDirty('commitZone')">
+              <span *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
                   <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
-              </div>
+              </span>
             </div>
-            <div>
-              <label>Target Zone</label>
+
+            <div class="input-style gap-2">
+              <label class="text-black" for="targetZone">Target Zone</label>
               <textarea
-                [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
-                class="input-fields"
-                formControlName="targetZone"
                 [attr.data-testId]="'targetZone'"
+                class="ordinal-input-fields"
+                [ngClass]="formInputCheck(keyResultForm, 'targetZone')"
+                formControlName="targetZone"
+                id="targetZone"
               ></textarea>
-              <div *ngIf="isTouchedOrDirty('targetZone')">
+              <span *ngIf="isTouchedOrDirty('targetZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
                   <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
-              </div>
+              </span>
             </div>
-            <div>
-              <label>Stretch Zone</label>
+
+            <div class="input-style gap-2">
+              <label class="text-black" for="stretchZone">Stretch Zone</label>
               <textarea
-                [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
-                class="input-fields"
-                formControlName="stretchZone"
                 [attr.data-testId]="'stretchZone'"
+                class="ordinal-input-fields"
+                [ngClass]="formInputCheck(keyResultForm, 'stretchZone')"
+                formControlName="stretchZone"
+                id="stretchZone"
               ></textarea>
-              <div *ngIf="isTouchedOrDirty('stretchZone')">
+              <span *ngIf="isTouchedOrDirty('stretchZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
                   <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
                 </mat-error>
-              </div>
+              </span>
             </div>
           </div>
         </div>

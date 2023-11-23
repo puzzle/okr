@@ -11,9 +11,9 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
-import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
 import { DATE_FORMAT } from '../shared/constantLibary';
-import { isInValid } from '../shared/common';
+import { isInValid, isMobileDevice } from '../shared/common';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -62,13 +62,26 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkInHistory() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
         isComplete: this.isComplete,
       },
-      maxHeight: '492px',
-      width: '721px',
+      width: dialogConfig.width,
+      height: dialogConfig.height,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.refreshDataService.markDataRefresh();
@@ -76,10 +89,24 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openEditKeyResultDialog(keyResult: KeyResult) {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     this.dialog
-      .open(KeyResultDialogComponent, {
-        width: '45em',
-        height: 'auto',
+      .open(KeyresultDialogComponent, {
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: keyResult.objective,
           keyResult: keyResult,
@@ -101,11 +128,25 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   openCheckInForm() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),
       },
-      width: '719px',
+      height: dialogConfig.height,
+      width: dialogConfig.width,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();

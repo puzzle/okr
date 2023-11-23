@@ -1,14 +1,16 @@
-<div mat-dialog-content class="dialog-padding">
+<section mat-dialog-title>
   <app-dialog-header [dialogTitle]="'Teamverwaltung'"></app-dialog-header>
+</section>
+
+<mat-dialog-content>
   <div class="w-100 d-flex justify-content-between align-items-center">
     <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
-      <div class="d-flex flex-column gap-2 col-12 mb-3">
+      <div class="input-style gap-2 col-12">
         <label class="text-black" for="name">Teamname</label>
         <textarea
           [attr.data-testId]="'name'"
           class="big-dialog-form-field"
           [ngClass]="formInputCheck(teamForm, 'name')"
-          cdkFocusInitial
           formControlName="name"
           id="name"
         ></textarea>
@@ -18,15 +20,15 @@
           </mat-error>
         </span>
       </div>
-      <div class="d-flex flex-column gap-2 col-12 mb-3">
+      <div class="input-style gap-2 col-12">
         <div class="d-flex flex-row">
           <label class="text-black" for="organisations">Organisationen</label>
           <mat-icon
             class="ms-2 text-danger"
             *ngIf="hasInActiveOrganisations"
             [matTooltip]="'This team has inactive organisations'"
-            >error_outline</mat-icon
-          >
+            >error_outline
+          </mat-icon>
         </div>
         <mat-select
           [attr.data-testId]="'organisation-select'"
@@ -80,4 +82,4 @@
       </div>
     </form>
   </div>
-</div>
+</mat-dialog-content>

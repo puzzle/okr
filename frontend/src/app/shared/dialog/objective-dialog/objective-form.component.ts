@@ -12,9 +12,9 @@ import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
 import errorMessages from '../../../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
-import { formInputCheck, getQuarterLabel, getValueFromQuery } from '../../common';
+import { formInputCheck, getQuarterLabel, getValueFromQuery, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
+import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 
 @Component({
   selector: 'app-objective-form',
@@ -57,9 +57,9 @@ export class ObjectiveFormComponent implements OnInit {
     },
   ) {}
 
-  onSubmit(event: any): void {
+  onSubmit(submitType: any): void {
     const value = this.objectiveForm.getRawValue();
-    const state = this.data.objective.objectiveId == null ? event.submitter.getAttribute('submitType') : this.state;
+    const state = this.data.objective.objectiveId == null ? submitType : this.state;
     let objectiveDTO: Objective = {
       id: this.data.objective.objectiveId,
       version: this.version,
@@ -115,12 +115,25 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   deleteObjective() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: CONFIRM_DIALOG_WIDTH,
+          height: 'auto',
+        };
     const dialog = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: 'Objective',
       },
-      width: CONFIRM_DIALOG_WIDTH,
-      height: 'auto',
+      width: dialogConfig.width,
+      height: dialogConfig.height,
+      maxHeight: dialogConfig.maxHeight,
+      maxWidth: dialogConfig.maxWidth,
     });
     dialog.afterClosed().subscribe((result) => {
       if (result) {

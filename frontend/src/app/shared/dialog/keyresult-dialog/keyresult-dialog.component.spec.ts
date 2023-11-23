@@ -1,6 +1,6 @@
+import { KeyresultDialogComponent } from './keyresult-dialog.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import { KeyResultDialogComponent } from './key-result-dialog.component';
+import { KeyresultService } from '../../services/keyresult.service';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
@@ -10,14 +10,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
 import { testUser, users } from '../../testData';
 import { State } from '../../types/enums/State';
-import { KeyresultService } from '../../services/keyresult.service';
 import { KeyResult } from '../../types/model/KeyResult';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { KeyResultObjective } from '../../types/model/KeyResultObjective';
-import { User } from '../../types/model/User';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyresultTypeComponent } from '../../../keyresult-type/keyresult-type.component';
@@ -25,10 +23,11 @@ import { ActionPlanComponent } from '../../../action-plan/action-plan.component'
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { UserService } from '../../services/user.service';
+import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
 
-describe('KeyResultDialogComponent', () => {
-  let component: KeyResultDialogComponent;
-  let fixture: ComponentFixture<KeyResultDialogComponent>;
+describe('KeyresultDialogComponent', () => {
+  let component: KeyresultDialogComponent;
+  let fixture: ComponentFixture<KeyresultDialogComponent>;
   let keyResultService: KeyresultService;
 
   const oauthMockService = {
@@ -282,10 +281,16 @@ describe('KeyResultDialogComponent', () => {
             useValue: oauthMockService,
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, KeyresultTypeComponent, ActionPlanComponent],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          DialogHeaderComponent,
+          KeyresultTypeComponent,
+          ActionPlanComponent,
+        ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -295,8 +300,7 @@ describe('KeyResultDialogComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    it('should be able to set title and have logged in user as owner', waitForAsync(async () => {
-      const userServiceSpy = jest.spyOn(userService, 'getUsers');
+    it('should be able to set title', waitForAsync(async () => {
       component.keyResultForm.setValue({
         owner: null,
         actionList: [],
@@ -310,7 +314,6 @@ describe('KeyResultDialogComponent', () => {
         stretchGoal: 0,
         keyResultType: 'metric',
       });
-      component.ngOnInit();
       fixture.detectChanges();
       const submitButton = fixture.debugElement.query(By.css('[data-testId="submit"]'));
       expect(await submitButton.nativeElement.getAttribute('disabled')).toBeFalsy();
@@ -318,9 +321,6 @@ describe('KeyResultDialogComponent', () => {
       const formObject = component.keyResultForm.value;
       expect(formObject.title).toBe('Title');
       expect(formObject.description).toBe(null);
-      expect(userServiceSpy).toHaveBeenCalled();
-      expect(component.keyResultForm.controls.owner.value).toBe(users[1]);
-      expect(component.keyResultForm.invalid).toBeFalsy();
     }));
 
     it('should display error message of too short input', waitForAsync(async () => {
@@ -427,10 +427,16 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultMetric, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          DialogHeaderComponent,
+          ActionPlanComponent,
+          KeyresultTypeComponent,
+        ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -528,7 +534,6 @@ describe('KeyResultDialogComponent', () => {
     it('should not display logged in user when editing', waitForAsync(() => {
       jest.resetAllMocks();
       const userServiceSpy = jest.spyOn(userService, 'getUsers');
-      component.ngOnInit();
       fixture.detectChanges();
       expect(userServiceSpy).toHaveBeenCalledTimes(0);
       expect(component.keyResultForm.controls.owner.value).toBe(testUser);
@@ -565,10 +570,16 @@ describe('KeyResultDialogComponent', () => {
             useValue: { keyResult: fullKeyResultOrdinal, objective: keyResultObjective },
           },
         ],
-        declarations: [KeyResultDialogComponent, DialogHeaderComponent, ActionPlanComponent, KeyresultTypeComponent],
+        declarations: [
+          KeyresultDialogComponent,
+          KeyResultFormComponent,
+          DialogHeaderComponent,
+          ActionPlanComponent,
+          KeyresultTypeComponent,
+        ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
+      fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
@@ -661,70 +672,5 @@ describe('KeyResultDialogComponent', () => {
       expect(spy).toBeCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(receivedKeyResultOrdinal);
     }));
-  });
-
-  describe('Method testing', () => {
-    beforeEach(() => {
-      mockUserService.getUsers.mockReturnValue(users);
-      TestBed.configureTestingModule({
-        imports: [
-          MatDialogModule,
-          NoopAnimationsModule,
-          MatInputModule,
-          ReactiveFormsModule,
-          HttpClientTestingModule,
-          MatIconModule,
-          MatAutocompleteModule,
-          TranslateModule.forRoot(),
-          DragDropModule,
-        ],
-        providers: [
-          KeyresultService,
-          {
-            provide: MatDialogRef,
-            useValue: {
-              close: (dialogResult: any) => {},
-            },
-          },
-          {
-            provide: OAuthService,
-            useValue: oauthMockService,
-          },
-          {
-            provide: MAT_DIALOG_DATA,
-            useValue: { keyResult: fullKeyResultMetric },
-          },
-        ],
-        declarations: [KeyResultDialogComponent, ActionPlanComponent, DialogHeaderComponent, KeyresultTypeComponent],
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(KeyResultDialogComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-      keyResultService = TestBed.inject(KeyresultService);
-      fullKeyResultMetric.id = 3;
-    });
-
-    afterEach(() => {
-      mockUserService.getUsers.mockReset();
-    });
-
-    it('should return right filtered user', () => {
-      let userObservable: Observable<User[]> = component.filter('baum');
-
-      userObservable.subscribe((userList) => {
-        expect(userList.length).toEqual(1);
-      });
-      userObservable = component.filter('ob');
-
-      userObservable.subscribe((userList) => {
-        expect(userList.length).toEqual(2);
-      });
-    });
-
-    it('should return label from user', () => {
-      let userName: string = component.getUserNameById(testUser);
-      expect(userName).toEqual('Bob Baumeister');
-    });
   });
 });

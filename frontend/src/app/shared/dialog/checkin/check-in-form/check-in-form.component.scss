@@ -19,3 +19,63 @@ section[mat-dialog-title] {
 app-check-in-form-ordinal {
   padding-top: 0.1rem;
 }
+
+@media only screen and (min-height: 600px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 450px;
+  }
+}
+
+@media only screen and (min-height: 700px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 500px;
+  }
+}
+
+@media only screen and (min-height: 800px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 550px;
+  }
+}
+
+@media only screen and (min-height: 400px) and (max-width: 1200px) {
+  .dialog-content {
+    max-height: 400px;
+  }
+}
+
+@media only screen and (min-height: 500px) and (max-width: 1200px) {
+  .dialog-content {
+    max-height: 450px;
+  }
+}
+
+@media only screen and (min-height: 750px) and (max-width: 1200px) {
+  .dialog-content {
+    max-height: 500px;
+  }
+}
+
+@media only screen and (min-height: 850px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 450px;
+  }
+}
+
+@media only screen and (min-height: 875px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 512.5px;
+  }
+}
+
+@media only screen and (min-height: 900px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 550px;
+  }
+}
+
+@media only screen and (min-height: 1000px) and (max-width: 450px) {
+  .dialog-content {
+    max-height: 550px;
+  }
+}

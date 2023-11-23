@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { formInputCheck } from '../../common';
+import errorMessages from '../../../../assets/errors/error-messages.json';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -43,4 +44,15 @@ export class CompleteDialogComponent {
       el.classList.remove('card-hover');
     });
   }
+
+  isTouchedOrDirty(name: string) {
+    return this.completeForm.get(name)?.dirty || this.completeForm.get(name)?.touched;
+  }
+
+  getErrorKeysOfFormField(name: string) {
+    const errors = this.completeForm.get(name)?.errors;
+    return errors == null ? [] : Object.keys(errors);
+  }
+
+  protected readonly errorMessages: any = errorMessages;
 }

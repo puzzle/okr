@@ -4,9 +4,10 @@ import { ObjectiveService } from '../shared/services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
+import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { Router } from '@angular/router';
+import { isMobileDevice } from '../shared/common';
 
 @Component({
   selector: 'app-objective-detail',
@@ -37,10 +38,24 @@ export class ObjectiveDetailComponent {
   }
 
   openAddKeyResultDialog() {
+    const dialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+
     this.dialog
-      .open(KeyResultDialogComponent, {
-        width: '45em',
-        height: 'auto',
+      .open(KeyresultDialogComponent, {
+        height: dialogConfig.height,
+        width: dialogConfig.width,
+        maxHeight: dialogConfig.maxHeight,
+        maxWidth: dialogConfig.maxWidth,
         data: {
           objective: this.objective$.getValue(),
           keyResult: null,

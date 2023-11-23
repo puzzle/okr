@@ -29,9 +29,11 @@ export class ErrorInterceptor implements HttpInterceptor {
   handleErrorToaster(response: any) {
     if (!this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
       const errors = response.error.errors;
-      console.log(this.translate.instant('TRANSLATIONS.' + errors[0].errorKey));
-      console.log(errors[0].errorKey);
-      this.toasterService.showError(response.error.message);
+      errors.forEach((error: { errorKey: string; params: string[] }) => {
+        const template = this.translate.instant('TRANSLATIONS.' + error.errorKey);
+        const message = template.format(error.params);
+        this.toasterService.showError(message);
+      });
     }
   }
 

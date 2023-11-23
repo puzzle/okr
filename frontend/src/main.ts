@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { isArray } from '@angular/compiler-cli/src/ngtsc/annotations/common';
 
 if (environment.production) {
   enableProdMode();
@@ -15,7 +16,7 @@ declare global {
 }
 
 String.prototype.format = function () {
-  const args = arguments;
+  const args = Array.from(arguments).flat();
   return this.replace(/{([0-9]+)}/g, function (match, index) {
     return typeof args[index] == 'undefined' ? match : args[index];
   });

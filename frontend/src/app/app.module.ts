@@ -162,7 +162,7 @@ export const MY_FORMATS = {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient],
+        deps: [HttpBackend],
       },
     }),
     OAuthModule.forRoot(),

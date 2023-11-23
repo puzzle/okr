@@ -2,14 +2,7 @@
   <app-dialog-header [dialogTitle]="this.dialogTitle"></app-dialog-header>
   {{ this.dialogText }}
   <div class="mt-3">
-    <button
-      color="primary"
-      type="submit"
-      mat-flat-button
-      cdkFocusInitial
-      (click)="closeAndDelete()"
-      [attr.data-testId]="'confirmYes'"
-    >
+    <button color="primary" type="submit" mat-flat-button (click)="closeAndDelete()" [attr.data-testId]="'confirmYes'">
       Ja
     </button>
     <button mat-button mat-dialog-close class="ms-2">Nein</button>

@@ -8,7 +8,6 @@
         [ngClass]="formInputCheck(keyResultForm, 'title')"
         formControlName="title"
         id="title"
-        cdkFocusInitial
       ></textarea>
       <span *ngIf="isTouchedOrDirty('title')">
         <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">

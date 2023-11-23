@@ -38,11 +38,6 @@ body {
   font-size: 1rem;
 }
 
-.icon {
-  width: 1.25rem !important;
-  height: 1.25rem !important;
-}
-
 .keyResult-attribute-show {
   background-color: $keyResult-attribute-bg;
   padding: 0.25em 0.75rem;
@@ -254,4 +249,12 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   background-color: var(--thumbBG);
   border-radius: 6px;
   border: 3px solid var(--scrollbarBG);
+}
+
+.line-height {
+  line-height: normal !important;
+}
+
+.sub-title-keyresult {
+  font-size: 0.9rem !important;
 }

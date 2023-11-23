@@ -1,5 +1,5 @@
 <section mat-dialog-title>
-  <app-dialog-header [dialogTitle]="'Teamverwaltung'"></app-dialog-header>
+  <app-dialog-header [dialogTitle]="data ? 'Team bearbeiten' : 'Team erfassen'"></app-dialog-header>
 </section>
 
 <mat-dialog-content>
@@ -77,7 +77,7 @@
           type="button"
           mat-button
         >
-          Team Löschen
+          Team löschen
         </button>
       </div>
     </form>

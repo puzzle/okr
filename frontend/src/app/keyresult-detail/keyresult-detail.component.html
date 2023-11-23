@@ -86,7 +86,9 @@
         </div>
 
         <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
-          <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</p>
+          <p class="sub-title-keyresult-detail fw-bold mb-1">
+            Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})
+          </p>
           <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
           <span class="d-flex justify-content-start">
             <button
@@ -103,13 +105,13 @@
         </div>
 
         <div class="mt-3 mb-4">
-          <p class="sub-title-keyresult fw-bold mb-1">Beschrieb</p>
+          <p class="sub-title-keyresult-detail fw-bold mb-1">Beschrieb</p>
           <p class="linebreak" *ngIf="keyResult.description === ''">-</p>
           <p class="linebreak" *ngIf="keyResult.description !== ''">{{ keyResult.description }}</p>
         </div>
 
         <div *ngIf="keyResult.actionList?.length != 0" class="mt-3 mb-4">
-          <h2 class="sub-title-keyresult fw-bold">Action Plan</h2>
+          <h2 class="sub-title-keyresult-detail fw-bold">Action Plan</h2>
           <div *ngFor="let action of keyResult.actionList" class="ms-2">
             <img
               src="{{

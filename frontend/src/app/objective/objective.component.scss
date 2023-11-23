@@ -23,7 +23,24 @@
   display: flex;
   justify-content: center;
   align-items: start;
-  padding-top: 0.2rem;
   width: 35px;
   height: 32px;
+}
+
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 2px;
+}
+
+@media only screen and (min-width: 450px) {
+  .three-dot-menu {
+    margin-left: 10px;
+  }
+}
+
+@media only screen and (min-width: 1217px) {
+  .three-dot-menu {
+    margin-left: 30px;
+  }
 }

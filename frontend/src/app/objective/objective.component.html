@@ -6,25 +6,18 @@
   [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
 >
-  <span class="col">
-    <img
-      class="d-flex"
-      src="assets/icons/objective-indicator.svg"
-      alt="An indicator that indicates, that this is an objective"
-    />
-  </span>
   <div class="row mx-1">
-    <section class="d-flex mb-3">
+    <section class="d-flex mb-3 mt-3">
       <img
         alt="The objectives state"
         (click)="$event.stopPropagation()"
         matTooltip="The objectives state is {{ objective.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         [attr.data-testId]="'objective-state'"
-        class="icon col-1 mt-1 ms-1 me-2"
+        class="icon col-1 ms-1 me-2"
         [src]="'assets/icons/' + objective.state"
       />
-      <header class="title col-10 ps-2 me-3">{{ objective.title }}</header>
+      <header class="title col-10 ps-2 line-height">{{ objective.title }}</header>
       <button
         *ngIf="isWritable"
         class="icon-button three-dot-menu"
@@ -47,7 +40,7 @@
         [attr.data-testId]="'keyresult'"
       ></app-keyresult>
     </section>
-    <section class="py-3">
+    <section class="p-0 py-3 m-0">
       <button
         *ngIf="!isComplete && isWritable"
         mat-button

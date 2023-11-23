@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.converter.JwtUserConverter;
+import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
@@ -35,15 +35,15 @@ public class AuthorizationService {
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
-    private final JwtUserConverter jwtUserConverter;
+    private final JwtConverterFactory jwtConverterFactory;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
             ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtUserConverter jwtUserConverter) {
+            JwtConverterFactory jwtConverterFactory) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.jwtUserConverter = jwtUserConverter;
+        this.jwtConverterFactory = jwtConverterFactory;
     }
 
     public static boolean hasRoleReadTeamsDraft(AuthorizationUser user) {
@@ -78,7 +78,7 @@ public class AuthorizationService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
-        User user = jwtUserConverter.convert(token);
+        User user = jwtConverterFactory.getJwtUserConverter().convert(token);
         return authorizationRegistrationService.registerAuthorizationUser(user, token);
     }
 

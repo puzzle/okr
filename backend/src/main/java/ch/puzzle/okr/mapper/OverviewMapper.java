@@ -67,8 +67,8 @@ public class OverviewMapper {
             objectives.add(createObjectiveDto(overview));
         }
         return new OverviewDto(
-                new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName(),
-                        overview.isWriteable(),
+                new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamVersion(),
+                        overview.getTeamName(), overview.isWriteable(),
                         organisationBusinessService.teamHasInActiveOrganisations(overview.getOverviewId().getTeamId())),
                 objectives);
     }

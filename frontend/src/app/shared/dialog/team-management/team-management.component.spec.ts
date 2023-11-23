@@ -137,7 +137,11 @@ describe('TeamManagementComponent', () => {
     fixture.detectChanges();
     component.saveTeam();
     expect(teamServiceMock.updateTeam).toHaveBeenCalled();
-    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith({ ...teamFormObject, id: teamMin1.id } as Team);
+    expect(teamServiceMock.updateTeam).toHaveBeenCalledWith({
+      ...teamFormObject,
+      id: teamMin1.id,
+      version: teamMin1.version,
+    } as Team);
   });
 
   it('should call service method to delete team', async () => {

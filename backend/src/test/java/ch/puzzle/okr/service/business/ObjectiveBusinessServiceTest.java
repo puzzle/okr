@@ -23,6 +23,7 @@ import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.models.State.DRAFT;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -57,15 +58,25 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void getOneObjective() {
-        Mockito.when(objectivePersistenceService.findById(5L)).thenReturn(objective);
+        when(objectivePersistenceService.findById(5L)).thenReturn(objective);
+
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
         assertEquals("Objective 1", realObjective.getTitle());
     }
 
     @Test
+    void getEntitiesByTeamId() {
+        when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
+
+        List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
+
+        assertThat(entities).hasSameElementsAs(List.of(objective));
+    }
+
+    @Test
     void shouldNotFindTheObjective() {
-        Mockito.when(objectivePersistenceService.findById(6L))
+        when(objectivePersistenceService.findById(6L))
                 .thenThrow(new ResponseStatusException(NOT_FOUND, "Objective with id 6 not found"));
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
@@ -94,7 +105,7 @@ class ObjectiveBusinessServiceTest {
     void shouldNotThrowResponseStatusExceptionWhenPuttingNullId() {
         Objective objective1 = Objective.Builder.builder().withId(null).withTitle("Title")
                 .withDescription("Description").withModifiedOn(LocalDateTime.now()).build();
-        Mockito.when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
+        when(objectiveBusinessService.createEntity(objective1, authorizationUser)).thenReturn(fullObjective);
 
         Objective savedObjective = objectiveBusinessService.createEntity(objective1, authorizationUser);
         assertNull(savedObjective.getId());

@@ -14,7 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static ch.puzzle.okr.TestHelper.*;
+import static ch.puzzle.okr.models.authorization.AuthorizationRole.READ_ALL_PUBLISHED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,5 +66,18 @@ class OverviewAuthorizationServiceTest {
 
         List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(5L), "");
         assertThat(List.of()).hasSameElementsAs(overviews);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
+        if (hasRoleWriteAll) {
+            when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        } else {
+            when(authorizationService.getAuthorizationUser())
+                    .thenReturn(mockAuthorizationUser(defaultUser(5L), List.of(), 7L, List.of(READ_ALL_PUBLISHED)));
+        }
+
+        assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());
     }
 }

@@ -28,13 +28,13 @@ public class TeamMapper {
         long chosenQuarterId = quarterId == null ? quarterBusinessService.getCurrentQuarter().getId() : quarterId;
         List<OrganisationDto> organisationDTOs = team.getAuthorizationOrganisation().stream()
                 .map(organisationMapper::toDto).toList();
-        return new TeamDto(team.getId(), team.getName(), organisationDTOs);
+        return new TeamDto(team.getId(), team.getVersion(), team.getName(), organisationDTOs);
     }
 
     public Team toTeam(TeamDto teamDto) {
         List<Organisation> organisations = teamDto.organisations().stream().map(organisationMapper::toOrganisation)
                 .toList();
-        return Team.Builder.builder().withId(teamDto.id()).withName(teamDto.name())
+        return Team.Builder.builder().withId(teamDto.id()).withVersion(teamDto.version()).withName(teamDto.name())
                 .withAuthorizationOrganisation(organisations).build();
     }
 }

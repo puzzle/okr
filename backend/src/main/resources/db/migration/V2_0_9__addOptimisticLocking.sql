@@ -10,6 +10,10 @@ alter table objective
     add column if not exists version int;
 alter table organisation
     add column if not exists version int;
+alter table person
+    add column if not exists version int;
+alter table team
+    add column if not exists version int;
 
 update alignment
 set version = 1
@@ -29,6 +33,12 @@ where version is null;
 update organisation
 set version = 1
 where version is null;
+update person
+set version = 1
+where version is null;
+update team
+set version = 1
+where version is null;
 
 alter table alignment
     alter column version set not null;
@@ -41,4 +51,8 @@ alter table completed
 alter table objective
     alter column version set not null;
 alter table organisation
+    alter column version set not null;
+alter table person
+    alter column version set not null;
+alter table team
     alter column version set not null;

@@ -12,24 +12,24 @@ truncate table action;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
-ALTER SEQUENCE sequence_team RESTART WITH 200;
+ALTER SEQUENCE sequence_action RESTART WITH 200;
+ALTER SEQUENCE sequence_alignment RESTART WITH 200;
+ALTER SEQUENCE sequence_check_in RESTART WITH 200;
+ALTER SEQUENCE sequence_completed RESTART WITH 200;
+ALTER SEQUENCE sequence_key_result RESTART WITH 200;
+ALTER SEQUENCE sequence_objective RESTART WITH 200;
+ALTER SEQUENCE sequence_organisation RESTART WITH 200;
 ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
-ALTER SEQUENCE sequence_objective RESTART WITH 200;
-ALTER SEQUENCE sequence_key_result RESTART WITH 200;
-ALTER SEQUENCE sequence_check_in RESTART WITH 200;
-ALTER SEQUENCE sequence_alignment RESTART WITH 200;
-ALTER SEQUENCE sequence_completed RESTART WITH 200;
-ALTER SEQUENCE sequence_organisation RESTART WITH 200;
-ALTER SEQUENCE sequence_action RESTART WITH 200;
+ALTER SEQUENCE sequence_team RESTART WITH 200;
 
-insert into person (id, email, firstname, lastname, username)
-values (1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
-       (11, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice'),
-       (21, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
-       (31, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
-       (41, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
-       (51, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
+insert into person (id, version, email, firstname, lastname, username)
+values (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
+       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice'),
+       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
+       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
+       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
+       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
 
 insert into quarter (id, label, start_date, end_date)
 values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
@@ -41,11 +41,11 @@ values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
        (7, 'GJ 23/24-Q2', '2023-10-01', '2023-12-31'),
        (8, 'GJ 23/24-Q3', '2024-01-01', '2024-03-31');
 
-insert into team (id, name)
-values (4, '/BBT'),
-       (8, 'we are cube.³'),
-       (5, 'Puzzle ITC'),
-       (6, 'LoremIpsum');
+insert into team (id, version, name)
+values (4, 1, '/BBT'),
+       (8, 1, 'we are cube.³'),
+       (5, 1, 'Puzzle ITC'),
+       (6, 1, 'LoremIpsum');
 
 insert into objective (id, version, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)

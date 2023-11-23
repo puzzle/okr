@@ -52,6 +52,7 @@ export class ObjectiveFormComponent implements OnInit {
       objective: {
         objectiveId?: number;
         teamId?: number;
+        teamVersion?: number;
       };
     },
   ) {}

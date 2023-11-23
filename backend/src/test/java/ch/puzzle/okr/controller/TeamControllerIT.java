@@ -44,8 +44,8 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, PUZZLE, new ArrayList<>());
-    static TeamDto teamOkrDto = new TeamDto(7L, "OKR", new ArrayList<>());
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, new ArrayList<>());
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", new ArrayList<>());
 
     private static final String CREATE_NEW_TEAM = """
             {
@@ -58,7 +58,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"name":"OKR","organisations":[]}""";
+            {"id":7,"version":4,"name":"OKR","organisations":[]}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -84,7 +84,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeams() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(2)))
@@ -94,7 +94,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(teamList);
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
         mvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON)).andExpectAll();
         BDDMockito.verify(teamMapper).toDto(teamOKR, null);
         BDDMockito.verify(teamMapper).toDto(teamPuzzle, null);
@@ -102,7 +102,7 @@ class TeamControllerIT {
 
     @Test
     void shouldGetAllTeamsIfTeamModelIsNull() throws Exception {
-        BDDMockito.given(teamAuthorizationService.getEntities()).willReturn(Collections.emptyList());
+        BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(Collections.emptyList());
 
         mvc.perform(get("/api/v2/teams?quarterId=1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(0)));
@@ -130,7 +130,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, "OKR-Team", new ArrayList<>());
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", new ArrayList<>());
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team")
                 .withAuthorizationOrganisation(new ArrayList<>()).build();
 
@@ -140,6 +140,7 @@ class TeamControllerIT {
         mvc.perform(put(URL_TEAM_1).contentType(MediaType.APPLICATION_JSON).content(UPDATE_TEAM)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(teamDto.id().intValue())))
+                .andExpect(jsonPath("$.version", Is.is(teamDto.version())))
                 .andExpect(jsonPath("$.name", Is.is(teamDto.name())));
     }
 

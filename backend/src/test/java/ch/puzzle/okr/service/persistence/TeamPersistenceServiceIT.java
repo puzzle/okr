@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
 class TeamPersistenceServiceIT {
@@ -90,6 +91,19 @@ class TeamPersistenceServiceIT {
 
         assertEquals(createdTeam.getId(), returnedTeam.getId());
         assertEquals("Updated Team", returnedTeam.getName());
+    }
+
+    @Test
+    void updateTeamShouldThrowExceptionWhenAlreadyUpdated() {
+        Team team = Team.Builder.builder().withVersion(1).withName("New Team").build();
+        createdTeam = teamPersistenceService.save(team);
+        Team changedTeam = Team.Builder.builder().withId(createdTeam.getId()).withVersion(0).withName("Changed Team")
+                .build();
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> teamPersistenceService.save(changedTeam));
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertTrue(exception.getReason().contains("updated or deleted by another user"));
     }
 
     @Test

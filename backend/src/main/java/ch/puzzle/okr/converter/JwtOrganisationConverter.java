@@ -34,6 +34,7 @@ public class JwtOrganisationConverter implements Converter<Jwt, List<String>> {
                 return organisations.stream().filter(o -> o.startsWith(organisationNamePrefix)).toList();
             }
         }
+        logger.warn("empty list of realms or organisations {}", realmAccess);
         return List.of();
     }
 }

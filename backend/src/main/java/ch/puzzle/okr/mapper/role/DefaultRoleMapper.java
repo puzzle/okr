@@ -1,4 +1,4 @@
-package ch.puzzle.okr.mapper;
+package ch.puzzle.okr.mapper.role;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationRole;
@@ -13,7 +13,7 @@ import java.util.Objects;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 @Component
-public class RoleMapper {
+public class DefaultRoleMapper implements RoleMapper {
     private static final String DELIMITER = ",";
 
     @Value("${okr.organisation.name.1stLevel}")
@@ -23,7 +23,8 @@ public class RoleMapper {
     @Value("${okr.user.champion.usernames}")
     private String okrChampionUsernames;
 
-    public List<AuthorizationRole> mapOrganisationNames(List<String> organisationNames, User user) {
+    @Override
+    public List<AuthorizationRole> mapAuthorizationRoles(List<String> organisationNames, User user) {
         List<AuthorizationRole> roles = new ArrayList<>();
         if (hasFirstLevelOrganisationName(organisationNames) || isOkrChampion(user)) {
             roles.addAll(List.of(READ_ALL_DRAFT, WRITE_ALL));

@@ -17,6 +17,7 @@ public class Overview implements WriteableInterface {
     @EmbeddedId
     private OverviewId overviewId;
     private String teamName;
+    private int teamVersion;
     private String objectiveTitle;
     @Enumerated(EnumType.STRING)
     private State objectiveState;
@@ -43,6 +44,7 @@ public class Overview implements WriteableInterface {
 
     private Overview(Builder builder) {
         overviewId = builder.overviewId;
+        teamVersion = builder.teamVersion;
         teamName = builder.teamName;
         objectiveTitle = builder.objectiveTitle;
         objectiveState = builder.objectiveState;
@@ -65,6 +67,10 @@ public class Overview implements WriteableInterface {
 
     public OverviewId getOverviewId() {
         return overviewId;
+    }
+
+    public int getTeamVersion() {
+        return teamVersion;
     }
 
     public String getTeamName() {
@@ -151,12 +157,12 @@ public class Overview implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "Overview{" + "overviewId=" + overviewId + ", teamName='" + teamName + '\'' + ", objectiveTitle='"
-                + objectiveTitle + '\'' + ", objectiveState=" + objectiveState + ", objectiveCreatedOn="
-                + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='" + quarterLabel + '\''
-                + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\''
-                + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
-                + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
+        return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName
+                + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
+                + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
+                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
+                + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
+                + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
                 + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
                 + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
                 + '}';
@@ -164,6 +170,7 @@ public class Overview implements WriteableInterface {
 
     public static final class Builder {
         private OverviewId overviewId;
+        private int teamVersion;
         private String teamName;
         private String objectiveTitle;
         private State objectiveState;
@@ -192,6 +199,11 @@ public class Overview implements WriteableInterface {
 
         public Builder withOverviewId(OverviewId overviewId) {
             this.overviewId = overviewId;
+            return this;
+        }
+
+        public Builder withTeamVersion(int teamVersion) {
+            this.teamVersion = teamVersion;
             return this;
         }
 

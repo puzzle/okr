@@ -24,12 +24,16 @@ public class TeamAuthorizationService {
 
     public Team createEntity(Team entity) {
         checkUserAuthorization("not authorized to create team");
-        return teamBusinessService.createTeam(entity);
+        Team savedTeam = teamBusinessService.createTeam(entity);
+        savedTeam.setWriteable(true);
+        return savedTeam;
     }
 
     public Team updateEntity(Team entity, Long id) {
         checkUserAuthorization("not authorized to update team");
-        return teamBusinessService.updateTeam(entity, id);
+        Team updatedTeam = teamBusinessService.updateTeam(entity, id);
+        updatedTeam.setWriteable(true);
+        return updatedTeam;
     }
 
     public void deleteEntity(Long id) {
@@ -37,14 +41,18 @@ public class TeamAuthorizationService {
         teamBusinessService.deleteTeam(id);
     }
 
-    public void checkUserAuthorization(String message) {
+    private void checkUserAuthorization(String message) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!hasRoleWriteAll(authorizationUser)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, message);
         }
     }
 
-    public List<Team> getEntities() {
-        return teamBusinessService.getAllTeams();
+    public List<Team> getAllTeams() {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        boolean isWritable = hasRoleWriteAll(authorizationUser);
+        List<Team> allTeams = teamBusinessService.getAllTeams();
+        allTeams.forEach(team -> team.setWriteable(isWritable));
+        return allTeams;
     }
 }

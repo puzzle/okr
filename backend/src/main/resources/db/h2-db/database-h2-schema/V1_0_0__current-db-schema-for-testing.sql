@@ -12,6 +12,7 @@ create sequence if not exists sequence_action;
 create table if not exists person
 (
     id        bigint       not null,
+    version   int          not null,
     email     varchar(250) not null,
     firstname varchar(50)  not null,
     lastname  varchar(50)  not null,
@@ -36,8 +37,9 @@ create table if not exists quarter
 
 create table if not exists team
 (
-    id   bigint       not null,
-    name varchar(250) not null,
+    id      bigint       not null,
+    version int          not null,
+    name    varchar(250) not null,
     primary key (id)
 );
 
@@ -144,7 +146,7 @@ create table action
 (
     id            bigint        not null
         primary key,
-        version int not null,
+    version       int           not null,
     action        varchar(4096) not null,
     priority      integer       not null,
     is_checked    boolean       not null,
@@ -159,6 +161,7 @@ create index if not exists idx_completed_objective
 DROP VIEW IF EXISTS OVERVIEW;
 CREATE VIEW OVERVIEW AS
 SELECT TQ.TEAM_ID          AS "TEAM_ID",
+       TQ.TEAM_VERSION     AS "TEAM_VERSION",
        TQ.NAME             AS "TEAM_NAME",
        TQ.QUARTER_ID       AS "QUARTER_ID",
        TQ.LABEL            AS "QUARTER_LABEL",
@@ -180,7 +183,7 @@ SELECT TQ.TEAM_ID          AS "TEAM_ID",
        C.ZONE              AS "CHECK_IN_ZONE",
        C.CONFIDENCE,
        C.CREATED_ON        AS "CHECK_IN_CREATED_ON"
-FROM (SELECT T.ID AS TEAM_ID, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
+FROM (SELECT T.ID AS TEAM_ID, T.VERSION AS TEAM_VERSION, T.NAME, Q.ID AS QUARTER_ID, Q.LABEL
       FROM TEAM T,
            QUARTER Q) TQ
          LEFT JOIN OBJECTIVE O ON TQ.TEAM_ID = O.TEAM_ID AND TQ.QUARTER_ID = O.QUARTER_ID

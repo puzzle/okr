@@ -14,10 +14,10 @@
         matTooltip="The objectives state is {{ objective.state.split('-')[0] | uppercase }}"
         matTooltipPosition="above"
         [attr.data-testId]="'objective-state'"
-        class="icon col-1 mt-1 ms-1 me-2"
+        class="icon col-1 ms-1 me-2"
         [src]="'assets/icons/' + objective.state"
       />
-      <header class="title col-10 ps-2 me-4 line-height">{{ objective.title }}</header>
+      <header class="title col-10 ps-2 line-height">{{ objective.title }}</header>
       <button
         *ngIf="isWritable"
         class="icon-button three-dot-menu"

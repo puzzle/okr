@@ -38,11 +38,6 @@ body {
   font-size: 1rem;
 }
 
-.icon {
-  width: 1.25rem !important;
-  height: 1.25rem !important;
-}
-
 .keyResult-attribute-show {
   background-color: $keyResult-attribute-bg;
   padding: 0.25em 0.75rem;
@@ -262,10 +257,4 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 
 .sub-title-keyresult {
   font-size: 0.9rem !important;
-}
-
-@media only screen and (max-width: 420px) {
-  .stretch-div {
-    width: 253px;
-  }
 }

@@ -7,9 +7,7 @@
     class="bg-inherit d-flex justify-content-center align-items-center"
     [ngClass]="[edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show', isDetail ? 'height' : '']"
   >
-    <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" class="text-black sub-title-keyresult" data-testid="confidence">
-      {{ checkIn.confidence }}/{{ max }}
-    </p>
+    <p class="fw-normal text-black sub-title-keyresult" data-testid="confidence">{{ checkIn.confidence }}/{{ max }}</p>
   </div>
 
   <mat-slider

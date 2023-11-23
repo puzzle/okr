@@ -42,16 +42,13 @@ public abstract class PersistenceBase<T, ID, R> {
 
     public void checkIdNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL_ON_MODEL);
-            // throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            // format("Missing identifier for %s", getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL);
         }
     }
 
     public OkrResponseStatusException createEntityNotFoundException(ID id) {
         throw new OkrResponseStatusException(HttpStatus.NOT_FOUND, ErrorMsg.MODEL_WITH_ID_NOT_FOUND,
                 List.of(getModelName(), id));
-        // return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
     }
 
     public T save(T model) throws OkrResponseStatusException {

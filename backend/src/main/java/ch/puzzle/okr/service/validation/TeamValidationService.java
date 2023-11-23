@@ -23,7 +23,6 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         checkIfTeamWithNameAlreadyExists(model.getName(), model.getId());
-        // Can't create team with already existing name
         validate(model);
     }
 

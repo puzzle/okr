@@ -60,7 +60,6 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         if (model == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.MODEL_NULL,
                     List.of(persistenceService.getModelName()));
-            // Given model %s is null
         }
     }
 
@@ -68,7 +67,6 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         if (id == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
                     List.of("ID", persistenceService.getModelName()));
-            // Id is null
         }
     }
 
@@ -76,7 +74,6 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         if (id != null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NOT_NULL,
                     List.of(persistenceService.getModelName(), id));
-            // Model %s cannot have id while create. Found id %s
         }
     }
 
@@ -84,8 +81,6 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
         if (!Objects.equals(id, modelId)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CHANGED,
                     List.of("ID", id, modelId));
-
-            // Id %s has changed to %s during update
         }
     }
 

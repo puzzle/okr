@@ -92,7 +92,6 @@ public class OverviewMapper {
         } else {
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorMsg.KEYRESULT_CONVERSION,
                     List.of(overview.getKeyResultType()));
-            // "The key result type %s can not be converted to a metric or ordinal DTO"
         }
     }
 

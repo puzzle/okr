@@ -43,7 +43,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, reason);
+        return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID);
     }
 
     public List<Objective> findObjectiveByTeamId(Long teamId) {
@@ -51,14 +51,14 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
     }
 
     public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(keyResultId, authorizationUser, SELECT_OBJECTIVE_BY_KEY_RESULT_ID, reason);
+        return findByAnyId(keyResultId, authorizationUser, SELECT_OBJECTIVE_BY_KEY_RESULT_ID);
     }
 
     public Objective findObjectiveByCheckInId(Long checkInId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(checkInId, authorizationUser, SELECT_OBJECTIVE_BY_CHECK_IN_ID, reason);
+        return findByAnyId(checkInId, authorizationUser, SELECT_OBJECTIVE_BY_CHECK_IN_ID);
     }
 
-    private Objective findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString, String reason) {
+    private Objective findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString) {
         checkIdNull(id);
         String fullQueryString = queryString + authorizationCriteria.appendObjective(authorizationUser);
         logger.debug("select objective by id={}: {}", id, fullQueryString);

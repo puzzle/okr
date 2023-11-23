@@ -32,14 +32,16 @@
     </div>
   </div>
 
-  <button
-    mat-button
-    color="primary"
-    class="fw-bold d-flex justify-content-start add-item-button"
-    (click)="addNewAction()"
-    [attr.data-testId]="'add-action-plan-line'"
-  >
-    <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
-    Weitere Action hinzufügen
-  </button>
+  <section class="p-0">
+    <button
+      mat-button
+      color="primary"
+      class="fw-bold"
+      [attr.data-testId]="'add-action-plan-line'"
+      (click)="addNewAction()"
+    >
+      <img src="assets/icons/new-icon.svg" alt="Add action button" />
+      Weitere Action hinzufügen
+    </button>
+  </section>
 </div>

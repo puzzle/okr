@@ -145,12 +145,6 @@ class ObjectiveBusinessServiceTest {
     }
 
     @Test
-    void verifyActiveObjectivesAmountOfTeam() {
-        objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter);
-        verify(objectiveBusinessService, times(1)).activeObjectivesAmountOfTeam(team1, quarter);
-    }
-
-    @Test
     void shouldDuplicateObjective() {
         KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withTitle("Ordinal").build();
         KeyResult keyResultOrdinal2 = KeyResultOrdinal.Builder.builder().withTitle("Ordinal2").build();

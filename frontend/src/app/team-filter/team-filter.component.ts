@@ -77,10 +77,6 @@ export class TeamFilterComponent implements OnInit {
     return this.activeTeams.length == 0 || areEqual(this.activeTeams, allTeamsIds);
   }
 
-  getAllObjectivesCount(teams: Team[]) {
-    return teams.map((team) => team.activeObjectives).reduce((a, b) => a + b, 0);
-  }
-
   selectAll() {
     if (this.activeTeams.length == 0) {
       return;

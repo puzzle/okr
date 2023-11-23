@@ -17,12 +17,6 @@ public class TeamValidationService extends ValidationBase<Team, Long, TeamReposi
         super(teamPersistenceService);
     }
 
-    public void validateOnGetActiveObjectives(Team team) {
-        throwExceptionWhenModelIsNull(team);
-        throwExceptionWhenIdIsNull(team.getId());
-        doesEntityExist(team.getId());
-    }
-
     @Override
     public void validateOnCreate(Team model) {
         throwExceptionWhenModelIsNull(model);

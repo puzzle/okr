@@ -192,13 +192,6 @@ class ObjectivePersistenceServiceIT {
     }
 
     @Test
-    void countByTeamAndQuarterShouldReturnActiveObjectivesOfTeamByQuarter() {
-        Integer count = objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(5L),
-                quarterPersistenceService.findById(2L));
-        assertEquals(2, count);
-    }
-
-    @Test
     void countByTeamAndQuarterShouldThrowErrorIfQuarterDoesNotExist() {
         Team teamId5 = teamPersistenceService.findById(5L);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,

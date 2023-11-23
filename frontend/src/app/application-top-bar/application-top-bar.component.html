@@ -1,17 +1,17 @@
 <div id="topBarHeight">
   <div id="okrTopbar">
     <span class="d-flex h-100 align-items-center ps-4">
-      <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="214" />
+      <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="140" />
     </span>
     <div class="d-flex align-items-center">
-      <div class="px-2" *ngIf="hasAdminAccess | async" (click)="openTeamManagement()">
+      <div *ngIf="hasAdminAccess | async" (click)="openTeamManagement()">
         <button class="topBarEntry btn" [attr.data-testId]="'team-management'">
           <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white">group</mat-icon>
           <span class="d-none d-md-flex"> Teamverwaltung </span>
         </button>
       </div>
 
-      <div class="px-2">
+      <div>
         <a class="topBarEntry" href="https://wiki.puzzle.ch/Puzzle/OKRs">
           <mat-icon aria-hidden="false" aria-label="Help icon" class="text-white" fontIcon="help_outline"></mat-icon>
           <span class="d-none d-md-flex"> Hilfe </span>
@@ -26,7 +26,7 @@
         class="topBarEntry text-white me-md-5 me-1"
         mat-button
       >
-        <span class="d-flex align-items-center gap-1">
+        <span class="d-flex align-items-center">
           <span class="mt-1">
             <mat-icon>person_outline</mat-icon>
           </span>

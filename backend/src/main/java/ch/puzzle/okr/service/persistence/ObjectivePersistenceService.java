@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.repository.ObjectiveRepository;
@@ -42,23 +43,23 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         return getRepository().countByTeamAndQuarter(team, quarter);
     }
 
-    public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID);
+    public Objective findObjectiveById(Long objectiveId, AuthorizationUser authorizationUser, ErrorDto error) {
+        return findByAnyId(objectiveId, authorizationUser, SELECT_OBJECTIVE_BY_ID, error);
     }
 
     public List<Objective> findObjectiveByTeamId(Long teamId) {
         return getRepository().findObjectivesByTeamId(teamId);
     }
 
-    public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(keyResultId, authorizationUser, SELECT_OBJECTIVE_BY_KEY_RESULT_ID);
+    public Objective findObjectiveByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser, ErrorDto error) {
+        return findByAnyId(keyResultId, authorizationUser, SELECT_OBJECTIVE_BY_KEY_RESULT_ID, error);
     }
 
-    public Objective findObjectiveByCheckInId(Long checkInId, AuthorizationUser authorizationUser, String reason) {
-        return findByAnyId(checkInId, authorizationUser, SELECT_OBJECTIVE_BY_CHECK_IN_ID);
+    public Objective findObjectiveByCheckInId(Long checkInId, AuthorizationUser authorizationUser, ErrorDto error) {
+        return findByAnyId(checkInId, authorizationUser, SELECT_OBJECTIVE_BY_CHECK_IN_ID, error);
     }
 
-    private Objective findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString) {
+    private Objective findByAnyId(Long id, AuthorizationUser authorizationUser, String queryString, ErrorDto error) {
         checkIdNull(id);
         String fullQueryString = queryString + authorizationCriteria.appendObjective(authorizationUser);
         logger.debug("select objective by id={}: {}", id, fullQueryString);
@@ -68,7 +69,7 @@ public class ObjectivePersistenceService extends PersistenceBase<Objective, Long
         try {
             return typedQuery.getSingleResult();
         } catch (NoResultException exception) {
-            throw new OkrResponseStatusException(UNAUTHORIZED, ErrorMsg.UNAUTHORIZED, List.of(id));
+            throw new OkrResponseStatusException(UNAUTHORIZED, error);
         }
     }
 }

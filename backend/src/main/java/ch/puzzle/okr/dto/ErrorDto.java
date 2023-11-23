@@ -11,6 +11,10 @@ public class ErrorDto {
         this.params = params.stream().map(Object::toString).toList();
     }
 
+    public ErrorDto(String errorKey, String param) {
+        this(errorKey, List.of(param));
+    }
+
     public String getErrorKey() {
         return errorKey;
     }

@@ -3,7 +3,10 @@
   id="confidence"
   *ngIf="checkIn.confidence"
 >
-  <div class="bg-inherit" [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'">
+  <div
+    class="bg-inherit height d-flex justify-content-center align-items-center"
+    [ngClass]="edit ? 'keyResult-attribute-edit' : 'keyResult-attribute-show'"
+  >
     <p [ngClass]="edit ? 'fw-normal' : 'fw-bold'" class="text-black" data-testid="confidence">
       {{ checkIn.confidence }}/{{ max }}
     </p>

@@ -63,7 +63,7 @@ body pzsh-backdrop {
 }
 
 .text-small {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .dialog {
@@ -82,8 +82,8 @@ body pzsh-backdrop {
 }
 
 .panel {
-  @extend .col-sm-12;
-  @extend .col-md-5;
+  max-width: 800px;
+  @extend .col-md-12;
 }
 
 .backdrop {
@@ -187,8 +187,6 @@ input[type="text"] {
   margin-bottom: 6.5px;
 }
 
-@media only screen and (max-width: 420px) {
-  .stretch-div {
-    width: 253px;
-  }
+.dialog-detail-button {
+  margin-left: -8px;
 }

@@ -7,19 +7,19 @@
 }
 
 .sub-title-keyresult {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .ordinal-zone-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .scoring-detail {
-  width: 81%;
+  width: 81.5%;
 }
 
 .confidence-container {
-  width: 19%;
+  width: 18.5%;
 }
 
 .ordinal-scoring-boxes {
@@ -42,4 +42,29 @@
   height: 12px;
   width: 12px;
   margin-bottom: 3px;
+}
+
+.scoring-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metric-label-div {
+  flex-direction: row;
+  column-gap: 3.33%;
+}
+
+@media screen and (max-width: 1240px) {
+  .scoring-detail {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .metric-label-div {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    row-gap: 10px;
+  }
 }

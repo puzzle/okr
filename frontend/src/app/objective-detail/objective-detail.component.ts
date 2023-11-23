@@ -5,6 +5,8 @@ import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { KeyResultDialogComponent } from '../shared/dialog/key-result-dialog/key-result-dialog.component';
+import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-objective-detail',
@@ -20,6 +22,7 @@ export class ObjectiveDetailComponent {
     private objectiveService: ObjectiveService,
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +50,29 @@ export class ObjectiveDetailComponent {
       .subscribe((result) => {
         if (result?.openNew) {
           this.openAddKeyResultDialog();
+        }
+        this.refreshDataService.markDataRefresh();
+      });
+  }
+
+  openEditObjectiveDialog() {
+    this.dialog
+      .open(ObjectiveFormComponent, {
+        width: '45em',
+        height: 'auto',
+        data: {
+          objective: {
+            objectiveId: this.objective$.getValue().id,
+            teamId: this.objective$.value.teamId,
+          },
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result.delete) {
+          this.router.navigate(['/']);
+        } else {
+          this.loadObjective(this.objective$.value.id);
         }
         this.refreshDataService.markDataRefresh();
       });

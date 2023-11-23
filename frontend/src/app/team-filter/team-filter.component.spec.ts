@@ -152,16 +152,6 @@ describe('TeamFilterComponent', () => {
     expect(component.areAllTeamsShown()).toBe(expected);
   });
 
-  it.each([
-    [[4, 5, 8], 17],
-    [[], 0],
-  ])('getAllObjectivesCount', (activeObjectivePerTeam: number[], sum: number) => {
-    const teams = activeObjectivePerTeam.map((e) => {
-      return { id: 1, version: 2, name: '', activeObjectives: e } as Team;
-    });
-    expect(component.getAllObjectivesCount(teams)).toBe(sum);
-  });
-
   it('select all', () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     jest.spyOn(component, 'changeTeamFilterParams');

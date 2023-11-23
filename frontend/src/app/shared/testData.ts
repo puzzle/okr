@@ -59,21 +59,18 @@ export const team1: Team = {
   id: 1,
   version: 2,
   name: 'Team2',
-  activeObjectives: 1,
 } as Team;
 
 export const team2: Team = {
   id: 2,
   version: 3,
   name: 'Team2',
-  activeObjectives: 2,
 } as Team;
 
 export const team3: Team = {
   id: 3,
   version: 4,
   name: 'Team3',
-  activeObjectives: 3,
 } as Team;
 
 export const teamList = [team1, team2, team3];

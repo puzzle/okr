@@ -26,10 +26,9 @@ public class TeamMapper {
 
     public TeamDto toDto(Team team, Long quarterId) {
         long chosenQuarterId = quarterId == null ? quarterBusinessService.getCurrentQuarter().getId() : quarterId;
-        Integer activeObjectives = teamBusinessService.activeObjectivesAmountOfTeam(team, chosenQuarterId);
         List<OrganisationDto> organisationDTOs = team.getAuthorizationOrganisation().stream()
                 .map(organisationMapper::toDto).toList();
-        return new TeamDto(team.getId(), team.getVersion(), team.getName(), activeObjectives, organisationDTOs);
+        return new TeamDto(team.getId(), team.getVersion(), team.getName(), organisationDTOs);
     }
 
     public Team toTeam(TeamDto teamDto) {

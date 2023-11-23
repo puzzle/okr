@@ -118,9 +118,4 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
         objectivePersistenceService.deleteById(id);
     }
-
-    public Integer activeObjectivesAmountOfTeam(Team team, Quarter quarter) {
-        // validate quarter in objective validator by using the quarter validator
-        return objectivePersistenceService.countByTeamAndQuarter(team, quarter);
-    }
 }

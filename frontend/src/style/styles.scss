@@ -63,7 +63,7 @@ body pzsh-backdrop {
 }
 
 .text-small {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .dialog {
@@ -82,8 +82,8 @@ body pzsh-backdrop {
 }
 
 .panel {
-  @extend .col-sm-12;
-  @extend .col-md-5;
+  max-width: 800px;
+  @extend .col-md-12;
 }
 
 .backdrop {
@@ -183,11 +183,19 @@ input[type="text"] {
 .stretch-div {
   width: 100%;
   background-image: url("./../assets/images/scoring-stars.svg");
-  height: 27px;
+  height: 21px;
+  margin-bottom: 6.5px;
 }
 
-@media only screen and (max-width: 420px) {
-  .stretch-div {
-    width: 253px;
-  }
+.dialog-detail-button {
+  margin-left: -8px;
+}
+
+#objective-form-field .mdc-notched-outline__trailing {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
+  width: 220px;
 }

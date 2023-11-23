@@ -49,8 +49,8 @@
         <div class="d-flex flex-column gap-2 col-6">
           <label class="text-black" for="quarter">Quartal</label>
           <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
-            <option *ngFor="let quarter of quarters$ | async" [value]="quarter.id">
-              {{ quarter.label }}
+            <option *ngFor="let quarter of quarters$ | async; let i = index" [value]="quarter.id">
+              {{ getQuarterLabel(quarter, i) }}
             </option>
           </select>
         </div>

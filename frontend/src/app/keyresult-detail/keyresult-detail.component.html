@@ -7,132 +7,142 @@
           <mat-icon>close</mat-icon>
         </button>
       </div>
-      <div class="d-flex justify-content-between mb-3">
-        <div>
-          {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
-        </div>
-        <div class="d-flex align-items-center">
-          <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
-          <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
-        </div>
-        <span *ngIf="keyResult?.objective?.quarter as quarter"
-          >{{ quarter.startDate | date: DATE_FORMAT }} - {{ quarter.endDate | date: DATE_FORMAT }}</span
-        >
-      </div>
-      <div class="d-flex justify-content-between mb-4 align-items-center">
-        <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
-
-        <span class="text-small d-flex align-items-center flex-column">
-          Confidence
-          <app-confidence [checkIn]="keyResult.lastCheckIn!" [edit]="false" class="bg-display-element"></app-confidence>
-        </span>
-      </div>
-
-      <div class="d-flex gap-4 flex-row">
-        <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
-          <div class="d-flex justify-content-start gap-5 w-100">
-            <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
-              Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
-            </p>
-            <p
-              *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
-              class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center gap-1"
-              [ngClass]="{
-                'border-error': isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)
-              }"
-            >
-              <span
-                class="text-error"
-                *ngIf="isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)"
-                >!</span
-              >
-              Aktuell:
-              <span>
-                {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}
-              </span>
-            </p>
-            <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
-              Stretch Goal: {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}
-            </p>
+      <div class="me-3">
+        <div class="d-flex justify-content-between mb-3">
+          <div>
+            {{ "KEY_RESULT_Type." + keyResult.keyResultType | translate }}
           </div>
-        </ng-container>
+          <div class="d-flex align-items-center">
+            <img alt="person icon" class="me-1" height="10" src="assets/icons/person-icon.svg" width="10" />
+            <p *ngIf="keyResult.owner as owner">{{ owner.firstname }} {{ owner.lastname }}</p>
+          </div>
+          <span *ngIf="keyResult?.objective?.quarter as quarter">{{ quarter.label }}</span>
+        </div>
 
-        <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
-          <div class="d-flex justify-content-between mb-4 w-100">
-            <div class="ordinal-col h-auto">
-              <p class="ordinal-zone-title">Commit</p>
-              <div class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
-                {{ keyResultOrdinal.commitZone }}
-              </div>
-            </div>
-            <div class="ordinal-col h-auto">
-              <p class="ordinal-zone-title">Target</p>
-              <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">{{ keyResultOrdinal.targetZone }}</p>
-            </div>
-            <div class="ordinal-col h-auto">
-              <p class="ordinal-zone-title">Stretch</p>
-              <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
-                {{ keyResultOrdinal.stretchZone }}
+        <div class="scoring-section">
+          <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
+          <span class="text-small d-flex align-items-center flex-column mb-2 ms-3">
+            Confidence
+            <app-confidence
+              [checkIn]="keyResult.lastCheckIn!"
+              [edit]="false"
+              class="bg-display-element"
+            ></app-confidence>
+          </span>
+        </div>
+
+        <div class="d-flex gap-4 flex-row mt-2">
+          <ng-container *ngIf="keyResult.keyResultType == 'metric' && castToMetric(keyResult) as keyResultMetric">
+            <div class="d-flex justify-content-start w-100 metric-label-div">
+              <p class="keyResult-detail-attribute-show rounded-5 p-2 d-flex justify-content-center metric-col">
+                Baseline: {{ keyResultMetric.baseline | unitValueTransformation: keyResultMetric.unit.toString() }}
+              </p>
+              <p
+                *ngIf="keyResultMetric.lastCheckIn as lastCheckIn"
+                class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center gap-1"
+                [ngClass]="{
+                  'border-error': isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)
+                }"
+              >
+                <span
+                  class="text-error"
+                  *ngIf="isInValid(keyResultMetric.baseline, keyResultMetric.stretchGoal, +lastCheckIn.value)"
+                  >!</span
+                >
+                Aktuell:
+                <span>
+                  {{ +lastCheckIn.value | unitValueTransformation: keyResultMetric.unit.toString() }}
+                </span>
+              </p>
+              <p class="keyResult-detail-attribute-show rounded-5 p-2 metric-col d-flex justify-content-center">
+                Stretch Goal:
+                {{ keyResultMetric.stretchGoal | unitValueTransformation: keyResultMetric.unit.toString() }}
               </p>
             </div>
-          </div>
-        </ng-container>
-      </div>
+          </ng-container>
 
-      <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
-        <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</p>
-        <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
-        <span class="d-flex justify-content-start">
-          <button
-            (click)="checkInHistory()"
-            class="px-0"
-            color="primary"
-            disableRipple="true"
-            mat-button
-            [attr.data-testId]="'show-all-checkins'"
-          >
-            Alle Check-ins anzeigen
-          </button>
-        </span>
-      </div>
-
-      <div class="mt-3 mb-4">
-        <h2 class="sub-title-keyresult fw-bold">Beschrieb</h2>
-        <p class="linebreak">{{ keyResult.description }}</p>
-      </div>
-
-      <div *ngIf="keyResult.actionList?.length != 0" class="mt-3 mb-4">
-        <h2 class="sub-title-keyresult fw-bold">Action Plan</h2>
-        <div *ngFor="let action of keyResult.actionList">
-          <img
-            src="{{ action.isChecked ? '../assets/icons/checked_checkbox.svg' : '../assets/icons/empty_checkbox.svg' }}"
-            alt="checkbox"
-            class="action-checkbox"
-          />
-          {{ action.action }}
+          <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
+            <div class="d-flex justify-content-between mb-4 w-100">
+              <div class="ordinal-col h-auto">
+                <p class="ordinal-zone-title">Commit</p>
+                <div class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                  {{ keyResultOrdinal.commitZone }}
+                </div>
+              </div>
+              <div class="ordinal-col h-auto">
+                <p class="ordinal-zone-title">Target</p>
+                <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                  {{ keyResultOrdinal.targetZone }}
+                </p>
+              </div>
+              <div class="ordinal-col h-auto">
+                <p class="ordinal-zone-title">Stretch</p>
+                <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                  {{ keyResultOrdinal.stretchZone }}
+                </p>
+              </div>
+            </div>
+          </ng-container>
         </div>
-      </div>
 
-      <div class="d-flex align-items-center flex-row justify-content-start gap-3">
-        <button
-          *ngIf="!isComplete && keyResult.writeable"
-          cdkFocusInitial
-          color="primary"
-          mat-flat-button
-          (click)="openCheckInForm()"
-          [attr.data-testId]="'add-check-in'"
-        >
-          Check-in erfassen
-        </button>
-        <button
-          *ngIf="!isComplete && keyResult.writeable"
-          (click)="openEditKeyResultDialog(keyResult)"
-          [attr.data-testId]="'edit-keyResult'"
-          color="primary"
-          mat-button
-        >
-          Key Result bearbeiten
-        </button>
+        <div *ngIf="keyResult.lastCheckIn as checkIn" class="mt-4">
+          <p class="sub-title-keyresult fw-bold mb-1">Letztes Check-in ({{ checkIn.createdOn | date: DATE_FORMAT }})</p>
+          <p class="linebreak" *ngIf="checkIn.changeInfo">{{ checkIn.changeInfo }}</p>
+          <span class="d-flex justify-content-start">
+            <button
+              (click)="checkInHistory()"
+              class="px-2 dialog-detail-button"
+              color="primary"
+              disableRipple="true"
+              mat-button
+              [attr.data-testId]="'show-all-checkins'"
+            >
+              Alle Check-ins anzeigen
+            </button>
+          </span>
+        </div>
+
+        <div class="mt-3 mb-4">
+          <p class="sub-title-keyresult fw-bold mb-1">Beschrieb</p>
+          <p class="linebreak" *ngIf="keyResult.description === ''">-</p>
+          <p class="linebreak" *ngIf="keyResult.description !== ''">{{ keyResult.description }}</p>
+        </div>
+
+        <div *ngIf="keyResult.actionList?.length != 0" class="mt-3 mb-4">
+          <h2 class="sub-title-keyresult fw-bold">Action Plan</h2>
+          <div *ngFor="let action of keyResult.actionList" class="ms-2">
+            <img
+              src="{{
+                action.isChecked ? '../assets/icons/checked_checkbox.svg' : '../assets/icons/empty_checkbox.svg'
+              }}"
+              alt="checkbox"
+              class="action-checkbox me-1"
+            />
+            {{ action.action }}
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center flex-row justify-content-start gap-3">
+          <button
+            *ngIf="!isComplete && keyResult.writeable"
+            cdkFocusInitial
+            color="primary"
+            mat-flat-button
+            (click)="openCheckInForm()"
+            [attr.data-testId]="'add-check-in'"
+          >
+            Check-in erfassen
+          </button>
+          <button
+            *ngIf="!isComplete && keyResult.writeable"
+            (click)="openEditKeyResultDialog(keyResult)"
+            [attr.data-testId]="'edit-keyResult'"
+            color="primary"
+            mat-button
+          >
+            Key Result bearbeiten
+          </button>
+        </div>
       </div>
     </div>
   </ng-container>

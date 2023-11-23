@@ -81,14 +81,6 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void activeObjectivesAmountOfTeamShouldBeSuccessful() throws ResponseStatusException {
-        Quarter quarter = Quarter.Builder.builder().withLabel("GJ 23/24-Q1").build();
-        Mockito.when(quarterService.getQuarterById(any())).thenReturn(quarter);
-        Mockito.when(objectiveBusinessService.activeObjectivesAmountOfTeam(team1, quarter)).thenReturn(69);
-        assertEquals(69, teamBusinessService.activeObjectivesAmountOfTeam(team1, 1L));
-    }
-
-    @Test
     void shouldSaveANewTeam() {
         Team team = Team.Builder.builder().withName("OKR-TEAM").withAuthorizationOrganisation(new ArrayList<>())
                 .build();

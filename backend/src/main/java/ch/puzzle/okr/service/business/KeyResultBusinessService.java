@@ -54,9 +54,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
 
     @Override
     public KeyResult updateEntity(Long id, KeyResult keyResult, AuthorizationUser authorizationUser) {
-        throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.UNSUPPORTED_METHOD_IN_CLASS,
-                List.of(getClass().getSimpleName()));
-        // unsupported method in class {} use updateEntities() instead
+        throw new IllegalCallerException("unsupported method 'updateEntity' use updateEntities() instead");
     }
 
     @Transactional

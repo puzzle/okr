@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models;
 
-import org.springframework.data.annotation.Transient;
+import ch.puzzle.okr.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -19,7 +19,7 @@ public class OkrResponseStatusException extends ResponseStatusException {
     }
 
     public OkrResponseStatusException(HttpStatus status, List<ErrorDto> errors) {
-        super(status);
+        super(status, errors.get(0).getErrorKey());
         this.errors = errors;
     }
 }

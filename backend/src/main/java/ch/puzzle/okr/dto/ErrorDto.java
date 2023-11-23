@@ -1,4 +1,4 @@
-package ch.puzzle.okr.models;
+package ch.puzzle.okr.dto;
 
 import java.util.List;
 

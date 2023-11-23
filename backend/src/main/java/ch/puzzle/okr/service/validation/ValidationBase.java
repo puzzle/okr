@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.models.ErrorDto;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.ErrorMsg;
 import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.service.persistence.PersistenceBase;
@@ -13,9 +13,6 @@ import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @param <T>

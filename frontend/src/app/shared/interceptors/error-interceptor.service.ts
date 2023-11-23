@@ -30,7 +30,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (!this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
       const errors = response.error.errors;
       errors.forEach((error: { errorKey: string; params: string[] }) => {
-        const template = this.translate.instant('TRANSLATIONS.' + error.errorKey);
+        const template = this.translate.instant('ERRORS.' + error.errorKey);
         const message = template.format(error.params);
         this.toasterService.showError(message);
       });

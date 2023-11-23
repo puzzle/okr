@@ -11,6 +11,7 @@ export class ConfidenceComponent implements OnChanges {
   min: number = 1;
   max: number = 10;
   @Input() edit: boolean = true;
+  @Input() isDetail: boolean = true;
   @Input() checkIn!: CheckInMin;
 
   ngOnChanges(changes: SimpleChanges) {

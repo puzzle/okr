@@ -102,8 +102,8 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
             } else if (keyResult.getKeyResultType().equals("ordinal")) {
                 KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-")
-                        .withStretchZone("-").build();
+                        .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-").withStretchZone("-")
+                        .build();
                 keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
             }
         }

@@ -8,14 +8,14 @@ export class ToasterService {
   constructor(private toastr: ToastrService) {}
 
   showSuccess(msg: string) {
-    this.toastr.success(msg, 'Success');
+    this.toastr.success(msg, 'Erfolgreich');
   }
 
   showError(msg: string) {
-    this.toastr.error(msg, 'Error');
+    this.toastr.error(msg, 'Fehler');
   }
 
-  showInfo() {
-    this.toastr.info('Hello world!', 'Information');
+  showWarn(msg: string) {
+    this.toastr.warning(msg, 'Warnung!');
   }
 }

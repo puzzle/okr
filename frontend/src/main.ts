@@ -11,7 +11,7 @@ if (environment.production) {
 
 declare global {
   interface String {
-    format(length: number): string;
+    format(): string;
   }
 }
 

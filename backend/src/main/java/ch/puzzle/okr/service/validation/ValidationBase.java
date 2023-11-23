@@ -10,9 +10,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.MatchResult;
+import java.util.regex.Pattern;
 
 /**
  * @param <T>
@@ -95,10 +95,20 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
-            List<ErrorDto> list = violations.stream().map(
-                    e -> new ErrorDto(e.getMessage(), List.of(persistenceService.getModelName(), e.getPropertyPath())))
-                    .toList();
+            List<ErrorDto> list = violations.stream().map(e -> {
+                List<String> attributes = new ArrayList<>(
+                        List.of(persistenceService.getModelName(), e.getPropertyPath().toString()));
+                attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate()));
+                String errorKey = e.getMessage().replaceAll("_\\{.*", "");
+                return new ErrorDto(errorKey, Collections.singletonList(attributes));
+            }).toList();
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, list);
         }
+    }
+
+    private List<String> getAttributes(String message, String messageTemplate) {
+        String pattern = messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
+
+        return Pattern.compile(pattern).matcher(message).results().map(MatchResult::group).toList();
     }
 }

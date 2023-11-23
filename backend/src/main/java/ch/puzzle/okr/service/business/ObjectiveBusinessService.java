@@ -96,13 +96,13 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
             if (keyResult.getKeyResultType().equals("metric")) {
                 KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(authorizationUser.user()).withUnit(((KeyResultMetric) keyResult).getUnit())
+                        .withOwner(keyResult.getOwner()).withUnit(((KeyResultMetric) keyResult).getUnit())
                         .withBaseline(0D).withStretchGoal(1D).build();
                 keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
             } else if (keyResult.getKeyResultType().equals("ordinal")) {
                 KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
-                        .withOwner(authorizationUser.user()).withCommitZone("-").withTargetZone("-")
+                        .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-")
                         .withStretchZone("-").build();
                 keyResultBusinessService.createEntity(keyResultOrdinal, authorizationUser);
             }

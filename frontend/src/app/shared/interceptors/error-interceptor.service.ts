@@ -53,7 +53,10 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
   }
 
-  handleSuccess(response: HttpEvent<any>, method: string) {
+  handleSuccess(response: any, method: string) {
+    if (this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+      return;
+    }
     switch (method) {
       case 'POST': {
         this.toasterService.showSuccess('Element wurde erfolgreich erstellt');

@@ -68,7 +68,6 @@ export class TeamManagementComponent implements OnInit {
         id: this.data.team.id,
         version: this.data.team.version,
       } as Team;
-      console.log('--------------------------- updated team=' || updatedTeam);
       this.teamService.updateTeam(updatedTeam).subscribe((result) => {
         this.dialogRef.close(result);
       });

@@ -175,7 +175,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   removeStyleClass() {
-    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch'];
+    let classArray: string[] = ['score-red', 'score-green', 'score-yellow', 'score-stretch', 'border-right'];
     for (let classToRemove of classArray) {
       this.commitElement?.nativeElement.classList.remove(classToRemove);
       this.targetElement?.nativeElement.classList.remove(classToRemove);

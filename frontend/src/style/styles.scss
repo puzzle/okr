@@ -123,13 +123,17 @@ input[type="text"] {
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
+.mat-mdc-checkbox .mdc-form-field {
+  font-size: 1rem !important;
+}
+
 .dialog-form-field-error {
   resize: none;
   outline: $error-color 2px solid !important;
 }
 
 .custom-select {
-  border: solid 1px #dddddd;
+  border: solid 1px #909090;
   padding: 0.44rem 0.625rem 0.375rem 0.625rem;
   cursor: pointer;
   width: 9.625rem;

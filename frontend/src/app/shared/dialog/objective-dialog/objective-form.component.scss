@@ -31,10 +31,3 @@
     margin-top: 1rem;
   }
 }
-
-@media only screen and (max-width: 400px) {
-  .mat-mdc-dialog-actions .mat-button-base + .mat-button-base,
-  .mat-mdc-dialog-actions .mat-mdc-button-base + .mat-mdc-button-base {
-    margin-left: 0;
-  }
-}

@@ -21,9 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,57 +80,57 @@ class UserValidationServiceTest {
     private static Stream<Arguments> firstNameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 51),
-                        List.of("Attribute firstname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
                 arguments(StringUtils.repeat('1', 1),
-                        List.of("Attribute firstname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
                 arguments("",
-                        List.of("Missing attribute firstname when saving user",
-                                "Attribute firstname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
                 arguments(" ",
-                        List.of("Missing attribute firstname when saving user",
-                                "Attribute firstname must have size between 2 and 50 characters when saving user")),
-                arguments("         ", List.of("Missing attribute firstname when saving user")),
-                arguments(null, List.of("Missing attribute firstname when saving user",
-                        "Attribute firstname can not be null when saving user")));
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("firstname", "User", "2", "50")))),
+                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("firstname", "User")),
+                        new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("firstname", "User")))));
     }
 
     private static Stream<Arguments> lastNameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 51),
-                        List.of("Attribute lastname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
                 arguments(StringUtils.repeat('1', 1),
-                        List.of("Attribute lastname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
                 arguments("",
-                        List.of("Missing attribute lastname when saving user",
-                                "Attribute lastname must have size between 2 and 50 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
                 arguments(" ",
-                        List.of("Missing attribute lastname when saving user",
-                                "Attribute lastname must have size between 2 and 50 characters when saving user")),
-                arguments("         ", List.of("Missing attribute lastname when saving user")),
-                arguments(null, List.of("Missing attribute lastname when saving user",
-                        "Attribute lastname can not be null when saving user")));
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("lastname", "User", "2", "50")))),
+                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("lastname", "User")),
+                        new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("lastname", "User")))));
     }
 
     private static Stream<Arguments> emailValidationArguments() {
         return Stream.of(
                 arguments(("1".repeat(251)),
-                        List.of("Attribute email must have size between 2 and 250 characters when saving user",
-                                "Attribute email should be valid when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("email", "User", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")))),
                 arguments(("1"),
-                        List.of("Attribute email should be valid when saving user",
-                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("email", "User", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")))),
                 arguments((""),
-                        List.of("Missing attribute email when saving user",
-                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("email", "User", "2", "250")))),
                 arguments((" "),
-                        List.of("Missing attribute email when saving user",
-                                "Attribute email should be valid when saving user",
-                                "Attribute email must have size between 2 and 250 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")),
+                                new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("email", "User", "2", "250")))),
                 arguments(("       "),
-                        List.of("Missing attribute email when saving user",
-                                "Attribute email should be valid when saving user")),
-                arguments(null, List.of("Attribute email can not be null when saving user",
-                        "Missing attribute email when saving user")));
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")),
+                                new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("email", "User")),
+                        new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("email", "User")))));
     }
 
     @Test
@@ -220,67 +218,44 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("firstNameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname(name).withLastname("lastname")
                 .withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("lastNameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname").withLastname(name)
                 .withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("emailValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withEmail(email).withFirstname("firstname").withLastname("lastname")
                 .withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        System.out.println(Arrays.toString(Arrays.stream(exceptionParts).toArray()));
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-            System.out.println(errorArray[i].strip());
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @Test
@@ -352,88 +327,58 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("userNameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname("lastname").withUsername(name).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("firstNameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenFirstnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname(name)
                 .withLastname("lastname").withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("lastNameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenLastnameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname(name).withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("emailValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenEmailIsInvalid(String email, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenEmailIsInvalid(String email, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withId(3L).withEmail(email).withFirstname("firstname")
                 .withLastname("lastname").withUsername("username").build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        System.out.println(Arrays.toString(Arrays.stream(exceptionParts).toArray()));
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-            System.out.println(errorArray[i].strip());
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @Test

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss'],
 })
 export class ConfirmDialogComponent implements OnInit {
   dialogTitle: string = '';
@@ -21,7 +22,13 @@ export class ConfirmDialogComponent implements OnInit {
       }
     } else {
       this.dialogTitle = this.data.title + ' löschen';
-      this.dialogText = (this.data.isAction ? 'Soll diese ' : 'Soll dieses ') + this.data.title + ' gelöscht werden?';
+      this.dialogText = this.data.isAction
+        ? 'Möchtest du diese Action wirklich löschen?'
+        : 'Möchtest du dieses ' +
+          this.data.title +
+          ' wirklich löschen? Zugehörige ' +
+          (this.data.title == 'Objective' ? 'Key Results' : 'Check-ins') +
+          ' werden dadurch ebenfalls gelöscht!';
     }
   }
 

@@ -35,7 +35,7 @@ describe('OKR Objective e2e tests', () => {
 
       it(`Create objective, should display error message`, () => {
         cy.getByTestId('add-objective').first().click();
-        cy.getByTestId('description').first().clear().type('description');
+        cy.getByTestId('title').first().type('description').clear();
         cy.contains('Dieses Feld muss ausgefüllt sein');
         cy.getByTestId('safe').should('be.disabled');
         cy.getByTestId('safe-draft').should('be.disabled');

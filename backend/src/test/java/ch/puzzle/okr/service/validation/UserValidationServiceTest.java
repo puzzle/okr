@@ -163,11 +163,15 @@ class UserValidationServiceTest {
 
     @Test
     void validateOnGetOrCreateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGetOrCreate(null));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
-        assertEquals("Given model User is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("User")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test

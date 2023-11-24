@@ -153,4 +153,8 @@ export class KeyresultDetailComponent implements OnInit {
       this.refreshDataService.markDataRefresh();
     });
   }
+
+  backToOverview() {
+    this.router.navigate(['']);
+  }
 }

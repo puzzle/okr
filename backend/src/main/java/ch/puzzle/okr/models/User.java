@@ -19,25 +19,25 @@ public class User implements WriteableInterface {
     private int version;
 
     @Column(unique = true)
-    @NotBlank(message = "Missing attribute username when saving user")
-    @NotNull(message = "Attribute username can not be null when saving user")
-    @Size(min = 2, max = 20, message = "Attribute username must have size between 2 and 20 characters when saving user")
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 20, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String username;
 
-    @NotBlank(message = "Missing attribute firstname when saving user")
-    @NotNull(message = "Attribute firstname can not be null when saving user")
-    @Size(min = 2, max = 50, message = "Attribute firstname must have size between 2 and 50 characters when saving user")
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 50, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String firstname;
 
-    @NotBlank(message = "Missing attribute lastname when saving user")
-    @NotNull(message = "Attribute lastname can not be null when saving user")
-    @Size(min = 2, max = 50, message = "Attribute lastname must have size between 2 and 50 characters when saving user")
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 50, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
-    @Email(message = "Attribute email should be valid when saving user")
-    @NotNull(message = "Attribute email can not be null when saving user")
-    @NotBlank(message = "Missing attribute email when saving user")
-    @Size(min = 2, max = 250, message = "Attribute email must have size between 2 and 250 characters when saving user")
+    @Email(message = ErrorMsg.ATTRIBUTE_NOT_VALID)
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
     private transient boolean writeable;

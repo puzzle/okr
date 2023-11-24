@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models.keyresult;
 
+import ch.puzzle.okr.models.ErrorMsg;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
@@ -22,27 +23,27 @@ public abstract class KeyResult implements WriteableInterface {
     @Version
     private int version;
 
-    @NotNull(message = "Objective must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Objective objective;
 
-    @NotBlank(message = "Title can not be blank")
-    @NotNull(message = "Title can not be null")
-    @Size(min = 2, max = 250, message = "Attribute title must have a length between 2 and 250 characters when saving key result")
+    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
-    @Size(max = 4096, message = "Attribute description has a max length of 4096 characters")
+    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(message = "Owner must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User owner;
 
-    @NotNull(message = "CreatedBy must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = "CreatedOn must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;

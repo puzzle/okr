@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ErrorInterceptor } from './error-interceptor.service';
 import { ToasterService } from '../services/toaster.service';
+import { TranslateService } from '@ngx-translate/core';
 
 describe('ErrorInterceptor', () => {
   beforeEach(() =>
@@ -9,6 +10,10 @@ describe('ErrorInterceptor', () => {
         ErrorInterceptor,
         {
           provide: ToasterService,
+          useValue: {},
+        },
+        {
+          provide: TranslateService,
           useValue: {},
         },
       ],

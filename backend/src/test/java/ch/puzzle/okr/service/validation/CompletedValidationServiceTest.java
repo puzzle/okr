@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import org.apache.commons.lang3.StringUtils;
@@ -22,10 +24,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ExtendWith(MockitoExtension.class)
 class CompletedValidationServiceTest {
@@ -67,7 +70,7 @@ class CompletedValidationServiceTest {
 
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(arguments(StringUtils.repeat('1', 5000),
-                List.of("Attribute comment has a max length of 4096 characters when completing an objective")));
+                List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("comment", "Completed", "0", "4096")))));
     }
 
     @Test
@@ -80,50 +83,55 @@ class CompletedValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
-        assertEquals("Given model Completed is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Completed")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         Completed completed = Completed.Builder.builder().withId(300L).withObjective(this.objective)
                 .withComment("Not valid").build();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completed));
 
-        assertEquals("Model Completed cannot have id while create. Found id 300", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Completed")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenCommentIsInvalid(String comment, List<ErrorDto> expectedErrors) {
         Completed completed = Completed.Builder.builder().withObjective(this.objective).withComment(comment).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completed));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         Completed completedInvalid = Completed.Builder.builder().withId(null).withComment("Valid comment")
                 .withObjective(null).build();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(completedInvalid));
 
-        assertThat(exception.getReason().strip()).contains("Objective must not be null.");
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "Completed")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -136,11 +144,15 @@ class CompletedValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfCompletedIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Completed")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
 }

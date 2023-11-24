@@ -1,5 +1,8 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.OrganisationState;
 import ch.puzzle.okr.repository.OrganisationRepository;
@@ -8,14 +11,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
 class OrganisationPersistenceIT {
@@ -44,7 +47,7 @@ class OrganisationPersistenceIT {
                 organisationPersistenceService.findById(createdOrganisation.getId());
                 organisationPersistenceService.deleteById(createdOrganisation.getId());
             }
-        } catch (ResponseStatusException ex) {
+        } catch (OkrResponseStatusException ex) {
             // created alignment already deleted
         } finally {
             createdOrganisation = null;
@@ -60,20 +63,27 @@ class OrganisationPersistenceIT {
 
     @Test
     void shouldThrowExceptionWhenFindingOrganisationNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> organisationPersistenceService.findById(321L));
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("Organisation with id 321 not found", exception.getReason());
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Organisation", "321")));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void shouldThrowExceptionWhenFindingOrganisationWithIdNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> organisationPersistenceService.findById(null));
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for Organisation", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Organisation")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test

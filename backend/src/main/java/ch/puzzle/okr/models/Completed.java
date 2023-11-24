@@ -14,11 +14,11 @@ public class Completed {
     @Version
     private int version;
 
-    @NotNull(message = "Objective must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @OneToOne
     private Objective objective;
 
-    @Size(max = 4096, message = "Attribute comment has a max length of 4096 characters when completing an objective")
+    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String comment;
 
     public Completed() {

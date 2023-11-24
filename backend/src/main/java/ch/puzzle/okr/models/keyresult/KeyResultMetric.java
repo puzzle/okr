@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models.keyresult;
 
+import ch.puzzle.okr.models.ErrorMsg;
 import ch.puzzle.okr.models.Unit;
 
 import javax.persistence.DiscriminatorValue;
@@ -14,13 +15,13 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
 public class KeyResultMetric extends KeyResult {
-    @NotNull(message = "Baseline must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private Double baseline;
 
-    @NotNull(message = "StretchGoal must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private Double stretchGoal;
 
-    @NotNull(message = "Unit must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @Enumerated(EnumType.STRING)
     private Unit unit;
 

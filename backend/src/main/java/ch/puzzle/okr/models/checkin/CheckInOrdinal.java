@@ -1,5 +1,7 @@
 package ch.puzzle.okr.models.checkin;
 
+import ch.puzzle.okr.models.ErrorMsg;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,7 +14,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_ORDINAL)
 public class CheckInOrdinal extends CheckIn {
-    @NotNull(message = "Zone must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @Enumerated(EnumType.STRING)
     private Zone zone;
 

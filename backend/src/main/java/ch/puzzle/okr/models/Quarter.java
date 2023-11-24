@@ -11,14 +11,14 @@ public class Quarter {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
     private Long id;
 
-    @NotNull(message = "Attribute label can not be null when saving quarter")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @Column(unique = true)
     private String label;
 
-    @NotNull(message = "Attribute startDate can not be null when saving quarter")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private LocalDate startDate;
 
-    @NotNull(message = "Attribute endDate can not be null when saving quarter")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private LocalDate endDate;
 
     public Quarter() {

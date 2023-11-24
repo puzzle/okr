@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.test.SpringIntegrationTest;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -19,6 +22,8 @@ import static org.springframework.http.HttpStatus.*;
 class ObjectivePersistenceServiceIT {
     private static final String REASON = "not authorized to read objective";
     private static final String MISSING_IDENTIFIER = "Missing identifier for Objective";
+
+    private static final ErrorDto error = new ErrorDto(REASON, List.of());
     private static final String HIGHER_CUSTOMER_HAPPINESS = "Wir wollen die Kundenzufriedenheit steigern";
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     private Objective createdObjective;
@@ -66,7 +71,7 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveById(3L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -74,8 +79,8 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, REASON));
+        ResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -83,16 +88,19 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByIdShouldThrowExceptionWhenObjectiveIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, REASON));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> objectivePersistenceService.findObjectiveById(null, authorizationUser, error));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals(MISSING_IDENTIFIER, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void findObjectiveByKeyResultIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(5L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -101,7 +109,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -109,16 +117,19 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByKeyResultIdShouldThrowExceptionWhenObjectiveIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, REASON));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> objectivePersistenceService.findObjectiveByKeyResultId(null, authorizationUser, error));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals(MISSING_IDENTIFIER, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void findObjectiveByCheckInIdShouldReturnObjectiveProperly() {
-        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, REASON);
+        Objective objective = objectivePersistenceService.findObjectiveByCheckInId(7L, authorizationUser, error);
 
         assertEquals(3L, objective.getId());
         assertEquals(HIGHER_CUSTOMER_HAPPINESS, objective.getTitle());
@@ -127,7 +138,7 @@ class ObjectivePersistenceServiceIT {
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, REASON));
+                () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser, error));
 
         assertEquals(UNAUTHORIZED, exception.getStatus());
         assertEquals(REASON, exception.getReason());
@@ -135,11 +146,14 @@ class ObjectivePersistenceServiceIT {
 
     @Test
     void findObjectiveByCheckInIdShouldThrowExceptionWhenObjectiveIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
-                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, REASON));
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> objectivePersistenceService.findObjectiveByCheckInId(null, authorizationUser, error));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals(MISSING_IDENTIFIER, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -172,10 +186,13 @@ class ObjectivePersistenceServiceIT {
         Objective updateObjective = createObjective(createdObjective.getId(), 0);
         updateObjective.setState(State.ONGOING);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.save(updateObjective));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Objective")));
+
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
-        assertTrue(exception.getReason().contains("updated or deleted by another user"));
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -185,27 +202,39 @@ class ObjectivePersistenceServiceIT {
         objectivePersistenceService.deleteById(createdObjective.getId());
 
         Long objectiveId = createdObjective.getId();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.findById(objectiveId));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Objective", "200")));
+
         assertEquals(NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void countByTeamAndQuarterShouldThrowErrorIfQuarterDoesNotExist() {
         Team teamId5 = teamPersistenceService.findById(5L);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamId5,
                         quarterPersistenceService.findById(12L)));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Quarter", "12")));
+
         assertEquals(NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         Quarter quarterId2 = quarterPersistenceService.findById(2L);
-        ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exceptionTeam = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
                         quarterId2));
+
+        List<ErrorDto> expectedErrorsTeam = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Team", "500")));
+
         assertEquals(NOT_FOUND, exceptionTeam.getStatus());
-        assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
+        assertThat(expectedErrorsTeam).hasSameElementsAs(exceptionTeam.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrorsTeam).contains(exceptionTeam.getReason()));
 
     }
 

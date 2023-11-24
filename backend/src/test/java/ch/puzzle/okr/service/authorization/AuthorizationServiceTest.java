@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.converter.JwtUserConverter;
-import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -22,7 +22,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,9 +30,12 @@ import static ch.puzzle.okr.TestConstants.ORGANISATION_FIRST_LEVEL;
 import static ch.puzzle.okr.TestHelper.*;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuthorizationServiceTest {
@@ -152,8 +154,8 @@ class AuthorizationServiceTest {
     void hasRoleReadByObjectiveIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read objective";
-        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, reason)).thenReturn(new Objective());
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Objective"));
+        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, error)).thenReturn(new Objective());
 
         authorizationService.hasRoleReadByObjectiveId(id, authorizationUser);
     }
@@ -162,22 +164,27 @@ class AuthorizationServiceTest {
     void hasRoleReadByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, reason))
-                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason));
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, error))
+                .thenThrow(new OkrResponseStatusException(HttpStatus.UNAUTHORIZED, error));
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void hasRoleReadByKeyResultIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, reason))
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
+        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, error))
                 .thenReturn(new Objective());
 
         authorizationService.hasRoleReadByKeyResultId(id, authorizationUser);
@@ -187,22 +194,28 @@ class AuthorizationServiceTest {
     void hasRoleReadByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, reason))
-                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in"));
+        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, error))
+                .thenThrow(new OkrResponseStatusException(HttpStatus.UNAUTHORIZED, error));
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void hasRoleReadByCheckInIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, reason))
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in"));
+
+        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, error))
                 .thenReturn(new Objective());
 
         authorizationService.hasRoleReadByCheckInId(id, authorizationUser);
@@ -222,8 +235,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_ALL_TEAMS));
-        String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, reason))
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
+
+        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, error))
                 .thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(keyResult, authorizationUser);
@@ -236,9 +250,10 @@ class AuthorizationServiceTest {
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
-        String reason = "not authorized to read check in";
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in"));
+
         when(objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getObjective().getId(),
-                authorizationUser, reason)).thenReturn(objective);
+                authorizationUser, error)).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdate(checkIn, authorizationUser);
     }
@@ -249,10 +264,14 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_ALL_TEAMS));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_WRITE", List.of("Objective")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to create or update objective", exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -261,10 +280,14 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_WRITE", List.of("Objective")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to create or update objective", exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -272,8 +295,9 @@ class AuthorizationServiceTest {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read objective";
-        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, reason)).thenReturn(objective);
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Objective"));
+
+        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, error)).thenReturn(objective);
 
         authorizationService.hasRoleCreateOrUpdateByObjectiveId(id, authorizationUser);
     }
@@ -299,8 +323,9 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(4L).build()).build();
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, reason))
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
+
+        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, error))
                 .thenReturn(objective);
 
         assertTrue(authorizationService.isWriteable(keyResult, authorizationUser));
@@ -312,7 +337,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(4L), 13L, List.of(WRITE_TEAM));
         String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, reason))
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
+
+        when(objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(), authorizationUser, error))
                 .thenReturn(objective);
 
         assertFalse(authorizationService.isWriteable(keyResult, authorizationUser));
@@ -324,9 +351,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(), authorizationUser,
-                reason)).thenReturn(objective);
+
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
+                eq(authorizationUser), any())).thenReturn(objective);
 
         assertTrue(authorizationService.isWriteable(checkIn, authorizationUser));
     }
@@ -337,9 +364,9 @@ class AuthorizationServiceTest {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withObjective(objective).build();
         CheckIn checkIn = CheckInMetric.Builder.builder().withKeyResult(keyResult).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(user, List.of(4L), 13L, List.of(WRITE_TEAM));
-        String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(), authorizationUser,
-                reason)).thenReturn(objective);
+
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(checkIn.getKeyResult().getId()),
+                eq(authorizationUser), any())).thenReturn(objective);
 
         assertFalse(authorizationService.isWriteable(checkIn, authorizationUser));
     }
@@ -349,8 +376,8 @@ class AuthorizationServiceTest {
         Long id = 13L;
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read objective";
-        when(objectivePersistenceService.findObjectiveById(id, authorizationUser, reason)).thenReturn(objective);
+
+        when(objectivePersistenceService.findObjectiveById(eq(id), eq(authorizationUser), any())).thenReturn(objective);
 
         authorizationService.hasRoleDeleteByObjectiveId(id, authorizationUser);
     }
@@ -362,7 +389,8 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_ALL_TEAMS));
         String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, reason))
+
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
         authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser);
@@ -375,7 +403,9 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
         String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, reason)).thenReturn(objective);
+
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
+                .thenReturn(objective);
 
         authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser);
     }
@@ -387,13 +417,17 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_ALL_TEAMS));
         String reason = "not authorized to read key result";
-        when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, reason))
+        when(objectivePersistenceService.findObjectiveByKeyResultId(eq(id), eq(authorizationUser), any()))
                 .thenReturn(objective);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleDeleteByKeyResultId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_DELETE", List.of("KeyResult")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to delete key result", exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -402,13 +436,18 @@ class AuthorizationServiceTest {
         Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(5L).build()).build();
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
-        String reason = "not authorized to read check in";
-        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, reason)).thenReturn(objective);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        when(objectivePersistenceService.findObjectiveByCheckInId(eq(id), eq(authorizationUser), any()))
+                .thenReturn(objective);
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleDeleteByCheckInId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_DELETE", List.of("Check-in")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to delete check in", exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     private void setSecurityContext(Jwt token) {

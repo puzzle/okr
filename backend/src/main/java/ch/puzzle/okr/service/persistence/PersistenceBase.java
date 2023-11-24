@@ -1,20 +1,17 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
-
-import static java.lang.String.format;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 /**
  * @param <T>
@@ -38,30 +35,30 @@ public abstract class PersistenceBase<T, ID, R> {
         return (R) repository;
     }
 
-    public T findById(ID id) throws ResponseStatusException {
+    public T findById(ID id) throws OkrResponseStatusException {
         checkIdNull(id);
         return repository.findById(id).orElseThrow(() -> createEntityNotFoundException(id));
     }
 
     public void checkIdNull(ID id) {
         if (id == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    format("Missing identifier for %s", getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+                    List.of("ID", getModelName()));
         }
     }
 
-    public ResponseStatusException createEntityNotFoundException(ID id) {
-        return new ResponseStatusException(NOT_FOUND, format("%s with id %s not found", getModelName(), id));
+    public OkrResponseStatusException createEntityNotFoundException(ID id) {
+        throw new OkrResponseStatusException(HttpStatus.NOT_FOUND, ErrorMsg.MODEL_WITH_ID_NOT_FOUND,
+                List.of(getModelName(), id));
     }
 
-    public T save(T model) throws ResponseStatusException {
+    public T save(T model) throws OkrResponseStatusException {
         try {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
-            throw new ResponseStatusException(UNPROCESSABLE_ENTITY,
-                    String.format("The data of %s has been updated or deleted by another user."
-                            + "\nPlease reload the data and apply your changes again.", getModelName()));
+            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorMsg.DATA_HAS_BEEN_UPDATED,
+                    getModelName());
         }
     }
 

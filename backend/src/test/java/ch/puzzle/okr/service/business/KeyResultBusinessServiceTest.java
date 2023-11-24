@@ -101,13 +101,10 @@ class KeyResultBusinessServiceTest {
 
     @Test
     void shouldThrowExceptionWhenDefaultMethodUsed() {
-        ResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> keyResultBusinessService.updateEntity(metricKeyResult.getId(), metricKeyResult,
-                        authorizationUser));
+        IllegalCallerException exception = assertThrows(IllegalCallerException.class, () -> keyResultBusinessService
+                .updateEntity(metricKeyResult.getId(), metricKeyResult, authorizationUser));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("unsupported method in class " + KeyResultBusinessService.class.getSimpleName()
-                + ", use updateEntities() instead", exception.getReason());
+        assertEquals("unsupported method 'updateEntity' use updateEntities() instead", exception.getMessage());
     }
 
     @Test

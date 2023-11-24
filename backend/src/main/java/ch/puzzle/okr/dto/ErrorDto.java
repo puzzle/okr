@@ -1,6 +1,7 @@
 package ch.puzzle.okr.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ErrorDto {
     private final String errorKey;
@@ -21,5 +22,20 @@ public class ErrorDto {
 
     public List<String> getParams() {
         return params;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        ErrorDto errorDto = (ErrorDto) o;
+        return Objects.equals(errorKey, errorDto.errorKey) && Objects.equals(params, errorDto.params);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(errorKey, params);
     }
 }

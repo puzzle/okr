@@ -1,5 +1,6 @@
 package ch.puzzle.okr;
 
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -80,5 +81,9 @@ public class TestHelper {
         }
 
         return new Jwt(exampleToken, Instant.now(), Instant.now().plusSeconds(3600), headers, claims);
+    }
+
+    public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
+        return errors.stream().map(ErrorDto::getErrorKey).toList();
     }
 }

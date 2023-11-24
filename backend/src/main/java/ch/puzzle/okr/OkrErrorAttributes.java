@@ -17,7 +17,7 @@ public class OkrErrorAttributes extends DefaultErrorAttributes {
 
         Throwable throwable = getError(webRequest);
         if (throwable instanceof OkrResponseStatusException exception) {
-            errorAttributes.put("errors", exception.errors);
+            errorAttributes.put("errors", exception.getErrors());
         }
         return errorAttributes;
     }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OkrResponseStatusException extends ResponseStatusException {
 
-    public final List<ErrorDto> errors;
+    private final List<ErrorDto> errors;
 
     public OkrResponseStatusException(HttpStatus status, String errorKey) {
         this(status, errorKey, List.of());
@@ -29,5 +29,9 @@ public class OkrResponseStatusException extends ResponseStatusException {
     public OkrResponseStatusException(HttpStatus status, List<ErrorDto> errors) {
         super(status, errors.get(0).getErrorKey());
         this.errors = errors;
+    }
+
+    public List<ErrorDto> getErrors() {
+        return errors;
     }
 }

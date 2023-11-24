@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -25,10 +27,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultValidationServiceTest {
@@ -69,16 +71,19 @@ class KeyResultValidationServiceTest {
 
     private static Stream<Arguments> nameValidationArguments() {
         return Stream.of(
-                arguments(StringUtils.repeat('1', 251), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving key result")),
-                arguments(StringUtils.repeat('1', 1), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving key result")),
-                arguments("", List.of("Title can not be blank",
-                        "Attribute title must have a length between 2 and 250 characters when saving key result")),
-                arguments(" ", List.of("Title can not be blank",
-                        "Attribute title must have a length between 2 and 250 characters when saving key result")),
-                arguments("         ", List.of("Title can not be blank")),
-                arguments(null, List.of("Title can not be blank", "Title can not be null")));
+                arguments(StringUtils.repeat('1', 251),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")))),
+                arguments(StringUtils.repeat('1', 1),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")))),
+                arguments("",
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                arguments(" ",
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "KeyResult", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "KeyResult")),
+                        new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "KeyResult")))));
     }
 
     @Test
@@ -91,11 +96,16 @@ class KeyResultValidationServiceTest {
 
     @Test
     void validateOnGetShouldThrowExceptionIfKeyResultIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -108,55 +118,59 @@ class KeyResultValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
-        assertEquals("Given model KeyResult is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultMetric));
 
-        assertEquals("Model KeyResult cannot have id while create. Found id 5", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
                 .withUnit(Unit.FTE).withId(null).withTitle(title).withOwner(user).withObjective(objective)
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResult));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            System.out.println(exceptionParts[i].strip());
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            System.out.println(exceptionParts[i]);
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
         KeyResult keyResultInvalid = KeyResultMetric.Builder.builder().withId(null).withTitle("Title").build();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResultInvalid));
 
-        assertThat(exception.getReason().strip()).contains("Baseline must not be null.");
-        assertThat(exception.getReason().strip()).contains("StretchGoal must not be null.");
-        assertThat(exception.getReason().strip()).contains("Unit must not be null.");
-        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
-        assertThat(exception.getReason().strip()).contains("Owner must not be null.");
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")));
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -178,55 +192,56 @@ class KeyResultValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
-        assertEquals("Given model KeyResult is null", exception.getReason());
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals("MODEL_NULL", exception.getReason());
+        assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult"))), exception.getErrors());
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, keyResultOrdinal));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals("ATTRIBUTE_NULL", exception.getReason());
+        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult"))), exception.getErrors());
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenIdHasChanged() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, keyResultMetric));
 
         verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultMetric);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResultMetric.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, keyResultMetric.getId());
-        assertEquals("Id 1 has changed to 5 during update", exception.getReason());
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals("ATTRIBUTE_CHANGED", exception.getReason());
+        assertEquals(List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "1", "5"))), exception.getErrors());
     }
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         Long id = 3L;
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
                 .withUnit(Unit.FTE).withId(id).withTitle(title).withOwner(user).withObjective(objective)
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, keyResult));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @Test
@@ -236,14 +251,19 @@ class KeyResultValidationServiceTest {
                 .withObjective(objective).build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResultInvalid);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, keyResultInvalid));
 
-        assertThat(exception.getReason().strip()).contains("Baseline must not be null.");
-        assertThat(exception.getReason().strip()).contains("StretchGoal must not be null.");
-        assertThat(exception.getReason().strip()).contains("Unit must not be null.");
-        assertThat(exception.getReason().strip()).contains("CreatedBy must not be null.");
-        assertThat(exception.getReason().strip()).contains("Owner must not be null.");
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("stretchGoal", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -256,11 +276,15 @@ class KeyResultValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfKeyResultIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
 }

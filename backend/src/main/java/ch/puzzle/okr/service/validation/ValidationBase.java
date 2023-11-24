@@ -10,8 +10,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.*;
-import java.util.regex.MatchResult;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -72,8 +75,8 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
 
     protected void throwExceptionWhenIdIsNotNull(ID id) {
         if (id != null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NOT_NULL,
-                    List.of(persistenceService.getModelName(), id));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+                    List.of("ID", persistenceService.getModelName()));
         }
     }
 
@@ -92,18 +95,25 @@ public abstract class ValidationBase<T, ID, R, PS extends PersistenceBase<T, ID,
     private void processViolations(Set<ConstraintViolation<T>> violations) {
         if (!violations.isEmpty()) {
             List<ErrorDto> list = violations.stream().map(e -> {
-                List<String> attributes = new ArrayList<>(
+                List<Object> attributes = new ArrayList<>(
                         List.of(e.getPropertyPath().toString(), persistenceService.getModelName()));
                 attributes.addAll(getAttributes(e.getMessage(), e.getMessageTemplate()));
-                String errorKey = e.getMessage().replaceAll("_\\{.*", "");
-                return new ErrorDto(errorKey, Collections.singletonList(attributes));
+                String errorKey = e.getMessageTemplate().replaceAll("_\\{.*", "");
+                return new ErrorDto(errorKey, attributes);
             }).toList();
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, list);
         }
     }
 
     private List<String> getAttributes(String message, String messageTemplate) {
-        String pattern = messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
-        return Pattern.compile(pattern).matcher(message).results().map(MatchResult::group).toList();
+        String patternString = messageTemplate.replaceAll("\\{([^}]*)\\}", "(.*)");
+        Pattern p = Pattern.compile(patternString);
+        Matcher m = p.matcher(message);
+        List<String> arr = new ArrayList<>();
+        m.find();
+        for (int i = 1; i < m.groupCount() + 1; i++) {
+            arr.add(m.group(i));
+        }
+        return arr;
     }
 }

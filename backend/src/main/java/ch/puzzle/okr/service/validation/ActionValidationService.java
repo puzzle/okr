@@ -1,15 +1,16 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.Constants;
 import ch.puzzle.okr.models.Action;
+import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.repository.ActionRepository;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Objects;
-
-import static java.lang.String.format;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class ActionValidationService extends ValidationBase<Action, Long, ActionRepository, ActionPersistenceService> {
@@ -46,12 +47,13 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     void throwExceptionWhenKeyResultHasChanged(Action action, Action savedAction) {
         if (action.getKeyResult() == null || savedAction.getKeyResult() == null) {
-            throw new ResponseStatusException(BAD_REQUEST,
-                    format("KeyResult must not be null. action=%s, savedAction=%s", action, savedAction));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NOT_NULL,
+                    List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
+
         if (!Objects.equals(action.getKeyResult().getId(), savedAction.getKeyResult().getId())) {
-            throw new ResponseStatusException(BAD_REQUEST,
-                    format("Not allowed change the association to the key result (id = %s)", savedAction.getId()));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CANNOT_CHANGE,
+                    List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
     }
 }

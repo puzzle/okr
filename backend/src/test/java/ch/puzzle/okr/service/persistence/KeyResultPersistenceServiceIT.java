@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -10,14 +13,13 @@ import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
 class KeyResultPersistenceServiceIT {
@@ -56,7 +58,7 @@ class KeyResultPersistenceServiceIT {
                 keyResultPersistenceService.findById(createdKeyResult.getId());
                 keyResultPersistenceService.deleteById(createdKeyResult.getId());
             }
-        } catch (ResponseStatusException ex) {
+        } catch (OkrResponseStatusException ex) {
             // created key result already deleted
         } finally {
             createdKeyResult = null;
@@ -87,20 +89,26 @@ class KeyResultPersistenceServiceIT {
 
     @Test
     void getKeyResultByIdShouldThrowExceptionWhenKeyResultNotFound() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(321L));
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id 321 not found", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", "321")));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void getKeyResultByIdShouldThrowExceptionWhenKeyResultIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(null));
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals("Missing identifier for KeyResult", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -119,9 +127,14 @@ class KeyResultPersistenceServiceIT {
 
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, this::execute);
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, this::execute);
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -148,10 +161,15 @@ class KeyResultPersistenceServiceIT {
 
         Long keyResultId = createdKeyResult.getId();
         // Should delete the old KeyResult
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals("KeyResult with id " + keyResultId + " not found", exception.getReason());
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created key result in tearDown()
         createdKeyResult = recreatedKeyResult;
@@ -184,10 +202,13 @@ class KeyResultPersistenceServiceIT {
         updateKeyResult.setTitle(KEY_RESULT_UPDATED);
         updateKeyResult.setDescription(THIS_IS_DESCRIPTION);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.updateEntity(updateKeyResult));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("KeyResult")));
+
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
-        assertTrue(exception.getReason().contains("updated or deleted by another user"));
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -204,10 +225,15 @@ class KeyResultPersistenceServiceIT {
         keyResultPersistenceService.deleteById(createdKeyResult.getId());
 
         Long keyResultId = createdKeyResult.getId();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("KeyResult with id %d not found", createdKeyResult.getId()), exception.getReason());
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -217,10 +243,15 @@ class KeyResultPersistenceServiceIT {
         keyResultPersistenceService.deleteById(newKeyResult.getId());
 
         Long keyResultId = newKeyResult.getId();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> keyResultPersistenceService.findById(keyResultId));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("KeyResult with id %d not found", newKeyResult.getId()), exception.getReason());
+
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     private void execute() {

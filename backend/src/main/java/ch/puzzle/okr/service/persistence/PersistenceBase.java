@@ -42,7 +42,8 @@ public abstract class PersistenceBase<T, ID, R> {
 
     public void checkIdNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL);
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
+                    List.of("ID", getModelName()));
         }
     }
 

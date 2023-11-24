@@ -124,7 +124,8 @@ class TeamPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> teamPersistenceService.findById(createdTeam.getId()));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Team", "200")));
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Team", createdTeam.getId())));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

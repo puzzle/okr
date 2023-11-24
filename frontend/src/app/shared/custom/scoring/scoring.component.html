@@ -13,7 +13,7 @@
         </span>
       </div>
 
-      <div [ngStyle]="{ display: stretched ? 'none' : 'block' }">
+      <div [ngStyle]="{ display: stretched ? 'none' : 'block' }" [attr.data-testId]="'normal-scoring'">
         <span class="okr-score">
           <span class="child" #fail [attr.data-testId]="'fail'"></span>
         </span>
@@ -24,7 +24,11 @@
           <span class="child" #target [attr.data-testId]="'target'"></span>
         </span>
       </div>
-      <div [ngStyle]="{ display: stretched ? 'block' : 'none' }" class="stretch-div">&nbsp;</div>
+      <div
+        [ngStyle]="{ display: stretched ? 'block' : 'none' }"
+        class="stretch-div"
+        [attr.data-testId]="'star-scoring'"
+      ></div>
     </div>
 
     <div class="okr-stretch d-flex flex-column align-items-center mb-1">

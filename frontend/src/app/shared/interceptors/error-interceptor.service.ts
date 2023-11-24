@@ -40,11 +40,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       this.translate.instant('ERRORS.' + error.errorKey).format(error.params),
     );
 
-    if (response.status == 226) {
-      errors.forEach((error: string) => this.toasterService.showWarn(error));
-      return;
-    }
-
     errors.forEach((error: string) => this.toasterService.showError(error));
   }
 
@@ -59,6 +54,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (NO_TOASTER.some((route) => response.url.includes(route))) {
       return;
     }
+
+    if (response.status == 226) {
+      this.toasterService.showWarn(this.translate.instant('ERRORS.ILLEGAL_CHANGE_OBJECTIVE_QUARTER'));
+      return;
+    }
+
     switch (method) {
       case 'POST': {
         this.toasterService.showSuccess('Element wurde erfolgreich erstellt');

@@ -1,5 +1,6 @@
 package ch.puzzle.okr.models.checkin;
 
+import ch.puzzle.okr.models.ErrorMsg;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -23,26 +24,26 @@ public abstract class CheckIn implements WriteableInterface {
     @Version
     private int version;
 
-    @Size(max = 4096, message = "Attribute changeInfo has a max length of 4096 characters")
+    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String changeInfo;
 
-    @Size(max = 4096, message = "Attribute initiatives has a max length of 4096 characters")
+    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
     private String initiatives;
 
-    @Max(value = 10, message = "Attribute confidence has a max value of 10")
-    @Min(value = 1, message = "Attribute confidence has a min value of 1")
-    @NotNull(message = "Confidence must not be null")
+    @Max(value = 10, message = ErrorMsg.ATTRIBUTE_MAX_VALUE)
+    @Min(value = 1, message = ErrorMsg.ATTRIBUTE_MIN_VALUE)
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private Integer confidence;
 
-    @NotNull(message = "KeyResult must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private KeyResult keyResult;
 
-    @NotNull(message = "CreatedBy must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = "CreatedOn must not be null")
+    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;

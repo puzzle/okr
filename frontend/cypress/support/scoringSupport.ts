@@ -53,10 +53,12 @@ function validateScoringWidth(zone: string, percent: number, isOverview: boolean
 function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
   cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
   if (rgbCode == 'rgba(0, 0, 0, 0)') {
+    cy.getByTestId('star-scoring').invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('star-scoring')
       .invoke('css', 'display')
       .should('equal', 'block');
+
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('normal-scoring')
       .invoke('css', 'display')
@@ -66,6 +68,7 @@ function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean
       .getByTestId('star-scoring')
       .invoke('css', 'display')
       .should('equal', 'none');
+
     (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
       .getByTestId('normal-scoring')
       .invoke('css', 'display')

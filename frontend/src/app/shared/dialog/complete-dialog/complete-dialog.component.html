@@ -3,6 +3,9 @@
 </section>
 
 <mat-dialog-content>
+  <p class="fs-6 text-black">Objective</p>
+  <p class="linebreak bg-display-element py-2 ps-1 mb-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
+
   <form [formGroup]="completeForm">
     <div class="input-style gap-2 col-12">
       <label class="text-black">Bewertung</label>
@@ -18,7 +21,7 @@
           [attr.data-testId]="'successful'"
           tabindex="0"
         >
-          Objective erfolgreich
+          Objective erreicht
         </div>
         <div
           class="not-successful w-50 valuation-card card-hover"
@@ -31,7 +34,7 @@
           [attr.data-testId]="'not-successful'"
           tabindex="0"
         >
-          Objective nicht erfolgreich
+          Objective nicht erreicht
         </div>
       </div>
     </div>

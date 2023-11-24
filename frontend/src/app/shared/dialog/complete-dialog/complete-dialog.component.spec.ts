@@ -70,13 +70,13 @@ describe('CompleteDialogComponent', () => {
     fixture.detectChanges();
     let nonActiveElement = document.querySelector('.non-active');
 
-    expect(nonActiveElement!.innerHTML).toContain('Objective nicht erfolgreich');
+    expect(nonActiveElement!.innerHTML).toContain('Objective nicht erreicht');
 
     component.switchSuccessState('notSuccessful');
     fixture.detectChanges();
     nonActiveElement = document.querySelector('.non-active');
 
-    expect(nonActiveElement!.innerHTML).toContain('Objective erfolgreich');
+    expect(nonActiveElement!.innerHTML).toContain('Objective erreicht');
   });
 
   it('should close dialog with right data', () => {

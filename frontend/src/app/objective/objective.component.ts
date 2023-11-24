@@ -68,7 +68,7 @@ export class ObjectiveComponent implements OnInit {
         {
           displayName: 'Objective abschliessen',
           action: 'complete',
-          dialog: { dialog: CompleteDialogComponent, data: {} },
+          dialog: { dialog: CompleteDialogComponent, data: { objectiveTitle: this.objective$.value.title } },
         },
       ],
     ];
@@ -137,6 +137,7 @@ export class ObjectiveComponent implements OnInit {
           title: menuEntry.dialog.data.title,
           action: menuEntry.action,
           objective: menuEntry.dialog.data,
+          objectiveTitle: menuEntry.dialog.data.objectiveTitle,
         },
         height: dialogConfig.height,
         width: dialogConfig.width,

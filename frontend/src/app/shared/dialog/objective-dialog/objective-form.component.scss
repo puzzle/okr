@@ -3,8 +3,18 @@
   height: 56px;
   border-bottom: 1px gray solid;
 }
+
 .custom-text-wrap {
   width: max-content;
+}
+
+.delete-button {
+  margin-left: auto;
+}
+
+.add-keyresult {
+  // Select is aligned with label and it's not easy to align checkbox to select
+  margin-top: -3px;
 }
 
 @media only screen and (min-width: 820px) {
@@ -14,6 +24,10 @@
     align-items: flex-end;
   }
 }
-.delete-button {
-  margin-left: auto;
+
+@media only screen and (max-width: 780px) {
+  .add-keyresult {
+    margin-left: -10px;
+    margin-top: 1rem;
+  }
 }

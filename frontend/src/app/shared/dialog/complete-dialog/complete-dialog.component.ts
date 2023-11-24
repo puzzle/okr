@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { formInputCheck } from '../../common';
 import errorMessages from '../../../../assets/errors/error-messages.json';
@@ -16,7 +16,10 @@ export class CompleteDialogComponent {
   });
   protected readonly formInputCheck = formInputCheck;
 
-  constructor(public dialogRef: MatDialogRef<CompleteDialogComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<CompleteDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { objectiveTitle: string },
+  ) {}
 
   switchSuccessState(input: string) {
     this.removeStandardHover();

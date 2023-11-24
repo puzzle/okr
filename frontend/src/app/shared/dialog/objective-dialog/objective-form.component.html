@@ -1,6 +1,8 @@
 <section mat-dialog-title>
   <div *ngIf="this.data.action == 'duplicate'">
-    <app-dialog-header [dialogTitle]="'Objective duplizieren'"></app-dialog-header>
+    <app-dialog-header
+      [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' duplizieren'"
+    ></app-dialog-header>
   </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
@@ -47,7 +49,7 @@
         </span>
       </div>
 
-      <div class="quarter-keyresult row mb-4">
+      <div class="d-flex row mb-1">
         <div class="d-flex flex-column gap-2 col-6">
           <label class="text-black" for="quarter">Quartal</label>
           <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
@@ -58,7 +60,7 @@
         </div>
         <mat-checkbox
           [attr.data-testId]="'keyResult-checkbox'"
-          class="d-flex align-items-center col-5 custom-text-wrap col-6"
+          class="d-flex align-items-center custom-text-wrap col-5 col-6 text-black add-keyresult"
           color="primary"
           formControlName="createKeyResults"
           *ngIf="!data.objective.objectiveId"

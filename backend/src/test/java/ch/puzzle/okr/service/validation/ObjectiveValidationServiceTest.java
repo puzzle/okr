@@ -17,7 +17,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ExtendWith(MockitoExtension.class)
 class ObjectiveValidationServiceTest {
@@ -39,6 +39,29 @@ class ObjectiveValidationServiceTest {
     User user;
     Quarter quarter;
     Team team;
+    @Spy
+    @InjectMocks
+    private ObjectiveValidationService validator;
+
+    private static Stream<Arguments> nameValidationArguments() {
+        return Stream.of(
+                arguments(StringUtils.repeat('1', 251),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")))),
+                arguments(StringUtils.repeat('1', 1),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")))),
+
+                arguments("",
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
+
+                arguments(" ",
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("title", "Objective", "2", "250")),
+                                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
+
+                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("title", "Objective")),
+                        new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("title", "Objective")))));
+    }
 
     @BeforeEach
     void setUp() {
@@ -57,28 +80,9 @@ class ObjectiveValidationServiceTest {
 
         when(objectivePersistenceService.findById(1L)).thenReturn(objective1);
         when(objectivePersistenceService.getModelName()).thenReturn("Objective");
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,
+        doThrow(new OkrResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("%s with id %s not found", objectivePersistenceService.getModelName(), 2L)))
                         .when(objectivePersistenceService).findById(2L);
-    }
-
-    @Spy
-    @InjectMocks
-    private ObjectiveValidationService validator;
-
-    private static Stream<Arguments> nameValidationArguments() {
-        return Stream.of(
-                arguments(StringUtils.repeat('1', 251), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments(StringUtils.repeat('1', 1), List
-                        .of("Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments("", List.of("Missing attribute title when saving objective",
-                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments(" ", List.of("Missing attribute title when saving objective",
-                        "Attribute title must have a length between 2 and 250 characters when saving objective")),
-                arguments("         ", List.of("Missing attribute title when saving objective")),
-                arguments(null, List.of("Missing attribute title when saving objective",
-                        "Attribute title can not be null when saving objective")));
     }
 
     @Test
@@ -136,24 +140,17 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder().withId(null).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withCreatedOn(LocalDateTime.MAX).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objective));
 
-        String[] exceptionParts = exception.getReason().split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assertThat(errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -242,26 +239,19 @@ class ObjectiveValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("nameValidationArguments")
-    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<String> errors) {
+    void validateOnUpdateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> expectedErrors) {
         Objective objective = Objective.Builder.builder().withId(3L).withTitle(title).withCreatedBy(this.user)
                 .withTeam(this.team).withQuarter(this.quarter).withDescription("This is our description 2")
                 .withModifiedOn(LocalDateTime.MAX).withState(State.DRAFT).withModifiedBy(this.user)
                 .withCreatedOn(LocalDateTime.MAX).build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, objective));
-        String[] exceptionParts = exception.getReason().split("\\.");
 
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assertThat(errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -291,8 +281,11 @@ class ObjectiveValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, objectiveInvalid));
 
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
-        assertEquals(String.format("Something went wrong. ModifiedBy %s is not set.", null), exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("modifiedBy")));
+
+        assertEquals(INTERNAL_SERVER_ERROR, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test

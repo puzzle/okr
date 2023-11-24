@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -188,27 +190,39 @@ class ObjectivePersistenceServiceIT {
         objectivePersistenceService.deleteById(createdObjective.getId());
 
         Long objectiveId = createdObjective.getId();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.findById(objectiveId));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Objective", "200")));
+
         assertEquals(NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Objective with id %d not found", createdObjective.getId()), exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void countByTeamAndQuarterShouldThrowErrorIfQuarterDoesNotExist() {
         Team teamId5 = teamPersistenceService.findById(5L);
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamId5,
                         quarterPersistenceService.findById(12L)));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Quarter", "12")));
+
         assertEquals(NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Quarter with id %d not found", 12), exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         Quarter quarterId2 = quarterPersistenceService.findById(2L);
-        ResponseStatusException exceptionTeam = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exceptionTeam = assertThrows(OkrResponseStatusException.class,
                 () -> objectivePersistenceService.countByTeamAndQuarter(teamPersistenceService.findById(500L),
                         quarterId2));
+
+        List<ErrorDto> expectedErrorsTeam = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Team", "500")));
+
         assertEquals(NOT_FOUND, exceptionTeam.getStatus());
-        assertEquals(String.format("Team with id %d not found", 500), exceptionTeam.getReason());
+        assertThat(expectedErrorsTeam).hasSameElementsAs(exceptionTeam.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrorsTeam).contains(exceptionTeam.getReason()));
 
     }
 

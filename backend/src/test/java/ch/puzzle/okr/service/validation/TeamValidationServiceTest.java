@@ -1,5 +1,8 @@
 package ch.puzzle.okr.service.validation;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,9 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class TeamValidationServiceTest {
@@ -61,11 +64,15 @@ class TeamValidationServiceTest {
 
     @Test
     void validateOnGetShouldThrowExceptionIfTeamIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -78,73 +85,131 @@ class TeamValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfTeamIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnGetActiveObjectivesShouldBeSuccessfulWhenValidTeamId() {
+        validator.validateOnGetActiveObjectives(team1);
+
+        verify(validator, times(1)).validateOnGetActiveObjectives(team1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(team1);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(team1.getId());
+        verify(validator, times(1)).doesEntityExist(team1.getId());
+    }
+
+    @Test
+    void validateOnGetActiveObjectivesShouldThrowExceptionWhenIdIsNull() {
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
+
+        verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
+        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(team1));
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(team1.getId());
-        assertEquals("Model Team cannot have id while create. Found id 1", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenTeamAlreadyExists() {
         BDDMockito.given(teamPersistenceService.findTeamsByName(anyString())).willReturn(List.of(team1));
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(teamWithIdNull));
-        assertEquals("Can't create team with already existing name", exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ALREADY_EXISTS_SAME_NAME", List.of("Team", "Team null")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
-        assertEquals("Given model Team is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenModelIsNameIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(teamWithoutName));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutName);
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(teamWithoutName.getId());
         verify(validator, times(1)).validate(teamWithoutName);
-        assertThat(exception.getReason()).contains("Missing attribute name when saving team.");
-        assertThat(exception.getReason()).contains("Attribute name can not be null when saving team.");
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("name", "Team")),
+                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("name", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(teamWithIdNull.getId(), teamWithIdNull));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithIdNull.getId());
-        assertEquals("Id is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(null, null));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
-        assertEquals("Given model Team is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenModelIsNameIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(teamWithoutNameWithId.getId(), teamWithoutNameWithId));
         verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithoutNameWithId);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithoutNameWithId.getId());
         verify(validator, times(1)).validate(teamWithoutNameWithId);
-        assertThat(exception.getReason()).contains("Missing attribute name when saving team.");
-        assertThat(exception.getReason()).contains("Attribute name can not be null when saving team.");
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("name", "Team")),
+                new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("name", "Team")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

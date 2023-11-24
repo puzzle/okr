@@ -98,9 +98,11 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(action2));
 
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action")));
+
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
-        assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("Action", "2"))), exception.getErrors());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @ParameterizedTest

@@ -46,7 +46,7 @@ class ActionValidationServiceTest {
     private static Stream<Arguments> actionValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 5000),
-                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN_0_4096", List.of("action", "Action")))),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("action", "Action", "0", "4096")))),
                 arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")))));
     }
 

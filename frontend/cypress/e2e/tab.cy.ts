@@ -368,6 +368,7 @@ describe('Tab workflow tests', () => {
       cy.tabForward();
       cy.focused().type('Target Zone');
       cy.tabForward();
+      cy.focused().type('Stretch Goal');
       cy.focused().type('Stretch Zone');
       fillInNewKeyResult();
       cy.contains('KeyResult ordinal by Cypress');

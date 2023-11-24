@@ -36,7 +36,7 @@ describe('OKR Overview', () => {
     cy.contains('Target');
     cy.contains('My commit zone');
     cy.contains('My target zone');
-    cy.contains('My stretch zone');
+    cy.contains('My stretch goal');
     cy.contains('Stretch');
     cy.contains('Confidence');
     cy.contains('Beschrieb');
@@ -86,7 +86,7 @@ describe('OKR Overview', () => {
       null,
       'My commit zone',
       'My target zone',
-      'My stretch zone',
+      'My stretch goal',
       null,
       'This is my description',
     );
@@ -111,7 +111,7 @@ describe('OKR Overview', () => {
     cy.contains('Ordinal');
     cy.contains('My commit zone');
     cy.contains('My target zone');
-    cy.contains('My stretch zone');
+    cy.contains('My stretch goal');
     cy.contains('A new car');
     cy.contains('A new house');
     cy.contains('A new company');
@@ -132,7 +132,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('titleInput').should('have.value', 'We want not to change keyresult title');
     cy.getByTestId('commitZone').should('have.value', 'My commit zone');
     cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch zone');
+    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
     cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
     cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
 
@@ -169,7 +169,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('titleInput').should('have.value', 'Here we want to change keyresult title');
     cy.getByTestId('commitZone').should('have.value', 'My commit zone');
     cy.getByTestId('targetZone').should('have.value', 'My target zone');
-    cy.getByTestId('stretchZone').should('have.value', 'My stretch zone');
+    cy.getByTestId('stretchZone').should('have.value', 'My stretch goal');
     cy.getByTestId('ownerInput').should('have.value', 'Jaya Norris');
     cy.getByTestId('descriptionInput').should('have.value', 'This is my description');
 

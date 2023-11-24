@@ -165,7 +165,7 @@ describe('KeyresultDialogComponent', () => {
     keyResultType: 'ordinal',
     commitZone: 'Commit zone',
     targetZone: 'Target zone',
-    stretchZone: 'Stretch zone',
+    stretchZone: 'Stretch goal',
   };
 
   let receivedKeyResultOrdinal = {
@@ -201,7 +201,7 @@ describe('KeyresultDialogComponent', () => {
     keyResultType: 'ordinal',
     commitZone: 'Commit zone',
     targetZone: 'Target zone',
-    stretchZone: 'Stretch zone',
+    stretchZone: 'Stretch goal',
     baseline: null,
     stretchGoal: null,
     unit: null,

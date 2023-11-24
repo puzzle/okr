@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <section class="p-0">
+  <section class="p-0 py-3 m-0">
     <button
       mat-button
       color="primary"
@@ -40,8 +40,10 @@
       [attr.data-testId]="'add-action-plan-line'"
       (click)="addNewAction()"
     >
-      <img src="assets/icons/new-icon.svg" alt="Add action button" />
-      Weitere Action hinzufügen
+      <span class="d-flex align-items-center">
+        <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
+        Weitere Action hinzufügen
+      </span>
     </button>
   </section>
 </div>

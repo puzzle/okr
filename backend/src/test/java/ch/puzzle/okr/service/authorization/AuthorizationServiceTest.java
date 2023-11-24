@@ -22,7 +22,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
@@ -155,8 +154,7 @@ class AuthorizationServiceTest {
     void hasRoleReadByObjectiveIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read objective";
-        ErrorDto error = new ErrorDto(reason, List.of());
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Objective"));
         when(objectivePersistenceService.findObjectiveById(id, authorizationUser, error)).thenReturn(new Objective());
 
         authorizationService.hasRoleReadByObjectiveId(id, authorizationUser);
@@ -166,24 +164,26 @@ class AuthorizationServiceTest {
     void hasRoleReadByKeyResultIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read key result";
-        ErrorDto error = new ErrorDto(reason, List.of());
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
 
         when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, error))
-                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason));
+                .thenThrow(new OkrResponseStatusException(HttpStatus.UNAUTHORIZED, error));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleReadByKeyResultId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void hasRoleReadByKeyResultIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read key result";
-        ErrorDto error = new ErrorDto(reason, List.of());
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("KeyResult"));
         when(objectivePersistenceService.findObjectiveByKeyResultId(id, authorizationUser, error))
                 .thenReturn(new Objective());
 
@@ -194,23 +194,26 @@ class AuthorizationServiceTest {
     void hasRoleReadByCheckInIdShouldThrowExceptionWhenObjectiveNotFound() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read check in";
-        ErrorDto error = new ErrorDto(reason, List.of());
-        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, error))
-                .thenThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, reason));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in"));
+        when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, error))
+                .thenThrow(new OkrResponseStatusException(HttpStatus.UNAUTHORIZED, error));
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleReadByCheckInId(id, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
     void hasRoleReadByCheckInIdShouldPassThroughWhenPermitted() {
         Long id = 13L;
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
-        String reason = "not authorized to read check in";
-        ErrorDto error = new ErrorDto(reason, List.of());
+        ErrorDto error = new ErrorDto("NOT_AUTHORIZED_TO_READ", List.of("Check-in"));
 
         when(objectivePersistenceService.findObjectiveByCheckInId(id, authorizationUser, error))
                 .thenReturn(new Objective());
@@ -277,10 +280,14 @@ class AuthorizationServiceTest {
         AuthorizationUser authorizationUser = mockAuthorizationUser(defaultUser(null), List.of(1L), 5L,
                 List.of(WRITE_TEAM));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> authorizationService.hasRoleCreateOrUpdate(objective, authorizationUser));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("NOT_AUTHORIZED_TO_WRITE", List.of("Objective")));
+
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals("not authorized to create or update objective", exception.getReason());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test

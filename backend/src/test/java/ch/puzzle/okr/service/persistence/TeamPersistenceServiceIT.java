@@ -74,7 +74,7 @@ class TeamPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> teamPersistenceService.findById(null));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of()));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

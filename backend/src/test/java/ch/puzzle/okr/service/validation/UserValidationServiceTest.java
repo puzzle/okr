@@ -65,18 +65,18 @@ class UserValidationServiceTest {
     private static Stream<Arguments> userNameValidationArguments() {
         return Stream.of(
                 arguments(StringUtils.repeat('1', 21),
-                        List.of("Attribute username must have size between 2 and 20 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("username", "User", "2", "20")))),
                 arguments(StringUtils.repeat('1', 1),
-                        List.of("Attribute username must have size between 2 and 20 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("username", "User", "2", "20")))),
                 arguments("",
-                        List.of("Missing attribute username when saving user",
-                                "Attribute username must have size between 2 and 20 characters when saving user")),
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("username", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("username", "User", "2", "20")))),
                 arguments(" ",
-                        List.of("Missing attribute username when saving user",
-                                "Attribute username must have size between 2 and 20 characters when saving user")),
-                arguments("         ", List.of("Missing attribute username when saving user")),
-                arguments(null, List.of("Missing attribute username when saving user",
-                        "Attribute username can not be null when saving user")));
+                        List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("username", "User")),
+                                new ErrorDto("ATTRIBUTE_SIZE_BETWEEN", List.of("username", "User", "2", "20")))),
+                arguments("         ", List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("username", "User")))),
+                arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("username", "User")),
+                        new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("username", "User")))));
     }
 
     private static Stream<Arguments> firstNameValidationArguments() {
@@ -206,23 +206,16 @@ class UserValidationServiceTest {
 
     @ParameterizedTest
     @MethodSource("userNameValidationArguments")
-    void validateOnCreateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<String> errors) {
+    void validateOnCreateShouldThrowExceptionWhenUsernameIsInvalid(String name, List<ErrorDto> errors) {
         User user2 = User.Builder.builder().withEmail("max@mail.com").withFirstname("firstname")
                 .withLastname("lastname").withUsername(name).build();
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        String[] exceptionParts = Objects.requireNonNull(exception.getReason()).split("\\.");
-        String[] errorArray = new String[errors.size()];
-
-        for (int i = 0; i < errors.size(); i++) {
-            errorArray[i] = exceptionParts[i].strip();
-        }
-
-        for (int i = 0; i < exceptionParts.length; i++) {
-            assert (errors.contains(errorArray[i]));
-        }
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(errors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
 
     @ParameterizedTest

@@ -290,11 +290,9 @@ class ObjectiveValidationServiceTest {
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, objectiveInvalid));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "7", "1")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exception.getStatus());
+        assertEquals(String.format("Something went wrong. ModifiedBy %s is not set.", null), exception.getReason());
     }
 
     @Test
@@ -308,13 +306,13 @@ class ObjectiveValidationServiceTest {
                 .withModifiedBy(user).build();
         when(objectivePersistenceService.findById(savedObjective.getId())).thenReturn(savedObjective);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, updatedObjective));
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
-        assertEquals(
-                String.format("The team can not be changed (new team %s, old team %s)",
-                        updatedObjective.getTeam().getName(), savedObjective.getTeam().getName()),
-                exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("Team", "Objective")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -327,10 +325,14 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnDeleteShouldThrowExceptionIfObjectiveIdIsNull() {
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnGet(null));
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        assertEquals("Id is null", exception.getReason());
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Objective")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

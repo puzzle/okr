@@ -8,7 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  NO_ERROR_TOASTER_ROUTES = ['/token'];
+  NO_TOASTER_ROUTES = ['/token'];
+  NO_TOASTER_SUCCESS_ROUTES = ['/action'];
 
   constructor(
     private router: Router,
@@ -31,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleErrorToaster(response: any) {
-    if (this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+    if (this.NO_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
       return;
     }
 
@@ -54,7 +55,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleSuccess(response: any, method: string) {
-    if (this.NO_ERROR_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+    const NO_TOASTER = this.NO_TOASTER_ROUTES.concat(this.NO_TOASTER_SUCCESS_ROUTES);
+    if (NO_TOASTER.some((route) => response.url.includes(route))) {
       return;
     }
     switch (method) {

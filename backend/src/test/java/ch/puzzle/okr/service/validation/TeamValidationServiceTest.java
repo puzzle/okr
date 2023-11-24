@@ -97,31 +97,6 @@ class TeamValidationServiceTest {
     }
 
     @Test
-    void validateOnGetActiveObjectivesShouldBeSuccessfulWhenValidTeamId() {
-        validator.validateOnGetActiveObjectives(team1);
-
-        verify(validator, times(1)).validateOnGetActiveObjectives(team1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(1L);
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(team1);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(team1.getId());
-        verify(validator, times(1)).doesEntityExist(team1.getId());
-    }
-
-    @Test
-    void validateOnGetActiveObjectivesShouldThrowExceptionWhenIdIsNull() {
-        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
-                () -> validator.validateOnGetActiveObjectives(teamWithIdNull));
-
-        verify(validator, times(1)).throwExceptionWhenModelIsNull(teamWithIdNull);
-        verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
-
-        assertEquals(BAD_REQUEST, exception.getStatus());
-        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
-        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
-
-    @Test
     void validateOnCreateShouldThrowExceptionWhenIdIsNotNull() {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(team1));

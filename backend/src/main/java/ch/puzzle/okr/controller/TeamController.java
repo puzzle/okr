@@ -29,10 +29,9 @@ public class TeamController {
         this.teamMapper = teamMapper;
     }
 
-    @Operation(summary = "Get Teams", description = "Get all Teams from db as well as all active objectives from chosen quarter")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned all Teams with active objective in quarter", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
+    @Operation(summary = "Get Teams", description = "Get all Teams from db")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Teams", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
     @GetMapping
     public List<TeamDto> getAllTeams(@RequestParam(value = "quarterId", required = false) Long quarterId) {
         return teamAuthorizationService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();

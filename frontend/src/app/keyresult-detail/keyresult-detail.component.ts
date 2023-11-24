@@ -140,17 +140,21 @@ export class KeyresultDetailComponent implements OnInit {
           height: 'auto',
         };
     const dialogRef = this.dialog.open(CheckInFormComponent, {
-      data: {
-        keyResult: this.keyResult$.getValue(),
-      },
       height: dialogConfig.height,
       width: dialogConfig.width,
       maxHeight: dialogConfig.maxHeight,
       maxWidth: dialogConfig.maxWidth,
+      data: {
+        keyResult: this.keyResult$.getValue(),
+      },
     });
     dialogRef.afterClosed().subscribe(() => {
       this.loadKeyResult();
       this.refreshDataService.markDataRefresh();
     });
+  }
+
+  backToOverview() {
+    this.router.navigate(['']);
   }
 }

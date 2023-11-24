@@ -120,7 +120,7 @@ Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, own
   cy.contains('Ordinal');
   cy.contains('Commit Zone');
   cy.contains('Target Zone');
-  cy.contains('Stretch Zone');
+  cy.contains('Stretch Goal');
   cy.contains('Owner');
   cy.contains('Beschreibung (optional)');
   cy.contains('Action Plan (optional)');
@@ -135,7 +135,7 @@ Cypress.Commands.add('createOrdinalKeyresult', (title: string | null = null, own
     null,
     'My commit zone',
     'My target zone',
-    'My stretch zone',
+    'My stretch goal',
     owner,
     'This is my description',
   );

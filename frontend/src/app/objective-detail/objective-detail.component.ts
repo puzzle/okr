@@ -92,4 +92,8 @@ export class ObjectiveDetailComponent {
         this.refreshDataService.markDataRefresh();
       });
   }
+
+  backToOverview() {
+    this.router.navigate(['']);
+  }
 }

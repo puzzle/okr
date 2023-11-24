@@ -31,7 +31,7 @@
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="input-alignments gap-2">
+          <div class="input-alignments">
             <div class="input-style gap-2">
               <label class="text-black" for="unit">Einheit</label>
               <select
@@ -95,15 +95,15 @@
     <div class="d-flex flex-column flex-wrap container p-0">
       <div class="d-flex flex-row">
         <div class="flex-fill">
-          <div class="input-alignments gap-2">
+          <div class="input-alignments">
             <div class="input-style gap-2">
               <label class="text-black" for="commitZone">Commit Zone</label>
               <textarea
-                [attr.data-testId]="'commitZone'"
                 class="ordinal-input-fields"
                 [ngClass]="formInputCheck(keyResultForm, 'commitZone')"
                 formControlName="commitZone"
                 id="commitZone"
+                [attr.data-testId]="'commitZone'"
               ></textarea>
               <span *ngIf="isTouchedOrDirty('commitZone')">
                 <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
@@ -129,7 +129,7 @@
             </div>
 
             <div class="input-style gap-2">
-              <label class="text-black" for="stretchZone">Stretch Zone</label>
+              <label class="text-black" for="stretchZone">Stretch Goal</label>
               <textarea
                 [attr.data-testId]="'stretchZone'"
                 class="ordinal-input-fields"

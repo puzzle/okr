@@ -1,11 +1,11 @@
 <div class="d-flex flex-row w-100 gap-4">
-  <div class="d-flex flex-column">
-    <mat-label>
-      Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT' && keyResult.unit != 'NUMBER'">
+  <div class="input-style gap-2 col-12">
+    <label class="text-black"
+      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT' && keyResult.unit != 'NUMBER'">
         ({{ keyResult.unit | unitLabelTransformation }})</span
-      >:
-    </mat-label>
-    <div class="d-flex flex-column mb-3">
+      >:</label
+    >
+    <div>
       <app-custom-input
         [formGroup]="dialogForm"
         [formControlNameGiven]="'value'"

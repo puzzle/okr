@@ -1,9 +1,12 @@
 package ch.puzzle.okr.mapper;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultMetricDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OrganisationBusinessService;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -181,11 +185,15 @@ class OverviewMapperTest {
                 .withTeamName("Puzzle ITC").withObjectiveTitle("Objective 1").withKeyResultTitle("Key Result 1")
                 .withKeyResultType("unknown").withCheckInZone("TARGET").build());
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> overviewMapper.toDto(overviews));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
-        assertEquals("The key result type unknown can not be converted to a metric or ordinal DTO",
-                exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("KEYRESULT_CONVERSION", List.of("unknown")));
+
+        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

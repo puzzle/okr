@@ -1,7 +1,10 @@
 package ch.puzzle.okr.service.persistence;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -9,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.*;
 
 @SpringIntegrationTest
 class CompletedPersistenceServiceIT {
@@ -70,10 +76,14 @@ class CompletedPersistenceServiceIT {
         Completed updateCompleted = createCompleted(createdCompleted.getId(), 0);
         updateCompleted.setComment("Updated completed");
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.save(updateCompleted));
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Completed")));
+
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
-        assertTrue(exception.getReason().contains("updated or deleted by another user"));
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -91,10 +101,14 @@ class CompletedPersistenceServiceIT {
 
         completedPersistenceService.deleteById(3L);
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.findById(3L));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Completed with id %d not found", 3), exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Completed", "3")));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 
     @Test
@@ -103,9 +117,13 @@ class CompletedPersistenceServiceIT {
         completedPersistenceService.deleteById(createdCompleted.getId());
 
         Long completedId = createdCompleted.getId();
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.findById(completedId));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
-        assertEquals(String.format("Completed with id %d not found", createdCompleted.getId()), exception.getReason());
+
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Completed", "200")));
+
+        assertEquals(NOT_FOUND, exception.getStatus());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
 }

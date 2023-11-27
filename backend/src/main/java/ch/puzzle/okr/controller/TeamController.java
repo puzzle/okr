@@ -48,7 +48,7 @@ public class TeamController {
     public ResponseEntity<TeamDto> createTeam(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody TeamDto teamDto) {
         Team createdTeam = teamAuthorizationService.createEntity(teamMapper.toTeam(teamDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(teamMapper.toDto(createdTeam, null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(teamMapper.toDto(createdTeam, List.of()));
     }
 
     @Operation(summary = "Update Team", description = "Update a Team by ID.")
@@ -63,7 +63,7 @@ public class TeamController {
             @Parameter(description = "The ID for updating a Team.", required = true) @PathVariable long id,
             @RequestBody TeamDto teamDto) {
         Team updatedTeam = teamAuthorizationService.updateEntity(teamMapper.toTeam(teamDto), id);
-        return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam, null));
+        return ResponseEntity.status(OK).body(teamMapper.toDto(updatedTeam, List.of()));
     }
 
     @Operation(summary = "Delete Team by ID", description = "Delete Team by ID")

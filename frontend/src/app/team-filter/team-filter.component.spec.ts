@@ -11,7 +11,6 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { of, Subject } from 'rxjs';
 import { team1, team2, team3, teamList } from '../shared/testData';
 import { Router } from '@angular/router';
-import { Team } from '../shared/types/model/Team';
 
 const teamServiceMock = {
   getAllTeams: jest.fn(),
@@ -81,7 +80,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  it('activeTeams array should be empty when all teams are shown', waitForAsync(async () => {
+  it('activeTeams array should contain every team when all teams are shown', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -94,7 +93,7 @@ describe('TeamFilterComponent', () => {
 
     expect(component.teams$.next).toHaveBeenCalledWith(teamList);
     expect(component.teams$.next).toBeCalledTimes(1);
-    expect(component.activeTeams.length).toBe(0);
+    expect(component.activeTeams.length).toBe(3);
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
@@ -126,8 +125,8 @@ describe('TeamFilterComponent', () => {
   it.each([
     [[1], 2, [1, 2]],
     [[1, 2], 2, [1]],
-    [[1, 2], 3, []],
-    [[], 3, [1, 2]],
+    [[1, 2], 3, [1, 2, 3]],
+    [[], 3, [3]],
     [[3], 3, []],
   ])('toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
     component.activeTeams = activeTeams;
@@ -137,7 +136,7 @@ describe('TeamFilterComponent', () => {
     component.toggleSelection(selected);
     fixture.detectChanges();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(component.areAllTeamsShown).toBeCalledTimes(2);
+    expect(component.areAllTeamsShown).toBeCalledTimes(1);
     expect(component.activeTeams).toStrictEqual(expected);
   });
 
@@ -145,7 +144,7 @@ describe('TeamFilterComponent', () => {
     [[1], false],
     [[1, 2], false],
     [[1, 2, 3], true],
-    [[], true],
+    [[], false],
     [[1, 2, 4], false],
   ])('are all teams shown', (activeTeams: number[], expected: boolean) => {
     component.activeTeams = activeTeams;
@@ -159,12 +158,12 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 
-  it('select all should do nothing', () => {
+  it('select all should change all', () => {
     component.activeTeams = [];
     jest.spyOn(component, 'changeTeamFilterParams');
     component.toggleAll();
 
-    expect(component.changeTeamFilterParams).toBeCalledTimes(0);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 
   it('should refresh teams on data refresh', () => {

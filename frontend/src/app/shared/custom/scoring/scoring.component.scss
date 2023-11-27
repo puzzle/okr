@@ -1,3 +1,8 @@
+.scoring-container {
+  display: flex;
+  align-items: center;
+}
+
 .okr-score-label {
   display: inline-grid;
   width: 30%;
@@ -50,4 +55,10 @@
   min-width: fit-content;
   display: inline-block;
   text-align: end;
+}
+
+@media screen and (max-width: 580px) {
+  .okr-stretch {
+    margin-bottom: 0.125rem !important;
+  }
 }

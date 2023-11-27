@@ -261,10 +261,10 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   border: 3px solid var(--scrollbarBG);
 }
 
-.line-height {
-  line-height: normal !important;
-}
-
 .sub-title-keyresult {
   font-size: 0.9rem !important;
+}
+
+* {
+  line-height: 115% !important;
 }

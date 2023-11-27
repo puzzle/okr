@@ -15,6 +15,7 @@
 .add-keyresult {
   // Select is aligned with label and it's not easy to align checkbox to select
   margin-top: -3px;
+  margin-left: 1.2rem;
 }
 
 @media only screen and (min-width: 820px) {
@@ -25,9 +26,17 @@
   }
 }
 
-@media only screen and (max-width: 780px) {
+@media only screen and (max-width: 770px) {
   .add-keyresult {
     margin-left: -10px;
     margin-top: 1rem;
   }
+
+  .add-keyresult-text {
+    margin: 0;
+  }
+}
+
+.add-keyresult-text {
+  margin-left: -10px;
 }

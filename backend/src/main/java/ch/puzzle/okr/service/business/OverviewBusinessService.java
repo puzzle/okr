@@ -29,12 +29,12 @@ public class OverviewBusinessService {
             quarterId = quarterBusinessService.getCurrentQuarter().getId();
         }
         teamIds = teamIds == null ? List.of() : teamIds;
+        validator.validateOnGet(quarterId, teamIds);
 
         if (teamIds.isEmpty()) {
             return List.of();
         }
 
-        validator.validateOnGet(quarterId, teamIds);
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
         return sortOverview(overviews, authorizationUser);

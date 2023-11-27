@@ -28,6 +28,7 @@
       (click)="openNew()"
       mat-stroked-button
       [disabled]="keyResultForm.invalid"
+      color="primary"
     >
       Speichern & Neu
     </button>
@@ -37,9 +38,9 @@
     color="primary"
     class="delete-button"
     *ngIf="this.data.keyResult"
-    [attr.data-testId]="'delete-keyResult'"
     mat-button
     (click)="deleteKeyResult()"
+    [attr.data-testId]="'delete-keyResult'"
   >
     Key Result löschen
   </button>

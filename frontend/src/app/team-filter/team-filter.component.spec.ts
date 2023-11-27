@@ -155,14 +155,14 @@ describe('TeamFilterComponent', () => {
   it('select all', () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     jest.spyOn(component, 'changeTeamFilterParams');
-    component.selectAll();
+    component.toggleAll();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 
   it('select all should do nothing', () => {
     component.activeTeams = [];
     jest.spyOn(component, 'changeTeamFilterParams');
-    component.selectAll();
+    component.toggleAll();
 
     expect(component.changeTeamFilterParams).toBeCalledTimes(0);
   });

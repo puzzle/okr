@@ -33,8 +33,9 @@ public class TeamController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned all Teams", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = TeamDto.class)) }), })
     @GetMapping
-    public List<TeamDto> getAllTeams(@RequestParam(value = "quarterId", required = false) Long quarterId) {
-        return teamAuthorizationService.getAllTeams().stream().map(team -> teamMapper.toDto(team, quarterId)).toList();
+    public List<TeamDto> getAllTeams() {
+        return teamAuthorizationService.getAllTeams().stream()
+                .map(team -> teamMapper.toDto(team, teamAuthorizationService.getUserTeamIds())).toList();
     }
 
     @Operation(summary = "Create Team", description = "Create a new Team")

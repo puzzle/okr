@@ -30,6 +30,10 @@ public class OverviewBusinessService {
         }
         teamIds = teamIds == null ? List.of() : teamIds;
 
+        if (teamIds.isEmpty()) {
+            return List.of();
+        }
+
         validator.validateOnGet(quarterId, teamIds);
         List<Overview> overviews = overviewPersistenceService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);

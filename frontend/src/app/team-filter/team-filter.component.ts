@@ -25,9 +25,7 @@ export class TeamFilterComponent implements OnInit {
     this.refreshDataService.reloadOverviewSubject.subscribe(() => {
       this.teamService.getAllTeams().subscribe((teams) => {
         this.teams$.next(teams);
-        this.activeTeams = this.activeTeams.filter((teamId) =>
-          this.teams$.value.map((team) => team.id).includes(teamId),
-        );
+        this.activeTeams = this.activeTeams.filter((teamId) => this.getAllTeamIds().includes(teamId));
       });
     });
   }
@@ -37,9 +35,10 @@ export class TeamFilterComponent implements OnInit {
       this.teams$.next(teams);
       const teamQuery = this.route.snapshot.queryParams['teams'];
       const teamIds = getValueFromQuery(teamQuery);
-      this.activeTeams = teams.filter((team) => teamIds?.includes(team.id)).map((team) => team.id);
-      if (this.areAllTeamsShown()) {
-        this.activeTeams = [];
+      if (teamIds.length == 0) {
+        this.activeTeams = teams.filter((e) => e.filterIsActive).map((team) => team.id);
+      } else {
+        this.activeTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
       }
       this.changeTeamFilterParams();
     });
@@ -48,40 +47,33 @@ export class TeamFilterComponent implements OnInit {
   changeTeamFilterParams() {
     const params = { teams: this.activeTeams.join(',') };
     const optionalParams = optionalReplaceWithNulls(params);
-    return this.router
+    this.router
       .navigate([], { queryParams: optionalParams })
       .then(() => this.refreshDataService.teamFilterReady.next());
   }
 
   toggleSelection(id: number) {
     if (this.areAllTeamsShown()) {
-      this.activeTeams = this.teams$
-        .getValue()
-        .filter((team) => team.id != id)
-        .map((team) => team.id);
+      this.activeTeams = this.getAllTeamIds().filter((teamId) => teamId === id);
     } else if (this.activeTeams.includes(id)) {
       this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
     } else {
       this.activeTeams.push(id);
     }
 
-    if (this.areAllTeamsShown()) {
-      this.activeTeams = [];
-    }
-
     this.changeTeamFilterParams();
   }
 
   areAllTeamsShown() {
-    const allTeamsIds = this.teams$.getValue().map((team) => team.id);
-    return this.activeTeams.length == 0 || areEqual(this.activeTeams, allTeamsIds);
+    return areEqual(this.activeTeams, this.getAllTeamIds());
   }
 
-  selectAll() {
-    if (this.activeTeams.length == 0) {
-      return;
-    }
-    this.activeTeams = [];
+  toggleAll() {
+    this.activeTeams = this.areAllTeamsShown() ? [] : this.getAllTeamIds();
     this.changeTeamFilterParams();
+  }
+
+  getAllTeamIds() {
+    return this.teams$.getValue().map((team) => team.id);
   }
 }

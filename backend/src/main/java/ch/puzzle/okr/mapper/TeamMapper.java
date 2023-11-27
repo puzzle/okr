@@ -4,7 +4,6 @@ import ch.puzzle.okr.dto.OrganisationDto;
 import ch.puzzle.okr.dto.TeamDto;
 import ch.puzzle.okr.models.Organisation;
 import ch.puzzle.okr.models.Team;
-import ch.puzzle.okr.service.business.QuarterBusinessService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.springframework.stereotype.Component;
 
@@ -13,22 +12,17 @@ import java.util.List;
 @Component
 public class TeamMapper {
 
-    private final TeamBusinessService teamBusinessService;
-    private final QuarterBusinessService quarterBusinessService;
     private final OrganisationMapper organisationMapper;
 
-    public TeamMapper(TeamBusinessService teamBusinessService, QuarterBusinessService quarterBusinessService,
-            OrganisationMapper organisationMapper) {
-        this.teamBusinessService = teamBusinessService;
-        this.quarterBusinessService = quarterBusinessService;
+    public TeamMapper(OrganisationMapper organisationMapper) {
         this.organisationMapper = organisationMapper;
     }
 
-    public TeamDto toDto(Team team, Long quarterId) {
-        long chosenQuarterId = quarterId == null ? quarterBusinessService.getCurrentQuarter().getId() : quarterId;
+    public TeamDto toDto(Team team, List<Long> userTeamIds) {
         List<OrganisationDto> organisationDTOs = team.getAuthorizationOrganisation().stream()
                 .map(organisationMapper::toDto).toList();
-        return new TeamDto(team.getId(), team.getVersion(), team.getName(), organisationDTOs);
+        boolean filterIsActive = userTeamIds.contains(team.getId());
+        return new TeamDto(team.getId(), team.getVersion(), team.getName(), organisationDTOs, filterIsActive);
     }
 
     public Team toTeam(TeamDto teamDto) {

@@ -68,3 +68,20 @@
     row-gap: 10px;
   }
 }
+
+@media screen and (max-width: 580px) {
+  .ordinal-div {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    row-gap: 10px;
+    margin-bottom: 0 !important;
+  }
+  .ordinal-col {
+    width: 100%;
+  }
+
+  .keyResult-detail-attribute-show {
+    height: auto;
+  }
+}

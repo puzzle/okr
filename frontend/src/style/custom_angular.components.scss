@@ -12,6 +12,10 @@
   }
 }
 
+.mdc-button--outlined {
+  padding: 0 16px 0 16px !important;
+}
+
 .mdc-dialog__title::before {
   display: none !important;
 }

@@ -1,14 +1,16 @@
 package ch.puzzle.okr.mapper.role;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RoleMapperFactory {
-    @Autowired
-    private ApplicationContext appContext;
+    private final ApplicationContext appContext;
     private RoleMapper roleMapper;
+
+    public RoleMapperFactory(ApplicationContext appContext) {
+        this.appContext = appContext;
+    }
 
     public synchronized RoleMapper getRoleMapper() {
         if (roleMapper == null) {

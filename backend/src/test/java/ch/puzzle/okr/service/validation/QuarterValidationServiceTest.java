@@ -2,7 +2,7 @@ package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.Unit;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -130,7 +130,7 @@ class KeyResultPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class, this::execute);
 
         List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -165,7 +165,7 @@ class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(keyResultId));
 
         List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -229,7 +229,7 @@ class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(keyResultId));
 
         List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -247,7 +247,7 @@ class KeyResultPersistenceServiceIT {
                 () -> keyResultPersistenceService.findById(keyResultId));
 
         List<ErrorDto> expectedErrors = List
-                .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("KeyResult", keyResultId)));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

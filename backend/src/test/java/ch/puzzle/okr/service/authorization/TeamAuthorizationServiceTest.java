@@ -47,12 +47,11 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void createEntityShouldThrowExceptionWhenNotAuthorized() {
-        String reason = "not authorized to create team";
         when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.createEntity(newTeam));
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
     @Test
@@ -68,12 +67,11 @@ class TeamAuthorizationServiceTest {
     @Test
     void updateEntityShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
-        String reason = "not authorized to update team";
         when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.updateEntity(newTeam, id));
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
     @Test
@@ -86,13 +84,12 @@ class TeamAuthorizationServiceTest {
     @Test
     void deleteEntityByIdShouldThrowExceptionWhenNotAuthorized() {
         Long id = 13L;
-        String reason = "not authorized to delete team";
         when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.deleteEntity(id));
         assertEquals(UNAUTHORIZED, exception.getStatus());
-        assertEquals(reason, exception.getReason());
+        assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
 
     @ParameterizedTest

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models.keyresult;
 
-import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
@@ -23,27 +23,27 @@ public abstract class KeyResult implements WriteableInterface {
     @Version
     private int version;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Objective objective;
 
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User owner;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
@@ -167,7 +167,7 @@ public abstract class KeyResult implements WriteableInterface {
     protected KeyResult() {
     }
 
-    protected KeyResult(Builder builder) {
+    protected KeyResult(Builder<?> builder) {
         id = builder.id;
         version = builder.version;
         setObjective(builder.objective);
@@ -180,6 +180,7 @@ public abstract class KeyResult implements WriteableInterface {
         setKeyResultType(builder.keyResultType);
     }
 
+    @SuppressWarnings(value = "unchecked")
     public abstract static class Builder<T> {
         private Long id;
         private int version;
@@ -190,7 +191,7 @@ public abstract class KeyResult implements WriteableInterface {
         private User createdBy;
         private LocalDateTime createdOn;
         private LocalDateTime modifiedOn;
-        private String keyResultType;
+        private final String keyResultType;
 
         protected Builder(String keyResultType) {
             this.keyResultType = keyResultType;

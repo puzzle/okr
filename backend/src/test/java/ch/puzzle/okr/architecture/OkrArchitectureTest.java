@@ -120,7 +120,7 @@ class OkrArchitectureTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "controller", "service", "mapper", "repository", "dto" })
+    @ValueSource(strings = { "controller", "service", "converter", "mapper", "repository", "dto", "exception" })
     void classesInRightPackages(String passedName) {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("ch.puzzle.okr");
 

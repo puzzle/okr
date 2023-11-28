@@ -1,8 +1,8 @@
 package ch.puzzle.okr.mapper;
 
+import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.overview.*;
-import ch.puzzle.okr.models.ErrorMsg;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.springframework.stereotype.Component;
@@ -90,7 +90,7 @@ public class OverviewMapper {
         } else if (Objects.equals(overview.getKeyResultType(), KEY_RESULT_TYPE_ORDINAL)) {
             return createKeyResultOrdinalDto(overview);
         } else {
-            throw new OkrResponseStatusException(BAD_REQUEST, ErrorMsg.KEYRESULT_CONVERSION,
+            throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.KEY_RESULT_CONVERSION,
                     overview.getKeyResultType());
         }
     }

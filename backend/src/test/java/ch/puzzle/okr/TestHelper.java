@@ -84,6 +84,6 @@ public class TestHelper {
     }
 
     public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
-        return errors.stream().map(ErrorDto::getErrorKey).toList();
+        return errors.stream().map(ErrorDto::errorKey).toList();
     }
 }

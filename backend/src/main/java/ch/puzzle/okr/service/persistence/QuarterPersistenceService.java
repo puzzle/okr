@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.QUARTER;
+
 @Service
 public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, QuarterRepository> {
 
@@ -16,7 +18,7 @@ public class QuarterPersistenceService extends PersistenceBase<Quarter, Long, Qu
 
     @Override
     public String getModelName() {
-        return "Quarter";
+        return QUARTER;
     }
 
     public List<Quarter> getMostCurrentQuarters() {

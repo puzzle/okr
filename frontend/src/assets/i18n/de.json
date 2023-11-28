@@ -17,15 +17,14 @@
     "BASIC_VALUE": "Startwert",
     "TARGET_VALUE": "Zielwert"
   },
-  "KEY_RESULT_Type": {
+  "KEY_RESULT_TYPE": {
     "metric": "Metrisch",
     "ordinal": "Ordinal"
   },
-
   "ERRORS": {
     "UNAUTHORIZED": "Du bist nicht autorisiert um das Objekt mit der Id {1} zu öffnen",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden",
-    "KEYRESULT_CONVERSION": "Der Keyresulttyp {0} konnte weder zu metrisch noch zu ordinal konvertiert werden",
+    "KEY_RESULT_CONVERSION": "Der Keyresulttyp {0} konnte weder zu metrisch noch zu ordinal konvertiert werden",
     "ALREADY_EXISTS_SAME_NAME": "{0} mit diesem Namen existiert bereits",
     "CONVERT_TOKEN": "Benutzer kann nicht aus Token konvertiert werden",
     "DATA_HAS_BEEN_UPDATED": "Die Daten des {0} wurden bereits von einem anderen Benutzer geändert oder gelöscht",
@@ -43,9 +42,9 @@
     "ATTRIBUTE_MIN_VALUE": "Das Attribut {0} auf dem Objekt muss mindestens einen Wert von {1} haben",
     "ATTRIBUTE_MAX_VALUE": "Das Attribut {0} auf dem Objekt darf maximal einen Wert von {1} haben",
     "NOT_AUTHORIZED_TO_READ": "Du bist nicht autorisiert um dieses {0} anzuzeigen",
-    "NOT_AUTHORIZED_TO_WRITE":"Du bist nicht autorisiert um dieses {0} zu bearbeiten",
+    "NOT_AUTHORIZED_TO_WRITE": "Du bist nicht autorisiert um dieses {0} zu bearbeiten",
     "NOT_AUTHORIZED_TO_DELETE": "Du bist nicht autorisiert um dieses {0} zu löschen",
     "TOKEN_NULL": "Das erhaltene Token ist null",
-    "ILLEGAL_CHANGE_OBJECTIVE_QUARTER":"Element kann nicht in ein anderes Quartal verlegt werden"
+    "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden"
   }
 }

@@ -1,41 +1,20 @@
 package ch.puzzle.okr.dto;
 
+import ch.puzzle.okr.ErrorKey;
+
 import java.util.List;
-import java.util.Objects;
 
-public class ErrorDto {
-    private final String errorKey;
-    private final List<String> params;
+public record ErrorDto(String errorKey, List<String> params) {
 
-    public ErrorDto(String errorKey, List<Object> params) {
-        this.errorKey = errorKey;
-        this.params = params.stream().map(Object::toString).toList();
+    public static ErrorDto of(ErrorKey errorKey, String param) {
+        return of(errorKey.name(), List.of(param));
     }
 
-    public ErrorDto(String errorKey, String param) {
-        this(errorKey, List.of(param));
+    public static ErrorDto of(ErrorKey errorKey, List<Object> params) {
+        return of(errorKey.name(), params);
     }
 
-    public String getErrorKey() {
-        return errorKey;
-    }
-
-    public List<String> getParams() {
-        return params;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        ErrorDto errorDto = (ErrorDto) o;
-        return Objects.equals(errorKey, errorDto.errorKey) && Objects.equals(params, errorDto.params);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(errorKey, params);
+    public static ErrorDto of(String messageKey, List<Object> params) {
+        return new ErrorDto(messageKey, params.stream().map(Object::toString).toList());
     }
 }

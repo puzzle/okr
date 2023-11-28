@@ -1,9 +1,10 @@
 package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.Constants;
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
-import ch.puzzle.okr.models.ErrorMsg;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.repository.ActionRepository;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import org.springframework.http.HttpStatus;
@@ -47,12 +48,12 @@ public class ActionValidationService extends ValidationBase<Action, Long, Action
 
     void throwExceptionWhenKeyResultHasChanged(Action action, Action savedAction) {
         if (action.getKeyResult() == null || savedAction.getKeyResult() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NOT_NULL,
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, MessageKey.ATTRIBUTE_NOT_NULL,
                     List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
 
         if (!Objects.equals(action.getKeyResult().getId(), savedAction.getKeyResult().getId())) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CANNOT_CHANGE,
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
                     List.of(Constants.KEY_RESULT, Constants.ACTION));
         }
     }

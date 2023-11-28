@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.*;
+import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
@@ -16,6 +16,9 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
+import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;
 
 @Service
 public class ObjectiveBusinessService implements BusinessServiceInterface<Long, Objective> {
@@ -93,13 +96,13 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         Objective duplicatedObjective = createEntity(objective, authorizationUser);
         List<KeyResult> keyResultsOfDuplicatedObjective = keyResultBusinessService.getAllKeyResultsByObjective(id);
         for (KeyResult keyResult : keyResultsOfDuplicatedObjective) {
-            if (keyResult.getKeyResultType().equals("metric")) {
+            if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_METRIC)) {
                 KeyResult keyResultMetric = KeyResultMetric.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
                         .withOwner(keyResult.getOwner()).withUnit(((KeyResultMetric) keyResult).getUnit())
                         .withBaseline(0D).withStretchGoal(1D).build();
                 keyResultBusinessService.createEntity(keyResultMetric, authorizationUser);
-            } else if (keyResult.getKeyResultType().equals("ordinal")) {
+            } else if (keyResult.getKeyResultType().equals(KEY_RESULT_TYPE_ORDINAL)) {
                 KeyResult keyResultOrdinal = KeyResultOrdinal.Builder.builder().withObjective(duplicatedObjective)
                         .withTitle(keyResult.getTitle()).withDescription(keyResult.getDescription())
                         .withOwner(keyResult.getOwner()).withCommitZone("-").withTargetZone("-").withStretchZone("-")

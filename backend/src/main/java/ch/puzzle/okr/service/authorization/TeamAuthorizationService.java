@@ -1,14 +1,15 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.TEAM;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
 
 @Service
@@ -23,28 +24,28 @@ public class TeamAuthorizationService {
     }
 
     public Team createEntity(Team entity) {
-        checkUserAuthorization("not authorized to create team");
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM));
         Team savedTeam = teamBusinessService.createTeam(entity);
         savedTeam.setWriteable(true);
         return savedTeam;
     }
 
     public Team updateEntity(Team entity, Long id) {
-        checkUserAuthorization("not authorized to update team");
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM));
         Team updatedTeam = teamBusinessService.updateTeam(entity, id);
         updatedTeam.setWriteable(true);
         return updatedTeam;
     }
 
     public void deleteEntity(Long id) {
-        checkUserAuthorization("not authorized to delete team");
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM));
         teamBusinessService.deleteTeam(id);
     }
 
-    private void checkUserAuthorization(String message) {
+    private void checkUserAuthorization(OkrResponseStatusException exception) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (!hasRoleWriteAll(authorizationUser)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, message);
+            throw exception;
         }
     }
 

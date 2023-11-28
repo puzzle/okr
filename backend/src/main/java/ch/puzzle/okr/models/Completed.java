@@ -14,11 +14,11 @@ public class Completed {
     @Version
     private int version;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @OneToOne
     private Objective objective;
 
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String comment;
 
     public Completed() {

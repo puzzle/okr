@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.ALIGNMENT;
+
 @Service
 public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long, AlignmentRepository> {
 
@@ -17,7 +19,7 @@ public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long
 
     @Override
     public String getModelName() {
-        return "Alignment";
+        return ALIGNMENT;
     }
 
     public List<Alignment> findByAlignedObjectiveId(Long alignedObjectiveId) {

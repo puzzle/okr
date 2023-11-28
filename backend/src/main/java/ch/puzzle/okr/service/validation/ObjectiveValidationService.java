@@ -1,8 +1,8 @@
 package ch.puzzle.okr.service.validation;
 
-import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-import static java.lang.String.format;
+import static ch.puzzle.okr.Constants.OBJECTIVE;
+import static ch.puzzle.okr.Constants.TEAM;
 
 @Service
 public class ObjectiveValidationService
@@ -44,22 +45,22 @@ public class ObjectiveValidationService
     private static void throwExceptionWhenModifiedByIsSet(Objective model) {
         if (model.getModifiedBy() != null) {
 
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_SET_FORBIDDEN,
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_SET_FORBIDDEN,
                     List.of("ModifiedBy", model.getModifiedBy()));
         }
     }
 
     private static void throwExceptionWhenModifiedByIsNull(Objective model) {
         if (model.getModifiedBy() == null) {
-            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMsg.ATTRIBUTE_NOT_SET,
+            throw new OkrResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ErrorKey.ATTRIBUTE_NOT_SET,
                     "modifiedBy");
         }
     }
 
     private static void throwExceptionWhenTeamHasChanged(Team team, Team savedTeam) {
         if (!Objects.equals(team, savedTeam)) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_CANNOT_CHANGE,
-                    List.of("Team", "Objective"));
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
+                    List.of(TEAM, OBJECTIVE));
         }
     }
 }

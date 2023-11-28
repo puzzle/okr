@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static ch.puzzle.okr.Constants.USER;
 import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @Service
@@ -17,7 +18,7 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
 
     @Override
     public String getModelName() {
-        return "User";
+        return USER;
     }
 
     @Cacheable(value = USER_CACHE, key = "#user.username")

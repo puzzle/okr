@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
-import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.business.TeamBusinessService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,10 @@ public class TeamAuthorizationService {
     private final TeamBusinessService teamBusinessService;
     private final AuthorizationService authorizationService;
 
-    private final CacheService cacheService;
-
-    public TeamAuthorizationService(TeamBusinessService teamBusinessService, AuthorizationService authorizationService,
-            CacheService cacheService) {
+    public TeamAuthorizationService(TeamBusinessService teamBusinessService,
+            AuthorizationService authorizationService) {
         this.teamBusinessService = teamBusinessService;
         this.authorizationService = authorizationService;
-        this.cacheService = cacheService;
     }
 
     public Team createEntity(Team entity) {
@@ -53,7 +49,6 @@ public class TeamAuthorizationService {
     }
 
     public List<Long> getUserTeamIds() {
-        this.cacheService.emptyAuthorizationUsersCache();
         return this.authorizationService.getAuthorizationUser().userTeamIds();
     }
 

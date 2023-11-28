@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.business;
 
-import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.springframework.stereotype.Service;
@@ -15,17 +15,16 @@ public class TeamBusinessService {
 
     private final ObjectiveBusinessService objectiveBusinessService;
 
-    private final QuarterBusinessService quarterBusinessService;
-
     private final TeamValidationService validator;
+    private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService,
-            TeamValidationService validator) {
+            TeamValidationService validator, CacheService cacheService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
-        this.quarterBusinessService = quarterBusinessService;
         this.validator = validator;
+        this.cacheService = cacheService;
     }
 
     public Team getTeamById(Long teamId) {
@@ -35,11 +34,13 @@ public class TeamBusinessService {
 
     public Team createTeam(Team team) {
         validator.validateOnCreate(team);
+        cacheService.emptyAuthorizationUsersCache();
         return teamPersistenceService.save(team);
     }
 
     public Team updateTeam(Team team, Long id) {
         validator.validateOnUpdate(id, team);
+        cacheService.emptyAuthorizationUsersCache();
         return teamPersistenceService.save(team);
     }
 
@@ -47,6 +48,7 @@ public class TeamBusinessService {
         validator.validateOnDelete(id);
         objectiveBusinessService.getEntitiesByTeamId(id)
                 .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
+        cacheService.emptyAuthorizationUsersCache();
         teamPersistenceService.deleteById(id);
     }
 

@@ -115,7 +115,6 @@ export class TeamManagementComponent implements OnInit {
     dialog.afterClosed().subscribe((result) => {
       if (result) {
         this.teamService.deleteTeam(this.data.team.id).subscribe(() => {
-          console.log('dleete');
           this.dialogRef.close({ state: CloseState.DELETED, id: this.data.team.id });
         });
       }

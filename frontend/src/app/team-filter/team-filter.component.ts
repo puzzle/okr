@@ -55,7 +55,7 @@ export class TeamFilterComponent implements OnInit {
 
   toggleSelection(id: number) {
     if (this.areAllTeamsShown()) {
-      this.activeTeams = this.getAllTeamIds().filter((teamId) => teamId === id);
+      this.activeTeams = [id];
     } else if (this.activeTeams.includes(id)) {
       this.activeTeams = this.activeTeams.filter((teamId) => teamId !== id);
     } else {

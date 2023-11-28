@@ -77,9 +77,6 @@ class TeamControllerIT {
     void setUp() {
         BDDMockito.given(teamMapper.toDto(teamPuzzle, List.of())).willReturn(teamPuzzleDto);
         BDDMockito.given(teamMapper.toDto(teamOKR, List.of())).willReturn(teamOkrDto);
-
-        BDDMockito.given(teamMapper.toDto(teamPuzzle, List.of())).willReturn(teamPuzzleDto);
-        BDDMockito.given(teamMapper.toDto(teamOKR, List.of())).willReturn(teamOkrDto);
     }
 
     @Test

@@ -97,17 +97,6 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  it('change filter params', waitForAsync(async () => {
-    component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
-    jest.spyOn(router, 'navigate');
-
-    fixture.detectChanges();
-    await component.changeTeamFilterParams();
-
-    expect(router.navigate).toBeCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
-  }));
-
   it('change filter params and reload', fakeAsync(async () => {
     component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
     const routerHarness = await RouterTestingHarness.create();
@@ -151,19 +140,20 @@ describe('TeamFilterComponent', () => {
     expect(component.areAllTeamsShown()).toBe(expected);
   });
 
-  it('select all', () => {
-    component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
+  it.each([
+    [[], [1, 2, 3]],
+    [[1], [1, 2, 3]],
+    [
+      [1, 2],
+      [1, 2, 3],
+    ],
+    [[1, 2, 3], []],
+  ])('select all', (currentTeams: number[], expectedTeams: number[]) => {
+    component.activeTeams = currentTeams;
     jest.spyOn(component, 'changeTeamFilterParams');
     component.toggleAll();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-  });
-
-  it('select all should change all', () => {
-    component.activeTeams = [];
-    jest.spyOn(component, 'changeTeamFilterParams');
-    component.toggleAll();
-
-    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+    expect(component.activeTeams).toStrictEqual(expectedTeams);
   });
 
   it('should refresh teams on data refresh', () => {
@@ -180,7 +170,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams).toStrictEqual([team2.id]);
   });
 
-  it('should should default Values if no known teams are in url', async () => {
+  it('should use default values if no known teams are in url', async () => {
     const teamIds = [654, 478];
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -194,5 +184,20 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams.length).toBe(1);
     expect(component.activeTeams[0]).toBe(1);
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+  });
+
+  it.each([
+    [[1, 2, 3], '1,2,3'],
+    [[], null],
+  ])('changeTeamFilterParams', async (currentTeams: number[], routingTeams: string | null) => {
+    component.activeTeams = currentTeams;
+
+    jest.spyOn(router, 'navigate');
+
+    fixture.detectChanges();
+    await component.changeTeamFilterParams();
+
+    expect(router.navigate).toBeCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
   });
 });

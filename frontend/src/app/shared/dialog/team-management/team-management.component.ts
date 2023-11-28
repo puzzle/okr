@@ -12,6 +12,7 @@ import { TeamMin } from '../../types/model/TeamMin';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { OrganisationState } from '../../types/enums/OrganisationState';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { CloseState } from '../../types/enums/CloseState';
 
 @Component({
   selector: 'app-team-management',
@@ -114,7 +115,8 @@ export class TeamManagementComponent implements OnInit {
     dialog.afterClosed().subscribe((result) => {
       if (result) {
         this.teamService.deleteTeam(this.data.team.id).subscribe(() => {
-          this.dialogRef.close();
+          console.log('dleete');
+          this.dialogRef.close({ state: CloseState.DELETED, id: this.data.team.id });
         });
       }
     });

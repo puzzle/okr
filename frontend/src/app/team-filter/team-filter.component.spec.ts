@@ -179,4 +179,20 @@ describe('TeamFilterComponent', () => {
     expect(component.teams$.value).toStrictEqual([team2, team1]);
     expect(component.activeTeams).toStrictEqual([team2.id]);
   });
+
+  it('should should default Values if no known teams are in url', async () => {
+    const teamIds = [654, 478];
+    jest.spyOn(component.teams$, 'next');
+    jest.spyOn(component, 'changeTeamFilterParams');
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(component.activeTeams.length).toBe(1);
+    expect(component.activeTeams[0]).toBe(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+  });
 });

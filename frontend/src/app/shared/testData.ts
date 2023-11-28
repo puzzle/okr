@@ -59,6 +59,7 @@ export const team1: Team = {
   id: 1,
   version: 2,
   name: 'Team2',
+  filterIsActive: true,
 } as Team;
 
 export const team2: Team = {

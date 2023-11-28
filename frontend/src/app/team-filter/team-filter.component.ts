@@ -35,10 +35,11 @@ export class TeamFilterComponent implements OnInit {
       this.teams$.next(teams);
       const teamQuery = this.route.snapshot.queryParams['teams'];
       const teamIds = getValueFromQuery(teamQuery);
-      if (teamIds.length == 0) {
+      const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
+      if (knownTeams.length == 0) {
         this.activeTeams = teams.filter((e) => e.filterIsActive).map((team) => team.id);
       } else {
-        this.activeTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
+        this.activeTeams = knownTeams;
       }
       this.changeTeamFilterParams();
     });

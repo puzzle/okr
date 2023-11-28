@@ -18,7 +18,7 @@
         <p data-test-id="description" class="linebreak">{{ objective.description }}</p>
 
         <div
-          class="d-flex align-items-center flex-row justify-content-start gap-3 mt-4"
+          class="d-flex align-items-center flex-row justify-content-start mt-4"
           *ngIf="objective.state.toUpperCase() != 'SUCCESSFUL' && objective.state.toUpperCase() != 'NOTSUCCESSFUL'"
         >
           <button

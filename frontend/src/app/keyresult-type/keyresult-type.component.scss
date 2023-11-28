@@ -28,9 +28,9 @@
 .tabfocus {
   outline: none;
   &:focus-visible {
+    border-radius: 5px;
     border: 2px solid #1a4e83;
   }
-  border-radius: 5px;
 }
 
 .metric {

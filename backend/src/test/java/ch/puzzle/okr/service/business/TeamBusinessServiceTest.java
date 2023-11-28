@@ -4,6 +4,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +30,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TeamBusinessServiceTest {
-    private static final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     @MockBean
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     Team team1;
@@ -42,9 +42,10 @@ class TeamBusinessServiceTest {
     List<Objective> objectiveList;
 
     @Mock
-    ObjectiveBusinessService objectiveBusinessService;
+    CacheService cacheService;
+
     @Mock
-    QuarterBusinessService quarterService;
+    ObjectiveBusinessService objectiveBusinessService;
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);
     @InjectMocks
@@ -59,6 +60,7 @@ class TeamBusinessServiceTest {
         this.objectiveCompleted = Objective.Builder.builder().withId(6L).withTitle("Objective 1").withState(SUCCESSFUL)
                 .build();
         this.objectiveList = List.of(objective, objective, objective, objectiveCompleted);
+
     }
 
     @Test
@@ -86,6 +88,7 @@ class TeamBusinessServiceTest {
                 .build();
         teamBusinessService.createTeam(team);
         verify(teamPersistenceService, times(1)).save(team);
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
@@ -94,6 +97,7 @@ class TeamBusinessServiceTest {
                 .withAuthorizationOrganisation(new ArrayList<>()).build();
         teamBusinessService.updateTeam(team, team.getId());
         verify(teamPersistenceService, times(1)).save(team);
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
@@ -103,5 +107,6 @@ class TeamBusinessServiceTest {
 
         verify(teamPersistenceService, times(1)).deleteById(1L);
         verify(objectiveBusinessService, times(objectiveList.size())).deleteEntityById(anyLong());
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 }

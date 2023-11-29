@@ -97,7 +97,7 @@
         Als Draft speichern
       </button>
 
-      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
+      <button color="primary" mat-button mat-dialog-close class="ms-2" [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
     <div *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
       <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">

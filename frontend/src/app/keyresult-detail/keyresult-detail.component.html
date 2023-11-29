@@ -138,6 +138,7 @@
           <button
             *ngIf="!isComplete && keyResult.writeable"
             (click)="openEditKeyResultDialog(keyResult)"
+            class="ms-2"
             [attr.data-testId]="'edit-keyResult'"
             color="primary"
             mat-button

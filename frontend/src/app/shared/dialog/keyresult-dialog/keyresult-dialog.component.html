@@ -33,7 +33,7 @@
       >
         Speichern & Neu
       </button>
-      <button mat-button mat-dialog-close color="primary" [attr.data-testId]="'cancel'">Abbrechen</button>
+      <button mat-button mat-dialog-close color="primary" class="ms-2" [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
     <div *ngIf="this.data.keyResult">
       <button color="primary" mat-button (click)="deleteKeyResult()" [attr.data-testId]="'delete-keyResult'">

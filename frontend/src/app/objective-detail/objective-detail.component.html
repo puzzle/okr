@@ -36,6 +36,7 @@
           <button
             (click)="openEditObjectiveDialog()"
             *ngIf="objective.writeable"
+            class="ms-2"
             [attr.data-testId]="'edit-objective'"
             color="primary"
             mat-button

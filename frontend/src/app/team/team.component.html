@@ -14,10 +14,24 @@
         *ngIf="OVEntity.team.hasInActiveOrganisations"
         class="team-actions cursor-pointer ms-2 text-danger"
         [matTooltip]="'This team has inactive organisations'"
-        >error_outline</mat-icon
+      >error_outline
+      </mat-icon
       >
     </div>
   </div>
+  <button
+    *ngIf="OVEntity.team.writable"
+    class="w-auto"
+    [attr.data-testId]="'add-objective'"
+    mat-button
+    color="primary"
+    (click)="createObjective()"
+  >
+        <span class="d-flex align-items-center fw-bold add-text mb-2">
+          <img src="assets/icons/new-icon.svg" alt="Add key-result button" class="add-cross-button"/>
+          <span>Objective hinzufügen</span>
+        </span>
+  </button>
   <div class="d-flex justify-content-center">
     <div
       class="d-flex gap-3 row col-12 flex-wrap justify-content-sm-between justify-content-md-start pb-2"
@@ -31,20 +45,6 @@
         class="col-xs-12 col-md-4 p-0 column-width"
         [attr.data-testId]="'objective'"
       ></app-objective-column>
-
-      <button
-        *ngIf="OVEntity.team.writable"
-        class="bg-white border border-1 border-pz-dark-blue column-width flex-nowrap col-xs-12 col-md-4 px-0 py-4"
-        [attr.data-testId]="'add-objective'"
-        mat-stroked-button
-        color="primary"
-        (click)="createObjective()"
-      >
-        <span class="d-flex align-items-center fw-bold">
-          <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
-          <span>Objective hinzufügen</span>
-        </span>
-      </button>
     </div>
   </div>
 </div>

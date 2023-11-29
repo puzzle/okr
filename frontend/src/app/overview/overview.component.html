@@ -9,4 +9,8 @@
     [overviewEntity]="overviewEntity"
   >
   </app-team>
+  <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">
+    <p>Kein Team ausgewählt</p>
+    <img src="assets/images/puzzle-p.svg" alt="" width="242" />
+  </div>
 </div>

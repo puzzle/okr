@@ -11,7 +11,6 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { of, Subject } from 'rxjs';
 import { team1, team2, team3, teamList } from '../shared/testData';
 import { Router } from '@angular/router';
-import { Team } from '../shared/types/model/Team';
 
 const teamServiceMock = {
   getAllTeams: jest.fn(),
@@ -81,7 +80,7 @@ describe('TeamFilterComponent', () => {
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   }));
 
-  it('activeTeams array should be empty when all teams are shown', waitForAsync(async () => {
+  it('activeTeams array should contain every team when all teams are shown', waitForAsync(async () => {
     const teamIds = teamList.map((e) => e.id);
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -94,19 +93,8 @@ describe('TeamFilterComponent', () => {
 
     expect(component.teams$.next).toHaveBeenCalledWith(teamList);
     expect(component.teams$.next).toBeCalledTimes(1);
-    expect(component.activeTeams.length).toBe(0);
+    expect(component.activeTeams.length).toBe(3);
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-  }));
-
-  it('change filter params', waitForAsync(async () => {
-    component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
-    jest.spyOn(router, 'navigate');
-
-    fixture.detectChanges();
-    await component.changeTeamFilterParams();
-
-    expect(router.navigate).toBeCalledTimes(1);
-    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: '1,2' } });
   }));
 
   it('change filter params and reload', fakeAsync(async () => {
@@ -126,8 +114,8 @@ describe('TeamFilterComponent', () => {
   it.each([
     [[1], 2, [1, 2]],
     [[1, 2], 2, [1]],
-    [[1, 2], 3, []],
-    [[], 3, [1, 2]],
+    [[1, 2], 3, [1, 2, 3]],
+    [[], 3, [3]],
     [[3], 3, []],
   ])('toggle Selection', (activeTeams: number[], selected: number, expected: number[]) => {
     component.activeTeams = activeTeams;
@@ -137,7 +125,7 @@ describe('TeamFilterComponent', () => {
     component.toggleSelection(selected);
     fixture.detectChanges();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-    expect(component.areAllTeamsShown).toBeCalledTimes(2);
+    expect(component.areAllTeamsShown).toBeCalledTimes(1);
     expect(component.activeTeams).toStrictEqual(expected);
   });
 
@@ -145,26 +133,27 @@ describe('TeamFilterComponent', () => {
     [[1], false],
     [[1, 2], false],
     [[1, 2, 3], true],
-    [[], true],
+    [[], false],
     [[1, 2, 4], false],
   ])('are all teams shown', (activeTeams: number[], expected: boolean) => {
     component.activeTeams = activeTeams;
     expect(component.areAllTeamsShown()).toBe(expected);
   });
 
-  it('select all', () => {
-    component.activeTeams = teamList.map((e) => e.id).filter((e, i) => i < 2);
+  it.each([
+    [[], [1, 2, 3]],
+    [[1], [1, 2, 3]],
+    [
+      [1, 2],
+      [1, 2, 3],
+    ],
+    [[1, 2, 3], []],
+  ])('select all', (currentTeams: number[], expectedTeams: number[]) => {
+    component.activeTeams = currentTeams;
     jest.spyOn(component, 'changeTeamFilterParams');
-    component.selectAll();
+    component.toggleAll();
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
-  });
-
-  it('select all should do nothing', () => {
-    component.activeTeams = [];
-    jest.spyOn(component, 'changeTeamFilterParams');
-    component.selectAll();
-
-    expect(component.changeTeamFilterParams).toBeCalledTimes(0);
+    expect(component.activeTeams).toStrictEqual(expectedTeams);
   });
 
   it('should refresh teams on data refresh', () => {
@@ -179,5 +168,36 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
     expect(component.teams$.value).toStrictEqual([team2, team1]);
     expect(component.activeTeams).toStrictEqual([team2.id]);
+  });
+
+  it('should use default values if no known teams are in url', async () => {
+    const teamIds = [654, 478];
+    jest.spyOn(component.teams$, 'next');
+    jest.spyOn(component, 'changeTeamFilterParams');
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('/?teams=' + teamIds.join(','));
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(component.activeTeams.length).toBe(1);
+    expect(component.activeTeams[0]).toBe(1);
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+  });
+
+  it.each([
+    [[1, 2, 3], '1,2,3'],
+    [[], null],
+  ])('changeTeamFilterParams', async (currentTeams: number[], routingTeams: string | null) => {
+    component.activeTeams = currentTeams;
+
+    jest.spyOn(router, 'navigate');
+
+    fixture.detectChanges();
+    await component.changeTeamFilterParams();
+
+    expect(router.navigate).toBeCalledTimes(1);
+    expect(router.navigate).toHaveBeenCalledWith([], { queryParams: { teams: routingTeams } });
   });
 });

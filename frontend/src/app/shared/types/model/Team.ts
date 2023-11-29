@@ -5,4 +5,5 @@ export interface Team {
   version: number;
   name: string;
   organisations: Organisation[];
+  filterIsActive: boolean;
 }

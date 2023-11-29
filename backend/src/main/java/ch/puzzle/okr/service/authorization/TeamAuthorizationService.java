@@ -49,6 +49,10 @@ public class TeamAuthorizationService {
         }
     }
 
+    public List<Long> getUserTeamIds() {
+        return this.authorizationService.getAuthorizationUser().userTeamIds();
+    }
+
     public List<Team> getAllTeams() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         boolean isWritable = hasRoleWriteAll(authorizationUser);

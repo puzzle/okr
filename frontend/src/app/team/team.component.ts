@@ -5,10 +5,12 @@ import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/object
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
-import { isMobileDevice, trackByFn } from '../shared/common';
+import { isMobileDevice, optionalReplaceWithNulls, trackByFn } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CloseState } from '../shared/types/enums/CloseState';
 
 @Component({
   selector: 'app-team',
@@ -26,6 +28,8 @@ export class TeamComponent {
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   @Input()
@@ -124,8 +128,20 @@ export class TeamComponent {
         team: team,
       },
     });
-    dialog.afterClosed().subscribe(() => {
-      this.refreshDataService.markDataRefresh();
+    dialog.afterClosed().subscribe((result) => {
+      if (result.state == CloseState.DELETED) {
+        this.removeTeam(result.id).then(() => this.refreshDataService.markDataRefresh());
+      } else {
+        this.refreshDataService.markDataRefresh();
+      }
     });
+  }
+
+  removeTeam(id: string) {
+    let currentTeams = this.route.snapshot.queryParams['teams'].split(',');
+    currentTeams = currentTeams.filter((cid: any) => cid != id);
+    const params = { teams: currentTeams.join(',') };
+    const optionalParams = optionalReplaceWithNulls(params);
+    return this.router.navigate([], { queryParams: optionalParams });
   }
 }

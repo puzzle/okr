@@ -144,17 +144,14 @@ class OverviewBusinessServiceTest {
     }
 
     @Test
-    void getFilteredOverviewShouldReturnListOfOverviewsWhenTeamIdsAreNull() {
-        when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser))
-                .thenReturn(createOverviews());
-
+    void getFilteredOverviewShouldReturnEmptyListOfOverviewsWhenTeamIdsAreNull() {
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, null, "", authorizationUser);
 
-        assertEquals(5, overviews.size());
-        verify(quarterBusinessService, never()).getCurrentQuarter();
-        verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser);
+        assertEquals(0, overviews.size());
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, List.of());
-        verify(overviewPersistenceService, times(1)).getFilteredOverview(anyLong(), anyList(), anyString(),
+        verify(quarterBusinessService, never()).getCurrentQuarter();
+        verify(overviewPersistenceService, never()).getFilteredOverview(QUARTER_ID, List.of(), "", authorizationUser);
+        verify(overviewPersistenceService, never()).getFilteredOverview(anyLong(), anyList(), anyString(),
                 eq(authorizationUser));
     }
 

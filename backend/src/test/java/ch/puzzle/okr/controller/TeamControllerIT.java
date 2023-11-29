@@ -44,8 +44,8 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, new ArrayList<>());
-    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", new ArrayList<>());
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, new ArrayList<>(), false);
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", new ArrayList<>(), false);
 
     private static final String CREATE_NEW_TEAM = """
             {
@@ -58,7 +58,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR","organisations":[]}""";
+            {"id":7,"version":4,"name":"OKR","organisations":[],"filterIsActive":false}""";
 
     private static final String UPDATE_TEAM = """
             {
@@ -75,11 +75,8 @@ class TeamControllerIT {
 
     @BeforeEach
     void setUp() {
-        BDDMockito.given(teamMapper.toDto(teamPuzzle, null)).willReturn(teamPuzzleDto);
-        BDDMockito.given(teamMapper.toDto(teamOKR, null)).willReturn(teamOkrDto);
-
-        BDDMockito.given(teamMapper.toDto(teamPuzzle, 1L)).willReturn(teamPuzzleDto);
-        BDDMockito.given(teamMapper.toDto(teamOKR, 1L)).willReturn(teamOkrDto);
+        BDDMockito.given(teamMapper.toDto(teamPuzzle, List.of())).willReturn(teamPuzzleDto);
+        BDDMockito.given(teamMapper.toDto(teamOKR, List.of())).willReturn(teamOkrDto);
     }
 
     @Test
@@ -96,8 +93,8 @@ class TeamControllerIT {
     void shouldGetAllTeamsWhenNoQuarterParamIsPassed() throws Exception {
         BDDMockito.given(teamAuthorizationService.getAllTeams()).willReturn(teamList);
         mvc.perform(get(BASE_URL).contentType(MediaType.APPLICATION_JSON)).andExpectAll();
-        BDDMockito.verify(teamMapper).toDto(teamOKR, null);
-        BDDMockito.verify(teamMapper).toDto(teamPuzzle, null);
+        BDDMockito.verify(teamMapper).toDto(teamOKR, List.of());
+        BDDMockito.verify(teamMapper).toDto(teamPuzzle, List.of());
     }
 
     @Test
@@ -130,7 +127,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", new ArrayList<>());
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", new ArrayList<>(), false);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team")
                 .withAuthorizationOrganisation(new ArrayList<>()).build();
 

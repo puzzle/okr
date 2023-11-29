@@ -66,6 +66,7 @@ export class ActionPlanComponent implements AfterViewInit {
       transferArrayItem(event.previousContainer.data!, event.container.data!, event.previousIndex, event.currentIndex);
     }
     this.adjustPriorities();
+    this.activeItem = event.currentIndex;
   }
 
   changeActionText(event: any, index: number) {

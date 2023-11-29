@@ -1,7 +1,6 @@
 package ch.puzzle.okr.converter;
 
 import ch.puzzle.okr.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -12,10 +11,13 @@ import java.util.List;
 @Component
 public class JwtConverterFactory {
 
-    @Autowired
-    private ApplicationContext appContext;
+    private final ApplicationContext appContext;
     private Converter<Jwt, List<String>> jwtOrganisationConverter;
     private Converter<Jwt, User> jwtUserConverter;
+
+    public JwtConverterFactory(ApplicationContext appContext) {
+        this.appContext = appContext;
+    }
 
     public synchronized Converter<Jwt, List<String>> getJwtOrganisationConverter() {
         if (jwtOrganisationConverter == null) {

@@ -2,6 +2,7 @@ package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -127,7 +128,7 @@ class CheckInValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(fullCheckIn));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "CheckIn")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "CheckIn")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         Assertions.assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

@@ -2,8 +2,8 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.checkin.CheckInMetric;
@@ -11,8 +11,6 @@ import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,7 +20,6 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
@@ -99,7 +96,7 @@ class CheckInPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> checkInPersistenceService.save(updateCheckIn));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("CheckIn")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Check-in")));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

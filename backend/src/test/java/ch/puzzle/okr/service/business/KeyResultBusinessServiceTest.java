@@ -2,7 +2,6 @@ package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
@@ -30,7 +29,6 @@ import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ExtendWith(MockitoExtension.class)
 class KeyResultBusinessServiceTest {

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.models.ErrorMsg;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.StreamSupport;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**
  * @param <T>
@@ -31,6 +34,7 @@ public abstract class PersistenceBase<T, ID, R> {
         this.repository = repository;
     }
 
+    @SuppressWarnings(value = "unchecked casts")
     public R getRepository() {
         return (R) repository;
     }
@@ -42,14 +46,12 @@ public abstract class PersistenceBase<T, ID, R> {
 
     public void checkIdNull(ID id) {
         if (id == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorMsg.ATTRIBUTE_NULL,
-                    List.of("ID", getModelName()));
+            throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL, List.of("ID", getModelName()));
         }
     }
 
     public OkrResponseStatusException createEntityNotFoundException(ID id) {
-        throw new OkrResponseStatusException(HttpStatus.NOT_FOUND, ErrorMsg.MODEL_WITH_ID_NOT_FOUND,
-                List.of(getModelName(), id));
+        throw new OkrResponseStatusException(NOT_FOUND, ErrorKey.MODEL_WITH_ID_NOT_FOUND, List.of(getModelName(), id));
     }
 
     public T save(T model) throws OkrResponseStatusException {
@@ -57,7 +59,7 @@ public abstract class PersistenceBase<T, ID, R> {
             return repository.save(model);
         } catch (OptimisticLockingFailureException ex) {
             logger.info("optimistic locking exception while saving {}", model, ex);
-            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorMsg.DATA_HAS_BEEN_UPDATED,
+            throw new OkrResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, ErrorKey.DATA_HAS_BEEN_UPDATED,
                     getModelName());
         }
     }

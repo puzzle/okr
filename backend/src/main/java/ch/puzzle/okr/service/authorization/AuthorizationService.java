@@ -1,10 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.Constants;
-import ch.puzzle.okr.converter.JwtUserConverter;
-import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.converter.JwtConverterFactory;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
@@ -14,13 +11,14 @@ import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
+import static ch.puzzle.okr.Constants.*;
+import static ch.puzzle.okr.ErrorKey.*;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 @Service
@@ -78,39 +76,39 @@ public class AuthorizationService {
 
     public void hasRoleReadByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE));
     }
 
     public void hasRoleReadByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser) {
         objectivePersistenceService.findObjectiveByKeyResultId(keyResultId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.KEY_RESULT));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
     }
 
     public void hasRoleReadByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {
         objectivePersistenceService.findObjectiveByCheckInId(checkInId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.CHECK_IN));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
     }
 
     public void hasRoleCreateOrUpdate(Objective objective, AuthorizationUser authorizationUser) {
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_WRITE, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     public void hasRoleCreateOrUpdate(KeyResult keyResult, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
-                authorizationUser, new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.KEY_RESULT));
+                authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_WRITE, Constants.KEY_RESULT));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, KEY_RESULT));
     }
 
     public void hasRoleCreateOrUpdate(CheckIn checkIn, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
-                authorizationUser, new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.CHECK_IN));
+                authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_WRITE, Constants.CHECK_IN));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, CHECK_IN));
     }
 
     public boolean isWriteable(Objective objective, AuthorizationUser authorizationUser) {
@@ -119,61 +117,62 @@ public class AuthorizationService {
 
     public boolean isWriteable(KeyResult keyResult, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(keyResult.getObjective().getId(),
-                authorizationUser, new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.KEY_RESULT));
+                authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
         return isWriteable(authorizationUser, objective.getTeam());
     }
 
     public boolean isWriteable(CheckIn checkIn, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(checkIn.getKeyResult().getId(),
-                authorizationUser, new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.CHECK_IN));
+                authorizationUser, OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
         return isWriteable(authorizationUser, objective.getTeam());
     }
 
     public void hasRoleCreateOrUpdateByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_WRITE, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_WRITE, OBJECTIVE));
     }
 
     public void hasRoleDeleteByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveById(objectiveId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, OBJECTIVE));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_DELETE, Constants.OBJECTIVE));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, OBJECTIVE));
     }
 
     public void hasRoleDeleteByKeyResultId(Long keyResultId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByKeyResultId(keyResultId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.KEY_RESULT));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, KEY_RESULT));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_DELETE, Constants.KEY_RESULT));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, KEY_RESULT));
     }
 
     public void hasRoleDeleteByActionId(Long actionId, AuthorizationUser authorizationUser) {
         Action action = actionPersistenceService.findById(actionId);
         hasRoleWrite(authorizationUser, action.getKeyResult().getObjective().getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_DELETE, Constants.ACTION));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, ACTION));
 
     }
 
     public void hasRoleDeleteByCheckInId(Long checkInId, AuthorizationUser authorizationUser) {
         Objective objective = objectivePersistenceService.findObjectiveByCheckInId(checkInId, authorizationUser,
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_READ, Constants.CHECK_IN));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_READ, CHECK_IN));
 
         hasRoleWrite(authorizationUser, objective.getTeam(),
-                new ErrorDto(ErrorMsg.NOT_AUTHORIZED_TO_DELETE, Constants.CHECK_IN));
+                OkrResponseStatusException.of(NOT_AUTHORIZED_TO_DELETE, CHECK_IN));
     }
 
-    private void hasRoleWrite(AuthorizationUser authorizationUser, Team team, ErrorDto error) {
+    private void hasRoleWrite(AuthorizationUser authorizationUser, Team team,
+            OkrResponseStatusException notAuthorizedException) {
         if (isWriteable(authorizationUser, team)) {
             return;
         }
-        throw new OkrResponseStatusException(HttpStatus.UNAUTHORIZED, error);
+        throw notAuthorizedException;
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Team team) {

@@ -1,6 +1,6 @@
 package ch.puzzle.okr;
 
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;

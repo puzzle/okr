@@ -2,7 +2,7 @@ package ch.puzzle.okr.service.validation;
 
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.dto.ErrorDto;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.junit.jupiter.api.BeforeEach;
@@ -101,7 +101,7 @@ class TeamValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(team1));
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(team1.getId());
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Team")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

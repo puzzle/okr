@@ -1,7 +1,7 @@
 package ch.puzzle.okr.converter;
 
-import ch.puzzle.okr.models.ErrorMsg;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +10,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Map;
 
+import static ch.puzzle.okr.Constants.USER;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
@@ -40,7 +40,7 @@ public class JwtUserConverter implements Converter<Jwt, User> {
                     .withEmail(claims.get(email).toString()).build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
-            throw new OkrResponseStatusException(BAD_REQUEST, ErrorMsg.CONVERT_TOKEN, List.of("User"));
+            throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);
         }
     }
 }

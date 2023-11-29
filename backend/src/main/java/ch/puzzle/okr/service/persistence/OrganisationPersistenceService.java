@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.ORGANISATION;
+
 @Service
 public class OrganisationPersistenceService extends PersistenceBase<Organisation, Long, OrganisationRepository> {
 
@@ -16,7 +18,7 @@ public class OrganisationPersistenceService extends PersistenceBase<Organisation
 
     @Override
     public String getModelName() {
-        return "Organisation";
+        return ORGANISATION;
     }
 
     public Organisation saveIfNotExists(Organisation org) {

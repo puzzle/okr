@@ -6,7 +6,7 @@ import ch.puzzle.okr.dto.overview.OverviewDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultMetricDto;
 import ch.puzzle.okr.dto.overview.OverviewKeyResultOrdinalDto;
-import ch.puzzle.okr.models.OkrResponseStatusException;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.business.OrganisationBusinessService;
@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -190,7 +189,7 @@ class OverviewMapperTest {
 
         assertEquals(BAD_REQUEST, exception.getStatus());
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("KEYRESULT_CONVERSION", List.of("unknown")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("KEY_RESULT_CONVERSION", List.of("unknown")));
 
         assertEquals(BAD_REQUEST, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

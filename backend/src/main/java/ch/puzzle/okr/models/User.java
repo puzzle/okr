@@ -19,25 +19,25 @@ public class User implements WriteableInterface {
     private int version;
 
     @Column(unique = true)
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 20, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 20, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String username;
 
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 50, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String firstname;
 
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 50, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
-    @Email(message = ErrorMsg.ATTRIBUTE_NOT_VALID)
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
     private transient boolean writeable;

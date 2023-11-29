@@ -4,6 +4,8 @@ import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.repository.CompletedRepository;
 import org.springframework.stereotype.Service;
 
+import static ch.puzzle.okr.Constants.COMPLETED;
+
 @Service
 public class CompletedPersistenceService extends PersistenceBase<Completed, Long, CompletedRepository> {
 
@@ -13,7 +15,7 @@ public class CompletedPersistenceService extends PersistenceBase<Completed, Long
 
     @Override
     public String getModelName() {
-        return "Completed";
+        return COMPLETED;
     }
 
     public Completed getCompletedByObjectiveId(Long objectiveId) {

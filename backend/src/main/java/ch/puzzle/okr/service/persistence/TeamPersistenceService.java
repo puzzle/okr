@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.TEAM;
+
 @Service
 public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepository> {
 
@@ -15,7 +17,7 @@ public class TeamPersistenceService extends PersistenceBase<Team, Long, TeamRepo
 
     @Override
     public String getModelName() {
-        return "Team";
+        return TEAM;
     }
 
     public List<Long> findTeamIdsByOrganisationName(String organisationName) {

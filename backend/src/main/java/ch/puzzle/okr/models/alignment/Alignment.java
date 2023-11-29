@@ -66,6 +66,7 @@ public abstract class Alignment {
         return Objects.hash(id, version, alignedObjective);
     }
 
+    @SuppressWarnings(value = "unchecked")
     public abstract static class Builder<T> {
         private Long id;
         private int version;

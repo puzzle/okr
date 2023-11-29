@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models.checkin;
 
-import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.MessageKey;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -24,26 +24,26 @@ public abstract class CheckIn implements WriteableInterface {
     @Version
     private int version;
 
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String changeInfo;
 
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String initiatives;
 
-    @Max(value = 10, message = ErrorMsg.ATTRIBUTE_MAX_VALUE)
-    @Min(value = 1, message = ErrorMsg.ATTRIBUTE_MIN_VALUE)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @Max(value = 10, message = MessageKey.ATTRIBUTE_MAX_VALUE)
+    @Min(value = 1, message = MessageKey.ATTRIBUTE_MIN_VALUE)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Integer confidence;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private KeyResult keyResult;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
@@ -164,7 +164,7 @@ public abstract class CheckIn implements WriteableInterface {
     protected CheckIn() {
     }
 
-    protected CheckIn(Builder builder) {
+    protected CheckIn(Builder<?> builder) {
         id = builder.id;
         version = builder.version;
         setChangeInfo(builder.changeInfo);
@@ -176,7 +176,7 @@ public abstract class CheckIn implements WriteableInterface {
         setModifiedOn(builder.modifiedOn);
     }
 
-    /* Builder */
+    @SuppressWarnings(value = "unchecked")
     public abstract static class Builder<T> {
         private Long id;
         private int version;

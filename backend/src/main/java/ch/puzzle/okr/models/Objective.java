@@ -17,31 +17,31 @@ public class Objective implements WriteableInterface {
     @Version
     private int version;
 
-    @NotBlank(message = ErrorMsg.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 250, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String title;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Enumerated(EnumType.STRING)
     private State state;
 
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String description;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Team team;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private Quarter quarter;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private User createdBy;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;

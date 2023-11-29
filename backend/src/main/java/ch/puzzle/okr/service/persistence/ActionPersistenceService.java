@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.ACTION;
+
 @Service
 public class ActionPersistenceService extends PersistenceBase<Action, Long, ActionRepository> {
 
@@ -15,7 +17,7 @@ public class ActionPersistenceService extends PersistenceBase<Action, Long, Acti
 
     @Override
     public String getModelName() {
-        return "Action";
+        return ACTION;
     }
 
     public List<Action> getActionsByKeyResultIdOrderByPriorityAsc(Long keyResultId) {

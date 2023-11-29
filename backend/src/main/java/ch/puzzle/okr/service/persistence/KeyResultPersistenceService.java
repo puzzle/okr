@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static ch.puzzle.okr.Constants.KEY_RESULT;
+
 @Service
 public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long, KeyResultRepository> {
 
@@ -16,7 +18,7 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     @Override
     public String getModelName() {
-        return "KeyResult";
+        return KEY_RESULT;
     }
 
     public List<KeyResult> getKeyResultsByObjective(Long objectiveId) {

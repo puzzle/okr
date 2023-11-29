@@ -16,17 +16,17 @@ public class Action implements WriteableInterface {
     @Version
     private int version;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
-    @Size(max = 4096, message = ErrorMsg.ATTRIBUTE_SIZE_BETWEEN)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
+    @Size(max = 4096, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String action;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private int priority;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private boolean isChecked;
 
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @ManyToOne
     private KeyResult keyResult;
 

@@ -1,6 +1,6 @@
 package ch.puzzle.okr.models.checkin;
 
-import ch.puzzle.okr.models.ErrorMsg;
+import ch.puzzle.okr.models.MessageKey;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_METRIC;
 @Entity
 @DiscriminatorValue(KEY_RESULT_TYPE_METRIC)
 public class CheckInMetric extends CheckIn {
-    @NotNull(message = ErrorMsg.ATTRIBUTE_NOT_NULL)
+    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Double valueMetric;
 
     /* Getter and Setter */

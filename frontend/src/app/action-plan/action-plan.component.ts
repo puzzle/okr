@@ -42,9 +42,14 @@ export class ActionPlanComponent implements AfterViewInit {
     let newIndex = currentIndex;
     if (event.key === 'ArrowDown') {
       newIndex += 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
     } else if (event.key === 'ArrowUp') {
       newIndex -= 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
     }
+  }
+
+  changePositionOfItemAndAdjustPriorities(newIndex: number, currentIndex: number) {
     this.changeItemPosition(newIndex, currentIndex);
     this.adjustPriorities();
   }

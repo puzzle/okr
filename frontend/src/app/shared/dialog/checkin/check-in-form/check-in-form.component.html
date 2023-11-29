@@ -4,78 +4,76 @@
 </section>
 
 <mat-dialog-content>
-  <div class="d-flex flex-column scroll-shadows overflow-x-hidden">
-    <div class="d-flex flex-column justify-content-between align-items-center p-2">
-      <div class="d-flex flex-column gap-2 mb-3">
-        <p class="fs-6 text-black">Key Result</p>
-        <p class="linebreak bg-display-element py-2 ps-2 mb-1 fs-6 fw-normal text-black">{{ keyResult.title }}</p>
+  <div class="d-flex flex-column scroll-shadows overflow-x-hidden p-2 justify-content-between align-items-center">
+    <form [formGroup]="dialogForm" class="d-flex flex-column flex-wrap container p-0">
+      <div class="mb-3 gap-2 col-12">
+        <p class="fs-6 text-black mb-2">Key Result</p>
+        <p class="linebreak bg-display-element py-2 ps-2 fw-normal text-black">{{ keyResult.title }}</p>
       </div>
-      <form [formGroup]="dialogForm" class="d-flex flex-column flex-wrap container p-0">
-        <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
-          <label class="text-black mb-1">Action Plan:</label>
-          <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
-            <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
-            <span class="action-list-item w-100">
-              {{ action.action }}
-            </span>
+      <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
+        <label class="text-black mb-1">Action Plan:</label>
+        <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
+          <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
+          <span class="action-list-item w-100">
+            {{ action.action }}
           </span>
-        </div>
+        </span>
+      </div>
 
-        <div class="input-style gap-2 col-12">
-          <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
-          <textarea
-            [attr.data-testId]="'changeInfo'"
-            [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
-            class="big-dialog-form-field"
-            formControlName="changeInfo"
-          ></textarea>
-          <div *ngIf="isTouchedOrDirty('changeInfo')">
-            <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-              <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-            </mat-error>
-          </div>
+      <div class="input-style gap-2 col-12">
+        <label class="text-black">Kommentar/ Veränderung seit letztem Check-in (optional):</label>
+        <textarea
+          [attr.data-testId]="'changeInfo'"
+          [ngClass]="formInputCheck(dialogForm, 'changeInfo')"
+          class="big-dialog-form-field"
+          formControlName="changeInfo"
+        ></textarea>
+        <div *ngIf="isTouchedOrDirty('changeInfo')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
         </div>
+      </div>
 
-        <app-check-in-form-metric
-          *ngIf="keyResult.keyResultType === 'metric'"
-          [checkIn]="checkIn"
-          [dialogForm]="dialogForm"
-          [keyResult]="getKeyResultMetric()"
-        ></app-check-in-form-metric>
-        <app-check-in-form-ordinal
-          *ngIf="keyResult.keyResultType === 'ordinal'"
-          [checkIn]="checkIn"
-          [dialogForm]="dialogForm"
-          [keyResult]="getKeyResultOrdinal()"
-        ></app-check-in-form-ordinal>
+      <app-check-in-form-metric
+        *ngIf="keyResult.keyResultType === 'metric'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultMetric()"
+      ></app-check-in-form-metric>
+      <app-check-in-form-ordinal
+        *ngIf="keyResult.keyResultType === 'ordinal'"
+        [checkIn]="checkIn"
+        [dialogForm]="dialogForm"
+        [keyResult]="getKeyResultOrdinal()"
+      ></app-check-in-form-ordinal>
 
-        <div class="input-style gap-2 col-12">
-          <label class="text-black">Massnahmen (optional):</label>
-          <textarea
-            [attr.data-testId]="'initiatives'"
-            [ngClass]="formInputCheck(dialogForm, 'initiatives')"
-            class="w-100 big-dialog-form-field"
-            formControlName="initiatives"
-          ></textarea>
-          <div *ngIf="isTouchedOrDirty('initiatives')">
-            <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-              <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-            </mat-error>
-          </div>
+      <div class="input-style gap-2 col-12">
+        <label class="text-black">Massnahmen (optional):</label>
+        <textarea
+          [attr.data-testId]="'initiatives'"
+          [ngClass]="formInputCheck(dialogForm, 'initiatives')"
+          class="w-100 big-dialog-form-field"
+          formControlName="initiatives"
+        ></textarea>
+        <div *ngIf="isTouchedOrDirty('initiatives')">
+          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
+            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+          </mat-error>
         </div>
+      </div>
 
-        <div class="d-flex flex-column justify-content-start gap-2 col-12">
-          <label class="text-black confidence-label"
-            >Confidence um Target Zone
-            <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
-              ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
-            </span>
-            zu erreichen:
-          </label>
-          <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
-        </div>
-      </form>
-    </div>
+      <div class="d-flex flex-column justify-content-start gap-2 col-12">
+        <label class="text-black confidence-label"
+          >Confidence um Target Zone
+          <span *ngIf="keyResult.keyResultType === 'metric' && getKeyResultMetric() as kr">
+            ({{ calculateTarget(kr) | unitValueTransformation: kr.unit }})
+          </span>
+          zu erreichen:
+        </label>
+        <app-confidence [checkIn]="checkIn" [edit]="true" class="w-100"></app-confidence>
+      </div>
+    </form>
   </div>
 </mat-dialog-content>
 

@@ -5,10 +5,11 @@
 
 <mat-dialog-content>
   <div class="d-flex flex-column scroll-shadows overflow-x-hidden">
-    <p class="fs-6 text-black">Key Result</p>
-    <p class="linebreak bg-display-element py-2 ps-2 mb-1 fs-6 fw-normal text-black">{{ keyResult.title }}</p>
-
-    <div class="d-flex justify-content-between align-items-center p-2">
+    <div class="d-flex flex-column justify-content-between align-items-center p-2">
+      <div class="d-flex flex-column gap-2 mb-3">
+        <p class="fs-6 text-black">Key Result</p>
+        <p class="linebreak bg-display-element py-2 ps-2 mb-1 fs-6 fw-normal text-black">{{ keyResult.title }}</p>
+      </div>
       <form [formGroup]="dialogForm" class="d-flex flex-column flex-wrap container p-0">
         <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
           <label class="text-black mb-1">Action Plan:</label>

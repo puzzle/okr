@@ -18,6 +18,8 @@
         />
       </div>
       <input
+        #listItem
+        (keydown)="handleKeyDown($event, i)"
         class="action-input"
         [value]="action.action"
         (change)="changeActionText($event, i)"

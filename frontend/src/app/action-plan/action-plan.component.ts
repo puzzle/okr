@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Action } from '../shared/types/model/Action';
 import { ActionService } from '../shared/services/action.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { isMobileDevice } from '../shared/common';
 import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
 
@@ -13,14 +13,44 @@ import { CONFIRM_DIALOG_WIDTH } from '../shared/constantLibary';
   templateUrl: './action-plan.component.html',
   styleUrls: ['./action-plan.component.scss'],
 })
-export class ActionPlanComponent {
-  @Input() control!: BehaviorSubject<Action[] | null>;
+export class ActionPlanComponent implements AfterViewInit {
+  @Input() control: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([]);
   @Input() keyResultId!: number | null;
+  activeItem: number = 0;
+  listSubscription!: Subscription;
 
+  @ViewChildren('listItem')
+  listItems!: QueryList<ElementRef>;
   constructor(
     private actionService: ActionService,
     public dialog: MatDialog,
   ) {}
+
+  ngAfterViewInit() {
+    this.listSubscription = this.listItems.changes.subscribe((_) => {
+      this.setFocus();
+    });
+  }
+
+  setFocus() {
+    this.listItems.toArray()[this.activeItem].nativeElement.focus();
+  }
+
+  handleKeyDown(event: KeyboardEvent, currentIndex: number) {
+    let newIndex = currentIndex;
+    if (event.key === 'ArrowDown') {
+      newIndex += 1;
+      this.changeItemPosition(newIndex, currentIndex);
+    } else if (event.key === 'ArrowUp') {
+      newIndex -= 1;
+      this.changeItemPosition(newIndex, currentIndex);
+    }
+  }
+
+  changeItemPosition(newIndex: number, currentIndex: number) {
+    moveItemInArray(this.control.getValue()!, currentIndex, newIndex);
+    this.activeItem = newIndex;
+  }
 
   drop(event: CdkDragDrop<Action[] | null>) {
     let value = (<HTMLInputElement>event.container.element.nativeElement.children[event.previousIndex].children[1])

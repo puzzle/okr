@@ -68,7 +68,7 @@ import { KeyresultTypeComponent } from './keyresult-type/keyresult-type.componen
 import { DialogHeaderComponent } from './shared/custom/dialog-header/dialog-header.component';
 import { ObjectiveFilterComponent } from './objective-filter/objective-filter.component';
 import { ActionPlanComponent } from './action-plan/action-plan.component';
-import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
 
@@ -179,6 +179,7 @@ export const MY_FORMATS = {
     MatChipsModule,
     CdkDropList,
     CdkDrag,
+    CdkDragHandle,
   ],
   providers: [
     {

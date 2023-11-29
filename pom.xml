@@ -8,7 +8,7 @@
 
     <groupId>ch.puzzle.okr</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.169-SNAPSHOT</version>
+    <version>1.0.170-SNAPSHOT</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

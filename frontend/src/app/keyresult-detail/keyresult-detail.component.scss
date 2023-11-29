@@ -18,14 +18,6 @@
   width: 81.5%;
 }
 
-.confidence-container {
-  width: 18.5%;
-}
-
-.ordinal-scoring-boxes {
-  width: 31%;
-}
-
 .ordinal-col {
   width: 30%;
 }
@@ -35,7 +27,7 @@
 }
 
 .ordinal-box {
-  line-break: normal;
+  word-break: break-word;
 }
 
 .action-checkbox {
@@ -66,5 +58,27 @@
     align-items: center;
     justify-content: space-between;
     row-gap: 10px;
+  }
+
+  .ordinal-div {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    row-gap: 10px;
+    margin-bottom: 0 !important;
+  }
+  .ordinal-col {
+    width: 100%;
+  }
+
+  .keyResult-detail-attribute-show {
+    height: auto;
+  }
+
+  .confidence-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0.065rem !important;
   }
 }

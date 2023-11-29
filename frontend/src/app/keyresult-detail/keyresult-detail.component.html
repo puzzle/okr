@@ -1,10 +1,10 @@
 <div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
   <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
     <div *ngIf="keyResult" class="d-flex flex-column">
-      <div class="w-100 d-flex justify-content-between align-items-start mb-3">
-        <span class="title pt-2">{{ keyResult.title }}</span>
+      <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+        <span class="title">{{ keyResult.title }}</span>
         <button class="d-flex" mat-icon-button (click)="backToOverview()" [attr.data-testId]="'close-drawer'">
-          <mat-icon>close</mat-icon>
+          <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
         </button>
       </div>
       <div class="me-3">
@@ -21,7 +21,7 @@
 
         <div class="scoring-section">
           <app-scoring class="scoring-detail" [keyResult]="keyResult" [isDetail]="true"></app-scoring>
-          <span class="text-small d-flex align-items-center flex-column mb-2 ms-3">
+          <span class="text-small d-flex align-items-center flex-column mb-2 ms-3 confidence-container">
             Confidence
             <app-confidence
               [checkIn]="keyResult.lastCheckIn!"
@@ -62,22 +62,22 @@
           </ng-container>
 
           <ng-container *ngIf="keyResult.keyResultType == 'ordinal' && castToOrdinal(keyResult) as keyResultOrdinal">
-            <div class="d-flex justify-content-between mb-4 w-100">
+            <div class="d-flex justify-content-between w-100 ordinal-div mb-4">
               <div class="ordinal-col h-auto">
                 <p class="ordinal-zone-title">Commit</p>
-                <div class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                <div class="keyResult-detail-attribute-show ordinal-box p-3">
                   {{ keyResultOrdinal.commitZone }}
                 </div>
               </div>
               <div class="ordinal-col h-auto">
                 <p class="ordinal-zone-title">Target</p>
-                <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                <p class="keyResult-detail-attribute-show ordinal-box p-3">
                   {{ keyResultOrdinal.targetZone }}
                 </p>
               </div>
               <div class="ordinal-col h-auto">
                 <p class="ordinal-zone-title">Stretch</p>
-                <p class="keyResult-detail-attribute-show p-3 ordinal-box linebreak">
+                <p class="keyResult-detail-attribute-show ordinal-box p-3">
                   {{ keyResultOrdinal.stretchZone }}
                 </p>
               </div>

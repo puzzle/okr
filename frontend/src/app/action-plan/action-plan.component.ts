@@ -33,17 +33,30 @@ export class ActionPlanComponent implements AfterViewInit {
   }
 
   setFocus() {
-    this.listItems.toArray()[this.activeItem].nativeElement.focus();
+    if (this.listItems.length > 0) {
+      this.listItems.toArray()[this.activeItem].nativeElement.focus();
+    }
   }
 
   handleKeyDown(event: KeyboardEvent, currentIndex: number) {
     let newIndex = currentIndex;
     if (event.key === 'ArrowDown') {
       newIndex += 1;
-      this.changeItemPosition(newIndex, currentIndex);
     } else if (event.key === 'ArrowUp') {
       newIndex -= 1;
-      this.changeItemPosition(newIndex, currentIndex);
+    }
+    this.changeItemPosition(newIndex, currentIndex);
+  }
+
+  increaseActiveItemWithTab() {
+    if (this.activeItem <= this.control.value!.length - 1) {
+      this.activeItem++;
+    }
+  }
+
+  decreaseActiveItemWithShiftTab() {
+    if (this.activeItem > 0) {
+      this.activeItem--;
     }
   }
 
@@ -83,6 +96,9 @@ export class ActionPlanComponent implements AfterViewInit {
 
   removeAction(index: number) {
     const actions = this.control.getValue()!;
+    if (this.activeItem >= actions.length - 1) {
+      this.activeItem--;
+    }
     if (actions[index].action !== '' || actions[index].id) {
       const dialogConfig = isMobileDevice()
         ? {

@@ -18,6 +18,8 @@
         />
       </div>
       <input
+        (keydown.tab)="increaseActiveItemWithTab()"
+        (keydown.shift.tab)="decreaseActiveItemWithShiftTab()"
         #listItem
         (keydown)="handleKeyDown($event, i)"
         class="action-input"

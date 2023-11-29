@@ -55,7 +55,7 @@ export class ActionPlanComponent implements AfterViewInit {
   }
 
   increaseActiveItemWithTab() {
-    if (this.activeItem <= this.control.value!.length - 1) {
+    if (this.activeItem <= this.control.value!.length - 2) {
       this.activeItem++;
     }
   }
@@ -102,7 +102,7 @@ export class ActionPlanComponent implements AfterViewInit {
 
   removeAction(index: number) {
     const actions = this.control.getValue()!;
-    if (this.activeItem >= actions.length - 1) {
+    if (this.activeItem > 0) {
       this.activeItem--;
     }
     if (actions[index].action !== '' || actions[index].id) {

@@ -46,6 +46,7 @@ export class ActionPlanComponent implements AfterViewInit {
       newIndex -= 1;
     }
     this.changeItemPosition(newIndex, currentIndex);
+    this.adjustPriorities();
   }
 
   increaseActiveItemWithTab() {

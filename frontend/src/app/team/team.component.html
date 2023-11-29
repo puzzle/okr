@@ -14,9 +14,8 @@
         *ngIf="OVEntity.team.hasInActiveOrganisations"
         class="team-actions cursor-pointer ms-2 text-danger"
         [matTooltip]="'This team has inactive organisations'"
-      >error_outline
-      </mat-icon
-      >
+        >error_outline
+      </mat-icon>
     </div>
   </div>
   <button
@@ -27,10 +26,10 @@
     color="primary"
     (click)="createObjective()"
   >
-        <span class="d-flex align-items-center fw-bold add-text mb-2">
-          <img src="assets/icons/new-icon.svg" alt="Add key-result button" class="add-cross-button"/>
-          <span>Objective hinzufügen</span>
-        </span>
+    <span class="d-flex align-items-center fw-bold add-text mb-2">
+      <img src="assets/icons/new-icon.svg" alt="Add key-result button" class="add-cross-button" />
+      <span>Objective hinzufügen</span>
+    </span>
   </button>
   <div class="d-flex justify-content-center">
     <div

@@ -3,6 +3,7 @@
 .mdc-button {
   border-radius: 0.5rem !important;
   letter-spacing: normal;
+
   &.mat-mdc-unelevated-button {
     font-weight: bold !important;
   }
@@ -10,6 +11,11 @@
   img {
     width: 2rem;
   }
+}
+
+.mdc-button--outlined {
+  padding: 0 16px 0 16px !important;
+  margin-left: 8px !important;
 }
 
 .mdc-dialog__title::before {
@@ -25,15 +31,11 @@
   width: 100% !important;
 }
 
-mat-dialog-content,
-mat-dialog-actions {
-  padding: 0 1.62rem 0 1.62rem !important;
-}
-
 .mat-mdc-menu-item.objective-menu-option {
   font-size: 1rem;
   height: 2rem !important;
   min-height: 0 !important;
+
   &:hover {
     padding-left: 0.75rem;
     border-left: 0.25rem solid darkblue;
@@ -64,10 +66,12 @@ mat-dialog-actions {
 
 .mat-mdc-standard-chip {
   margin: 0 !important;
+
   &:not(.mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary) {
     --mdc-chip-elevated-container-color: #ffffffff !important;
   }
 }
+
 .mdc-evolution-chip-set__chips {
   display: flex !important;
   gap: 5px !important;

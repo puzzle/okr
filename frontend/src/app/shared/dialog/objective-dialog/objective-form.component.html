@@ -73,40 +73,36 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="mt-3">
-  <div>
-    <button
-      [disabled]="objectiveForm.invalid"
-      color="primary"
-      mat-flat-button
-      type="submit"
-      (click)="onSubmit('ONGOING')"
-      [attr.data-testId]="'safe'"
-    >
-      Speichern
-    </button>
-    <button
-      *ngIf="!data.objective.objectiveId"
-      [disabled]="objectiveForm.invalid"
-      color="dark"
-      mat-stroked-button
-      (click)="onSubmit('DRAFT')"
-      type="submit"
-      [attr.data-testId]="'safe-draft'"
-    >
-      Als Draft speichern
-    </button>
+  <div class="d-flex w-100 flex-row justify-content-between">
+    <div class="d-flex flex-row">
+      <button
+        [disabled]="objectiveForm.invalid"
+        color="primary"
+        mat-flat-button
+        type="submit"
+        (click)="onSubmit('ONGOING')"
+        [attr.data-testId]="'safe'"
+      >
+        Speichern
+      </button>
+      <button
+        *ngIf="!data.objective.objectiveId"
+        [disabled]="objectiveForm.invalid"
+        color="primary"
+        mat-stroked-button
+        (click)="onSubmit('DRAFT')"
+        type="submit"
+        [attr.data-testId]="'safe-draft'"
+      >
+        Als Draft speichern
+      </button>
 
-    <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
+      <button color="primary" mat-button mat-dialog-close class="ms-2" [attr.data-testId]="'cancel'">Abbrechen</button>
+    </div>
+    <div *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
+      <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">
+        Objective Löschen
+      </button>
+    </div>
   </div>
-  <button
-    color="primary"
-    class="delete-button"
-    *ngIf="data.objective.objectiveId && data.action != 'duplicate'"
-    type="button"
-    mat-button
-    (click)="deleteObjective()"
-    [attr.data-testId]="'delete'"
-  >
-    Objective Löschen
-  </button>
 </mat-dialog-actions>

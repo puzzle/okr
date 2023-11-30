@@ -31,6 +31,8 @@ export class ToasterService {
       case 'ERROR':
         this.showError(msg);
         break;
+      default:
+        this.showSuccess(msg);
     }
   }
 }

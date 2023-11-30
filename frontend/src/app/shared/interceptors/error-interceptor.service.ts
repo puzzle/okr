@@ -59,9 +59,8 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleSuccessToaster(response: any, method: string) {
-    const requestURL = new URL(response.url);
-    const successMessageObj = this.getSuccessMessageKey(requestURL.pathname, method, response.status);
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + '.' + successMessageObj.message);
+    const successMessageObj = this.getSuccessMessageKey(response.url, method, response.status);
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.message);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 

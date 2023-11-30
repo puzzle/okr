@@ -46,5 +46,32 @@
     "NOT_AUTHORIZED_TO_DELETE": "Du bist nicht autorisiert um dieses {0} zu löschen",
     "TOKEN_NULL": "Das erhaltene Token ist null",
     "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden"
+  },
+  "SUCCESS": {
+    "UNKNOWN": "Die Aktion wurde erfolgreich abgeschlossen",
+    "TEAM": {
+      "POST": "Das Team wurde erfolgreich erstellt",
+      "PUT": "Das Team wurde erfolgreich aktualisiert",
+      "DELETED": "Das Team wurde erfolgreich gelöscht"
+    },
+    "OBJECTIVE": {
+      "POST": "Das Objective wurde erfolgreich erstellt",
+      "PUT": "Das Objective wurde erfolgreich aktualisiert",
+      "DELETE": "Das Objective wurde erfolgreich gelöscht"
+    },
+    "KEY_RESULT": {
+      "POST": "Das Key Result wurde erfolgreich erstellt",
+      "PUT": "Das Key Result wurde erfolgreich aktualisiert",
+      "DELETE": "Das Key Result wurde erfolgreich gelöscht"
+    },
+    "CHECK_IN": {
+      "POST": "Das Check-in wurde erfolgreich erstellt",
+      "PUT": "Das Check-in wurde erfolgreich aktualisiert",
+      "DELETE": "Das Check-in wurde erfolgreich gelöscht"
+    },
+    "COMPLETED": {
+      "POST": "Das Objective wurde erfolgreich abgeschlossen",
+      "DELETE": "Das Objective ist nicht länger abgeschlossen"
+    }
   }
 }

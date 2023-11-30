@@ -11,9 +11,10 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { CloseState } from '../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../shared/dialog/checkin/check-in-form/check-in-form.component';
 import { State } from '../shared/types/enums/State';
-import { DATE_FORMAT } from '../shared/constantLibary';
+import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT } from '../shared/constantLibary';
 import { isInValid, isMobileDevice } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
+import { ConfirmDialogComponent } from '../shared/dialog/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-keyresult-detail',
@@ -125,6 +126,41 @@ export class KeyresultDetailComponent implements OnInit {
           this.loadKeyResult();
         }
       });
+  }
+
+  checkForDraftState(keyResult: KeyResult) {
+    if (keyResult.objective.state.toUpperCase() === 'DRAFT') {
+      const dialogConfig = isMobileDevice()
+        ? {
+            maxWidth: '100vw',
+            maxHeight: '100vh',
+            height: '100vh',
+            width: CONFIRM_DIALOG_WIDTH,
+          }
+        : {
+            width: '45em',
+            height: 'auto',
+          };
+
+      this.dialog
+        .open(ConfirmDialogComponent, {
+          data: {
+            draftCreate: true,
+          },
+          width: dialogConfig.width,
+          height: dialogConfig.height,
+          maxHeight: dialogConfig.maxHeight,
+          maxWidth: dialogConfig.maxWidth,
+        })
+        .afterClosed()
+        .subscribe((result) => {
+          if (result) {
+            this.openCheckInForm();
+          }
+        });
+    } else {
+      this.openCheckInForm();
+    }
   }
 
   openCheckInForm() {

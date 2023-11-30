@@ -21,6 +21,9 @@
     "metric": "Metrisch",
     "ordinal": "Ordinal"
   },
+  "INFORMATION": {
+    "OBJECTIVE_STATE_TOOLTIP": "Der Status dieses Objectives ist"
+  },
   "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert um das Objekt mit der Id {1} zu öffnen",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden",

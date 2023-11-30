@@ -11,7 +11,7 @@
       <img
         alt="The objectives state"
         (click)="$event.stopPropagation()"
-        matTooltip="The objectives state is {{ objective.state.split('-')[0] | uppercase }}"
+        matTooltip="{{ getStateTooltip() + ' ' + formatObjectiveState(objective.state) }}"
         matTooltipPosition="above"
         [attr.data-testId]="'objective-state'"
         class="icon col-1 ms-1 me-2"

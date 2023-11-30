@@ -100,7 +100,7 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('three-dot-menu')
           .click();
-        cy.get('.mat-mdc-menu-content').contains('Objective freigeben').click();
+        cy.get('.mat-mdc-menu-content').contains('Objective veröffentlichen').click();
         cy.getByTestId('confirmYes').click();
 
         cy.getByTestId('objective')

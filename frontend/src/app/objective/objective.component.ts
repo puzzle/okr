@@ -14,6 +14,7 @@ import { Completed } from '../shared/types/model/Completed';
 import { Objective } from '../shared/types/model/Objective';
 import { isMobileDevice, trackByFn } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-objective-column',
@@ -34,6 +35,7 @@ export class ObjectiveComponent implements OnInit {
     private router: Router,
     private refreshDataService: RefreshDataService,
     private objectiveService: ObjectiveService,
+    private translate: TranslateService,
   ) {}
 
   @Input()
@@ -47,6 +49,19 @@ export class ObjectiveComponent implements OnInit {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
     }
+  }
+
+  formatObjectiveState(state: string): string {
+    const lastIndex = state.lastIndexOf('-');
+    if (lastIndex !== -1) {
+      return state.substring(0, lastIndex).toUpperCase();
+    } else {
+      return state.toUpperCase();
+    }
+  }
+
+  getStateTooltip(): string {
+    return this.translate.instant('INFORMATION.OBJECTIVE_STATE_TOOLTIP');
   }
 
   getMenu(): void {
@@ -79,7 +94,7 @@ export class ObjectiveComponent implements OnInit {
       ...this.getDefaultMenuActions(),
       ...[
         {
-          displayName: 'Objective freigeben',
+          displayName: 'Objective veröffentlichen',
           action: 'release',
           dialog: {
             dialog: ConfirmDialogComponent,

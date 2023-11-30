@@ -24,9 +24,6 @@ jobs:
 
   e2e:
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        browser: ['chrome']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,7 +36,7 @@ jobs:
 
       - uses: abhi1693/setup-browser@v0.3.4
         with:
-          browser: ${{ matrix.browser }}
+          browser: chrome
           version: latest
 
       - name: run keycloak docker

@@ -85,7 +85,7 @@ export class ObjectiveDetailComponent {
       .afterClosed()
       .subscribe((result) => {
         if (result.delete) {
-          this.router.navigate(['/']);
+          this.router.navigate(['']);
         } else {
           this.loadObjective(this.objective$.value.id);
         }

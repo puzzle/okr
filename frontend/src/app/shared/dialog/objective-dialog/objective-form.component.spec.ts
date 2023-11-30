@@ -109,7 +109,7 @@ describe('ObjectiveDialogComponent', () => {
       team = teams[0].id;
     });
     quarterService.getAllQuarters().subscribe((quarters) => {
-      quarter = quarters[0].id;
+      quarter = quarters[1].id;
     });
 
     // Get input elements and set values

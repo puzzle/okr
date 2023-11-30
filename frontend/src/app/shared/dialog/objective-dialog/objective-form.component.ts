@@ -86,7 +86,7 @@ export class ObjectiveFormComponent implements OnInit {
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[0].id)[0];
+      const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {

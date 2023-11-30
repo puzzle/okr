@@ -1,23 +1,20 @@
-<div class="d-flex flex-row w-100 gap-4">
-  <div class="input-style gap-2 col-12">
-    <label class="text-black"
-      >Aktueller Wert<span *ngIf="keyResult.unit != 'PERCENT' && keyResult.unit != 'NUMBER'">
-        ({{ keyResult.unit | unitLabelTransformation }})</span
-      >:</label
-    >
-    <div>
-      <app-custom-input
-        [formGroup]="dialogForm"
-        [formControlNameGiven]="'value'"
-        (focusout)="formatValue()"
-        (focusin)="resetValue()"
+<div class="input-style gap-2 col-12">
+  <label class="text-black" for="value">Neuer Wert</label>
+  <div class="d-flex flex-row align-items-center">
+    <form [formGroup]="dialogForm">
+      <input
+        class="value-field"
         [attr.data-testId]="'check-in-metric-value'"
-      ></app-custom-input>
-      <div *ngIf="isTouchedOrDirty('value')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
-      </div>
-    </div>
+        [ngClass]="formInputCheck(dialogForm, 'value')"
+        formControlName="value"
+        id="value"
+      />
+    </form>
+    <span class="text-black unit-label">{{ generateUnitLabel() }}</span>
   </div>
+  <span *ngIf="isTouchedOrDirty('value')">
+    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">
+      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
+    </mat-error>
+  </span>
 </div>

@@ -46,22 +46,21 @@ describe('CheckInFormComponent', () => {
 
   it('should format percent correctly', waitForAsync(async () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.PERCENT };
-    component.dialogForm.controls['value'].setValue(checkInMetric.value!.toString());
-    component.formatValue();
-    expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value + '%');
+    expect(component.generateUnitLabel()).toEqual('%');
   }));
 
-  it('should format CHF correctly', waitForAsync(async () => {
+  it('should format chf correctly', waitForAsync(async () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.CHF };
-    component.dialogForm.controls['value'].setValue(checkInMetric.value!.toString());
-    component.formatValue();
-    expect(component.dialogForm.controls['value'].value).toBe('CHF ' + checkInMetric.value + '.-');
+    expect(component.generateUnitLabel()).toEqual('CHF');
   }));
 
-  it('should format FTE correctly', waitForAsync(async () => {
+  it('should format fte correctly', waitForAsync(async () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.FTE };
-    component.dialogForm.controls['value'].setValue(checkInMetric.value!.toString());
-    component.formatValue();
-    expect(component.dialogForm.controls['value'].value).toBe(checkInMetric.value!.toString() + ' FTE');
+    expect(component.generateUnitLabel()).toEqual('FTE');
+  }));
+
+  it('should format number correctly', waitForAsync(async () => {
+    component.keyResult = { ...keyResultMetric, unit: Unit.NUMBER };
+    expect(component.generateUnitLabel()).toEqual('');
   }));
 });

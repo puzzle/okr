@@ -46,10 +46,12 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.keyResult.keyResultType === 'metric') {
-      this.calculatePercentageMetric();
-    } else {
-      this.calculatePercentageOrdinal();
+    if (this.keyResult.lastCheckIn) {
+      if (this.keyResult.keyResultType === 'metric') {
+        this.calculatePercentageMetric();
+      } else {
+        this.calculatePercentageOrdinal();
+      }
     }
   }
 

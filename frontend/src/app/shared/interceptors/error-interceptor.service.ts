@@ -3,16 +3,18 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
-  WHITELIST_TOASTER_HTTP_METHODS_SUCCESS,
-  DRAWER_ROUTES,
-  HTTP_TYPES,
-  SUCCESS_MESSAGE_KEYS,
   BLACKLIST_TOASTER_ROUTES_ERROR,
-  BLACKLIST_TOASTER_ROUTES_SUCCESS,
+  DRAWER_ROUTES,
+  ERROR_MESSAGE_KEY_PREFIX,
+  HTTP_TYPE,
+  SUCCESS_MESSAGE_KEY_PREFIX,
+  SUCCESS_MESSAGE_MAP,
+  WHITELIST_TOASTER_HTTP_METHODS_SUCCESS,
   WHITELIST_TOASTER_ROUTES_SUCCESS,
 } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ToasterMessage } from '../types/toasterMessage';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -44,7 +46,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
 
     const errors = response.error.errors.map((error: any) =>
-      this.translate.instant('ERRORS.' + error.errorKey).format(error.params),
+      this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey).format(error.params),
     );
 
     errors.forEach((error: string) => this.toasterService.showError(error));
@@ -57,33 +59,37 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleSuccessToaster(response: any, method: string) {
-    if (response.status == 226) {
-      this.toasterService.showWarn(this.translate.instant('ERRORS.ILLEGAL_CHANGE_OBJECTIVE_QUARTER'));
-      return;
-    }
-
     const requestURL = new URL(response.url);
-    const successMessageKey = this.getSuccessMessageKey(requestURL.pathname, method);
-    const successMessage = this.translate.instant('SUCCESS.' + successMessageKey);
-    this.toasterService.showSuccess(successMessage);
+    const successMessageObj = this.getSuccessMessageKey(requestURL.pathname, method, response.status);
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + '.' + successMessageObj.message);
+    this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
-  getSuccessMessageKey(url: string, method: string): string {
-    for (const key in SUCCESS_MESSAGE_KEYS) {
-      if (url.includes(key) && SUCCESS_MESSAGE_KEYS[key].methods.includes(method as HTTP_TYPES)) {
-        return SUCCESS_MESSAGE_KEYS[key].KEY + '.' + method;
+  getSuccessMessageKey(url: string, method: string, statusCode: number): ToasterMessage {
+    for (const key in SUCCESS_MESSAGE_MAP) {
+      const value = SUCCESS_MESSAGE_MAP[key];
+      if (!url.includes(key)) {
+        continue;
+      }
+
+      for (let exception of value.exceptions) {
+        if (exception.method == method && exception.statusCode == statusCode) {
+          const messageKey = value.KEY + '.' + exception.key;
+          return { message: messageKey, toasterType: 'WARN' };
+        }
+      }
+      if (value.methods.includes(method as HTTP_TYPE)) {
+        const messageKey = value.KEY + '.' + method;
+        return { message: messageKey, toasterType: 'SUCCESS' };
       }
     }
-    return 'UNKNOWN';
+
+    return { message: 'UNKNOWN', toasterType: 'SUCCESS' };
   }
 
   checkIfSuccessToasterIsShown(response: any, method: string): boolean {
     const requestURL = new URL(response.url);
     if (!WHITELIST_TOASTER_ROUTES_SUCCESS.some((route) => response.url.includes(route))) {
-      //Request on a not permitted route
-      return false;
-    }
-    if (BLACKLIST_TOASTER_ROUTES_SUCCESS.some((route) => response.url.includes(route))) {
       //Request on a not permitted route
       return false;
     }

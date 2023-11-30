@@ -21,7 +21,7 @@
     "metric": "Metrisch",
     "ordinal": "Ordinal"
   },
-  "ERRORS": {
+  "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert um das Objekt mit der Id {1} zu öffnen",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden",
     "KEY_RESULT_CONVERSION": "Der Keyresulttyp {0} konnte weder zu metrisch noch zu ordinal konvertiert werden",
@@ -57,12 +57,14 @@
     "OBJECTIVE": {
       "POST": "Das Objective wurde erfolgreich erstellt",
       "PUT": "Das Objective wurde erfolgreich aktualisiert",
-      "DELETE": "Das Objective wurde erfolgreich gelöscht"
+      "DELETE": "Das Objective wurde erfolgreich gelöscht",
+      "IM_USED": "Im used"
     },
     "KEY_RESULT": {
       "POST": "Das Key Result wurde erfolgreich erstellt",
       "PUT": "Das Key Result wurde erfolgreich aktualisiert",
-      "DELETE": "Das Key Result wurde erfolgreich gelöscht"
+      "DELETE": "Das Key Result wurde erfolgreich gelöscht",
+      "IM_USED": "Im used"
     },
     "CHECK_IN": {
       "POST": "Das Check-in wurde erfolgreich erstellt",

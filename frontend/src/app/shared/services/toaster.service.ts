@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { TOASTER_TYPE } from '../constantLibary';
 
 @Injectable({
   providedIn: 'root',
@@ -17,5 +18,19 @@ export class ToasterService {
 
   showWarn(msg: string) {
     this.toastr.warning(msg, 'Warnung!');
+  }
+
+  showCustomToaster(msg: string, type: TOASTER_TYPE) {
+    switch (type) {
+      case 'SUCCESS':
+        this.showSuccess(msg);
+        break;
+      case 'WARN':
+        this.showWarn(msg);
+        break;
+      case 'ERROR':
+        this.showError(msg);
+        break;
+    }
   }
 }

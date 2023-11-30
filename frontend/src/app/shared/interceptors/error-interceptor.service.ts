@@ -7,6 +7,7 @@ import {
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
   HTTP_TYPE,
+  MessageKey,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
 } from '../constantLibary';
@@ -71,18 +72,33 @@ export class ErrorInterceptor implements HttpInterceptor {
         continue;
       }
 
-      for (let exception of value.exceptions) {
-        if (exception.method == method && exception.statusCode == statusCode) {
-          const messageKey = value.KEY + '.' + exception.key;
-          return { message: messageKey, toasterType: 'WARN' };
+      const mappedValues: MessageKey[] = value.methods
+        .filter((e) => typeof e != 'object')
+        .map((e) => {
+          return { method: e } as MessageKey;
+        });
+      const objects: MessageKey[] = value.methods.filter((e) => typeof e == 'object').map((e) => e as MessageKey);
+      const all: MessageKey[] = objects.concat(mappedValues);
+
+      for (const toasterMessage of all) {
+        if (toasterMessage.method == method) {
+          for (let codeKey of toasterMessage.keysForCode || []) {
+            if (codeKey.code == statusCode) {
+              const messageKey = value.KEY + '.' + codeKey.key;
+              return { message: messageKey, toasterType: codeKey.toaster || 'SUCCESS' };
+            }
+          }
+          const messageKey = value.KEY + '.' + method;
+          return { message: messageKey, toasterType: 'SUCCESS' };
         }
       }
+
+      console.log(url, method, mappedValues, objects, all);
       if (value.methods.includes(method as HTTP_TYPE)) {
         const messageKey = value.KEY + '.' + method;
         return { message: messageKey, toasterType: 'SUCCESS' };
       }
     }
-
     return undefined;
   }
 

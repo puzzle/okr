@@ -1,13 +1,17 @@
 interface MessageKeyMap {
   [key: string]: {
     KEY: string;
-    methods: HTTP_TYPE[];
-    exceptions: {
-      method: HTTP_TYPE;
-      statusCode: number;
-      key: string;
-    }[];
+    methods: (MessageKey | HTTP_TYPE)[];
   };
+}
+
+export interface MessageKey {
+  method: HTTP_TYPE;
+  keysForCode?: {
+    code: number;
+    toaster?: TOASTER_TYPE;
+    key: string;
+  }[];
 }
 
 export type HTTP_TYPE = 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -24,33 +28,51 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',
     methods: ['POST', 'PUT', 'DELETE'],
-    exceptions: [],
   },
   objectives: {
     KEY: 'OBJECTIVE',
-    methods: ['POST', 'PUT', 'DELETE'],
-    exceptions: [
+    methods: [
+      'POST',
+      'DELETE',
       {
-        key: 'IM_USED',
-        statusCode: 226,
         method: 'PUT',
+        keysForCode: [
+          {
+            key: 'IM_USED',
+            toaster: 'WARN',
+            code: 226,
+          },
+        ],
       },
     ],
   },
   keyresults: {
     KEY: 'KEY_RESULT',
-    methods: ['POST', 'PUT', 'DELETE'],
-    exceptions: [
+    methods: [
+      'POST',
+      'DELETE',
       {
-        key: 'IM_USED',
-        statusCode: 226,
         method: 'PUT',
+        keysForCode: [
+          {
+            key: 'IM_USED',
+            code: 226,
+            toaster: 'WARN',
+          },
+        ],
       },
     ],
   },
   checkins: {
     KEY: 'CHECK_IN',
     methods: ['POST', 'PUT', 'DELETE'],
-    exceptions: [],
+  },
+  action: {
+    KEY: 'CHECK_IN',
+    methods: ['PUT', 'DELETE'],
+  },
+  completed: {
+    KEY: 'COMPLETED',
+    methods: ['POST', 'DELETE'],
   },
 };

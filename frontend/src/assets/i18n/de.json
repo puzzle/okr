@@ -48,7 +48,6 @@
     "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden"
   },
   "SUCCESS": {
-    "UNKNOWN": "Die Aktion wurde erfolgreich abgeschlossen",
     "TEAM": {
       "POST": "Das Team wurde erfolgreich erstellt",
       "PUT": "Das Team wurde erfolgreich aktualisiert",
@@ -58,13 +57,13 @@
       "POST": "Das Objective wurde erfolgreich erstellt",
       "PUT": "Das Objective wurde erfolgreich aktualisiert",
       "DELETE": "Das Objective wurde erfolgreich gelöscht",
-      "IM_USED": "Im used"
+      "IM_USED": "Das Objective kann nicht in ein anderes Quartal verlegt werden"
     },
     "KEY_RESULT": {
       "POST": "Das Key Result wurde erfolgreich erstellt",
       "PUT": "Das Key Result wurde erfolgreich aktualisiert",
       "DELETE": "Das Key Result wurde erfolgreich gelöscht",
-      "IM_USED": "Im used"
+      "IM_USED": "Das Key Result kann nicht in ein anderes Quartal verlegt werden"
     },
     "CHECK_IN": {
       "POST": "Das Check-in wurde erfolgreich erstellt",

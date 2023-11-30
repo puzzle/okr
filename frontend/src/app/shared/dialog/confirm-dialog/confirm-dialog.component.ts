@@ -18,7 +18,7 @@ export class ConfirmDialogComponent implements OnInit {
     if (this.data.draftCreate) {
       this.dialogTitle = 'Check-in im Draft-Status';
       this.dialogText =
-        'Möchtest du wirklich ein Check-in zu einem Key Result erstellen, wessen Objective im Status DRAFT ist?';
+        'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?';
     } else {
       if (this.data.action) {
         if (this.data.action === 'release') {

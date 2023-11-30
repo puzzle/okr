@@ -1,7 +1,7 @@
 interface MessageKeyMap {
   [key: string]: {
     KEY: string;
-    methods: (MessageKey | HTTP_TYPE)[];
+    methods: MessageKey[];
   };
 }
 
@@ -27,13 +27,13 @@ export const BLACKLIST_TOASTER_ROUTES_ERROR = ['/token'];
 export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',
-    methods: ['POST', 'PUT', 'DELETE'],
+    methods: [{ method: 'POST' }, { method: 'PUT' }, { method: 'DELETE' }],
   },
   objectives: {
     KEY: 'OBJECTIVE',
     methods: [
-      'POST',
-      'DELETE',
+      { method: 'POST' },
+      { method: 'DELETE' },
       {
         method: 'PUT',
         keysForCode: [
@@ -49,15 +49,15 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   keyresults: {
     KEY: 'KEY_RESULT',
     methods: [
-      'POST',
-      'DELETE',
+      { method: 'POST' },
+      { method: 'DELETE' },
       {
         method: 'PUT',
         keysForCode: [
           {
             key: 'IM_USED',
-            code: 226,
             toaster: 'WARN',
+            code: 226,
           },
         ],
       },
@@ -65,14 +65,14 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   },
   checkins: {
     KEY: 'CHECK_IN',
-    methods: ['POST', 'PUT', 'DELETE'],
+    methods: [{ method: 'POST' }, { method: 'PUT' }, { method: 'DELETE' }],
   },
   action: {
-    KEY: 'CHECK_IN',
-    methods: ['PUT', 'DELETE'],
+    KEY: 'ACTION',
+    methods: [{ method: 'PUT' }, { method: 'DELETE' }],
   },
   completed: {
     KEY: 'COMPLETED',
-    methods: ['POST', 'DELETE'],
+    methods: [{ method: 'POST' }, { method: 'DELETE' }],
   },
 };

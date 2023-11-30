@@ -72,15 +72,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         continue;
       }
 
-      const mappedValues: MessageKey[] = value.methods
-        .filter((e) => typeof e != 'object')
-        .map((e) => {
-          return { method: e } as MessageKey;
-        });
-      const objects: MessageKey[] = value.methods.filter((e) => typeof e == 'object').map((e) => e as MessageKey);
-      const all: MessageKey[] = objects.concat(mappedValues);
-
-      for (const toasterMessage of all) {
+      for (const toasterMessage of value.methods) {
         if (toasterMessage.method == method) {
           for (let codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
@@ -91,12 +83,6 @@ export class ErrorInterceptor implements HttpInterceptor {
           const messageKey = value.KEY + '.' + method;
           return { message: messageKey, toasterType: 'SUCCESS' };
         }
-      }
-
-      console.log(url, method, mappedValues, objects, all);
-      if (value.methods.includes(method as HTTP_TYPE)) {
-        const messageKey = value.KEY + '.' + method;
-        return { message: messageKey, toasterType: 'SUCCESS' };
       }
     }
     return undefined;

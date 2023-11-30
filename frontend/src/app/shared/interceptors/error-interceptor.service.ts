@@ -24,9 +24,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
-      filter((event) => this.checkIfSuccessToasterIsShown(event, request.method)),
       tap((response) => {
-        this.handleSuccess(response, request.method);
+        if (this.checkIfSuccessToasterIsShown(response, request.method)) {
+          this.handleSuccessToaster(response, request.method);
+        }
       }),
       catchError((response) => {
         this.handleErrorToaster(response);
@@ -54,7 +55,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
   }
 
-  handleSuccess(response: any, method: string) {
+  handleSuccessToaster(response: any, method: string) {
     if (response.status == 226) {
       this.toasterService.showWarn(this.translate.instant('ERRORS.ILLEGAL_CHANGE_OBJECTIVE_QUARTER'));
       return;
@@ -76,15 +77,13 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   checkIfSuccessToasterIsShown(response: any, method: string): boolean {
-    const currentURL = new URL(this.router.url);
     const requestURL = new URL(response.url);
     const NO_TOASTER_ROUTES = NO_TOASTER_ROUTES_ERROR.concat(NO_TOASTER_ROUTES_SUCCESS);
-
     if (NO_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
       //Request on a not permitted route
       return false;
     }
-    if (currentURL.host !== requestURL.host) {
+    if (window.location.host !== requestURL.host) {
       //Request on an external service
       return false;
     }

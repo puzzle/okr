@@ -70,4 +70,5 @@ jobs:
           start: npm start
           wait-on: 'http://localhost:8080/config, http://localhost:4200'
           wait-on-timeout: 120
-          browser: ${{ matrix.browser }}
+          browser: chrome
+          headed: true

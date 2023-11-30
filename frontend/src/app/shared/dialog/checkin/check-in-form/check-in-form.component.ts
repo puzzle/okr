@@ -9,8 +9,8 @@ import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-v
 import { CheckInService } from '../../../services/check-in.service';
 import { Action } from '../../../types/model/Action';
 import { ActionService } from '../../../services/action.service';
-import { formInputCheck } from '../../../common';
-import errorMessages from '../../../../../assets/errors/error-messages.json';
+import { formInputCheck, hasFormFieldErrors } from '../../../common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-check-in-form',
@@ -31,7 +31,7 @@ export class CheckInFormComponent implements OnInit {
     actionList: new FormControl<Action[]>([]),
   });
   protected readonly formInputCheck = formInputCheck;
-  protected readonly errorMessages: { [key: string]: string } = errorMessages;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
     public dialogRef: MatDialogRef<CheckInFormComponent>,
@@ -39,6 +39,7 @@ export class CheckInFormComponent implements OnInit {
     public parserPipe: ParseUnitValuePipe,
     private checkInService: CheckInService,
     private actionService: ActionService,
+    private translate: TranslateService,
   ) {
     this.currentDate = new Date();
     this.keyResult = data.keyResult;
@@ -49,13 +50,8 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string): string[] {
-    const errors = this.dialogForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
 
   setDefaultValues() {

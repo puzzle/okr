@@ -3,9 +3,9 @@ import { KeyResult } from '../shared/types/model/KeyResult';
 import { FormGroup, Validators } from '@angular/forms';
 import { KeyResultMetric } from '../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../shared/types/model/KeyResultOrdinal';
-import errorMessages from '../../assets/errors/error-messages.json';
 import { Unit } from '../shared/types/enums/Unit';
-import { formInputCheck } from '../shared/common';
+import { formInputCheck, hasFormFieldErrors } from '../shared/common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-keyresult-type',
@@ -18,9 +18,11 @@ export class KeyresultTypeComponent implements OnInit {
   @Output() formValidityEmitter = new EventEmitter<boolean>();
   isMetric: boolean = true;
   typeChangeAllowed: boolean = true;
-  protected readonly errorMessages: any = errorMessages;
   protected readonly Unit = Unit;
   protected readonly formInputCheck = formInputCheck;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
+
+  constructor(private translate: TranslateService) {}
 
   ngOnInit(): void {
     if (this.keyresult) {
@@ -98,12 +100,7 @@ export class KeyresultTypeComponent implements OnInit {
     }
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.keyResultForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
 }

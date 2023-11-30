@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { formInputCheck } from '../../common';
-import errorMessages from '../../../../assets/errors/error-messages.json';
+import { formInputCheck, hasFormFieldErrors } from '../../common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-complete-dialog',
@@ -15,10 +15,12 @@ export class CompleteDialogComponent {
     comment: new FormControl<string | null>(null, [Validators.maxLength(4096)]),
   });
   protected readonly formInputCheck = formInputCheck;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
     public dialogRef: MatDialogRef<CompleteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { objectiveTitle: string },
+    private translate: TranslateService,
   ) {}
 
   switchSuccessState(input: string) {
@@ -48,14 +50,7 @@ export class CompleteDialogComponent {
     });
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.completeForm.get(name)?.dirty || this.completeForm.get(name)?.touched;
+  getErrorMessage(error: string, field: string, maxLength: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(maxLength);
   }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.completeForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
-  }
-
-  protected readonly errorMessages: any = errorMessages;
 }

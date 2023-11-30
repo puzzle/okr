@@ -9,11 +9,9 @@
         formControlName="title"
         id="title"
       ></textarea>
-      <span *ngIf="isTouchedOrDirty('title')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
-      </span>
+      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'title')">
+        <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
+      </mat-error>
     </div>
 
     <div class="mb-3">
@@ -40,9 +38,9 @@
           {{ user.firstname + " " + user.lastname }}
         </mat-option>
       </mat-autocomplete>
-      <div *ngIf="invalidOwner()">
-        <mat-error>Du musst einen Owner auswählen</mat-error>
-      </div>
+      <mat-error *ngIf="invalidOwner()">
+        <span>{{ getErrorMessage("MUST_SELECT", "Owner", null, null) }}</span>
+      </mat-error>
     </div>
 
     <div class="input-style gap-2 col-12">
@@ -54,11 +52,9 @@
         formControlName="description"
         id="description"
       ></textarea>
-      <span *ngIf="isTouchedOrDirty('description')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
-      </span>
+      <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'description')">
+        <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
+      </mat-error>
     </div>
     <app-action-plan [control]="actionList$" [keyResultId]="getKeyResultId()"></app-action-plan>
   </form>

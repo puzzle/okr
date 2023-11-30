@@ -14,11 +14,9 @@
           formControlName="name"
           id="name"
         ></textarea>
-        <span *ngIf="isTouchedOrDirty('name')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('name')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </span>
+        <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
+          <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
+        </mat-error>
       </div>
       <div class="input-style gap-2 col-12">
         <div class="d-flex flex-row">
@@ -49,11 +47,9 @@
           </mat-option>
         </mat-select>
 
-        <div *ngIf="isTouchedOrDirty('organisations')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('organisations')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </div>
+        <mat-error *ngIf="hasFormFieldErrors(teamForm, 'organisations')">
+          <span>{{ getErrorMessage("MUST_SELECT", "Organisation", null, null) }}</span>
+        </mat-error>
       </div>
       <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
         <div class="d-flex p-0">

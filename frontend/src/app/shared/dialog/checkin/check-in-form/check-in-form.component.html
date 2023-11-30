@@ -28,11 +28,9 @@
           class="big-dialog-form-field"
           formControlName="changeInfo"
         ></textarea>
-        <div *ngIf="isTouchedOrDirty('changeInfo')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('changeInfo')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </div>
+        <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096, null) }}</span>
+        </mat-error>
       </div>
 
       <app-check-in-form-metric
@@ -56,11 +54,9 @@
           class="w-100 big-dialog-form-field"
           formControlName="initiatives"
         ></textarea>
-        <div *ngIf="isTouchedOrDirty('initiatives')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('initiatives')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </div>
+        <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096, null) }}</span>
+        </mat-error>
       </div>
 
       <div class="d-flex flex-column justify-content-start gap-2 col-12">

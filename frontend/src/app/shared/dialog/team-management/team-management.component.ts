@@ -1,8 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { formInputCheck, isMobileDevice } from '../../common';
+import { formInputCheck, isMobileDevice, hasFormFieldErrors } from '../../common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import errorMessages from '../../../../assets/errors/error-messages.json';
 import { Organisation } from '../../types/model/Organisation';
 import { OrganisationService } from '../../services/organisation.service';
 import { Observable, of } from 'rxjs';
@@ -13,6 +12,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 import { OrganisationState } from '../../types/enums/OrganisationState';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
 import { CloseState } from '../../types/enums/CloseState';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-team-management',
@@ -27,7 +27,7 @@ export class TeamManagementComponent implements OnInit {
   organisations$: Observable<Organisation[]> = new Observable<Organisation[]>();
   public hasInActiveOrganisations: boolean = false;
   protected readonly formInputCheck = formInputCheck;
-  protected readonly errorMessages: any = errorMessages;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
     public dialogRef: MatDialogRef<TeamManagementComponent>,
@@ -38,6 +38,7 @@ export class TeamManagementComponent implements OnInit {
     public data: {
       team: TeamMin;
     },
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -126,13 +127,8 @@ export class TeamManagementComponent implements OnInit {
     return { 'text-decoration': isInActive ? 'line-through' : 'none' };
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.teamForm.get(name)?.dirty || this.teamForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.teamForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
 
   compareWithFunc(a: Organisation, b: Organisation) {

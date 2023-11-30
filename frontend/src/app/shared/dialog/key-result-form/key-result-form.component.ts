@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormGroup } from '@angular/forms';
 import { User } from '../../types/model/User';
 import { KeyResult } from '../../types/model/KeyResult';
-import errorMessages from '../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
 import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../types/model/Action';
-import { formInputCheck } from '../../common';
+import { formInputCheck, hasFormFieldErrors } from '../../common';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-key-result-form',
@@ -22,17 +22,17 @@ export class KeyResultFormComponent implements OnInit {
   filteredUsers$: Observable<User[]> | undefined = of([]);
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
   protected readonly formInputCheck = formInputCheck;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   @Input()
   keyResultForm!: FormGroup;
   @Input()
   keyResult!: KeyResult | null;
 
-  protected readonly errorMessages: any = errorMessages;
-
   constructor(
     public userService: UserService,
     private oauthService: OAuthService,
+    private translate: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -96,9 +96,8 @@ export class KeyResultFormComponent implements OnInit {
     return this.keyResultForm.get(name)?.dirty || this.keyResultForm.get(name)?.touched;
   }
 
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.keyResultForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
 
   filter(value: string): Observable<User[]> {

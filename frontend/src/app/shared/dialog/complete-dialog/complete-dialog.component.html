@@ -48,11 +48,9 @@
         [ngClass]="formInputCheck(completeForm, 'comment')"
         id="comment"
       ></textarea>
-      <span *ngIf="isTouchedOrDirty('comment')">
-        <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('comment')">
-          <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-        </mat-error>
-      </span>
+      <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
+        <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
+      </mat-error>
     </div>
   </form>
 </mat-dialog-content>

@@ -10,11 +10,11 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';
 import { Objective } from '../../types/model/Objective';
-import errorMessages from '../../../../assets/errors/error-messages.json';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { formInputCheck, getQuarterLabel, getValueFromQuery, isMobileDevice } from '../../common';
+import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
 import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-objective-form',
@@ -36,8 +36,8 @@ export class ObjectiveFormComponent implements OnInit {
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
   version!: number;
-  protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +55,7 @@ export class ObjectiveFormComponent implements OnInit {
         teamVersion?: number;
       };
     },
+    private translate: TranslateService,
   ) {}
 
   onSubmit(submitType: any): void {
@@ -168,13 +169,8 @@ export class ObjectiveFormComponent implements OnInit {
     });
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.objectiveForm.get(name)?.dirty || this.objectiveForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.objectiveForm.get(name)?.errors;
-    return errors == null ? [] : Object.keys(errors);
+  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
   }
 
   getDefaultObjective() {

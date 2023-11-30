@@ -69,3 +69,6 @@ jobs:
           wait-on-timeout: 120
           browser: chrome
           headed: true
+
+      - name: remove docker containers
+        run: docker rm -rf

@@ -127,7 +127,7 @@ jobs:
 
       - name: run keycloak docker
         run: |
-          docker run -d \
+          docker run -d --network=host\
           --name my_keycloak \
           -e KEYCLOAK_ADMIN=admin \
           -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
@@ -145,7 +145,7 @@ jobs:
 
       - name: Run docker image
         run: |
-          docker run \
+          docker run --network=host\
           -p 8080:8080 \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:8544/realms/pitc \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:8544/realms/pitc/protocol/openid-connect/certs \
@@ -165,6 +165,7 @@ jobs:
           wait-on: 'http://localhost:8080/config'
           wait-on-timeout: 120
           browser: chrome
+          headed: true
           working-directory: frontend
           config: baseUrl=http://localhost:8080
 

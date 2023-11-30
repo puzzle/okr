@@ -3,12 +3,13 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
-  ALLOWED_TOASTER_METHODS_SUCCESS,
-  drawerRoutes,
-  HttpMethod,
-  messageKeys,
-  NO_TOASTER_ROUTES_ERROR,
-  NO_TOASTER_ROUTES_SUCCESS,
+  WHITELIST_TOASTER_HTTP_METHODS_SUCCESS,
+  DRAWER_ROUTES,
+  HTTP_TYPES,
+  SUCCESS_MESSAGE_KEYS,
+  BLACKLIST_TOASTER_ROUTES_ERROR,
+  BLACKLIST_TOASTER_ROUTES_SUCCESS,
+  WHITELIST_TOASTER_ROUTES_SUCCESS,
 } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleErrorToaster(response: any) {
-    if (NO_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route))) {
+    if (BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route))) {
       return;
     }
 
@@ -50,7 +51,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleDrawerError(request: HttpRequest<unknown>) {
-    if (drawerRoutes.some((route) => request.url.includes(route))) {
+    if (DRAWER_ROUTES.some((route) => request.url.includes(route))) {
       this.router.navigate(['']);
     }
   }
@@ -68,9 +69,9 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   getSuccessMessageKey(url: string, method: string): string {
-    for (const key in messageKeys) {
-      if (url.includes(key) && messageKeys[key].methods.includes(method as HttpMethod)) {
-        return messageKeys[key].KEY + '.' + method;
+    for (const key in SUCCESS_MESSAGE_KEYS) {
+      if (url.includes(key) && SUCCESS_MESSAGE_KEYS[key].methods.includes(method as HTTP_TYPES)) {
+        return SUCCESS_MESSAGE_KEYS[key].KEY + '.' + method;
       }
     }
     return 'UNKNOWN';
@@ -78,8 +79,11 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   checkIfSuccessToasterIsShown(response: any, method: string): boolean {
     const requestURL = new URL(response.url);
-    const NO_TOASTER_ROUTES = NO_TOASTER_ROUTES_ERROR.concat(NO_TOASTER_ROUTES_SUCCESS);
-    if (NO_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
+    if (!WHITELIST_TOASTER_ROUTES_SUCCESS.some((route) => response.url.includes(route))) {
+      //Request on a not permitted route
+      return false;
+    }
+    if (BLACKLIST_TOASTER_ROUTES_SUCCESS.some((route) => response.url.includes(route))) {
       //Request on a not permitted route
       return false;
     }
@@ -91,6 +95,6 @@ export class ErrorInterceptor implements HttpInterceptor {
       //Request to our backend but not to our api
       return false;
     }
-    return ALLOWED_TOASTER_METHODS_SUCCESS.includes(method);
+    return WHITELIST_TOASTER_HTTP_METHODS_SUCCESS.includes(method);
   }
 }

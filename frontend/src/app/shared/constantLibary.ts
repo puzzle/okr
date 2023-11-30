@@ -1,21 +1,21 @@
 interface MessageKeyMap {
   [key: string]: {
     KEY: string;
-    methods: HttpMethod[];
+    methods: HTTP_TYPES[];
   };
 }
 
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type HTTP_TYPES = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 export const DATE_FORMAT = 'dd.MM.yyyy';
 export const CONFIRM_DIALOG_WIDTH: string = '450px';
 
-export const drawerRoutes = ['objective', 'keyresult'];
-
-export const NO_TOASTER_ROUTES_ERROR = ['/token'];
-export const NO_TOASTER_ROUTES_SUCCESS = ['/action'];
-export const ALLOWED_TOASTER_METHODS_SUCCESS = ['PUT', 'POST', 'DELETE'];
-export const messageKeys: MessageKeyMap = {
+export const DRAWER_ROUTES = ['objective', 'keyresult'];
+export const BLACKLIST_TOASTER_ROUTES_ERROR = ['/token'];
+export const BLACKLIST_TOASTER_ROUTES_SUCCESS = ['/action', '/completed'];
+export const WHITELIST_TOASTER_ROUTES_SUCCESS = ['/objectives', '/keyresults', '/checkins'];
+export const WHITELIST_TOASTER_HTTP_METHODS_SUCCESS = ['PUT', 'POST', 'DELETE'];
+export const SUCCESS_MESSAGE_KEYS: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',
     methods: ['POST', 'PUT', 'DELETE'],
@@ -31,13 +31,5 @@ export const messageKeys: MessageKeyMap = {
   checkins: {
     KEY: 'CHECK_IN',
     methods: ['POST', 'PUT', 'DELETE'],
-  },
-  action: {
-    KEY: 'CHECK_IN',
-    methods: ['PUT', 'DELETE'],
-  },
-  completed: {
-    KEY: 'COMPLETED',
-    methods: ['POST', 'DELETE'],
   },
 };

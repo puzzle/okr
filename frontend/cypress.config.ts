@@ -6,6 +6,6 @@ export default defineConfig({
     experimentalMemoryManagement: true,
   },
   env: {
-    login_url: 'https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch',
+    login_url: 'http://localhost:8544',
   },
 });

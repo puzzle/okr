@@ -18,6 +18,7 @@ import { of } from 'rxjs';
 import { organisationActive, organisationInActive, teamFormObject, teamMin1 } from '../../testData';
 import { Team } from '../../types/model/Team';
 import { OrganisationService } from '../../services/organisation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 const dialogRefMock = {
   close: jest.fn(),
@@ -79,6 +80,7 @@ describe('TeamManagementComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: null,
         },
+        { provide: TranslateService, useValue: {} },
       ],
     });
     fixture = TestBed.createComponent(TeamManagementComponent);

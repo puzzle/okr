@@ -25,6 +25,8 @@ import { KeyResultFormComponent } from '../key-result-form/key-result-form.compo
 import { Action } from '../../types/model/Action';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import * as de from '../../../../assets/i18n/de.json';
 
 describe('KeyResultFormComponent', () => {
   let component: KeyResultFormComponent;
@@ -100,6 +102,9 @@ describe('KeyResultFormComponent', () => {
           MatIconModule,
           TranslateModule.forRoot(),
           DragDropModule,
+          TranslateTestingModule.withTranslations({
+            de: de,
+          }),
         ],
         providers: [
           KeyresultService,

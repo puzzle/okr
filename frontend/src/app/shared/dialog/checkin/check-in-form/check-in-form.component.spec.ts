@@ -23,6 +23,8 @@ import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-v
 import { CheckInService } from '../../../services/check-in.service';
 import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
+import * as de from '../../../../../assets/i18n/de.json';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 const dialogMock = {
   close: jest.fn(),
@@ -52,6 +54,9 @@ describe('CheckInFormComponent', () => {
         MatInputModule,
         NoopAnimationsModule,
         MatCheckboxModule,
+        TranslateTestingModule.withTranslations({
+          de: de,
+        }),
       ],
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: { keyResult: {} } },

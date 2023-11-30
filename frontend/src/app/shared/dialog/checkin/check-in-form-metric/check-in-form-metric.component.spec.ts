@@ -11,6 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Unit } from '../../../types/enums/Unit';
 import { ParseUnitValuePipe } from '../../../pipes/parse-unit-value/parse-unit-value.pipe';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import * as de from '../../../../../assets/i18n/de.json';
 
 describe('CheckInFormComponent', () => {
   let component: CheckInFormMetricComponent;
@@ -25,6 +27,9 @@ describe('CheckInFormComponent', () => {
         MatInputModule,
         MatRadioModule,
         ReactiveFormsModule,
+        TranslateTestingModule.withTranslations({
+          de: de,
+        }),
       ],
       declarations: [CheckInFormMetricComponent, UnitValueTransformationPipe],
       providers: [UnitValueTransformationPipe, ParseUnitValuePipe],

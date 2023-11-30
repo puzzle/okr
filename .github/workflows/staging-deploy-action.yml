@@ -164,7 +164,7 @@ jobs:
           install: false
           wait-on: 'http://localhost:8080/config'
           wait-on-timeout: 120
-          browser: ${{ matrix.browser }}
+          browser: chrome
           working-directory: frontend
           config: baseUrl=http://localhost:8080
 

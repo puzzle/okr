@@ -54,7 +54,7 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   close() {
-    this.router.navigate(['/']);
+    this.router.navigate(['']);
   }
 
   closeOnKeydown($event: KeyboardEvent) {

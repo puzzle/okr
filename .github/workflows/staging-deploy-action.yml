@@ -145,7 +145,7 @@ jobs:
 
       - name: Run docker image
         run: |
-          docker run --network=host \
+          docker run \
           -p 8080:8080 \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER-URI=http://localhost:8544/realms/pitc \
           -e SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI=http://localhost:8544/realms/pitc/protocol/openid-connect/certs \
@@ -242,5 +242,6 @@ jobs:
       - run: rm -rf ccy-repo
         shell: bash
 
-      - name: remove dockers
-        run: docker rm -rf
+#enable as soon as e2e tests run
+#      - name: remove dockers
+#        run: docker rm -rf

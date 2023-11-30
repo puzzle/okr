@@ -9,8 +9,6 @@ import {
   HTTP_TYPE,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
-  WHITELIST_TOASTER_HTTP_METHODS_SUCCESS,
-  WHITELIST_TOASTER_ROUTES_SUCCESS,
 } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
       tap((response) => {
-        if (this.checkIfSuccessToasterIsShown(response, request.method)) {
+        if (this.checkIfSuccessToasterIsShown(response)) {
           this.handleSuccessToaster(response, request.method);
         }
       }),
@@ -60,11 +58,13 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   handleSuccessToaster(response: any, method: string) {
     const successMessageObj = this.getSuccessMessageKey(response.url, method, response.status);
+    if (!successMessageObj) return;
+
     const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.message);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
-  getSuccessMessageKey(url: string, method: string, statusCode: number): ToasterMessage {
+  getSuccessMessageKey(url: string, method: string, statusCode: number): ToasterMessage | undefined {
     for (const key in SUCCESS_MESSAGE_MAP) {
       const value = SUCCESS_MESSAGE_MAP[key];
       if (!url.includes(key)) {
@@ -83,23 +83,11 @@ export class ErrorInterceptor implements HttpInterceptor {
       }
     }
 
-    return { message: 'UNKNOWN', toasterType: 'SUCCESS' };
+    return undefined;
   }
 
-  checkIfSuccessToasterIsShown(response: any, method: string): boolean {
+  checkIfSuccessToasterIsShown(response: any): boolean {
     const requestURL = new URL(response.url);
-    if (!WHITELIST_TOASTER_ROUTES_SUCCESS.some((route) => response.url.includes(route))) {
-      //Request on a not permitted route
-      return false;
-    }
-    if (window.location.host !== requestURL.host) {
-      //Request on an external service
-      return false;
-    }
-    if (!requestURL.pathname.startsWith('/api')) {
-      //Request to our backend but not to our api
-      return false;
-    }
-    return WHITELIST_TOASTER_HTTP_METHODS_SUCCESS.includes(method);
+    return window.location.host == requestURL.host && requestURL.pathname.startsWith('/api');
   }
 }

@@ -18,11 +18,8 @@ export const ERROR_MESSAGE_KEY_PREFIX = 'ERROR.';
 
 export const DATE_FORMAT = 'dd.MM.yyyy';
 export const CONFIRM_DIALOG_WIDTH: string = '450px';
-
 export const DRAWER_ROUTES = ['objective', 'keyresult'];
 export const BLACKLIST_TOASTER_ROUTES_ERROR = ['/token'];
-export const WHITELIST_TOASTER_ROUTES_SUCCESS = ['/objectives', '/keyresults', '/checkins'];
-export const WHITELIST_TOASTER_HTTP_METHODS_SUCCESS = ['PUT', 'POST', 'DELETE'];
 export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',

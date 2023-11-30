@@ -39,7 +39,7 @@ public class SecurityConfig {
         http.headers().contentSecurityPolicy("default-src 'self';" + "script-src 'self' 'unsafe-inline';"
                 + "        style-src 'self' 'unsafe-inline';" + "        object-src 'none';"
                 + "        base-uri 'self';"
-                + "        connect-src 'self' https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch; https://sso.puzzle.ch;"
+                + "        connect-src 'self' https://idp-mock-okr.ocp-internal.cloudscale.puzzle.ch; https://sso.puzzle.ch; https://sso.puzzle.ch/auth/realms/pitc/.well-known/openid-configuration;"
                 + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self';"
                 + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';").and()
                 .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer

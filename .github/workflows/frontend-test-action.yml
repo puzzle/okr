@@ -22,34 +22,53 @@ jobs:
       - name: Run unit tests
         run: npm test
 
-#  e2e:
-#    runs-on: ubuntu-22.04
-#    strategy:
-#      matrix:
-#        browser: ['chrome', "firefox"]
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#
-#      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
-#        with:
-#          java-version: '17'
-#          distribution: 'adopt'
-#
-#      - uses: abhi1693/setup-browser@v0.3.4
-#        with:
-#          browser: ${{ matrix.browser }}
-#          version: latest
-#
-#      - name: start backend
-#        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
-#
-#      - name: Cypress run e2e tests
-#        uses: cypress-io/github-action@v6
-#        with:
-#          working-directory: frontend
-#          start: npm start
-#          wait-on: 'http://localhost:8080/config, http://localhost:4200'
-#          wait-on-timeout: 120
-#          browser: ${{ matrix.browser }}
+  e2e:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - uses: abhi1693/setup-browser@v0.3.4
+        with:
+          browser: chrome
+          version: latest
+
+      - name: run keycloak docker
+        run: |
+              docker run -d \
+              --name my_keycloak \
+              -e KEYCLOAK_ADMIN=admin \
+              -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
+              -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
+              -p 8544:8080 \
+              quay.io/keycloak/keycloak:22.0.0 \
+              start-dev --import-realm
+
+      - name: wait for keycloak
+        run: |
+          until nc -z localhost 8544; do
+            echo "Waiting for Keycloak to start..."
+            sleep 5
+          done
+
+      - name: start backend
+        run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
+
+      - name: Cypress run e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: frontend
+          start: npm start
+          wait-on: 'http://localhost:8080/config, http://localhost:4200'
+          wait-on-timeout: 120
+          browser: chrome
+          headed: true
+
+      - name: remove docker containers
+        run: docker rm -rf

@@ -33,6 +33,26 @@ All users
     "password": "bl",
     "name": "Esha Harris"
   },
+  "bl-mob": {
+    "username": "bl-mob",
+    "password": "bl",
+    "name": "BL Mobility"
+  },
+  "bl-mid": {
+    "username": "bl-mid",
+    "password": "bl",
+    "name": "BL Mid"
+  },
+  "bl-sys": {
+    "username": "bl-sys",
+    "password": "bl",
+    "name": "BL Sys"
+  },
+  "bl-ruby": {
+    "username": "bl-ruby",
+    "password": "bl",
+    "name": "BL Ruby"
+  },
   "bbt": {
     "username": "bbt",
     "password": "bbt",

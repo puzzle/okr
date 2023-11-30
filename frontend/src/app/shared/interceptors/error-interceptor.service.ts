@@ -10,6 +10,7 @@ import {
   MessageKey,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
+  TOASTER_TYPE,
 } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -65,23 +66,21 @@ export class ErrorInterceptor implements HttpInterceptor {
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
-  getSuccessMessageKey(url: string, method: string, statusCode: number): ToasterMessage | undefined {
+  getSuccessMessageKey(url: string, method: string, statusCode: number) {
     for (const key in SUCCESS_MESSAGE_MAP) {
       const value = SUCCESS_MESSAGE_MAP[key];
-      if (!url.includes(key)) {
-        continue;
-      }
+      if (!url.includes(key)) continue;
 
       for (const toasterMessage of value.methods) {
         if (toasterMessage.method == method) {
           for (let codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
               const messageKey = value.KEY + '.' + codeKey.key;
-              return { message: messageKey, toasterType: codeKey.toaster || 'SUCCESS' };
+              return { message: messageKey, toasterType: codeKey.toaster };
             }
           }
           const messageKey = value.KEY + '.' + method;
-          return { message: messageKey, toasterType: 'SUCCESS' };
+          return { message: messageKey, toasterType: 'SUCCESS' as TOASTER_TYPE };
         }
       }
     }

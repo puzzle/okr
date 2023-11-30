@@ -20,7 +20,7 @@ export class ToasterService {
     this.toastr.warning(msg, 'Warnung!');
   }
 
-  showCustomToaster(msg: string, type: TOASTER_TYPE) {
+  showCustomToaster(msg: string, type?: TOASTER_TYPE) {
     switch (type) {
       case 'SUCCESS':
         this.showSuccess(msg);

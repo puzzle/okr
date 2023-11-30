@@ -67,12 +67,4 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
     KEY: 'CHECK_IN',
     methods: [{ method: 'POST' }, { method: 'PUT' }, { method: 'DELETE' }],
   },
-  action: {
-    KEY: 'ACTION',
-    methods: [{ method: 'PUT' }, { method: 'DELETE' }],
-  },
-  completed: {
-    KEY: 'COMPLETED',
-    methods: [{ method: 'POST' }, { method: 'DELETE' }],
-  },
 };

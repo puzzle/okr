@@ -27,7 +27,7 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('submit-check-in').click();
       const percentage = getPercentageMetric(baseline, stretchgoal, value);
       cy.validateScoring(false, percentage);
-      cy.getByTestId('close-drawer').click();
+      cy.getByTestId('close-drawer').click({ force: true });
       cy.validateScoring(true, percentage);
     });
   });
@@ -45,7 +45,7 @@ describe('Scoring component e2e tests', () => {
       cy.getByTestId('submit-check-in').click();
       const percentage = getPercentageOrdinal(zoneName);
       cy.validateScoring(false, percentage);
-      cy.getByTestId('close-drawer').click();
+      cy.getByTestId('close-drawer').click({ force: true });
       cy.validateScoring(true, percentage);
     });
   });

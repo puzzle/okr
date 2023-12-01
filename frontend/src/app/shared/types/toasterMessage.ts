@@ -1,4 +1,4 @@
-import { TOASTER_TYPE } from '../constantLibary';
+import { ToasterType } from '../constantLibary';
 
 export interface ToasterMessage {
   message: string;

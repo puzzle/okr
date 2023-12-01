@@ -6,15 +6,13 @@ import {
   BLACKLIST_TOASTER_ROUTES_ERROR,
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
-  HTTP_TYPE,
-  MessageKey,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
-  TOASTER_TYPE,
 } from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ToasterMessage } from '../types/toasterMessage';
+import { HttpType } from '../types/enums/HttpType';
+import { ToasterType } from '../types/enums/ToasterType';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -72,7 +70,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       if (!url.includes(key)) continue;
 
       for (const toasterMessage of value.methods) {
-        if (toasterMessage.method == method) {
+        const methodEnum = HttpType[method as keyof typeof HttpType];
+        if (toasterMessage.method == methodEnum) {
           for (let codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
               const messageKey = value.KEY + '.' + codeKey.key;
@@ -80,7 +79,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             }
           }
           const messageKey = value.KEY + '.' + method;
-          return { message: messageKey, toasterType: 'SUCCESS' as TOASTER_TYPE };
+          return { message: messageKey, toasterType: ToasterType.SUCCESS };
         }
       }
     }

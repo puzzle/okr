@@ -41,7 +41,6 @@ describe('Tab workflow tests', () => {
   function editInputFields(message: string) {
     cy.focused().type('{selectall}{backspace}');
     cy.focused().type(message);
-    cy.tabForward();
   }
 
   function fillInNewKeyResult() {
@@ -178,7 +177,9 @@ describe('Tab workflow tests', () => {
       cy.wait(500);
       cy.tabForward();
       editInputFields('Edited by Cypress');
+      cy.tabForward();
       editInputFields('Edited by Cypress too');
+      cy.tabForward();
       cy.tabForward();
       cy.realPress('Enter');
       cy.contains('Edited by Cypress');
@@ -189,15 +190,18 @@ describe('Tab workflow tests', () => {
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
       cy.realPress('Enter');
-      cy.contains('Objective duplizieren');
+      cy.wait(500);
+      cy.contains('duplizieren');
+      cy.tabForward();
       editInputFields('Duplicated by Cypress');
+      cy.tabForward();
       cy.tabForward();
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
-      cy.tabForward();
+      cy.wait(500);
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();

@@ -218,8 +218,8 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Objective abschliessen');
       cy.realPress('Enter');
       cy.contains('Objective abschliessen');
-      cy.contains('Objective erfolgreich');
-      cy.contains('Objective nicht erfolgreich');
+      cy.contains('Objective erreicht');
+      cy.contains('Objective nicht erreicht');
       cy.tabForward();
       cy.tabForward();
       cy.realPress('Enter');

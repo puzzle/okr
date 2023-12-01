@@ -42,10 +42,6 @@ export class ActionPlanComponent implements AfterViewInit {
     } else if ((event as KeyboardEvent).key === 'ArrowUp') {
       newIndex -= 1;
     }
-    this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
-  }
-
-  changePositionOfItemAndAdjustPriorities(newIndex: number, currentIndex: number) {
     this.changeItemPosition(newIndex, currentIndex);
     this.adjustPriorities();
   }

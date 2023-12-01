@@ -106,7 +106,7 @@ describe('ErrorInterceptor', () => {
     };
 
     interceptor.handleSuccessToaster(requestMock, method);
-    expect(interceptor.getSuccessMessageKey).toBeCalledWith(url, method, code);
+    expect(interceptor.getSuccessMessageKey).toBeCalledWith(url, code, method);
 
     expect(translator.instant).toBeCalledTimes(0);
     expect(toaster.showCustomToaster).toBeCalledTimes(0);

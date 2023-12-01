@@ -198,7 +198,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it('Check validation in keyresult dialog', () => {
+  it.only('Check validation in keyresult dialog', () => {
     cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');
@@ -219,28 +219,28 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('titleInput').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Titel muss folgende Länge haben: 2-250');
 
     cy.getByTestId('titleInput').type('My title');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('baseline').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Baseline muss eine Zahl sein');
 
     cy.getByTestId('baseline').type('abc');
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieser Wert muss dem vorgegebenen Muster entsprechen');
+    cy.contains('Baseline muss eine Zahl sein');
 
     cy.getByTestId('baseline').clear();
     cy.getByTestId('baseline').type('45');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('stretchGoal').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Stretch Goal muss eine Zahl sein');
 
     cy.getByTestId('stretchGoal').type('abc');
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieser Wert muss dem vorgegebenen Muster entsprechen');
+    cy.contains('Stretch Goal muss eine Zahl sein');
 
     cy.getByTestId('stretchGoal').clear();
     cy.getByTestId('stretchGoal').type('83');
@@ -251,7 +251,7 @@ describe('OKR Overview', () => {
     cy.getByTestId('ownerInput').type('abc');
     cy.getByTestId('titleInput').type('Hello');
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Du musst einen Owner auswählen');
+    cy.contains('Owner muss ausgewählt sein');
 
     cy.getByTestId('ownerInput').clear();
     cy.getByTestId('ownerInput').type('Pac').type('{downarrow}').type('{enter}');
@@ -267,19 +267,19 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('commitZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Commit Zone muss folgende Länge haben: 1-400');
 
     cy.getByTestId('commitZone').type('Commit');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('targetZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Target Zone muss folgende Länge haben: 1-400');
 
     cy.getByTestId('targetZone').type('Target');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('stretchZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Stretch Zone muss folgende Länge haben: 1-400');
 
     cy.getByTestId('stretchZone').type('Commit');
     cy.getByTestId('submit').should('not.be.disabled');

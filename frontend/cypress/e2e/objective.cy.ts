@@ -35,8 +35,9 @@ describe('OKR Objective e2e tests', () => {
 
       it(`Create objective, should display error message`, () => {
         cy.getByTestId('add-objective').first().click();
+        cy.getByTestId('title').first().clear();
         cy.getByTestId('description').first().clear().type('description');
-        cy.contains('Dieses Feld muss ausgefüllt sein');
+        cy.contains('Titel muss folgende Länge haben: 2-250');
         cy.getByTestId('safe').should('be.disabled');
         cy.getByTestId('safe-draft').should('be.disabled');
         cy.getByTestId('cancel').should('not.be.disabled');
@@ -122,8 +123,8 @@ describe('OKR Objective e2e tests', () => {
         cy.get('.mat-mdc-menu-content').contains('Objective abschliessen').click();
 
         cy.contains('Bewertung');
-        cy.contains('Objective erfolgreich');
-        cy.contains('Objective nicht erfolgreich');
+        cy.contains('Objective erreicht');
+        cy.contains('Objective nicht erreicht');
         cy.contains('Kommentar (optional)');
         cy.contains('Objective abschliessen');
         cy.contains('Abbrechen');
@@ -150,8 +151,8 @@ describe('OKR Objective e2e tests', () => {
         cy.get('.mat-mdc-menu-content').contains('Objective abschliessen').click();
 
         cy.contains('Bewertung');
-        cy.contains('Objective erfolgreich');
-        cy.contains('Objective nicht erfolgreich');
+        cy.contains('Objective erreicht');
+        cy.contains('Objective nicht erreicht');
         cy.contains('Kommentar (optional)');
         cy.contains('Objective abschliessen');
         cy.contains('Abbrechen');

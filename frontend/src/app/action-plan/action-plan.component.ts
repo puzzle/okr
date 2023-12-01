@@ -39,9 +39,26 @@ export class ActionPlanComponent implements AfterViewInit {
     }
   }
 
+  handleKeyDown(event: Event, currentIndex: number) {
+    const keyEvent = event as KeyboardEvent;
+    let newIndex = currentIndex;
+    if (keyEvent.key === 'ArrowDown') {
+      newIndex += 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
+    } else if (keyEvent.key === 'ArrowUp') {
+      newIndex -= 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
+    }
+  }
+
   changePositionOfItemAndAdjustPriorities(newIndex: number, currentIndex: number) {
     this.changeItemPosition(newIndex, currentIndex);
     this.adjustPriorities();
+  }
+
+  changeItemPosition(newIndex: number, currentIndex: number) {
+    moveItemInArray(this.control.getValue()!, currentIndex, newIndex);
+    this.activeItem = newIndex;
   }
 
   increaseActiveItemWithTab() {
@@ -54,11 +71,6 @@ export class ActionPlanComponent implements AfterViewInit {
     if (this.activeItem > 0) {
       this.activeItem--;
     }
-  }
-
-  changeItemPosition(newIndex: number, currentIndex: number) {
-    moveItemInArray(this.control.getValue()!, currentIndex, newIndex);
-    this.activeItem = newIndex;
   }
 
   drop(event: CdkDragDrop<Action[] | null>) {
@@ -84,35 +96,12 @@ export class ActionPlanComponent implements AfterViewInit {
     this.control.next(actions);
   }
 
-  preventAddingNewItems(event: Event) {
-    event.preventDefault();
-  }
-
-  handleKeyDown(event: Event, currentIndex: number) {
-    const keyEvent = event as KeyboardEvent;
-    let newIndex = currentIndex;
-    if (keyEvent.key === 'ArrowDown') {
-      newIndex += 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
-    } else if (keyEvent.key === 'ArrowUp') {
-      newIndex -= 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
-    }
-  }
-
   adjustPriorities() {
     const actions = this.control.getValue()!;
     actions.forEach(function (action, index) {
       action.priority = index;
     });
     this.control.next(actions);
-  }
-
-  addNewAction() {
-    const actions = this.control.getValue()!;
-    actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
-    this.control.next(actions);
-    this.activeItem = actions.length - 1;
   }
 
   removeAction(index: number) {
@@ -159,5 +148,16 @@ export class ActionPlanComponent implements AfterViewInit {
       this.control.next(actions);
       this.adjustPriorities();
     }
+  }
+
+  addNewAction() {
+    const actions = this.control.getValue()!;
+    actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
+    this.control.next(actions);
+    this.activeItem = actions.length - 1;
+  }
+
+  preventAddingNewItems(event: Event) {
+    event.preventDefault();
   }
 }

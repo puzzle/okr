@@ -7,7 +7,8 @@ describe('Tab workflow tests', () => {
     cy.visit('/?quarter=2');
   });
   function openThreeDotMenu() {
-    cy.getByTestId('three-dot-menu').first().focus();
+    cy.get('.objective').first().focus();
+    cy.tabForwardUntil('[data-testId="three-dot-menu"]');
     cy.focused().realPress('Enter');
   }
 
@@ -241,6 +242,9 @@ describe('Tab workflow tests', () => {
 
     it('Create new objective with tab', () => {
       openCreateObjective();
+      cy.wait(500);
+      cy.contains('erfassen');
+      cy.tabForward();
       cy.focused().type('Objective by Cypress');
       cy.tabForward();
       cy.focused().type('Description of Objective...');

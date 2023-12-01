@@ -110,13 +110,6 @@ jobs:
     needs: [build-docker-image,update-version]
     steps:
       - uses: actions/checkout@v3
-        with:
-          token: ${{secrets.VERSION_TOKEN}}
-
-      - uses: abhi1693/setup-browser@v0.3.4
-        with:
-          browser: chrome
-          version: latest
 
       - name: Download artifact
         uses: actions/download-artifact@v3
@@ -153,6 +146,11 @@ jobs:
           -p 8544:8080 \
           quay.io/keycloak/keycloak:22.0.0 \
           start-dev --import-realm &
+
+      - uses: abhi1693/setup-browser@v0.3.4
+        with:
+          browser: chrome
+          version: latest
 
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6

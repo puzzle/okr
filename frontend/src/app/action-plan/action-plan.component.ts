@@ -38,9 +38,13 @@ export class ActionPlanComponent implements AfterViewInit {
   handleKeyDown(event: Event, currentIndex: number) {
     let newIndex = currentIndex;
     if ((event as KeyboardEvent).key === 'ArrowDown') {
-      newIndex += 1;
+      if (newIndex + 1 <= this.control.getValue()!.length - 1) {
+        newIndex += 1;
+      }
     } else if ((event as KeyboardEvent).key === 'ArrowUp') {
-      newIndex -= 1;
+      if (newIndex - 1 >= 0) {
+        newIndex -= 1;
+      }
     }
     this.changeItemPosition(newIndex, currentIndex);
     this.adjustPriorities();

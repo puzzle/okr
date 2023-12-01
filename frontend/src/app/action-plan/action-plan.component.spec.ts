@@ -5,7 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { ActionService } from '../shared/services/action.service';
-import { action1, action2, action3, addedAction, keyResult } from '../shared/testData';
+import { action1, action2, action3, addedAction } from '../shared/testData';
 import { BehaviorSubject, of } from 'rxjs';
 import { Action } from '../shared/types/model/Action';
 
@@ -67,6 +67,15 @@ describe('ActionPlanComponent', () => {
     expect(actionServiceMock.deleteAction).not.toHaveBeenCalled();
   });
 
+  it('should decrease index of active item when index is the same as the one of the removed item', () => {
+    jest.spyOn(component.dialog, 'open');
+    component.control = new BehaviorSubject<Action[] | null>([action2, action3, action1]);
+    component.activeItem = 2;
+
+    component.removeAction(2);
+    expect(component.activeItem).toBe(1);
+  });
+
   it('should add new action with empty text into array', () => {
     component.control = new BehaviorSubject<Action[] | null>([]);
     component.keyResultId = addedAction.keyResultId;
@@ -85,5 +94,44 @@ describe('ActionPlanComponent', () => {
 
     expect(component.control.getValue()![0].action).toBe(testString1);
     expect(component.control.getValue()![1].action).toBe(testString2);
+  });
+
+  it('should decrease index of active item', async () => {
+    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
+    component.control.next([action1, action2, action3]);
+    component.handleKeyDown(keyEvent, 2);
+
+    expect((component.activeItem = 1));
+    expect(component.control.getValue()!.toString()).toBe([action1, action3, action2].toString());
+    expect(component.control.getValue()![0].priority == 0);
+    expect(component.control.getValue()![1].priority == 1);
+    expect(component.control.getValue()![2].priority == 2);
+  });
+
+  it('should increase index of active item', async () => {
+    const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
+    component.control.next([action1, action2, action3, action1]);
+    component.handleKeyDown(keyEvent, 2);
+
+    expect((component.activeItem = 3));
+    expect(component.control.getValue()!.toString()).toBe([action1, action3, action1, action3].toString());
+    expect(component.control.getValue()![0].priority == 0);
+    expect(component.control.getValue()![1].priority == 1);
+    expect(component.control.getValue()![2].priority == 2);
+    expect(component.control.getValue()![3].priority == 3);
+  });
+
+  it('should increase active item index', async () => {
+    component.activeItem = 0;
+    component.control.next([action1, action2, action3]);
+    component.increaseActiveItemWithTab();
+    expect(component.activeItem).toBe(1);
+  });
+
+  it('should decrease active item index', async () => {
+    component.activeItem = 2;
+    component.control.next([action1, action2, action3]);
+    component.decreaseActiveItemWithShiftTab();
+    expect(component.activeItem).toBe(1);
   });
 });

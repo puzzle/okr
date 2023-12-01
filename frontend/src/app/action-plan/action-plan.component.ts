@@ -96,7 +96,7 @@ export class ActionPlanComponent implements AfterViewInit {
 
   removeAction(index: number) {
     let actions = this.control.getValue()!;
-    if (this.activeItem > 0) {
+    if (this.activeItem == index && this.activeItem > 0) {
       this.activeItem--;
     }
     if (actions[index].action !== '' || actions[index].id) {

@@ -96,7 +96,7 @@ describe('ActionPlanComponent', () => {
     expect(component.control.getValue()![1].action).toBe(testString2);
   });
 
-  it('should decrease index of active item', async () => {
+  it('should decrease index of active item', () => {
     const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowUp' });
     component.control.next([action1, action2, action3]);
     component.handleKeyDown(keyEvent, 2);
@@ -108,7 +108,7 @@ describe('ActionPlanComponent', () => {
     expect(component.control.getValue()![2].priority == 2);
   });
 
-  it('should increase index of active item', async () => {
+  it('should increase index of active item', () => {
     const keyEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
     component.control.next([action1, action2, action3, action1]);
     component.handleKeyDown(keyEvent, 2);
@@ -121,14 +121,14 @@ describe('ActionPlanComponent', () => {
     expect(component.control.getValue()![3].priority == 3);
   });
 
-  it('should increase active item index', async () => {
+  it('should increase active item index', () => {
     component.activeItem = 0;
     component.control.next([action1, action2, action3]);
     component.increaseActiveItemWithTab();
     expect(component.activeItem).toBe(1);
   });
 
-  it('should decrease active item index', async () => {
+  it('should decrease active item index', () => {
     component.activeItem = 2;
     component.control.next([action1, action2, action3]);
     component.decreaseActiveItemWithShiftTab();

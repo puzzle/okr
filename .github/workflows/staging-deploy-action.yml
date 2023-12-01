@@ -14,6 +14,8 @@ jobs:
       okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-STAGING
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{secrets.VERSION_TOKEN}}
 
       - name: Generate and Set New Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DgenerateBackupPoms=false

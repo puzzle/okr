@@ -155,7 +155,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [e2e-docker, update-version]
+    needs: [build-docker-image, update-version]
     steps:
       - uses: actions/checkout@v3
 
@@ -180,13 +180,6 @@ jobs:
 
       - name: Push
         run: docker push ${{ needs.update-version.outputs.okr-docker-image}}
-
-      - name: Build and push the docker image
-        uses: docker/build-push-action@v3
-        if: failure()
-        with:
-          push: true
-          tags: ${{ needs.update-version.outputs.okr-docker-image}}
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3

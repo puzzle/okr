@@ -29,14 +29,10 @@ export class ActionPlanComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.listSubscription = this.listItems.changes.subscribe((_) => {
-      this.setFocus();
+      if (this.listItems.length > 0) {
+        this.listItems.toArray()[this.activeItem].nativeElement.focus();
+      }
     });
-  }
-
-  setFocus() {
-    if (this.listItems.length > 0) {
-      this.listItems.toArray()[this.activeItem].nativeElement.focus();
-    }
   }
 
   handleKeyDown(event: Event, currentIndex: number) {

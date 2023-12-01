@@ -21,6 +21,7 @@ export class ActionPlanComponent implements AfterViewInit {
 
   @ViewChildren('listItem')
   listItems!: QueryList<ElementRef>;
+
   constructor(
     private actionService: ActionService,
     public dialog: MatDialog,
@@ -35,17 +36,6 @@ export class ActionPlanComponent implements AfterViewInit {
   setFocus() {
     if (this.listItems.length > 0) {
       this.listItems.toArray()[this.activeItem].nativeElement.focus();
-    }
-  }
-
-  handleKeyDown(event: KeyboardEvent, currentIndex: number) {
-    let newIndex = currentIndex;
-    if (event.key === 'ArrowDown') {
-      newIndex += 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
-    } else if (event.key === 'ArrowUp') {
-      newIndex -= 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
     }
   }
 
@@ -94,14 +84,39 @@ export class ActionPlanComponent implements AfterViewInit {
     this.control.next(actions);
   }
 
+  preventAddingNewItems(event: Event) {
+    event.preventDefault();
+  }
+
+  handleKeyDown(event: Event, currentIndex: number) {
+    const keyEvent = event as KeyboardEvent;
+    let newIndex = currentIndex;
+    if (keyEvent.key === 'ArrowDown') {
+      newIndex += 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
+    } else if (keyEvent.key === 'ArrowUp') {
+      newIndex -= 1;
+      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
+    }
+  }
+
+  adjustPriorities() {
+    const actions = this.control.getValue()!;
+    actions.forEach(function (action, index) {
+      action.priority = index;
+    });
+    this.control.next(actions);
+  }
+
   addNewAction() {
     const actions = this.control.getValue()!;
     actions.push({ action: '', priority: actions.length, keyResultId: this.keyResultId } as Action);
     this.control.next(actions);
+    this.activeItem = actions.length - 1;
   }
 
   removeAction(index: number) {
-    const actions = this.control.getValue()!;
+    let actions = this.control.getValue()!;
     if (this.activeItem > 0) {
       this.activeItem--;
     }
@@ -144,13 +159,5 @@ export class ActionPlanComponent implements AfterViewInit {
       this.control.next(actions);
       this.adjustPriorities();
     }
-  }
-
-  adjustPriorities() {
-    const actions = this.control.getValue()!;
-    actions.forEach(function (action, index) {
-      action.priority = index;
-    });
-    this.control.next(actions);
   }
 }

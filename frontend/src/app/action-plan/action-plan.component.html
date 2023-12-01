@@ -1,9 +1,10 @@
 <div class="d-flex flex-column gap-2 col-12">
   <label for="actionlist" class="text-black">Action Plan (optional)</label>
   <div
-    *ngIf="control?.getValue()"
     cdkDropList
+    *ngIf="control?.getValue()"
     [cdkDropListData]="control | async"
+    (keydown.enter)="preventAddingNewItems($event)"
     class="d-flex flex-column gap-2"
     (cdkDropListDropped)="drop($event)"
     id="actionlist"
@@ -18,16 +19,20 @@
         />
       </div>
       <input
-        (keydown.tab)="increaseActiveItemWithTab()"
-        (keydown.shift.tab)="decreaseActiveItemWithShiftTab()"
         #listItem
-        (keydown)="handleKeyDown($event, i)"
+        (keydown.arrowDown)="handleKeyDown($event, i)"
+        (keydown.arrowUp)="handleKeyDown($event, i)"
+        (focusin)="activeItem = i"
         class="action-input"
         [value]="action.action"
-        (change)="changeActionText($event, i)"
+        (input)="changeActionText($event, i)"
         [attr.data-testId]="'actionInput'"
       />
       <img
+        tabindex="0"
+        (keydown.tab)="increaseActiveItemWithTab()"
+        (keydown.shift.tab)="decreaseActiveItemWithShiftTab()"
+        (keydown.enter)="removeAction(i)"
         class="icons bin-icon cursor-pointer"
         src="../assets/icons/delete-icon.svg"
         alt="Delete bin"

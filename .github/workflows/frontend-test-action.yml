@@ -50,13 +50,6 @@ jobs:
               quay.io/keycloak/keycloak:22.0.0 \
               start-dev --import-realm
 
-      - name: wait for keycloak
-        run: |
-          until nc -z localhost 8544; do
-            echo "Waiting for Keycloak to start..."
-            sleep 5
-          done
-
       - name: start backend
         run: cd ./backend && mvn spring-boot:run -Dspring-boot.run.profiles=integration-test &
 
@@ -65,7 +58,7 @@ jobs:
         with:
           working-directory: frontend
           start: npm start
-          wait-on: 'http://localhost:8080/config, http://localhost:4200'
+          wait-on: 'http://localhost:8080/config, http://localhost:4200, http://localhost:8544'
           wait-on-timeout: 120
           browser: chrome
           headed: true

@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     outputs:
-      version: ${{ steps.store-version.outputs.version}}
+      okr-docker-image:  ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-STAGING
     steps:
       - name: Checkout project
         uses: actions/checkout@v2
@@ -32,7 +32,6 @@ jobs:
       - name: Extract Maven project version
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
         id: store-version
-
 
       - name: Set New Snapshot Version
         run: mvn build-helper:parse-version versions:set -DnewVersion=${{ steps.store-version.outputs.version}}-SNAPSHOT -DgenerateBackupPoms=false
@@ -92,7 +91,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
+          tags: ${{ needs.update-version.outputs.okr-docker-image}}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
@@ -102,6 +101,9 @@ jobs:
         with:
           name: okr-image
           path: /tmp/okr-docker-image.tar
+
+      - name: print imagetags
+        run: echo ${{ needs.update-version.outputs.okr-docker-image}}
 
   e2e-docker:
     runs-on: ubuntu-22.04
@@ -140,7 +142,7 @@ jobs:
           -e SPRING_DATASOURCE_USERNAME=user \
           -e SPRING_DATASOURCE_PASSWORD=sa \
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING &
+          ${{ needs.update-version.outputs.okr-docker-image}} &
 
       - name: run keycloak docker
         run: |
@@ -192,14 +194,14 @@ jobs:
 
 
       - name: Push
-        run: docker push ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
+        run: docker push ${{ needs.update-version.outputs.okr-docker-image}}
 
       - name: Build and push the docker image
         uses: docker/build-push-action@v3
         if: failure()
         with:
           push: true
-          tags: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
+          tags: ${{ needs.update-version.outputs.okr-docker-image}}
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v3
@@ -214,7 +216,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING
+          NEWVALUE: ${{ needs.update-version.outputs.okr-docker-image}}
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

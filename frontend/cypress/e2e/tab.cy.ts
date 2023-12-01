@@ -263,6 +263,8 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="delete"]');
       cy.focused().contains('Objective Löschen');
       cy.realPress('Enter');
+      cy.wait(500);
+      cy.tabForward();
       cy.contains('Objective löschen');
       cy.focused().contains('Ja');
       cy.realPress('Enter');

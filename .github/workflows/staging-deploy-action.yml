@@ -93,6 +93,8 @@ jobs:
         run: echo ${{ needs.update-version.outputs.okr-docker-image}}
 
   e2e-docker:
+    # remove line below if e2e are working again
+    if: false
     runs-on: ubuntu-22.04
     needs: [build-docker-image,update-version]
     steps:
@@ -153,7 +155,6 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-#    as soon as e2e gets activated again job also needs e2e-docker
     needs: [e2e-docker, update-version]
     steps:
       - uses: actions/checkout@v3

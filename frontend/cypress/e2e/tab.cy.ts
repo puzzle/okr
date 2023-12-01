@@ -170,7 +170,7 @@ describe('Tab workflow tests', () => {
       closeDialogWithCross();
     });
 
-    it.only('Edit objective with tab', () => {
+    it('Edit objective with tab', () => {
       openThreeDotMenu();
       cy.focused().contains('Objective bearbeiten');
       cy.realPress('Enter');

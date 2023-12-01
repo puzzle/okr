@@ -3,7 +3,6 @@ import { getPercentageMetric, getPercentageOrdinal } from 'cypress/support/scori
 import { onlyOn } from '@cypress/skip-test';
 
 describe('Scoring component e2e tests', () => {
-  Cypress.config('numTestsKeptInMemory', 3);
   beforeEach(() => {
     cy.loginAsUser(users.gl);
     onlyOn('chrome');

@@ -51,7 +51,7 @@
     "TEAM": {
       "POST": "Das Team wurde erfolgreich erstellt",
       "PUT": "Das Team wurde erfolgreich aktualisiert",
-      "DELETED": "Das Team wurde erfolgreich gelöscht"
+      "DELETE": "Das Team wurde erfolgreich gelöscht"
     },
     "OBJECTIVE": {
       "POST": "Das Objective wurde erfolgreich erstellt",
@@ -63,16 +63,11 @@
       "POST": "Das Key Result wurde erfolgreich erstellt",
       "PUT": "Das Key Result wurde erfolgreich aktualisiert",
       "DELETE": "Das Key Result wurde erfolgreich gelöscht",
-      "IM_USED": "Das Key Result kann nicht in ein anderes Quartal verlegt werden"
+      "IM_USED": "Der Key Result Typ kann nicht geändert werden wenn bereits check-ins existieren"
     },
     "CHECK_IN": {
       "POST": "Das Check-in wurde erfolgreich erstellt",
-      "PUT": "Das Check-in wurde erfolgreich aktualisiert",
-      "DELETE": "Das Check-in wurde erfolgreich gelöscht"
-    },
-    "COMPLETED": {
-      "POST": "Das Objective wurde erfolgreich abgeschlossen",
-      "DELETE": "Das Objective ist nicht länger abgeschlossen"
+      "PUT": "Das Check-in wurde erfolgreich aktualisiert"
     }
   }
 }

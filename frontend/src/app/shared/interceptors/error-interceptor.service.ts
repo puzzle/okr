@@ -31,7 +31,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
       }),
       catchError((response) => {
-        this.handleErrorToaster(response);
+        if (this.shouldErrorToasterBeShown(response)) {
+          this.handleErrorToaster(response);
+        }
         this.handleDrawerError(request);
         return throwError(() => new Error(response));
       }),
@@ -39,10 +41,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleErrorToaster(response: any) {
-    if (BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route))) {
-      return;
-    }
-
     const errors = response.error.errors.map((error: any) =>
       this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey).format(error.params),
     );
@@ -50,7 +48,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     errors.forEach((error: string) => this.toasterService.showError(error));
   }
 
-  handleDrawerError(request: HttpRequest<unknown>) {
+  handleDrawerError(request: any) {
     if (DRAWER_ROUTES.some((route) => request.url.includes(route))) {
       this.router.navigate(['']);
     }
@@ -89,5 +87,9 @@ export class ErrorInterceptor implements HttpInterceptor {
   checkIfSuccessToasterIsShown(response: any): boolean {
     const requestURL = new URL(response.url);
     return window.location.host == requestURL.host && requestURL.pathname.startsWith('/api');
+  }
+
+  shouldErrorToasterBeShown(response: any) {
+    return BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route));
   }
 }

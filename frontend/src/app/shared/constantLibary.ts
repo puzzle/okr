@@ -62,7 +62,7 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
       },
     ],
   },
-  checkins: {
+  checkIns: {
     KEY: 'CHECK_IN',
     methods: [{ method: HttpType.POST }, { method: HttpType.PUT }, { method: HttpType.DELETE }],
   },

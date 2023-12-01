@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { catchError, filter, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   BLACKLIST_TOASTER_ROUTES_ERROR,
@@ -26,13 +26,13 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
       tap((response) => {
-        if (this.checkIfSuccessToasterIsShown(response)) {
+        if (this.checkForToaster(response)) {
           const method = HttpType[request.method as keyof typeof HttpType];
           this.handleSuccessToaster(response, method);
         }
       }),
       catchError((response) => {
-        if (this.shouldErrorToasterBeShown(response)) {
+        if (this.checkForToaster(response)) {
           this.handleErrorToaster(response);
         }
         this.handleDrawerError(request);
@@ -84,12 +84,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     return undefined;
   }
 
-  checkIfSuccessToasterIsShown(response: any): boolean {
+  checkForToaster(response: any): boolean {
     const requestURL = new URL(response.url);
     return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith('/api');
-  }
-
-  shouldErrorToasterBeShown(response: any) {
-    return !BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route));
   }
 }

@@ -149,7 +149,7 @@ describe('ErrorInterceptor', () => {
       const requestMock = { url: requestURL };
       window.location.assign(currentURL);
 
-      const b = interceptor.checkIfSuccessToasterIsShown(requestMock);
+      const b = interceptor.checkForToaster(requestMock);
       expect(b).toBe(result);
     },
   );

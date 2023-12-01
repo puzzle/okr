@@ -1,5 +1,6 @@
 import { HttpType } from './types/enums/HttpType';
 import { ToasterType } from './types/enums/ToasterType';
+import { HttpStatusCode } from '@angular/common/http';
 
 interface MessageKeyMap {
   [key: string]: {
@@ -38,7 +39,7 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
           {
             key: 'IM_USED',
             toaster: ToasterType.WARN,
-            code: 226,
+            code: HttpStatusCode.ImUsed,
           },
         ],
       },
@@ -55,7 +56,7 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
           {
             key: 'IM_USED',
             toaster: ToasterType.WARN,
-            code: 226,
+            code: HttpStatusCode.ImUsed,
           },
         ],
       },

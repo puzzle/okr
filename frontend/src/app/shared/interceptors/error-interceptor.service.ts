@@ -90,6 +90,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   shouldErrorToasterBeShown(response: any) {
-    return BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route));
+    return !BLACKLIST_TOASTER_ROUTES_ERROR.some((route) => response.url.includes(route));
   }
 }

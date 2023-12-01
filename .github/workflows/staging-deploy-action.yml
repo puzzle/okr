@@ -125,24 +125,6 @@ jobs:
       - name: Load image
         run: docker load --input /tmp/okr-docker-image.tar
 
-      - name: run keycloak docker
-        run: |
-          docker run -d \
-          --name my_keycloak \
-          -e KEYCLOAK_ADMIN=admin \
-          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
-          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
-          -p 8544:8080 \
-          quay.io/keycloak/keycloak:22.0.0 \
-          start-dev --import-realm
-
-      - name: wait for keycloak
-        run: |
-          until nc -z localhost 8544; do
-            echo "Waiting for Keycloak to start..."
-            sleep 5
-          done
-
       - name: Run docker image
         run: |
           docker run --network=host\
@@ -157,12 +139,22 @@ jobs:
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
           ${{ vars.NEW_VALUE_URL }}:${{ needs.update-version.outputs.version}}-STAGING &
 
+      - name: run keycloak docker
+        run: |
+          docker run --network=host\
+          -e KEYCLOAK_ADMIN=admin \
+          -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
+          -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
+          -p 8544:8080 \
+          quay.io/keycloak/keycloak:22.0.0 \
+          start-dev --import-realm &
+
       - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
           build: npm i -D cypress
           install: false
-          wait-on: 'http://localhost:8080/config'
+          wait-on: 'http://localhost:8080/config', "http://localhost:8544"
           wait-on-timeout: 120
           browser: chrome
           headed: true

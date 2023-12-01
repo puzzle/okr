@@ -19,7 +19,7 @@ describe('Scoring component e2e tests', () => {
       cy.createMetricKeyresult('Metric scoring keyresult', String(baseline), String(stretchgoal));
       cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
       cy.getByTestId('add-check-in').click();
-      cy.getByTestId('key-result-metric-value').clear().type(String(value));
+      cy.getByTestId('check-in-metric-value').clear().type(String(value));
       cy.getByTestId('confidence-slider').click();
       cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
       cy.getByTestId('changeInfo').click().type('Testveränderungen');

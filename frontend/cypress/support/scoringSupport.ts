@@ -54,26 +54,19 @@ function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean
   cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
   if (rgbCode == 'rgba(0, 0, 0, 0)') {
     cy.getByTestId('star-scoring').invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('star-scoring')
-      .invoke('css', 'display')
-      .should('equal', 'block');
-
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('normal-scoring')
-      .invoke('css', 'display')
-      .should('equal', 'none');
+    checkVisibilityOfScoringComponent(isOverview, 'block', 'star-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'none', 'normal-scoring');
   } else {
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('star-scoring')
-      .invoke('css', 'display')
-      .should('equal', 'none');
-
-    (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
-      .getByTestId('normal-scoring')
-      .invoke('css', 'display')
-      .should('equal', 'block');
+    checkVisibilityOfScoringComponent(isOverview, 'none', 'star-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'block', 'normal-scoring');
   }
+}
+
+function checkVisibilityOfScoringComponent(isOverview: boolean, displayProperty: string, componentTestId: string) {
+  (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
+    .getByTestId(componentTestId)
+    .invoke('css', 'display')
+    .should('equal', displayProperty);
 }
 
 function colorFromPercentage(percentage: number) {

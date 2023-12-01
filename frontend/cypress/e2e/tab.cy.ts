@@ -310,6 +310,71 @@ describe('Tab workflow tests', () => {
       fillInNewKeyResult();
       cy.contains('KeyResult metric by Cypress');
 
+      //Actionplan
+      it('Create new key result with new actionplan', () => {
+        openCreateKeyResult();
+        cy.tabForward();
+        cy.focused().type('KeyResult');
+        cy.tabForward();
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('ArrowDown'); // -> Entspricht "CHF"
+        cy.tabForward();
+        cy.focused().type('0');
+        cy.tabForward();
+        cy.focused().type('10');
+        cy.tabForward();
+        cy.tabForward();
+        cy.tabForward();
+        cy.focused().type('Action 1');
+        cy.tabForward();
+        cy.tabForward();
+        cy.focused().type('Action 2');
+        cy.tabForward();
+        cy.tabForward();
+        cy.focused().type('Action 3');
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+        cy.focused().type('Action 4');
+        cy.tabForward();
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+      });
+
+      it('Edit actionplan of key result and change order of actions', () => {
+        openKeyresultDetail();
+        cy.tabForwardUntil('[data-testId="edit-keyResult"]');
+        cy.focused().contains('Key Result bearbeiten');
+        cy.realPress('Enter');
+        cy.tabForwardUntil('[data-testId="add-action-plan-line"]');
+        cy.realPress('Enter');
+        cy.focused().type('Action 2');
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+        cy.focused().type('Action 1');
+        cy.realPress('ArrowUp');
+        cy.tabForwardUntil('[data-testId="submit"]');
+        cy.realPress('Enter');
+      });
+
+      it('Edit actionplan of key result and delete action', () => {
+        openKeyresultDetail();
+        cy.tabForwardUntil('[data-testId="edit-keyResult"]');
+        cy.focused().contains('Key Result bearbeiten');
+        cy.realPress('Enter');
+        cy.tabForwardUntil('[data-testId="add-action-plan-line"]');
+        cy.tabBackward();
+        cy.realPress('Enter');
+        cy.tabForwardUntil('[data-testId="confirmYes"]');
+        cy.realPress('Enter');
+        cy.tabForward();
+        cy.tabForwardUntil('[data-testId="submit"]');
+        cy.realPress('Enter');
+      });
+
       // Create check-in
       cy.getByTestId('keyresult').contains('KeyResult metric by Cypress').click();
       cy.tabForwardUntil('[data-testId="add-check-in"]');

@@ -36,15 +36,13 @@ export class ActionPlanComponent implements AfterViewInit {
   }
 
   handleKeyDown(event: Event, currentIndex: number) {
-    const keyEvent = event as KeyboardEvent;
     let newIndex = currentIndex;
-    if (keyEvent.key === 'ArrowDown') {
+    if ((event as KeyboardEvent).key === 'ArrowDown') {
       newIndex += 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
-    } else if (keyEvent.key === 'ArrowUp') {
+    } else if ((event as KeyboardEvent).key === 'ArrowUp') {
       newIndex -= 1;
-      this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
     }
+    this.changePositionOfItemAndAdjustPriorities(newIndex, currentIndex);
   }
 
   changePositionOfItemAndAdjustPriorities(newIndex: number, currentIndex: number) {

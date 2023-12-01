@@ -1,6 +1,9 @@
 .search-button {
   border-radius: 0 4px 4px 0;
   mat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transform: scale(1.25);
   }
 }

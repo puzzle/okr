@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
-import { catchError, filter, Observable, tap, throwError } from 'rxjs';
+import { catchError, filter, map, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
   BLACKLIST_TOASTER_ROUTES_ERROR,
@@ -27,7 +27,8 @@ export class ErrorInterceptor implements HttpInterceptor {
       filter((event) => event instanceof HttpResponse),
       tap((response) => {
         if (this.checkIfSuccessToasterIsShown(response)) {
-          this.handleSuccessToaster(response, request.method);
+          const method = HttpType[request.method as keyof typeof HttpType];
+          this.handleSuccessToaster(response, method);
         }
       }),
       catchError((response) => {
@@ -54,30 +55,29 @@ export class ErrorInterceptor implements HttpInterceptor {
     }
   }
 
-  handleSuccessToaster(response: any, method: string) {
-    const successMessageObj = this.getSuccessMessageKey(response.url, method, response.status);
+  handleSuccessToaster(response: any, method: HttpType) {
+    const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
     if (!successMessageObj) return;
 
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.message);
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 
-  getSuccessMessageKey(url: string, method: string, statusCode: number) {
+  getSuccessMessageKey(url: string, statusCode: number, method: HttpType) {
     for (const key in SUCCESS_MESSAGE_MAP) {
       const value = SUCCESS_MESSAGE_MAP[key];
       if (!url.includes(key)) continue;
 
       for (const toasterMessage of value.methods) {
-        const methodEnum = HttpType[method as keyof typeof HttpType];
-        if (toasterMessage.method == methodEnum) {
+        if (toasterMessage.method == method) {
           for (let codeKey of toasterMessage.keysForCode || []) {
             if (codeKey.code == statusCode) {
               const messageKey = value.KEY + '.' + codeKey.key;
-              return { message: messageKey, toasterType: codeKey.toaster };
+              return { key: messageKey, toasterType: codeKey.toaster };
             }
           }
           const messageKey = value.KEY + '.' + method;
-          return { message: messageKey, toasterType: ToasterType.SUCCESS };
+          return { key: messageKey, toasterType: ToasterType.SUCCESS };
         }
       }
     }
@@ -86,7 +86,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   checkIfSuccessToasterIsShown(response: any): boolean {
     const requestURL = new URL(response.url);
-    return window.location.host == requestURL.host && requestURL.pathname.startsWith('/api');
+    return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith('/api');
   }
 
   shouldErrorToasterBeShown(response: any) {

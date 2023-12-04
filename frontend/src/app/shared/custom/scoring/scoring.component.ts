@@ -110,28 +110,30 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   calculatePercentageMetric() {
-    let KeyResultMetric: KeyResultMetricMin = this.castToMetric();
+    if (this.keyResult.lastCheckIn !== null) {
+      let keyResultMetric: KeyResultMetricMin = this.castToMetric();
 
-    let percentage = calculateCurrentPercentage(KeyResultMetric);
-    this.labelPercentage = of(percentage);
-    switch (true) {
-      case percentage >= 100:
-        this.stretched = true;
-        break;
-      case percentage > 70:
-        this.stretched = false;
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = (100 / 30) * (percentage - 70);
-        break;
-      case percentage > 30:
-        this.stretched = false;
-        this.failPercent = 100;
-        this.commitPercent = (100 / 40) * (percentage - 30);
-        break;
-      default:
-        this.stretched = false;
-        this.failPercent = (100 / 30) * percentage;
+      let percentage = calculateCurrentPercentage(keyResultMetric);
+      this.labelPercentage = of(percentage);
+      switch (true) {
+        case percentage >= 100:
+          this.stretched = true;
+          break;
+        case percentage > 70:
+          this.stretched = false;
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = (100 / 30) * (percentage - 70);
+          break;
+        case percentage > 30:
+          this.stretched = false;
+          this.failPercent = 100;
+          this.commitPercent = (100 / 40) * (percentage - 30);
+          break;
+        default:
+          this.stretched = false;
+          this.failPercent = (100 / 30) * percentage;
+      }
     }
   }
 

@@ -57,32 +57,30 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    if (this.keyResult.lastCheckIn) {
-      //Define width of scoring elements
-      this.failElement!.nativeElement.style.width = this.failPercent + '%';
-      this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
-      this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
+    //Define width of scoring elements
+    this.failElement!.nativeElement.style.width = this.failPercent + '%';
+    this.commitElement!.nativeElement.style.width = this.commitPercent + '%';
+    this.targetElement!.nativeElement.style.width = this.targetPercent + '%';
 
-      if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
-        this.labelPercentage.subscribe((value) => {
-          this.valueLabel!.nativeElement.style.width = value + '%';
-          this.changeDetectionRef.detectChanges();
-        });
-      }
-
-      // Set color of scoring component
-      let scoringClass = this.getScoringColorClassAndSetBorder();
-      if (scoringClass !== null) {
-        this.targetElement!.nativeElement.classList.add(scoringClass);
-        this.commitElement!.nativeElement.classList.add(scoringClass);
-        this.failElement!.nativeElement.classList.add(scoringClass);
-      }
-
-      //Fill out icon if target percent has reached 100 percent or more
-      if (this.stretched) {
-        this.iconPath = 'filled';
+    if (this.valueLabel != undefined && this.keyResult.keyResultType == 'metric') {
+      this.labelPercentage.subscribe((value) => {
+        this.valueLabel!.nativeElement.style.width = value + '%';
         this.changeDetectionRef.detectChanges();
-      }
+      });
+    }
+
+    // Set color of scoring component
+    let scoringClass = this.getScoringColorClassAndSetBorder();
+    if (scoringClass !== null) {
+      this.targetElement!.nativeElement.classList.add(scoringClass);
+      this.commitElement!.nativeElement.classList.add(scoringClass);
+      this.failElement!.nativeElement.classList.add(scoringClass);
+    }
+
+    //Fill out icon if target percent has reached 100 percent or more
+    if (this.stretched) {
+      this.iconPath = 'filled';
+      this.changeDetectionRef.detectChanges();
     }
   }
 

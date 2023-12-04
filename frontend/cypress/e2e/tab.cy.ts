@@ -101,6 +101,20 @@ describe('Tab workflow tests', () => {
     cy.realPress('ArrowRight');
   }
 
+  function createNewObjectiveWithTab() {
+    openCreateObjective();
+    cy.wait(500);
+    cy.contains('erfassen');
+    cy.tabForward();
+    cy.focused().type('Objective by Cypress');
+    cy.tabForward();
+    cy.focused().type('Description of Objective...');
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
+    cy.realPress('Enter');
+  }
+
   describe('Tool functionality without data', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
@@ -255,22 +269,15 @@ describe('Tab workflow tests', () => {
     });
 
     it('Create new objective with tab', () => {
-      openCreateObjective();
-      cy.wait(500);
-      cy.contains('erfassen');
-      cy.tabForward();
-      cy.focused().type('Objective by Cypress');
-      cy.tabForward();
-      cy.focused().type('Description of Objective...');
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
-      cy.realPress('Enter');
-      cy.contains('Objective by Cypress');
+      createNewObjectiveWithTab();
     });
 
     it('Delete objective with tab', () => {
-      openThreeDotMenu();
+      createNewObjectiveWithTab();
+      cy.wait(500);
+      cy.get('.objective').last().focus();
+      cy.tabForwardUntil('[data-testId="three-dot-menu"]');
+      cy.focused().realPress('Enter');
       cy.focused().contains('Objective bearbeiten');
       cy.realPress('Enter');
       cy.contains('bearbeiten');

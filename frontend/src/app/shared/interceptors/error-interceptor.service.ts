@@ -2,15 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { drawerRoutes } from '../constantLibary';
+import {
+  DRAWER_ROUTES,
+  ERROR_MESSAGE_KEY_PREFIX,
+  SUCCESS_MESSAGE_KEY_PREFIX,
+  SUCCESS_MESSAGE_MAP,
+} from '../constantLibary';
 import { ToasterService } from '../services/toaster.service';
 import { TranslateService } from '@ngx-translate/core';
+import { HttpType } from '../types/enums/HttpType';
+import { ToasterType } from '../types/enums/ToasterType';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  NO_TOASTER_ROUTES = ['/token'];
-  NO_TOASTER_SUCCESS_ROUTES = ['/action'];
-
   constructor(
     private router: Router,
     private toasterService: ToasterService,
@@ -21,10 +25,15 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       filter((event) => event instanceof HttpResponse),
       tap((response) => {
-        this.handleSuccess(response, request.method);
+        if (this.checkForToaster(response)) {
+          const method = HttpType[request.method as keyof typeof HttpType];
+          this.handleSuccessToaster(response, method);
+        }
       }),
       catchError((response) => {
-        this.handleErrorToaster(response);
+        if (this.checkForToaster(response)) {
+          this.handleErrorToaster(response);
+        }
         this.handleDrawerError(request);
         return throwError(() => new Error(response));
       }),
@@ -32,47 +41,50 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   handleErrorToaster(response: any) {
-    if (this.NO_TOASTER_ROUTES.some((route) => response.url.includes(route))) {
-      return;
-    }
-
     const errors = response.error.errors.map((error: any) =>
-      this.translate.instant('ERRORS.' + error.errorKey).format(error.params),
+      this.translate.instant(ERROR_MESSAGE_KEY_PREFIX + error.errorKey).format(error.params),
     );
 
     errors.forEach((error: string) => this.toasterService.showError(error));
   }
 
-  handleDrawerError(request: HttpRequest<unknown>) {
-    if (drawerRoutes.some((route) => request.url.includes(route))) {
+  handleDrawerError(request: any) {
+    if (DRAWER_ROUTES.some((route) => request.url.includes(route))) {
       this.router.navigate(['']);
     }
   }
 
-  handleSuccess(response: any, method: string) {
-    const NO_TOASTER = this.NO_TOASTER_ROUTES.concat(this.NO_TOASTER_SUCCESS_ROUTES);
-    if (NO_TOASTER.some((route) => response.url.includes(route))) {
-      return;
-    }
+  handleSuccessToaster(response: any, method: HttpType) {
+    const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
+    if (!successMessageObj) return;
 
-    if (response.status == 226) {
-      this.toasterService.showWarn(this.translate.instant('ERRORS.ILLEGAL_CHANGE_OBJECTIVE_QUARTER'));
-      return;
-    }
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
+    this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
+  }
 
-    switch (method) {
-      case 'POST': {
-        this.toasterService.showSuccess('Element wurde erfolgreich erstellt');
-        break;
-      }
-      case 'PUT': {
-        this.toasterService.showSuccess('Element wurde erfolgreich aktualisiert');
-        break;
-      }
-      case 'DELETE': {
-        this.toasterService.showSuccess('Element wurde erfolgreich gelöscht');
-        break;
+  getSuccessMessageKey(url: string, statusCode: number, method: HttpType) {
+    for (const key in SUCCESS_MESSAGE_MAP) {
+      const value = SUCCESS_MESSAGE_MAP[key];
+      if (!url.includes(key)) continue;
+
+      for (const toasterMessage of value.methods) {
+        if (toasterMessage.method == method) {
+          for (let codeKey of toasterMessage.keysForCode || []) {
+            if (codeKey.code == statusCode) {
+              const messageKey = value.KEY + '.' + codeKey.key;
+              return { key: messageKey, toasterType: codeKey.toaster };
+            }
+          }
+          const messageKey = value.KEY + '.' + method;
+          return { key: messageKey, toasterType: ToasterType.SUCCESS };
+        }
       }
     }
+    return undefined;
+  }
+
+  checkForToaster(response: any): boolean {
+    const requestURL = new URL(response.url);
+    return window.location.hostname == requestURL.hostname && requestURL.pathname.startsWith('/api');
   }
 }

@@ -287,6 +287,7 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="edit-keyResult"]');
       cy.focused().contains('Key Result bearbeiten');
       cy.realPress('Enter');
+      cy.tabForward();
       editInputFields('This has been edited by Cypress');
       cy.tabForwardUntil('[data-testId="descriptionInput"]');
       editInputFields('Description of Cypress');

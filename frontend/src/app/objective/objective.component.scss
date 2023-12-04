@@ -1,7 +1,6 @@
 @import "_variables";
 
-.objective {
-  max-width: 750px;
+.objective-shadow {
   &:hover {
     box-shadow:
       0 0 0 0 rgba(0, 0, 0, 0.06),
@@ -13,11 +12,6 @@
   }
 }
 
-.three-dot-menu:hover {
-  border-radius: 1rem;
-  background-color: lightgray;
-}
-
 .three-dot-menu {
   color: $pz-dark-blue;
   display: flex;
@@ -25,22 +19,16 @@
   align-items: start;
   width: 35px;
   height: 32px;
+
+  &:hover {
+    border-radius: 1rem;
+    background-color: lightgray;
+  }
 }
 
 .icon {
   width: 1.25rem;
   height: 1.25rem;
   margin-top: 2px;
-}
-
-@media only screen and (min-width: 450px) {
-  .three-dot-menu {
-    margin-left: 10px;
-  }
-}
-
-@media only screen and (min-width: 1217px) {
-  .three-dot-menu {
-    margin-left: 30px;
-  }
+  margin-left: 4px;
 }

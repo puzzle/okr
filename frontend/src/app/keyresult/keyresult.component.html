@@ -1,8 +1,8 @@
 <div
-  (click)="openDrawer()"
+  (click)="$event.stopPropagation(); openDrawer()"
+  (keydown.enter)="$event.stopPropagation(); openDrawer()"
   [attr.data-testId]="'key-result'"
   class="key-result rounded-2 p-3 w-100"
-  (keydown.enter)="openDrawer()"
   tabindex="0"
 >
   <div class="text-start linebreak mb-2">{{ keyResult.title }}</div>

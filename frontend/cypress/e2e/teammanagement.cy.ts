@@ -29,10 +29,22 @@ describe('Team management tests', () => {
       cy.contains('New Team');
     });
 
-    it('Edit team', () => {
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
-      cy.getByTestId('edit-team-LoremIpsum').click();
-      cy.getByTestId('name').type('Edited');
+    it.only('Edit team', () => {
+      cy.getByTestId('team-management').click();
+      cy.wait(500);
+      cy.getByTestId('name').click().type('bestTeam');
+
+      //Select gl as organisation
+      cy.getByTestId('organisation-select').click().get('mat-option').contains('org_gl').click();
+      cy.realPress('Escape');
+
+      //Save team and check if team appears now on overview
+      cy.getByTestId('save').click();
+      cy.wait(500);
+
+      cy.get('mat-chip:visible:contains("bestTeam")').click();
+      cy.getByTestId('edit-team-bestTeam').click();
+      cy.getByTestId('name').clear().type('Is new edited');
       cy.getByTestId('organisation-select').click();
 
       //Remove organisations from team
@@ -45,7 +57,7 @@ describe('Team management tests', () => {
 
       //Save Team and check if it was edited correctly
       cy.getByTestId('save').click();
-      cy.contains('LoremIpsumEdited');
+      cy.contains('Is new edited');
     });
 
     it('Delete team', () => {

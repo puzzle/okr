@@ -19,6 +19,7 @@ import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
 import static ch.puzzle.okr.TestHelper.userWithoutWriteAllRole;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -101,7 +102,7 @@ class TeamAuthorizationServiceTest {
         } else {
             when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         }
-        when(teamBusinessService.getAllTeams()).thenReturn(teamList);
+        when(teamBusinessService.getAllTeams(any())).thenReturn(teamList);
 
         List<Team> teams = teamAuthorizationService.getAllTeams();
         assertEquals(teamList, teams);

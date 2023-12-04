@@ -56,7 +56,7 @@ public class TeamAuthorizationService {
     public List<Team> getAllTeams() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         boolean isWritable = hasRoleWriteAll(authorizationUser);
-        List<Team> allTeams = teamBusinessService.getAllTeams();
+        List<Team> allTeams = teamBusinessService.getAllTeams(authorizationUser);
         allTeams.forEach(team -> team.setWriteable(isWritable));
         return allTeams;
     }

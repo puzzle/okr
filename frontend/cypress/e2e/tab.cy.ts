@@ -2,7 +2,6 @@ import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
-  Cypress.config('numTestsKeptInMemory', 3);
   beforeEach(() => {
     cy.visit('/?quarter=2');
   });

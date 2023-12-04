@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../shared/dialog/objective-dialog/objective-form.component';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { Objective } from '../shared/types/model/Objective';
-import { isMobileDevice, optionalReplaceWithNulls, trackByFn } from '../shared/common';
+import { isMobileDevice, optionalReplaceWithNulls } from '../shared/common';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { TeamMin } from '../shared/types/model/TeamMin';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CloseState } from '../shared/types/enums/CloseState';
+import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 
 @Component({
   selector: 'app-team',
@@ -20,7 +21,7 @@ import { CloseState } from '../shared/types/enums/CloseState';
 })
 export class TeamComponent {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity>({} as OverviewEntity);
-  protected readonly trackByFn = trackByFn;
+  trackByObjectiveId: TrackByFunction<ObjectiveMin> = (index, objective) => objective.id;
 
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;

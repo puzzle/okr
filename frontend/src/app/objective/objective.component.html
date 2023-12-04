@@ -19,6 +19,7 @@
       />
       <header class="title col-10 ps-2">{{ objective.title }}</header>
       <button
+        #menuButton
         *ngIf="isWritable"
         class="icon-button three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"

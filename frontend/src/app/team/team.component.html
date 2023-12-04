@@ -25,7 +25,7 @@
     >
       <app-objective-column
         id="objective-column"
-        *ngFor="let objective of OVEntity.objectives; trackBy: trackByFn"
+        *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
         [objective]="objective"
         [isWritable]="OVEntity.team.writable"
         class="col-xs-12 col-md-4 p-0 column-width"

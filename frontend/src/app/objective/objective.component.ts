@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MenuEntry } from '../shared/types/menu-entry';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { Router } from '@angular/router';
@@ -29,6 +29,7 @@ export class ObjectiveComponent implements OnInit {
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
   protected readonly trackByFn = trackByFn;
+  @ViewChild('menuButton') private menuButton!: ElementRef;
 
   constructor(
     private matDialog: MatDialog,
@@ -160,6 +161,7 @@ export class ObjectiveComponent implements OnInit {
         maxWidth: dialogConfig.maxWidth,
       });
       matDialogRef.afterClosed().subscribe((result) => {
+        this.menuButton.nativeElement.focus();
         if (result) {
           this.handleDialogResult(menuEntry, result);
         }

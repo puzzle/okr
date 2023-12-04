@@ -114,13 +114,13 @@
           <h2 class="sub-title-keyresult-detail fw-bold">Action Plan</h2>
           <div *ngFor="let action of keyResult.actionList" class="ms-2">
             <img
-              src="{{
-                action.isChecked ? '../assets/icons/checked_checkbox.svg' : '../assets/icons/empty_checkbox.svg'
-              }}"
+              src="{{ action.isChecked ? '../assets/icons/bookmark-check.svg' : '../assets/icons/bookmark.svg' }}"
               alt="checkbox"
               class="action-checkbox me-1"
             />
-            {{ action.action }}
+            <span [ngStyle]="{ 'text-decoration': action.isChecked ? 'line-through' : 'none' }">{{
+              action.action
+            }}</span>
           </div>
         </div>
 

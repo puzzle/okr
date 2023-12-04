@@ -37,7 +37,7 @@ describe('OKR Objective e2e tests', () => {
         cy.getByTestId('add-objective').first().click();
         cy.getByTestId('title').first().clear();
         cy.getByTestId('description').first().clear().type('description');
-        cy.contains('Titel muss folgende Länge haben: 2-250');
+        cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
         cy.getByTestId('safe').should('be.disabled');
         cy.getByTestId('safe-draft').should('be.disabled');
         cy.getByTestId('cancel').should('not.be.disabled');

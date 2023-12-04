@@ -219,7 +219,7 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('titleInput').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Titel muss folgende Länge haben: 2-250');
+    cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
 
     cy.getByTestId('titleInput').type('My title');
     cy.getByTestId('submit').should('not.be.disabled');
@@ -267,19 +267,19 @@ describe('OKR Overview', () => {
 
     cy.getByTestId('commitZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Commit Zone muss folgende Länge haben: 1-400');
+    cy.contains('Commit Zone muss folgende Länge haben: 1-400 Zeichen');
 
     cy.getByTestId('commitZone').type('Commit');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('targetZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Target Zone muss folgende Länge haben: 1-400');
+    cy.contains('Target Zone muss folgende Länge haben: 1-400 Zeichen');
 
     cy.getByTestId('targetZone').type('Target');
     cy.getByTestId('submit').should('not.be.disabled');
     cy.getByTestId('stretchZone').clear();
     cy.getByTestId('submit').should('be.disabled');
-    cy.contains('Stretch Zone muss folgende Länge haben: 1-400');
+    cy.contains('Stretch Zone muss folgende Länge haben: 1-400 Zeichen');
 
     cy.getByTestId('stretchZone').type('Commit');
     cy.getByTestId('submit').should('not.be.disabled');

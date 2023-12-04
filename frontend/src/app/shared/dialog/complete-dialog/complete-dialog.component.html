@@ -3,8 +3,10 @@
 </section>
 
 <mat-dialog-content>
-  <p class="fs-6 text-black">Objective</p>
-  <p class="linebreak bg-display-element py-2 ps-2 mb-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
+  <div class="input-style gap-2 col-12">
+    <p class="fs-6 text-black">Objective</p>
+    <p class="linebreak bg-display-element py-2 ps-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
+  </div>
 
   <form [formGroup]="completeForm">
     <div class="input-style gap-2 col-12">

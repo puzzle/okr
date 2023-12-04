@@ -76,7 +76,7 @@
   "DIALOG_ERRORS": {
     "MUST_BE_NUMBER": " muss eine Zahl sein",
     "MUST_SELECT": " muss ausgewählt sein",
-    "MAX_VALUE": " darf maximal eine Länge von {0} haben",
-    "SIZE_BETWEEN": " muss folgende Länge haben: {0}-{1}"
+    "MAX_VALUE": " darf maximal eine Länge von {0} Zeichen haben",
+    "SIZE_BETWEEN": " muss folgende Länge haben: {0}-{1} Zeichen"
   }
 }

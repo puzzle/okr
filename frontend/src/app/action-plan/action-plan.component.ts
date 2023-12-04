@@ -151,6 +151,8 @@ export class ActionPlanComponent implements AfterViewInit {
     this.activeItem = actions.length - 1;
   }
 
+  /* By default angular material adds a new entry inside the actionplan when the user presses enter
+   *  to disable this behaviour we need this method which prevents the event from firing */
   preventAddingNewItems(event: Event) {
     event.preventDefault();
   }

@@ -58,19 +58,19 @@ describe('OKR team e2e tests', () => {
       });
 
       it('URL changes to the selected teams', () => {
-        cy.url().should('not.include', 'team');
-
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
         cy.url().should('include', 'teams=');
-        cy.url().should('include', '4');
-        cy.url().should('include', '6');
-        cy.url().should('include', '8');
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.url().should('include', '5');
+        cy.url().should('not.include', '6');
+
         cy.get('mat-chip:visible:contains("LoremIpsum")').click();
         cy.url().should('include', 'teams=');
-        cy.url().should('include', '4');
-        cy.url().should('include', '8');
         cy.url().should('include', '5');
+        cy.url().should('include', '6');
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+        cy.url().should('not.include', 'teams=');
+        cy.url().should('not.include', '5');
+        cy.url().should('not.include', '6');
       });
 
       it('Select teams by url', () => {

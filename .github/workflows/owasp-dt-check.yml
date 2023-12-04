@@ -1,0 +1,19 @@
+name: 'Dependency-Track'
+
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Generates a BoM and uploads it to OWASP Dependency Track
+      - name: Generates BoM and upload to OWASP DTrack
+        id: riskscoreFromDT
+        uses:  Quobis/action-owasp-dependecy-track-check@v1.3
+        with:
+          url: 'https://deptrack.ocp.cloudscale.puzzle.ch'
+          key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
+          language: 'java'
+      - name: Get the output time
+        run: echo "The risk score of the project is ${{ steps.riskscoreFromDT.outputs.riskscore }}"

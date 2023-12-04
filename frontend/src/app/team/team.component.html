@@ -1,4 +1,4 @@
-<div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between">
+<div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between pt-3">
   <span class="d-flex align-items-center gap-2">
     <p class="team-title">{{ OVEntity.team.name }}</p>
     <img
@@ -23,7 +23,7 @@
     (click)="createObjective()"
     *ngIf="OVEntity.team.writable"
     [attr.data-testId]="'add-objective'"
-    class="px-0 h-50"
+    class="px-0 py-1 h-50"
     color="primary"
     mat-button
   >
@@ -36,7 +36,10 @@
     class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2"
     data-testid="objective-container"
   >
-    <div *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId" class="col-xs-12 col-md-6 col-xl-4 pb-3">
+    <div
+      *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
+      class="col-xs-12 col-md-6 col-xl-4 pb-3"
+    >
       <app-objective-column
         [attr.data-testId]="'objective'"
         [isWritable]="OVEntity.team.writable"

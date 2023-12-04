@@ -1,6 +1,7 @@
 @import "_variables";
 
-.objective-shadow {
+.objective {
+  max-width: 750px;
   &:hover {
     box-shadow:
       0 0 0 0 rgba(0, 0, 0, 0.06),

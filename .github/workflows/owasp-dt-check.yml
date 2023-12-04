@@ -24,11 +24,11 @@ jobs:
 
       - name: 'Generate SBOM for npm dependencies'
         working-directory: frontend
-        run: cdxgen -o ../target/sbom-npm.xml -t npm .
+        run: cdxgen -o ../sbom-npm.xml -t npm .
 
       - name: 'Merge frontend and backend SBOMs'
         run: |
-          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files backend/target/bom.xml target/sbom-npm.xml --output-file target/sbom.xml
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files backend/target/bom.xml ../sbom-npm.xml --output-file target/sbom.xml
 
       - name: 'Push merged SBOM to dependency track'
         env:

@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CompleteDialogComponent } from './complete-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
+import { TranslateService } from '@ngx-translate/core';
 
 const dialogMock = {
   close: jest.fn(),
@@ -25,6 +26,7 @@ describe('CompleteDialogComponent', () => {
       providers: [
         { provide: MatDialogRef, useValue: dialogMock },
         { provide: MAT_DIALOG_DATA, useValue: matDataMock },
+        { provide: TranslateService, useValue: {} },
       ],
     });
     fixture = TestBed.createComponent(CompleteDialogComponent);

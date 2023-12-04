@@ -12,9 +12,7 @@
     </form>
     <span class="text-black unit-label">{{ generateUnitLabel() }}</span>
   </div>
-  <span *ngIf="isTouchedOrDirty('value')">
-    <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('value')">
-      <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-    </mat-error>
-  </span>
+  <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'value')">
+    <span>{{ getErrorMessage("MUST_BE_NUMBER", "Neuer Wert") }}</span>
+  </mat-error>
 </div>

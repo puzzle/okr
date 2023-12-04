@@ -1,14 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamComponent } from './team.component';
 import { MatIcon } from '@angular/material/icon';
-import {
-  organisationActive,
-  organisationInActive,
-  overViewEntity1,
-  overViewEntity2,
-  team1,
-  teamMin1,
-} from '../shared/testData';
+import { overViewEntity1, overViewEntity2, team1, teamMin1 } from '../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,6 +12,8 @@ import { By } from '@angular/platform-browser';
 import { OrganisationService } from '../shared/services/organisation.service';
 import { of, ReplaySubject } from 'rxjs';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import * as de from '../../assets/i18n/de.json';
 
 const organisationServiceMock = {
   getOrganisationsByTeamId: jest.fn(),
@@ -38,7 +33,15 @@ describe('TeamComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatMenuModule, MatDialogModule, HttpClientTestingModule],
+      imports: [
+        RouterTestingModule,
+        MatMenuModule,
+        MatDialogModule,
+        HttpClientTestingModule,
+        TranslateTestingModule.withTranslations({
+          de: de,
+        }),
+      ],
       declarations: [TeamComponent, MatIcon, ObjectiveComponent, KeyresultComponent],
       providers: [
         {

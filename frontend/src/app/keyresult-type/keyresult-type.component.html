@@ -45,11 +45,9 @@
                   {{ "UNIT." + unit.value | translate }}
                 </option>
               </select>
-              <div *ngIf="isTouchedOrDirty('unit')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('unit')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </div>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'unit')">
+                <span>{{ getErrorMessage("MUST_SELECT", "Einheit", null, null) }}</span>
+              </mat-error>
             </div>
 
             <div class="input-style gap-2">
@@ -61,11 +59,9 @@
                 formControlName="baseline"
                 id="baseline"
               />
-              <span *ngIf="isTouchedOrDirty('baseline')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('baseline')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </span>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'baseline')">
+                <span>{{ getErrorMessage("MUST_BE_NUMBER", "Baseline", null, null) }}</span>
+              </mat-error>
             </div>
 
             <div class="input-style gap-2">
@@ -77,11 +73,9 @@
                 formControlName="stretchGoal"
                 id="stretchGoal"
               />
-              <span *ngIf="isTouchedOrDirty('stretchGoal')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchGoal')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </span>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchGoal')">
+                <span>{{ getErrorMessage("MUST_BE_NUMBER", "Stretch Goal", null, null) }}</span>
+              </mat-error>
             </div>
           </div>
         </div>
@@ -105,11 +99,9 @@
                 id="commitZone"
                 [attr.data-testId]="'commitZone'"
               ></textarea>
-              <span *ngIf="isTouchedOrDirty('commitZone')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('commitZone')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </span>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'commitZone')">
+                <span>{{ getErrorMessage("SIZE_BETWEEN", "Commit Zone", 1, 400) }}</span>
+              </mat-error>
             </div>
 
             <div class="input-style gap-2">
@@ -121,11 +113,9 @@
                 formControlName="targetZone"
                 id="targetZone"
               ></textarea>
-              <span *ngIf="isTouchedOrDirty('targetZone')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('targetZone')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </span>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'targetZone')">
+                <span>{{ getErrorMessage("SIZE_BETWEEN", "Target Zone", 1, 400) }}</span>
+              </mat-error>
             </div>
 
             <div class="input-style gap-2">
@@ -137,11 +127,9 @@
                 formControlName="stretchZone"
                 id="stretchZone"
               ></textarea>
-              <span *ngIf="isTouchedOrDirty('stretchZone')">
-                <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('stretchZone')">
-                  <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-                </mat-error>
-              </span>
+              <mat-error *ngIf="hasFormFieldErrors(keyResultForm, 'stretchZone')">
+                <span>{{ getErrorMessage("SIZE_BETWEEN", "Stretch Zone", 1, 400) }}</span>
+              </mat-error>
             </div>
           </div>
         </div>

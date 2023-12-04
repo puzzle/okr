@@ -28,11 +28,9 @@
           formControlName="title"
           id="title"
         ></textarea>
-        <span *ngIf="isTouchedOrDirty('title')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('title')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </span>
+        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'title')">
+          <span>{{ getErrorMessage("SIZE_BETWEEN", "Titel", 2, 250) }}</span>
+        </mat-error>
       </div>
       <div class="input-style gap-2 col-12">
         <label class="text-black" for="title">Beschreibung (optional)</label>
@@ -42,11 +40,9 @@
           class="big-dialog-form-field"
           [ngClass]="formInputCheck(objectiveForm, 'description')"
         ></textarea>
-        <span *ngIf="isTouchedOrDirty('description')">
-          <mat-error *ngFor="let errorKey of getErrorKeysOfFormField('description')">
-            <span>{{ errorMessages[errorKey.toUpperCase()] }}</span>
-          </mat-error>
-        </span>
+        <mat-error *ngIf="hasFormFieldErrors(objectiveForm, 'description')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Beschreibung", 4096, null) }}</span>
+        </mat-error>
       </div>
 
       <div class="d-flex row mb-1">

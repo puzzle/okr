@@ -226,6 +226,37 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Buy now a new pool');
       cy.contains('STRETCH');
     });
+
+    it.only(`Should display confirm dialog when creating checkin on draft objective`, () => {
+      cy.getByTestId('add-objective').first().click();
+      cy.fillOutObjective('draft objective title', 'safe-draft', '3');
+      cy.visit('/?quarter=3');
+      cy.contains('draft objective title').first().parentsUntil('#objective-column').last().focus();
+
+      cy.tabForwardUntil('[data-testId="add-keyResult"]');
+      cy.focused().contains('Key Result hinzufügen');
+      cy.realPress('Enter');
+
+      cy.fillOutKeyResult(
+        'I am a metric keyresult for testing',
+        'PERCENT',
+        '21',
+        '52',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('I am a metric keyresult for testing').click();
+      cy.tabForward();
+      cy.tabForward();
+      cy.focused().contains('Check-in erfassen').click();
+      cy.contains('Check-in im Draft-Status');
+      cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
+    });
   });
 });
 

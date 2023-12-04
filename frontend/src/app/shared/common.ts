@@ -94,3 +94,11 @@ export function getQuarterLabel(quarter: any, index: number): string {
 export function isMobileDevice() {
   return window.navigator.userAgent.toLowerCase().includes('mobile');
 }
+
+export function hasFormFieldErrors(formGroup: FormGroup, field: string) {
+  if (formGroup.get(field)?.dirty || formGroup.get(field)?.touched) {
+    return formGroup.get(field)?.errors;
+  } else {
+    return false;
+  }
+}

@@ -24,6 +24,8 @@ import { By } from '@angular/platform-browser';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
 import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import * as de from '../../../../assets/i18n/de.json';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -78,6 +80,9 @@ describe('ObjectiveDialogComponent', () => {
         NoopAnimationsModule,
         MatCheckboxModule,
         RouterTestingModule,
+        TranslateTestingModule.withTranslations({
+          de: de,
+        }),
       ],
       declarations: [ObjectiveFormComponent, DialogHeaderComponent],
       providers: [

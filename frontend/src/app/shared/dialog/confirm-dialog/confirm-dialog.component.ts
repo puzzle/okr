@@ -15,20 +15,26 @@ export class ConfirmDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.data.action) {
-      if (this.data.action === 'release') {
-        this.dialogTitle = this.data.title + ' freigeben';
-        this.dialogText = 'Soll dieses ' + this.data.title + ' freigegeben werden?';
-      }
+    if (this.data.draftCreate) {
+      this.dialogTitle = 'Check-in im Draft-Status';
+      this.dialogText =
+        'Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?';
     } else {
-      this.dialogTitle = this.data.title + ' löschen';
-      this.dialogText = this.data.isAction
-        ? 'Möchtest du diese Action wirklich löschen?'
-        : 'Möchtest du dieses ' +
-          this.data.title +
-          ' wirklich löschen? Zugehörige ' +
-          (this.data.title == 'Objective' ? 'Key Results' : 'Check-ins') +
-          ' werden dadurch ebenfalls gelöscht!';
+      if (this.data.action) {
+        if (this.data.action === 'release') {
+          this.dialogTitle = this.data.title + ' veröffentlichen';
+          this.dialogText = 'Soll dieses ' + this.data.title + ' veröffentlicht werden?';
+        }
+      } else {
+        this.dialogTitle = this.data.title + ' löschen';
+        this.dialogText = this.data.isAction
+          ? 'Möchtest du diese Action wirklich löschen?'
+          : 'Möchtest du dieses ' +
+            this.data.title +
+            ' wirklich löschen? Zugehörige ' +
+            (this.data.title == 'Objective' ? 'Key Results' : 'Check-ins') +
+            ' werden dadurch ebenfalls gelöscht!';
+      }
     }
   }
 

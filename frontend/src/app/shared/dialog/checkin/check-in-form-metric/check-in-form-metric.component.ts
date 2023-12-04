@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import errorMessages from '../../../../../assets/errors/error-messages.json';
 import { KeyResultMetric } from '../../../types/model/KeyResultMetric';
 import { CheckInMin } from '../../../types/model/CheckInMin';
-import { formInputCheck } from '../../../common';
+import { formInputCheck, hasFormFieldErrors } from '../../../common';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-check-in-form-metric',
@@ -18,8 +18,10 @@ export class CheckInFormMetricComponent implements OnInit {
   checkIn!: CheckInMin;
   @Input()
   dialogForm!: FormGroup;
-  protected readonly errorMessages: any = errorMessages;
   protected readonly formInputCheck = formInputCheck;
+  protected readonly hasFormFieldErrors = hasFormFieldErrors;
+
+  constructor(private translate: TranslateService) {}
 
   ngOnInit() {
     this.dialogForm.controls['value'].setValidators([Validators.required, Validators.pattern('^-?\\d+\\.?\\d*$')]);
@@ -38,12 +40,7 @@ export class CheckInFormMetricComponent implements OnInit {
     }
   }
 
-  isTouchedOrDirty(name: string) {
-    return this.dialogForm.get(name)?.dirty || this.dialogForm.get(name)?.touched;
-  }
-
-  getErrorKeysOfFormField(name: string) {
-    const errors = this.dialogForm.get(name)?.errors;
-    return errors === null ? [] : Object.keys(errors!);
+  getErrorMessage(error: string, field: string): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error);
   }
 }

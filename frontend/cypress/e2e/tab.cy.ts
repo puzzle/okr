@@ -257,6 +257,7 @@ describe('Tab workflow tests', () => {
       cy.tabForward();
       cy.realPress('Enter');
 
+      cy.wait(500);
       cy.get('.objective')
         .first()
         .getByTestId('objective-state')

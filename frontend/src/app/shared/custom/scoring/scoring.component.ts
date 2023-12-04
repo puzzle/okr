@@ -46,85 +46,13 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.keyResult.keyResultType === 'metric') {
-      this.calculatePercentageMetric();
-    } else {
-      this.calculatePercentageOrdinal();
-    }
-  }
-
-  calculatePercentageOrdinal() {
-    switch (this.keyResult.lastCheckIn?.value) {
-      case Zone.STRETCH:
-        this.stretched = true;
-        break;
-      case Zone.TARGET:
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.targetPercent = 100;
-        this.stretched = false;
-        break;
-      case Zone.COMMIT:
-        this.failPercent = 100;
-        this.commitPercent = 100;
-        this.stretched = false;
-        break;
-      case Zone.FAIL:
-        this.failPercent = 100;
-        this.stretched = false;
-        break;
-    }
-  }
-
-  calculatePercentageMetric() {
-    if (this.keyResult.lastCheckIn !== null) {
-      let KeyResultMetric: KeyResultMetricMin = this.castToMetric();
-
-      let percentage = calculateCurrentPercentage(KeyResultMetric);
-      this.labelPercentage = of(percentage);
-      switch (true) {
-        case percentage >= 100:
-          this.stretched = true;
-          break;
-        case percentage > 70:
-          this.stretched = false;
-          this.failPercent = 100;
-          this.commitPercent = 100;
-          this.targetPercent = (100 / 30) * (percentage - 70);
-          break;
-        case percentage > 30:
-          this.stretched = false;
-          this.failPercent = 100;
-          this.commitPercent = (100 / 40) * (percentage - 30);
-          break;
-        default:
-          this.stretched = false;
-          this.failPercent = (100 / 30) * percentage;
+    this.stretched = false;
+    if (this.keyResult.lastCheckIn) {
+      if (this.keyResult.keyResultType === 'metric') {
+        this.calculatePercentageMetric();
+      } else {
+        this.calculatePercentageOrdinal();
       }
-    }
-  }
-
-  getScoringColorClassAndSetBorder(): string | null {
-    switch (true) {
-      case this.targetPercent > 100:
-        return 'score-stretch';
-      case this.targetPercent > 0:
-        this.setBorder(this.targetElement!);
-        return 'score-green';
-      case this.commitPercent > 0:
-        this.setBorder(this.commitElement!);
-        return 'score-yellow';
-      case this.failPercent > 0:
-        this.setBorder(this.failElement!);
-        return 'score-red';
-      default:
-        return null;
-    }
-  }
-
-  setBorder(element: ElementRef<HTMLSpanElement>) {
-    if (this.keyResult.keyResultType != 'ordinal') {
-      element.nativeElement.classList.add('border-right');
     }
   }
 
@@ -153,6 +81,80 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
     if (this.stretched) {
       this.iconPath = 'filled';
       this.changeDetectionRef.detectChanges();
+    }
+  }
+
+  calculatePercentageOrdinal() {
+    switch (this.keyResult.lastCheckIn?.value) {
+      case Zone.STRETCH:
+        this.stretched = true;
+        break;
+      case Zone.TARGET:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.targetPercent = 100;
+        this.stretched = false;
+        break;
+      case Zone.COMMIT:
+        this.failPercent = 100;
+        this.commitPercent = 100;
+        this.stretched = false;
+        break;
+      case Zone.FAIL:
+        this.failPercent = 100;
+        this.stretched = false;
+        break;
+    }
+  }
+
+  calculatePercentageMetric() {
+    if (this.keyResult.lastCheckIn !== null) {
+      let keyResultMetric: KeyResultMetricMin = this.castToMetric();
+
+      let percentage = calculateCurrentPercentage(keyResultMetric);
+      this.labelPercentage = of(percentage);
+      switch (true) {
+        case percentage >= 100:
+          this.stretched = true;
+          break;
+        case percentage > 70:
+          this.stretched = false;
+          this.failPercent = 100;
+          this.commitPercent = 100;
+          this.targetPercent = (100 / 30) * (percentage - 70);
+          break;
+        case percentage > 30:
+          this.stretched = false;
+          this.failPercent = 100;
+          this.commitPercent = (100 / 40) * (percentage - 30);
+          break;
+        default:
+          this.stretched = false;
+          this.failPercent = (100 / 30) * percentage;
+      }
+    }
+  }
+
+  getScoringColorClassAndSetBorder(): string | null {
+    if (this.targetPercent > 100) {
+      return 'score-stretch';
+    } else if (this.targetPercent > 0) {
+      this.setBorder(this.targetElement!);
+      return 'score-green';
+    } else if (this.commitPercent > 0) {
+      this.setBorder(this.commitElement!);
+      return 'score-yellow';
+    } else if (this.failPercent > 0) {
+      this.setBorder(this.failElement!);
+      return 'score-red';
+    } else {
+      return null;
+    }
+  }
+
+  setBorder(element: ElementRef<HTMLSpanElement>) {
+    if (this.keyResult.keyResultType != 'ordinal') {
+      element.nativeElement.classList.add('border-right');
     }
   }
 

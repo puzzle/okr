@@ -245,7 +245,6 @@ describe('Tab workflow tests', () => {
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective abschliessen');
       cy.realPress('Enter');
-      cy.wait(500);
       cy.contains('Objective abschliessen');
       cy.contains('Objective erreicht');
       cy.contains('Objective nicht erreicht');
@@ -323,11 +322,9 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="edit-keyResult"]');
       cy.focused().contains('Key Result bearbeiten');
       cy.realPress('Enter');
-      cy.wait(500);
       cy.tabForwardUntil('[data-testId="delete-keyResult"]');
       cy.focused().contains('Key Result löschen');
       cy.realPress('Enter');
-      cy.wait(500);
       cy.tabForward();
       cy.focused().contains('Ja');
       cy.realPress('Enter');
@@ -337,7 +334,6 @@ describe('Tab workflow tests', () => {
     it('Create new key result metric with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
-      cy.wait(500);
       cy.tabForward();
       cy.focused().type('KeyResult metric by Cypress');
       cy.contains('Einheit');
@@ -422,7 +418,6 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="add-check-in"]');
       cy.focused().contains('Check-in erfassen');
       cy.realPress('Enter');
-      cy.wait(500);
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
@@ -461,7 +456,6 @@ describe('Tab workflow tests', () => {
     it('Create new key result ordinal with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
-      cy.wait(500);
       cy.tabForward(); // -> title
       cy.focused().type('KeyResult ordinal by Cypress');
       cy.tabForward();

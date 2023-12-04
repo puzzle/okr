@@ -305,6 +305,7 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="delete-keyResult"]');
       cy.focused().contains('Key Result löschen');
       cy.realPress('Enter');
+      cy.tabForward();
       cy.focused().contains('Ja');
       cy.realPress('Enter');
       cy.contains('This has been edited by Cypress').should('not.exist');

@@ -314,15 +314,16 @@ describe('Tab workflow tests', () => {
     it('Create new key result metric with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
+      cy.tabForward();
       cy.focused().type('KeyResult metric by Cypress');
       cy.contains('Einheit');
       cy.tabForward();
       cy.tabForward();
-      cy.tabForward();
+      cy.tabForward(); // -> unit
       cy.realPress('ArrowDown'); // -> Entspricht "CHF"
-      cy.tabForward();
+      cy.tabForward(); // -> baseline
       cy.focused().type('0');
-      cy.tabForward();
+      cy.tabForward(); // -> stretchgoal
       cy.focused().type('10');
       fillInNewKeyResult();
       cy.contains('KeyResult metric by Cypress');
@@ -398,39 +399,33 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Check-in erfassen');
       cy.realPress('Enter');
       cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward(); // -> commentary
+      editInputFields('Check-in by Cypress');
+      cy.tabForward(); // -> new value field
       editInputFields('5');
+      cy.tabForward();
+      cy.tabForward(); // -> confidence slider
       cy.realPress('ArrowRight');
       cy.tabForward();
-      cy.focused().contains('Weiter');
+      cy.focused().contains('Check-in speichern');
       cy.realPress('Enter');
-      cy.tabForward();
-      cy.tabForwardUntil('[data-testId="changeInfo"]');
-      editInputFields('Check-in by Cypress');
-      cy.tabForwardUntil('[data-testId="submit-check-in"]');
-      cy.focused().contains('Check-in erfassen');
-      cy.realPress('Enter');
-
       // Edit checkin
       openCheckInHistory();
       cy.tabForward();
-      cy.tabForward();
       cy.realPress('Enter');
+      cy.wait(500);
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
-      editInputFields('8');
-      cy.realPress('ArrowRight');
-      cy.focused().contains('Weiter');
-      cy.realPress('Enter');
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
+      cy.tabForward(); // -> commentary
       editInputFields('Check-in by Cypress (edited)');
+      cy.tabForward(); // -> new value
+      editInputFields('8');
       cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
+      cy.tabForward(); // -> confidence slider
+      cy.realPress('ArrowRight');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');

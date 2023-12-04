@@ -13,8 +13,11 @@
       <div *ngIf="getActions()?.length != 0" class="input-style gap-1">
         <label class="text-black mb-1">Action Plan:</label>
         <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
-          <mat-checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
-          <span class="action-list-item w-100">
+          <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
+          <span
+            class="action-list-item w-100"
+            [ngStyle]="{ 'text-decoration': checkbox.checked ? 'line-through' : 'none' }"
+          >
             {{ action.action }}
           </span>
         </span>

@@ -1,52 +1,51 @@
 <div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between pt-3">
-  <span class="d-flex align-items-center gap-2">
-    <p class="team-title">{{ OVEntity.team.name }}</p>
-    <img
-      (click)="openEditTeamDialog(OVEntity.team)"
-      *ngIf="hasAdminAccess | async"
-      [attr.data-testId]="'edit-team-' + OVEntity.team.name"
-      alt="edit team"
-      class="team-icons team-actions cursor-pointer ms-2"
-      src="assets/icons/edit.svg"
-    />
-  </span>
-
-  <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
-    <mat-icon
-      *ngIf="OVEntity.team.hasInActiveOrganisations"
-      [matTooltip]="'This team has inactive organisations'"
-      class="team-actions cursor-pointer ms-2 text-danger"
-      >error_outline
-    </mat-icon>
-  </div>
-  <button
-    (click)="createObjective()"
-    *ngIf="OVEntity.team.writable"
-    [attr.data-testId]="'add-objective'"
-    class="px-0 pt-1 pb-3 h-50 align-new-icon"
-    color="primary"
-    mat-button
-  >
-    <span class="d-flex align-items-center fw-bold add-text gap-2">
-      <img alt="Add key-result button" class="add-cross-button" src="assets/icons/new-icon.svg" />
-      Objective hinzufügen
+  <section class="team-header">
+    <span class="d-flex align-items-center gap-2">
+      <p class="team-title">{{ OVEntity.team.name }}</p>
+      <img
+        (click)="openEditTeamDialog(OVEntity.team)"
+        *ngIf="hasAdminAccess | async"
+        [attr.data-testId]="'edit-team-' + OVEntity.team.name"
+        alt="edit team"
+        class="team-icons team-actions cursor-pointer ms-2"
+        src="assets/icons/edit.svg"
+      />
     </span>
-  </button>
+
+    <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
+      <mat-icon
+        *ngIf="OVEntity.team.hasInActiveOrganisations"
+        [matTooltip]="'This team has inactive organisations'"
+        class="team-actions cursor-pointer ms-2 text-danger"
+        >error_outline
+      </mat-icon>
+    </div>
+    <button
+      (click)="createObjective()"
+      *ngIf="OVEntity.team.writable"
+      [attr.data-testId]="'add-objective'"
+      class="px-0 pt-1 pb-3 h-50 align-new-icon"
+      color="primary"
+      mat-button
+    >
+      <span class="d-flex align-items-center fw-bold add-text gap-2">
+        <img alt="Add key-result button" class="add-cross-button" src="assets/icons/new-icon.svg" />
+        Objective hinzufügen
+      </span>
+    </button>
+  </section>
+
   <div
     class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2"
     data-testid="objective-container"
   >
-    <div
+    <app-objective-column
       *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
-      class="col-xs-12 col-md-6 col-xl-4 pb-3"
-    >
-      <app-objective-column
-        [attr.data-testId]="'objective'"
-        [isWritable]="OVEntity.team.writable"
-        [objective]="objective"
-        class="col-12 column-width"
-        id="objective-column"
-      ></app-objective-column>
-    </div>
+      [attr.data-testId]="'objective'"
+      [isWritable]="OVEntity.team.writable"
+      [objective]="objective"
+      class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
+      id="objective-column"
+    ></app-objective-column>
   </div>
 </div>

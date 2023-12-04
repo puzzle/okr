@@ -276,3 +276,9 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 .align-new-icon {
   margin-left: -10px;
 }
+
+.team-header {
+  @include media-breakpoint-down(sm) {
+    padding-left: 22px;
+  }
+}

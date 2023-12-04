@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { KeyResultOrdinal } from '../../../types/model/KeyResultOrdinal';
 import { Zone } from '../../../types/enums/Zone';

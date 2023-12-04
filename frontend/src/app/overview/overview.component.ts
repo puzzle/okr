@@ -9,7 +9,6 @@ import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '..
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OverviewComponent implements OnInit, OnDestroy {

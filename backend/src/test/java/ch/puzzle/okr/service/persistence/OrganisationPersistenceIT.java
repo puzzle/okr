@@ -141,8 +141,6 @@ class OrganisationPersistenceIT {
     @Test
     void getActiveOrganisations() {
         List<Organisation> organisations = organisationPersistenceService.getActiveOrganisations();
-        organisations.forEach(organisation -> {
-            assertNotSame(OrganisationState.INACTIVE, organisation.getState());
-        });
+        organisations.forEach(organisation -> assertNotSame(OrganisationState.INACTIVE, organisation.getState()));
     }
 }

@@ -23,8 +23,8 @@ public class TeamBusinessService {
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
-            ObjectiveBusinessService objectiveBusinessService, QuarterBusinessService quarterBusinessService,
-            TeamValidationService validator, CacheService cacheService) {
+            ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
+            CacheService cacheService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.validator = validator;

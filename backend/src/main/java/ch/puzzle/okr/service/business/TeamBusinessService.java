@@ -59,8 +59,7 @@ public class TeamBusinessService {
     public List<Team> getAllTeams(AuthorizationUser authorizationUser) {
         List<Team> teams = teamPersistenceService.findAll();
         List<Team> mutableTeams = new ArrayList<>(teams);
-        sortTeams(mutableTeams, authorizationUser);
-        return mutableTeams;
+        return sortTeams(mutableTeams, authorizationUser);
     }
 
     private List<Team> sortTeams(List<Team> teams, AuthorizationUser authorizationUser) {

@@ -10,9 +10,9 @@ jobs:
       # Generates a BoM and uploads it to OWASP Dependency Track
       - name: Generates BoM and upload to OWASP DTrack
         id: riskscoreFromDT
-        uses:  Quobis/action-owasp-dependecy-track-check@v1.3
+        uses: Quobis/action-owasp-dependecy-track-check@v1.3
         with:
-          url: 'https://deptrack.ocp.cloudscale.puzzle.ch'
+          url: 'https://deptrack.ocp.cloudscale.puzzle.ch/api/v1/bom'
           key: '${{ secrets.SECRET_OWASP_DT_KEY }}'
           language: 'java'
       - name: Get the output time

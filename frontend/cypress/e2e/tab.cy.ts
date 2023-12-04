@@ -240,14 +240,11 @@ describe('Tab workflow tests', () => {
     });
 
     it('Complete objective dialog with tab', () => {
-      cy.get('.objective')
-        .first()
-        .getByTestId('three-dot-menu')
-        .click()
-        .get('.mat-mdc-menu-content')
-        .wait(500)
-        .contains('Objective abschliessen')
-        .click();
+      openThreeDotMenu();
+      cy.realPress('ArrowDown');
+      cy.realPress('ArrowDown');
+      cy.focused().contains('Objective abschliessen');
+      cy.realPress('Enter');
       cy.contains('Objective abschliessen');
       cy.contains('Objective erreicht');
       cy.contains('Objective nicht erreicht');
@@ -264,16 +261,10 @@ describe('Tab workflow tests', () => {
         .first()
         .getByTestId('objective-state')
         .should('have.attr', 'src', `assets/icons/successful-icon.svg`);
-      cy.wait(500);
 
-      cy.get('.objective')
-        .first()
-        .getByTestId('three-dot-menu')
-        .click()
-        .get('.mat-mdc-menu-content')
-        .wait(500)
-        .contains('Objective wiedereröffnen')
-        .click();
+      openThreeDotMenu();
+      cy.focused().contains('Objective wiedereröffnen');
+      cy.realPress('Enter');
     });
 
     it('Create new objective with tab', () => {

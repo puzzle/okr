@@ -130,10 +130,12 @@ export class TeamComponent {
       },
     });
     dialog.afterClosed().subscribe((result) => {
-      if (result.state == CloseState.DELETED) {
-        this.removeTeam(result.id).then(() => this.refreshDataService.markDataRefresh());
-      } else {
-        this.refreshDataService.markDataRefresh();
+      if (result) {
+        if (result.state == CloseState.DELETED) {
+          this.removeTeam(result.id).then(() => this.refreshDataService.markDataRefresh());
+        } else {
+          this.refreshDataService.markDataRefresh();
+        }
       }
     });
   }

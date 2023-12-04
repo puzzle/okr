@@ -8,7 +8,7 @@ describe('OKR team e2e tests', () => {
     });
 
     describe('team filter', () => {
-      it('Deselect teams from filter', () => {
+      it('Select teams from filter', () => {
         cy.get('p:visible:contains("Puzzle ITC")').should('have.length', 1);
         cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
         cy.get('mat-chip:visible:contains("Alle")').click();

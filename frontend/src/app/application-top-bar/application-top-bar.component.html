@@ -27,10 +27,7 @@
         mat-button
       >
         <span class="d-flex align-items-center">
-          <span class="mt-1">
-            <mat-icon>person_outline</mat-icon>
-          </span>
-
+          <mat-icon>person_outline</mat-icon>
           <p class="fw-normal fs-6 d-none d-md-flex" [attr.data-testId]="'user-name'">{{ username | async }}</p>
           <span class="mt-1">
             <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>

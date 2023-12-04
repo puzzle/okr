@@ -13,6 +13,12 @@
   }
 }
 
+.mat-mdc-form-field-infix {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
 .mdc-button--outlined {
   padding: 0 16px 0 16px !important;
   margin-left: 8px !important;

@@ -28,7 +28,8 @@
 .tabfocus {
   outline: none;
   &:focus-visible {
-    box-shadow: gray 2px 2px 5px;
+    border-radius: 5px;
+    border: 2px solid #1a4e83;
   }
 }
 

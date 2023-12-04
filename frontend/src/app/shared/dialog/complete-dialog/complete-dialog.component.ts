@@ -50,7 +50,7 @@ export class CompleteDialogComponent {
     });
   }
 
-  getErrorMessage(error: string, field: string, maxLength: number | null): string {
+  getErrorMessage(error: string, field: string, maxLength: number): string {
     return field + this.translate.instant('DIALOG_ERRORS.' + error).format(maxLength);
   }
 }

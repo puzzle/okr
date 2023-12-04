@@ -29,7 +29,7 @@
           formControlName="changeInfo"
         ></textarea>
         <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'changeInfo')">
-          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096, null) }}</span>
+          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar / Veränderung", 4096) }}</span>
         </mat-error>
       </div>
 
@@ -55,7 +55,7 @@
           formControlName="initiatives"
         ></textarea>
         <mat-error *ngIf="hasFormFieldErrors(dialogForm, 'initiatives')">
-          <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096, null) }}</span>
+          <span>{{ getErrorMessage("MAX_VALUE", "Massnahmen", 4096) }}</span>
         </mat-error>
       </div>
 

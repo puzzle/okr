@@ -198,7 +198,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it.only('Check validation in keyresult dialog', () => {
+  it('Check validation in keyresult dialog', () => {
     cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
     cy.getByTestId('submit').should('be.disabled');
     cy.contains('Key Result erfassen');

@@ -50,8 +50,8 @@ export class CheckInFormComponent implements OnInit {
     this.dialogForm.patchValue({ actionList: this.keyResult.actionList });
   }
 
-  getErrorMessage(error: string, field: string, firstNumber: number | null, secondNumber: number | null): string {
-    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(firstNumber, secondNumber);
+  getErrorMessage(error: string, field: string, maxLength: number): string {
+    return field + this.translate.instant('DIALOG_ERRORS.' + error).format(maxLength);
   }
 
   setDefaultValues() {

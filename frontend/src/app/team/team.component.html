@@ -24,11 +24,11 @@
       (click)="createObjective()"
       *ngIf="OVEntity.team.writable"
       [attr.data-testId]="'add-objective'"
-      class="px-0 pt-1 pb-3 h-50 align-new-icon"
+      class="px-0 mt-1 mb-3 pe-2 h-50 align-new-icon"
       color="primary"
       mat-button
     >
-      <span class="d-flex align-items-center fw-bold add-text gap-2">
+      <span class="d-flex align-items-center fw-bold add-text">
         <img alt="Add key-result button" class="add-cross-button" src="assets/icons/new-icon.svg" />
         Objective hinzufügen
       </span>
@@ -47,5 +47,7 @@
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"
     ></app-objective-column>
+
+    <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
   </div>
 </div>

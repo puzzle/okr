@@ -3,7 +3,6 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { catchError, filter, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import {
-  BLACKLIST_TOASTER_ROUTES_ERROR,
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_KEY_PREFIX,

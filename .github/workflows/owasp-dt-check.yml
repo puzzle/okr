@@ -39,5 +39,6 @@ jobs:
           --header "Content-Type: multipart/form-data" \
           --form "autoCreate=true" \
           --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
+          --form "projectType=library" \
           --form "projectVersion=latest" \
           --form "bom=@sbom.xml"

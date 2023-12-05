@@ -3,4 +3,5 @@
 .overviewContainer {
   overflow-x: hidden;
   background-color: $overview-bg;
+  transition: 0.5s;
 }

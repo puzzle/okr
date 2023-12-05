@@ -291,7 +291,7 @@ describe('Tab workflow tests', () => {
       cy.realPress('Enter');
     });
 
-    it.only('Close create objective with tab', () => {
+    it('Close create objective with tab', () => {
       openCreateObjective();
       closeDialogWithCloseButton();
       openCreateObjective();

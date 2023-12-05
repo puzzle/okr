@@ -1,50 +1,53 @@
-<div class="row w-auto bg-grey mt-4" *ngIf="overviewEntity | async as OVEntity">
-  <div class="d-flex flex-row align-items-center">
-    <p class="team-title">{{ OVEntity.team.name }}</p>
-    <img
-      class="team-icons team-actions cursor-pointer ms-2"
-      src="assets/icons/edit.svg"
-      alt="edit team"
-      [attr.data-testId]="'edit-team-' + OVEntity.team.name"
-      *ngIf="hasAdminAccess | async"
-      (click)="openEditTeamDialog(OVEntity.team)"
-    />
+<div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between pt-3">
+  <section class="team-header">
+    <span class="d-flex align-items-center gap-2">
+      <p class="team-title">{{ OVEntity.team.name }}</p>
+      <img
+        (click)="openEditTeamDialog(OVEntity.team)"
+        *ngIf="hasAdminAccess | async"
+        [attr.data-testId]="'edit-team-' + OVEntity.team.name"
+        alt="edit team"
+        class="team-icons team-actions cursor-pointer ms-2"
+        src="assets/icons/edit.svg"
+      />
+    </span>
+
     <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
       <mat-icon
         *ngIf="OVEntity.team.hasInActiveOrganisations"
-        class="team-actions cursor-pointer ms-2 text-danger"
         [matTooltip]="'This team has inactive organisations'"
-        >error_outline</mat-icon
-      >
+        class="team-actions cursor-pointer ms-2 text-danger"
+        >error_outline
+      </mat-icon>
     </div>
-  </div>
-  <div class="d-flex justify-content-center">
-    <div
-      class="d-flex gap-3 row col-12 flex-wrap justify-content-sm-between justify-content-md-start pb-2"
-      data-testid="objective-container"
+    <button
+      (click)="createObjective()"
+      *ngIf="OVEntity.team.writable"
+      [attr.data-testId]="'add-objective'"
+      class="px-0 mt-1 mb-3 pe-2 h-50 align-new-icon"
+      color="primary"
+      mat-button
     >
-      <app-objective-column
-        id="objective-column"
-        *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
-        [objective]="objective"
-        [isWritable]="OVEntity.team.writable"
-        class="col-xs-12 col-md-4 p-0 column-width"
-        [attr.data-testId]="'objective'"
-      ></app-objective-column>
+      <span class="d-flex align-items-center fw-bold add-text">
+        <img alt="Add key-result button" class="add-cross-button" src="assets/icons/new-icon.svg" />
+        Objective hinzufügen
+      </span>
+    </button>
+  </section>
 
-      <button
-        *ngIf="OVEntity.team.writable"
-        class="bg-white border border-1 border-pz-dark-blue column-width flex-nowrap col-xs-12 col-md-4 px-0 py-4"
-        [attr.data-testId]="'add-objective'"
-        mat-stroked-button
-        color="primary"
-        (click)="createObjective()"
-      >
-        <span class="d-flex align-items-center fw-bold">
-          <img src="assets/icons/new-icon.svg" alt="Add key-result button" />
-          <span>Objective hinzufügen</span>
-        </span>
-      </button>
-    </div>
+  <div
+    class="d-flex row flex-wrap justify-content-sm-between justify-content-md-start pb-2"
+    data-testid="objective-container"
+  >
+    <app-objective-column
+      *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
+      [attr.data-testId]="'objective'"
+      [isWritable]="OVEntity.team.writable"
+      [objective]="objective"
+      class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
+      id="objective-column"
+    ></app-objective-column>
+
+    <div *ngFor="let placeholder of [].constructor(2)" class="col-xs-12 col-md-6 col-xl-4 column-width h-0"></div>
   </div>
 </div>

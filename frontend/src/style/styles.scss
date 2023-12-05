@@ -183,11 +183,7 @@ input[type="text"] {
 
 .team-title {
   font-size: 1.5rem;
-  padding-bottom: 16px;
-
-  @include media-breakpoint-down(sm) {
-    padding-left: 32px;
-  }
+  font-weight: bold;
 }
 
 .select-style .mat-mdc-select-value-text {
@@ -275,4 +271,18 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 
 .add-text {
   margin-top: 1px;
+}
+
+.align-new-icon {
+  margin-left: -10px;
+}
+
+.team-header {
+  @include media-breakpoint-down(sm) {
+    padding-left: 22px;
+  }
+}
+
+.h-0 {
+  height: 0;
 }

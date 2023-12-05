@@ -1,37 +1,39 @@
 <div
   (click)="openObjectiveDetail()"
   (keydown.enter)="openObjectiveDetail()"
-  class="objective rounded-3 bg-white"
-  tabindex="0"
-  [attr.data-testId]="'objective'"
   *ngIf="objective$ | async as objective"
+  [attr.data-testId]="'objective'"
+  class="objective rounded-3 bg-white w-100"
+  tabindex="0"
 >
   <div class="row mx-1">
-    <section class="d-flex mb-3 mt-3">
-      <img
-        alt="The objectives state"
-        (click)="$event.stopPropagation()"
-        matTooltip="{{ getStateTooltip() + ' ' + formatObjectiveState(objective.state) }}"
-        matTooltipPosition="above"
-        [attr.data-testId]="'objective-state'"
-        class="icon col-1 ms-1 me-2"
-        [src]="'assets/icons/' + objective.state"
-      />
-      <header class="title col-10 ps-2">{{ objective.title }}</header>
+    <section class="d-flex mb-3 mt-3 justify-content-between">
+      <section class="d-flex gap-2 align-items-start">
+        <img
+          (click)="$event.stopPropagation()"
+          [attr.data-testId]="'objective-state'"
+          [src]="'assets/icons/' + objective.state"
+          alt="The objectives state"
+          class="icon"
+          matTooltip="{{ getStateTooltip() + ' ' + formatObjectiveState(objective.state) }}"
+          matTooltipPosition="above"
+        />
+        <header class="title">{{ objective.title }}</header>
+      </section>
       <button
         #menuButton
         *ngIf="isWritable"
         class="icon-button three-dot-menu"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation(); getMenu()"
-        data-testid="objective-menu"
         (keydown.enter)="$event.stopPropagation()"
         [attr.data-testId]="'three-dot-menu'"
       >
         <mat-icon>more_vert</mat-icon>
       </button>
     </section>
-    <section class="d-flex gap-3 px-3 flex-column">
+
+    <div class="d-flex px-3 gap-3 flex-column">
       <app-keyresult
         *ngFor="let keyResult of objective.keyResults; trackBy: trackByFn"
         class="border-0 p-0"
@@ -40,8 +42,9 @@
         [keyResult]="keyResult"
         [attr.data-testId]="'keyresult'"
       ></app-keyresult>
-    </section>
-    <section class="p-0 py-3 m-0">
+    </div>
+
+    <section class="p-0 py-2 m-0">
       <button
         *ngIf="!isComplete && isWritable"
         mat-button
@@ -52,7 +55,7 @@
         (keydown.enter)="$event.stopPropagation()"
       >
         <span class="d-flex align-items-center add-text">
-          <img src="assets/icons/new-icon.svg" alt="Add key-result button" class="add-cross-button" />
+          <img alt="Add key-result button" class="add-cross-button" src="assets/icons/new-icon.svg" />
           Key Result hinzufügen
         </span>
       </button>
@@ -60,18 +63,18 @@
   </div>
 </div>
 <mat-menu
-  class="pt-2 pb-2"
   #objectiveMenu="matMenu"
+  [class]="'objective-three-dot-menu'"
+  class="pt-2 pb-2"
   xPosition="before"
   yPosition="below"
-  [class]="'objective-three-dot-menu'"
 >
   <button
-    mat-menu-item
-    class="objective-menu-option"
-    [attr.data-testId]="'objective-menu'"
     (click)="redirect(menuEntry)"
     *ngFor="let menuEntry of menuEntries"
+    [attr.data-testId]="'objective-menu'"
+    class="objective-menu-option"
+    mat-menu-item
   >
     {{ menuEntry.displayName }}
   </button>

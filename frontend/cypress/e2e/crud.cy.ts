@@ -33,7 +33,7 @@ describe('CRUD operations', () => {
   it(`Create objective, should display error message`, () => {
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().type('description').clear();
-    cy.contains('Dieses Feld muss ausgefüllt sein');
+    cy.contains('Titel muss folgende Länge haben: 2-250 Zeichen');
     cy.getByTestId('safe').should('be.disabled');
     cy.getByTestId('safe-draft').should('be.disabled');
     cy.getByTestId('cancel').should('not.be.disabled');

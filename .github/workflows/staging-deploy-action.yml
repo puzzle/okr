@@ -222,4 +222,4 @@ jobs:
 
 #enable as soon as e2e tests run
 #      - name: remove dockers
-#        run: docker rm -rf
+#        run: docker rm -f $(docker ps -aq)

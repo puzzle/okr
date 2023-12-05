@@ -2,12 +2,20 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 
 import { ApplicationBannerComponent } from './application-banner.component';
 import { By } from '@angular/platform-browser';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { PUZZLE_TOP_BAR_HEIGHT } from '../shared/constantLibary';
 
 class ResizeObserverMock {
   observe() {}
   unobserve() {}
   disconnect() {}
 }
+
+const refreshDataServiceMock = {
+  okrBannerHeightSubject: {
+    next: jest.fn(),
+  },
+};
 
 describe('ApplicationBannerComponent', () => {
   //@ts-ignore
@@ -18,7 +26,9 @@ describe('ApplicationBannerComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ApplicationBannerComponent],
+      providers: [{ provide: RefreshDataService, useValue: refreshDataServiceMock }],
     });
+
     fixture = TestBed.createComponent(ApplicationBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -35,34 +45,33 @@ describe('ApplicationBannerComponent', () => {
     let scrollTop: number = 180;
     //Set lastScrollPosition to smaller than scrollTop => user scrolls down
     component.lastScrollPosition = 160;
+    component.bannerHeight = bannerHeight;
 
     //Set banner style
-    component.refreshBanner(bannerHeight, scrollTop);
+    component.refreshBanner(scrollTop);
     tick(600);
 
     //Assert that banner is hidden was changed
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: -' + (component.PUZZLE_TOP_BAR_HEIGHT + bannerHeight),
+      'top: -' + (PUZZLE_TOP_BAR_HEIGHT + bannerHeight),
     );
   }));
 
   it('should show banner if scrolled up', fakeAsync(() => {
-    //Set bannerHeight to default
-    let bannerHeight: number = 160;
     //Scroll more than the height of the banner
     let scrollTop: number = 180;
     //Set lastScrollPosition to bigger than scrollTop => user scrolls up
     component.lastScrollPosition = 200;
 
     //Set banner style
-    component.refreshBanner(bannerHeight, scrollTop);
+    component.refreshBanner(scrollTop);
     tick(600);
 
     //Assert that banner is visible
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#okrBanner')).attributes['style']).toContain(
-      'top: ' + component.PUZZLE_TOP_BAR_HEIGHT,
+      'top: ' + PUZZLE_TOP_BAR_HEIGHT,
     );
   }));
 
@@ -70,23 +79,19 @@ describe('ApplicationBannerComponent', () => {
     jest.spyOn(component, 'refreshBanner').mockReturnValue();
 
     //Set bannerHeight to default and execute header appearance change
-    let bannerHeight: number = 160;
-    component.changeHeaderAppearance(bannerHeight);
+    component.bannerHeight = 160;
+    component.changeHeaderAppearance();
 
     //Assert that banner is visible
     fixture.detectChanges();
     expect(component.refreshBanner).toHaveBeenCalled();
   });
 
-  it('should call removeScrollEventListener() when updating scroll event listeners', () => {
-    jest.spyOn(component, 'removeScrollEventListener').mockReturnValue();
+  it('should call correct method after call scroll()', () => {
+    jest.spyOn(component, 'changeHeaderAppearance');
 
-    //Set bannerHeight to default and execute updating of scroll event listeners
-    let bannerHeight: number = 160;
-    component.updateScrollEventListeners(bannerHeight);
+    component.scroll();
 
-    //Assert that banner is visible
-    fixture.detectChanges();
-    expect(component.removeScrollEventListener).toHaveBeenCalled();
+    expect(component.changeHeaderAppearance).toHaveBeenCalled();
   });
 });

@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "jest --silent",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --browser chrome",
+    "cypress:run": "cypress run --browser chrome --headed",
     "cypress:open-test": "concurrently \"npm start\" \"cypress open\"",
     "cypress:run-test": "npm run build && concurrently \"npm run serve:dist\" \"cypress run\"",
     "format": "prettier --write \"./**/*.{js,ts,json,css,scss,html,md,yaml}\"",

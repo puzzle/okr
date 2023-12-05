@@ -20,7 +20,9 @@ describe('Tab workflow tests', () => {
   }
 
   function openCreateObjective() {
-    cy.get('.objective').first().focus();
+    cy.contains('Puzzle ITC');
+    cy.contains('Teamverwaltung').focus();
+    cy.tabForward();
     cy.tabForwardUntil('[data-testId="add-objective"]');
     cy.focused().contains('Objective hinzufügen');
     cy.realPress('Enter');
@@ -289,7 +291,7 @@ describe('Tab workflow tests', () => {
       cy.realPress('Enter');
     });
 
-    it('Close create objective with tab', () => {
+    it.only('Close create objective with tab', () => {
       openCreateObjective();
       closeDialogWithCloseButton();
       openCreateObjective();

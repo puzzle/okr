@@ -21,7 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private overviewService: OverviewService,
-    public refreshDataService: RefreshDataService,
+    private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
   ) {

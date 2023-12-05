@@ -241,7 +241,7 @@ jobs:
 
       - name: 'Merge frontend and backend SBOMs'
         run: |
-          echo $(pwd) && docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files data/backend/target/bom.xml data/sbom-npm.xml --output-file data/sbom.xml
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files data/backend/target/bom.xml data/sbom-npm.xml --output-file data/sbom.xml
 
       - name: 'Push merged SBOM to dependency track'
         env:

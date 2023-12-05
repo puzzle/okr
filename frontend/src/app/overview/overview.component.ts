@@ -20,7 +20,7 @@ export class OverviewComponent implements OnDestroy {
 
   constructor(
     private overviewService: OverviewService,
-    private refreshDataService: RefreshDataService,
+    public refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
   ) {
     this.refreshDataService.reloadOverviewSubject

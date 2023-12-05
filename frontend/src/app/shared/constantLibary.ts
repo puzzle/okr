@@ -16,13 +16,16 @@ interface MessageKeyMap {
   };
 }
 
+export const PUZZLE_TOP_BAR_HEIGHT: number = 48;
+export const DEFAULT_HEADER_HEIGHT_PX = 140;
+
 export const SUCCESS_MESSAGE_KEY_PREFIX = 'SUCCESS.';
 export const ERROR_MESSAGE_KEY_PREFIX = 'ERROR.';
 
 export const DATE_FORMAT = 'dd.MM.yyyy';
 export const CONFIRM_DIALOG_WIDTH: string = '450px';
 export const DRAWER_ROUTES = ['objective', 'keyresult'];
-export const BLACKLIST_TOASTER_ROUTES_ERROR = ['/token'];
+
 export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
     KEY: 'TEAM',

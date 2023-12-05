@@ -1,5 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { PUZZLE_TOP_BAR_HEIGHT } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-application-banner',
@@ -9,15 +11,18 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
   lastScrollPosition: number = 0;
-  PUZZLE_TOP_BAR_HEIGHT: number = 48;
   okrBanner: HTMLElement | null = null;
   eventListener: EventListener | null = null;
   quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   panelOpenState = false;
+  resizeObserver: ResizeObserver;
 
-  resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-    this.updateScrollEventListeners(entries[0].contentRect.height);
-  });
+  constructor(private refreshDataService: RefreshDataService) {
+    this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      this.refreshDataService.okrBannerHeightSubject.next(entries[0].contentRect.height);
+      this.updateScrollEventListeners(entries[0].contentRect.height);
+    });
+  }
 
   ngAfterViewInit(): void {
     this.okrBanner = document.getElementById('okrBanner')!;
@@ -37,12 +42,13 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
 
   setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
     this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
+    console.log(this.showOrHideBanner(scrollTop, bannerHeight));
   }
 
   showOrHideBanner(scrollTop: number, bannerHeight: number) {
     return scrollTop > this.lastScrollPosition
-      ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
-      : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
+      ? '-' + (PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
+      : PUZZLE_TOP_BAR_HEIGHT + 'px';
   }
 
   updateScrollEventListeners(bannerHeight: number) {

@@ -98,7 +98,7 @@
                 </executions>
                 <configuration>
                     <projectType>application</projectType>
-                    <schemaVersion>v1.4</schemaVersion>
+                    <schemaVersion>1.4</schemaVersion>
                     <includeBomSerialNumber>true</includeBomSerialNumber>
                     <includeCompileScope>true</includeCompileScope>
                     <includeProvidedScope>true</includeProvidedScope>
@@ -106,7 +106,7 @@
                     <includeSystemScope>true</includeSystemScope>
                     <includeTestScope>false</includeTestScope>
                     <includeLicenseText>false</includeLicenseText>
-                    <outputFormat>all</outputFormat>
+                    <outputFormat>CycloneDX 1.4</outputFormat>
                     <outputName>bom</outputName>
                 </configuration>
             </plugin>

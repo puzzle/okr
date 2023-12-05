@@ -54,9 +54,12 @@ describe('Tab workflow tests', () => {
     cy.tabForward();
     cy.realType('Action point one');
     cy.tabForward();
+    cy.tabForward();
     cy.realType('Action point two');
     cy.tabForward();
+    cy.tabForward();
     cy.realType('Action point three');
+    cy.tabForward();
     cy.tabForward();
     cy.tabForward();
     cy.tabForward();
@@ -147,13 +150,12 @@ describe('Tab workflow tests', () => {
       cy.tabForward();
       cy.focused().contains('GJ');
       cy.tabForward();
-      cy.focused().type('Objective'); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
+      cy.focused().type('Objective').wait(350); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
       cy.url().should('include', 'objectiveQuery=objective');
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
       cy.focused().contains('Alle');
-      cy.tabForward();
       cy.realPress('Enter');
       cy.url().should('include', 'teams');
     });
@@ -230,10 +232,7 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
       cy.wait(500);
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
+      cy.tabBackwardUntil('[data-testId="quarterFilter"]');
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
       cy.contains('Duplicated by Cypress');
@@ -359,6 +358,7 @@ describe('Tab workflow tests', () => {
       //Actionplan
       it('Create new key result with new actionplan', () => {
         openCreateKeyResult();
+        cy.wait(500);
         cy.tabForward();
         cy.focused().type('KeyResult');
         cy.tabForward();
@@ -391,6 +391,7 @@ describe('Tab workflow tests', () => {
 
       it('Edit actionplan of key result and change order of actions', () => {
         openKeyresultDetail();
+        cy.wait(500);
         cy.tabForwardUntil('[data-testId="edit-keyResult"]');
         cy.focused().contains('Key Result bearbeiten');
         cy.realPress('Enter');
@@ -408,6 +409,7 @@ describe('Tab workflow tests', () => {
 
       it('Edit actionplan of key result and delete action', () => {
         openKeyresultDetail();
+        cy.wait(500);
         cy.tabForwardUntil('[data-testId="edit-keyResult"]');
         cy.focused().contains('Key Result bearbeiten');
         cy.realPress('Enter');

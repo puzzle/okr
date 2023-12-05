@@ -106,7 +106,7 @@
                     <includeSystemScope>true</includeSystemScope>
                     <includeTestScope>false</includeTestScope>
                     <includeLicenseText>false</includeLicenseText>
-                    <outputFormat>CycloneDX 1.4</outputFormat>
+                    <outputFormat>all</outputFormat>
                     <outputName>bom</outputName>
                 </configuration>
             </plugin>

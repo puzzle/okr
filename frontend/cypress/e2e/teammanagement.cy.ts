@@ -32,7 +32,7 @@ describe('Team management tests', () => {
     it('Edit team', () => {
       cy.get('mat-chip:visible:contains("LoremIpsum")').click();
       cy.getByTestId('edit-team-LoremIpsum').click();
-      cy.getByTestId('name').clear().type('LoremIpsumEdited');
+      cy.getByTestId('name').click().clear().type('LoremIpsumEdited');
       cy.getByTestId('organisation-select').click();
 
       //Remove organisations from team

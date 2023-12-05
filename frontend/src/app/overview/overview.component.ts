@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, combineLatest, EMPTY, Observable, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
+import { catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
@@ -12,16 +12,18 @@ import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
   styleUrls: ['./overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OverviewComponent implements OnDestroy {
+export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  overviewPadding: Subject<number> = new Subject();
 
   constructor(
     private overviewService: OverviewService,
     public refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
+    private changeDetector: ChangeDetectorRef,
   ) {
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
@@ -37,6 +39,13 @@ export class OverviewComponent implements OnDestroy {
           this.loadOverviewWithParams();
         });
       });
+  }
+
+  ngOnInit(): void {
+    this.refreshDataService.okrBannerHeightSubject.subscribe((e) => {
+      this.overviewPadding.next(e);
+      this.changeDetector.detectChanges();
+    });
   }
 
   loadOverviewWithParams() {

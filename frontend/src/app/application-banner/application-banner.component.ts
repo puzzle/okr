@@ -27,8 +27,11 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
 
   constructor(private refreshDataService: RefreshDataService) {
     this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      this.bannerHeight = entries[0].contentRect.height;
-      this.changeHeaderAppearance();
+      const newBannerHeight = entries[0].contentRect.height;
+      if (newBannerHeight != this.bannerHeight) {
+        this.bannerHeight = newBannerHeight;
+        this.refreshDataService.okrBannerHeightSubject.next(this.bannerHeight);
+      }
     });
   }
 
@@ -38,11 +41,11 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
 
   changeHeaderAppearance() {
     let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
-    this.setOKRBannerStyle(scrollTop);
+    this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }
 
-  setOKRBannerStyle(scrollTop: number) {
+  refreshBanner(scrollTop: number) {
     const newBannerPadding = this.getBannerTopPadding(scrollTop);
     this.okrBanner.nativeElement.style.top = newBannerPadding + 'px';
 

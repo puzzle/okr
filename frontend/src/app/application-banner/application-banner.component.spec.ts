@@ -37,7 +37,7 @@ describe('ApplicationBannerComponent', () => {
     component.lastScrollPosition = 160;
 
     //Set banner style
-    component.setOKRBannerStyle(bannerHeight, scrollTop);
+    component.refreshBanner(bannerHeight, scrollTop);
     tick(600);
 
     //Assert that banner is hidden was changed
@@ -56,7 +56,7 @@ describe('ApplicationBannerComponent', () => {
     component.lastScrollPosition = 200;
 
     //Set banner style
-    component.setOKRBannerStyle(bannerHeight, scrollTop);
+    component.refreshBanner(bannerHeight, scrollTop);
     tick(600);
 
     //Assert that banner is visible
@@ -67,7 +67,7 @@ describe('ApplicationBannerComponent', () => {
   }));
 
   it('should call setOKRBannerStyle() when changing header appearance', () => {
-    jest.spyOn(component, 'setOKRBannerStyle').mockReturnValue();
+    jest.spyOn(component, 'refreshBanner').mockReturnValue();
 
     //Set bannerHeight to default and execute header appearance change
     let bannerHeight: number = 160;
@@ -75,7 +75,7 @@ describe('ApplicationBannerComponent', () => {
 
     //Assert that banner is visible
     fixture.detectChanges();
-    expect(component.setOKRBannerStyle).toHaveBeenCalled();
+    expect(component.refreshBanner).toHaveBeenCalled();
   });
 
   it('should call removeScrollEventListener() when updating scroll event listeners', () => {

@@ -34,7 +34,7 @@ jobs:
         env:
           PROJECT_NAME: okr
         run: |
-          curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
+          curl --verbose -s --location --request PUT ${{ secrets.DEPENDENCY_TRACK_URL }} \
           --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
           --header "Content-Type: multipart/form-data" \
           --form "autoCreate=true" \

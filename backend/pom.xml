@@ -87,7 +87,7 @@
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
-                <version>2.7.1</version>
+                <version>2.6.2</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -98,7 +98,7 @@
                 </executions>
                 <configuration>
                     <projectType>application</projectType>
-                    <schemaVersion>CycloneDX 1.4</schemaVersion>
+                    <schemaVersion>1.4</schemaVersion>
                     <includeBomSerialNumber>true</includeBomSerialNumber>
                     <includeCompileScope>true</includeCompileScope>
                     <includeProvidedScope>true</includeProvidedScope>

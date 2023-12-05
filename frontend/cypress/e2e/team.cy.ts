@@ -8,7 +8,10 @@ describe('OKR team e2e tests', () => {
     });
 
     describe('team filter', () => {
-      it('Deselect teams from filter', () => {
+      it('Select teams from filter', () => {
+        cy.get('p:visible:contains("Puzzle ITC")').should('have.length', 1);
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
+        cy.get('mat-chip:visible:contains("Alle")').click();
         cy.contains('Alle');
         cy.get('p:visible:contains("/BBT")').should('have.length', 1);
         cy.get('mat-chip:visible:contains("/BBT")').should('have.length', 1);
@@ -22,44 +25,52 @@ describe('OKR team e2e tests', () => {
         cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'true');
         cy.get('mat-chip:visible:contains("/BBT")').should('have.attr', 'ng-reflect-highlighted', 'true');
         cy.get('mat-chip:visible:contains("/BBT")').click();
-        cy.get('p:visible:contains("/BBT")').should('not.exist');
-        cy.get('mat-chip:visible:contains("/BBT")').should('have.attr', 'ng-reflect-highlighted', 'false');
-        cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'false');
-
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.get('p:visible:contains("/BBT")').should('exist');
         cy.get('p:visible:contains("Puzzle ITC")').should('not.exist');
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.attr', 'ng-reflect-highlighted', 'false');
-      });
-
-      it('Deselect last standing team from filter will select all teams', () => {
-        cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'true');
+        cy.get('p:visible:contains("LoremIpsum")').should('not.exist');
+        cy.get('p:visible:contains("we are cube")').should('not.exist');
         cy.get('mat-chip:visible:contains("/BBT")').should('have.attr', 'ng-reflect-highlighted', 'true');
-        cy.get('mat-chip:visible:contains("/BBT")').click();
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
-        cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("we are cube")').should('have.attr', 'ng-reflect-highlighted', 'false');
         cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'false');
-        cy.get('mat-chip:visible:contains("we are cube")').click();
-        cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'true');
+
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.get('p:visible:contains("Puzzle ITC")').should('exist');
+        cy.get('p:visible:contains("/BBT")').should('exist');
+        cy.get('p:visible:contains("LoremIpsum")').should('not.exist');
+        cy.get('p:visible:contains("we are cube")').should('not.exist');
         cy.get('mat-chip:visible:contains("/BBT")').should('have.attr', 'ng-reflect-highlighted', 'true');
         cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.attr', 'ng-reflect-highlighted', 'true');
-        cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.attr', 'ng-reflect-highlighted', 'true');
-        cy.get('mat-chip:visible:contains("we are cube")').should('have.attr', 'ng-reflect-highlighted', 'true');
+        cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("we are cube")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'false');
+      });
+
+      it('Deselect all teams from filter will display text on overview', () => {
+        cy.getByTestId('team-filter-alle').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("/BBT")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.attr', 'ng-reflect-highlighted', 'true');
+        cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("we are cube")').should('have.attr', 'ng-reflect-highlighted', 'false');
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.contains('Kein Team ausgewählt');
       });
 
       it('URL changes to the selected teams', () => {
-        cy.url().should('not.include', 'team');
-
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
         cy.url().should('include', 'teams=');
-        cy.url().should('include', '4');
-        cy.url().should('include', '6');
-        cy.url().should('include', '8');
-        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.url().should('include', '5');
+        cy.url().should('not.include', '6');
+
         cy.get('mat-chip:visible:contains("LoremIpsum")').click();
         cy.url().should('include', 'teams=');
-        cy.url().should('include', '4');
-        cy.url().should('include', '8');
         cy.url().should('include', '5');
+        cy.url().should('include', '6');
+        cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+        cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+        cy.url().should('not.include', 'teams=');
+        cy.url().should('not.include', '5');
+        cy.url().should('not.include', '6');
       });
 
       it('Select teams by url', () => {

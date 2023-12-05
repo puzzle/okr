@@ -2,10 +2,13 @@ import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
 
 describe('Tab workflow tests', () => {
+  beforeEach(() => {
+    cy.visit('/?quarter=2');
+  });
   function openThreeDotMenu() {
     cy.get('.objective').first().focus();
-    cy.tabForwardUntil('[data-testid="three-dot-menu"]');
-    cy.realPress('Enter');
+    cy.tabForwardUntil('[data-testId="three-dot-menu"]');
+    cy.focused().realPress('Enter');
   }
 
   function openCreateKeyResult() {
@@ -38,7 +41,6 @@ describe('Tab workflow tests', () => {
   function editInputFields(message: string) {
     cy.focused().type('{selectall}{backspace}');
     cy.focused().type(message);
-    cy.tabForward();
   }
 
   function fillInNewKeyResult() {
@@ -52,9 +54,12 @@ describe('Tab workflow tests', () => {
     cy.tabForward();
     cy.realType('Action point one');
     cy.tabForward();
+    cy.tabForward();
     cy.realType('Action point two');
     cy.tabForward();
+    cy.tabForward();
     cy.realType('Action point three');
+    cy.tabForward();
     cy.tabForward();
     cy.tabForward();
     cy.tabForward();
@@ -81,6 +86,34 @@ describe('Tab workflow tests', () => {
   function openCheckInHistory() {
     cy.tabForwardUntil('[data-testId="show-all-checkins"]');
     cy.focused().contains('Alle Check-ins anzeigen');
+    cy.realPress('Enter');
+  }
+
+  function fillOutOrdinalCheckin(commentary: string) {
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward(); // -> commentary
+    editInputFields(commentary);
+    cy.tabForward(); // -> zone
+    cy.realPress('ArrowDown');
+    cy.realPress('ArrowDown');
+    cy.tabForward();
+    cy.tabForward(); // -> confidence slider
+    cy.realPress('ArrowRight');
+  }
+
+  function createNewObjectiveWithTab() {
+    openCreateObjective();
+    cy.wait(500);
+    cy.contains('erfassen');
+    cy.tabForward();
+    cy.focused().type('Objective by Cypress');
+    cy.tabForward();
+    cy.focused().type('Description of Objective...');
+    cy.tabForward();
+    cy.tabForward();
+    cy.tabForward();
     cy.realPress('Enter');
   }
 
@@ -117,13 +150,12 @@ describe('Tab workflow tests', () => {
       cy.tabForward();
       cy.focused().contains('GJ');
       cy.tabForward();
-      cy.focused().type('Objective'); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
+      cy.focused().type('Objective').wait(350); // Decided to try writing since this changes the url. Sadly you can't use contains on placeholders otherwise I would have done that
       cy.url().should('include', 'objectiveQuery=objective');
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
       cy.focused().contains('Alle');
-      cy.tabForward();
       cy.realPress('Enter');
       cy.url().should('include', 'teams');
     });
@@ -172,8 +204,12 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('Objective bearbeiten');
       cy.realPress('Enter');
       cy.contains('bearbeiten');
+      cy.wait(500);
+      cy.tabForward();
       editInputFields('Edited by Cypress');
+      cy.tabForward();
       editInputFields('Edited by Cypress too');
+      cy.tabForward();
       cy.tabForward();
       cy.realPress('Enter');
       cy.contains('Edited by Cypress');
@@ -184,19 +220,19 @@ describe('Tab workflow tests', () => {
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective duplizieren');
       cy.realPress('Enter');
-      cy.contains('Objective duplizieren');
+      cy.wait(500);
+      cy.contains('duplizieren');
+      cy.tabForward();
       editInputFields('Duplicated by Cypress');
+      cy.tabForward();
       cy.tabForward();
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
+      cy.wait(500);
+      cy.tabBackwardUntil('[data-testId="quarterFilter"]');
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
       cy.contains('Duplicated by Cypress');
@@ -208,10 +244,10 @@ describe('Tab workflow tests', () => {
       cy.realPress('ArrowDown');
       cy.focused().contains('Objective abschliessen');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.contains('Objective abschliessen');
       cy.contains('Objective erreicht');
       cy.contains('Objective nicht erreicht');
-      cy.tabForward();
       cy.tabForward();
       cy.realPress('Enter');
       cy.tabForward();
@@ -231,25 +267,23 @@ describe('Tab workflow tests', () => {
     });
 
     it('Create new objective with tab', () => {
-      openCreateObjective();
-      cy.focused().type('Objective by Cypress');
-      cy.tabForward();
-      cy.focused().type('Description of Objective...');
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
-      cy.realPress('Enter');
-      cy.contains('Objective by Cypress');
+      createNewObjectiveWithTab();
     });
 
     it('Delete objective with tab', () => {
-      openThreeDotMenu();
+      createNewObjectiveWithTab();
+      cy.wait(500);
+      cy.get('.objective').last().focus();
+      cy.tabForwardUntil('[data-testId="three-dot-menu"]');
+      cy.focused().realPress('Enter');
       cy.focused().contains('Objective bearbeiten');
       cy.realPress('Enter');
       cy.contains('bearbeiten');
       cy.tabForwardUntil('[data-testId="delete"]');
       cy.focused().contains('Objective Löschen');
       cy.realPress('Enter');
+      cy.wait(500);
+      cy.tabForward();
       cy.contains('Objective löschen');
       cy.focused().contains('Ja');
       cy.realPress('Enter');
@@ -269,43 +303,54 @@ describe('Tab workflow tests', () => {
 
     it('Edit key result with tab', () => {
       openKeyresultDetail();
+      cy.wait(500);
       cy.tabForwardUntil('[data-testId="edit-keyResult"]');
       cy.focused().contains('Key Result bearbeiten');
       cy.realPress('Enter');
+      cy.wait(500);
+      cy.tabForward();
       editInputFields('This has been edited by Cypress');
       cy.tabForwardUntil('[data-testId="descriptionInput"]');
       editInputFields('Description of Cypress');
       cy.tabForwardUntil('[data-testId="submit"]');
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.contains('This has been edited by Cypress');
     });
 
     it('Delete key result with tab', () => {
       openKeyresultDetail();
+      cy.wait(500);
       cy.tabForwardUntil('[data-testId="edit-keyResult"]');
       cy.focused().contains('Key Result bearbeiten');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.tabForwardUntil('[data-testId="delete-keyResult"]');
       cy.focused().contains('Key Result löschen');
       cy.realPress('Enter');
+      cy.wait(500);
+      cy.tabForward();
       cy.focused().contains('Ja');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.contains('This has been edited by Cypress').should('not.exist');
     });
 
     it('Create new key result metric with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
+      cy.wait(500);
+      cy.tabForward();
       cy.focused().type('KeyResult metric by Cypress');
       cy.contains('Einheit');
       cy.tabForward();
       cy.tabForward();
-      cy.tabForward();
+      cy.tabForward(); // -> unit
       cy.realPress('ArrowDown'); // -> Entspricht "CHF"
-      cy.tabForward();
+      cy.tabForward(); // -> baseline
       cy.focused().type('0');
-      cy.tabForward();
+      cy.tabForward(); // -> stretchgoal
       cy.focused().type('10');
       fillInNewKeyResult();
       cy.contains('KeyResult metric by Cypress');
@@ -313,6 +358,7 @@ describe('Tab workflow tests', () => {
       //Actionplan
       it('Create new key result with new actionplan', () => {
         openCreateKeyResult();
+        cy.wait(500);
         cy.tabForward();
         cy.focused().type('KeyResult');
         cy.tabForward();
@@ -345,6 +391,7 @@ describe('Tab workflow tests', () => {
 
       it('Edit actionplan of key result and change order of actions', () => {
         openKeyresultDetail();
+        cy.wait(500);
         cy.tabForwardUntil('[data-testId="edit-keyResult"]');
         cy.focused().contains('Key Result bearbeiten');
         cy.realPress('Enter');
@@ -362,6 +409,7 @@ describe('Tab workflow tests', () => {
 
       it('Edit actionplan of key result and delete action', () => {
         openKeyresultDetail();
+        cy.wait(500);
         cy.tabForwardUntil('[data-testId="edit-keyResult"]');
         cy.focused().contains('Key Result bearbeiten');
         cy.realPress('Enter');
@@ -380,53 +428,54 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="add-check-in"]');
       cy.focused().contains('Check-in erfassen');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.tabForward();
+      cy.tabForward();
+      cy.tabForward();
+      cy.tabForward(); // -> commentary
+      editInputFields('Check-in by Cypress');
+      cy.tabForward(); // -> new value field
       editInputFields('5');
+      cy.tabForward();
+      cy.tabForward(); // -> confidence slider
       cy.realPress('ArrowRight');
       cy.tabForward();
-      cy.focused().contains('Weiter');
+      cy.focused().contains('Check-in speichern');
       cy.realPress('Enter');
-      cy.tabForward();
-      cy.tabForwardUntil('[data-testId="changeInfo"]');
-      editInputFields('Check-in by Cypress');
-      cy.tabForwardUntil('[data-testId="submit-check-in"]');
-      cy.focused().contains('Check-in erfassen');
-      cy.realPress('Enter');
+      cy.wait(500);
 
       // Edit checkin
       openCheckInHistory();
-      cy.tabForward();
+      cy.wait(500);
       cy.tabForward();
       cy.realPress('Enter');
+      cy.wait(500);
       cy.tabForward();
       cy.tabForward();
       cy.tabForward();
-      editInputFields('8');
-      cy.realPress('ArrowRight');
-      cy.focused().contains('Weiter');
-      cy.realPress('Enter');
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
+      cy.tabForward(); // -> commentary
       editInputFields('Check-in by Cypress (edited)');
+      cy.tabForward(); // -> new value
+      editInputFields('8');
       cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
+      cy.tabForward(); // -> confidence slider
+      cy.realPress('ArrowRight');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.contains('Check-in by Cypress (edited)');
     });
 
     it('Create new key result ordinal with checkin and edit checkin with tab', () => {
       // Create keyresult
       openCreateKeyResult();
+      cy.wait(500);
+      cy.tabForward(); // -> title
       cy.focused().type('KeyResult ordinal by Cypress');
       cy.tabForward();
       cy.tabForward();
-      cy.realPress('Enter');
+      cy.realPress('Enter'); // -> switch to ordinal type
       cy.contains('Commit Zone');
       cy.tabForward();
       cy.focused().type('Commit Zone');
@@ -434,8 +483,8 @@ describe('Tab workflow tests', () => {
       cy.focused().type('Target Zone');
       cy.tabForward();
       cy.focused().type('Stretch Goal');
-      cy.focused().type('Stretch Zone');
       fillInNewKeyResult();
+      cy.wait(500);
       cy.contains('KeyResult ordinal by Cypress');
 
       // Create checkin
@@ -443,49 +492,24 @@ describe('Tab workflow tests', () => {
       cy.tabForwardUntil('[data-testId="add-check-in"]');
       cy.focused().contains('Check-in erfassen');
       cy.realPress('Enter');
+      cy.wait(500);
+      fillOutOrdinalCheckin('Check-in by Cypress');
       cy.tabForward();
-      cy.realPress('ArrowDown');
-      cy.realPress('ArrowDown');
-      cy.tabForward();
-      cy.realPress('ArrowRight');
-      cy.tabForward();
-      cy.focused().contains('Weiter');
+      cy.focused().contains('Check-in speichern');
       cy.realPress('Enter');
-      cy.tabForward();
-      cy.tabForwardUntil('[data-testId="changeInfo"]');
-      editInputFields('Check-in by Cypress');
-      cy.tabForward();
-      cy.tabForwardUntil('[data-testId="submit-check-in"]');
-      cy.focused().contains('Check-in erfassen');
-      cy.realPress('Enter');
+      cy.wait(500);
 
       // Edit checkin
       openCheckInHistory();
-      cy.tabForward();
+      cy.wait(500);
       cy.tabForward();
       cy.realPress('Enter');
-      cy.realPress('ArrowDown');
-      cy.realPress('ArrowDown');
-      cy.tabForward();
-      cy.realPress('ArrowRight');
-      cy.tabForward();
-      cy.realPress('ArrowLeft');
-      cy.realPress('ArrowLeft');
-      cy.tabForward();
-      cy.focused().contains('Weiter');
-      cy.realPress('Enter');
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      cy.tabBackward();
-      editInputFields('Check-in by Cypress (edited)');
-      cy.tabForward();
-      cy.tabForward();
-      cy.tabForward();
+      cy.wait(500);
+      fillOutOrdinalCheckin('Check-in by Cypress (edited)');
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
+      cy.wait(500);
       cy.contains('Check-in by Cypress (edited)');
     });
 

@@ -32,7 +32,7 @@ export function getPercentageMetric(baseline: number, stretchGoal: number, value
 
 export function getPercentageOrdinal(zone: string) {
   if (zone == 'stretch') return 101;
-  if (zone == 'target') return 99;
+  if (zone == 'target') return 99.99;
   if (zone == 'commit') return 70;
   if (zone == 'fail') return 30;
   return 0;
@@ -53,8 +53,20 @@ function validateScoringWidth(zone: string, percent: number, isOverview: boolean
 function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
   cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
   if (rgbCode == 'rgba(0, 0, 0, 0)') {
-    cy.getZone(zone, isOverview).invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
+    cy.getByTestId('star-scoring').invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
+    checkVisibilityOfScoringComponent(isOverview, 'block', 'star-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'none', 'normal-scoring');
+  } else {
+    checkVisibilityOfScoringComponent(isOverview, 'none', 'star-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'block', 'normal-scoring');
   }
+}
+
+function checkVisibilityOfScoringComponent(isOverview: boolean, displayProperty: string, componentTestId: string) {
+  (isOverview ? cy.focused() : cy.getByTestId('side-panel'))
+    .getByTestId(componentTestId)
+    .invoke('css', 'display')
+    .should('equal', displayProperty);
 }
 
 function colorFromPercentage(percentage: number) {
@@ -66,7 +78,7 @@ function colorFromPercentage(percentage: number) {
 
 function scoringValueFromPercentage(percentage: number): ScoringValue {
   if (percentage >= 100) {
-    return { failPercent: 100, commitPercent: 100, targetPercent: 101 };
+    return { failPercent: 0, commitPercent: 0, targetPercent: 0 };
   } else if (percentage > 70) {
     let targetPercent = (percentage - 70) * (100 / 30);
     return { failPercent: 100, commitPercent: 100, targetPercent: targetPercent };

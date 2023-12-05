@@ -17,6 +17,7 @@ describe('Team management tests', () => {
 
     it('Create team', () => {
       cy.getByTestId('team-management').click();
+      cy.wait(500);
       cy.getByTestId('name').click().type('New Team');
 
       //Select gl as organisation
@@ -29,8 +30,9 @@ describe('Team management tests', () => {
     });
 
     it('Edit team', () => {
+      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
       cy.getByTestId('edit-team-LoremIpsum').click();
-      cy.getByTestId('name').type('Edited');
+      cy.getByTestId('name').click().clear().type('LoremIpsumEdited');
       cy.getByTestId('organisation-select').click();
 
       //Remove organisations from team
@@ -47,6 +49,7 @@ describe('Team management tests', () => {
     });
 
     it('Delete team', () => {
+      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
       cy.getByTestId('edit-team-LoremIpsumEdited').click();
       //Click delete button
       cy.getByTestId('delete').click();

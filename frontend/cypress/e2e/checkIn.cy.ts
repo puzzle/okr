@@ -171,7 +171,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('CHF 30.-');
       cy.contains('Confidence um Target Zone (CHF 213.-) zu erreichen');
       cy.contains('5/10');
-      cy.getByTestId('check-in-metric-value').clear().type('200');
+      cy.getByTestId('check-in-metric-value').click().clear().type('200');
       cy.getByTestId('confidence-slider').realMouseDown();
       cy.contains('Here we are');
       cy.contains('A cat would be great');

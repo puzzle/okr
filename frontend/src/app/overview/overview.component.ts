@@ -4,7 +4,7 @@ import { catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUnt
 import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getQueryString, getValueFromQuery, trackByFn } from '../shared/common';
+import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
 
 @Component({
   selector: 'app-overview',
@@ -46,6 +46,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.overviewPadding.next(e);
       this.changeDetector.detectChanges();
     });
+    if (!isMobileDevice()) {
+      document.getElementById('overview')?.classList.add('bottom-shadow-space');
+    }
   }
 
   loadOverviewWithParams() {

@@ -220,6 +220,41 @@ jobs:
       - run: rm -rf ccy-repo
         shell: bash
 
+  generate-and-push-sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install cdxgen
+        working-directory: frontend
+        run: npm install -g @cyclonedx/cdxgen@8.6.0
+
+      - name: 'Generate SBOM for maven dependencies'
+        working-directory: backend
+        run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+
+      - name: 'Generate SBOM for npm dependencies'
+        working-directory: frontend
+        run: cdxgen -o ../sbom-npm.xml -t npm .
+
+      - name: 'Merge frontend and backend SBOMs'
+        run: |
+          docker run --rm -v $(pwd):/data cyclonedx/cyclonedx-cli merge --input-files data/backend/target/bom.xml data/sbom-npm.xml --output-file data/sbom.xml
+
+      - name: 'Push merged SBOM to dependency track'
+        env:
+          PROJECT_NAME: okr
+        run: |
+          curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
+          --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \
+          --header "Content-Type: multipart/form-data" \
+          --form "autoCreate=true" \
+          --form "projectName=${PROJECT_NAME:-$GITHUB_REPOSITORY}" \
+          --form "projectVersion=latest" \
+          --form "bom=@sbom.xml"
+
 #enable as soon as e2e tests run
 #      - name: remove dockers
 #        run: docker rm -f $(docker ps -aq)

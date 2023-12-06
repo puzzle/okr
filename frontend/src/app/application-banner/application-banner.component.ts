@@ -1,5 +1,15 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { DEFAULT_HEADER_HEIGHT_PX, PUZZLE_TOP_BAR_HEIGHT } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-application-banner',
@@ -8,50 +18,57 @@ import { BehaviorSubject, Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
-  lastScrollPosition: number = 0;
-  PUZZLE_TOP_BAR_HEIGHT: number = 48;
-  okrBanner: HTMLElement | null = null;
-  eventListener: EventListener | null = null;
+  @ViewChild('okrBanner') okrBanner!: ElementRef;
   quarterLabel$: BehaviorSubject<string> = new BehaviorSubject<string>('');
   panelOpenState = false;
+  resizeObserver: ResizeObserver;
+  bannerHeight: number = DEFAULT_HEADER_HEIGHT_PX;
+  lastScrollPosition: number = 0;
 
-  resizeObserver: ResizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
-    this.updateScrollEventListeners(entries[0].contentRect.height);
-  });
+  constructor(private refreshDataService: RefreshDataService) {
+    this.resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      const newBannerHeight = entries[0].contentRect.height;
+      if (newBannerHeight != this.bannerHeight) {
+        this.bannerHeight = newBannerHeight;
+        this.refreshDataService.okrBannerHeightSubject.next(this.bannerHeight);
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
-    this.okrBanner = document.getElementById('okrBanner')!;
-    this.resizeObserver.observe(this.okrBanner);
+    this.resizeObserver.observe(this.okrBanner.nativeElement);
   }
 
-  ngOnDestroy(): void {
-    this.removeScrollEventListener();
-    this.resizeObserver.disconnect();
-  }
-
-  changeHeaderAppearance(bannerHeight: number) {
+  changeHeaderAppearance() {
     let scrollTop: number = window.scrollY || document.documentElement.scrollTop;
-    this.setOKRBannerStyle(bannerHeight, scrollTop);
+    this.refreshBanner(scrollTop);
     this.lastScrollPosition = scrollTop;
   }
 
-  setOKRBannerStyle(bannerHeight: number, scrollTop: number) {
-    this.okrBanner!.style.top = this.showOrHideBanner(scrollTop, bannerHeight);
+  refreshBanner(scrollTop: number) {
+    const newBannerPadding = this.getBannerTopPadding(scrollTop);
+    this.okrBanner.nativeElement.style.top = newBannerPadding + 'px';
+
+    const overviewPadding = this.getOverviewPadding(newBannerPadding, this.bannerHeight);
+    this.refreshDataService.okrBannerHeightSubject.next(overviewPadding);
   }
 
-  showOrHideBanner(scrollTop: number, bannerHeight: number) {
+  getBannerTopPadding(scrollTop: number) {
     return scrollTop > this.lastScrollPosition
-      ? '-' + (this.PUZZLE_TOP_BAR_HEIGHT + bannerHeight) + 'px'
-      : this.PUZZLE_TOP_BAR_HEIGHT + 'px';
+      ? 0 - (PUZZLE_TOP_BAR_HEIGHT + this.bannerHeight)
+      : PUZZLE_TOP_BAR_HEIGHT;
   }
 
-  updateScrollEventListeners(bannerHeight: number) {
-    this.removeScrollEventListener();
-    this.eventListener = () => this.changeHeaderAppearance(bannerHeight);
-    window.addEventListener('scroll', this.eventListener);
+  getOverviewPadding(newBannerPadding: number, paddingAmount: number): number {
+    return newBannerPadding < 0 ? PUZZLE_TOP_BAR_HEIGHT * 2 : paddingAmount;
   }
 
-  removeScrollEventListener() {
-    window.removeEventListener('scroll', this.eventListener!);
+  @HostListener('window:scroll')
+  scroll() {
+    this.changeHeaderAppearance();
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver.disconnect();
   }
 }

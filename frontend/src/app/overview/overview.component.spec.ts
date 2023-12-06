@@ -3,12 +3,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { OverviewComponent } from './overview.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { overViewEntity1 } from '../shared/testData';
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { OverviewService } from '../shared/services/overview.service';
 import { AppRoutingModule } from '../app-routing.module';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { authGuard } from '../shared/guards/auth.guard';
+import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
+import { ApplicationTopBarComponent } from '../application-top-bar/application-top-bar.component';
+import { DateTimeProvider, OAuthLogger, OAuthService, UrlHelperService } from 'angular-oauth2-oidc';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 const overviewService = {
   getOverview: jest.fn(),
@@ -22,15 +29,25 @@ const refreshDataServiceMock = {
   teamFilterReady: new Subject(),
   quarterFilterReady: new Subject(),
   reloadOverviewSubject: new Subject(),
+  okrBannerHeightSubject: new BehaviorSubject(5),
 };
 
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
 describe('OverviewComponent', () => {
+  //@ts-ignore
+  global.ResizeObserver = ResizeObserverMock;
+
   let component: OverviewComponent;
   let fixture: ComponentFixture<OverviewComponent>;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, AppRoutingModule],
-      declarations: [OverviewComponent],
+      imports: [HttpClientTestingModule, AppRoutingModule, MatDialogModule, MatIconModule, MatMenuModule],
+      declarations: [OverviewComponent, ApplicationBannerComponent, ApplicationTopBarComponent],
       providers: [
         {
           provide: OverviewService,
@@ -44,7 +61,16 @@ describe('OverviewComponent', () => {
           provide: RefreshDataService,
           useValue: refreshDataServiceMock,
         },
+        {
+          provide: MatDialogRef,
+          useValue: {},
+        },
+        OAuthService,
+        UrlHelperService,
+        OAuthLogger,
+        DateTimeProvider,
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OverviewComponent);

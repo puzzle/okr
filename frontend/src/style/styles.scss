@@ -170,17 +170,6 @@ input[type="text"] {
   }
 }
 
-.overviewContainer {
-  overflow-x: hidden;
-  padding-top: $default-header-height;
-  background-color: $overview-bg;
-  @extend .px-sm-4;
-
-  @include media-breakpoint-down(md) {
-    padding-top: $mobile-header-height;
-  }
-}
-
 .team-title {
   font-size: 1.5rem;
   font-weight: bold;

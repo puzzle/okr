@@ -1,5 +1,7 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.mapper.DashboardMapper;
+import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
@@ -41,6 +43,11 @@ class OverviewControllerIT {
     private OverviewAuthorizationService overviewAuthorizationService;
     @MockBean
     OrganisationBusinessService organisationBusinessService;
+    // Dashboard and OverviewMapper are required for testing
+    @SpyBean
+    private DashboardMapper dashboardMapper;
+    @SpyBean
+    private OverviewMapper overviewMapper;
 
     public static final String PUZZLE = "Puzzle";
     public static final String DESCRIPTION = "This is a description";
@@ -95,7 +102,7 @@ class OverviewControllerIT {
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("JSON_PATH_OVERVIEWS", Matchers.hasSize(3)))
+                .andExpect(jsonPath(JSON_PATH_OVERVIEWS, Matchers.hasSize(3)))
                 .andExpect(jsonPath("$.adminAccess", Is.is(true))).andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(1)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(PUZZLE)))
                 .andExpect(jsonPath("$.overviews[0].objectives[0].id", Is.is(1)))

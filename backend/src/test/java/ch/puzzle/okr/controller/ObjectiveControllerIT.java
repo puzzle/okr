@@ -64,11 +64,7 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {
-                "id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster",
-                "state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true
-            }
-            """;
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();

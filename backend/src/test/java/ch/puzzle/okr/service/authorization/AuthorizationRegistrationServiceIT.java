@@ -91,10 +91,11 @@ class AuthorizationRegistrationServiceIT {
 
     @Test
     void registerAuthorizationUserShouldSetChampions() {
-        User user = User.Builder.builder().withFirstname("firstname").withLastname("lastname").withUsername("peggimann")
-                .withEmail("mail@puzzle.ch").build();
-        Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
-        AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user, token);
+        User testUser = User.Builder.builder().withFirstname("firstname").withLastname("lastname")
+                .withUsername("peggimann").withEmail("mail@puzzle.ch").build();
+        Jwt token = mockJwtToken(testUser, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
+        AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(testUser,
+                token);
 
         assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL), authorizationUser);
     }

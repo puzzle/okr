@@ -1,6 +1,5 @@
 package ch.puzzle.okr.service.persistence;
 
-import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.overview.Overview;
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringIntegrationTest
 class AuthorizationCriteriaIT {
-    private static final String REASON = "not authorized to read objective";
 
     @Autowired
     ObjectivePersistenceService objectivePersistenceService;

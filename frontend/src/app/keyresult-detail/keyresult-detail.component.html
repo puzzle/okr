@@ -129,6 +129,7 @@
         <div class="d-flex align-items-center flex-row justify-content-start">
           <button
             *ngIf="!isComplete && keyResult.writeable"
+            cdkFocusInitial
             color="primary"
             mat-flat-button
             (click)="checkForDraftState(keyResult)"

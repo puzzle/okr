@@ -227,7 +227,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('STRETCH');
     });
 
-    it.only(`Should display confirm dialog when creating checkin on draft objective`, () => {
+    it(`Should display confirm dialog when creating checkin on draft objective`, () => {
       cy.getByTestId('add-objective').first().click();
       cy.fillOutObjective('draft objective title', 'safe-draft', '3');
       cy.visit('/?quarter=3');

@@ -253,6 +253,9 @@ jobs:
           --form "projectVersion=latest" \
           --form "bom=@sbom.xml"
 
-#enable as soon as e2e tests run
-#      - name: remove dockers
-#        run: docker rm -f $(docker ps -aq)
+  clean-up:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: remove dockers
+        run: docker rm -f $(docker ps -aq)

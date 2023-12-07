@@ -15,10 +15,10 @@
 
       <div class="me-3">
         <p class="sub-title-objective fw-bold mb-1">Beschrieb</p>
-        <p class="linebreak" *ngIf="objective.description === ''">-</p>
-        <p *ngIf="objective.description !== ''" data-test-id="description" class="linebreak">
-          {{ objective.description }}
-        </p>
+        <div class="linebreak" *ngIf="objective.description === ''"><p>-</p></div>
+        <div *ngIf="objective.description !== ''" data-test-id="description" class="linebreak">
+          <p>{{ objective.description }}</p>
+        </div>
 
         <div
           class="d-flex align-items-center flex-row justify-content-start mt-4"

@@ -8,6 +8,7 @@ import { ActionService } from '../shared/services/action.service';
 import { action1, action2, action3, addedAction } from '../shared/testData';
 import { BehaviorSubject, of } from 'rxjs';
 import { Action } from '../shared/types/model/Action';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 const actionServiceMock = {
   deleteAction: jest.fn(),
@@ -21,8 +22,9 @@ describe('ActionPlanComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActionPlanComponent],
-      imports: [HttpClientTestingModule, MatDialogModule, CdkDropList, CdkDrag],
+      imports: [HttpClientTestingModule, MatDialogModule, CdkDropList, CdkDrag, TranslateModule.forRoot()],
       providers: [
+        TranslateService,
         {
           provide: ActionService,
           useValue: actionServiceMock,

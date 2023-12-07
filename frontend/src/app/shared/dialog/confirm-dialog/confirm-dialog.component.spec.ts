@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 const dialogMock = {
   close: jest.fn(),
@@ -29,9 +30,11 @@ describe('ConfirmDialogComponent', () => {
         MatInputModule,
         MatRadioModule,
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [ConfirmDialogComponent],
       providers: [
+        TranslateService,
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: dialogMock },
       ],

@@ -43,6 +43,7 @@ class OverviewControllerIT {
     private OverviewAuthorizationService overviewAuthorizationService;
     @MockBean
     OrganisationBusinessService organisationBusinessService;
+    // Dashboard and OverviewMapper are required for testing
     @SpyBean
     private DashboardMapper dashboardMapper;
     @SpyBean
@@ -55,6 +56,7 @@ class OverviewControllerIT {
     public static final String CHF = "CHF";
     public static final String JSON_PATH_TEAM_NAME = "$.overviews[0].team.name";
     public static final String JSON_PATH_TEAM_ID = "$.overviews[0].team.id";
+    public static final String JSON_PATH_OVERVIEWS = "$.overviews";
 
     static List<Overview> overviewPuzzle = List.of(
             Overview.Builder.builder().withOverviewId(OverviewId.of(1L, 1L, 20L, 20L)).withTeamName(PUZZLE)
@@ -100,7 +102,7 @@ class OverviewControllerIT {
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,2,3,4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.overviews", Matchers.hasSize(3)))
+                .andExpect(jsonPath(JSON_PATH_OVERVIEWS, Matchers.hasSize(3)))
                 .andExpect(jsonPath("$.adminAccess", Is.is(true))).andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(1)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(PUZZLE)))
                 .andExpect(jsonPath("$.overviews[0].objectives[0].id", Is.is(1)))
@@ -122,7 +124,7 @@ class OverviewControllerIT {
 
         mvc.perform(get("/api/v2/overview").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.overviews", Matchers.hasSize(0)))
+                .andExpect(jsonPath(JSON_PATH_OVERVIEWS, Matchers.hasSize(0)))
                 .andExpect(jsonPath("$.adminAccess", Is.is(true)));
     }
 
@@ -135,7 +137,7 @@ class OverviewControllerIT {
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=1,3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.overviews", Matchers.hasSize(2)))
+                .andExpect(jsonPath(JSON_PATH_OVERVIEWS, Matchers.hasSize(2)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(1)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(PUZZLE)))
                 .andExpect(jsonPath("$.overviews[0].objectives[0].id", Is.is(1)))
@@ -152,7 +154,7 @@ class OverviewControllerIT {
 
         mvc.perform(get("/api/v2/overview?quarter=2&team=4").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.overviews", Matchers.hasSize(1)))
+                .andExpect(jsonPath(JSON_PATH_OVERVIEWS, Matchers.hasSize(1)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_ID, Is.is(4)))
                 .andExpect(jsonPath(JSON_PATH_TEAM_NAME, Is.is(TEAM_KUCHEN)))
                 .andExpect(jsonPath("$.overviews[0].objectives.size()", Is.is(0)));

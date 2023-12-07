@@ -22,7 +22,10 @@
     "ordinal": "Ordinal"
   },
   "INFORMATION": {
-    "OBJECTIVE_STATE_TOOLTIP": "Der Status dieses Objectives ist"
+    "OBJECTIVE_STATE_TOOLTIP": "Der Status dieses Objectives ist",
+    "DELETE_TEAM": "Möchtest du dieses Team wirklich löschen? Zugehörige Objectives werden dadurch in allen Quartalen ebenfalls gelöscht!",
+    "DELETE_OBJECTIVE": "Möchtest du dieses Objective wirklich löschen? Zugehörige Key Results werden dadruch ebenfalls gelöscht!",
+    "DELETE_KEY_RESULT": "Möchtest du dieses Key Result wirklich löschen? Zugehörige Check-ins werden dadurch ebenfalls gelöscht!"
   },
   "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert, um das Objekt mit der Id {1} zu öffnen",

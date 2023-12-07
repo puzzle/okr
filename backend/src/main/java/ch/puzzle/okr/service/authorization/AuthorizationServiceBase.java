@@ -16,7 +16,7 @@ public abstract class AuthorizationServiceBase<ID, T extends WriteableInterface,
     private final BusinessServiceInterface<ID, T> businessService;
     private final AuthorizationService authorizationService;
 
-    public AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService,
+    protected AuthorizationServiceBase(BusinessServiceInterface<ID, T> businessService,
             AuthorizationService authorizationService) {
         this.businessService = businessService;
         this.authorizationService = authorizationService;

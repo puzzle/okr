@@ -34,6 +34,8 @@ class CompletedPersistenceServiceIT {
                 .withComment("Wir haben es gut geschafft").build();
     }
 
+    private static final String COMPLETED = "Completed";
+
     @AfterEach
     void tearDown() {
         try {
@@ -79,7 +81,7 @@ class CompletedPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.save(updateCompleted));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Completed")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(COMPLETED)));
 
         assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -104,7 +106,7 @@ class CompletedPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.findById(3L));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Completed", "3")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "3")));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -120,7 +122,7 @@ class CompletedPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> completedPersistenceService.findById(completedId));
 
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Completed", "200")));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of(COMPLETED, "200")));
 
         assertEquals(NOT_FOUND, exception.getStatus());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());

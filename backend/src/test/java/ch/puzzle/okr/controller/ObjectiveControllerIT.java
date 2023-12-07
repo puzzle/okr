@@ -5,7 +5,6 @@ import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.ObjectiveAuthorizationService;
-import ch.puzzle.okr.service.business.ObjectiveBusinessService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,7 +65,7 @@ class ObjectiveControllerIT {
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
             {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
-
+    private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
@@ -88,8 +87,6 @@ class ObjectiveControllerIT {
     @MockBean
     private ObjectiveAuthorizationService objectiveAuthorizationService;
     @Mock
-    private ObjectiveBusinessService objectiveBusinessService;
-    @Mock
     private AuthorizationService authorizationService;
     @MockBean
     private ObjectiveMapper objectiveMapper;
@@ -106,7 +103,7 @@ class ObjectiveControllerIT {
 
         mvc.perform(get(URL_OBJECTIVE_5).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(5)))
-                .andExpect(jsonPath("$.title", Is.is(OBJECTIVE_TITLE_1)));
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(OBJECTIVE_TITLE_1)));
     }
 
     @Test
@@ -158,7 +155,7 @@ class ObjectiveControllerIT {
                 .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id", Is.is(1)))
                 .andExpect(jsonPath("$.description", Is.is(EVERYTHING_FINE_DESCRIPTION)))
-                .andExpect(jsonPath("$.title", Is.is(TITLE)));
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(TITLE)));
     }
 
     @Test
@@ -224,7 +221,7 @@ class ObjectiveControllerIT {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(jsonPath("$.id", Is.is(objective1Dto.id().intValue())))
                 .andExpect(jsonPath("$.description", Is.is(objective1Dto.description())))
-                .andExpect(jsonPath("$.title", Is.is(objective1Dto.title())));
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is(objective1Dto.title())));
 
         verify(objectiveMapper, times(1)).toObjective(any());
         verify(objectiveMapper, times(1)).toDto(any());

@@ -36,6 +36,8 @@ class ActionPersistenceServiceIT {
                 .build();
     }
 
+    private static final String UPDATED_ACTION = "Updated Action";
+
     @AfterEach
     void tearDown() {
         try {
@@ -67,13 +69,13 @@ class ActionPersistenceServiceIT {
     void updateActionShouldUpdateAction() {
         Action action = createAction(null);
         createdAction = actionPersistenceService.save(action);
-        createdAction.setAction("Updated Action");
+        createdAction.setAction(UPDATED_ACTION);
         createdAction.setPriority(4);
 
         Action updateAction = actionPersistenceService.save(createdAction);
 
         assertEquals(createdAction.getId(), updateAction.getId());
-        assertEquals("Updated Action", updateAction.getAction());
+        assertEquals(UPDATED_ACTION, updateAction.getAction());
         assertEquals(4, updateAction.getPriority());
     }
 
@@ -81,7 +83,7 @@ class ActionPersistenceServiceIT {
     void updateActionShouldThrowExceptionWhenAlreadyUpdated() {
         createdAction = actionPersistenceService.save(createAction(null));
         Action changedAction = createAction(createdAction.getId(), 0);
-        changedAction.setAction("Updated Action");
+        changedAction.setAction(UPDATED_ACTION);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> actionPersistenceService.save(changedAction));

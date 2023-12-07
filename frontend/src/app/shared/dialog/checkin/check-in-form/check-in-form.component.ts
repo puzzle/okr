@@ -89,7 +89,7 @@ export class CheckInFormComponent implements OnInit {
     if (this.keyResult.keyResultType === 'metric') {
       checkIn = {
         ...this.dialogForm.value,
-        value: this.parserPipe.transform(this.dialogForm?.controls['value'].value!),
+        value: this.parserPipe.transform(this.dialogForm.controls['value'].value),
         keyResultId: this.keyResult.id,
         id: this.checkIn.id,
         version: this.checkIn.version,

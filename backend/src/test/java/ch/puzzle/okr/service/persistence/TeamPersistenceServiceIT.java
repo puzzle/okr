@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.*;
 class TeamPersistenceServiceIT {
 
     private static final Logger logger = LoggerFactory.getLogger(TeamPersistenceServiceIT.class);
-
+    private static final String NEW_TEAM = "New Team";
     private Team createdTeam;
     @Autowired
     private TeamPersistenceService teamPersistenceService;
@@ -90,7 +90,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldUpdateTeamProperly() {
-        Team team = Team.Builder.builder().withName("New Team").build();
+        Team team = Team.Builder.builder().withName(NEW_TEAM).build();
         createdTeam = teamPersistenceService.save(team);
         createdTeam.setName("Updated Team");
 
@@ -102,7 +102,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void updateTeamShouldThrowExceptionWhenAlreadyUpdated() {
-        Team team = Team.Builder.builder().withVersion(1).withName("New Team").build();
+        Team team = Team.Builder.builder().withVersion(1).withName(NEW_TEAM).build();
         createdTeam = teamPersistenceService.save(team);
         Team changedTeam = Team.Builder.builder().withId(createdTeam.getId()).withVersion(0).withName("Changed Team")
                 .build();
@@ -118,7 +118,7 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldDeleteTeam() {
-        Team team = Team.Builder.builder().withName("New Team").build();
+        Team team = Team.Builder.builder().withName(NEW_TEAM).build();
         createdTeam = teamPersistenceService.save(team);
         teamPersistenceService.deleteById(createdTeam.getId());
 
@@ -145,9 +145,9 @@ class TeamPersistenceServiceIT {
 
     @Test
     void shouldFindTeamsByName() {
-        Team team = Team.Builder.builder().withName("New Team").build();
+        Team team = Team.Builder.builder().withName(NEW_TEAM).build();
         createdTeam = teamPersistenceService.save(team);
-        List<Team> teams = teamPersistenceService.findTeamsByName("New Team");
+        List<Team> teams = teamPersistenceService.findTeamsByName(NEW_TEAM);
         assertThat(teams).contains(createdTeam);
     }
 

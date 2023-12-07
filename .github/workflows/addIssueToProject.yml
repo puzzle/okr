@@ -9,7 +9,7 @@ jobs:
     name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/add-to-project@v0.4.0
+      - uses: actions/add-to-project@v0.5.0
         with:
           project-url: https://github.com/orgs/puzzle/projects/3
           github-token: ${{ secrets.ADD_ISSUE_TO_PROJECT_CLASSIC }}

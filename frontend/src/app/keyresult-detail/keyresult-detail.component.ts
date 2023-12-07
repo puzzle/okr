@@ -118,7 +118,6 @@ export class KeyresultDetailComponent implements OnInit {
           this.refreshDataService.markDataRefresh();
         } else if (result?.closeState === CloseState.DELETED) {
           this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
-          this.refreshDataService.markDataRefresh();
         } else {
           this.loadKeyResult(this.keyResult$.getValue().id);
         }

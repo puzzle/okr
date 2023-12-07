@@ -15,7 +15,7 @@
         <span *ngFor="let action of getActions(); let i = index" class="d-flex flex-row">
           <mat-checkbox #checkbox (change)="changeIsChecked($event, i)" [checked]="action.isChecked"></mat-checkbox>
           <span
-            class="action-list-item w-100"
+            class="action-list-item w-100 break-word"
             [ngStyle]="{ 'text-decoration': checkbox.checked ? 'line-through' : 'none' }"
           >
             {{ action.action }}

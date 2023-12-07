@@ -2,14 +2,19 @@
 
 .objective {
   max-width: 750px;
+  box-shadow:
+    0px 2px 4px 0px rgba(0, 0, 0, 0.1),
+    0px 7px 7px 0px rgba(0, 0, 0, 0.09),
+    0px 15px 9px 0px rgba(0, 0, 0, 0.05),
+    0px 27px 11px 0px rgba(0, 0, 0, 0.01),
+    0px 42px 12px 0px rgba(0, 0, 0, 0);
   &:hover {
     box-shadow:
-      0 0 0 0 rgba(0, 0, 0, 0.06),
-      1px 1px 2px 0 rgba(0, 0, 0, 0.06),
-      3px 3px 4px 0 rgba(0, 0, 0, 0.05),
-      8px 6px 6px 0 rgba(0, 0, 0, 0.03),
-      14px 11px 7px 0 rgba(0, 0, 0, 0.01),
-      21px 18px 8px 0 rgba(0, 0, 0, 0);
+      2px 8px 19px 0px rgba(0, 0, 0, 0.1),
+      10px 33px 34px 0px rgba(0, 0, 0, 0.09),
+      22px 73px 46px 0px rgba(0, 0, 0, 0.05),
+      40px 130px 54px 0px rgba(0, 0, 0, 0.01),
+      62px 203px 59px 0px rgba(0, 0, 0, 0);
   }
 }
 

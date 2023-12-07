@@ -220,7 +220,7 @@ jobs:
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest
-
+    needs: [upload-to-quay]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -254,6 +254,7 @@ jobs:
           --form "bom=@sbom.xml"
 
   clean-up:
+    needs: [generate-and-push-sbom]
     runs-on: ubuntu-latest
 
     steps:

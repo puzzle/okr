@@ -1,13 +1,13 @@
 <div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between pt-3">
   <section class="team-header">
     <span class="d-flex align-items-center gap-2">
-      <p class="team-title">{{ OVEntity.team.name }}</p>
+      <h1 class="team-title">{{ OVEntity.team.name }}</h1>
       <img
         (click)="openEditTeamDialog(OVEntity.team)"
         *ngIf="hasAdminAccess | async"
         [attr.data-testId]="'edit-team-' + OVEntity.team.name"
         alt="edit team"
-        class="team-icons team-actions cursor-pointer ms-2"
+        class="team-icons team-actions cursor-pointer ms-2 mb-2"
         src="assets/icons/edit.svg"
       />
     </span>

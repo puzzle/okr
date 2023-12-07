@@ -35,17 +35,15 @@ export class KeyresultDetailComponent implements OnInit {
     private refreshDataService: RefreshDataService,
     private dialog: MatDialog,
     private router: Router,
-  ) {
-    this.refreshDataService.reloadOverviewSubject.subscribe(() => this.loadKeyResult());
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.loadKeyResult();
+    this.loadKeyResult(this.keyResultId);
   }
 
-  loadKeyResult(): void {
+  loadKeyResult(id: number): void {
     this.keyResultService
-      .getFullKeyResult(this.keyResultId)
+      .getFullKeyResult(id)
       .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => {
         this.keyResult$.next(keyResult);
@@ -115,15 +113,13 @@ export class KeyresultDetailComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result?.closeState === CloseState.SAVED) {
-          this.loadKeyResult();
+        if (result?.closeState === CloseState.SAVED && result.id) {
+          this.loadKeyResult(result.id);
           this.refreshDataService.markDataRefresh();
-        }
-        if (result?.closeState === CloseState.DELETED) {
-          this.refreshDataService.markDataRefresh();
-          this.router.navigate(['']);
+        } else if (result?.closeState === CloseState.DELETED) {
+          this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
         } else {
-          this.loadKeyResult();
+          this.loadKeyResult(this.keyResult$.getValue().id);
         }
       });
   }
@@ -185,7 +181,7 @@ export class KeyresultDetailComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe(() => {
-      this.loadKeyResult();
+      this.loadKeyResult(this.keyResult$.getValue().id);
       this.refreshDataService.markDataRefresh();
     });
   }

@@ -188,7 +188,6 @@ describe('OKR Overview', () => {
     );
 
     cy.getByTestId('submit').click();
-    cy.getByTestId('keyresult').contains('This is my new title for the new metric keyresult').first().click();
 
     cy.contains('This is my new title for the new metric keyresult');
     cy.contains('21%');
@@ -196,6 +195,8 @@ describe('OKR Overview', () => {
     cy.contains('Metrisch');
     cy.contains('Jaya Norris');
     cy.contains('This is my new description');
+
+    cy.checkForErrorToaster(0);
   });
 
   it('Check validation in keyresult dialog', () => {

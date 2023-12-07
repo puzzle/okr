@@ -54,8 +54,8 @@ export class KeyresultDialogComponent {
     keyResult.actionList = keyResult.actionList!.filter((action: Action) => action.action !== '');
     this.keyResultService.saveKeyResult(keyResult).subscribe((returnValue) => {
       this.dialogRef.close({
-        id: keyResult.id,
-        version: keyResult.version,
+        id: returnValue.id,
+        version: returnValue.version,
         closeState: CloseState.SAVED,
         openNew: openNewDialog,
       });

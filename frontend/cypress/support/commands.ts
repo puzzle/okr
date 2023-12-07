@@ -20,6 +20,18 @@ Cypress.Commands.add('validateScoring', (isOverview: boolean, percentage: number
   validateScoring(isOverview, percentage);
 });
 
+Cypress.Commands.add('checkForErrorToaster', (amount: number, errorMessages?: string[]) => {
+  checkForToaster('toast-error', amount, errorMessages);
+});
+
+Cypress.Commands.add('checkForWarnToaster', (amount: number, errorMessages?: string[]) => {
+  checkForToaster('toast-warn', amount, errorMessages);
+});
+
+Cypress.Commands.add('checkForSuccessToaster', (amount: number, errorMessages?: string[]) => {
+  checkForToaster('toast-success', amount, errorMessages);
+});
+
 Cypress.Commands.add(
   'fillOutObjective',
   (
@@ -245,6 +257,16 @@ function loginWithCredentials(username: string, password: string) {
     const baseURL = new URL(Cypress.config().baseUrl!);
     expect(currentUrl.pathname).equal(baseURL.pathname);
   });
+}
+
+function checkForToaster(selector: string, amount: number, messages: string[] = []) {
+  const toaster = cy.get('.ngx-toastr.' + selector);
+  toaster.should('have.length', amount);
+  if (amount == 0) return;
+  toaster
+    .find('.toast-message')
+    .invoke('text')
+    .then((e) => messages.forEach((m) => expect(e).contains(m)));
 }
 
 const overviewIsLoaded = () =>

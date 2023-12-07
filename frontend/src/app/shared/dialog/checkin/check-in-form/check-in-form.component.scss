@@ -2,7 +2,8 @@
 
 .action-list-item {
   background-color: $show-element;
-  height: 40px;
+  height: auto;
+  min-height: 40px;
   padding: 10px;
   margin: auto;
   color: black;

@@ -93,8 +93,6 @@ jobs:
         run: echo ${{ needs.update-version.outputs.okr-docker-image}}
 
   e2e-docker:
-    # remove line below if e2e are working again
-    if: false
     runs-on: ubuntu-22.04
     needs: [build-docker-image,update-version]
     steps:
@@ -155,7 +153,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [build-docker-image, update-version]
+    needs: [e2e-docker, update-version]
     steps:
       - uses: actions/checkout@v3
 
@@ -222,7 +220,7 @@ jobs:
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest
-
+    needs: [upload-to-quay]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -255,6 +253,10 @@ jobs:
           --form "projectVersion=latest" \
           --form "bom=@sbom.xml"
 
-#enable as soon as e2e tests run
-#      - name: remove dockers
-#        run: docker rm -f $(docker ps -aq)
+  clean-up:
+    needs: [generate-and-push-sbom]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: remove dockers
+        run: docker rm -f $(docker ps -aq)

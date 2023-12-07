@@ -17,10 +17,6 @@
   outline: 1px solid #5d6974;
 }
 
-.stretch-label {
-  margin-bottom: 3px;
-}
-
 .okr-score-commit {
   width: 40%;
 }
@@ -33,6 +29,14 @@
   display: block;
   width: 21px;
   height: 21px;
+  margin-top: 2px;
+}
+
+.stretch-div {
+  width: 100%;
+  background-image: url("./../../../../assets/images/scoring-stars.svg");
+  height: 21px;
+  margin-bottom: 3.5px;
 }
 
 .score-red {

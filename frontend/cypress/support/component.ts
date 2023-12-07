@@ -7,6 +7,9 @@ declare global {
       getByTestId(testsId: string): Chainable;
       tabForward(): void;
       tabBackward(): void;
+      checkForErrorToaster(amount: number, errorMessages?: string[]): void;
+      checkForSuccessToaster(amount: number, errorMessages?: string[]): void;
+      checkForWarnToaster(amount: number, errorMessages?: string[]): void;
       tabForwardUntil(selector: string, limit?: number): void;
       tabBackwardUntil(selector: string, limit?: number): void;
       createOrdinalKeyresult(title: string | null, owner: string | null): void;

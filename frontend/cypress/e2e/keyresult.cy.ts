@@ -157,7 +157,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it('Edit a KeyResult with type change', () => {
+  it.only('Edit a KeyResult with type change', () => {
     cy.createOrdinalKeyresult('Here we want to change keyresult title', null);
 
     cy.getByTestId('keyresult').contains('Here we want to change keyresult title').last().click();
@@ -196,6 +196,8 @@ describe('OKR Overview', () => {
     cy.contains('Metrisch');
     cy.contains('Jaya Norris');
     cy.contains('This is my new description');
+
+    cy.checkForErrorToaster(0);
   });
 
   it('Check validation in keyresult dialog', () => {

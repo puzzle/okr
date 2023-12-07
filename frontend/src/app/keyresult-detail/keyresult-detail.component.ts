@@ -36,7 +36,7 @@ export class KeyresultDetailComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
   ) {
-    this.refreshDataService.reloadOverviewSubject.subscribe(() => this.loadKeyResult());
+    // this.refreshDataService.reloadOverviewSubject.subscribe(() => this.loadKeyResult());
   }
 
   ngOnInit(): void {
@@ -48,6 +48,7 @@ export class KeyresultDetailComponent implements OnInit {
       .getFullKeyResult(this.keyResultId)
       .pipe(catchError(() => EMPTY))
       .subscribe((keyResult) => {
+        console.log('test');
         this.keyResult$.next(keyResult);
         const state = keyResult.objective.state;
         this.isComplete = state === ('SUCCESSFUL' as State) || state === ('NOTSUCCESSFUL' as State);
@@ -120,8 +121,8 @@ export class KeyresultDetailComponent implements OnInit {
           this.refreshDataService.markDataRefresh();
         }
         if (result?.closeState === CloseState.DELETED) {
+          this.router.navigate(['']).then(() => this.refreshDataService.markDataRefresh());
           this.refreshDataService.markDataRefresh();
-          this.router.navigate(['']);
         } else {
           this.loadKeyResult();
         }

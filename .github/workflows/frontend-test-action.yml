@@ -64,4 +64,4 @@ jobs:
           headed: true
 
       - name: remove docker containers
-        run: docker rm -f $(docker ps -qa)
+        run: docker ps -aq | xargs -r docker rm -f

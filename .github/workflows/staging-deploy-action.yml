@@ -259,4 +259,4 @@ jobs:
 
     steps:
       - name: remove dockers
-        run: docker rm -f $(docker ps -aq)
+        run: docker ps -aq | xargs -r docker rm -f

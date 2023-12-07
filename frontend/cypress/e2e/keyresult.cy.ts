@@ -157,7 +157,7 @@ describe('OKR Overview', () => {
     cy.contains('This is my new description');
   });
 
-  it.only('Edit a KeyResult with type change', () => {
+  it('Edit a KeyResult with type change', () => {
     cy.createOrdinalKeyresult('Here we want to change keyresult title', null);
 
     cy.getByTestId('keyresult').contains('Here we want to change keyresult title').last().click();
@@ -188,7 +188,6 @@ describe('OKR Overview', () => {
     );
 
     cy.getByTestId('submit').click();
-    cy.getByTestId('keyresult').contains('This is my new title for the new metric keyresult').first().click();
 
     cy.contains('This is my new title for the new metric keyresult');
     cy.contains('21%');

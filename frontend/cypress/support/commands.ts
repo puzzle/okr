@@ -262,6 +262,7 @@ function loginWithCredentials(username: string, password: string) {
 function checkForToaster(selector: string, amount: number, messages: string[] = []) {
   const toaster = cy.get('.ngx-toastr.' + selector);
   toaster.should('have.length', amount);
+  if (amount == 0) return;
   toaster
     .find('.toast-message')
     .invoke('text')

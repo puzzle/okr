@@ -6,6 +6,7 @@
 .okr-score-label {
   display: inline-grid;
   width: 30%;
+  margin-bottom: 2px;
 }
 
 .okr-score {
@@ -14,6 +15,10 @@
   width: 30%;
   background-color: white;
   outline: 1px solid #5d6974;
+}
+
+.stretch-label {
+  margin-bottom: 3px;
 }
 
 .okr-score-commit {

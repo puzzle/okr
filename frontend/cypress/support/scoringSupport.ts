@@ -53,7 +53,7 @@ function validateScoringWidth(zone: string, percent: number, isOverview: boolean
 function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean) {
   cy.getZone(zone, isOverview).invoke('css', 'background-color').should('equal', rgbCode);
   if (rgbCode == 'rgba(0, 0, 0, 0)') {
-    cy.getByTestId('star-scoring').invoke('css', 'background-image').should('contain', 'scoring-stars.svg');
+    cy.getByTestId('star-scoring').invoke('css', 'background-image').should('contain', 'scoring-stars');
     checkVisibilityOfScoringComponent(isOverview, 'block', 'star-scoring');
     checkVisibilityOfScoringComponent(isOverview, 'none', 'normal-scoring');
   } else {

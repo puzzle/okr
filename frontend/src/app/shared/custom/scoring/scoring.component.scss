@@ -6,6 +6,7 @@
 .okr-score-label {
   display: inline-grid;
   width: 30%;
+  margin-bottom: 2px;
 }
 
 .okr-score {
@@ -28,6 +29,14 @@
   display: block;
   width: 21px;
   height: 21px;
+  margin-top: 2px;
+}
+
+.stretch-div {
+  width: 100%;
+  background-image: url("./../../../../assets/images/scoring-stars.svg");
+  height: 21px;
+  margin-bottom: 3.5px;
 }
 
 .score-red {

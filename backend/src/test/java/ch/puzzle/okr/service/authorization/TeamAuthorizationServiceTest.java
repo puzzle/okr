@@ -51,7 +51,7 @@ class TeamAuthorizationServiceTest {
         when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.createEntity(newTeam));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
@@ -71,7 +71,7 @@ class TeamAuthorizationServiceTest {
         when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.updateEntity(newTeam, id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_WRITE", exception.getReason());
     }
 
@@ -89,7 +89,7 @@ class TeamAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.deleteEntity(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_DELETE", exception.getReason());
     }
 

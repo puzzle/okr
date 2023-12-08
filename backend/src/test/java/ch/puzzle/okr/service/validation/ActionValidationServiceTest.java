@@ -70,7 +70,7 @@ class ActionValidationServiceTest {
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action"))), exception.getErrors());
     }
@@ -88,7 +88,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(null));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("Action"))), exception.getErrors());
     }
@@ -100,7 +100,7 @@ class ActionValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Action")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -114,7 +114,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(action));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -128,7 +128,7 @@ class ActionValidationServiceTest {
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("keyResult", "Action")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -152,7 +152,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("Action"))), exception.getErrors());
     }
@@ -165,7 +165,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(action1);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action"))), exception.getErrors());
     }
@@ -179,7 +179,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action2.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, action2.getId());
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_CHANGED", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "1", "2"))), exception.getErrors());
     }
@@ -196,7 +196,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action2.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(action2.getId(), action2.getId());
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
@@ -213,7 +213,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(id, action.getId());
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("KeyResult", "Action"))),
                 exception.getErrors());
@@ -233,7 +233,7 @@ class ActionValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(action.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(action.getId(), action2.getId());
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_CANNOT_CHANGE", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_CANNOT_CHANGE", List.of("KeyResult", "Action"))),
                 exception.getErrors());
@@ -249,7 +249,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, action));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -262,7 +262,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(11L, actionInvalid));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("KeyResult", "Action"))),
                 exception.getErrors());
@@ -277,7 +277,7 @@ class ActionValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(11L, actionInvalid));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NOT_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("action", "Action"))), exception.getErrors());
     }
@@ -297,7 +297,7 @@ class ActionValidationServiceTest {
 
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Action"))), exception.getErrors());
     }

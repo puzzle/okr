@@ -70,7 +70,7 @@ class OrganisationPersistenceIT {
         List<ErrorDto> expectedErrors = List
                 .of(new ErrorDto("MODEL_WITH_ID_NOT_FOUND", List.of("Organisation", "321")));
 
-        assertEquals(NOT_FOUND, exception.getStatus());
+        assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -82,7 +82,7 @@ class OrganisationPersistenceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Organisation")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

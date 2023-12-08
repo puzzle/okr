@@ -69,7 +69,7 @@ class UserPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> userPersistenceService.findById(321L));
 
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertEquals("MODEL_WITH_ID_NOT_FOUND", exception.getReason());
     }
 
@@ -78,7 +78,7 @@ class UserPersistenceServiceIT {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> userPersistenceService.findById(null));
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
     }
 

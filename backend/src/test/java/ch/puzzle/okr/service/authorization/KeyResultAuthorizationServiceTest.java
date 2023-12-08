@@ -53,7 +53,7 @@ class KeyResultAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.createEntity(metricKeyResult));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -88,7 +88,7 @@ class KeyResultAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.getEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -114,7 +114,7 @@ class KeyResultAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.updateEntities(id, metricKeyResult, List.of()));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -122,7 +122,7 @@ class KeyResultAuthorizationServiceTest {
     void updateEntityShouldThrowException() {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.updateEntity(1L, metricKeyResult));
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("unsupported method in class " + KeyResultAuthorizationService.class.getSimpleName()
                 + ", use updateEntities() instead", exception.getReason());
     }
@@ -145,7 +145,7 @@ class KeyResultAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultAuthorizationService.deleteEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 

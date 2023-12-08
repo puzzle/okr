@@ -42,7 +42,7 @@ class OrganisationAuthorizationServiceTest {
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> organizationAuthorizationService.getEntities());
 
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals("NOT_AUTHORIZED_TO_READ", exception.getReason());
         verify(organisationBusinessService, never()).getActiveOrganisations();
 

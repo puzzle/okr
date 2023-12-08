@@ -1,4 +1,4 @@
-create sequence if not exists sequence_completed ;
+create sequence if not exists sequence_completed;
 alter sequence sequence_completed restart with 1000;
 
 create table if not exists completed

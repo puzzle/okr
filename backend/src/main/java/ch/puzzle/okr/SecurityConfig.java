@@ -28,7 +28,8 @@ public class SecurityConfig {
         http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         setHeaders(http);
         logger.debug("*** apiSecurityFilterChain reached");
-        return http.authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
+        return http.cors(Customizer.withDefaults())
+                .authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())).build();
     }

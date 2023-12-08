@@ -3,7 +3,7 @@ version: '3.5'
 services:
   okr-db:
     container_name: okr-dev-db
-    image: postgres:12
+    image: postgres:16
     restart: unless-stopped
     environment:
       POSTGRES_USER: user

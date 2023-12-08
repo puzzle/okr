@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { overViewEntity1 } from '../testData';
+import { State } from '../types/enums/State';
 
 const httpClient = {
   get: jest.fn(),
@@ -28,5 +29,12 @@ describe('OverviewService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should set state of objectives correctly', () => {});
+  it('should set state of objectives correctly', (done) => {
+    service.getOverview().subscribe((dashboard) => {
+      dashboard.overviews.forEach((overview) =>
+        overview.objectives.forEach((objective) => expect(typeof objective.state).toBe(State)),
+      );
+      done();
+    });
+  });
 });

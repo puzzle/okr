@@ -136,6 +136,7 @@ input[type="text"] {
 .dialog-form-field-error {
   resize: none;
   outline: $error-color 2px solid !important;
+  outline-offset: -2px;
 }
 
 .custom-select {
@@ -149,6 +150,12 @@ input[type="text"] {
 
 *:focus {
   outline: $pz-dark-blue solid 2px;
+}
+
+select,
+textarea,
+input {
+  outline-offset: -2px;
 }
 
 .bg-inherit {

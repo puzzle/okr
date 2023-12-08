@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: build-docker-image
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Download artifact
         uses: actions/download-artifact@v3
@@ -104,7 +104,7 @@ jobs:
           quay.io/keycloak/keycloak:22.0.0 \
           start-dev --import-realm &
 
-      - uses: abhi1693/setup-browser@v0.3.4
+      - uses: abhi1693/setup-browser@v0.3.5
         with:
           browser: chrome
           version: latest
@@ -151,7 +151,7 @@ jobs:
         run: mvn -B clean package --file pom.xml -P build-for-docker
 
       - name: Log in to Quay registry
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ secrets.QUAY_REGISTRY }}
           username: ${{ secrets.QUAY_USERNAME }}
@@ -207,7 +207,7 @@ jobs:
     needs: okr-deploy
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install cdxgen
         working-directory: frontend

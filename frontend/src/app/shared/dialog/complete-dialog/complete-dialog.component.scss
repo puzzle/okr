@@ -73,3 +73,7 @@ div:hover {
   @extend .card-shadow;
   background-color: #ba3838;
 }
+
+.dialog-content {
+  max-height: 30vh;
+}

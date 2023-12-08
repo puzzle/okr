@@ -3,10 +3,11 @@
 </section>
 
 <mat-dialog-content>
-  <div class="input-style gap-2 col-12">
-    <p class="fs-6 text-black">Objective</p>
-    <p class="linebreak bg-display-element py-2 ps-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
-  </div>
+  <div class="dialog-content">
+    <div class="input-style gap-2 col-12">
+      <p class="fs-6 text-black">Objective</p>
+      <p class="linebreak bg-display-element py-2 ps-2 fs-6 fw-normal text-black">{{ data.objectiveTitle }}</p>
+    </div>
 
   <form [formGroup]="completeForm">
     <div class="input-style gap-2 col-12">
@@ -41,20 +42,21 @@
       </div>
     </div>
 
-    <div class="input-style gap-2 col-12">
-      <label for="comment" class="text-black">Kommentar (optional)</label>
-      <textarea
-        class="big-dialog-form-field"
-        formControlName="comment"
-        [attr.data-testId]="'completeComment'"
-        [ngClass]="formInputCheck(completeForm, 'comment')"
-        id="comment"
-      ></textarea>
-      <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
-        <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
-      </mat-error>
-    </div>
-  </form>
+      <div class="input-style gap-2 col-12">
+        <label for="comment" class="text-black">Kommentar (optional)</label>
+        <textarea
+          class="big-dialog-form-field"
+          formControlName="comment"
+          [attr.data-testId]="'completeComment'"
+          [ngClass]="formInputCheck(completeForm, 'comment')"
+          id="comment"
+        ></textarea>
+        <mat-error *ngIf="hasFormFieldErrors(completeForm, 'comment')">
+          <span>{{ getErrorMessage("MAX_VALUE", "Kommentar", 4096) }}</span>
+        </mat-error>
+      </div>
+    </form>
+  </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>

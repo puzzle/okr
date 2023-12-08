@@ -47,7 +47,7 @@ jobs:
               -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
               -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
               -p 8544:8080 \
-              quay.io/keycloak/keycloak:22.0.5 \
+              quay.io/keycloak/keycloak:23.0.1 \
               start-dev --import-realm
 
       - name: start backend

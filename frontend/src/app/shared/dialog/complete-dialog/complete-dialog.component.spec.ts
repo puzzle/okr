@@ -39,10 +39,14 @@ describe('CompleteDialogComponent', () => {
   });
 
   it('should set right classes on init', () => {
-    let elements = document.querySelectorAll('.card-hover');
+    let elements = document.querySelectorAll('.valuation-card');
+    let successful = document.querySelectorAll('.card-hover-successful');
+    let notSuccessful = document.querySelectorAll('.card-hover-not-successful');
     let submitButton = document.querySelectorAll('button')[1];
 
     expect(elements.length).toEqual(2);
+    expect(successful.length).toEqual(1);
+    expect(notSuccessful.length).toEqual(1);
     expect(component.completeForm.value.isSuccessful).toBeNull();
     expect(component.completeForm.value.comment).toBeNull();
     expect(component.completeForm.invalid).toBeTruthy();
@@ -70,15 +74,15 @@ describe('CompleteDialogComponent', () => {
   it('should set active and non-active classes on switch', () => {
     component.switchSuccessState('successful');
     fixture.detectChanges();
-    let nonActiveElement = document.querySelector('.non-active');
+    let nonActiveElement = document.querySelector('.active-successful');
 
-    expect(nonActiveElement!.innerHTML).toContain('Objective nicht erreicht');
+    expect(nonActiveElement!.innerHTML).toContain('Objective erreicht');
 
     component.switchSuccessState('notSuccessful');
     fixture.detectChanges();
-    nonActiveElement = document.querySelector('.non-active');
+    nonActiveElement = document.querySelector('.active-not-successful');
 
-    expect(nonActiveElement!.innerHTML).toContain('Objective erreicht');
+    expect(nonActiveElement!.innerHTML).toContain('Objective nicht erreicht');
   });
 
   it('should close dialog with right data', () => {

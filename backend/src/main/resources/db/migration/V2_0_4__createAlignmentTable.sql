@@ -1,4 +1,4 @@
-create sequence if not exists sequence_alignment;
+create sequence if not exists sequence_alignment INCREMENT 50;
 
 create table if not exists alignment
 (

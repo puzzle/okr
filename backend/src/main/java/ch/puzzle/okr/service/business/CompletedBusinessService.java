@@ -3,9 +3,8 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Completed;
 import ch.puzzle.okr.service.persistence.CompletedPersistenceService;
 import ch.puzzle.okr.service.validation.CompletedValidationService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Service
 public class CompletedBusinessService {

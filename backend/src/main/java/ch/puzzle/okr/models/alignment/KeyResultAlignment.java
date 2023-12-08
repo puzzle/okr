@@ -2,9 +2,7 @@ package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity

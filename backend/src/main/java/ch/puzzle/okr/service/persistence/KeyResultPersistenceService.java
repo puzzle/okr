@@ -2,9 +2,9 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.repository.KeyResultRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT;

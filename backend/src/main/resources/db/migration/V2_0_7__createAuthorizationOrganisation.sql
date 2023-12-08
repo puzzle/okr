@@ -1,4 +1,4 @@
-create sequence if not exists sequence_organisation;
+create sequence if not exists sequence_organisation INCREMENT 50;
 Alter SEQUENCE sequence_organisation RESTART WITH 1000;
 
 create table if not exists organisation

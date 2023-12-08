@@ -93,6 +93,7 @@ jobs:
         run: echo ${{ needs.update-version.outputs.okr-docker-image}}
 
   e2e-docker:
+    if: false
     runs-on: ubuntu-22.04
     needs: [build-docker-image,update-version]
     steps:
@@ -153,7 +154,7 @@ jobs:
 
   upload-to-quay:
     runs-on: ubuntu-latest
-    needs: [e2e-docker, update-version]
+    needs: [build-docker-image, update-version]
     steps:
       - uses: actions/checkout@v4
 

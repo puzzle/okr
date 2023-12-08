@@ -49,7 +49,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ needs.update-version.outputs.okr-docker-image}}
+          tags: ${{ steps.store-version.outputs.version }}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
@@ -61,7 +61,7 @@ jobs:
           path: /tmp/okr-docker-image.tar
 
       - name: print imagetags
-        run: echo ${{ needs.update-version.outputs.okr-docker-image}}
+        run: echo ${{ steps.store-version.outputs.version }}
 
   e2e-docker:
     runs-on: ubuntu-22.04
@@ -93,7 +93,7 @@ jobs:
           -e SPRING_DATASOURCE_USERNAME=user \
           -e SPRING_DATASOURCE_PASSWORD=sa \
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ needs.update-version.outputs.okr-docker-image}} &
+          ${{ steps.store-version.outputs.version }} &
 
       - name: run keycloak docker
         run: |

@@ -13,10 +13,10 @@
       <label class="text-black">Bewertung</label>
       <div class="d-flex gap-3">
         <div
-          class="successful w-50 valuation-card card-hover"
+          class="successful w-50 valuation-card card-hover-successful"
           [ngClass]="{
             active: completeForm.value.isSuccessful == true,
-            'non-active': completeForm.value.isSuccessful === false
+            'non-active-successful': completeForm.value.isSuccessful === false
           }"
           (click)="switchSuccessState('successful')"
           (keydown.enter)="switchSuccessState('successful')"
@@ -26,10 +26,10 @@
           Objective erreicht
         </div>
         <div
-          class="not-successful w-50 valuation-card card-hover"
+          class="not-successful w-50 valuation-card card-hover-not-successful"
           [ngClass]="{
             active: completeForm.value.isSuccessful === false,
-            'non-active': completeForm.value.isSuccessful == true
+            'non-active-not-successful': completeForm.value.isSuccessful == true
           }"
           (click)="switchSuccessState('notSuccessful')"
           (keydown.enter)="switchSuccessState('notSuccessful')"

@@ -19,8 +19,8 @@
   font-weight: bold;
 }
 
-.card-hover:hover {
-  background-color: lightgray;
+.card-shadow {
+  color: white;
   box-shadow:
     0 0 0 0 rgba(0, 0, 0, 0.06),
     1px 1px 2px 0 rgba(0, 0, 0, 0.06),
@@ -28,6 +28,20 @@
     8px 6px 6px 0 rgba(0, 0, 0, 0.03),
     14px 11px 7px 0 rgba(0, 0, 0, 0.01),
     21px 18px 8px 0 rgba(0, 0, 0, 0);
+}
+
+.card-hover-successful:hover,
+.card-hover-successful:focus {
+  @extend .card-shadow;
+  background-color: #1e8a29;
+  outline: #1e8a29 solid 2px;
+}
+
+.card-hover-not-successful:hover,
+.card-hover-not-successful:focus {
+  @extend .card-shadow;
+  background-color: #ba3838;
+  outline: #ba3838 solid 2px;
 }
 
 .active {
@@ -40,13 +54,12 @@
   color: black;
 }
 
-.non-active:hover {
-  background-color: lightgray;
-  box-shadow:
-    0 0 0 0 rgba(0, 0, 0, 0.06),
-    1px 1px 2px 0 rgba(0, 0, 0, 0.06),
-    3px 3px 4px 0 rgba(0, 0, 0, 0.05),
-    8px 6px 6px 0 rgba(0, 0, 0, 0.03),
-    14px 11px 7px 0 rgba(0, 0, 0, 0.01),
-    21px 18px 8px 0 rgba(0, 0, 0, 0);
+.non-active-successful:hover {
+  @extend .card-shadow;
+  background-color: #1e8a29;
+}
+
+.non-active-not-successful:hover {
+  @extend .card-shadow;
+  background-color: #ba3838;
 }

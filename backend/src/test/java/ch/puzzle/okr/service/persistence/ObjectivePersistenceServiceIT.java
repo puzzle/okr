@@ -85,7 +85,7 @@ class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.findObjectiveById(321L, authorizationUser,
                         ObjectivePersistenceServiceIT.exception));
 
-        assertEquals(UNAUTHORIZED, findObjectiveException.getStatus());
+        assertEquals(UNAUTHORIZED, findObjectiveException.getStatusCode());
         assertEquals(REASON, findObjectiveException.getReason());
     }
 
@@ -97,7 +97,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
 
-        assertEquals(BAD_REQUEST, findObjectiveException.getStatus());
+        assertEquals(BAD_REQUEST, findObjectiveException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(findObjectiveException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(findObjectiveException.getReason()));
     }
@@ -116,7 +116,7 @@ class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.findObjectiveByKeyResultId(321L, authorizationUser,
                         ObjectivePersistenceServiceIT.exception));
 
-        assertEquals(UNAUTHORIZED, objectiveByKeyResultException.getStatus());
+        assertEquals(UNAUTHORIZED, objectiveByKeyResultException.getStatusCode());
         assertEquals(REASON, objectiveByKeyResultException.getReason());
     }
 
@@ -128,7 +128,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
 
-        assertEquals(BAD_REQUEST, objectiveByKeyResultException.getStatus());
+        assertEquals(BAD_REQUEST, objectiveByKeyResultException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(objectiveByKeyResultException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(objectiveByKeyResultException.getReason()));
     }
@@ -147,7 +147,7 @@ class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.findObjectiveByCheckInId(321L, authorizationUser,
                         ObjectivePersistenceServiceIT.exception));
 
-        assertEquals(UNAUTHORIZED, objectiveByCheckInException.getStatus());
+        assertEquals(UNAUTHORIZED, objectiveByCheckInException.getStatusCode());
         assertEquals(REASON, objectiveByCheckInException.getReason());
     }
 
@@ -159,7 +159,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto(ATTRIBUTE_NULL, List.of("ID", OBJECTIVE)));
 
-        assertEquals(BAD_REQUEST, objectiveByCheckInException.getStatus());
+        assertEquals(BAD_REQUEST, objectiveByCheckInException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(objectiveByCheckInException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(objectiveByCheckInException.getReason()));
     }
@@ -198,7 +198,7 @@ class ObjectivePersistenceServiceIT {
                 () -> objectivePersistenceService.save(updateObjective));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of(OBJECTIVE)));
 
-        assertEquals(UNPROCESSABLE_ENTITY, objectiveSaveException.getStatus());
+        assertEquals(UNPROCESSABLE_ENTITY, objectiveSaveException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(objectiveSaveException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(objectiveSaveException.getReason()));
     }
@@ -215,7 +215,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto(MODEL_WITH_ID_NOT_FOUND, List.of(OBJECTIVE, "200")));
 
-        assertEquals(NOT_FOUND, findObjectiveException.getStatus());
+        assertEquals(NOT_FOUND, findObjectiveException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(findObjectiveException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(findObjectiveException.getReason()));
     }
@@ -229,7 +229,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto(MODEL_WITH_ID_NOT_FOUND, List.of("Quarter", "12")));
 
-        assertEquals(NOT_FOUND, countByTeamException.getStatus());
+        assertEquals(NOT_FOUND, countByTeamException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(countByTeamException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(countByTeamException.getReason()));
 
@@ -240,7 +240,7 @@ class ObjectivePersistenceServiceIT {
 
         List<ErrorDto> expectedErrorsTeam = List.of(new ErrorDto(MODEL_WITH_ID_NOT_FOUND, List.of("Team", "500")));
 
-        assertEquals(NOT_FOUND, exceptionTeam.getStatus());
+        assertEquals(NOT_FOUND, exceptionTeam.getStatusCode());
         assertThat(expectedErrorsTeam).hasSameElementsAs(exceptionTeam.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrorsTeam).contains(exceptionTeam.getReason()));
 

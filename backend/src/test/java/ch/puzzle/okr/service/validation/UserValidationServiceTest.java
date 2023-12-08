@@ -148,7 +148,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -169,7 +169,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -189,7 +189,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -201,7 +201,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -215,7 +215,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -229,7 +229,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -243,7 +243,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -257,7 +257,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -271,7 +271,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -293,7 +293,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -308,7 +308,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -324,7 +324,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "7", "1")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -338,7 +338,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -352,7 +352,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -366,7 +366,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -380,7 +380,7 @@ class UserValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(3L, user2));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -394,7 +394,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_VALID", List.of("email", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -413,7 +413,7 @@ class UserValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("TOKEN_NULL", List.of()));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -434,7 +434,7 @@ class UserValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

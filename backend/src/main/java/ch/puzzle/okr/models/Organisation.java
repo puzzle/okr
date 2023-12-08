@@ -1,8 +1,10 @@
 package ch.puzzle.okr.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +13,7 @@ public class Organisation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_organisation")
+    @SequenceGenerator(name = "sequence_organisation", allocationSize = 1)
     private Long id;
 
     @Version

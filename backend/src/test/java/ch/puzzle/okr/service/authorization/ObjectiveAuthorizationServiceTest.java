@@ -47,7 +47,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveAuthorizationService.createEntity(newObjective));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -82,7 +82,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveAuthorizationService.getEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -106,7 +106,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveAuthorizationService.updateEntity(id, newObjective));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -135,7 +135,7 @@ class ObjectiveAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveAuthorizationService.deleteEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 }

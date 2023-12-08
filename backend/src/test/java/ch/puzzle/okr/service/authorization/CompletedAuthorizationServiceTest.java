@@ -51,7 +51,7 @@ class CompletedAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> completedAuthorizationService.createCompleted(newCompleted));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -71,7 +71,7 @@ class CompletedAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> completedAuthorizationService.deleteCompletedByObjectiveId(objectiveId));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 }

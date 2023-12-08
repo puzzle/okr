@@ -70,7 +70,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -91,7 +91,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -103,7 +103,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNotNull(team1.getId());
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -116,7 +116,7 @@ class TeamValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ALREADY_EXISTS_SAME_NAME", List.of("Team", "Team null")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -128,7 +128,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -143,7 +143,7 @@ class TeamValidationServiceTest {
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("name", "Team")),
                 new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("name", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -156,7 +156,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(teamWithIdNull.getId());
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -168,7 +168,7 @@ class TeamValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(null);
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -183,7 +183,7 @@ class TeamValidationServiceTest {
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("name", "Team")),
                 new ErrorDto("ATTRIBUTE_NOT_BLANK", List.of("name", "Team")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

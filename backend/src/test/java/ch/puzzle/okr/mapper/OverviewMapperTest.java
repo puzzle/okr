@@ -187,11 +187,11 @@ class OverviewMapperTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> overviewMapper.toDto(overviews));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("KEY_RESULT_CONVERSION", List.of("unknown")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

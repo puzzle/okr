@@ -122,7 +122,7 @@ class UserBusinessServiceTest {
             userBusinessService.getOrCreateUser(newUser);
         });
 
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());
     }
 }

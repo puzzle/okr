@@ -311,7 +311,7 @@ class KeyResultBusinessServiceTest {
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "KeyResult with id 1 not found"));
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> keyResultBusinessService.getAllCheckInsByKeyResult(1L));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertEquals("KeyResult with id 1 not found", exception.getReason());
     }
 

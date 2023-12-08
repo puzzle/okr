@@ -1,7 +1,10 @@
 package ch.puzzle.okr.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,6 +12,7 @@ import java.util.Objects;
 public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
+    @SequenceGenerator(name = "sequence_quarter", allocationSize = 1)
     private Long id;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)

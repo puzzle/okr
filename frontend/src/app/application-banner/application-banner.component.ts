@@ -37,6 +37,7 @@ export class ApplicationBannerComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.resizeObserver.observe(this.okrBanner.nativeElement);
+    this.changeHeaderAppearance();
   }
 
   changeHeaderAppearance() {

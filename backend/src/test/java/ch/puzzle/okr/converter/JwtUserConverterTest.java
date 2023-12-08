@@ -45,7 +45,7 @@ class JwtUserConverterTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("CONVERT_TOKEN", List.of("User")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

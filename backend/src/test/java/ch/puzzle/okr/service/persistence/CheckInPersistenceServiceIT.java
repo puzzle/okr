@@ -98,7 +98,7 @@ class CheckInPersistenceServiceIT {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("DATA_HAS_BEEN_UPDATED", List.of("Check-in")));
 
-        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatus());
+        assertEquals(UNPROCESSABLE_ENTITY, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 

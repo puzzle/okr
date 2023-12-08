@@ -178,7 +178,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, "KeyResult"));
 
-        assertEquals(UNAUTHORIZED, actualException.getStatus());
+        assertEquals(UNAUTHORIZED, actualException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(actualException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(actualException.getReason()));
     }
@@ -210,7 +210,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_READ, "Check-in"));
 
-        assertEquals(UNAUTHORIZED, actualException.getStatus());
+        assertEquals(UNAUTHORIZED, actualException.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(actualException.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(actualException.getReason()));
     }
@@ -274,7 +274,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "Objective"));
 
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -290,7 +290,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_WRITE, "Objective"));
 
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -423,7 +423,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_DELETE, "KeyResult"));
 
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -443,7 +443,7 @@ class AuthorizationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(ErrorDto.of(NOT_AUTHORIZED_TO_DELETE, "Check-in"));
 
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

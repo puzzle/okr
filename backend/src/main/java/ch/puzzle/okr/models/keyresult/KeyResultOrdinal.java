@@ -1,9 +1,10 @@
 package ch.puzzle.okr.models.keyresult;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 import static ch.puzzle.okr.Constants.KEY_RESULT_TYPE_ORDINAL;

@@ -60,7 +60,7 @@ class CheckInAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInAuthorizationService.getEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -82,7 +82,7 @@ class CheckInAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInAuthorizationService.createEntity(checkInMetric));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -106,7 +106,7 @@ class CheckInAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInAuthorizationService.updateEntity(id, checkInMetric));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 
@@ -128,7 +128,7 @@ class CheckInAuthorizationServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> checkInAuthorizationService.deleteEntityById(id));
-        assertEquals(UNAUTHORIZED, exception.getStatus());
+        assertEquals(UNAUTHORIZED, exception.getStatusCode());
         assertEquals(reason, exception.getReason());
     }
 }

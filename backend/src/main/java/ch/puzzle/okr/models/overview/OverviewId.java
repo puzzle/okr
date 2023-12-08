@@ -1,6 +1,7 @@
 package ch.puzzle.okr.models.overview;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
+
 import java.io.Serializable;
 import java.util.Objects;
 

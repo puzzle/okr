@@ -5,11 +5,9 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.WriteableInterface;
 import ch.puzzle.okr.models.keyresult.KeyResult;
 
-import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -19,6 +17,7 @@ import java.util.Objects;
 public abstract class CheckIn implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_check_in")
+    @SequenceGenerator(name = "sequence_check_in", allocationSize = 1)
     private Long id;
 
     @Version

@@ -1,16 +1,21 @@
 package ch.puzzle.okr;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Filter;
+import java.util.logging.LogRecord;
 
-@Component
-public class ForwardFilter implements Filter {
+public class ForwardFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
     private final String[] allowedRoutes = { "/keyresult", "/objective" };

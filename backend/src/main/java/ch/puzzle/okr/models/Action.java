@@ -2,15 +2,16 @@ package ch.puzzle.okr.models;
 
 import ch.puzzle.okr.models.keyresult.KeyResult;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
 public class Action implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
+    @SequenceGenerator(name = "sequence_action", allocationSize = 1)
     private Long id;
 
     @Version

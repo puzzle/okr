@@ -104,7 +104,7 @@ class KeyResultValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -124,7 +124,7 @@ class KeyResultValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -136,7 +136,7 @@ class KeyResultValidationServiceTest {
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("ID", "KeyResult")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -151,7 +151,7 @@ class KeyResultValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(keyResult));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -169,7 +169,7 @@ class KeyResultValidationServiceTest {
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("objective", "KeyResult")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("baseline", "KeyResult")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("unit", "KeyResult")));
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -196,7 +196,7 @@ class KeyResultValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(1L, null));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("MODEL_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("MODEL_NULL", List.of("KeyResult"))), exception.getErrors());
     }
@@ -209,7 +209,7 @@ class KeyResultValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenModelIsNull(keyResultOrdinal);
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_NULL", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult"))), exception.getErrors());
     }
@@ -223,7 +223,7 @@ class KeyResultValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(keyResultMetric.getId());
         verify(validator, times(1)).throwExceptionWhenIdHasChanged(1L, keyResultMetric.getId());
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertEquals("ATTRIBUTE_CHANGED", exception.getReason());
         assertEquals(List.of(new ErrorDto("ATTRIBUTE_CHANGED", List.of("ID", "1", "5"))), exception.getErrors());
     }
@@ -240,7 +240,7 @@ class KeyResultValidationServiceTest {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(id, keyResult));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(errors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(errors).contains(exception.getReason()));
     }
@@ -262,7 +262,7 @@ class KeyResultValidationServiceTest {
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "KeyResult")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("owner", "KeyResult")));
 
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }
@@ -283,7 +283,7 @@ class KeyResultValidationServiceTest {
         verify(validator, times(1)).throwExceptionWhenIdIsNull(null);
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("ID", "KeyResult")));
-        assertEquals(BAD_REQUEST, exception.getStatus());
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

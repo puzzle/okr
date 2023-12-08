@@ -81,7 +81,7 @@ class ObjectiveBusinessServiceTest {
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> objectiveBusinessService.getEntityById(6L));
-        assertEquals(NOT_FOUND, exception.getStatus());
+        assertEquals(NOT_FOUND, exception.getStatusCode());
         assertEquals("Objective with id 6 not found", exception.getReason());
     }
 

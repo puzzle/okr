@@ -10,7 +10,6 @@ jobs:
   extract-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions
       - name: Extract Maven project version
         run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec | sed 's/-SNAPSHOT$//')" >> $GITHUB_OUTPUT
         id: store-version

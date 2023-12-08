@@ -9,10 +9,6 @@ mat-select {
   padding: 0.437rem 0.625rem 0.375rem 0.2rem !important;
 }
 
-*:focus {
-  outline: $pz-dark-blue solid 2px;
-}
-
 mat-select:hover {
   outline: 1px solid #5d6974;
   overflow-y: visible;

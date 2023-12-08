@@ -148,7 +148,15 @@ input[type="text"] {
   box-sizing: content-box;
 }
 
-*:focus {
+input:focus,
+textarea:focus,
+select:focus,
+mat-checkbox:focus,
+mat-chip:focus,
+mat-radio-button:focus,
+app-objective-column:focus,
+app-keyresult:focus,
+.focus-outline:focus {
   outline: $pz-dark-blue solid 2px;
 }
 

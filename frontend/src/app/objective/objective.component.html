@@ -23,7 +23,7 @@
       <button
         #menuButton
         *ngIf="isWritable"
-        class="icon-button three-dot-menu"
+        class="icon-button three-dot-menu focus-outline"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation(); getMenu()"
         (keydown.enter)="$event.stopPropagation()"

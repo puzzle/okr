@@ -3,7 +3,7 @@
   (keydown.enter)="openObjectiveDetail()"
   *ngIf="objective$ | async as objective"
   [attr.data-testId]="'objective'"
-  class="objective rounded-3 bg-white w-100"
+  class="objective rounded-3 bg-white w-100 cursor-pointer focus-outline"
   tabindex="0"
 >
   <div class="row mx-1">
@@ -23,7 +23,7 @@
       <button
         #menuButton
         *ngIf="isWritable"
-        class="icon-button three-dot-menu"
+        class="icon-button three-dot-menu focus-outline"
         [matMenuTriggerFor]="objectiveMenu"
         (click)="$event.stopPropagation(); getMenu()"
         (keydown.enter)="$event.stopPropagation()"

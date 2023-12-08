@@ -240,8 +240,9 @@ function doUntil(selector: string, tab: () => void, limit: number = 100) {
 
 function changeConfidence(changeConfidence: boolean) {
   if (changeConfidence) {
-    cy.getByTestId('confidence-slider').realMouseDown();
-    cy.getByTestId('confidence-slider').realMouseUp();
+    cy.tabForward();
+    cy.tabForward();
+    cy.realPress('ArrowRight');
   }
 }
 

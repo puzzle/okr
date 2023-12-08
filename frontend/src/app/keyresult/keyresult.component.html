@@ -2,7 +2,7 @@
   (click)="$event.stopPropagation(); openDrawer()"
   (keydown.enter)="$event.stopPropagation(); openDrawer()"
   [attr.data-testId]="'key-result'"
-  class="key-result rounded-2 p-3 w-100"
+  class="key-result rounded-2 p-3 w-100 focus-outline"
   tabindex="0"
 >
   <h3 class="keyresult-title linebreak mb-2">{{ keyResult.title }}</h3>

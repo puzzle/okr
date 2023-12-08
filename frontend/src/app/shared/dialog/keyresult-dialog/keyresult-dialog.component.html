@@ -5,8 +5,12 @@
 </section>
 
 <mat-dialog-content>
-  <div class="d-flex flex-column scroll-shadows">
-    <app-key-result-form [keyResultForm]="keyResultForm" [keyResult]="data.keyResult"></app-key-result-form>
+  <div class="d-flex flex-column scroll-shadows" tabindex="-1">
+    <app-key-result-form
+      class="keyresult-form"
+      [keyResultForm]="keyResultForm"
+      [keyResult]="data.keyResult"
+    ></app-key-result-form>
   </div>
 </mat-dialog-content>
 

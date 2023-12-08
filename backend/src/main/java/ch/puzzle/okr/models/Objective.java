@@ -13,6 +13,7 @@ import java.util.Objects;
 public class Objective implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_objective")
+    @SequenceGenerator(name = "sequence_objective", allocationSize = 1)
     private Long id;
 
     @Version

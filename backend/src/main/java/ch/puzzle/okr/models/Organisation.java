@@ -13,6 +13,7 @@ public class Organisation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_organisation")
+    @SequenceGenerator(name = "sequence_organisation", allocationSize = 1)
     private Long id;
 
     @Version

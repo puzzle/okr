@@ -17,6 +17,7 @@ import java.util.Objects;
 public abstract class CheckIn implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_check_in")
+    @SequenceGenerator(name = "sequence_check_in", allocationSize = 1)
     private Long id;
 
     @Version

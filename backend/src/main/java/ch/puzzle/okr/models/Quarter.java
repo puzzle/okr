@@ -12,6 +12,7 @@ import java.util.Objects;
 public class Quarter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_quarter")
+    @SequenceGenerator(name = "sequence_quarter", allocationSize = 1)
     private Long id;
 
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)

@@ -1,13 +1,13 @@
-create sequence if not exists sequence_key_result INCREMENT 50;
-create sequence if not exists sequence_check_in INCREMENT 50;
-create sequence if not exists sequence_objective INCREMENT 50;
-create sequence if not exists sequence_person INCREMENT 50;
-create sequence if not exists sequence_quarter INCREMENT 50;
-create sequence if not exists sequence_team INCREMENT 50;
-create sequence if not exists sequence_alignment INCREMENT 50;
-create sequence if not exists sequence_completed INCREMENT 50;
-create sequence if not exists sequence_organisation INCREMENT 50;
-create sequence if not exists sequence_action INCREMENT 50;
+create sequence if not exists sequence_key_result;
+create sequence if not exists sequence_check_in;
+create sequence if not exists sequence_objective;
+create sequence if not exists sequence_person;
+create sequence if not exists sequence_quarter;
+create sequence if not exists sequence_team;
+create sequence if not exists sequence_alignment;
+create sequence if not exists sequence_completed;
+create sequence if not exists sequence_organisation;
+create sequence if not exists sequence_action;
 
 create table if not exists person
 (

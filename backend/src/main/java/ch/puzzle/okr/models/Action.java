@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Action implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_action")
+    @SequenceGenerator(name = "sequence_action", allocationSize = 1)
     private Long id;
 
     @Version

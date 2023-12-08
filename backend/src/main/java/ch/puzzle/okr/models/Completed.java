@@ -9,6 +9,7 @@ import java.util.Objects;
 public class Completed {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_completed")
+    @SequenceGenerator(name = "sequence_completed", allocationSize = 1)
     private Long id;
 
     @Version

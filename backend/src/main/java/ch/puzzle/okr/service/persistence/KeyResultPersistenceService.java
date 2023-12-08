@@ -27,8 +27,11 @@ public class KeyResultPersistenceService extends PersistenceBase<KeyResult, Long
 
     @Transactional
     public KeyResult recreateEntity(Long id, KeyResult keyResult) {
+        System.out.println(keyResult.toString());
+        System.out.println("*".repeat(30));
         // delete entity in order to prevent duplicates in case of changed keyResultType
         deleteById(id);
+        System.out.printf("reached delete entity with %d", id);
         return save(keyResult);
     }
 

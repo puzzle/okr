@@ -18,6 +18,7 @@ import java.util.Objects;
 public abstract class KeyResult implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_key_result")
+    @SequenceGenerator(name = "sequence_key_result", allocationSize = 1)
     private Long id;
 
     @Version

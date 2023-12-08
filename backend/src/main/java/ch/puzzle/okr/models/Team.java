@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Team implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_team")
+    @SequenceGenerator(name = "sequence_team", allocationSize = 1)
     private Long id;
 
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)

@@ -13,6 +13,7 @@ import java.util.Objects;
 public class User implements WriteableInterface {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
+    @SequenceGenerator(name = "sequence_person", allocationSize = 1)
     private Long id;
 
     @Version

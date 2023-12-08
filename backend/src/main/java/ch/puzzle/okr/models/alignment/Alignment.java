@@ -13,6 +13,7 @@ public abstract class Alignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_alignment")
+    @SequenceGenerator(name = "sequence_alignment", allocationSize = 1)
     private Long id;
     @Version
     private int version;

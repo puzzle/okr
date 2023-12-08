@@ -33,10 +33,7 @@
             "stylePreprocessorOptions": {
               "includePaths": ["src/style", "src/assets"]
             },
-            "scripts": [
-              "node_modules/@puzzleitc/puzzle-shell/dist/bundle.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.min.js"]
           },
           "configurations": {
             "production": {

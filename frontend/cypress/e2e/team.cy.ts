@@ -8,17 +8,17 @@ describe('OKR team e2e tests', () => {
     });
 
     it('Select teams from filter', () => {
-      cy.get('p:visible:contains("Puzzle ITC")').should('have.length', 1);
+      cy.get('h1:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Alle")').click();
       cy.contains('Alle');
-      cy.get('p:visible:contains("/BBT")').should('have.length', 1);
+      cy.get('h1:visible:contains("/BBT")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("/BBT")').should('have.length', 1);
-      cy.get('p:visible:contains("Puzzle ITC")').should('have.length', 1);
+      cy.get('h1:visible:contains("Puzzle ITC")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("Puzzle ITC")').should('have.length', 1);
-      cy.get('p:visible:contains("LoremIpsum")').should('have.length', 1);
+      cy.get('h1:visible:contains("LoremIpsum")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("LoremIpsum")').should('have.length', 1);
-      cy.get('p:visible:contains("we are cube")').should('have.length', 1);
+      cy.get('h1:visible:contains("we are cube")').should('have.length', 1);
       cy.get('mat-chip:visible:contains("we are cube")').should('have.length', 1);
 
       cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
@@ -26,10 +26,10 @@ describe('OKR team e2e tests', () => {
       cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
 
       cy.get('mat-chip:visible:contains("/BBT")').click();
-      cy.get('p:visible:contains("/BBT")').should('exist');
-      cy.get('p:visible:contains("Puzzle ITC")').should('not.exist');
-      cy.get('p:visible:contains("LoremIpsum")').should('not.exist');
-      cy.get('p:visible:contains("we are cube")').should('not.exist');
+      cy.get('h1:visible:contains("/BBT")').should('exist');
+      cy.get('h1:visible:contains("Puzzle ITC")').should('not.exist');
+      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
+      cy.get('h1:visible:contains("we are cube")').should('not.exist');
       cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
       cy.get('mat-chip:visible:contains("Puzzle ITC")')
         .should('have.css', 'background-color')
@@ -43,10 +43,10 @@ describe('OKR team e2e tests', () => {
       cy.getByTestId('team-filter-alle').should('have.css', 'background-color').and('eq', 'rgb(255, 255, 255)');
 
       cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
-      cy.get('p:visible:contains("Puzzle ITC")').should('exist');
-      cy.get('p:visible:contains("/BBT")').should('exist');
-      cy.get('p:visible:contains("LoremIpsum")').should('not.exist');
-      cy.get('p:visible:contains("we are cube")').should('not.exist');
+      cy.get('h1:visible:contains("Puzzle ITC")').should('exist');
+      cy.get('h1:visible:contains("/BBT")').should('exist');
+      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
+      cy.get('h1:visible:contains("we are cube")').should('not.exist');
 
       cy.get('mat-chip:visible:contains("/BBT")').should('have.css', 'background-color').and('eq', 'rgb(30, 90, 150)');
 
@@ -113,7 +113,7 @@ describe('OKR team e2e tests', () => {
       cy.get('mat-chip:visible:contains("we are cube")')
         .should('have.css', 'background-color')
         .and('eq', 'rgb(30, 90, 150)');
-      cy.get('p:visible:contains("LoremIpsum")').should('not.exist');
+      cy.get('h1:visible:contains("LoremIpsum")').should('not.exist');
     });
   });
 });

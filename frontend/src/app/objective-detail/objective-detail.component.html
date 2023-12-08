@@ -2,7 +2,7 @@
   <ng-container *ngIf="(objective$ | async)?.id && (objective$ | async) as objective; else spinner">
     <div *ngIf="objective" class="d-flex flex-column">
       <div class="w-100 d-flex justify-content-between align-items-center mb-3">
-        <span class="title">{{ objective.title }}</span>
+        <h2 class="title">{{ objective.title }}</h2>
         <button
           class="d-flex align-items-center justify-content-center"
           mat-icon-button

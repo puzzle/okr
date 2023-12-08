@@ -2,7 +2,7 @@
   <ng-container *ngIf="(keyResult$ | async)?.id && (keyResult$ | async) as keyResult; else spinner">
     <div *ngIf="keyResult" class="d-flex flex-column">
       <div class="w-100 d-flex justify-content-between align-items-center mb-3">
-        <span class="title">{{ keyResult.title }}</span>
+        <h3 class="title">{{ keyResult.title }}</h3>
         <button class="d-flex" mat-icon-button (click)="backToOverview()" [attr.data-testId]="'close-drawer'">
           <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
         </button>

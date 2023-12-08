@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.header.writers.*;
 
 @EnableWebSecurity
@@ -20,6 +21,7 @@ public class SecurityConfig {
     @Bean
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         setHeaders(http);
         logger.debug("*** apiSecurityFilterChain reached");
         return http.authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated())

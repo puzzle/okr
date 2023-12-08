@@ -10,6 +10,6 @@ export class QuarterService {
   constructor(private http: HttpClient) {}
 
   getAllQuarters(): Observable<Quarter[]> {
-    return this.http.get<Quarter[]>('/api/v1/quarters/');
+    return this.http.get<Quarter[]>('/api/v1/quarters');
   }
 }

@@ -2,12 +2,12 @@ package ch.puzzle.okr.models.overview;
 
 import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.WriteableInterface;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Entity

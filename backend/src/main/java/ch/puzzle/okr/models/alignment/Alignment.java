@@ -2,8 +2,8 @@ package ch.puzzle.okr.models.alignment;
 
 import ch.puzzle.okr.models.Objective;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity

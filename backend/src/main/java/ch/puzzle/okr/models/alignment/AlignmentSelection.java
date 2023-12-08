@@ -1,9 +1,9 @@
 package ch.puzzle.okr.models.alignment;
 
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity

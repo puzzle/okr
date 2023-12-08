@@ -1,11 +1,11 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import jakarta.persistence.TypedQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 import static ch.puzzle.okr.models.State.*;

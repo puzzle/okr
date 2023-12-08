@@ -1,3 +1,8 @@
+div,
+div:hover {
+  outline: none;
+}
+
 .commentary-field {
   resize: none;
   padding: 0.625rem;
@@ -20,7 +25,6 @@
 }
 
 .card-shadow {
-  color: white;
   box-shadow:
     0 0 0 0 rgba(0, 0, 0, 0.06),
     1px 1px 2px 0 rgba(0, 0, 0, 0.06),
@@ -34,22 +38,28 @@
 .card-hover-successful:focus {
   @extend .card-shadow;
   background-color: #1e8a29;
-  outline: #1e8a29 solid 2px;
+  color: white;
 }
 
 .card-hover-not-successful:hover,
 .card-hover-not-successful:focus {
   @extend .card-shadow;
   background-color: #ba3838;
-  outline: #ba3838 solid 2px;
-}
-
-.active {
-  background-color: #1e5a96;
   color: white;
 }
 
-.non-active {
+.active-successful {
+  background-color: #1e8a29;
+  color: white;
+}
+
+.active-not-successful {
+  background-color: #ba3838;
+  color: white;
+}
+
+.non-active-successful,
+.non-active-not-successful {
   background-color: white;
   color: black;
 }

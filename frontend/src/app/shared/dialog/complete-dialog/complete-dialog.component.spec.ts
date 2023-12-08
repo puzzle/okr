@@ -74,13 +74,13 @@ describe('CompleteDialogComponent', () => {
   it('should set active and non-active classes on switch', () => {
     component.switchSuccessState('successful');
     fixture.detectChanges();
-    let nonActiveElement = document.querySelector('.active');
+    let nonActiveElement = document.querySelector('.active-successful');
 
     expect(nonActiveElement!.innerHTML).toContain('Objective erreicht');
 
     component.switchSuccessState('notSuccessful');
     fixture.detectChanges();
-    nonActiveElement = document.querySelector('.active');
+    nonActiveElement = document.querySelector('.active-not-successful');
 
     expect(nonActiveElement!.innerHTML).toContain('Objective nicht erreicht');
   });

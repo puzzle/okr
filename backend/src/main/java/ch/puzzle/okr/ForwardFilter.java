@@ -8,19 +8,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Filter;
 import java.util.logging.LogRecord;
 
-@Component
-public class ForwardFilter implements Filter {
+public class ForwardFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
     private final String[] allowedRoutes = { "/keyresult", "/objective" };
 
-    // TOdo make sure this methis is actually used
+    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
@@ -41,10 +41,5 @@ public class ForwardFilter implements Filter {
         }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);
-    }
-
-    @Override
-    public boolean isLoggable(LogRecord record) {
-        return false;
     }
 }

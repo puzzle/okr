@@ -19,6 +19,7 @@ import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
 import { OrganisationState } from './types/enums/OrganisationState';
 import { Organisation } from './types/model/Organisation';
+import { Dashboard } from './types/model/Dashboard';
 
 export const organisationActive = {
   id: 1,
@@ -241,6 +242,43 @@ export const objectiveMin: ObjectiveMin = {
   quarter: quarterMin,
   keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
 } as ObjectiveMin;
+
+export const objectiveResponse1: any = {
+  id: 101,
+  version: 1,
+  title: 'Increase Environment Engagement',
+  state: 'ONGOING',
+  quarter: quarterMin,
+  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+};
+
+export const objectiveResponse2: any = {
+  id: 102,
+  version: 1,
+  title: 'Increase Social Engagement',
+  state: 'DRAFT',
+  quarter: quarterMin,
+  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+};
+
+export const objectiveResponse3: any = {
+  id: 103,
+  version: 1,
+  title: 'Increase Member Engagement',
+  state: 'NOTSUCCESSFUL',
+  quarter: quarterMin,
+  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+};
+
+export const objectiveResponse4: any = {
+  id: 104,
+  version: 1,
+  title: 'Increase Company Engagement',
+  state: 'SUCCESSFUL',
+  quarter: quarterMin,
+  keyResults: [keyResultMetricMin, keyResultOrdinalMin] as KeyresultMin[],
+};
+
 export const overViewEntity1: OverviewEntity = {
   team: teamMin1,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
@@ -251,6 +289,23 @@ export const overViewEntity2: OverviewEntity = {
   team: teamMin2,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
   writable: true,
+};
+
+export const overViewEntityResponse1: any = {
+  team: team1,
+  objectives: [objectiveResponse1, objectiveResponse2],
+  writable: true,
+};
+
+export const overViewEntityResponse2: any = {
+  team: team2,
+  objectives: [objectiveResponse3, objectiveResponse4],
+  writable: false,
+};
+
+export const dashboard: Dashboard = {
+  overviews: [overViewEntityResponse1, overViewEntityResponse2],
+  adminAccess: true,
 };
 
 export const quarter: Quarter = {

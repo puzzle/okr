@@ -65,10 +65,10 @@ jobs:
         run: cd ./frontend && npm ci
 
       - name: Build frontend with Angular
-        run: cd ./frontend && npm run build:staging
+        run: cd ./frontend && npm run build
 
       - name: Build backend with Maven
-        run: mvn -B clean package --file pom.xml -P staging
+        run: mvn -B clean package --file pom.xml -P build-for-docker
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -243,7 +243,7 @@ jobs:
 
       - name: 'Push merged SBOM to dependency track'
         env:
-          PROJECT_NAME: okr
+          PROJECT_NAME: okr-staging
         run: |
           curl --verbose -s --location --request POST ${{ secrets.DEPENDENCY_TRACK_URL }} \
           --header "X-Api-Key: ${{ secrets.SECRET_OWASP_DT_KEY }}" \

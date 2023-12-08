@@ -1,4 +1,4 @@
-create sequence if not exists sequence_action ;
+create sequence if not exists sequence_action;
 ALTER SEQUENCE sequence_action RESTART WITH 1000;
 create table if not exists action
 (

@@ -1,14 +1,14 @@
-create sequence if not exists sequence_key_result ;
+create sequence if not exists sequence_key_result;
 
-create sequence if not exists sequence_measure ;
+create sequence if not exists sequence_measure;
 
-create sequence if not exists sequence_objective ;
+create sequence if not exists sequence_objective;
 
-create sequence if not exists sequence_person ;
+create sequence if not exists sequence_person;
 
-create sequence if not exists sequence_quarter ;
+create sequence if not exists sequence_quarter;
 
-create sequence if not exists sequence_team ;
+create sequence if not exists sequence_team;
 
 create table if not exists person
 (

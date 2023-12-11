@@ -59,8 +59,7 @@ class ForwardFilterTest {
     @Test
     void shouldFilterAuthPath() throws ServletException, IOException {
         // given
-        when(request.getRequestURI()).thenReturn("/state=''");
-        when(request.getParameter("state")).thenReturn("state");
+        when(request.getRequestURI()).thenReturn("/?state=''");
         when(request.getRequestDispatcher(anyString())).thenReturn(requestDispatcher);
         doNothing().when(requestDispatcher).forward(Mockito.eq(request), Mockito.eq(response));
 

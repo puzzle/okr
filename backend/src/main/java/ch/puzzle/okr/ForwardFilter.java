@@ -28,6 +28,7 @@ public class ForwardFilter extends GenericFilterBean {
             logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
                     request.getRequestURI(), "/"));
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
+            return;
         }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));
         filterChain.doFilter(servletRequest, servletResponse);

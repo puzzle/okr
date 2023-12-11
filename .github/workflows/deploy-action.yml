@@ -9,6 +9,8 @@ jobs:
 
   extract-version:
     runs-on: ubuntu-latest
+    outputs:
+      okr-docker-image: ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-PROD
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,7 +54,7 @@ jobs:
         with:
           context: .
           file: docker/Dockerfile
-          tags: ${{ steps.store-version.outputs.version }}
+          tags: ${{ needs.extract-version.outputs.okr-docker-image}}
           load: true
           push: false
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
@@ -64,11 +66,11 @@ jobs:
           path: /tmp/okr-docker-image.tar
 
       - name: print imagetags
-        run: echo ${{ steps.store-version.outputs.version }}
+        run: echo ${{ needs.extract-version.outputs.okr-docker-image}}
 
   e2e-docker:
     runs-on: ubuntu-22.04
-    needs: build-docker-image
+    needs: [build-docker-image,extract-version]
     steps:
       - uses: actions/checkout@v4
 
@@ -96,7 +98,7 @@ jobs:
           -e SPRING_DATASOURCE_USERNAME=user \
           -e SPRING_DATASOURCE_PASSWORD=sa \
           -e SPRING_FLYWAY_LOCATIONS="classpath:db/h2-db/database-h2-schema,classpath:db/h2-db/data-test-h2" \
-          ${{ steps.store-version.outputs.version }} &
+          ${{ needs.extract-version.outputs.okr-docker-image}} &
 
       - name: run keycloak docker
         run: |
@@ -105,7 +107,7 @@ jobs:
           -e KEYCLOAK_ADMIN_PASSWORD=keycloak \
           -v ./docker/config/realm-export.json:/opt/keycloak/data/import/realm.json \
           -p 8544:8080 \
-          quay.io/keycloak/keycloak:22.0.0 \
+          quay.io/keycloak/keycloak:23.0.1 \
           start-dev --import-realm &
 
       - uses: abhi1693/setup-browser@v0.3.5
@@ -161,13 +163,8 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
-      - name: Build and push the Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: docker/Dockerfile
-          push: true
-          tags: ${{ secrets.TAG }}:${{ steps.store-version.outputs.version}}-PROD
+      - name: Push
+        run: docker push ${{ needs.extract-version.outputs.okr-docker-image}}
 
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v4
@@ -182,7 +179,7 @@ jobs:
         env:
           FILEPATH: ${{ vars.FILEPATH }}
           YAMLPATH: ${{ vars.YAML_PATH }}
-          NEWVALUE: ${{ vars.NEW_VALUE_URL }}:${{ steps.store-version.outputs.version}}-PROD
+          NEWVALUE: ${{ needs.extract-version.outputs.okr-docker-image}}
           VERSION: v4.25.2
           BINARY: yq_linux_amd64
         run: |

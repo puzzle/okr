@@ -18,7 +18,7 @@ import java.util.logging.LogRecord;
 public class ForwardFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
-    private final String[] allowedRoutes = { "/keyresult", "/objective" };
+    private final String[] allowedRoutes = { "/keyresult", "/objective", "keyresult", "objective" };
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)

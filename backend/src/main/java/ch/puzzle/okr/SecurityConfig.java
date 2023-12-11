@@ -26,6 +26,7 @@ public class SecurityConfig {
     @Order(1) // Must be First order! Otherwise unauthorized Requests are sent to Controllers
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         setHeaders(http);
+        http.addFilterAfter(new ForwardFilter(), BasicAuthenticationFilter.class);
         logger.debug("*** apiSecurityFilterChain reached");
         return http.cors(Customizer.withDefaults())
                 .authorizeHttpRequests(e -> e.requestMatchers("/api/**").authenticated().anyRequest().permitAll())

@@ -12,31 +12,22 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Filter;
-import java.util.logging.LogRecord;
 
 public class ForwardFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(ForwardFilter.class);
-    private final String[] allowedRoutes = { "/keyresult", "/objective" };
+    private final String[] allowedRoutes = { "/keyresult", "/objective", "/?state" };
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String path = request.getRequestURI();
-        if (request.getParameter("state") != null) {
+
+        if (Arrays.stream(this.allowedRoutes).anyMatch(path::startsWith)) {
             logger.info(String.format("Keycloak state parameter detected ====> make a forward from '%s' to '%s'",
                     request.getRequestURI(), "/"));
             servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
-            return;
-        }
-        if (Arrays.stream(this.allowedRoutes).anyMatch(path::startsWith)) {
-            servletRequest.getRequestDispatcher("/").forward(servletRequest, servletResponse);
-            return;
-        }
-        if (request.getParameter("error") != null) {
-            logger.error(String.format("error from keycloak %s", request.getParameter("error")));
             return;
         }
         logger.debug(String.format("====> pass through the filter '%s'", request.getRequestURI()));

@@ -43,8 +43,9 @@ describe('ScoringComponent', () => {
 
     it.each([
       [{ fail: 0, commit: 0, target: 0, className: null, borderClass: 'none' }],
-      [{ fail: 100, commit: 0, target: 0, className: 'score-red', borderClass: 'fail' }],
-      [{ fail: 100, commit: 100, target: 0, className: 'score-yellow', borderClass: 'commit' }],
+      [{ fail: 90, commit: 0, target: 0, className: 'score-red', borderClass: 'fail' }],
+      [{ fail: 100, commit: 0, target: 0, className: 'score-yellow', borderClass: 'commit' }],
+      [{ fail: 100, commit: 100, target: 0, className: 'score-green', borderClass: 'target' }],
       [{ fail: 100, commit: 100, target: 100, className: 'score-green', borderClass: 'target' }],
       [{ fail: 100, commit: 100, target: 101, className: 'score-stretch', borderClass: 'none' }],
     ])('should set styles correctly', async (object: any) => {

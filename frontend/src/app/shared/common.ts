@@ -35,7 +35,7 @@ export function optionalValue(param: object): { [p: string]: any } {
   );
 }
 export function isInValid(baseline: number, stretchGoal: number, value: number): boolean {
-  if (value < baseline && baseline < stretchGoal) return true;
+  if (value < baseline && baseline <= stretchGoal) return true;
   return value > baseline && baseline > stretchGoal;
 }
 
@@ -44,6 +44,7 @@ export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin):
   let baseline: number = +keyResultMetric.baseline;
   let stretchGoal: number = +keyResultMetric.stretchGoal;
   if (isInValid(baseline, stretchGoal, value)) return 0;
+  if (value == stretchGoal) return 100;
 
   return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
 }

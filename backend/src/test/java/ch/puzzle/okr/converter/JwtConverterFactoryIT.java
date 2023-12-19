@@ -31,4 +31,11 @@ public class JwtConverterFactoryIT {
         assertNotNull(converter);
         assertSame(converter, jwtConverterFactory.getJwtUserConverter());
     }
+
+    @Test
+    void getJwtTenantConverter() {
+        var converter = jwtConverterFactory.getJwtTenantConverter();
+        assertNotNull(converter);
+        assertSame(converter, jwtConverterFactory.getJwtTenantConverter());
+    }
 }

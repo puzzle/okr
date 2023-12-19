@@ -4,6 +4,10 @@ import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.CollectionUtils;
 
@@ -20,6 +24,7 @@ public class TestHelper {
     private static final String LASTNAME = "Kaufmann";
     private static final String USERNAME = "bkaufmann";
     private static final String EMAIL = "kaufmann@puzzle.ch";
+    private static final String ISS = "http://localhost:8544/realms/pitc";
 
     public static User defaultUser(Long id) {
         return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withUsername(USERNAME)
@@ -49,19 +54,19 @@ public class TestHelper {
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken(USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"));
+        return mockJwtToken(USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"), ISS);
     }
 
-    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email) {
-        return mockJwtToken(username, firstname, lastname, email, List.of());
+    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email, String iss) {
+        return mockJwtToken(username, firstname, lastname, email, List.of(), iss);
     }
 
     public static Jwt mockJwtToken(User user, List<String> roles) {
-        return mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail(), roles);
+        return mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail(), roles, ISS);
     }
 
     public static Jwt mockJwtToken(String username, String firstname, String lastname, String email,
-            List<String> roles) {
+            List<String> roles, String iss) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();
@@ -79,11 +84,51 @@ public class TestHelper {
             realmAccess.put("roles", new ArrayList<>(roles));
             claims.put("pitc", realmAccess);
         }
+        claims.put("iss", iss);
 
         return new Jwt(exampleToken, Instant.now(), Instant.now().plusSeconds(3600), headers, claims);
     }
 
     public static List<String> getAllErrorKeys(List<ErrorDto> errors) {
         return errors.stream().map(ErrorDto::errorKey).toList();
+    }
+
+    public static void setSecurityContext(Jwt token) {
+        SecurityContextHolder.setContext(new SecurityContextImpl(new Authentication() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return null;
+            }
+
+            @Override
+            public Object getCredentials() {
+                return null;
+            }
+
+            @Override
+            public Object getDetails() {
+                return null;
+            }
+
+            @Override
+            public Object getPrincipal() {
+                return token;
+            }
+
+            @Override
+            public boolean isAuthenticated() {
+                return false;
+            }
+
+            @Override
+            public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+
+            }
+
+            @Override
+            public String getName() {
+                return "unit test authentication";
+            }
+        }));
     }
 }

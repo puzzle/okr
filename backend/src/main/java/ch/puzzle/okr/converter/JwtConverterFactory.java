@@ -1,5 +1,6 @@
 package ch.puzzle.okr.converter;
 
+import ch.puzzle.okr.models.Tenant;
 import ch.puzzle.okr.models.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.converter.Converter;
@@ -14,6 +15,7 @@ public class JwtConverterFactory {
     private final ApplicationContext appContext;
     private Converter<Jwt, List<String>> jwtOrganisationConverter;
     private Converter<Jwt, User> jwtUserConverter;
+    private Converter<Jwt, Tenant> jwtTenantConverter;
 
     public JwtConverterFactory(ApplicationContext appContext) {
         this.appContext = appContext;
@@ -33,5 +35,12 @@ public class JwtConverterFactory {
             jwtUserConverter = appContext.getBean(JwtUserConverter.class);
         }
         return jwtUserConverter;
+    }
+
+    public synchronized Converter<Jwt, Tenant> getJwtTenantConverter() {
+        if (jwtTenantConverter == null) {
+            jwtTenantConverter = appContext.getBean(JwtTenantConverter.class);
+        }
+        return jwtTenantConverter;
     }
 }

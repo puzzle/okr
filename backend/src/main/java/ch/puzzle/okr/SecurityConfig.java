@@ -35,7 +35,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    @Order(2)
+    @Order(3)
     public SecurityFilterChain securityHeadersFilter(HttpSecurity http) throws Exception {
         logger.debug("*** SecurityHeader reached");
         return setHeaders(http).build();

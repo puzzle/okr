@@ -28,7 +28,7 @@ public class UserAuthorizationServiceTest {
 
     private final AuthorizationUser authorizationUser = defaultAuthorizationUser();
     User user = User.Builder.builder().withId(5L).withFirstname("firstname").withLastname("lastname")
-            .withUsername("username").withEmail("lastname@puzzle.ch").build();
+            .withEmail("lastname@puzzle.ch").build();
 
     @ParameterizedTest
     @ValueSource(booleans = { true, false })

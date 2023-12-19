@@ -16,10 +16,9 @@ create table if not exists person
     email     varchar(250) not null,
     firstname varchar(50)  not null,
     lastname  varchar(50)  not null,
-    username  varchar(20)  not null,
     primary key (id),
-    constraint uk_person_username
-        unique (username)
+    constraint uk_person_email
+        unique (email)
 );
 
 

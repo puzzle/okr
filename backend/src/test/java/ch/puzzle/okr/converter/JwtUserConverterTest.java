@@ -22,7 +22,6 @@ class JwtUserConverterTest {
 
     @BeforeEach
     public void setup() {
-        setUsername("preferred_username");
         setFirstname("given_name");
         setLastname("family_name");
         setEmail("email");
@@ -32,13 +31,13 @@ class JwtUserConverterTest {
     void convertShouldReturnUserWhenValidJwt() {
         User user = converter.convert(jwt);
 
-        assertEquals(User.Builder.builder().withUsername("bkaufmann").withFirstname("Bob").withLastname("Kaufmann")
+        assertEquals(User.Builder.builder().withFirstname("Bob").withLastname("Kaufmann")
                 .withEmail("kaufmann@puzzle.ch").build(), user);
     }
 
     @Test
-    void convertShouldThrowExceptionWhenClaimNameDoesNotMatch() {
-        setUsername("foo_name");
+    void convertShouldThrowExceptionWhenEmailDoesNotMatch() {
+        setEmail("foo@test.com");
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> converter.convert(jwt));
@@ -48,10 +47,6 @@ class JwtUserConverterTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
-    }
-
-    private void setUsername(String claimRealm) {
-        setField(converter, "username", claimRealm);
     }
 
     private void setFirstname(String claimRoles) {

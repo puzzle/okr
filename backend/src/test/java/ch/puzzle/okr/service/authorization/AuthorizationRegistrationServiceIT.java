@@ -39,7 +39,7 @@ class AuthorizationRegistrationServiceIT {
         Cache cache = cacheManager.getCache(USER_CACHE);
         assertNotNull(cache);
 
-        User cachedUser = cache.get(user.getUsername(), User.class);
+        User cachedUser = cache.get(user.getEmail(), User.class);
         if (cachedUser != null) {
             userPersistenceService.deleteById(cachedUser.getId());
         }
@@ -58,11 +58,11 @@ class AuthorizationRegistrationServiceIT {
 
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
-        assertNotNull(cache.get(user.getUsername(), AuthorizationUser.class));
+        assertNotNull(cache.get(user.getEmail(), AuthorizationUser.class));
 
         cache = cacheManager.getCache(USER_CACHE);
         assertNotNull(cache);
-        assertNotNull(cache.get(user.getUsername(), User.class));
+        assertNotNull(cache.get(user.getEmail(), User.class));
     }
 
     @Test
@@ -92,7 +92,7 @@ class AuthorizationRegistrationServiceIT {
     @Test
     void registerAuthorizationUserShouldSetChampions() {
         User testUser = User.Builder.builder().withFirstname("firstname").withLastname("lastname")
-                .withUsername("peggimann").withEmail("mail@puzzle.ch").build();
+                .withEmail("mail@puzzle.ch").build();
         Jwt token = mockJwtToken(testUser, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
         AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(testUser,
                 token);

@@ -23,13 +23,13 @@ ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 
-insert into person (id, version, email, firstname, lastname, username)
-values (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', 'peggimann'),
-       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', 'alice'),
-       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', 'bob'),
-       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson', 'findus'),
-       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', 'paco'),
-       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', 'robin');
+insert into person (id, version, email, firstname, lastname)
+values (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann'),
+       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland'),
+       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister'),
+       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson'),
+       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman'),
+       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer');
 
 insert into quarter (id, label, start_date, end_date)
 values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),

@@ -16,7 +16,7 @@ import { isMobileDevice } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
-  username: ReplaySubject<string> = new ReplaySubject();
+  viewName: ReplaySubject<string> = new ReplaySubject();
   menuIsOpen = false;
 
   @Input()
@@ -43,9 +43,16 @@ export class ApplicationTopBarComponent implements OnInit {
       .subscribe();
 
     if (this.oauthService.hasValidIdToken()) {
-      this.username.next(this.oauthService.getIdentityClaims()['name']);
+      this.viewName.next(this.getViewNameFromToken());
     }
   }
+
+  private getViewNameFromToken() {
+    return `${this.oauthService.getIdentityClaims()['given_name']} ${
+      this.oauthService.getIdentityClaims()['family_name']
+    }`;
+  }
+
   logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
     this.router.navigateByUrl(currentUrlTree).then(() => {

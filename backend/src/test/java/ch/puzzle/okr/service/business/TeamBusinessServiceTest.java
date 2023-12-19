@@ -1,7 +1,6 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Objective;
-import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
@@ -16,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ import static ch.puzzle.okr.models.State.SUCCESSFUL;
 import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -96,9 +93,8 @@ class TeamBusinessServiceTest {
         List<Long> firstLevelTeamIds = List.of(9L, 5L);
         User user = defaultUser(13L);
         AuthorizationUser authUser = new AuthorizationUser(
-                User.Builder.builder().withId(user.getId()).withUsername(user.getUsername())
-                        .withFirstname(user.getFirstname()).withLastname(user.getLastname()).withEmail(user.getEmail())
-                        .build(),
+                User.Builder.builder().withId(user.getId()).withFirstname(user.getFirstname())
+                        .withLastname(user.getLastname()).withEmail(user.getEmail()).build(),
                 userTeamIds, firstLevelTeamIds, List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
         when(teamPersistenceService.findAll()).thenReturn(teams);
 

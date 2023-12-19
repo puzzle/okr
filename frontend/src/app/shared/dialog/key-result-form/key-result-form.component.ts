@@ -104,10 +104,8 @@ export class KeyResultFormComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return this.users$.pipe(
       map((users) =>
-        users.filter(
-          (user) =>
-            (user.firstname.toLowerCase() + ' ' + user.lastname.toLowerCase()).includes(filterValue) ||
-            user.username.toLowerCase().includes(filterValue),
+        users.filter((user) =>
+          (user.firstname.toLowerCase() + ' ' + user.lastname.toLowerCase()).includes(filterValue),
         ),
       ),
     );

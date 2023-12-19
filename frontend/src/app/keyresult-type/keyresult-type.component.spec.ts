@@ -25,10 +25,10 @@ describe('KeyresultTypeComponent', () => {
     description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
       Validators.maxLength(4096),
     ]),
-    owner: new FormControl<User | string | null>(
-      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
-      [Validators.required, Validators.nullValidator],
-    ),
+    owner: new FormControl<User | string | null>({ id: 1, firstname: 'firstname', lastname: 'lastname' }, [
+      Validators.required,
+      Validators.nullValidator,
+    ]),
     unit: new FormControl<string | null>('PERCENT'),
     baseline: new FormControl<number | null>(30),
     stretchGoal: new FormControl<number | null>(100),
@@ -47,10 +47,10 @@ describe('KeyresultTypeComponent', () => {
     description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
       Validators.maxLength(4096),
     ]),
-    owner: new FormControl<User | string | null>(
-      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
-      [Validators.required, Validators.nullValidator],
-    ),
+    owner: new FormControl<User | string | null>({ id: 1, firstname: 'firstname', lastname: 'lastname' }, [
+      Validators.required,
+      Validators.nullValidator,
+    ]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),
@@ -69,10 +69,10 @@ describe('KeyresultTypeComponent', () => {
     description: new FormControl<string>('Puzzle ITC erledigt die IT-Aufträge für 100% aller Unternehmen.', [
       Validators.maxLength(4096),
     ]),
-    owner: new FormControl<User | string | null>(
-      { id: 1, firstname: 'firstname', lastname: 'lastname', username: 'username' },
-      [Validators.required, Validators.nullValidator],
-    ),
+    owner: new FormControl<User | string | null>({ id: 1, firstname: 'firstname', lastname: 'lastname' }, [
+      Validators.required,
+      Validators.nullValidator,
+    ]),
     unit: new FormControl<string | null>(null),
     baseline: new FormControl<number | null>(null),
     stretchGoal: new FormControl<number | null>(null),

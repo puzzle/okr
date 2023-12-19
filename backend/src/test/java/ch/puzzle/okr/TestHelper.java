@@ -18,50 +18,48 @@ public class TestHelper {
 
     private static final String FIRSTNAME = "Bob";
     private static final String LASTNAME = "Kaufmann";
-    private static final String USERNAME = "bkaufmann";
     private static final String EMAIL = "kaufmann@puzzle.ch";
 
     public static User defaultUser(Long id) {
-        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withUsername(USERNAME)
-                .withEmail(EMAIL).build();
+        return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withEmail(EMAIL)
+                .build();
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
-        return mockAuthorizationUser(1L, USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
+        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
     }
 
     public static AuthorizationUser userWithoutWriteAllRole() {
-        return mockAuthorizationUser(1L, USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
+        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
                 List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT));
     }
 
     public static AuthorizationUser mockAuthorizationUser(User user, List<Long> teamIds, Long firstLevelTeamId,
             List<AuthorizationRole> roles) {
-        return mockAuthorizationUser(user.getId(), user.getUsername(), user.getFirstname(), user.getLastname(),
-                user.getEmail(), teamIds, firstLevelTeamId, roles);
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), teamIds,
+                firstLevelTeamId, roles);
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id, String username, String firstname, String lastname,
-            String email, List<Long> teamIds, Long firstLevelTeamId, List<AuthorizationRole> roles) {
-        return new AuthorizationUser(User.Builder.builder().withId(id).withUsername(username).withFirstname(firstname)
-                .withLastname(lastname).withEmail(email).build(), teamIds, List.of(firstLevelTeamId), roles);
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
+            List<Long> teamIds, Long firstLevelTeamId, List<AuthorizationRole> roles) {
+        return new AuthorizationUser(User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname)
+                .withEmail(email).build(), teamIds, List.of(firstLevelTeamId), roles);
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken(USERNAME, FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"));
+        return mockJwtToken(FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"));
     }
 
-    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email) {
-        return mockJwtToken(username, firstname, lastname, email, List.of());
+    public static Jwt mockJwtToken(String firstname, String lastname, String email) {
+        return mockJwtToken(firstname, lastname, email, List.of());
     }
 
     public static Jwt mockJwtToken(User user, List<String> roles) {
-        return mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail(), roles);
+        return mockJwtToken(user.getFirstname(), user.getLastname(), user.getEmail(), roles);
     }
 
-    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email,
-            List<String> roles) {
+    public static Jwt mockJwtToken(String firstname, String lastname, String email, List<String> roles) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();
@@ -69,7 +67,6 @@ public class TestHelper {
         headers.put("typ", "JWT");
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("preferred_username", username);
         claims.put("given_name", firstname);
         claims.put("family_name", lastname);
         claims.put("email", email);

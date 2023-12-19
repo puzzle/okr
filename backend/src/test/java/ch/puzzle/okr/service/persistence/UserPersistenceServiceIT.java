@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringIntegrationTest
 class UserPersistenceServiceIT {
 
-    private static final String USERNAME_ALICE = "alice";
+    private static final String EMAIL_ALICE = "wunderland@puzzle.ch";
 
     User createdUser;
 
@@ -60,7 +60,6 @@ class UserPersistenceServiceIT {
         assertEquals(1L, returnedUser.getId());
         assertEquals("Paco", returnedUser.getFirstname());
         assertEquals("Eggimann", returnedUser.getLastname());
-        assertEquals("peggimann", returnedUser.getUsername());
         assertEquals("peggimann@puzzle.ch", returnedUser.getEmail());
     }
 
@@ -84,37 +83,35 @@ class UserPersistenceServiceIT {
 
     @Test
     void getOrCreateUserShouldReturnSingleUserWhenUserFound() {
-        User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
+        User existingUser = User.Builder.builder().withEmail(EMAIL_ALICE).build();
 
         User returnedUser = userPersistenceService.getOrCreateUser(existingUser);
 
         assertEquals(11L, returnedUser.getId());
         assertEquals("Alice", returnedUser.getFirstname());
         assertEquals("Wunderland", returnedUser.getLastname());
-        assertEquals(USERNAME_ALICE, returnedUser.getUsername());
         assertEquals("wunderland@puzzle.ch", returnedUser.getEmail());
     }
 
     @Test
     void getOrCreateUserShouldReturnSavedUserWhenUserNotFound() {
         User newUser = User.Builder.builder().withId(null).withFirstname("firstname").withLastname("lastname")
-                .withUsername("username").withEmail("lastname@puzzle.ch").build();
+                .withEmail("lastname@puzzle.ch").build();
 
         createdUser = userPersistenceService.getOrCreateUser(newUser);
 
         assertNotNull(createdUser.getId());
         assertEquals("firstname", createdUser.getFirstname());
         assertEquals("lastname", createdUser.getLastname());
-        assertEquals("username", createdUser.getUsername());
         assertEquals("lastname@puzzle.ch", createdUser.getEmail());
     }
 
     @Test
     void getOrCreateUserShouldAddUserToCache() {
-        User existingUser = User.Builder.builder().withUsername(USERNAME_ALICE).build();
+        User existingUser = User.Builder.builder().withEmail(EMAIL_ALICE).build();
         userPersistenceService.getOrCreateUser(existingUser);
 
-        User cachedUser = cacheManager.getCache(USER_CACHE).get(USERNAME_ALICE, User.class);
+        User cachedUser = cacheManager.getCache(USER_CACHE).get(EMAIL_ALICE, User.class);
         assertNotNull(cachedUser);
     }
 }

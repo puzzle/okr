@@ -45,7 +45,7 @@ class CompletedValidationServiceTest {
     @BeforeEach
     void setUp() {
         this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
-                .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
+                .withEmail("kaufmann@puzzle.ch").build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
         this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
 

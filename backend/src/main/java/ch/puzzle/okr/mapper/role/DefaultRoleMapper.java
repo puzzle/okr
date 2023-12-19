@@ -20,8 +20,8 @@ public class DefaultRoleMapper implements RoleMapper {
     private String firstLevelOrganisationName;
     @Value("${okr.organisation.name.2ndLevel}")
     private String secondLevelOrganisationName;
-    @Value("${okr.user.champion.usernames}")
-    private String okrChampionUsernames;
+    @Value("${okr.user.champion.emails}")
+    private String okrChampionEmails;
 
     @Override
     public List<AuthorizationRole> mapAuthorizationRoles(List<String> organisationNames, User user) {
@@ -46,7 +46,7 @@ public class DefaultRoleMapper implements RoleMapper {
     }
 
     private boolean isOkrChampion(User user) {
-        String[] champions = okrChampionUsernames.split(DELIMITER);
-        return Arrays.stream(champions).anyMatch(c -> Objects.equals(c, user.getUsername()));
+        String[] champions = okrChampionEmails.split(DELIMITER);
+        return Arrays.stream(champions).anyMatch(c -> Objects.equals(c, user.getEmail()));
     }
 }

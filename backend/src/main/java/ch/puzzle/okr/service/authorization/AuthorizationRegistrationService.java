@@ -35,7 +35,7 @@ public class AuthorizationRegistrationService {
         this.roleMapperFactory = roleMapperFactory;
     }
 
-    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.username")
+    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.email")
     public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
         List<String> organisationNames = jwtConverterFactory.getJwtOrganisationConverter().convert(token);
         return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),

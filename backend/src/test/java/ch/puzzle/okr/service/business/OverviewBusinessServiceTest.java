@@ -220,9 +220,8 @@ class OverviewBusinessServiceTest {
         List<Long> firstLevelTeamIds = List.of(9L, 5L);
         User user = defaultUser(13L);
         AuthorizationUser authUser = new AuthorizationUser(
-                User.Builder.builder().withId(user.getId()).withUsername(user.getUsername())
-                        .withFirstname(user.getFirstname()).withLastname(user.getLastname()).withEmail(user.getEmail())
-                        .build(),
+                User.Builder.builder().withId(user.getId()).withFirstname(user.getFirstname())
+                        .withLastname(user.getLastname()).withEmail(user.getEmail()).build(),
                 userTeamIds, firstLevelTeamIds, List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
 
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, authUser))

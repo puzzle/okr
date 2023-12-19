@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import java.util.Objects;
 
 @Entity
@@ -19,12 +20,6 @@ public class User implements WriteableInterface {
     @Version
     private int version;
 
-    @Column(unique = true)
-    @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
-    @Size(min = 2, max = 20, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
-    private String username;
-
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
@@ -35,6 +30,7 @@ public class User implements WriteableInterface {
     @Size(min = 2, max = 50, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String lastname;
 
+    @Column(unique = true, nullable = false)
     @Email(message = MessageKey.ATTRIBUTE_NOT_VALID)
     @NotBlank(message = MessageKey.ATTRIBUTE_NOT_BLANK)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
@@ -49,7 +45,6 @@ public class User implements WriteableInterface {
     private User(Builder builder) {
         id = builder.id;
         version = builder.version;
-        setUsername(builder.username);
         setFirstname(builder.firstname);
         setLastname(builder.lastname);
         setEmail(builder.email);
@@ -61,14 +56,6 @@ public class User implements WriteableInterface {
 
     public int getVersion() {
         return version;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstname() {
@@ -107,9 +94,8 @@ public class User implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", username='" + username + '\'' + ", firstname='"
-                + firstname + '\'' + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", writeable="
-                + writeable + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\''
+                + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", writeable=" + writeable + '}';
     }
 
     @Override
@@ -120,20 +106,18 @@ public class User implements WriteableInterface {
             return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
-                && Objects.equals(username, user.username) && Objects.equals(firstname, user.firstname)
-                && Objects.equals(lastname, user.lastname) && Objects.equals(email, user.email)
-                && Objects.equals(writeable, user.writeable);
+                && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
+                && Objects.equals(email, user.email) && Objects.equals(writeable, user.writeable);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, username, firstname, lastname, email, writeable);
+        return Objects.hash(id, version, firstname, lastname, email, writeable);
     }
 
     public static final class Builder {
         private Long id;
         private int version;
-        private String username;
         private String firstname;
         private String lastname;
         private String email;
@@ -152,11 +136,6 @@ public class User implements WriteableInterface {
 
         public Builder withVersion(int version) {
             this.version = version;
-            return this;
-        }
-
-        public Builder withUsername(String username) {
-            this.username = username;
             return this;
         }
 

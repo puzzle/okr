@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 public class StyleService {
     @Value("${okr.style.class}")
     private String bodyClass;
+
     public StyleDto getStyles() {
         return new StyleDto(bodyClass);
     }

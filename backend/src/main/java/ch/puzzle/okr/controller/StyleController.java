@@ -25,14 +25,12 @@ public class StyleController {
     @Operation(summary = "Get all configurable styles for the UI", description = "Gets all styles for the UI as an object")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returned an object of the styles", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = StyleDto.class))}),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = StyleDto.class)) }),
             @ApiResponse(responseCode = "400", description = "Can't return the styles", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Not authorized to read the styles", content = @Content)
-    })
+            @ApiResponse(responseCode = "401", description = "Not authorized to read the styles", content = @Content) })
     @GetMapping("")
     public ResponseEntity<StyleDto> getStyles() {
-        return ResponseEntity.ok()
-                .body(styleService.getStyles());
+        return ResponseEntity.ok().body(styleService.getStyles());
     }
 
 }

@@ -39,12 +39,6 @@ class JwtTenantConverterTest {
     }
 
     private Jwt mockDefaultJwtWithIss(String iss) {
-        return mockJwtToken(
-                "username",
-                "firstname",
-                "lastname",
-                "email@email.com",
-                iss
-        );
+        return mockJwtToken("username", "firstname", "lastname", "email@email.com", iss);
     }
 }

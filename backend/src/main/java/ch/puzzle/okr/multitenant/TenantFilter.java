@@ -21,16 +21,14 @@ class TenantFilter extends GenericFilterBean {
 
     private final JwtConverterFactory jwtConverterFactory;
 
-    public TenantFilter(
-            JwtConverterFactory jwtConverterFactory
-    ) {
+    public TenantFilter(JwtConverterFactory jwtConverterFactory) {
         this.jwtConverterFactory = jwtConverterFactory;
     }
 
     @Override
     @Order(2)
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();

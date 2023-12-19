@@ -65,8 +65,8 @@ public class TestHelper {
         return mockJwtToken(user.getUsername(), user.getFirstname(), user.getLastname(), user.getEmail(), roles, ISS);
     }
 
-    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email,
-            List<String> roles, String iss) {
+    public static Jwt mockJwtToken(String username, String firstname, String lastname, String email, List<String> roles,
+            String iss) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();

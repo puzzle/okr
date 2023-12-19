@@ -39,7 +39,8 @@ class UserValidationServiceTest {
     User userMinimal;
     User user;
 
-    Jwt mockJwt = TestHelper.mockJwtToken("username", "firstname", "lastname", "email@email.com", "http://localhost:8544/realms/pitc");
+    Jwt mockJwt = TestHelper.mockJwtToken("username", "firstname", "lastname", "email@email.com",
+            "http://localhost:8544/realms/pitc");
 
     @BeforeEach
     void setUp() {

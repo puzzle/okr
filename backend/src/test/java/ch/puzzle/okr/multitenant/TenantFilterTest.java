@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 class TenantFilterTest {
 
@@ -65,9 +64,7 @@ class TenantFilterTest {
     }
 
     private void emptySecurityContext() {
-        SecurityContextHolder.setContext(
-                new SecurityContextImpl(new AnonymousAuthenticationToken("anonymousUser", "anonymousUser", AuthorityUtils.createAuthorityList(
-                        "ROLE_ANONYMOUS"))
-                ));
+        SecurityContextHolder.setContext(new SecurityContextImpl(new AnonymousAuthenticationToken("anonymousUser",
+                "anonymousUser", AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"))));
     }
 }

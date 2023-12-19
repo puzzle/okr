@@ -1,13 +1,13 @@
 @import "variables";
 
 .submit {
-  background-color: $pz-dark-blue;
+  background-color: var(--primary-color);
   border-radius: 8px;
 }
 
 .cancel {
   background-color: white;
-  color: $pz-dark-blue;
+  color: var(--primary-color);
 }
 
 span {

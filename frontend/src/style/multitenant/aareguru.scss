@@ -2,8 +2,11 @@
 @import "_variables";
 @import "custom_angular.components";
 
-.aareguru {
+body .aareguru {
   $primary: green;
+
+  // variable to use in non-angular components
+  --primary-color: #{$primary};
 
   $primary-palette: (
     50: lighten($primary, 50%),

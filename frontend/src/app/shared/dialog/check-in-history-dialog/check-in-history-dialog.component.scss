@@ -1,7 +1,7 @@
 @import "_variables";
 
 .cancel-button {
-  background-color: $pz-dark-blue;
+  background-color: var(--primary-color);
   border-radius: 8px;
   width: min-content;
 }

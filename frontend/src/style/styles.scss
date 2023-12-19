@@ -159,7 +159,7 @@ mat-radio-button:focus,
 app-objective-column:focus,
 app-keyresult:focus,
 .focus-outline:focus {
-  outline: $pz-dark-blue solid 2px;
+  outline: var(--primary-color) solid 2px;
 }
 
 select,

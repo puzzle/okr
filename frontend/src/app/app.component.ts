@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { StyleService } from './style.service';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +7,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private readonly styleService: StyleService) {}
+  public getBodyClass() {
+    return this.styleService.bodyClass;
+  }
+}

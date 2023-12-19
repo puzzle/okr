@@ -1,0 +1,49 @@
+@use "@angular/material" as mat;
+@import "_variables";
+@import "custom_angular.components";
+
+body {
+  $primary: #1e5a96;
+
+  $pz-dark-blue-palette: (
+    50: lighten($primary, 50%),
+    100: lighten($primary, 40%),
+    200: lighten($primary, 30%),
+    300: lighten($primary, 20%),
+    400: lighten($primary, 10%),
+    500: $primary,
+    600: darken($primary, 10%),
+    700: darken($primary, 20%),
+    800: darken($primary, 30%),
+    900: darken($primary, 40%),
+    1000: darken($primary, 50%),
+    contrast: (
+      50: rgba(black, 0.87),
+      100: rgba(black, 0.87),
+      200: rgba(black, 0.87),
+      300: white,
+      400: white,
+      500: white,
+      600: white,
+      700: white,
+      800: white,
+      900: white,
+    ),
+  );
+
+  $my-primary: mat.define-palette($pz-dark-blue-palette, 500);
+  $my-accent: mat.define-palette(mat.$grey-palette, 900);
+  $my-warn: mat.define-palette(mat.$red-palette);
+
+  $theme: mat.define-light-theme(
+    (
+      color: (
+        primary: $my-primary,
+        accent: $my-accent,
+        warn: $my-warn,
+      ),
+    )
+  );
+
+  @include mat.all-component-themes($theme);
+}

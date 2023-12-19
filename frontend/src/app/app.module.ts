@@ -71,6 +71,7 @@ import { ActionPlanComponent } from './action-plan/action-plan.component';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
+import { StyleService } from './style.service';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -85,6 +86,10 @@ export function createTranslateLoader(http: HttpBackend) {
 
 export function storageFactory(): OAuthStorage {
   return localStorage;
+}
+
+export function loadStyles(styleService: StyleService) {
+  return () => styleService.loadAndSetStyles();
 }
 
 export const MY_FORMATS = {
@@ -191,6 +196,7 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
     { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    { provide: APP_INITIALIZER, useFactory: loadStyles, deps: [StyleService], multi: true },
     {
       provide: Router,
       useClass: CustomRouter,

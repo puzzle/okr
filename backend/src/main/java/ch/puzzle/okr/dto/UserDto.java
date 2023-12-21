@@ -1,4 +1,8 @@
 package ch.puzzle.okr.dto;
 
-public record UserDto(Long id, int version, String firstname, String lastname, String email, boolean isWriteable) {
+import ch.puzzle.okr.models.UserTeam;
+
+import java.util.List;
+
+public record UserDto(Long id, int version, String firstname, String lastname, String email, List<UserTeam> userTeamList, boolean isWriteable) {
 }

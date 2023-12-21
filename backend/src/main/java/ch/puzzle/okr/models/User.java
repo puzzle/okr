@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +38,9 @@ public class User implements WriteableInterface {
     @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<UserTeam> userTeamList;
+
     private transient boolean writeable;
 
     public User() {
@@ -48,6 +52,7 @@ public class User implements WriteableInterface {
         setFirstname(builder.firstname);
         setLastname(builder.lastname);
         setEmail(builder.email);
+        setUserTeamList(builder.userTeamList);
     }
 
     public Long getId() {
@@ -80,6 +85,14 @@ public class User implements WriteableInterface {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<UserTeam> getUserTeamList() {
+        return userTeamList;
+    }
+
+    public void setUserTeamList(List<UserTeam> userTeamList) {
+        this.userTeamList = userTeamList;
     }
 
     @Override
@@ -121,6 +134,7 @@ public class User implements WriteableInterface {
         private String firstname;
         private String lastname;
         private String email;
+        private List<UserTeam> userTeamList;
 
         private Builder() {
         }
@@ -151,6 +165,11 @@ public class User implements WriteableInterface {
 
         public Builder withEmail(String email) {
             this.email = email;
+            return this;
+        }
+
+        public Builder withUserTeamList(List<UserTeam> userTeamList) {
+            this.userTeamList = userTeamList;
             return this;
         }
 

@@ -32,6 +32,8 @@
     "@angular/platform-browser": "^17.0.6",
     "@angular/platform-browser-dynamic": "^17.0.6",
     "@angular/router": "^17.0.6",
+    "gojs": "^2.3.12",
+    "gojs-angular": "^2.0.6",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "angular-oauth2-oidc": "^17.0.0",

@@ -121,7 +121,7 @@ public class UserTeam implements WriteableInterface {
                 ", version=" + version +
                 ", user=" + user +
                 ", team=" + team +
-                ", isAdmin=" + isTeamAdmin +
+                ", isTeamAdmin=" + isTeamAdmin +
                 '}';
     }
 

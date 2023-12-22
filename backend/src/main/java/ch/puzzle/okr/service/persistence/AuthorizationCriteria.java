@@ -52,7 +52,8 @@ public class AuthorizationCriteria<T> {
         // all users can read published state
         sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
         // users can read draft state of teams with admin role
-        sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias, teamIdColumn, PARAM_USER_TEAM_IDS));
+        sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
+                teamIdColumn, PARAM_USER_TEAM_IDS));
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");
         }

@@ -120,8 +120,8 @@ public class User implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\''
-                + ", lastname='" + lastname + '\'' + ", email='" + email + '\'' + ", writeable=" + writeable + '}';
+        return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
+                + lastname + '\'' + ", email='" + email + '\'' + ", writeable=" + writeable + '}';
     }
 
     @Override

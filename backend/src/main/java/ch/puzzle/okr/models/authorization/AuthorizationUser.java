@@ -5,7 +5,7 @@ import ch.puzzle.okr.models.UserTeam;
 
 import java.util.List;
 
-public record AuthorizationUser(User user, List<AuthorizationRole> roles) {
+public record AuthorizationUser(User user) {
     public List<Long> extractTeamIds() {
         return this.user.getUserTeamList().stream()
                 .map(UserTeam::getId)

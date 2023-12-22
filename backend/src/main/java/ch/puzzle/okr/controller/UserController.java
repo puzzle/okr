@@ -23,11 +23,8 @@ public class UserController {
     private final AuthorizationService authorizationService;
     private final UserMapper userMapper;
 
-    public UserController(
-            UserAuthorizationService userAuthorizationService,
-            AuthorizationService authorizationService,
-            UserMapper userMapper
-    ) {
+    public UserController(UserAuthorizationService userAuthorizationService, AuthorizationService authorizationService,
+            UserMapper userMapper) {
         this.userAuthorizationService = userAuthorizationService;
         this.authorizationService = authorizationService;
         this.userMapper = userMapper;
@@ -42,8 +39,9 @@ public class UserController {
     }
 
     @Operation(summary = "Get Current User", description = "Get all current logged in user.")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned current logged in user.", content = {
-            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned current logged in user.", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping(path = "/current")
     public UserDto getCurrentUser() {
         var currentUser = this.authorizationService.getAuthorizationUser().user();

@@ -200,8 +200,7 @@ class OverviewBusinessServiceTest {
     @Test
     void getFilteredOverviewShouldReturnSortedListFirstLevelTeamFirst() {
         Long firstLevelTeamId = 9L;
-        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L), List.of(firstLevelTeamId, 2L),
-                firstLevelTeamId, List.of());
+        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
                 .thenReturn(createOverviews(user));
 
@@ -241,7 +240,7 @@ class OverviewBusinessServiceTest {
     @Test
     void getFilteredOverviewShouldReturnSortedListUserTeamsFirst() {
         Long firstLevelTeamId = 5L;
-        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L), List.of(9L, 2L), firstLevelTeamId, List.of());
+        AuthorizationUser user = mockAuthorizationUser(defaultUser(13L));
         when(overviewPersistenceService.getFilteredOverview(QUARTER_ID, teamIds, null, user))
                 .thenReturn(createOverviews(user));
 

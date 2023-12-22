@@ -2,15 +2,12 @@ package ch.puzzle.okr;
 
 import ch.puzzle.okr.dto.ErrorDto;
 import ch.puzzle.okr.models.User;
-import ch.puzzle.okr.models.authorization.AuthorizationRole;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
 import java.util.*;
-
-import static ch.puzzle.okr.models.authorization.AuthorizationRole.*;
 
 public class TestHelper {
     private TestHelper() {
@@ -26,25 +23,20 @@ public class TestHelper {
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
-        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
-                List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT, WRITE_ALL));
+        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL);
     }
 
     public static AuthorizationUser userWithoutWriteAllRole() {
-        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL, List.of(5L), 5L,
-                List.of(READ_ALL_PUBLISHED, READ_ALL_DRAFT));
+        return mockAuthorizationUser(1L, FIRSTNAME, LASTNAME, EMAIL);
     }
 
-    public static AuthorizationUser mockAuthorizationUser(User user, List<Long> teamIds, Long firstLevelTeamId,
-            List<AuthorizationRole> roles) {
-        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), teamIds,
-                firstLevelTeamId, roles);
+    public static AuthorizationUser mockAuthorizationUser(User user) {
+        return mockAuthorizationUser(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail());
     }
 
-    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email,
-            List<Long> teamIds, Long firstLevelTeamId, List<AuthorizationRole> roles) {
+    public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email) {
         return new AuthorizationUser(User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname)
-                .withEmail(email).build(), teamIds, List.of(firstLevelTeamId), roles);
+                .withEmail(email).build());
     }
 
     public static Jwt defaultJwtToken() {

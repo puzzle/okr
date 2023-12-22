@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static ch.puzzle.okr.TestHelper.*;
-import static ch.puzzle.okr.models.authorization.AuthorizationRole.READ_ALL_PUBLISHED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,7 +49,7 @@ class OverviewAuthorizationServiceTest {
     @ValueSource(booleans = { true, false })
     void getFilteredOverviewShouldSetWritableProperly(boolean isWritable) {
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(authorizationService.isWriteable(authorizationUser, 5L)).thenReturn(isWritable);
+        when(authorizationService.hasRoleWriteForTeam(authorizationUser, 5L)).thenReturn(isWritable);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
@@ -74,8 +73,7 @@ class OverviewAuthorizationServiceTest {
         if (hasRoleWriteAll) {
             when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
         } else {
-            when(authorizationService.getAuthorizationUser())
-                    .thenReturn(mockAuthorizationUser(defaultUser(5L), List.of(), 7L, List.of(READ_ALL_PUBLISHED)));
+            when(authorizationService.getAuthorizationUser()).thenReturn(mockAuthorizationUser(defaultUser(5L)));
         }
 
         assertEquals(hasRoleWriteAll, overviewAuthorizationService.hasWriteAllAccess());

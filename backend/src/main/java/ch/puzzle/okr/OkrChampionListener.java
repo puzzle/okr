@@ -24,9 +24,8 @@ public class OkrChampionListener implements ApplicationListener<ApplicationReady
     public void onApplicationEvent(ApplicationReadyEvent event) {
         String[] championMails = okrChampionEmails.split(DELIMITER);
         for (var mail : championMails) {
-            var user = userRepository.findByEmail(mail).orElseThrow(
-                    () -> new RuntimeException("User not found by champion e-mail: " + mail)
-            );
+            var user = userRepository.findByEmail(mail)
+                    .orElseThrow(() -> new RuntimeException("User not found by champion e-mail: " + mail));
             user.setOkrChampion(true);
             userRepository.save(user);
         }

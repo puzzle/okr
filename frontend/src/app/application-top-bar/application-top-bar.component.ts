@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
-
+import { MatDialog } from '@angular/material/dialog';
+// import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { Router } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { isMobileDevice } from '../shared/common';
+import { UserService } from '../shared/services/user.service';
+import { getFullNameFromUser } from '../shared/types/model/User';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -16,15 +17,16 @@ import { isMobileDevice } from '../shared/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationTopBarComponent implements OnInit {
-  viewName: ReplaySubject<string> = new ReplaySubject();
+  userFullName: string = '';
   menuIsOpen = false;
 
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;
-  private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
+  // private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
 
   constructor(
     private oauthService: OAuthService,
+    private userService: UserService,
     private configService: ConfigService,
     private dialog: MatDialog,
     private router: Router,
@@ -42,15 +44,7 @@ export class ApplicationTopBarComponent implements OnInit {
       )
       .subscribe();
 
-    if (this.oauthService.hasValidIdToken()) {
-      this.viewName.next(this.getViewNameFromToken());
-    }
-  }
-
-  private getViewNameFromToken() {
-    return `${this.oauthService.getIdentityClaims()['given_name']} ${
-      this.oauthService.getIdentityClaims()['family_name']
-    }`;
+    this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
   }
 
   logOut() {
@@ -72,17 +66,17 @@ export class ApplicationTopBarComponent implements OnInit {
           width: '45em',
           height: 'auto',
         };
-    if (!this.dialogRef) {
-      this.dialogRef = this.dialog.open(TeamManagementComponent, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
-      });
-      this.dialogRef.afterClosed().subscribe(() => {
-        this.dialogRef = undefined;
-        this.refreshDataService.markDataRefresh();
-      });
-    }
+    // if (!this.dialogRef) {
+    //   this.dialogRef = this.dialog.open(TeamManagementComponent, {
+    //     height: dialogConfig.height,
+    //     width: dialogConfig.width,
+    //     maxHeight: dialogConfig.maxHeight,
+    //     maxWidth: dialogConfig.maxWidth,
+    //   });
+    //   this.dialogRef.afterClosed().subscribe(() => {
+    //     this.dialogRef = undefined;
+    //     this.refreshDataService.markDataRefresh();
+    //   });
+    // }
   }
 }

@@ -13,3 +13,7 @@ export interface User {
 export const extractTeamsFromUser = (user: User) => {
   return user.userTeamList.map((u) => u.team);
 };
+
+export const getFullNameFromUser = (user: User) => {
+  return `${user.firstname} ${user.lastname}`;
+};

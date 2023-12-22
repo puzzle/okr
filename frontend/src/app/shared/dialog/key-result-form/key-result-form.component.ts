@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { User } from '../../types/model/User';
+import { getFullNameFromUser, User } from '../../types/model/User';
 import { KeyResult } from '../../types/model/KeyResult';
 import { KeyResultMetric } from '../../types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../types/model/KeyResultOrdinal';
@@ -64,7 +64,7 @@ export class KeyResultFormComponent implements OnInit {
       this.users$.subscribe((users) => {
         const loggedInUser = this.getUserName();
         users.forEach((user) => {
-          if (user.firstname + ' ' + user.lastname === loggedInUser) {
+          if (getFullNameFromUser(user) === loggedInUser) {
             this.keyResultForm.controls['owner'].setValue(user);
           }
         });
@@ -103,11 +103,7 @@ export class KeyResultFormComponent implements OnInit {
   filter(value: string): Observable<User[]> {
     const filterValue = value.toLowerCase();
     return this.users$.pipe(
-      map((users) =>
-        users.filter((user) =>
-          (user.firstname.toLowerCase() + ' ' + user.lastname.toLowerCase()).includes(filterValue),
-        ),
-      ),
+      map((users) => users.filter((user) => getFullNameFromUser(user).toLowerCase().includes(filterValue))),
     );
   }
 
@@ -119,7 +115,7 @@ export class KeyResultFormComponent implements OnInit {
   }
 
   getUserNameById(user: User): string {
-    return user ? user.firstname + ' ' + user.lastname : '';
+    return user ? getFullNameFromUser(user) : '';
   }
 
   getKeyResultId(): number | null {

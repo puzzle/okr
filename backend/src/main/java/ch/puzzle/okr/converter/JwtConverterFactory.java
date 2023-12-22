@@ -22,7 +22,8 @@ public class JwtConverterFactory {
     public synchronized Converter<Jwt, List<String>> getJwtOrganisationConverter() {
         if (jwtOrganisationConverter == null) {
             // place to load configured converter instead of default converter
-            jwtOrganisationConverter = appContext.getBean(JwtOrganisationConverter.class);
+            // TODO: add this again
+            // jwtOrganisationConverter = appContext.getBean(JwtOrganisationConverter.class);
         }
         return jwtOrganisationConverter;
     }

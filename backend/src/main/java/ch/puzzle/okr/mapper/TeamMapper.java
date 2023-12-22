@@ -10,15 +10,12 @@ public class TeamMapper {
     public TeamMapper() {
     }
 
-    public TeamDto toTeamDto(Team team) {
+    public TeamDto toDto(Team team) {
         return new TeamDto(team.getId(), team.getVersion(), team.getName());
     }
 
     public Team toTeam(TeamDto teamDto) {
-        return Team.Builder.builder()
-                .withId(teamDto.id())
-                .withVersion(teamDto.version())
-                .withName(teamDto.name())
+        return Team.Builder.builder().withId(teamDto.id()).withVersion(teamDto.version()).withName(teamDto.name())
                 .build();
     }
 }

@@ -1,9 +1,12 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
 import { EMPTY, of } from 'rxjs';
 import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
 import { authGuard } from './shared/guards/auth.guard';
+import { UserService } from './shared/services/user.service';
+import { User } from './shared/types/model/User';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 /**
  * Resolver for get the id from url like `/objective/42` or `/keyresult/42`.
@@ -18,10 +21,22 @@ export const getIdFromPathResolver: ResolveFn<number> = (route: ActivatedRouteSn
   }
 };
 
+const currentUserResolver: ResolveFn<User | undefined> = () => {
+  const oauthService = inject(OAuthService);
+  const userService = inject(UserService);
+  if (oauthService.hasValidIdToken()) {
+    return userService.initCurrentUser();
+  }
+  return of(undefined);
+};
+
 const routes: Routes = [
   {
     path: '',
     component: OverviewComponent,
+    resolve: {
+      user: currentUserResolver,
+    },
     children: [
       {
         path: 'objective/:id',

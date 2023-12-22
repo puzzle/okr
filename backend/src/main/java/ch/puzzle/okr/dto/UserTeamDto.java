@@ -3,6 +3,6 @@ package ch.puzzle.okr.dto;
 public record UserTeamDto(
         Long id,
         int version,
-        TeamDto teamDto,
+        TeamDto team,
         boolean isTeamAdmin
         ) {}

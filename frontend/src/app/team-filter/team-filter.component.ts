@@ -5,6 +5,8 @@ import { TeamService } from '../shared/services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { areEqual, getValueFromQuery, optionalReplaceWithNulls, trackByFn } from '../shared/common';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
+import { UserService } from '../shared/services/user.service';
+import { extractTeamsFromUser } from '../shared/types/model/User';
 
 @Component({
   selector: 'app-team-filter',
@@ -21,6 +23,7 @@ export class TeamFilterComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private refreshDataService: RefreshDataService,
+    private userService: UserService,
   ) {
     this.refreshDataService.reloadOverviewSubject.subscribe(() => {
       this.teamService.getAllTeams().subscribe((teams) => {
@@ -37,7 +40,7 @@ export class TeamFilterComponent implements OnInit {
       const teamIds = getValueFromQuery(teamQuery);
       const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
       if (knownTeams.length == 0) {
-        this.activeTeams = teams.filter((e) => e.filterIsActive).map((team) => team.id);
+        this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
       } else {
         this.activeTeams = knownTeams;
       }

@@ -70,23 +70,17 @@ public class TeamBusinessService {
     private record TeamComparator(AuthorizationUser authorizationUser) implements Comparator<Team> {
         @Override
         public int compare(Team t1, Team t2) {
-            boolean isUserTeam1 = authorizationUser.userTeamIds().contains(t1.getId());
-            boolean isUserTeam2 = authorizationUser.userTeamIds().contains(t2.getId());
-            boolean isFirstLevelTeam1 = authorizationUser.firstLevelTeamIds().contains(t1.getId());
-            boolean isFirstLevelTeam2 = authorizationUser.firstLevelTeamIds().contains(t2.getId());
+            boolean isUserTeam1 = authorizationUser.extractTeamIds().contains(t1.getId());
+            boolean isUserTeam2 = authorizationUser.extractTeamIds().contains(t2.getId());
 
             if (isUserTeam1 == isUserTeam2) {
-                if (isFirstLevelTeam1 == isFirstLevelTeam2) {
-                    if (Objects.equals(t1.getName(), t2.getName())) {
-                        return t1.getId().compareTo(t2.getId());
-                    } else {
-                        return t1.getName().compareTo(t2.getName());
-                    }
+                if (Objects.equals(t1.getName(), t2.getName())) {
+                    return t1.getId().compareTo(t2.getId());
                 } else {
-                    return isFirstLevelTeam1 && !isFirstLevelTeam2 ? -1 : 1;
+                    return t1.getName().compareTo(t2.getName());
                 }
             }
-            return isUserTeam1 && !isUserTeam2 ? -1 : 1;
+            return isUserTeam1 ? -1 : 1;
         }
     }
 }

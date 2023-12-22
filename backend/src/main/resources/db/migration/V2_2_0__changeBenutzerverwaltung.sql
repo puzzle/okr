@@ -23,3 +23,5 @@ ALTER TABLE IF EXISTS person_team
     ADD CONSTRAINT FK_person_team_team FOREIGN KEY (team_id) REFERENCES team;
 ALTER TABLE IF EXISTS person_team
     ADD CONSTRAINT FK_person_team_person FOREIGN KEY (person_id) REFERENCES person;
+
+ALTER TABLE person ADD COLUMN is_okr_champion BOOLEAN DEFAULT FALSE;

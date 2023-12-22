@@ -49,28 +49,20 @@ public class OverviewBusinessService {
 
         @Override
         public int compare(Overview o1, Overview o2) {
-            boolean containsUserTeam1 = authorizationUser.userTeamIds().contains(o1.getOverviewId().getTeamId());
-            boolean containsUserTeam2 = authorizationUser.userTeamIds().contains(o2.getOverviewId().getTeamId());
-            boolean containsFirstLevelTeam1 = authorizationUser.firstLevelTeamIds()
-                    .contains(o1.getOverviewId().getTeamId());
-            boolean containsFirstLevelTeam2 = authorizationUser.firstLevelTeamIds()
-                    .contains(o2.getOverviewId().getTeamId());
+            boolean containsUserTeam1 = authorizationUser.extractTeamIds().contains(o1.getOverviewId().getTeamId());
+            boolean containsUserTeam2 = authorizationUser.extractTeamIds().contains(o2.getOverviewId().getTeamId());
 
             if (containsUserTeam1 == containsUserTeam2) {
-                if (containsFirstLevelTeam1 == containsFirstLevelTeam2) {
-                    if (Objects.equals(o1.getTeamName(), o2.getTeamName())) {
-                        if (Objects.equals(o1.getObjectiveCreatedOn(), o2.getObjectiveCreatedOn())) {
-                            return o1.getOverviewId().compareTo(o2.getOverviewId());
-                        }
-                        return o1.getObjectiveCreatedOn().compareTo(o2.getObjectiveCreatedOn());
-                    } else {
-                        return o1.getTeamName().compareTo(o2.getTeamName());
+                if (Objects.equals(o1.getTeamName(), o2.getTeamName())) {
+                    if (Objects.equals(o1.getObjectiveCreatedOn(), o2.getObjectiveCreatedOn())) {
+                        return o1.getOverviewId().compareTo(o2.getOverviewId());
                     }
+                    return o1.getObjectiveCreatedOn().compareTo(o2.getObjectiveCreatedOn());
                 } else {
-                    return (containsFirstLevelTeam1 && !containsFirstLevelTeam2) ? -1 : 1;
+                    return o1.getTeamName().compareTo(o2.getTeamName());
                 }
             }
-            return (containsUserTeam1 && !containsUserTeam2) ? -1 : 1;
+            return containsUserTeam1 ? -1 : 1;
         }
     }
 }

@@ -38,7 +38,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
 
     @Override
     protected boolean isWriteable(KeyResult entity, AuthorizationUser authorizationUser) {
-        return getAuthorizationService().isWriteable(entity, authorizationUser);
+        return getAuthorizationService().hasRoleWriteForTeam(entity, authorizationUser);
     }
 
     public List<CheckIn> getAllCheckInsByKeyResult(Long keyResultId) {
@@ -70,7 +70,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
 
     private void setRoleCreateOrUpdateCheckIn(List<CheckIn> checkIns, AuthorizationUser authorizationUser) {
         if (!CollectionUtils.isEmpty(checkIns)) {
-            boolean isWriteable = getAuthorizationService().isWriteable(checkIns.get(0), authorizationUser);
+            boolean isWriteable = getAuthorizationService().hasRoleWriteForTeam(checkIns.get(0), authorizationUser);
             checkIns.forEach(c -> c.setWriteable(isWriteable));
         }
     }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static ch.puzzle.okr.Constants.TEAM;
-import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 
 @Service
 public class TeamAuthorizationService {
@@ -44,18 +44,14 @@ public class TeamAuthorizationService {
 
     private void checkUserAuthorization(OkrResponseStatusException exception) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        if (!hasRoleWriteAll(authorizationUser)) {
+        if (!hasRoleWriteAndReadAll(authorizationUser)) {
             throw exception;
         }
     }
 
-    public List<Long> getUserTeamIds() {
-        return this.authorizationService.getAuthorizationUser().userTeamIds();
-    }
-
     public List<Team> getAllTeams() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        boolean isWritable = hasRoleWriteAll(authorizationUser);
+        boolean isWritable = hasRoleWriteAndReadAll(authorizationUser);
         List<Team> allTeams = teamBusinessService.getAllTeams(authorizationUser);
         allTeams.forEach(team -> team.setWriteable(isWritable));
         return allTeams;

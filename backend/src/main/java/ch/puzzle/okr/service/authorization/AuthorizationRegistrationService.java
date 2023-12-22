@@ -8,10 +8,7 @@ import ch.puzzle.okr.service.business.UserBusinessService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
@@ -36,18 +33,8 @@ public class AuthorizationRegistrationService {
     }
 
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.email")
-    public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
-        List<String> organisationNames = jwtConverterFactory.getJwtOrganisationConverter().convert(token);
-        return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),
-                getFirstLevelTeamIds(),
-                roleMapperFactory.getRoleMapper().mapAuthorizationRoles(organisationNames, user));
-    }
-
-    private List<Long> getTeamIds(List<String> organisationNames) {
-        return teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
-    }
-
-    private List<Long> getFirstLevelTeamIds() {
-        return teamPersistenceService.findTeamIdsByOrganisationName(firstLevelOrganisationName);
+    public AuthorizationUser registerAuthorizationUser(User user) {
+        return new AuthorizationUser(userBusinessService.getOrCreateUser(user),
+                roleMapperFactory.getRoleMapper().mapAuthorizationRoles(user));
     }
 }

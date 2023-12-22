@@ -9,18 +9,16 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 import static ch.puzzle.okr.models.State.*;
-import static ch.puzzle.okr.service.authorization.AuthorizationService.*;
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static java.lang.String.format;
 
 @Component
 public class AuthorizationCriteria<T> {
 
     private static final String PARAM_ALL_DRAFT_STATE = "allDraftState";
-    private static final String PARAM_FIRST_LEVEL_TEAM_IDS = "firstLevelTeamIds";
     private static final String PARAM_OBJECTIVE_QUERY = "objectiveQuery";
     private static final String PARAM_PUBLISHED_STATES = "publishedStates";
     private static final String PARAM_TEAM_DRAFT_STATE = "teamDraftState";
-    private static final String PARAM_TEAMS_DRAFT_STATE = "teamsDraftState";
     private static final String PARAM_TEAM_IDS = "teamIds";
     private static final String PARAM_USER_TEAM_IDS = "userTeamIds";
 
@@ -48,20 +46,13 @@ public class AuthorizationCriteria<T> {
 
     private String append(AuthorizationUser user, String alias, String stateColumn, String teamIdColumn) {
         StringBuilder sb = new StringBuilder(256);
-        if (hasRoleReadAllDraft(user)) {
+        if (hasRoleWriteAndReadAll(user)) {
             sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
         }
-        if (hasRoleReadAllPublished(user)) {
-            sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
-        }
-        if (hasRoleReadTeamDraft(user)) {
-            sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
-                    teamIdColumn, PARAM_USER_TEAM_IDS));
-        }
-        if (hasRoleReadTeamsDraft(user)) {
-            sb.append(format(" or %s.%s=:%s and %s.%s NOT IN (:%s)", alias, stateColumn, PARAM_TEAMS_DRAFT_STATE, alias,
-                    teamIdColumn, PARAM_FIRST_LEVEL_TEAM_IDS));
-        }
+        // all users can read published state
+        sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
+        // users can read draft state of teams with admin role
+        sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias, teamIdColumn, PARAM_USER_TEAM_IDS));
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");
         }
@@ -80,20 +71,12 @@ public class AuthorizationCriteria<T> {
     }
 
     public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user) {
-        if (hasRoleReadAllDraft(user)) {
+        if (hasRoleWriteAndReadAll(user)) {
             typedQuery.setParameter(PARAM_ALL_DRAFT_STATE, DRAFT);
         }
-        if (hasRoleReadAllPublished(user)) {
-            typedQuery.setParameter(PARAM_PUBLISHED_STATES, List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
-        }
-        if (hasRoleReadTeamDraft(user)) {
-            typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
-            typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.userTeamIds());
-        }
-        if (hasRoleReadTeamsDraft(user)) {
-            typedQuery.setParameter(PARAM_TEAMS_DRAFT_STATE, DRAFT);
-            typedQuery.setParameter(PARAM_FIRST_LEVEL_TEAM_IDS, user.firstLevelTeamIds());
-        }
+        typedQuery.setParameter(PARAM_PUBLISHED_STATES, List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
+        typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
+        typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.extractTeamIds());
     }
 
     private static boolean shouldAddTeamFilter(List<Long> teamIds) {

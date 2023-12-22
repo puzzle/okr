@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,10 @@ public class User implements WriteableInterface {
     private String email;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private List<UserTeam> userTeamList;
+    private List<UserTeam> userTeamList = new ArrayList<>();
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean isOkrChampion = false;
 
     private transient boolean writeable;
 
@@ -53,6 +57,7 @@ public class User implements WriteableInterface {
         setLastname(builder.lastname);
         setEmail(builder.email);
         setUserTeamList(builder.userTeamList);
+        setOkrChampion(builder.isOkrChampion);
     }
 
     public Long getId() {
@@ -95,6 +100,14 @@ public class User implements WriteableInterface {
         this.userTeamList = userTeamList;
     }
 
+    public boolean isOkrChampion() {
+        return isOkrChampion;
+    }
+
+    public void setOkrChampion(boolean okrChampion) {
+        isOkrChampion = okrChampion;
+    }
+
     @Override
     public boolean isWriteable() {
         return writeable;
@@ -135,6 +148,7 @@ public class User implements WriteableInterface {
         private String lastname;
         private String email;
         private List<UserTeam> userTeamList;
+        private boolean isOkrChampion;
 
         private Builder() {
         }
@@ -170,6 +184,11 @@ public class User implements WriteableInterface {
 
         public Builder withUserTeamList(List<UserTeam> userTeamList) {
             this.userTeamList = userTeamList;
+            return this;
+        }
+
+        public Builder withOkrChampion(boolean isOkrChampion) {
+            this.isOkrChampion = isOkrChampion;
             return this;
         }
 

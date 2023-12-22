@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 
 @Service
 public class UserAuthorizationService {
@@ -22,7 +22,7 @@ public class UserAuthorizationService {
 
     public List<User> getAllUsers() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        boolean isWritable = hasRoleWriteAll(authorizationUser);
+        boolean isWritable = hasRoleWriteAndReadAll(authorizationUser);
         List<User> allUsers = userBusinessService.getAllUsers();
         allUsers.forEach(user -> user.setWriteable(isWritable));
         return allUsers;

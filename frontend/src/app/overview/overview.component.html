@@ -1,10 +1,9 @@
 <router-outlet></router-outlet>
 
-<app-application-top-bar [hasAdminAccess]="hasAdminAccess"></app-application-top-bar>
+<app-application-top-bar></app-application-top-bar>
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div id="overview" class="overviewContainer px-sm-4" [ngStyle]="{ 'padding-top.px': overviewPadding | async }">
   <app-team
-    [hasAdminAccess]="hasAdminAccess"
     *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"
     [overviewEntity]="overviewEntity"
   >

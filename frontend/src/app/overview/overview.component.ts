@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUntil } from 'rxjs';
-import { OverviewService } from '../shared/services/overview.service';
-import { ActivatedRoute } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {OverviewEntity} from '../shared/types/model/OverviewEntity';
+import {catchError, combineLatest, EMPTY, ReplaySubject, Subject, take, takeUntil} from 'rxjs';
+import {OverviewService} from '../shared/services/overview.service';
+import {ActivatedRoute} from '@angular/router';
+import {RefreshDataService} from '../shared/services/refresh-data.service';
+import {getQueryString, getValueFromQuery, isMobileDevice, trackByFn} from '../shared/common';
 
 @Component({
   selector: 'app-overview',
@@ -16,7 +16,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
-  hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
 
   constructor(
@@ -71,9 +70,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
           return EMPTY;
         }),
       )
-      .subscribe((dashboard) => {
-        this.hasAdminAccess.next(dashboard.adminAccess);
-        this.overviewEntities$.next(dashboard.overviews);
+      .subscribe((overviews) => {
+        this.overviewEntities$.next(overviews);
       });
   }
 

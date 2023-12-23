@@ -1,4 +1,4 @@
-<div *ngIf="overviewEntity | async as OVEntity" class="bg-grey justify-content-between pt-3">
+<div *ngIf="overviewEntity as OVEntity" class="bg-grey justify-content-between pt-3">
   <section class="team-header">
     <span class="d-flex align-items-center gap-2">
       <div class="d-flex align-items-center flex-row">
@@ -6,14 +6,14 @@
         <img
           (click)="openEditTeamDialog(OVEntity.team)"
           (keydown.enter)="openEditTeamDialog(OVEntity.team)"
-          *ngIf="hasAdminAccess | async"
+          *ngIf="currentUserHasAdminRightsForTeam"
           [attr.data-testId]="'edit-team-' + OVEntity.team.name"
           alt="edit team"
           class="team-icons team-actions cursor-pointer ms-2 mb-2 focus-outline"
           src="assets/icons/edit.svg"
           tabindex="0"
         />
-        <div *ngIf="this.hasAdminAccess | async" class="d-flex flex-row align-items-center">
+        <div *ngIf="currentUserHasAdminRightsForTeam" class="d-flex flex-row align-items-center">
           <mat-icon
             id="organisation-warning"
             *ngIf="OVEntity.team.hasInActiveOrganisations"

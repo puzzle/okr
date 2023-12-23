@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { map, ReplaySubject } from 'rxjs';
-import { ConfigService } from '../config.service';
-import { MatDialog } from '@angular/material/dialog';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {OAuthService} from 'angular-oauth2-oidc';
+import {map} from 'rxjs';
+import {ConfigService} from '../config.service';
+import {MatDialog} from '@angular/material/dialog';
 // import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
-import { Router } from '@angular/router';
-import { RefreshDataService } from '../shared/services/refresh-data.service';
-import { isMobileDevice } from '../shared/common';
-import { UserService } from '../shared/services/user.service';
-import { getFullNameFromUser } from '../shared/types/model/User';
+import {Router} from '@angular/router';
+import {RefreshDataService} from '../shared/services/refresh-data.service';
+import {isMobileDevice} from '../shared/common';
+import {UserService} from '../shared/services/user.service';
+import {getFullNameFromUser} from '../shared/types/model/User';
 
 @Component({
   selector: 'app-application-top-bar',
@@ -20,8 +20,6 @@ export class ApplicationTopBarComponent implements OnInit {
   userFullName: string = '';
   menuIsOpen = false;
 
-  @Input()
-  hasAdminAccess!: ReplaySubject<boolean>;
   // private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
 
   constructor(

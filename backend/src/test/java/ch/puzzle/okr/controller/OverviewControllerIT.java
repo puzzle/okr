@@ -1,6 +1,5 @@
 package ch.puzzle.okr.controller;
 
-import ch.puzzle.okr.mapper.DashboardMapper;
 import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
@@ -44,8 +43,6 @@ class OverviewControllerIT {
     @MockBean
     OrganisationBusinessService organisationBusinessService;
     // Dashboard and OverviewMapper are required for testing
-    @SpyBean
-    private DashboardMapper dashboardMapper;
     @SpyBean
     private OverviewMapper overviewMapper;
 

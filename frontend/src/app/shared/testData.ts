@@ -1,25 +1,24 @@
-import { TeamMin } from './types/model/TeamMin';
-import { State } from './types/enums/State';
-import { QuarterMin } from './types/model/QuarterMin';
-import { CheckInMin } from './types/model/CheckInMin';
-import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
-import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
-import { KeyresultMin } from './types/model/KeyresultMin';
-import { ObjectiveMin } from './types/model/ObjectiveMin';
-import { OverviewEntity } from './types/model/OverviewEntity';
-import { KeyResultObjective } from './types/model/KeyResultObjective';
-import { Quarter } from './types/model/Quarter';
-import { KeyResultOrdinal } from './types/model/KeyResultOrdinal';
-import { CheckIn } from './types/model/CheckIn';
-import { Objective } from './types/model/Objective';
-import { User } from './types/model/User';
-import { KeyResultMetric } from './types/model/KeyResultMetric';
-import { Unit } from './types/enums/Unit';
-import { Team } from './types/model/Team';
-import { Action } from './types/model/Action';
-import { OrganisationState } from './types/enums/OrganisationState';
-import { Organisation } from './types/model/Organisation';
-import { Dashboard } from './types/model/Dashboard';
+import {TeamMin} from './types/model/TeamMin';
+import {State} from './types/enums/State';
+import {QuarterMin} from './types/model/QuarterMin';
+import {CheckInMin} from './types/model/CheckInMin';
+import {KeyResultMetricMin} from './types/model/KeyResultMetricMin';
+import {KeyResultOrdinalMin} from './types/model/KeyResultOrdinalMin';
+import {KeyresultMin} from './types/model/KeyresultMin';
+import {ObjectiveMin} from './types/model/ObjectiveMin';
+import {OverviewEntity} from './types/model/OverviewEntity';
+import {KeyResultObjective} from './types/model/KeyResultObjective';
+import {Quarter} from './types/model/Quarter';
+import {KeyResultOrdinal} from './types/model/KeyResultOrdinal';
+import {CheckIn} from './types/model/CheckIn';
+import {Objective} from './types/model/Objective';
+import {User} from './types/model/User';
+import {KeyResultMetric} from './types/model/KeyResultMetric';
+import {Unit} from './types/enums/Unit';
+import {Team} from './types/model/Team';
+import {Action} from './types/model/Action';
+import {OrganisationState} from './types/enums/OrganisationState';
+import {Organisation} from './types/model/Organisation';
 
 export const organisationActive = {
   id: 1,
@@ -303,10 +302,7 @@ export const overViewEntityResponse2: any = {
   writable: false,
 };
 
-export const dashboard: Dashboard = {
-  overviews: [overViewEntityResponse1, overViewEntityResponse2],
-  adminAccess: true,
-};
+export const overviews: OverviewEntity[] = [overViewEntityResponse1, overViewEntityResponse2];
 
 export const quarter: Quarter = {
   id: 1,

@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { OverviewService } from './overview.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { dashboard } from '../testData';
+import {OverviewService} from './overview.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {of} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {overviews} from '../testData';
 
 const httpClient = {
   get: jest.fn(),
@@ -26,9 +26,9 @@ describe('OverviewService', () => {
   });
 
   it('should set state of objectives correctly', (done) => {
-    jest.spyOn(httpClient, 'get').mockReturnValue(of(dashboard));
+    jest.spyOn(httpClient, 'get').mockReturnValue(of(overviews));
     service.getOverview().subscribe((dashboard) => {
-      dashboard.overviews.forEach((overview) =>
+      overviews.forEach((overview) =>
         overview.objectives.forEach((objective) => expect(typeof objective.state).toBe('string')),
       );
       done();

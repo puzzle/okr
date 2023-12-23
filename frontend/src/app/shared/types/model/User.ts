@@ -1,4 +1,4 @@
-import { UserTeam } from './UserTeam';
+import {UserTeam} from './UserTeam';
 
 export interface User {
   id: number;
@@ -12,6 +12,10 @@ export interface User {
 
 export const extractTeamsFromUser = (user: User) => {
   return user.userTeamList.map((u) => u.team);
+};
+
+export const extractAdminTeamsFromUser = (user: User) => {
+  return user.userTeamList.filter(ut => ut.isTeamAdmin).map((u) => u.team);
 };
 
 export const getFullNameFromUser = (user: User) => {

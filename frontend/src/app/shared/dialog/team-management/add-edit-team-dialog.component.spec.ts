@@ -1,24 +1,24 @@
-import { TeamManagementComponent } from './team-management.component';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterTestingModule } from '@angular/router/testing';
-import { DialogHeaderComponent } from '../../custom/dialog-header/dialog-header.component';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { TeamService } from '../../services/team.service';
-import { of } from 'rxjs';
-import { organisationActive, organisationInActive, teamFormObject, teamMin1 } from '../../testData';
-import { Team } from '../../types/model/Team';
-import { OrganisationService } from '../../services/organisation.service';
-import { TranslateService } from '@ngx-translate/core';
+import {AddEditTeamDialog} from './add-edit-team-dialog.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {HarnessLoader} from '@angular/cdk/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {RouterTestingModule} from '@angular/router/testing';
+import {DialogHeaderComponent} from '../../custom/dialog-header/dialog-header.component';
+import {TestbedHarnessEnvironment} from '@angular/cdk/testing/testbed';
+import {TeamService} from '../../services/team.service';
+import {of} from 'rxjs';
+import {organisationActive, organisationInActive, teamFormObject, teamMin1} from '../../testData';
+import {Team} from '../../types/model/Team';
+import {OrganisationService} from '../../services/organisation.service';
+import {TranslateService} from '@ngx-translate/core';
 
 const dialogRefMock = {
   close: jest.fn(),
@@ -40,8 +40,8 @@ const organisationServiceMock = {
 };
 
 describe('TeamManagementComponent', () => {
-  let component: TeamManagementComponent;
-  let fixture: ComponentFixture<TeamManagementComponent>;
+  let component: AddEditTeamDialog;
+  let fixture: ComponentFixture<AddEditTeamDialog>;
   let loader: HarnessLoader;
 
   beforeEach(() => {
@@ -58,7 +58,7 @@ describe('TeamManagementComponent', () => {
         MatCheckboxModule,
         RouterTestingModule,
       ],
-      declarations: [TeamManagementComponent, DialogHeaderComponent],
+      declarations: [AddEditTeamDialog, DialogHeaderComponent],
       providers: [
         {
           provide: MatDialog,
@@ -83,7 +83,7 @@ describe('TeamManagementComponent', () => {
         { provide: TranslateService, useValue: {} },
       ],
     });
-    fixture = TestBed.createComponent(TeamManagementComponent);
+    fixture = TestBed.createComponent(AddEditTeamDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
     loader = TestbedHarnessEnvironment.loader(fixture);

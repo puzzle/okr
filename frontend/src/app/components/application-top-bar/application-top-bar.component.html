@@ -1,0 +1,47 @@
+<div id="topBarHeight">
+  <div id="okrTopbar">
+    <span class="d-flex h-100 align-items-center ps-4">
+      <img alt="okr-logo" height="32" ngSrc="../../../assets/images/okr-logo.svg" width="140" />
+    </span>
+    <div class="d-flex align-items-center">
+      <div>
+        <a routerLink="team-management" class="topBarEntry btn" [attr.data-testId]="'team-management'">
+          <mat-icon aria-hidden="false" aria-label="Group icon" class="text-white">group</mat-icon>
+          <span class="d-none d-md-flex"> Teamverwaltung </span>
+        </a>
+      </div>
+
+      <div>
+        <a class="topBarEntry focus-outline" href="https://wiki.puzzle.ch/Puzzle/OKRs">
+          <mat-icon aria-hidden="false" aria-label="Help icon" class="text-white" fontIcon="help_outline"></mat-icon>
+          <span class="d-none d-md-flex"> Hilfe </span>
+        </a>
+      </div>
+
+      <button
+        (menuClosed)="menuIsOpen = false"
+        (menuOpened)="menuIsOpen = true"
+        [matMenuTriggerFor]="menu"
+        [attr.data-testId]="'user-options'"
+        class="topBarEntry text-white me-md-5 me-1"
+        mat-button
+      >
+        <span class="d-flex align-items-center">
+          <mat-icon>person_outline</mat-icon>
+          <p class="fw-normal fs-6 d-none d-md-flex" [attr.data-testId]="'user-name'">{{ userFullName }}</p>
+          <span class="mt-1">
+            <mat-icon *ngIf="!menuIsOpen">expand_more</mat-icon>
+            <mat-icon *ngIf="menuIsOpen">expand_less</mat-icon>
+          </span>
+        </span>
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+      <button mat-menu-item (click)="logOut()" [attr.data-testId]="'logout'" class="py-2">
+        <mat-icon class="scale-9">exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

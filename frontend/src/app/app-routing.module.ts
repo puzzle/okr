@@ -1,10 +1,10 @@
 import { inject, NgModule } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './overview/overview.component';
+import { OverviewComponent } from './components/overview/overview.component';
 import { EMPTY, of } from 'rxjs';
-import { SidepanelComponent } from './shared/custom/sidepanel/sidepanel.component';
-import { authGuard } from './shared/guards/auth.guard';
-import { UserService } from './shared/services/user.service';
+import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
+import { authGuard } from './guards/auth.guard';
+import { UserService } from './services/user.service';
 import { User } from './shared/types/model/User';
 import { OAuthService } from 'angular-oauth2-oidc';
 
@@ -51,6 +51,11 @@ const routes: Routes = [
         data: { type: 'KeyResult' },
       },
     ],
+    canActivate: [authGuard],
+  },
+  {
+    path: 'team-management',
+    loadChildren: () => import('./team-management/team-management.module').then((m) => m.TeamManagementModule),
     canActivate: [authGuard],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },

@@ -1,0 +1,22 @@
+@import "../style/variables";
+
+.submit {
+  background-color: $pz-dark-blue;
+  border-radius: 8px;
+}
+
+.cancel {
+  background-color: white;
+  color: $pz-dark-blue;
+}
+
+span {
+  color: black;
+}
+mat-label {
+  color: black;
+}
+.radio-text-container {
+  background: $show-element;
+  height: auto;
+}

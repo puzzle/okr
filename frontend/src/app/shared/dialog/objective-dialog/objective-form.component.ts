@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
-import { TeamService } from '../../services/team.service';
+import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
-import { QuarterService } from '../../services/quarter.service';
+import { QuarterService } from '../../../services/quarter.service';
 import { forkJoin, Observable, of, Subject } from 'rxjs';
-import { ObjectiveService } from '../../services/objective.service';
+import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
 import { ObjectiveMin } from '../../types/model/ObjectiveMin';

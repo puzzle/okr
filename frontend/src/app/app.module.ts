@@ -28,7 +28,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
-import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 import { TeamComponent } from './components/team/team.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { ObjectiveComponent } from './components/objective/objective.component';
@@ -62,6 +61,7 @@ import { CheckInFormMetricComponent } from './components/checkin/check-in-form-m
 import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
 import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
+import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {

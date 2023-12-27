@@ -2,8 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map } from 'rxjs';
 import { ConfigService } from '../../config.service';
-// import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { getFullNameFromUser } from '../../shared/types/model/User';
 
@@ -35,7 +34,16 @@ export class ApplicationTopBarComponent implements OnInit {
       )
       .subscribe();
 
-    this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
+    this.initUserFullName();
+  }
+
+  private initUserFullName() {
+    // user is loaded on base route resolver. We have to wait until routing is done.
+    this.router.events.subscribe((val) => {
+      if (!this.userFullName && val instanceof NavigationEnd) {
+        this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
+      }
+    });
   }
 
   logOut() {

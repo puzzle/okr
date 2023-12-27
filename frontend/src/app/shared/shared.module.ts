@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ExampleDialogComponent } from './dialog/example-dialog/example-dialog.component';
 import { ObjectiveFormComponent } from './dialog/objective-dialog/objective-form.component';
 import { UnitValueTransformationPipe } from './pipes/unit-value-transformation/unit-value-transformation.pipe';
@@ -16,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
+import { OkrTangramComponent } from './custom/okr-tangram/okr-tangram.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     ScoringComponent,
     CompleteDialogComponent,
     DialogHeaderComponent,
+    OkrTangramComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatRadioModule,
     MatIconModule,
+    NgOptimizedImage,
   ],
   exports: [
     ExampleDialogComponent,
@@ -50,6 +53,7 @@ import { MatIconModule } from '@angular/material/icon';
     ScoringComponent,
     CompleteDialogComponent,
     DialogHeaderComponent,
+    OkrTangramComponent,
   ],
 })
 export class SharedModule {}

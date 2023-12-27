@@ -3,6 +3,7 @@ import * as go from 'gojs';
 import { ContinuousForceDirectedLayout } from './continuous-force-directed-layout';
 import { Subject } from 'rxjs';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-diagram',
@@ -30,7 +31,7 @@ export class DiagramComponent implements OnInit {
     // Null check can be added if you want to handle null cases
   }
 
-  constructor() {
+  constructor(private router: Router) {
     this.overviewEntities$.subscribe((hey) => {
       const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
         this.myLayout.updateDiagram(value);
@@ -41,7 +42,7 @@ export class DiagramComponent implements OnInit {
 
   ngOnInit() {
     const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
-      this.myLayout = new ContinuousForceDirectedLayout(this.myDiagram, value);
+      this.myLayout = new ContinuousForceDirectedLayout(this.myDiagram, value, this.router);
       this.myLayout.eventListener();
       this.myLayout.init();
       this.myDiagram.layout = this.myLayout;

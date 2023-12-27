@@ -1,12 +1,13 @@
 import * as go from 'gojs';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
+import { Router } from "@angular/router";
 
 export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
   private _isObserving: boolean = false;
-  public myDiagram: go.Diagram = new go.Diagram();
+  private myDiagram: go.Diagram = new go.Diagram();
   private overviewEntities: OverviewEntity[];
 
-  constructor(myDiagram: go.Diagram, overviewEntities: OverviewEntity[]) {
+  constructor(myDiagram: go.Diagram, overviewEntities: OverviewEntity[], private router: Router) {
     super();
     this.myDiagram = myDiagram;
     this.overviewEntities = overviewEntities;
@@ -166,6 +167,7 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
       if (!(part instanceof go.Link)) {
         let type = part.ub.key.charAt(0) == 2 ? 'Objective' : 'KeyResult';
         document.getElementById('clickedElement')!.innerHTML = 'It is a : ' + type + ' with text: ' + part.ub.text;
+        this.router.navigate([type.toLowerCase(), part.ub.key.substring(1)]);
       }
     });
 

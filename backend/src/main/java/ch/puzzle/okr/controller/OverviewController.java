@@ -23,7 +23,8 @@ public class OverviewController {
     private final OverviewMapper overviewMapper;
     private final OverviewAuthorizationService overviewAuthorizationService;
 
-    public OverviewController(OverviewMapper overviewMapper, OverviewAuthorizationService overviewAuthorizationService) {
+    public OverviewController(OverviewMapper overviewMapper,
+            OverviewAuthorizationService overviewAuthorizationService) {
         this.overviewMapper = overviewMapper;
         this.overviewAuthorizationService = overviewAuthorizationService;
     }
@@ -40,9 +41,7 @@ public class OverviewController {
             @RequestParam(required = false, defaultValue = "", name = "team") List<Long> teamFilter,
             @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
             @RequestParam(required = false, defaultValue = "", name = "objectiveQuery") String objectiveQuery) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(overviewMapper.toDto(
-                        overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery))
-                );
+        return ResponseEntity.status(HttpStatus.OK).body(overviewMapper
+                .toDto(overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)));
     }
 }

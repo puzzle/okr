@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as go from 'gojs';
 import { ContinuousForceDirectedLayout } from './continuous-force-directed-layout';
-import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 
 @Component({
   selector: 'app-diagram',
@@ -10,13 +11,42 @@ import { Router } from '@angular/router';
 })
 export class DiagramComponent implements OnInit {
   private myDiagram: go.Diagram = new go.Diagram();
+  private overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
+  private myLayout: any;
 
-  constructor(private router: Router) {}
+  @Input()
+  get overviewEntity(): Subject<OverviewEntity[]> | null {
+    return this.overviewEntities$;
+  }
+
+  set overviewEntity(overviewEntity: OverviewEntity[] | Subject<OverviewEntity[]> | null) {
+    if (Array.isArray(overviewEntity)) {
+      // If an array is passed, assume it's the data and update the Subject
+      this.overviewEntities$.next(overviewEntity);
+    } else if (overviewEntity instanceof Subject) {
+      // If a Subject is passed, directly update the internal Subject
+      this.overviewEntities$ = overviewEntity;
+    }
+    // Null check can be added if you want to handle null cases
+  }
+
+  constructor() {
+    this.overviewEntities$.subscribe((hey) => {
+      const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
+        this.myLayout.updateDiagram(value);
+        subscription.unsubscribe();
+      });
+    });
+  }
 
   ngOnInit() {
-    const layout = new ContinuousForceDirectedLayout(this.myDiagram, this.router);
-    layout.eventListener();
-    layout.init();
-    this.myDiagram.layout = layout;
+    const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
+      this.myLayout = new ContinuousForceDirectedLayout(this.myDiagram, value);
+      this.myLayout.eventListener();
+      this.myLayout.init();
+      this.myDiagram.layout = this.myLayout;
+
+      subscription.unsubscribe();
+    });
   }
 }

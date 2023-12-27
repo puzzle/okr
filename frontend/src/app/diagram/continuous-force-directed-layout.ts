@@ -1,20 +1,25 @@
 import * as go from 'gojs';
-import { Router } from '@angular/router';
+import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 
 export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
   private _isObserving: boolean = false;
-  private myDiagram: go.Diagram = new go.Diagram();
+  public myDiagram: go.Diagram = new go.Diagram();
+  private overviewEntities: OverviewEntity[];
 
-  constructor(
-    myDiagram: go.Diagram,
-    private router: Router,
-  ) {
+  constructor(myDiagram: go.Diagram, overviewEntities: OverviewEntity[]) {
     super();
     this.myDiagram = myDiagram;
+    this.overviewEntities = overviewEntities;
   }
 
   eventListener() {
     window.addEventListener('DOMContentLoaded', this.init);
+  }
+
+  updateDiagram(overviewEntities: OverviewEntity[]) {
+    this.myDiagram = generateData(this.myDiagram, overviewEntities);
+    this.myDiagram.layout.invalidateLayout();
+    this.myDiagram.layoutDiagram();
   }
 
   override isFixed(v: go.LayoutVertex) {
@@ -56,16 +61,15 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
     this.network = net;
   }
 
-  init() {
+  async init() {
     const $ = go.GraphObject.make;
-
     this.myDiagram = new go.Diagram(
       'myDiagramDiv', // must name or refer to the DIV HTML element
       {
         initialAutoScale: go.Diagram.Uniform, // an initial automatic zoom-to-fit
         contentAlignment: go.Spot.Center, // align document to the center of the viewport
         layout: $(
-          ContinuousForceDirectedLayout, // automatically spread nodes apart while dragging
+          ContinuousForceDirectedLayout, // our class extends go.ForceDirectedLayout
           {
             defaultSpringLength: 60,
             defaultElectricalCharge: 150,
@@ -112,63 +116,13 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
       {
         shadowColor: 'gray',
         mouseEnter: function (e, node) {
-          if (!node.part!.findObject('PUZZLE') && !node.part!.findObject('TEAM')) {
-            const goNode = node as go.Node;
-            if (goNode) {
-              if (!goNode.isSelected) {
-                goNode.isShadowed = true;
-                if (node.part!.findObject('KR')) {
-                  const krObject1 = node.part!.findObject('KR') as go.Shape;
-                  if (krObject1) {
-                    krObject1.fill = '#F7F8F9';
-                  }
-
-                  const krObject2 = node.part!.findObject('KR') as go.Shape;
-                  if (krObject2) {
-                    krObject2.stroke = '#5D6974';
-                  }
-                }
-              }
-            }
-          }
+          handleNodeAction(node, false);
         },
         mouseLeave: function (e, node) {
-          if (!node.part!.findObject('PUZZLE') && !node.part!.findObject('TEAM')) {
-            const goNode = node as go.Node;
-            if (goNode) {
-              goNode.isShadowed = false;
-            }
-            if (node.part!.findObject('KR')) {
-              const krObject1 = node.part!.findObject('KR') as go.Shape;
-              if (krObject1) {
-                krObject1.fill = '#E5E8EB';
-              }
-
-              const krObject2 = node.part!.findObject('KR') as go.Shape;
-              if (krObject2) {
-                krObject2.stroke = null; // Access stroke property safely
-              }
-            }
-          }
+          handleNodeAction(node, true);
         },
         click: function (e, node) {
-          if (!node.part!.findObject('PUZZLE') && !node.part!.findObject('TEAM')) {
-            const goNode = node as go.Node;
-            if (goNode) {
-              goNode.isShadowed = false;
-            }
-            if (node.part!.findObject('KR')) {
-              const krObject1 = node.part!.findObject('KR') as go.Shape;
-              if (krObject1) {
-                krObject1.fill = '#E5E8EB';
-              }
-
-              const krObject2 = node.part!.findObject('KR') as go.Shape;
-              if (krObject2) {
-                krObject2.stroke = null; // Access stroke property safely
-              }
-            }
-          }
+          handleNodeAction(node, true);
         },
       },
       $(
@@ -177,12 +131,12 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
           font: 'normal 18px Roboto',
           textAlign: 'center',
           stroke: 'black',
-          maxSize: new go.Size(90, 90),
           wrap: go.TextBlock.WrapDesiredSize,
         },
         new go.Binding('text', 'text'),
         new go.Binding('font', 'font'),
         new go.Binding('margin', 'margin'),
+        new go.Binding('maxSize', 'maxSize'),
         new go.Binding('stroke', 'textColor'),
       ),
     );
@@ -206,56 +160,66 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
 
     this.myDiagram.addDiagramListener('ObjectSingleClicked', (e: any) => {
       var part = e.subject.part;
+      console.log('Selected Node ' + this.myDiagram!.findNodeForKey(part.ub.key));
       if (part.ub.text == 'puzzle') return;
       if (part.ub.key.charAt(0) == 1) return;
       if (!(part instanceof go.Link)) {
         let type = part.ub.key.charAt(0) == 2 ? 'Objective' : 'KeyResult';
         document.getElementById('clickedElement')!.innerHTML = 'It is a : ' + type + ' with text: ' + part.ub.text;
-        // this.router.navigate(['keyresult', part.ub.key.substring(1)]);
-        this.router.navigate(['keyresult', 21]);
       }
     });
 
-    let diagramData = createBubbles();
-
-    this.myDiagram.model = new go.GraphLinksModel(diagramData[0], diagramData[1]);
+    generateData(this.myDiagram, this.overviewEntities);
   }
 }
 
-function createBubbles() {
-  var teams = ['BBT', 'dev/tre', 'mobility'];
-  var objectives1 = [
-    'Wir wollen mehr Umsatz',
-    'Die Verrechenbarkeit liegt bei 95%',
-    'Die Energie kommt von erneuerbaren Quellen',
-  ];
-  var objectives2 = [
-    'Wir wollen mehr Umsatz',
-    'Die Verrechenbarkeit liegt bei 95%',
-    'Die Energie kommt von erneuerbaren Quellen',
-  ];
-  var keyresults1 = [
-    'Mehr Kaffees pro Tag',
-    'Die Lehrlinge sollen leiser werden',
-    'Eine Katze soll den Eingang bewachen',
-  ];
-  var keyresults2 = [
-    'Mehr kuchen',
-    'Die Lehrlinge sollen leiser werden',
-    'Eine Katze soll den Eingang bewachen denn wir wollen keine ungewollten Gäste',
-  ];
-  var keyresults3 = ['Mehr kuchen', 'Die Lehrlinge sollen leiser werden', 'Eine Katze soll den Eingang bewachen'];
-  var keyresults4 = ['Mehr kuchen', 'Die Lehrlinge sollen leiser werden', 'Eine Katze soll den Eingang bewachen'];
-  var keyresults5 = ['Mehr kuchen', 'Die Lehrlinge sollen leiser werden', 'Eine Katze soll den Eingang bewachen'];
-  var keyresults6 = ['Mehr kuchen', 'Die Lehrlinge sollen leiser werden', 'Eine Katze soll den Eingang bewachen'];
+function generateData(diagram: go.Diagram, overviewEntities: OverviewEntity[]) {
+  let diagramData = createBubbles(overviewEntities);
 
-  let counter = 1;
-  var nodeDataArray = [];
-  var linkDataArray = [];
+  diagram.model = new go.GraphLinksModel(diagramData[0], diagramData[1]);
 
-  // Puzzle bubbles
+  return diagram;
+}
+
+function handleNodeAction(node: any, isLeaving: boolean) {
+  if (!node.part!.findObject('PUZZLE') && !node.part!.findObject('TEAM')) {
+    const goNode = node as go.Node;
+    if (goNode) {
+      if (isLeaving) {
+        goNode.isShadowed = false;
+      } else {
+        if (!goNode.isSelected) {
+          goNode.isShadowed = true;
+        }
+      }
+      if (node.part!.findObject('KR')) {
+        const krObject1 = node.part!.findObject('KR') as go.Shape;
+        if (krObject1) {
+          if (isLeaving) {
+            krObject1.fill = '#E5E8EB';
+          } else {
+            krObject1.fill = '#F7F8F9';
+          }
+        }
+        const krObject2 = node.part!.findObject('KR') as go.Shape;
+        if (krObject2) {
+          if (isLeaving) {
+            krObject2.stroke = null;
+          } else {
+            krObject2.stroke = '#5D6974';
+          }
+        }
+      }
+    }
+  }
+}
+
+function createBubbles(overviewEntities: OverviewEntity[]) {
+  var nodeDataArray: any[] = [];
+  var linkDataArray: any[] = [];
+
   let puzzle = {
-    key: counter,
+    key: 1,
     text: 'puzzle',
     font: 'bold 70px OKRFont, sans-serif',
     margin: new go.Margin(20, 0, 0, 0),
@@ -265,177 +229,49 @@ function createBubbles() {
     size: new go.Size(200, 200),
   };
   nodeDataArray.push(puzzle);
-  counter++;
 
-  // Team bubbles
-  for (let i = 0; i < teams.length; i++) {
+  overviewEntities.forEach((overviewEntity) => {
     let team = {
-      key: '1' + counter,
-      text: teams[i],
+      key: '1' + overviewEntity.team.id,
+      text: overviewEntity.team.name,
       font: 'normal 32px Roboto',
       name: 'TEAM',
       color: '#238BCA',
+      maxSize: new go.Size(90, 90),
       size: new go.Size(160, 160),
     };
     nodeDataArray.push(team);
-    counter++;
-  }
+    let teamLink = { from: '1' + overviewEntity.team.id, to: 1 };
+    linkDataArray.push(teamLink);
 
-  // Objective bubbles
-  for (let i = 0; i < objectives1.length; i++) {
-    let objective = {
-      key: '2' + counter,
-      text: objectives1[i].length > 25 ? split_at_index(objectives1[i], 25) : objectives1[i],
-      color: '#2C97A6',
-      size: new go.Size(160, 160),
-    };
-    nodeDataArray.push(objective);
-    counter++;
-  }
-  for (let i = 0; i < objectives2.length; i++) {
-    let objective = {
-      key: '2' + counter,
-      text: objectives2[i].length > 25 ? split_at_index(objectives2[i], 25) : objectives2[i],
-      color: '#2C97A6',
-      size: new go.Size(160, 160),
-    };
-    nodeDataArray.push(objective);
-    counter++;
-  }
+    overviewEntity.objectives.forEach((objective) => {
+      let objectiveBubble = {
+        key: '2' + objective.id,
+        text: objective.title.length > 25 ? split_at_index(objective.title, 25) : objective.title,
+        color: '#2C97A6',
+        maxSize: new go.Size(90, 90),
+        size: new go.Size(160, 160),
+      };
+      nodeDataArray.push(objectiveBubble);
+      let objectiveLink = { from: '2' + objective.id, to: '1' + overviewEntity.team.id };
+      linkDataArray.push(objectiveLink);
 
-  // Keyresult bubbles
-  for (let i = 0; i < keyresults1.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults1[i].length > 20 ? split_at_index(keyresults1[i], 20) : keyresults1[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-  for (let i = 0; i < keyresults2.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults2[i].length > 20 ? split_at_index(keyresults2[i], 20) : keyresults2[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-  for (let i = 0; i < keyresults3.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults3[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-  for (let i = 0; i < keyresults4.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults4[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-  for (let i = 0; i < keyresults5.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults5[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-  for (let i = 0; i < keyresults6.length; i++) {
-    let el = {
-      key: '3' + counter,
-      text: keyresults6[i],
-      font: 'normal 14px Roboto',
-      name: 'KR',
-      color: '#E5E8EB',
-      size: new go.Size(120, 120),
-    };
-    counter++;
-    nodeDataArray.push(el);
-  }
-
-  // Keyresult to objective
-  let zahl = 11;
-  for (let i = 0; i < keyresults1.length; i++) {
-    let el = { from: '3' + zahl, to: 25 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 14;
-  for (let i = 0; i < keyresults2.length; i++) {
-    let el = { from: '3' + zahl, to: 26 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 17;
-  for (let i = 0; i < keyresults3.length; i++) {
-    let el = { from: '3' + zahl, to: 27 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 20;
-  for (let i = 0; i < keyresults4.length; i++) {
-    let el = { from: '3' + zahl, to: 28 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 23;
-  for (let i = 0; i < keyresults5.length; i++) {
-    let el = { from: '3' + zahl, to: 29 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 26;
-  for (let i = 0; i < keyresults6.length; i++) {
-    let el = { from: '3' + zahl, to: 210 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-
-  // Objective to team
-  zahl = 5;
-  for (let i = 0; i < objectives1.length; i++) {
-    let el = { from: '2' + zahl, to: '1' + 2 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-  zahl = 8;
-  for (let i = 0; i < objectives2.length; i++) {
-    let el = { from: '2' + zahl, to: '1' + 3 };
-    zahl++;
-    linkDataArray.push(el);
-  }
-
-  // Team to puzzle
-  zahl = 2;
-  for (let i = 0; i < teams.length; i++) {
-    let el = { from: '1' + zahl, to: 1 };
-    zahl++;
-    linkDataArray.push(el);
-  }
+      objective.keyResults.forEach((keyResult) => {
+        let keyResultBubble = {
+          key: '3' + keyResult.id,
+          text: keyResult.title.length > 20 ? split_at_index(keyResult.title, 20) : keyResult.title,
+          font: 'normal 14px Roboto',
+          name: 'KR',
+          color: '#E5E8EB',
+          maxSize: new go.Size(90, 90),
+          size: new go.Size(120, 120),
+        };
+        nodeDataArray.push(keyResultBubble);
+        let keyResultLink = { from: '3' + keyResult.id, to: '2' + objective.id };
+        linkDataArray.push(keyResultLink);
+      });
+    });
+  });
 
   return [nodeDataArray, linkDataArray];
 }

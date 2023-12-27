@@ -3,15 +3,15 @@
 <app-application-top-bar [hasAdminAccess]="hasAdminAccess"></app-application-top-bar>
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div id="overview" class="overviewContainer px-sm-4" [ngStyle]="{ 'padding-top.px': overviewPadding | async }">
-  <!--  <app-team-->
-  <!--    [hasAdminAccess]="hasAdminAccess"-->
-  <!--    *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"-->
-  <!--    [overviewEntity]="overviewEntity"-->
-  <!--  >-->
-  <!--  </app-team>-->
-  <!--  <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">-->
-  <!--    <p>Kein Team ausgewählt</p>-->
-  <!--    <img src="assets/images/puzzle-p.svg" alt="" width="242" class="puzzle-logo" />-->
-  <!--  </div>-->
-  <app-diagram></app-diagram>
+  <!--    <app-team-->
+  <!--      [hasAdminAccess]="hasAdminAccess"-->
+  <!--      *ngFor="let overviewEntity of overviewEntities$ | async; trackBy: trackByFn"-->
+  <!--      [overviewEntity]="overviewEntity"-->
+  <!--    >-->
+  <!--    </app-team>-->
+  <!--    <div *ngIf="(overviewEntities$ | async)?.length == 0" class="d-flex align-items-center flex-column pt-5 gap-5">-->
+  <!--      <p>Kein Team ausgewählt</p>-->
+  <!--      <img src="assets/images/puzzle-p.svg" alt="" width="242" class="puzzle-logo" />-->
+  <!--    </div>-->
+  <app-diagram [overviewEntity]="overviewEntities$ | async"></app-diagram>
 </div>

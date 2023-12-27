@@ -5,6 +5,8 @@ import { OverviewService } from '../shared/services/overview.service';
 import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
+import { AlignmentService } from '../shared/services/alignment.service';
+import { Dashboard } from "../shared/types/model/Dashboard";
 
 @Component({
   selector: 'app-overview',
@@ -18,13 +20,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
+  private service: any;
+  isDiagram: boolean = true;
 
   constructor(
     private overviewService: OverviewService,
+    private alignmentService: AlignmentService,
     private refreshDataService: RefreshDataService,
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
   ) {
+    this.service = this.isDiagram ? this.alignmentService : this.overviewService;
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
@@ -63,7 +69,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
-    this.overviewService
+    this.service
       .getOverview(quarterId, teamIds, objectiveQuery)
       .pipe(
         catchError(() => {
@@ -71,7 +77,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
           return EMPTY;
         }),
       )
-      .subscribe((dashboard) => {
+      .subscribe((dashboard: Dashboard) => {
         this.hasAdminAccess.next(dashboard.adminAccess);
         this.overviewEntities$.next(dashboard.overviews);
       });

@@ -158,7 +158,6 @@ public class AuthorizationService {
         if (hasRoleWriteAndReadAll(authorizationUser)) {
             return true;
         }
-        var teamIdsWithAdmin = authorizationUser.extractTeamIdsWithAdminRole();
-        return teamIdsWithAdmin.contains(teamId);
+        return authorizationUser.isUserAdminInTeam(teamId);
     }
 }

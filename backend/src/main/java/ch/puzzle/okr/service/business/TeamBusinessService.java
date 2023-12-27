@@ -70,8 +70,8 @@ public class TeamBusinessService {
     private record TeamComparator(AuthorizationUser authorizationUser) implements Comparator<Team> {
         @Override
         public int compare(Team t1, Team t2) {
-            boolean isUserTeam1 = authorizationUser.extractTeamIds().contains(t1.getId());
-            boolean isUserTeam2 = authorizationUser.extractTeamIds().contains(t2.getId());
+            boolean isUserTeam1 = authorizationUser.isUserMemberInTeam(t1.getId());
+            boolean isUserTeam2 = authorizationUser.isUserMemberInTeam(t2.getId());
 
             if (isUserTeam1 == isUserTeam2) {
                 if (Objects.equals(t1.getName(), t2.getName())) {

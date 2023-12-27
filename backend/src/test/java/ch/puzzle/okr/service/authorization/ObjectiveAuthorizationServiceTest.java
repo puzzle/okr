@@ -65,7 +65,7 @@ class ObjectiveAuthorizationServiceTest {
     void getEntityByIdShouldReturnObjectiveWritableWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(authorizationService.isWriteable(newObjective, authorizationUser)).thenReturn(true);
+        when(authorizationService.hasRoleWriteForTeam(newObjective, authorizationUser)).thenReturn(true);
         when(objectiveBusinessService.getEntityById(id)).thenReturn(newObjective);
 
         Objective objective = objectiveAuthorizationService.getEntityById(id);

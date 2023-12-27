@@ -49,8 +49,8 @@ public class OverviewBusinessService {
 
         @Override
         public int compare(Overview o1, Overview o2) {
-            boolean containsUserTeam1 = authorizationUser.extractTeamIds().contains(o1.getOverviewId().getTeamId());
-            boolean containsUserTeam2 = authorizationUser.extractTeamIds().contains(o2.getOverviewId().getTeamId());
+            boolean containsUserTeam1 = authorizationUser.isUserMemberInTeam(o1.getOverviewId().getTeamId());
+            boolean containsUserTeam2 = authorizationUser.isUserMemberInTeam(o2.getOverviewId().getTeamId());
 
             if (containsUserTeam1 == containsUserTeam2) {
                 if (Objects.equals(o1.getTeamName(), o2.getTeamName())) {

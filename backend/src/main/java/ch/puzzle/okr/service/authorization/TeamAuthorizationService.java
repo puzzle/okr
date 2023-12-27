@@ -24,29 +24,33 @@ public class TeamAuthorizationService {
     }
 
     public Team createEntity(Team entity) {
-        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM));
+        // everybody is allowed to create a new team
         Team savedTeam = teamBusinessService.createTeam(entity);
         savedTeam.setWriteable(true);
         return savedTeam;
     }
 
     public Team updateEntity(Team entity, Long id) {
-        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM));
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entity.getId());
         Team updatedTeam = teamBusinessService.updateTeam(entity, id);
         updatedTeam.setWriteable(true);
         return updatedTeam;
     }
 
     public void deleteEntity(Long id) {
-        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM));
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM), id);
         teamBusinessService.deleteTeam(id);
     }
 
-    private void checkUserAuthorization(OkrResponseStatusException exception) {
+    private void checkUserAuthorization(OkrResponseStatusException exception, Long teamId) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        if (!hasRoleWriteAndReadAll(authorizationUser)) {
-            throw exception;
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
+            return;
         }
+        if (authorizationUser.isUserAdminInTeam(teamId)) {
+            return;
+        }
+        throw exception;
     }
 
     public List<Team> getAllTeams() {

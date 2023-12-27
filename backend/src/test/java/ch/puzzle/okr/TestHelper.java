@@ -1,13 +1,17 @@
 package ch.puzzle.okr;
 
 import ch.puzzle.okr.dto.ErrorDto;
+import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class TestHelper {
     private TestHelper() {
@@ -20,6 +24,30 @@ public class TestHelper {
     public static User defaultUser(Long id) {
         return User.Builder.builder().withId(id).withFirstname(FIRSTNAME).withLastname(LASTNAME).withEmail(EMAIL)
                 .build();
+    }
+
+    public static User defaultOkrChampion(Long id) {
+        var user = defaultUser(id);
+        user.setOkrChampion(true);
+        return user;
+    }
+
+    public static User defaultUserWithTeams(Long id, List<Team> adminTeams, List<Team> memberTeams) {
+        var user = defaultUser(id);
+        var adminUserTeams = adminTeams.stream()
+                .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
+        var memberUserTeams = memberTeams.stream()
+                .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
+        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams).toList());
+        return user;
+    }
+
+    public static Team defaultTeam(Long id) {
+        return Team.Builder.builder().withId(id).withName("Test Team").build();
+    }
+
+    public static UserTeam defaultUserTeam(Long id, User user) {
+        return UserTeam.Builder.builder().withId(id).withTeam(defaultTeam(1L)).withUser(user).build();
     }
 
     public static AuthorizationUser defaultAuthorizationUser() {
@@ -35,23 +63,21 @@ public class TestHelper {
     }
 
     public static AuthorizationUser mockAuthorizationUser(Long id, String firstname, String lastname, String email) {
-        return new AuthorizationUser(User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname)
-                .withEmail(email).build());
+        User user = User.Builder.builder().withId(id).withFirstname(firstname).withLastname(lastname).withEmail(email)
+                .build();
+        user.setUserTeamList(List.of(defaultUserTeam(1L, user)));
+        return new AuthorizationUser(user);
     }
 
     public static Jwt defaultJwtToken() {
-        return mockJwtToken(FIRSTNAME, LASTNAME, EMAIL, List.of("org_gl"));
-    }
-
-    public static Jwt mockJwtToken(String firstname, String lastname, String email) {
-        return mockJwtToken(firstname, lastname, email, List.of());
+        return mockJwtToken(FIRSTNAME, LASTNAME, EMAIL);
     }
 
     public static Jwt mockJwtToken(User user, List<String> roles) {
-        return mockJwtToken(user.getFirstname(), user.getLastname(), user.getEmail(), roles);
+        return mockJwtToken(user.getFirstname(), user.getLastname(), user.getEmail());
     }
 
-    public static Jwt mockJwtToken(String firstname, String lastname, String email, List<String> roles) {
+    public static Jwt mockJwtToken(String firstname, String lastname, String email) {
         String exampleToken = "MockToken";
 
         Map<String, Object> headers = new HashMap<>();
@@ -63,11 +89,6 @@ public class TestHelper {
         claims.put("family_name", lastname);
         claims.put("email", email);
         claims.put("exp", Instant.now().plusSeconds(3600).getEpochSecond()); // Expires in 1 hour
-        if (!CollectionUtils.isEmpty(roles)) {
-            Map<String, Collection<String>> realmAccess = new HashMap<>();
-            realmAccess.put("roles", new ArrayList<>(roles));
-            claims.put("pitc", realmAccess);
-        }
 
         return new Jwt(exampleToken, Instant.now(), Instant.now().plusSeconds(3600), headers, claims);
     }

@@ -43,7 +43,7 @@ class CheckInAuthorizationServiceTest {
     void getEntityByIdShouldReturnCheckInWritableWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(authorizationService.isWriteable(checkInMetric, authorizationUser)).thenReturn(true);
+        when(authorizationService.hasRoleWriteForTeam(checkInMetric, authorizationUser)).thenReturn(true);
         when(checkInBusinessService.getEntityById(id)).thenReturn(checkInMetric);
 
         CheckIn checkIn = checkInAuthorizationService.getEntityById(id);

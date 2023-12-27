@@ -71,7 +71,7 @@ class KeyResultAuthorizationServiceTest {
     void getEntityByIdShouldReturnKeyResultWritableWhenAuthorized() {
         Long id = 13L;
         when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
-        when(authorizationService.isWriteable(metricKeyResult, authorizationUser)).thenReturn(true);
+        when(authorizationService.hasRoleWriteForTeam(metricKeyResult, authorizationUser)).thenReturn(true);
         when(keyResultBusinessService.getEntityById(id)).thenReturn(metricKeyResult);
 
         KeyResult keyResult = keyResultAuthorizationService.getEntityById(id);

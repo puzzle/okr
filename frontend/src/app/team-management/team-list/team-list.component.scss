@@ -6,6 +6,8 @@ div {
   > mat-nav-list {
     padding: 0;
 
+    background-color: $light-grey;
+
     .selected {
       background-color: $pz-dark-blue;
 

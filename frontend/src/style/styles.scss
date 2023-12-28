@@ -300,3 +300,24 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 app-team-management-banner > #okrBanner {
   position: relative;
 }
+
+table.okr-table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  border: none;
+  box-shadow: none;
+  tr {
+    height: 40px;
+
+    > td {
+      border: none;
+      background-color: $light-grey;
+    }
+    > th {
+      vertical-align: bottom;
+      font-size: 0.75rem;
+      border: none;
+      background-color: white;
+    }
+  }
+}

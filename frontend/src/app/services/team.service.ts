@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Team } from '../shared/types/model/Team';
-import { Observable } from 'rxjs';
+import { Observable, of, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,18 @@ import { Observable } from 'rxjs';
 export class TeamService {
   constructor(private http: HttpClient) {}
 
+  private teams: Team[] | undefined;
+
   getAllTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>('/api/v2/teams');
+    if (this.teams) {
+      return of(this.teams).pipe(take(1));
+    }
+    return this.http.get<Team[]>('/api/v2/teams').pipe(tap((teams) => (this.teams = teams)));
+  }
+
+  reloadTeams(): Observable<Team[]> {
+    this.teams = undefined;
+    return this.getAllTeams();
   }
 
   createTeam(team: Team): Observable<Team> {

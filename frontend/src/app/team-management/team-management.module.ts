@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { RolesPipe } from './roles.pipe';
 import { TeamsPipe } from './teams.pipe';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { TeamsPipe } from './teams.pipe';
     NgOptimizedImage,
     MatListModule,
     MatTableModule,
+    MatIconModule,
   ],
 })
 export class TeamManagementModule {}

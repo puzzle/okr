@@ -1,21 +1,33 @@
 <div>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div id="member-header">
+    <div>
+      <h3 *ngIf="selectedTeam">{{ selectedTeam?.name }}</h3>
+      <h3 *ngIf="!selectedTeam">Alle Teams</h3>
+      <p>Members: {{ dataSource.length }}</p>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
     <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- Position Column -->
+    <ng-container matColumnDef="icon">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon>person_outline</mat-icon>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
       <td mat-cell *matCellDef="let element">{{ element.firstname }} {{ element.lastname }}</td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="roles">
       <th mat-header-cell *matHeaderCellDef>Rolle</th>
       <td mat-cell *matCellDef="let element">{{ element.roles | roles }}</td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="teams">
       <th mat-header-cell *matHeaderCellDef>Teams</th>
       <td mat-cell *matCellDef="let element" [title]="element.teams | teams: undefined">

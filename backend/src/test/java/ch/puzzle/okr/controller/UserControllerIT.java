@@ -3,6 +3,7 @@ package ch.puzzle.okr.controller;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
@@ -48,6 +49,8 @@ class UserControllerIT {
     private MockMvc mvc;
     @MockBean
     private UserAuthorizationService userAuthorizationService;
+    @MockBean
+    private AuthorizationService authorizationService;
     @MockBean
     private UserMapper userMapper;
 

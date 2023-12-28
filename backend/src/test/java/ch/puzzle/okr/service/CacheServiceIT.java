@@ -27,7 +27,7 @@ class CacheServiceIT {
     private User createdUser;
     private Cache cache;
 
-    private static final String USER_EMAIL = "email";
+    private static final String USER_EMAIL = "username@puzzle.ch";
 
     @BeforeEach
     void beforeEach() {
@@ -44,8 +44,7 @@ class CacheServiceIT {
     }
 
     private static User createUser() {
-        return User.Builder.builder().withFirstname("firstname").withLastname("lastname")
-                .withEmail("username@puzzle.ch").build();
+        return User.Builder.builder().withFirstname("firstname").withLastname("lastname").withEmail(USER_EMAIL).build();
     }
 
     @Test

@@ -23,13 +23,14 @@ ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
 ALTER SEQUENCE sequence_team RESTART WITH 200;
 
-insert into person (id, version, email, firstname, lastname)
-values (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann'),
-       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland'),
-       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister'),
-       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson'),
-       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman'),
-       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer');
+INSERT INTO person (id, version, email, firstname, lastname, is_okr_champion)
+VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),
+       (11, 1, 'wunderland@puzzle.ch', 'Alice', 'Wunderland', FALSE),
+       (21, 1, 'baumeister@puzzle.ch', 'Bob', 'Baumeister', FALSE),
+       (31, 1, 'peterson@puzzle.ch', 'Findus', 'Peterson', FALSE),
+       (41, 1, 'egiman@puzzle.ch', 'Paco', 'Egiman', FALSE),
+       (51, 1, 'papierer@puzzle.ch', 'Robin', 'Papierer', FALSE),
+       (61, 1, 'gl@gl.com', 'Jaya', 'Norris', TRUE);
 
 insert into quarter (id, label, start_date, end_date)
 values (1, 'GJ 22/23-Q4', '2023-04-01', '2023-06-30'),
@@ -46,6 +47,25 @@ values (4, 1, '/BBT'),
        (8, 1, 'we are cube.³'),
        (5, 1, 'Puzzle ITC'),
        (6, 1, 'LoremIpsum');
+
+-- map existing users to teams
+INSERT INTO person_team (id, version, person_id, team_id, is_team_admin)
+-- peggimann@puzzle.ch
+VALUES (1, 1, 1, 4, TRUE),
+       (2, 1, 1, 5, FALSE),
+       -- wunderland@puzzle.ch
+       (3, 1, 11, 6, FALSE),
+       -- baumeister@puzzle.ch
+       (4, 1, 21, 8, FALSE),
+       -- peterson@puzzle.ch
+       (5, 1, 31, 8, TRUE),
+       -- egiman@puzzlech
+       (6, 1, 41, 4, FALSE),
+       -- papierer@puzzle.ch
+       (7, 1, 51, 6, TRUE),
+       -- gl@gl.ch
+       (8, 1, 61, 5, TRUE),
+       (9, 1, 61, 6, FALSE);
 
 insert into objective (id, version, description, modified_on, progress, title, created_by_id, quarter_id, team_id, state,
                               modified_by_id, created_on)
@@ -119,21 +139,6 @@ insert into completed (id, version, objective_id, comment) values
        (1,1, 4, 'Das hat geklappt'),
        (2,1, 6, 'War leider nicht moeglich'),
        (3,1, 10, 'Schade');
-
-insert into organisation (id, version, org_name, state) values
-       (1,1, 'org_gl', 'ACTIVE'),
-       (2,1, 'org_bl', 'ACTIVE'),
-       (3,1, 'org_mobility', 'ACTIVE'),
-       (4,1, 'org_azubi', 'ACTIVE'),
-       (5,1, 'org_inactive', 'INACTIVE');
-
-insert into team_organisation (team_id, organisation_id) values
-       (6, 3),
-       (4, 5),
-       (5, 1),
-       (6, 2),
-       (8, 2),
-       (8, 5);
 
 insert into action (id, version, action, priority, is_checked, key_result_id) values
                                                       (1,  1, 'Neues Haus', 1, true, 8),

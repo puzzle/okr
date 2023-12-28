@@ -16,6 +16,7 @@ create table if not exists person
     email     varchar(250) not null,
     firstname varchar(50)  not null,
     lastname  varchar(50)  not null,
+    is_okr_champion BOOLEAN DEFAULT FALSE,
     primary key (id),
     constraint uk_person_email
         unique (email)
@@ -241,3 +242,20 @@ create table if not exists team_organisation
     constraint fk_team_organisation_team
         foreign key (team_id) references team
 );
+
+CREATE SEQUENCE IF NOT EXISTS sequence_team;
+
+CREATE TABLE person_team
+(
+    is_team_admin BOOLEAN DEFAULT FALSE NOT NULL,
+    version       INTEGER               NOT NULL,
+    id            BIGINT                NOT NULL,
+    person_id     BIGINT,
+    team_id       BIGINT,
+    PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS person_team
+    ADD CONSTRAINT FK_person_team_team FOREIGN KEY (team_id) REFERENCES team;
+ALTER TABLE IF EXISTS person_team
+    ADD CONSTRAINT FK_person_team_person FOREIGN KEY (person_id) REFERENCES person;

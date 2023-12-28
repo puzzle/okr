@@ -119,7 +119,7 @@ class CheckInPersistenceServiceIT {
         assertEquals(0.5, ((CheckInMetric) checkIn).getValue(), 0.01);
         assertEquals(
                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore "
-                        + "magna aliquyam erat, sed diam voluptua.At vero eos et accusam et justo duo dolores",
+                        + "magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores ",
                 checkIn.getChangeInfo());
     }
 

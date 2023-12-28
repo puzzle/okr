@@ -50,7 +50,7 @@ class UserPersistenceServiceIT {
     void shouldReturnAllUsersCorrect() throws ResponseStatusException {
         List<User> userList = userPersistenceService.findAll();
 
-        Assertions.assertThat(userList).hasSize(6);
+        Assertions.assertThat(userList).hasSize(7);
     }
 
     @Test

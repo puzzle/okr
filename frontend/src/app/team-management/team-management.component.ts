@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { isMobileDevice } from '../shared/common';
-import { AddEditTeamDialog } from './add-edit-team-dialog/add-edit-team-dialog.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {Component} from '@angular/core';
+import {isMobileDevice} from '../shared/common';
+import {AddEditTeamDialog} from './add-edit-team-dialog/add-edit-team-dialog.component';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-team-management',
   templateUrl: './team-management.component.html',
-  styleUrl: './team-management.component.css',
+  styleUrl: './team-management.component.scss',
 })
 export class TeamManagementComponent {
   private dialogRef!: MatDialogRef<AddEditTeamDialog> | undefined;

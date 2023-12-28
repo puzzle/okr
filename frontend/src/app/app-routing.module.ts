@@ -1,12 +1,12 @@
-import { inject, NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
-import { OverviewComponent } from './components/overview/overview.component';
-import { EMPTY, of } from 'rxjs';
-import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
-import { authGuard } from './guards/auth.guard';
-import { UserService } from './services/user.service';
-import { User } from './shared/types/model/User';
-import { OAuthService } from 'angular-oauth2-oidc';
+import {inject, NgModule} from '@angular/core';
+import {ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes} from '@angular/router';
+import {OverviewComponent} from './components/overview/overview.component';
+import {EMPTY, of} from 'rxjs';
+import {SidepanelComponent} from './components/sidepanel/sidepanel.component';
+import {authGuard} from './guards/auth.guard';
+import {UserService} from './services/user.service';
+import {User} from './shared/types/model/User';
+import {OAuthService} from 'angular-oauth2-oidc';
 
 /**
  * Resolver for get the id from url like `/objective/42` or `/keyresult/42`.
@@ -57,6 +57,7 @@ const routes: Routes = [
     path: 'team-management',
     loadChildren: () => import('./team-management/team-management.module').then((m) => m.TeamManagementModule),
     canActivate: [authGuard],
+    resolve: {user: currentUserResolver}
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

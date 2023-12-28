@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {isMobileDevice} from '../../shared/common';
+import { Component } from '@angular/core';
+import { isMobileDevice } from '../../shared/common';
 
 @Component({
   selector: 'app-team-management-banner',

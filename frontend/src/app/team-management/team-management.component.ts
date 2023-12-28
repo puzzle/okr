@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {isMobileDevice} from '../shared/common';
-import {AddEditTeamDialog} from './add-edit-team-dialog/add-edit-team-dialog.component';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { isMobileDevice } from '../shared/common';
+import { AddEditTeamDialog } from './add-edit-team-dialog/add-edit-team-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-team-management',

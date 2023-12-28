@@ -1,0 +1,5 @@
+export enum UserRole {
+  OKR_CHAMPION = 'OKR_CHAMPION',
+  TEAM_ADMIN = 'TEAM_ADMIN',
+  TEAM_MEMBER = 'TEAM_MEMBER'
+}

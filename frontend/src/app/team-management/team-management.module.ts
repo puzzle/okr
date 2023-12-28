@@ -12,7 +12,8 @@ import { TeamListComponent } from './team-list/team-list.component';
 import { MemberListComponent } from './member-list/member-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { RolesPipe } from './roles.pipe';
+import { TeamsPipe } from './teams.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     TeamManagementBannerComponent,
     TeamListComponent,
     MemberListComponent,
+    RolesPipe,
+    TeamsPipe,
   ],
   imports: [
     CommonModule,

@@ -1,31 +1,53 @@
-import { Component } from '@angular/core';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { UserService } from '../../services/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { combineLatest, map, ReplaySubject, Subscription } from 'rxjs';
+import { User } from '../../shared/types/model/User';
+import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
-export class MemberListComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+export class MemberListComponent implements OnInit, OnDestroy {
+  dataSource: UserTableEntry[] = [];
+  private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+
+  private subscription!: Subscription;
+  private allColumns = ['name', 'roles', 'teams'];
+  private teamColumns = ['name', 'roles'];
+
+  displayedColumns: string[] = this.allColumns;
+
+  public constructor(
+    private readonly userService: UserService,
+    private readonly route: ActivatedRoute,
+    private readonly cd: ChangeDetectorRef,
+  ) {}
+
+  public ngOnInit(): void {
+    this.userService.getUsers().subscribe((users) => this.allUsersSubj.next(users));
+    const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
+    this.subscription = combineLatest([this.allUsersSubj.asObservable(), teamId$]).subscribe(([users, teamIdParam]) =>
+      this.setDataSource(users, teamIdParam),
+    );
+  }
+
+  private setDataSource(users: User[], teamIdParam: string | null) {
+    if (!teamIdParam) {
+      this.dataSource = convertFromUsers(users, null);
+      this.displayedColumns = this.allColumns;
+      this.cd.markForCheck();
+      return;
+    }
+    const teamId = parseInt(teamIdParam);
+    this.dataSource = convertFromUsers(users, teamId);
+    this.displayedColumns = this.teamColumns;
+    this.cd.markForCheck();
+  }
+
+  public ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 }

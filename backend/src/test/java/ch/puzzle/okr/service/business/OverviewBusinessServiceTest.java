@@ -49,7 +49,16 @@ class OverviewBusinessServiceTest {
 
     private static List<Overview> createOverviews(AuthorizationUser authorizationUser) {
         long index = 1L;
-        List<Overview> overviews = new ArrayList<>();
+        List<Overview> overviews = new ArrayList<>(List.of(
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++).withTeamId(111L).build())
+                        .withObjectiveTitle("Another Team Objective A").withTeamName("team-111")
+                        .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 21, 18, 33)).build(),
+                Overview.Builder.builder()
+                        .withOverviewId(OverviewId.Builder.builder().withObjectiveId(index++).withTeamId(222L).build())
+                        .withObjectiveTitle("Another Team Objective B").withTeamName("team-222")
+                        .withObjectiveCreatedOn(LocalDateTime.of(2023, 10, 1, 8, 53)).build()));
+
         for (Long teamId : authorizationUser.extractTeamIds()) {
             overviews
                     .addAll((List.of(
@@ -80,7 +89,7 @@ class OverviewBusinessServiceTest {
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, "Objective",
                 authorizationUser);
 
-        assertEquals(3, overviews.size());
+        assertEquals(5, overviews.size());
         verify(overviewPersistenceService, times(1)).getFilteredOverview(QUARTER_ID, teamIds, "Objective",
                 authorizationUser);
         verify(quarterBusinessService, times(0)).getCurrentQuarter();
@@ -99,7 +108,7 @@ class OverviewBusinessServiceTest {
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(null, teamIds, "", authorizationUser);
 
-        assertEquals(3, overviews.size());
+        assertEquals(5, overviews.size());
 
         verify(quarterBusinessService, times(1)).getCurrentQuarter();
         verify(overviewValidationService, times(1)).validateOnGet(QUARTER_ID, teamIds);
@@ -169,17 +178,9 @@ class OverviewBusinessServiceTest {
 
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(QUARTER_ID, teamIds, null, user);
 
-        assertThat(
-                List.of(
-                        OverviewId.of(2L, 7L, null, null),
-                        OverviewId.of(2L, 6L, null, null),
-                        OverviewId.of(9L, 5L, null, null),
-                        OverviewId.of(9L, 4L, null, null),
-                        OverviewId.of(firstLevelTeamId, 2L, null, null),
-                        OverviewId.of(firstLevelTeamId, 3L, null, null),
-                        OverviewId.of(firstLevelTeamId, 1L, null, null)
-                )
-        ).hasSameElementsAs(getOverviewIds(overviews));
+        assertThat(List.of(OverviewId.of(1L, 4L, null, null), OverviewId.of(1L, 5L, null, null),
+                OverviewId.of(1L, 3L, null, null), OverviewId.of(111L, 1L, null, null),
+                OverviewId.of(222L, 2L, null, null))).hasSameElementsAs(getOverviewIds(overviews));
     }
 
     private List<OverviewId> getOverviewIds(List<Overview> overviews) {

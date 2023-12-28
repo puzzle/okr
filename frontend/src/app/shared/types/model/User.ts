@@ -7,7 +7,6 @@ export interface User {
   email: string;
   userTeamList: UserTeam[];
   isOkrChampion: boolean;
-  isWriteable: boolean;
 }
 
 export const extractTeamsFromUser = (user: User) => {

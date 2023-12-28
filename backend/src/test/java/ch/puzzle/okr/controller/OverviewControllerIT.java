@@ -4,7 +4,6 @@ import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.overview.Overview;
 import ch.puzzle.okr.models.overview.OverviewId;
 import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -40,8 +39,6 @@ class OverviewControllerIT {
     private MockMvc mvc;
     @MockBean
     private OverviewAuthorizationService overviewAuthorizationService;
-    @MockBean
-    OrganisationBusinessService organisationBusinessService;
     // Dashboard and OverviewMapper are required for testing
     @SpyBean
     private OverviewMapper overviewMapper;

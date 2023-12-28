@@ -1,5 +1,5 @@
-import {User} from "./User";
-import {UserRole} from "../enums/UserRole";
+import { User } from './User';
+import { UserRole } from '../enums/UserRole';
 
 export interface UserTableEntry {
   id: number;
@@ -14,26 +14,28 @@ export const convertFromUsers = (users: User[], teamId: number | null): UserTabl
   // make a deep copy to not modify original value
   const usersCopy = JSON.parse(JSON.stringify(users)) as User[];
   if (!teamId) {
-    return usersCopy.map(u => convertFromUser(u));
+    return usersCopy.map((u) => convertFromUser(u));
   }
-  return usersCopy
-    // first we filter user teams based on selected team id
-    .map(u => {
-      u.userTeamList = u.userTeamList.filter(ut => ut.team.id === teamId);
-      return u;
-    })
-    // we remove users without membership in selected team id
-    .filter(u => u.userTeamList.length)
-    .map(u => convertFromUser(u))
-}
+  return (
+    usersCopy
+      // first we filter user teams based on selected team id
+      .map((u) => {
+        u.userTeamList = u.userTeamList.filter((ut) => ut.team.id === teamId);
+        return u;
+      })
+      // we remove users without membership in selected team id
+      .filter((u) => u.userTeamList.length)
+      .map((u) => convertFromUser(u))
+  );
+};
 
 export const convertFromUser = (user: User): UserTableEntry => {
-  const teams = user.userTeamList.map(ut => ut.team.name);
+  const teams = user.userTeamList.map((ut) => ut.team.name);
   const roles = [];
   if (user.isOkrChampion) {
-    roles.push(UserRole.OKR_CHAMPION)
+    roles.push(UserRole.OKR_CHAMPION);
   }
-  if (user.userTeamList.filter(ut => ut.isTeamAdmin).length > 0) {
+  if (user.userTeamList.filter((ut) => ut.isTeamAdmin).length > 0) {
     roles.push(UserRole.TEAM_ADMIN);
   } else if (user.userTeamList.length > 0) {
     roles.push(UserRole.TEAM_MEMBER);
@@ -47,6 +49,6 @@ export const convertFromUser = (user: User): UserTableEntry => {
     lastname: user.lastname,
     email: user.email,
     teams,
-    roles
-  }
-}
+    roles,
+  };
+};

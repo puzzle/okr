@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 // table cannot be named "user" since it is a reserved keyword of Postgres
 @Table(name = "person")
-public class User implements WriteableInterface {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person")
     @SequenceGenerator(name = "sequence_person", allocationSize = 1)
@@ -44,8 +44,6 @@ public class User implements WriteableInterface {
 
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isOkrChampion = false;
-
-    private transient boolean writeable;
 
     public User() {
     }
@@ -109,19 +107,9 @@ public class User implements WriteableInterface {
     }
 
     @Override
-    public boolean isWriteable() {
-        return writeable;
-    }
-
-    @Override
-    public void setWriteable(boolean writeable) {
-        this.writeable = writeable;
-    }
-
-    @Override
     public String toString() {
         return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + ", writeable=" + writeable + '}';
+                + lastname + '\'' + ", email='" + email + '\'' + '}';
     }
 
     @Override
@@ -133,12 +121,12 @@ public class User implements WriteableInterface {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
                 && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email) && Objects.equals(writeable, user.writeable);
+                && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, firstname, lastname, email, writeable);
+        return Objects.hash(id, version, firstname, lastname, email);
     }
 
     public static final class Builder {

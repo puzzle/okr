@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static ch.puzzle.okr.ErrorKey.*;
-import static ch.puzzle.okr.TestConstants.ORGANISATION_FIRST_LEVEL;
 import static ch.puzzle.okr.TestHelper.*;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteForTeam;
@@ -53,18 +52,12 @@ class AuthorizationServiceTest {
     @Mock
     JwtUserConverter jwtUserConverter;
 
-    private final List<Team> adminTeams = List.of(
-            Team.Builder.builder().withName("Team 1").withId(1L).build(),
-            Team.Builder.builder().withName("Team 2").withId(2L).build()
-    );
-    private final List<Team> memberTeams = List.of(
-            Team.Builder.builder().withName("Team 3").withId(3L).build(),
-            Team.Builder.builder().withName("Team 4").withId(4L).build()
-    );
-    private final List<Team> otherTeams = List.of(
-            Team.Builder.builder().withName("Team 5").withId(5L).build(),
-            Team.Builder.builder().withName("Team 6").withId(6L).build()
-    );
+    private final List<Team> adminTeams = List.of(Team.Builder.builder().withName("Team 1").withId(1L).build(),
+            Team.Builder.builder().withName("Team 2").withId(2L).build());
+    private final List<Team> memberTeams = List.of(Team.Builder.builder().withName("Team 3").withId(3L).build(),
+            Team.Builder.builder().withName("Team 4").withId(4L).build());
+    private final List<Team> otherTeams = List.of(Team.Builder.builder().withName("Team 5").withId(5L).build(),
+            Team.Builder.builder().withName("Team 6").withId(6L).build());
 
     private final User user = defaultUserWithTeams(1L, adminTeams, memberTeams);
     private final User okrUser = defaultOkrChampion(1L);
@@ -102,7 +95,7 @@ class AuthorizationServiceTest {
     @Test
     void getAuthorizationUserShouldReturnAuthorizationUser() {
         User user = defaultUser(null);
-        Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL));
+        Jwt token = mockJwtToken(user);
         AuthorizationUser authorizationUser = defaultAuthorizationUser();
         setSecurityContext(token);
 
@@ -487,7 +480,8 @@ class AuthorizationServiceTest {
     void hasRoleDeleteByKeyResultIdShouldThrowExceptionWhenNotAuthorized() {
         var memeberId = memberTeams.get(0).getId();
         var otherId = otherTeams.get(0).getId();
-        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(memeberId).build()).build();
+        Objective objective = Objective.Builder.builder().withTeam(Team.Builder.builder().withId(memeberId).build())
+                .build();
         AuthorizationUser authorizationUser = new AuthorizationUser(user);
         when(objectivePersistenceService.findObjectiveByKeyResultId(eq(otherId), eq(authorizationUser), any()))
                 .thenReturn(objective);

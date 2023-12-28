@@ -21,6 +21,6 @@ public class UserMapper {
                 teamMapper.toDto(ut.getTeam()), ut.isTeamAdmin())).collect(Collectors.toList());
 
         return new UserDto(user.getId(), user.getVersion(), user.getFirstname(), user.getLastname(), user.getEmail(),
-                userTeams, user.isOkrChampion(), user.isWriteable());
+                userTeams, user.isOkrChampion());
     }
 }

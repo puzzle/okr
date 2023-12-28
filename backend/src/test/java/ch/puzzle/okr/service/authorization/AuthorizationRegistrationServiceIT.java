@@ -10,12 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 
-import java.util.List;
-
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static ch.puzzle.okr.TestHelper.defaultUser;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringIntegrationTest
@@ -48,8 +45,7 @@ class AuthorizationRegistrationServiceIT {
 
     @Test
     void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
-        // Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL));
-        // authorizationRegistrationService.registerAuthorizationUser(user, token);
+        authorizationRegistrationService.registerAuthorizationUser(user);
 
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);
@@ -58,47 +54,5 @@ class AuthorizationRegistrationServiceIT {
         cache = cacheManager.getCache(USER_CACHE);
         assertNotNull(cache);
         assertNotNull(cache.get(user.getEmail(), User.class));
-    }
-
-    @Test
-    void registerAuthorizationUserShouldSetFirstLeveOrganisations() {
-        // Jwt token = mockJwtToken(user, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
-        // AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user,
-        // token);
-        //
-        // assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL), authorizationUser);
-    }
-
-    @Test
-    void registerAuthorizationUserShouldSetSecondLevelOrganisations() {
-        // Jwt token = mockJwtToken(user, List.of(ORGANISATION_SECOND_LEVEL, ORGANISATION_TEAM));
-        // AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user,
-        // token);
-        //
-        // assertRoles(List.of(READ_TEAMS_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL_TEAMS), authorizationUser);
-    }
-
-    @Test
-    void registerAuthorizationUserShouldSetTeamOrganisations() {
-        // Jwt token = mockJwtToken(user, List.of(ORGANISATION_TEAM));
-        // AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(user,
-        // token);
-        //
-        // assertRoles(List.of(READ_TEAM_DRAFT, READ_ALL_PUBLISHED, WRITE_TEAM), authorizationUser);
-    }
-
-    @Test
-    void registerAuthorizationUserShouldSetChampions() {
-        // User testUser = User.Builder.builder().withFirstname("firstname").withLastname("lastname")
-        // .withEmail("mail@puzzle.ch").build();
-        // Jwt token = mockJwtToken(testUser, List.of(ORGANISATION_FIRST_LEVEL, ORGANISATION_SECOND_LEVEL));
-        // AuthorizationUser authorizationUser = authorizationRegistrationService.registerAuthorizationUser(testUser,
-        // token);
-        //
-        // assertRoles(List.of(READ_ALL_DRAFT, READ_ALL_PUBLISHED, WRITE_ALL), authorizationUser);
-    }
-
-    private static void assertRoles(List<AuthorizationRole> roles, AuthorizationUser authorizationUser) {
-        assertThat(roles).hasSameElementsAs(authorizationUser.roles());
     }
 }

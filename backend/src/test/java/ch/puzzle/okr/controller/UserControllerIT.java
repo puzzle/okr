@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,8 +42,8 @@ class UserControllerIT {
     static User userBob = User.Builder.builder().withId(9L).withFirstname(FIRSTNAME_2).withLastname(LASTNAME_2)
             .withEmail(EMAIL_2).build();
     static List<User> userList = Arrays.asList(userAlice, userBob);
-    static UserDto userAliceDto = new UserDto(2L, 3, FIRSTNAME_1, LASTNAME_1, EMAIL_1, true);
-    static UserDto userBobDto = new UserDto(9L, 4, FIRSTNAME_2, LASTNAME_2, EMAIL_2, false);
+    static UserDto userAliceDto = new UserDto(2L, 3, FIRSTNAME_1, LASTNAME_1, EMAIL_1, new ArrayList<>(), false);
+    static UserDto userBobDto = new UserDto(9L, 4, FIRSTNAME_2, LASTNAME_2, EMAIL_2, new ArrayList<>(), false);
     @Autowired
     private MockMvc mvc;
     @MockBean

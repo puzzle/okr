@@ -26,4 +26,12 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
         Optional<User> savedUser = getRepository().findByEmail(user.getEmail());
         return savedUser.orElseGet(() -> getRepository().save(user));
     }
+
+    public Optional<User> findByEmail(String email) {
+        return getRepository().findByEmail(email);
+    }
+
+    public User save(User user) {
+        return getRepository().save(user);
+    }
 }

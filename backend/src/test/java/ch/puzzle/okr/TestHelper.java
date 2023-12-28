@@ -32,8 +32,8 @@ public class TestHelper {
         return user;
     }
 
-    public static User defaultUserWithTeams(Long id, List<Team> adminTeams, List<Team> memberTeams) {
-        var user = defaultUser(id);
+    public static User defaultUserWithTeams(Long userId, List<Team> adminTeams, List<Team> memberTeams) {
+        var user = defaultUser(userId);
         var adminUserTeams = adminTeams.stream()
                 .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
@@ -73,7 +73,7 @@ public class TestHelper {
         return mockJwtToken(FIRSTNAME, LASTNAME, EMAIL);
     }
 
-    public static Jwt mockJwtToken(User user, List<String> roles) {
+    public static Jwt mockJwtToken(User user) {
         return mockJwtToken(user.getFirstname(), user.getLastname(), user.getEmail());
     }
 

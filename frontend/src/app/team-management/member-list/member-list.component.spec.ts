@@ -1,17 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {ActivatedRoute} from '@angular/router';
-import {ChangeDetectorRef} from '@angular/core';
-import {of} from 'rxjs';
-import {MemberListComponent} from './member-list.component';
-import {UserService} from '../../services/user.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
+import { of } from 'rxjs';
+import { MemberListComponent } from './member-list.component';
+import { UserService } from '../../services/user.service';
 
 const userServiceMock = {
-  getUsers: jest.fn()
-}
+  getUsers: jest.fn(),
+};
 
 const activatedRouteMock = {
-  paramMap: jest.fn()
-}
+  paramMap: jest.fn(),
+};
 
 describe('MemberListComponent', () => {
   let component: MemberListComponent;

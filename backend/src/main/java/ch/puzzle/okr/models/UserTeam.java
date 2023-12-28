@@ -119,27 +119,31 @@ public class UserTeam implements WriteableInterface {
         private Team team;
         private boolean isTeamAdmin;
 
-        public Builder setId(Long id) {
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setVersion(int version) {
+        public Builder withVersion(int version) {
             this.version = version;
             return this;
         }
 
-        public Builder setUser(User user) {
+        public Builder withUser(User user) {
             this.user = user;
             return this;
         }
 
-        public Builder setTeam(Team team) {
+        public Builder withTeam(Team team) {
             this.team = team;
             return this;
         }
 
-        public Builder setTeamAdmin(boolean isAdmin) {
+        public Builder withTeamAdmin(boolean isAdmin) {
             this.isTeamAdmin = isAdmin;
             return this;
         }

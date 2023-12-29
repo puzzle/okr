@@ -1,7 +1,41 @@
-<div id="okrBanner">
-  <div class="d-flex flex-row">
-    <div class="d-flex flex-grow-1"></div>
-    <div *ngIf="!isMobileDevice()" class="d-flex justify-content-end">
+<div id="okrBanner" class="container-fluid">
+  <div class="row first-line">
+    <div class="col-12">
+      <a routerLink="/">Zurück zu OKR's</a>
+    </div>
+  </div>
+  <div class="row second-line">
+    <div class="col-4">
+      <h1>Teamverwaltung</h1>
+    </div>
+    <div class="col-8">
+      <form class="d-flex" id="search-member">
+        <mat-form-field
+          id="objective-form-field"
+          class="bg-white header-form-field"
+          ngDefaultControl
+          subscriptSizing="dynamic"
+          appearance="outline"
+        >
+          <input matInput type="text" placeholder="Nach Team oder Member suchen" attr.data-testId="objectiveSearch" />
+        </mat-form-field>
+        <button
+          class="bg-pz-dark-blue d-flex justify-content-center align-items-center search-button icon-button px-3 focus-outline"
+          type="submit"
+        >
+          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="search" class="text-white"></mat-icon>
+        </button>
+      </form>
+      <button (click)="createTeam()" [attr.data-testId]="'add-team'" class="align-new-icon" color="primary" mat-button>
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Team hinzufügen
+        </span>
+      </button>
+    </div>
+  </div>
+  <div id="okr-tangram">
+    <div *ngIf="!isMobileDevice()">
       <app-okr-tangram></app-okr-tangram>
     </div>
   </div>

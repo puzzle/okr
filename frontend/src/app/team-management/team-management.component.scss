@@ -1,19 +1,11 @@
 #wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-
   $margin-top: 2rem;
 
-  > app-team-list {
-    width: 300px;
-    margin-top: $margin-top;
-    flex: 0 0 auto;
+  app-team-list {
+    padding-top: $margin-top;
   }
 
-  > app-member-list {
-    max-width: 800px;
-    margin-top: $margin-top;
-    flex: 1 0;
+  app-member-list {
+    padding-top: $margin-top;
   }
 }

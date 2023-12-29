@@ -1,33 +1,40 @@
 @import "../../../style/_variables.scss";
 
-div {
+:host {
   width: 100%;
+  display: flex;
+  justify-content: flex-start;
 
-  #member-header {
-    display: flex;
-    align-items: center;
-    background-color: $dark-grey;
-    width: 100%;
-    min-height: 57px;
+  div {
+    max-width: 800px;
+    flex: 1 0 0;
 
-    div {
+    #member-header {
       display: flex;
-      align-items: end;
-      h3 {
-        margin: 0 2rem 0 1rem;
-      }
-      p {
-        font-size: 0.75rem;
-        margin-bottom: 4px;
+      align-items: center;
+      background-color: $dark-grey;
+      width: 100%;
+      min-height: 57px;
+
+      div {
+        display: flex;
+        align-items: end;
+        h3 {
+          margin: 0 2rem 0 1rem;
+        }
+        p {
+          font-size: 0.75rem;
+          margin-bottom: 4px;
+        }
       }
     }
-  }
 
-  .mat-column-icon {
-    width: 50px;
-  }
+    .mat-column-icon {
+      width: 50px;
+    }
 
-  .mat-column-name {
-    width: 30%;
+    .mat-column-name {
+      width: 30%;
+    }
   }
 }

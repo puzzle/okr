@@ -1,23 +1,29 @@
 @import "../../../style/_variables.scss";
 
-div {
+:host {
   width: 100%;
+  display: flex;
+  justify-content: center;
 
-  > mat-nav-list {
-    padding: 0;
+  > div {
+    width: 300px;
 
-    background-color: $light-grey;
+    > mat-nav-list {
+      padding: 0;
 
-    .selected {
-      background-color: $pz-dark-blue;
+      background-color: $light-grey;
 
-      ::ng-deep .mdc-list-item__primary-text {
-        color: white;
+      .selected {
+        background-color: $pz-dark-blue;
+
+        ::ng-deep .mdc-list-item__primary-text {
+          color: white;
+        }
       }
-    }
 
-    a {
-      cursor: pointer;
+      a {
+        cursor: pointer;
+      }
     }
   }
 }

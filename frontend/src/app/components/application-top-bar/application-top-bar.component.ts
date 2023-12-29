@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { map } from 'rxjs';
 import { ConfigService } from '../../config.service';
@@ -21,6 +21,7 @@ export class ApplicationTopBarComponent implements OnInit {
     private userService: UserService,
     private configService: ConfigService,
     private router: Router,
+    private readonly cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +43,7 @@ export class ApplicationTopBarComponent implements OnInit {
     this.router.events.subscribe((val) => {
       if (!this.userFullName && val instanceof NavigationEnd) {
         this.userFullName = getFullNameFromUser(this.userService.getCurrentUser());
+        this.cd.markForCheck();
       }
     });
   }

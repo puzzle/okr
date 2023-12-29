@@ -15,6 +15,8 @@ import { MatTableModule } from '@angular/material/table';
 import { RolesPipe } from './roles.pipe';
 import { TeamsPipe } from './teams.pipe';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatListModule,
     MatTableModule,
     MatIconModule,
+    MatInputModule,
+    MatButtonModule,
   ],
 })
 export class TeamManagementModule {}

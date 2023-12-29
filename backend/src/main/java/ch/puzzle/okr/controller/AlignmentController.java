@@ -31,9 +31,9 @@ public class AlignmentController {
     private final AlignmentSelectionBusinessService alignmentSelectionBusinessService;
     private final OverviewAuthorizationService overviewAuthorizationService;
 
-
     public AlignmentController(OverviewMapper overviewMapper, AlignmentSelectionMapper alignmentSelectionMapper,
-            AlignmentSelectionBusinessService alignmentSelectionBusinessService, OverviewAuthorizationService overviewAuthorizationService, DashboardMapper dashboardMapper) {
+            AlignmentSelectionBusinessService alignmentSelectionBusinessService,
+            OverviewAuthorizationService overviewAuthorizationService, DashboardMapper dashboardMapper) {
         this.alignmentSelectionMapper = alignmentSelectionMapper;
         this.dashboardMapper = dashboardMapper;
         this.overviewMapper = overviewMapper;
@@ -70,7 +70,7 @@ public class AlignmentController {
         boolean hasWriteAllAccess = overviewAuthorizationService.hasWriteAllAccess();
         return ResponseEntity.status(HttpStatus.OK)
                 .body(dashboardMapper.toDto(overviewMapper.toDto(
-                                overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)),
+                        overviewAuthorizationService.getFilteredOverview(quarterFilter, teamFilter, objectiveQuery)),
                         hasWriteAllAccess));
     }
 }

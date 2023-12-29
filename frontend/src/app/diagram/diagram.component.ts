@@ -3,7 +3,7 @@ import * as go from 'gojs';
 import { ContinuousForceDirectedLayout } from './continuous-force-directed-layout';
 import { Subject } from 'rxjs';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-diagram',

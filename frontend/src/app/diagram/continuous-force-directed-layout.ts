@@ -1,13 +1,17 @@
 import * as go from 'gojs';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
   private _isObserving: boolean = false;
   private myDiagram: go.Diagram = new go.Diagram();
   private overviewEntities: OverviewEntity[];
 
-  constructor(myDiagram: go.Diagram, overviewEntities: OverviewEntity[], private router: Router) {
+  constructor(
+    myDiagram: go.Diagram,
+    overviewEntities: OverviewEntity[],
+    private router: Router,
+  ) {
     super();
     this.myDiagram = myDiagram;
     this.overviewEntities = overviewEntities;
@@ -132,7 +136,6 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
           font: 'normal 18px Roboto',
           textAlign: 'center',
           stroke: 'black',
-          wrap: go.TextBlock.WrapDesiredSize,
         },
         new go.Binding('text', 'text'),
         new go.Binding('font', 'font'),
@@ -146,9 +149,6 @@ export class ContinuousForceDirectedLayout extends go.ForceDirectedLayout {
     // replace the default Link template in the linkTemplateMap
     this.myDiagram.linkTemplate = $(
       go.Link, // the whole link panel
-      // {
-      //   routing: go.Link.AvoidsNodes
-      // },
       $(
         go.Shape, // the link shape
         { stroke: '#1C355E' },
@@ -233,10 +233,17 @@ function createBubbles(overviewEntities: OverviewEntity[]) {
   nodeDataArray.push(puzzle);
 
   overviewEntities.forEach((overviewEntity) => {
+    let fontSize = '32px';
+    if (overviewEntity.team.name.length > 12) {
+      fontSize = '28px';
+    } else if (overviewEntity.team.name.length > 9) {
+      fontSize = '30px';
+    }
+
     let team = {
       key: '1' + overviewEntity.team.id,
       text: overviewEntity.team.name,
-      font: 'normal 32px Roboto',
+      font: `normal ${fontSize} Roboto`,
       name: 'TEAM',
       color: '#238BCA',
       maxSize: new go.Size(90, 90),

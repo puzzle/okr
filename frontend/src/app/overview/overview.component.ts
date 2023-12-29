@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
 import { AlignmentService } from '../shared/services/alignment.service';
-import { Dashboard } from "../shared/types/model/Dashboard";
+import { Dashboard } from '../shared/types/model/Dashboard';
 
 @Component({
   selector: 'app-overview',

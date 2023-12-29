@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { SearchTeamManagementComponent } from './search-team-management/search-team-management.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MemberListComponent,
     RolesPipe,
     TeamsPipe,
+    SearchTeamManagementComponent,
   ],
   imports: [
     CommonModule,

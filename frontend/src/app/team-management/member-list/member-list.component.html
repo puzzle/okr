@@ -17,7 +17,11 @@
     </div>
   </div>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
+  <div class="pt-3 p-2" *ngIf="!dataSource.length">
+    <p>Keine Members</p>
+  </div>
+
+  <table *ngIf="dataSource.length" mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
     <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
 

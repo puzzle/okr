@@ -5,27 +5,11 @@
     </div>
   </div>
   <div class="row second-line">
-    <div class="col-4">
+    <div class="col-12 col-md-5 col-lg-4">
       <h1>Teamverwaltung</h1>
     </div>
-    <div class="col-8">
-      <form class="d-flex" id="search-member">
-        <mat-form-field
-          id="objective-form-field"
-          class="bg-white header-form-field"
-          ngDefaultControl
-          subscriptSizing="dynamic"
-          appearance="outline"
-        >
-          <input matInput type="text" placeholder="Nach Team oder Member suchen" attr.data-testId="objectiveSearch" />
-        </mat-form-field>
-        <button
-          class="bg-pz-dark-blue d-flex justify-content-center align-items-center search-button icon-button px-3 focus-outline"
-          type="submit"
-        >
-          <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="search" class="text-white"></mat-icon>
-        </button>
-      </form>
+    <div class="d-none d-md-flex col-md-7 col-lg-8">
+      <app-search-team-management></app-search-team-management>
       <button (click)="createTeam()" [attr.data-testId]="'add-team'" class="align-new-icon" color="primary" mat-button>
         <span class="d-flex align-items-center fw-bold add-text">
           <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />

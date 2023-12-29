@@ -13,11 +13,11 @@ export interface UserTableEntry {
 export const convertFromUsers = (users: User[], teamId: number | null): UserTableEntry[] => {
   // make a deep copy to not modify original value
   const usersCopy = JSON.parse(JSON.stringify(users)) as User[];
+  let userTableEntries;
   if (!teamId) {
-    return usersCopy.map((u) => convertFromUser(u));
-  }
-  return (
-    usersCopy
+    userTableEntries = usersCopy.map((u) => convertFromUser(u));
+  } else {
+    userTableEntries = usersCopy
       // first we filter user teams based on selected team id
       .map((u) => {
         u.userTeamList = u.userTeamList.filter((ut) => ut.team.id === teamId);
@@ -25,8 +25,9 @@ export const convertFromUsers = (users: User[], teamId: number | null): UserTabl
       })
       // we remove users without membership in selected team id
       .filter((u) => u.userTeamList.length)
-      .map((u) => convertFromUser(u))
-  );
+      .map((u) => convertFromUser(u));
+  }
+  return userTableEntries.sort((a, b) => a.firstname.localeCompare(b.firstname));
 };
 
 export const convertFromUser = (user: User): UserTableEntry => {

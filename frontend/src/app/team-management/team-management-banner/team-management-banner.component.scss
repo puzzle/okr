@@ -36,11 +36,12 @@
 
   #okr-tangram {
     position: absolute;
+    z-index: -1;
     top: 0;
     right: 0;
   }
 
-  #search-member {
+  app-search-team-management {
     width: 100%;
     max-width: 360px;
     margin-right: 2rem;

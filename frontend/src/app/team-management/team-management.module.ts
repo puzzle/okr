@@ -17,6 +17,7 @@ import { TeamsPipe } from './teams.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
+    MatMenuModule,
   ],
 })
 export class TeamManagementModule {}

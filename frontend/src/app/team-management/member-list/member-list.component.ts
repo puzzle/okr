@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
@@ -29,6 +29,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly cd: ChangeDetectorRef,
     private readonly teamService: TeamService,
+    private readonly router: Router,
   ) {}
 
   public ngOnInit(): void {
@@ -70,5 +71,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
     }
     this.selectedTeam = teams.find((t) => t.id === parseInt(teamIdParam));
     this.cd.markForCheck();
+  }
+
+  deleteTeam(selectedTeam: Team) {
+    this.teamService.deleteTeam(selectedTeam.id).subscribe(() => this.router.navigateByUrl('team-management'));
   }
 }

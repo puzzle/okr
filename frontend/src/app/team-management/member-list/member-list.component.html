@@ -5,6 +5,16 @@
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
       <p>Members: {{ dataSource.length }}</p>
     </div>
+    <div class="menu" *ngIf="selectedTeam">
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button (click)="deleteTeam(selectedTeam)" mat-menu-item>
+          <span>Team löschen</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">

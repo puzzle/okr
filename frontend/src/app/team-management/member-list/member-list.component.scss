@@ -15,6 +15,7 @@
       background-color: $dark-grey;
       width: 100%;
       min-height: 57px;
+      justify-content: space-between;
 
       div {
         display: flex;
@@ -25,6 +26,9 @@
         p {
           font-size: 0.75rem;
           margin-bottom: 4px;
+        }
+        &.menu {
+          flex: 0 0 0;
         }
       }
     }

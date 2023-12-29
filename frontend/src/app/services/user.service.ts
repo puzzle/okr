@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/types/model/User';
 
@@ -10,7 +10,8 @@ export class UserService {
   private readonly API_URL = 'api/v1/users';
 
   private _user: User | undefined;
-  private users: User[] | undefined;
+  private users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+  private usersLoaded = false;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -22,15 +23,15 @@ export class UserService {
   }
 
   public getUsers(): Observable<User[]> {
-    if (this.users) {
-      return of(this.users).pipe(take(1));
+    if (!this.usersLoaded) {
+      this.usersLoaded = true;
+      this.reloadUsers().subscribe();
     }
-    return this.httpClient.get<User[]>(this.API_URL).pipe(tap((users) => (this.users = users)));
+    return this.users.asObservable();
   }
 
   public reloadUsers(): Observable<User[]> {
-    this.users = undefined;
-    return this.getUsers();
+    return this.httpClient.get<User[]>(this.API_URL).pipe(tap((users) => this.users.next(users)));
   }
 
   public getCurrentUser(): User {

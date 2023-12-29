@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Quarter } from '../../types/model/Quarter';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../types/model/Team';
 import { QuarterService } from '../../../services/quarter.service';
-import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { forkJoin, Observable, of, Subject, takeUntil } from 'rxjs';
 import { ObjectiveService } from '../../../services/objective.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { State } from '../../types/enums/State';
@@ -22,7 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./objective-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ObjectiveFormComponent implements OnInit {
+export class ObjectiveFormComponent implements OnInit, OnDestroy {
   objectiveForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
@@ -38,6 +38,7 @@ export class ObjectiveFormComponent implements OnInit {
   version!: number;
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
@@ -79,7 +80,7 @@ export class ObjectiveFormComponent implements OnInit {
 
   ngOnInit(): void {
     const isCreating: boolean = !!this.data.objective.objectiveId;
-    this.teams$ = this.teamService.getAllTeams();
+    this.teams$ = this.teamService.getAllTeams().pipe(takeUntil(this.unsubscribe$));
     this.quarters$ = this.quarterService.getAllQuarters();
     const objective$ = isCreating
       ? this.objectiveService.getFullObjective(this.data.objective.objectiveId!)
@@ -101,6 +102,11 @@ export class ObjectiveFormComponent implements OnInit {
         quarter: quarterId,
       });
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   getSubmitFunction(id: number, objectiveDTO: any): Observable<Objective> {

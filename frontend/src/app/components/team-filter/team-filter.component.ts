@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,10 +13,11 @@ import { extractTeamsFromUser } from '../../shared/types/model/User';
   templateUrl: './team-filter.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TeamFilterComponent implements OnInit {
+export class TeamFilterComponent implements OnInit, OnDestroy {
   teams$: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   activeTeams: number[] = [];
   protected readonly trackByFn = trackByFn;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private teamService: TeamService,
@@ -26,26 +27,37 @@ export class TeamFilterComponent implements OnInit {
     private userService: UserService,
   ) {
     this.refreshDataService.reloadOverviewSubject.subscribe(() => {
-      this.teamService.getAllTeams().subscribe((teams) => {
-        this.teams$.next(teams);
-        this.activeTeams = this.activeTeams.filter((teamId) => this.getAllTeamIds().includes(teamId));
-      });
+      this.teamService
+        .getAllTeams()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((teams) => {
+          this.teams$.next(teams);
+          this.activeTeams = this.activeTeams.filter((teamId) => this.getAllTeamIds().includes(teamId));
+        });
     });
   }
 
   ngOnInit(): void {
-    this.teamService.getAllTeams().subscribe((teams: Team[]) => {
-      this.teams$.next(teams);
-      const teamQuery = this.route.snapshot.queryParams['teams'];
-      const teamIds = getValueFromQuery(teamQuery);
-      const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
-      if (knownTeams.length == 0) {
-        this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
-      } else {
-        this.activeTeams = knownTeams;
-      }
-      this.changeTeamFilterParams();
-    });
+    this.teamService
+      .getAllTeams()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((teams: Team[]) => {
+        this.teams$.next(teams);
+        const teamQuery = this.route.snapshot.queryParams['teams'];
+        const teamIds = getValueFromQuery(teamQuery);
+        const knownTeams = this.getAllTeamIds().filter((teamId) => teamIds?.includes(teamId));
+        if (knownTeams.length == 0) {
+          this.activeTeams = extractTeamsFromUser(this.userService.getCurrentUser()).map((team) => team.id);
+        } else {
+          this.activeTeams = knownTeams;
+        }
+        this.changeTeamFilterParams();
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   changeTeamFilterParams() {

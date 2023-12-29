@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
-import { BehaviorSubject, filter, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable, of, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Action } from '../../shared/types/model/Action';
 import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
@@ -17,12 +17,13 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./key-result-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KeyResultFormComponent implements OnInit {
+export class KeyResultFormComponent implements OnInit, OnDestroy {
   users$!: Observable<User[]>;
   filteredUsers$: Observable<User[]> | undefined = of([]);
   actionList$: BehaviorSubject<Action[] | null> = new BehaviorSubject<Action[] | null>([] as Action[]);
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
+  private unsubscribe$ = new Subject<void>();
 
   @Input()
   keyResultForm!: FormGroup;
@@ -61,7 +62,7 @@ export class KeyResultFormComponent implements OnInit {
         { id: null, version: 1, action: '', priority: 2, keyResultId: null, isChecked: false },
       ]);
 
-      this.users$.subscribe((users) => {
+      this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
         const loggedInUser = this.getUserName();
         users.forEach((user) => {
           if (getFullNameFromUser(user) === loggedInUser) {
@@ -74,6 +75,11 @@ export class KeyResultFormComponent implements OnInit {
     this.actionList$.subscribe((value) => {
       this.keyResultForm.patchValue({ actionList: value });
     });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   isMetricKeyResult() {

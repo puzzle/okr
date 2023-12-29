@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TeamService } from '../../services/team.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { ActivatedRoute } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class TeamListComponent implements OnInit, OnDestroy {
   public teams$: Observable<Team[]>;
   public selectedTeamId: number | undefined;
-  private subscription!: Subscription;
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     private readonly teamService: TeamService,
@@ -22,13 +22,14 @@ export class TeamListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.pipe(takeUntil(this.unsubscribe$)).subscribe((params) => {
       const teamId = params.get('teamId');
       this.selectedTeamId = teamId ? parseInt(teamId) : undefined;
     });
   }
 
   public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, map, ReplaySubject, Subscription } from 'rxjs';
+import { combineLatest, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
@@ -18,7 +18,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
 
-  private subscription!: Subscription;
+  private unsubscribe$ = new Subject<void>();
   private allColumns = ['icon', 'name', 'roles', 'teams'];
   private teamColumns = ['icon', 'name', 'roles'];
 
@@ -32,16 +32,17 @@ export class MemberListComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.userService.getUsers().subscribe((users) => this.allUsersSubj.next(users));
+    this.userService
+      .getUsers()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((users) => this.allUsersSubj.next(users));
     const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
-    this.subscription = combineLatest([
-      this.allUsersSubj.asObservable(),
-      teamId$,
-      this.teamService.getAllTeams(),
-    ]).subscribe(([users, teamIdParam, teams]) => {
-      this.setDataSource(users, teamIdParam);
-      this.setSelectedTeam(teams, teamIdParam);
-    });
+    combineLatest([this.allUsersSubj.asObservable(), teamId$, this.teamService.getAllTeams()])
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(([users, teamIdParam, teams]) => {
+        this.setDataSource(users, teamIdParam);
+        this.setSelectedTeam(teams, teamIdParam);
+      });
   }
 
   private setDataSource(users: User[], teamIdParam: string | null) {
@@ -58,7 +59,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   private setSelectedTeam(teams: Team[], teamIdParam: string | null) {

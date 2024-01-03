@@ -15,9 +15,8 @@ import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { of } from 'rxjs';
-import { organisationActive, organisationInActive, teamFormObject, teamMin1 } from '../../shared/testData';
+import { teamFormObject, teamMin1 } from '../../shared/testData';
 import { Team } from '../../shared/types/model/Team';
-import { OrganisationService } from '../../services/organisation.service';
 import { TranslateService } from '@ngx-translate/core';
 
 const dialogRefMock = {
@@ -32,11 +31,6 @@ const teamServiceMock = {
   createTeam: jest.fn(),
   updateTeam: jest.fn(),
   deleteTeam: jest.fn(),
-};
-
-const organisationServiceMock = {
-  getOrganisationsByTeamId: jest.fn(),
-  getOrganisations: jest.fn(),
 };
 
 describe('TeamManagementComponent', () => {
@@ -73,10 +67,6 @@ describe('TeamManagementComponent', () => {
           useValue: teamServiceMock,
         },
         {
-          provide: OrganisationService,
-          useValue: organisationServiceMock,
-        },
-        {
           provide: MAT_DIALOG_DATA,
           useValue: null,
         },
@@ -91,36 +81,6 @@ describe('TeamManagementComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should style inactive teams with line through decoration', async () => {
-    expect(component.getMatOptionStyle(organisationInActive).toString()).toBe(
-      { 'text-decoration': 'line-through' }.toString(),
-    );
-  });
-
-  it('should style active teams with no text decoration', async () => {
-    expect(component.getMatOptionStyle(organisationActive).toString()).toBe({ 'text-decoration': 'none' }.toString());
-  });
-
-  it('should return true if team has inactive organisations', async () => {
-    component.teamForm.controls.organisations.setValue([organisationActive, organisationInActive]);
-    component.checkIfInActiveAdded();
-    expect(component.hasInActiveOrganisations).toBeTruthy();
-  });
-
-  it('should return false if team does not have inactive organisations', async () => {
-    component.teamForm.controls.organisations.setValue([organisationActive, organisationActive]);
-    component.checkIfInActiveAdded();
-    expect(component.hasInActiveOrganisations).toBeFalsy();
-  });
-
-  it('should return true if org-name is the same', async () => {
-    expect(component.compareWithFunc(organisationActive, organisationActive)).toBeTruthy();
-  });
-
-  it('should return false if org-name is not the same', async () => {
-    expect(component.compareWithFunc(organisationInActive, organisationActive)).toBeFalsy();
   });
 
   it('should call service method to save team', async () => {
@@ -155,24 +115,9 @@ describe('TeamManagementComponent', () => {
   });
 
   it('should set team values in from on init if data is not null', async () => {
-    jest
-      .spyOn(organisationServiceMock, 'getOrganisations')
-      .mockReturnValue(of([organisationActive, organisationInActive]));
-    jest.spyOn(organisationServiceMock, 'getOrganisationsByTeamId').mockReturnValue(of([organisationActive]));
     component.data = { team: teamMin1 };
     component.ngOnInit();
     expect(component.teamForm.controls.name.value).toBe(teamMin1.name);
-    expect(component.teamForm.controls.organisations.value!.toString()).toBe([organisationActive].toString());
     expect(component.hasInActiveOrganisations).toBeFalsy();
   });
-
-  it('should merge Organisations together', (done) => {
-    let organisationsArray = [organisationActive, organisationInActive];
-    component.organisations$ = of([organisationActive]);
-    component.mergeOrganisations(organisationsArray);
-    component.organisations$.subscribe((result) => {
-      expect(result).toStrictEqual([organisationActive, organisationInActive]);
-      done();
-    });
-  }, 1500);
 });

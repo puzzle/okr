@@ -1,13 +1,13 @@
-import { TestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
 import { users } from '../shared/testData';
-import { User } from '../shared/types/model/User';
 
 const response = users;
+
 describe('UserService', () => {
   let service: UserService;
-  let httpTestingController: HttpTestingController;
+  let httpMock: HttpTestingController;
   const URL = 'api/v1/users';
 
   beforeEach(() => {
@@ -15,27 +15,36 @@ describe('UserService', () => {
       imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(UserService);
-    httpTestingController = TestBed.inject(HttpTestingController);
+    const injector = getTestBed();
+    httpMock = injector.get(HttpTestingController);
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   test('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  test('should get Users', (done) => {
-    service.getUsers().subscribe({
-      next(response: User[]) {
-        expect(response.length).toBe(3);
-        done();
-      },
-      error(error) {
-        done(error);
-      },
+  test('getUsers should only reload users when they are not loaded yet', () => {
+    service.getUsers().subscribe((users) => {
+      expect(service.reloadUsers()).toBeCalledTimes(1);
+      service.getUsers().subscribe(() => {
+        expect(service.reloadUsers()).toBeCalledTimes(0);
+        expect(service.getUsers()).toBe([{ test }]);
+      });
     });
+  });
 
-    const req = httpTestingController.expectOne(`${URL}`);
-    expect(req.request.method).toEqual('GET');
-    req.flush(response);
-    httpTestingController.verify();
+  test('get current user should throw error, when not loaded', () => {
+    expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
+  });
+
+  test('init current user should load user', () => {
+    expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
+    service.initCurrentUser().subscribe(() => {
+      expect(service.getCurrentUser()).toBe({ test });
+    });
   });
 });

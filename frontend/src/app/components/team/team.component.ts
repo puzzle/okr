@@ -4,10 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { Objective } from '../../shared/types/model/Objective';
-import { isMobileDevice, optionalReplaceWithNulls } from '../../shared/common';
+import { isMobileDevice } from '../../shared/common';
 // import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
 
 @Component({
@@ -25,8 +24,6 @@ export class TeamComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
-    private router: Router,
-    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {}
@@ -95,13 +92,5 @@ export class TeamComponent implements OnInit {
         }
         this.refreshDataService.markDataRefresh();
       });
-  }
-
-  removeTeam(id: string) {
-    let currentTeams = this.route.snapshot.queryParams['teams'].split(',');
-    currentTeams = currentTeams.filter((cid: any) => cid != id);
-    const params = { teams: currentTeams.join(',') };
-    const optionalParams = optionalReplaceWithNulls(params);
-    return this.router.navigate([], { queryParams: optionalParams });
   }
 }

@@ -33,6 +33,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
         .subscribe((teams) => {
           this.teams$.next(teams);
           this.activeTeams = this.activeTeams.filter((teamId) => this.getAllTeamIds().includes(teamId));
+          this.changeTeamFilterParams();
         });
     });
   }

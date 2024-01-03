@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { authGuard } from '../../guards/auth.guard';
 import { OverviewComponent } from '../overview/overview.component';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 describe('ObjectiveFilterComponent', () => {
   let component: ObjectiveFilterComponent;
@@ -26,6 +27,10 @@ describe('ObjectiveFilterComponent', () => {
     return Promise.resolve(true);
   };
 
+  const oauthServiceMock = {
+    hasValidIdToken: jest.fn(),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ObjectiveFilterComponent, OverviewComponent],
@@ -33,6 +38,10 @@ describe('ObjectiveFilterComponent', () => {
         {
           provide: authGuard,
           useValue: authGuardMock,
+        },
+        {
+          provide: OAuthService,
+          useValue: oauthServiceMock,
         },
       ],
       imports: [

@@ -9,8 +9,11 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { of, Subject } from 'rxjs';
-import { team1, team2, team3, teamList } from '../../shared/testData';
+import { team1, team2, team3, teamList, testUser } from '../../shared/testData';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../services/user.service';
+import { extractTeamsFromUser } from '../../shared/types/model/User';
 
 const teamServiceMock = {
   getAllTeams: jest.fn(),
@@ -22,6 +25,10 @@ const refreshDataServiceMock = {
   markDataRefresh: jest.fn,
 };
 
+const userServiceMock = {
+  getCurrentUser: () => testUser,
+};
+
 describe('TeamFilterComponent', () => {
   let component: TeamFilterComponent;
   let fixture: ComponentFixture<TeamFilterComponent>;
@@ -31,10 +38,11 @@ describe('TeamFilterComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TeamFilterComponent],
-      imports: [HttpClientTestingModule, RouterTestingModule, MatChipsModule],
+      imports: [HttpClientTestingModule, RouterTestingModule, MatChipsModule, MatIconModule],
       providers: [
         { provide: TeamService, useValue: teamServiceMock },
         { provide: RefreshDataService, useValue: refreshDataServiceMock },
+        { provide: UserService, useValue: userServiceMock },
       ],
     });
     fixture = TestBed.createComponent(TeamFilterComponent);
@@ -170,7 +178,7 @@ describe('TeamFilterComponent', () => {
     expect(component.activeTeams).toStrictEqual([team2.id]);
   });
 
-  it('should use default values if no known teams are in url', async () => {
+  it('should use teams of user if no known teams are in url', async () => {
     const teamIds = [654, 478];
     jest.spyOn(component.teams$, 'next');
     jest.spyOn(component, 'changeTeamFilterParams');
@@ -182,7 +190,22 @@ describe('TeamFilterComponent', () => {
     fixture.detectChanges();
 
     expect(component.activeTeams.length).toBe(1);
-    expect(component.activeTeams[0]).toBe(1);
+    expect(component.activeTeams).toStrictEqual(extractTeamsFromUser(testUser).map((team) => team.id));
+    expect(component.changeTeamFilterParams).toBeCalledTimes(1);
+  });
+
+  it('should use teams of user if no teams are in url', async () => {
+    jest.spyOn(component.teams$, 'next');
+    jest.spyOn(component, 'changeTeamFilterParams');
+    const routerHarness = await RouterTestingHarness.create();
+
+    await routerHarness.navigateByUrl('');
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(component.activeTeams.length).toBe(1);
+    expect(component.activeTeams).toStrictEqual(extractTeamsFromUser(testUser).map((team) => team.id));
     expect(component.changeTeamFilterParams).toBeCalledTimes(1);
   });
 

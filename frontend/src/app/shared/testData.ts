@@ -17,28 +17,9 @@ import { KeyResultMetric } from './types/model/KeyResultMetric';
 import { Unit } from './types/enums/Unit';
 import { Team } from './types/model/Team';
 import { Action } from './types/model/Action';
-import { OrganisationState } from './types/enums/OrganisationState';
-import { Organisation } from './types/model/Organisation';
-
-export const organisationActive = {
-  id: 1,
-  version: 1,
-  orgName: 'org_bbt',
-  teams: [],
-  state: OrganisationState.ACTIVE,
-} as Organisation;
-
-export const organisationInActive = {
-  id: 1,
-  version: 1,
-  orgName: 'org_mobility',
-  teams: [],
-  state: OrganisationState.INACTIVE,
-} as Organisation;
 
 export const teamFormObject = {
   name: 'newTeamName',
-  organisations: [organisationActive],
 };
 
 export const teamMin1: TeamMin = {
@@ -376,6 +357,15 @@ export const testUser: User = {
   id: 1,
   firstname: 'Bob',
   lastname: 'Baumeister',
+  isOkrChampion: false,
+  userTeamList: [
+    {
+      id: 1,
+      team: team1,
+      isTeamAdmin: false,
+    },
+  ],
+  email: 'bob.baumeister@puzzle.ch',
 };
 
 export const users: User[] = [
@@ -384,11 +374,25 @@ export const users: User[] = [
     id: 2,
     firstname: 'Paco',
     lastname: 'Egiman',
+    isOkrChampion: true,
+    userTeamList: [],
+    email: 'peggimann@puzzle.ch',
   },
   {
     id: 3,
     firstname: 'Robin',
     lastname: 'Papier',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'robin.papier@puzzle.ch',
+  },
+  {
+    id: 4,
+    firstname: 'Key Result',
+    lastname: 'Owner',
+    isOkrChampion: false,
+    userTeamList: [],
+    email: 'keyresult.owner@puzzle.ch',
   },
 ];
 
@@ -400,7 +404,7 @@ export const keyResult: KeyResultOrdinal = {
   commitZone: 'Äpfel',
   targetZone: 'Äpfel und Birnen',
   stretchZone: 'Äpfel, Birnen, Bananen und Erdberen',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -439,7 +443,7 @@ export const keyResultOrdinal: KeyResultOrdinal = {
   commitZone: 'Grundriss steht',
   targetZone: 'Gebäude gebaut',
   stretchZone: 'Inneneinrichtung gestaltet',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -478,7 +482,7 @@ export const keyResultWriteableFalse: KeyResultOrdinal = {
   commitZone: 'Not writeable',
   targetZone: 'Not writeable',
   stretchZone: 'Not writeable',
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: users[3],
   keyResultType: 'ordinal',
   objective: {
     id: 301,
@@ -517,7 +521,7 @@ export const keyResultMetric: KeyResultMetric = {
   baseline: 30,
   stretchGoal: 100,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: users[3],
   keyResultType: 'metric',
   objective: {
     id: 302,
@@ -556,7 +560,7 @@ export const keyResultActions: KeyResultMetric = {
   baseline: 10,
   stretchGoal: 30,
   unit: Unit.PERCENT,
-  owner: { id: 1, firstname: 'firstname', lastname: 'lastname' },
+  owner: users[3],
   keyResultType: 'metric',
   objective: {
     id: 302,

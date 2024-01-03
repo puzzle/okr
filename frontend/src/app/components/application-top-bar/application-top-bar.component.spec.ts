@@ -10,8 +10,11 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { NavigationEnd, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { team1 } from '../../shared/testData';
+import { testUser } from '../../shared/testData';
+import { UserService } from '../../services/user.service';
+import { ConfigService } from '../../config.service';
 
 const oAuthMock = {
   getIdentityClaims: jest.fn(),
@@ -21,6 +24,19 @@ const oAuthMock = {
 
 const dialogMock = {
   open: jest.fn(),
+};
+
+const routerMock = {
+  events: of(new NavigationEnd(1, '', '')),
+  navigateByUrl: jest.fn(),
+};
+
+const userServiceMock = {
+  getCurrentUser: () => testUser,
+};
+
+const configServiceMock = {
+  config$: of({}),
 };
 
 describe('ApplicationHeaderComponent', () => {
@@ -43,6 +59,18 @@ describe('ApplicationHeaderComponent', () => {
           provide: MatDialog,
           useValue: dialogMock,
         },
+        {
+          provide: Router,
+          useValue: routerMock,
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock,
+        },
+        {
+          provide: ConfigService,
+          useValue: configServiceMock,
+        },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -50,13 +78,19 @@ describe('ApplicationHeaderComponent', () => {
     fixture = TestBed.createComponent(ApplicationTopBarComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
+    component.ngOnInit();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should set full name from user service', () => {
+    expect(component.userFullName).toBe('Bob Baumeister');
+  });
+
   it('logout function should get called on button click', async () => {
+    routerMock.navigateByUrl.mockReturnValue(of().toPromise());
     const harness = await loader.getHarness(MatMenuHarness);
     await harness.open();
     fixture.detectChanges();
@@ -64,11 +98,5 @@ describe('ApplicationHeaderComponent', () => {
       items[0].click();
       expect(oAuthMock.logOut).toBeCalledTimes(1);
     });
-  });
-
-  it('should make call to dialog object when opening team management dialog', async () => {
-    jest.spyOn(dialogMock, 'open').mockReturnValue({ afterClosed: () => of(team1) });
-    component.openTeamManagement();
-    expect(dialogMock.open).toHaveBeenCalled();
   });
 });

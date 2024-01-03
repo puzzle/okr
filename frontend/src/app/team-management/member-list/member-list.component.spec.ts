@@ -4,6 +4,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { of } from 'rxjs';
 import { MemberListComponent } from './member-list.component';
 import { UserService } from '../../services/user.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -20,6 +21,7 @@ describe('MemberListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MemberListComponent],
+      imports: [HttpClientTestingModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

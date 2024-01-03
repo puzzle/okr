@@ -3,4 +3,5 @@ export interface Team {
   version: number;
   name: string;
   filterIsActive: boolean;
+  isWriteable: boolean;
 }

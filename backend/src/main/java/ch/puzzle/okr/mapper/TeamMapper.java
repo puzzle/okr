@@ -11,7 +11,7 @@ public class TeamMapper {
     }
 
     public TeamDto toDto(Team team) {
-        return new TeamDto(team.getId(), team.getVersion(), team.getName());
+        return new TeamDto(team.getId(), team.getVersion(), team.getName(), team.isWriteable());
     }
 
     public Team toTeam(TeamDto teamDto) {

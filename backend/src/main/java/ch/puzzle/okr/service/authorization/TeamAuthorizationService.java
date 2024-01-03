@@ -42,22 +42,33 @@ public class TeamAuthorizationService {
         teamBusinessService.deleteTeam(id);
     }
 
+    public void addUsersToTeam(long entityId, List<Long> userIdList) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
+        teamBusinessService.addUsersToTeam(entityId, userIdList);
+    }
+
     private void checkUserAuthorization(OkrResponseStatusException exception, Long teamId) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        if (hasRoleWriteAndReadAll(authorizationUser)) {
-            return;
-        }
-        if (authorizationUser.isUserAdminInTeam(teamId)) {
+        if (isUserWriteAllowed(teamId)) {
             return;
         }
         throw exception;
     }
 
+    private boolean isUserWriteAllowed(Long teamId) {
+        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
+            return true;
+        }
+        if (authorizationUser.isUserAdminInTeam(teamId)) {
+            return true;
+        }
+        return false;
+    }
+
     public List<Team> getAllTeams() {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        boolean isWritable = hasRoleWriteAndReadAll(authorizationUser);
         List<Team> allTeams = teamBusinessService.getAllTeams(authorizationUser);
-        allTeams.forEach(team -> team.setWriteable(isWritable));
+        allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
         return allTeams;
     }
 }

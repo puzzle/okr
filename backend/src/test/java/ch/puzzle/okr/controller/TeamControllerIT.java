@@ -43,8 +43,8 @@ class TeamControllerIT {
     static Team teamPuzzle = Team.Builder.builder().withId(5L).withName(PUZZLE).build();
     static Team teamOKR = Team.Builder.builder().withId(7L).withName("OKR").build();
     static List<Team> teamList = Arrays.asList(teamPuzzle, teamOKR);
-    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE);
-    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR");
+    static TeamDto teamPuzzleDto = new TeamDto(5L, 3, PUZZLE, false);
+    static TeamDto teamOkrDto = new TeamDto(7L, 4, "OKR", false);
 
     private static final String CREATE_NEW_TEAM = """
             {
@@ -126,7 +126,7 @@ class TeamControllerIT {
 
     @Test
     void shouldReturnUpdatedTeam() throws Exception {
-        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team");
+        TeamDto teamDto = new TeamDto(1L, 0, "OKR-Team", false);
         Team team = Team.Builder.builder().withId(1L).withName("OKR-Team").build();
 
         BDDMockito.given(teamMapper.toDto(any())).willReturn(teamDto);

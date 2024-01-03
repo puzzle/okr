@@ -82,11 +82,9 @@ public class TeamController {
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })
     @PutMapping("/{id}/addusers")
     public void addUsersToTeam(
-            @Parameter(description = "The ID of an Team to delete it.", required = true)
-            @PathVariable long id,
-            @RequestBody List<UserDto> userDtoList
-    ) {
-        var userIds =  userDtoList.stream().map(UserDto::id).toList();
+            @Parameter(description = "The ID of an Team to delete it.", required = true) @PathVariable long id,
+            @RequestBody List<UserDto> userDtoList) {
+        var userIds = userDtoList.stream().map(UserDto::id).toList();
         teamAuthorizationService.addUsersToTeam(id, userIds);
     }
 }

@@ -78,11 +78,7 @@ public class TeamBusinessService {
         var team = teamPersistenceService.findById(teamId);
         for (var userId : userIdList) {
             var user = userPersistenceService.findById(userId);
-            var userTeam = UserTeam.Builder.builder()
-                    .withTeam(team)
-                    .withUser(user)
-                    .withTeamAdmin(false)
-                    .build();
+            var userTeam = UserTeam.Builder.builder().withTeam(team).withUser(user).withTeamAdmin(false).build();
             user.getUserTeamList().add(userTeam);
             userPersistenceService.save(user);
         }

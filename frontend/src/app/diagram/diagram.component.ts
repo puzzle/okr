@@ -22,23 +22,18 @@ export class DiagramComponent implements OnInit {
 
   set overviewEntity(overviewEntity: OverviewEntity[] | Subject<OverviewEntity[]> | null) {
     if (Array.isArray(overviewEntity)) {
+      console.log('Is array');
       // If an array is passed, assume it's the data and update the Subject
       this.overviewEntities$.next(overviewEntity);
     } else if (overviewEntity instanceof Subject) {
+      console.log('Is subject');
       // If a Subject is passed, directly update the internal Subject
       this.overviewEntities$ = overviewEntity;
     }
     // Null check can be added if you want to handle null cases
   }
 
-  constructor(private router: Router) {
-    this.overviewEntities$.subscribe((hey) => {
-      const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
-        this.myLayout.updateDiagram(value);
-        subscription.unsubscribe();
-      });
-    });
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
@@ -48,6 +43,13 @@ export class DiagramComponent implements OnInit {
       this.myDiagram.layout = this.myLayout;
 
       subscription.unsubscribe();
+    });
+
+    this.overviewEntities$.subscribe(() => {
+      const subscription = this.overviewEntities$.asObservable().subscribe((value: OverviewEntity[]) => {
+        this.myLayout.updateDiagram(value);
+        subscription.unsubscribe();
+      });
     });
   }
 }

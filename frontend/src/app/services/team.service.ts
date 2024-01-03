@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Team } from '../shared/types/model/Team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { User } from '../shared/types/model/User';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class TeamService {
 
   private teams: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   private teamsLoaded = false;
+  private readonly API_URL = '/api/v2/teams';
 
   getAllTeams(): Observable<Team[]> {
     if (!this.teamsLoaded) {
@@ -21,7 +23,7 @@ export class TeamService {
   }
 
   reloadTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>('/api/v2/teams').pipe(
+    return this.http.get<Team[]>(this.API_URL).pipe(
       tap((teams) => {
         if (!this.teams) {
           this.teams = new BehaviorSubject<Team[]>(teams);
@@ -33,14 +35,18 @@ export class TeamService {
   }
 
   createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>('/api/v2/teams', team).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.post<Team>(this.API_URL, team).pipe(tap(() => this.reloadTeams().subscribe()));
   }
 
   updateTeam(team: Team): Observable<Team> {
-    return this.http.put<Team>(`/api/v2/teams/${team.id}`, team).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team).pipe(tap(() => this.reloadTeams().subscribe()));
   }
 
   deleteTeam(id: number): Observable<any> {
-    return this.http.delete(`/api/v2/teams/${id}`).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.delete(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams().subscribe()));
+  }
+
+  addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`, selectedUsers);
   }
 }

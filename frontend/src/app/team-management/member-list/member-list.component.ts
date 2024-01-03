@@ -6,6 +6,9 @@ import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
+import { isMobileDevice } from '../../shared/common';
 
 @Component({
   selector: 'app-member-list',
@@ -30,6 +33,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
     private readonly cd: ChangeDetectorRef,
     private readonly teamService: TeamService,
     private readonly router: Router,
+    private readonly dialog: MatDialog,
   ) {}
 
   public ngOnInit(): void {
@@ -75,5 +79,37 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   deleteTeam(selectedTeam: Team) {
     this.teamService.deleteTeam(selectedTeam.id).subscribe(() => this.router.navigateByUrl('team-management'));
+  }
+
+  addMemberToTeam() {
+    const dialogConfig: MatDialogConfig = isMobileDevice()
+      ? {
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          height: '100vh',
+          width: '100vw',
+        }
+      : {
+          width: '45em',
+          height: 'auto',
+        };
+    dialogConfig.data = {
+      team: this.selectedTeam,
+      currentUsersOfTeam: this.dataSource,
+    };
+    const dialogRef = this.dialog.open(AddMemberToTeamDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
+  }
+
+  invitePerson() {
+    alert('not implemented');
+  }
+
+  showInvitePerson(): boolean {
+    return !this.selectedTeam;
+  }
+
+  showAddMemberToTeam() {
+    return this.selectedTeam && this.selectedTeam.isWriteable;
   }
 }

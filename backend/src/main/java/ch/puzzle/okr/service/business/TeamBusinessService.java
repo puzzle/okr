@@ -1,10 +1,13 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.Team;
+import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,14 +22,17 @@ public class TeamBusinessService {
 
     private final ObjectiveBusinessService objectiveBusinessService;
 
+    private final UserPersistenceService userPersistenceService;
+
     private final TeamValidationService validator;
     private final CacheService cacheService;
 
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
-            CacheService cacheService) {
+            CacheService cacheService, UserPersistenceService userPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
+        this.userPersistenceService = userPersistenceService;
         this.validator = validator;
         this.cacheService = cacheService;
     }
@@ -65,6 +71,21 @@ public class TeamBusinessService {
     private List<Team> sortTeams(List<Team> teams, AuthorizationUser authorizationUser) {
         teams.sort(new TeamComparator(authorizationUser));
         return teams;
+    }
+
+    @Transactional
+    public void addUsersToTeam(long teamId, List<Long> userIdList) {
+        var team = teamPersistenceService.findById(teamId);
+        for (var userId : userIdList) {
+            var user = userPersistenceService.findById(userId);
+            var userTeam = UserTeam.Builder.builder()
+                    .withTeam(team)
+                    .withUser(user)
+                    .withTeamAdmin(false)
+                    .build();
+            user.getUserTeamList().add(userTeam);
+            userPersistenceService.save(user);
+        }
     }
 
     private record TeamComparator(AuthorizationUser authorizationUser) implements Comparator<Team> {

@@ -1,9 +1,37 @@
 <div>
   <div id="member-header">
-    <div>
+    <div class="title">
       <h3 *ngIf="selectedTeam">{{ selectedTeam?.name }}</h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
       <p>Members: {{ dataSource.length }}</p>
+    </div>
+    <div class="action-button">
+      <button
+        *ngIf="showAddMemberToTeam()"
+        (click)="addMemberToTeam()"
+        [attr.data-testId]="'add-team'"
+        class="align-new-icon"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Member hinzufügen
+        </span>
+      </button>
+      <button
+        *ngIf="showInvitePerson()"
+        (click)="invitePerson()"
+        [attr.data-testId]="'add-team'"
+        class="align-new-icon"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Person einladen
+        </span>
+      </button>
     </div>
     <div class="menu" *ngIf="selectedTeam">
       <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">

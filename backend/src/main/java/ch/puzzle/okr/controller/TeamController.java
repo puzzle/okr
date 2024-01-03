@@ -1,6 +1,7 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.dto.TeamDto;
+import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.TeamMapper;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.service.authorization.TeamAuthorizationService;
@@ -73,5 +74,19 @@ public class TeamController {
     public void deleteTeamById(
             @Parameter(description = "The ID of an Team to delete it.", required = true) @PathVariable long id) {
         teamAuthorizationService.deleteEntity(id);
+    }
+
+    @Operation(summary = "Add users to a team", description = "Add users to a team")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Added users to team"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to add users to the team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })
+    @PutMapping("/{id}/addusers")
+    public void addUsersToTeam(
+            @Parameter(description = "The ID of an Team to delete it.", required = true)
+            @PathVariable long id,
+            @RequestBody List<UserDto> userDtoList
+    ) {
+        var userIds =  userDtoList.stream().map(UserDto::id).toList();
+        teamAuthorizationService.addUsersToTeam(id, userIds);
     }
 }

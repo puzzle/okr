@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { OkrTangramComponent } from './custom/okr-tangram/okr-tangram.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { OkrTangramComponent } from './custom/okr-tangram/okr-tangram.component'
     MatRadioModule,
     MatIconModule,
     NgOptimizedImage,
+    MatButtonModule,
   ],
   exports: [
     ExampleDialogComponent,

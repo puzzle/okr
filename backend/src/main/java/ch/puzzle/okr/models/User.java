@@ -39,7 +39,7 @@ public class User {
     @Size(min = 2, max = 250, message = MessageKey.ATTRIBUTE_SIZE_BETWEEN)
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeamList = new ArrayList<>();
 
     @Column(nullable = false, columnDefinition = "boolean default false")

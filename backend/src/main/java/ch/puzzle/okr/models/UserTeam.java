@@ -9,8 +9,8 @@ import java.util.Objects;
 public class UserTeam implements WriteableInterface {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_user_team")
-    @SequenceGenerator(name = "sequence_user_team", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person_team")
+    @SequenceGenerator(name = "sequence_person_team", allocationSize = 1)
     private Long id;
 
     @Version
@@ -27,7 +27,7 @@ public class UserTeam implements WriteableInterface {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean isTeamAdmin = false;
 
-    public UserTeam() {
+    private UserTeam() {
     }
 
     private UserTeam(Builder builder) {

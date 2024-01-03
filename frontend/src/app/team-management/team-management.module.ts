@@ -19,6 +19,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { SearchTeamManagementComponent } from './search-team-management/search-team-management.component';
+import { AddMemberToTeamDialogComponent } from './add-member-to-team-dialog/add-member-to-team-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { SearchTeamManagementComponent } from './search-team-management/search-t
     RolesPipe,
     TeamsPipe,
     SearchTeamManagementComponent,
+    AddMemberToTeamDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +49,7 @@ import { SearchTeamManagementComponent } from './search-team-management/search-t
     MatInputModule,
     MatButtonModule,
     MatMenuModule,
+    MatAutocompleteModule,
   ],
 })
 export class TeamManagementModule {}

@@ -1,7 +1,10 @@
 <div>
   <div id="member-header">
     <div class="title">
-      <h3 *ngIf="selectedTeam">{{ selectedTeam?.name }}</h3>
+      <h3 *ngIf="selectedTeam">
+        <span>{{ selectedTeam?.name }}</span>
+        <mat-icon class="mx-2 cursor-pointer" *ngIf="selectedTeam?.isWriteable" (click)="editTeam()">edit</mat-icon>
+      </h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
       <p>Members: {{ dataSource.length }}</p>
     </div>

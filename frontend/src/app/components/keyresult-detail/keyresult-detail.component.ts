@@ -11,7 +11,7 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { State } from '../../shared/types/enums/State';
-import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT } from '../../shared/constantLibary';
+import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { isInValid, isMobileDevice } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
@@ -61,17 +61,7 @@ export class KeyresultDetailComponent implements OnInit {
   }
 
   checkInHistory() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
     const dialogRef = this.dialog.open(CheckInHistoryDialogComponent, {
       data: {
         keyResult: this.keyResult$.getValue(),

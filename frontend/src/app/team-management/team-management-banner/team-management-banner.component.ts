@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { isMobileDevice } from '../../shared/common';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-team-management-banner',
@@ -15,17 +16,7 @@ export class TeamManagementBannerComponent {
   public constructor(private dialog: MatDialog) {}
 
   createTeam(): void {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
     if (!this.dialogRef) {
       this.dialogRef = this.dialog.open(AddEditTeamDialog, {
         height: dialogConfig.height,

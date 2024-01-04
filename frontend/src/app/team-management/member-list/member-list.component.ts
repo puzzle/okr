@@ -6,9 +6,10 @@ import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
-import { isMobileDevice } from '../../shared/common';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 
 @Component({
   selector: 'app-member-list',
@@ -82,17 +83,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   addMemberToTeam() {
-    const dialogConfig: MatDialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
     dialogConfig.data = {
       team: this.selectedTeam,
       currentUsersOfTeam: this.dataSource,
@@ -111,5 +102,14 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   showAddMemberToTeam() {
     return this.selectedTeam && this.selectedTeam.isWriteable;
+  }
+
+  editTeam(): void {
+    const dialogConfig = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      team: this.selectedTeam,
+    };
+    const dialogRef = this.dialog.open(AddEditTeamDialog, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
 }

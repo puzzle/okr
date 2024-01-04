@@ -198,11 +198,6 @@ input {
   margin-left: -8px;
 }
 
-#objective-form-field .mdc-notched-outline__trailing {
-  border-bottom-right-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-}
-
 mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   width: 220px;
 }
@@ -319,5 +314,21 @@ table.okr-table {
       border: none;
       background-color: white;
     }
+  }
+}
+
+.search-form {
+  button {
+    border-radius: 0 4px 4px 0;
+    mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(1.25);
+    }
+  }
+  .mdc-notched-outline__trailing {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
   }
 }

@@ -2,13 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CheckInMin } from '../../shared/types/model/CheckInMin';
 import { CheckInService } from '../../services/check-in.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DATE_FORMAT } from '../../shared/constantLibary';
+import { DATE_FORMAT, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { KeyResult } from '../../shared/types/model/KeyResult';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { Observable, of } from 'rxjs';
 import { KeyResultMetric } from '../../shared/types/model/KeyResultMetric';
 import { RefreshDataService } from '../../services/refresh-data.service';
-import { isMobileDevice } from '../../shared/common';
 
 @Component({
   selector: 'app-check-in-history-dialog',
@@ -36,17 +35,7 @@ export class CheckInHistoryDialogComponent implements OnInit {
   }
 
   openCheckInDialogForm(checkIn: CheckInMin) {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
     const dialogRef = this.dialog.open(CheckInFormComponent, {
       data: {
         keyResult: this.keyResult,

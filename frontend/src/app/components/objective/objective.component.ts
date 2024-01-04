@@ -12,9 +12,10 @@ import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confi
 import { CompleteDialogComponent } from '../../shared/dialog/complete-dialog/complete-dialog.component';
 import { Completed } from '../../shared/types/model/Completed';
 import { Objective } from '../../shared/types/model/Objective';
-import { isMobileDevice, trackByFn } from '../../shared/common';
+import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-column',
@@ -133,17 +134,7 @@ export class ObjectiveComponent implements OnInit {
 
   redirect(menuEntry: MenuEntry) {
     if (menuEntry.dialog) {
-      const dialogConfig = isMobileDevice()
-        ? {
-            maxWidth: '100vw',
-            maxHeight: '100vh',
-            height: '100vh',
-            width: '100vw',
-          }
-        : {
-            width: '45em',
-            height: 'auto',
-          };
+      const dialogConfig = OKR_DIALOG_CONFIG;
 
       if (menuEntry.action == 'release') {
         dialogConfig.width = 'auto';
@@ -233,17 +224,7 @@ export class ObjectiveComponent implements OnInit {
   }
 
   openAddKeyResultDialog() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
 
     this.matDialog
       .open(KeyresultDialogComponent, {

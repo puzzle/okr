@@ -7,7 +7,7 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
 import { Router } from '@angular/router';
-import { isMobileDevice } from '../../shared/common';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-detail',
@@ -38,17 +38,7 @@ export class ObjectiveDetailComponent {
   }
 
   openAddKeyResultDialog() {
-    const dialogConfig = isMobileDevice()
-      ? {
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          height: '100vh',
-          width: '100vw',
-        }
-      : {
-          width: '45em',
-          height: 'auto',
-        };
+    const dialogConfig = OKR_DIALOG_CONFIG;
 
     this.dialog
       .open(KeyresultDialogComponent, {

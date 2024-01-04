@@ -39,7 +39,7 @@ export const teamMin2: TeamMin = {
 export const team1: Team = {
   id: 1,
   version: 2,
-  name: 'Team2',
+  name: 'Team1',
   filterIsActive: true,
 } as Team;
 

@@ -38,10 +38,12 @@ export const convertFromUser = (user: User): UserTableEntry => {
   }
   if (user.userTeamList.filter((ut) => ut.isTeamAdmin).length > 0) {
     roles.push(UserRole.TEAM_ADMIN);
-  } else if (user.userTeamList.length > 0) {
+  }
+  if (user.userTeamList.filter((ut) => !ut.isTeamAdmin).length > 0) {
     roles.push(UserRole.TEAM_MEMBER);
-  } else {
-    throw Error('User should at least be a Member');
+  }
+  if (roles.length === 0) {
+    throw Error('User should have at least one role');
   }
 
   return {

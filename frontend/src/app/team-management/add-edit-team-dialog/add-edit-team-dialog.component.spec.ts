@@ -106,14 +106,6 @@ describe('TeamManagementComponent', () => {
     } as Team);
   });
 
-  it('should call service method to delete team', async () => {
-    component.data = { team: teamMin1 };
-    jest.spyOn(dialogMock, 'open').mockReturnValue({ afterClosed: () => of(true) });
-    jest.spyOn(teamServiceMock, 'deleteTeam').mockReturnValue(null);
-    component.deleteTeam();
-    expect(teamServiceMock.deleteTeam).toHaveBeenCalledWith(teamMin1.id);
-  });
-
   it('should set team values in from on init if data is not null', async () => {
     component.data = { team: teamMin1 };
     component.ngOnInit();

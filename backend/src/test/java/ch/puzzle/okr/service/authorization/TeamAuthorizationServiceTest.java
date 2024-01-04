@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.TeamBusinessService;
@@ -18,7 +19,7 @@ import static ch.puzzle.okr.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ExtendWith(MockitoExtension.class)
@@ -135,5 +136,28 @@ class TeamAuthorizationServiceTest {
         List<Team> teams = teamAuthorizationService.getAllTeams();
         assertEquals(teamList, teams);
         teams.forEach(team -> assertEquals(isWriteable, team.isWriteable()));
+    }
+
+    @Test
+    void addUsersToTeam_shouldThrowExceptionIfUserNotAuthorized() {
+        when(authorizationService.getAuthorizationUser()).thenReturn(
+                new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of()))
+        );
+        assertThrows(OkrResponseStatusException.class, () -> {
+            teamAuthorizationService.addUsersToTeam(1L, List.of());
+        });
+    }
+
+    @Test
+    void addUsersToTeam_shouldCallTeamBusinessService() {
+        var adminTeamId = 1L;
+        var adminTeam = defaultTeam(adminTeamId);
+        var usersList = List.of(1L, 2L);
+        when(authorizationService.getAuthorizationUser()).thenReturn(
+                new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of()))
+        );
+        teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);
+        verify(teamBusinessService, times(1)).addUsersToTeam(adminTeamId, usersList);
+
     }
 }

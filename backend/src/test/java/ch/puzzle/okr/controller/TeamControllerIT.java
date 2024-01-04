@@ -65,6 +65,10 @@ class TeamControllerIT {
             }
             """;
 
+    private static final String ADD_USERS = """
+            [{"id":31,"version":1,"firstname":"Findus","lastname":"Peterson","email":"peterson@puzzle.ch","userTeamList":[{"id":31,"version":1,"team":{"id":8,"version":1,"name":"we are cube.³","isWriteable":false},"isTeamAdmin":true}],"isOkrChampion":false},{"id":41,"version":1,"firstname":"Paco","lastname":"Egiman","email":"egiman@puzzle.ch","userTeamList":[{"id":41,"version":1,"team":{"id":4,"version":1,"name":"/BBT","isWriteable":false},"isTeamAdmin":false}],"isOkrChampion":false}]
+            """;
+
     @Autowired
     private MockMvc mvc;
     @MockBean
@@ -171,5 +175,14 @@ class TeamControllerIT {
                 .deleteEntity(anyLong());
         mvc.perform(delete(URL_TEAM_1).with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void addUsersToTeam_shouldReturnOk() throws Exception {
+        mvc.perform(put(URL_TEAM_1 + "/addusers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(ADD_USERS)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

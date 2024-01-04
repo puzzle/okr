@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
+import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,14 +18,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static ch.puzzle.okr.TestHelper.defaultAuthorizationUser;
-import static ch.puzzle.okr.TestHelper.defaultUser;
+import static ch.puzzle.okr.TestHelper.*;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static ch.puzzle.okr.models.State.SUCCESSFUL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,6 +46,10 @@ class TeamBusinessServiceTest {
 
     @Mock
     ObjectiveBusinessService objectiveBusinessService;
+
+    @Mock
+    UserPersistenceService userPersistenceService;
+
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);
     @InjectMocks
@@ -123,5 +128,29 @@ class TeamBusinessServiceTest {
         verify(teamPersistenceService, times(1)).deleteById(1L);
         verify(objectiveBusinessService, times(objectiveList.size())).deleteEntityById(anyLong());
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+    }
+
+    @Test
+    void addUsersToTeam_shouldAddUsersCorrectly() {
+        var teamId = 1L;
+        var userIds = List.of(1L, 2L);
+
+        var user1 = defaultUserWithTeams(1L, new ArrayList<>(), new ArrayList<>());
+        var user2 = defaultUserWithTeams(2L, new ArrayList<>(), new ArrayList<>());
+
+        when(teamPersistenceService.findById(teamId)).thenReturn(defaultTeam(teamId));
+        when(userPersistenceService.findById(userIds.get(0))).thenReturn(user1);
+        when(userPersistenceService.findById(userIds.get(1))).thenReturn(user2);
+
+        teamBusinessService.addUsersToTeam(teamId, userIds);
+
+        var user1Teamids = user1.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
+        assertTrue(user1Teamids.contains(teamId));
+
+        var user2Teamids = user2.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList();
+        assertTrue(user2Teamids.contains(teamId));
+
+        assertFalse(user1Teamids.contains(3L));
+        assertFalse(user2Teamids.contains(3L));
     }
 }

@@ -8,9 +8,11 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestHelper {
@@ -38,7 +40,7 @@ public class TestHelper {
                 .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
                 .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
-        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams).toList());
+        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
         return user;
     }
 

@@ -40,7 +40,8 @@ public class TestHelper {
                 .map(t -> UserTeam.Builder.builder().withTeamAdmin(true).withTeam(t).withUser(user).build());
         var memberUserTeams = memberTeams.stream()
                 .map(t -> UserTeam.Builder.builder().withTeam(t).withUser(user).build());
-        user.setUserTeamList(Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
+        user.setUserTeamList(
+                Stream.concat(adminUserTeams, memberUserTeams).collect(Collectors.toCollection(ArrayList::new)));
         return user;
     }
 

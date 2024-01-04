@@ -153,9 +153,8 @@ class TeamAuthorizationServiceTest {
         var adminTeamId = 1L;
         var adminTeam = defaultTeam(adminTeamId);
         var usersList = List.of(1L, 2L);
-        when(authorizationService.getAuthorizationUser()).thenReturn(
-                new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of()))
-        );
+        when(authorizationService.getAuthorizationUser())
+                .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of())));
         teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);
         verify(teamBusinessService, times(1)).addUsersToTeam(adminTeamId, usersList);
 

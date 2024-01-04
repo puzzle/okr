@@ -179,10 +179,7 @@ class TeamControllerIT {
 
     @Test
     void addUsersToTeam_shouldReturnOk() throws Exception {
-        mvc.perform(put(URL_TEAM_1 + "/addusers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(ADD_USERS)
-                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(put(URL_TEAM_1 + "/addusers").contentType(MediaType.APPLICATION_JSON).content(ADD_USERS)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

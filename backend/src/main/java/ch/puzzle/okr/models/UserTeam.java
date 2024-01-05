@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "person_team")
-public class UserTeam implements WriteableInterface {
+public class UserTeam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "sequence_person_team")
@@ -36,16 +36,6 @@ public class UserTeam implements WriteableInterface {
         this.user = builder.user;
         this.team = builder.team;
         this.isTeamAdmin = builder.isTeamAdmin;
-    }
-
-    @Override
-    public boolean isWriteable() {
-        return false;
-    }
-
-    @Override
-    public void setWriteable(boolean writeable) {
-
     }
 
     public Long getId() {

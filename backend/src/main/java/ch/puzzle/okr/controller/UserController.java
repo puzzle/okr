@@ -5,11 +5,13 @@ import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
 import ch.puzzle.okr.service.authorization.UserAuthorizationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +37,11 @@ public class UserController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userAuthorizationService.getAllUsers().stream().map(userMapper::toDto).toList();
+        return userAuthorizationService.getAllUsers().stream()
+                .map(userMapper::toDto).toList();
     }
+
+
 
     @Operation(summary = "Get Current User", description = "Get all current logged in user.")
     @ApiResponses(value = {
@@ -46,6 +51,18 @@ public class UserController {
     public UserDto getCurrentUser() {
         var currentUser = this.authorizationService.getAuthorizationUser().user();
         return userMapper.toDto(currentUser);
+    }
+
+    @Operation(summary = "Get User by ID", description = "Get user by given ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned user", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
+    @GetMapping(path = "/{id}")
+    public UserDto getUserById(
+            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id
+            ) {
+        var user = this.userAuthorizationService.getById(id);
+        return userMapper.toDto(user);
     }
 
 }

@@ -9,17 +9,17 @@ import { User } from '../shared/types/model/User';
 export class UserService {
   private readonly API_URL = 'api/v1/users';
 
-  private _user: User | undefined;
+  private _currentUser: User | undefined;
   private users: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
   private usersLoaded = false;
 
   constructor(private httpClient: HttpClient) {}
 
   public initCurrentUser(): Observable<User> {
-    if (this._user) {
-      return of(this._user);
+    if (this._currentUser) {
+      return of(this._currentUser);
     }
-    return this.httpClient.get<User>(this.API_URL + '/current').pipe(tap((u) => (this._user = u)));
+    return this.httpClient.get<User>(this.API_URL + '/current').pipe(tap((u) => (this._currentUser = u)));
   }
 
   public getUsers(): Observable<User[]> {
@@ -35,9 +35,13 @@ export class UserService {
   }
 
   public getCurrentUser(): User {
-    if (!this._user) {
+    if (!this._currentUser) {
       throw new Error('user should not be undefined here');
     }
-    return this._user;
+    return this._currentUser;
+  }
+
+  getUserById(id: number): Observable<User> {
+    return this.httpClient.get<User>(this.API_URL + '/' + id);
   }
 }

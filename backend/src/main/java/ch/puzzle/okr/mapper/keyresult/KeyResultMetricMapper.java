@@ -54,7 +54,7 @@ public class KeyResultMetricMapper {
                 .withId(keyResultMetricDto.id()).withVersion(keyResultMetricDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultMetricDto.objective().id()))
                 .withTitle(keyResultMetricDto.title()).withDescription(keyResultMetricDto.description())
-                .withOwner(userBusinessService.getOwnerById(keyResultMetricDto.owner().id()))
+                .withOwner(userBusinessService.getUserById(keyResultMetricDto.owner().id()))
                 .withModifiedOn(keyResultMetricDto.modifiedOn()).build();
     }
 

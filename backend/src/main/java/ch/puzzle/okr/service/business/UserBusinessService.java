@@ -23,7 +23,7 @@ public class UserBusinessService {
         return userPersistenceService.findAll();
     }
 
-    public User getOwnerById(Long ownerId) {
+    public User getUserById(Long ownerId) {
         return userPersistenceService.findById(ownerId);
     }
 

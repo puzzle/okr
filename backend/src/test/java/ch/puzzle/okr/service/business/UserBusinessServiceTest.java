@@ -72,7 +72,7 @@ class UserBusinessServiceTest {
                 .withEmail("kaufmann@puzzle.ch").build();
         Mockito.when(userPersistenceService.findById(any())).thenReturn(owner);
 
-        User returnedUser = userBusinessService.getOwnerById(1L);
+        User returnedUser = userBusinessService.getUserById(1L);
 
         assertEquals(1L, returnedUser.getId());
         assertEquals("Bob", returnedUser.getFirstname());

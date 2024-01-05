@@ -54,7 +54,7 @@ public class TeamAuthorizationService {
         throw exception;
     }
 
-    private boolean isUserWriteAllowed(Long teamId) {
+    public boolean isUserWriteAllowed(Long teamId) {
         AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
         if (hasRoleWriteAndReadAll(authorizationUser)) {
             return true;

@@ -23,7 +23,6 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { OAuthModule, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { A11yModule } from '@angular/cdk/a11y';
 import { MatRadioModule } from '@angular/material/radio';
 import { ConfigService } from './config.service';
 import { firstValueFrom } from 'rxjs';
@@ -41,7 +40,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApplicationBannerComponent } from './components/application-banner/application-banner.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { QuarterFilterComponent } from './components/quarter-filter/quarter-filter.component';
 import { TeamFilterComponent } from './components/team-filter/team-filter.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -60,7 +59,6 @@ import { CheckInHistoryDialogComponent } from './components/check-in-history-dia
 import { CheckInFormMetricComponent } from './components/checkin/check-in-form-metric/check-in-form-metric.component';
 import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
-import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
@@ -113,7 +111,6 @@ export const MY_FORMATS = {
     CheckInFormMetricComponent,
     CheckInFormOrdinalComponent,
     CheckInFormComponent,
-    SidepanelComponent,
   ],
   imports: [
     CommonModule,
@@ -145,7 +142,6 @@ export const MY_FORMATS = {
       },
     }),
     OAuthModule.forRoot(),
-    A11yModule,
     MatRadioModule,
     NgOptimizedImage,
     MatSidenavModule,
@@ -154,9 +150,6 @@ export const MY_FORMATS = {
     MatDividerModule,
     MatSidenavModule,
     MatCheckboxModule,
-    CdkOverlayOrigin,
-    CdkConnectedOverlay,
-    CdkOverlayOrigin,
     MatChipsModule,
     CdkDropList,
     CdkDrag,

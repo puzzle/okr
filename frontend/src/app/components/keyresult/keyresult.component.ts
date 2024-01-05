@@ -16,6 +16,6 @@ export class KeyresultComponent {
   constructor(private router: Router) {}
 
   openDrawer() {
-    this.router.navigate(['keyresult', this.keyResult.id]);
+    this.router.navigate(['details/keyresult', this.keyResult.id]);
   }
 }

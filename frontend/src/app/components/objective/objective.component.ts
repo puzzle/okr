@@ -220,7 +220,7 @@ export class ObjectiveComponent implements OnInit {
   }
 
   openObjectiveDetail() {
-    this.router.navigate(['objective', this.objective$.value.id]);
+    this.router.navigate(['details/objective', this.objective$.value.id]);
   }
 
   openAddKeyResultDialog() {

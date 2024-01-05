@@ -315,6 +315,11 @@ table.okr-table {
       background-color: white;
     }
   }
+  tbody {
+    tr:hover {
+      box-shadow: 0 0 0 1px $dark-grey;
+    }
+  }
 }
 
 .search-form {

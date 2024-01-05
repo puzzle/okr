@@ -1,25 +1,14 @@
 import { inject, NgModule } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn, RouterModule, Routes } from '@angular/router';
+import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './components/overview/overview.component';
-import { EMPTY, of } from 'rxjs';
-import { SidepanelComponent } from './components/sidepanel/sidepanel.component';
+import { of } from 'rxjs';
+import { SidepanelComponent } from './shared/sidepanel/sidepanel.component';
 import { authGuard } from './guards/auth.guard';
 import { UserService } from './services/user.service';
 import { User } from './shared/types/model/User';
 import { OAuthService } from 'angular-oauth2-oidc';
-
-/**
- * Resolver for get the id from url like `/objective/42` or `/keyresult/42`.
- */
-export const getIdFromPathResolver: ResolveFn<number> = (route: ActivatedRouteSnapshot) => {
-  try {
-    let id = Number.parseInt(route.url[1].path);
-    return of(id);
-  } catch (error) {
-    console.error('Can not get id from URL:', error);
-    return EMPTY;
-  }
-};
+import { ObjectiveDetailComponent } from './components/objective-detail/objective-detail.component';
+import { KeyresultDetailComponent } from './components/keyresult-detail/keyresult-detail.component';
 
 const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
@@ -39,16 +28,18 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'objective/:id',
+        path: 'details',
         component: SidepanelComponent,
-        resolve: { id: getIdFromPathResolver },
-        data: { type: 'Objective' },
-      },
-      {
-        path: 'keyresult/:id',
-        component: SidepanelComponent,
-        resolve: { id: getIdFromPathResolver },
-        data: { type: 'KeyResult' },
+        children: [
+          {
+            path: 'objective/:id',
+            component: ObjectiveDetailComponent,
+          },
+          {
+            path: 'keyresult/:id',
+            component: KeyresultDetailComponent,
+          },
+        ],
       },
     ],
     canActivate: [authGuard],

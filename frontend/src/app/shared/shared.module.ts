@@ -18,6 +18,11 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { OkrTangramComponent } from './custom/okr-tangram/okr-tangram.component';
 import { MatButtonModule } from '@angular/material/button';
+import { SidepanelComponent } from './sidepanel/sidepanel.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { A11yModule } from '@angular/cdk/a11y';
+import { RouterOutlet } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -31,6 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
     CompleteDialogComponent,
     DialogHeaderComponent,
     OkrTangramComponent,
+    SidepanelComponent,
   ],
   imports: [
     CommonModule,
@@ -44,6 +50,12 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     NgOptimizedImage,
     MatButtonModule,
+    MatSidenavModule,
+    CdkOverlayOrigin,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin,
+    A11yModule,
+    RouterOutlet,
   ],
   exports: [
     ExampleDialogComponent,
@@ -56,6 +68,7 @@ import { MatButtonModule } from '@angular/material/button';
     CompleteDialogComponent,
     DialogHeaderComponent,
     OkrTangramComponent,
+    SidepanelComponent,
   ],
 })
 export class SharedModule {}

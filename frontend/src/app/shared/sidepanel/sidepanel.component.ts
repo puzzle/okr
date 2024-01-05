@@ -1,6 +1,7 @@
 import {
-  AfterViewInit,
+  AfterContentInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -16,9 +17,10 @@ import { ConnectedPosition } from '@angular/cdk/overlay'; // ESM
   styleUrls: ['./sidepanel.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SidepanelComponent implements OnInit, AfterContentInit, OnDestroy {
   leaveKeys = ['Escape'];
   right = '-100%';
+  loaded = false;
   @ViewChild('sidebar')
   sidebar!: ElementRef<HTMLDivElement>;
   position: ConnectedPosition[] = [
@@ -29,24 +31,19 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
       overlayY: 'top',
     },
   ];
-  modelType = '';
-  id: number = 0;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private router: Router,
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute,
   ) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data) => {
-      this.modelType = data['type'];
-      this.id = data['id'];
-    });
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {}
+  ngAfterContentInit(): void {
     document.body.classList.add('disable-scrolling');
     this.right = '0';
+    this.loaded = true;
+    this.cd.markForCheck();
   }
 
   ngOnDestroy() {
@@ -54,7 +51,7 @@ export class SidepanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   close() {
-    this.router.navigate(['']);
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   closeOnKeydown($event: KeyboardEvent) {

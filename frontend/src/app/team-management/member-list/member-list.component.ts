@@ -112,4 +112,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddEditTeamDialog, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
+
+  getMemberDetailsLink(user: User) {
+    return '/team-management/details/member/' + user.id;
+  }
 }

@@ -6,7 +6,7 @@ import { KeyResultOrdinal } from '../../shared/types/model/KeyResultOrdinal';
 import { CheckInHistoryDialogComponent } from '../check-in-history-dialog/check-in-history-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
@@ -35,10 +35,20 @@ export class KeyresultDetailComponent implements OnInit {
     private refreshDataService: RefreshDataService,
     private dialog: MatDialog,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.keyResultId = this.getIdFromParams();
     this.loadKeyResult(this.keyResultId);
+  }
+
+  private getIdFromParams(): number {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      throw Error('keyresult id is undefined');
+    }
+    return parseInt(id);
   }
 
   loadKeyResult(id: number): void {

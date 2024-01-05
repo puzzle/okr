@@ -1,9 +1,9 @@
-<div>
+<div xmlns="http://www.w3.org/1999/html">
   <div id="member-header">
     <div class="title">
       <h3 *ngIf="selectedTeam">
-        <span>{{ selectedTeam?.name }}</span>
-        <mat-icon class="mx-2 cursor-pointer" *ngIf="selectedTeam?.isWriteable" (click)="editTeam()">edit</mat-icon>
+        <span>{{ selectedTeam.name }}</span>
+        <mat-icon class="mx-2 cursor-pointer" *ngIf="selectedTeam.isWriteable" (click)="editTeam()">edit</mat-icon>
       </h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
       <p>Members: {{ dataSource.length }}</p>
@@ -65,7 +65,9 @@
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">{{ element.firstname }} {{ element.lastname }}</td>
+      <td mat-cell *matCellDef="let element">
+        <a [routerLink]="getMemberDetailsLink(element)"> {{ element.firstname }} {{ element.lastname }} </a>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="roles">
@@ -81,6 +83,11 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr
+      mat-row
+      class="cursor-pointer"
+      [routerLink]="getMemberDetailsLink(row)"
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
   </table>
 </div>

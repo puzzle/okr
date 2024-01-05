@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Objective } from '../../shared/types/model/Objective';
 import { ObjectiveService } from '../../services/objective.service';
 import { BehaviorSubject, catchError, EMPTY } from 'rxjs';
@@ -6,16 +6,16 @@ import { MatDialog } from '@angular/material/dialog';
 import { RefreshDataService } from '../../services/refresh-data.service';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ObjectiveFormComponent } from '../../shared/dialog/objective-dialog/objective-form.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-detail',
   templateUrl: './objective-detail.component.html',
+  styleUrl: 'objective-detail.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObjectiveDetailComponent {
-  @Input()
   objectiveId!: number;
   objective$: BehaviorSubject<Objective> = new BehaviorSubject<Objective>({} as Objective);
 
@@ -24,10 +24,20 @@ export class ObjectiveDetailComponent {
     private dialog: MatDialog,
     private refreshDataService: RefreshDataService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.objectiveId = this.getIdFromParams();
     this.loadObjective(this.objectiveId);
+  }
+
+  private getIdFromParams(): number {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (!id) {
+      throw Error('objective id is undefined');
+    }
+    return parseInt(id);
   }
 
   loadObjective(id: number): void {

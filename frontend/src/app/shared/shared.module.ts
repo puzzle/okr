@@ -23,6 +23,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { A11yModule } from '@angular/cdk/a11y';
 import { RouterOutlet } from '@angular/router';
+import { SpinnerComponent } from './custom/spinner/spinner.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { RouterOutlet } from '@angular/router';
     DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
+    SpinnerComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +59,7 @@ import { RouterOutlet } from '@angular/router';
     CdkOverlayOrigin,
     A11yModule,
     RouterOutlet,
+    MatProgressSpinnerModule,
   ],
   exports: [
     ExampleDialogComponent,
@@ -69,6 +73,7 @@ import { RouterOutlet } from '@angular/router';
     DialogHeaderComponent,
     OkrTangramComponent,
     SidepanelComponent,
+    SpinnerComponent,
   ],
 })
 export class SharedModule {}

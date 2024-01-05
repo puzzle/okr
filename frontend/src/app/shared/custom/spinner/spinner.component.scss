@@ -1,0 +1,9 @@
+@import "custom_bootstrap";
+
+.spinner-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  @extend .mt-5;
+}

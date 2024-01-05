@@ -22,6 +22,7 @@ import { SearchTeamManagementComponent } from './search-team-management/search-t
 import { AddMemberToTeamDialogComponent } from './add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MemberDetailComponent } from './member-detail/member-detail.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { MemberDetailComponent } from './member-detail/member-detail.component';
     MatButtonModule,
     MatMenuModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class TeamManagementModule {}

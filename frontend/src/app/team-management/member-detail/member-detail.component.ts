@@ -19,6 +19,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   user: User | undefined;
   teams: Team[] = [];
+  currentUserTeams$ = new Subject<UserTeam[]>();
   selectedUserIsLoggedInUser: boolean = false;
   unsubscribe$ = new Subject<void>();
   userTeamEditId: number | undefined;
@@ -56,6 +57,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .pipe(tap((user) => this.setSelectedUserIsLoggedinUser(user)))
       .subscribe((user) => {
         this.user = user;
+        this.currentUserTeams$.next(user.userTeamList);
         this.cd.markForCheck();
       });
   }
@@ -86,7 +88,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  saveTeamRole(userTeam: UserTeam, user: User, $event: boolean) {
+  saveTeamRole(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
     this.teamService
       .updateOrAddTeamMembership(user, userTeam)

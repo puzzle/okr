@@ -1,7 +1,7 @@
 import { Team } from './Team';
 
 export interface UserTeam {
-  id: number;
+  id?: number;
   team: Team;
   isTeamAdmin: boolean;
 }

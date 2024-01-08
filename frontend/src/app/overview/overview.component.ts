@@ -20,7 +20,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
-  private service: any;
+  private service: AlignmentService | OverviewService;
   isDiagram: boolean = true;
 
   constructor(

@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "OKRFont";
+  src:
+    url("./fonts/OKR-Regular.woff2") format("woff2"),
+    url("./fonts/OKR-Regular.woff") format("woff");
+}
+
+#cy {
+  margin-top: 30px;
+  width: 2050px;
+  height: 1000px;
+  border: 1px solid black;
+}

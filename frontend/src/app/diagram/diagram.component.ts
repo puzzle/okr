@@ -119,6 +119,7 @@ export class DiagramComponent implements OnInit, OnChanges {
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
         node.style({
+          color: '#000000',
           'background-color': '#2C97A6',
         });
       }
@@ -141,6 +142,7 @@ export class DiagramComponent implements OnInit, OnChanges {
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
         node.style({
+          color: '#FFFFFF',
           'background-color': '#1d7e8c',
         });
       }
@@ -156,6 +158,7 @@ export class DiagramComponent implements OnInit, OnChanges {
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
         node.style({
+          color: '#000000',
           'background-color': '#2C97A6',
         });
       }

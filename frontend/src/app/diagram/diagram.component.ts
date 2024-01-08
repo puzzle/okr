@@ -16,12 +16,12 @@ export class DiagramComponent implements OnInit, OnChanges {
 
   constructor(private router: Router) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.generateDiagram(changes['overviewEntity'].currentValue);
-  }
-
   ngOnInit() {
     this.generateDiagram(this.overviewEntity);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.generateDiagram(changes['overviewEntity'].currentValue);
   }
 
   generateDiagram(data: OverviewEntity[]) {
@@ -79,6 +79,7 @@ export class DiagramComponent implements OnInit, OnChanges {
             width: 160,
             'font-size': '32px',
             backgroundColor: '#238BCA',
+            'text-max-width': '140',
           },
         },
         {
@@ -88,6 +89,7 @@ export class DiagramComponent implements OnInit, OnChanges {
             width: 160,
             'font-size': '18px',
             backgroundColor: '#2C97A6',
+            'text-max-width': '140',
           },
         },
         {
@@ -97,6 +99,7 @@ export class DiagramComponent implements OnInit, OnChanges {
             width: 120,
             'font-size': '14px',
             backgroundColor: '#E5E8EB',
+            'text-max-width': '100',
           },
         },
       ],
@@ -109,15 +112,14 @@ export class DiagramComponent implements OnInit, OnChanges {
     cy.on('tap', 'node', (evt) => {
       let node = evt.target;
 
-      // node.style({
-      //   'background-color': '#008000',
-      //   color: '#FFFFFF'
-      // });
-
       if (node.id().substring(0, 2) == 'KR') {
         node.style({
           'background-color': '#E5E8EB',
           'border-width': 0,
+        });
+      } else if (node.id().substring(0, 2) == 'Ob') {
+        node.style({
+          'background-color': '#2C97A6',
         });
       }
 
@@ -129,7 +131,7 @@ export class DiagramComponent implements OnInit, OnChanges {
     });
 
     cy.on('mouseover', 'node', function (evt) {
-      var node = evt.target;
+      let node = evt.target;
 
       if (node.id().substring(0, 2) == 'KR') {
         node.style({
@@ -137,16 +139,24 @@ export class DiagramComponent implements OnInit, OnChanges {
           'border-color': '#5D6974',
           'border-width': 1,
         });
+      } else if (node.id().substring(0, 2) == 'Ob') {
+        node.style({
+          'background-color': '#1d7e8c',
+        });
       }
     });
 
     cy.on('mouseout', 'node', function (evt) {
-      var node = evt.target;
+      let node = evt.target;
 
       if (node.id().substring(0, 2) == 'KR') {
         node.style({
           'background-color': '#E5E8EB',
           'border-width': 0,
+        });
+      } else if (node.id().substring(0, 2) == 'Ob') {
+        node.style({
+          'background-color': '#2C97A6',
         });
       }
     });
@@ -159,7 +169,6 @@ export class DiagramComponent implements OnInit, OnChanges {
     let elements: any[] = [];
     let edges: any[] = [];
     let element = {
-      // node a
       data: { id: 'P', label: 'puzzle' },
     };
     elements.push(element);
@@ -176,7 +185,10 @@ export class DiagramComponent implements OnInit, OnChanges {
 
       overViewEntity.objectives.forEach((objective) => {
         element = {
-          data: { id: 'Ob' + objective.id, label: objective.title },
+          data: {
+            id: 'Ob' + objective.id,
+            label: objective.title.length > 44 ? this.split_at_index(objective.title, 44) : objective.title,
+          },
         };
         elements.push(element);
         edge = {
@@ -186,7 +198,10 @@ export class DiagramComponent implements OnInit, OnChanges {
 
         objective.keyResults.forEach((keyResult) => {
           element = {
-            data: { id: 'KR' + keyResult.id, label: keyResult.title },
+            data: {
+              id: 'KR' + keyResult.id,
+              label: keyResult.title.length > 49 ? this.split_at_index(keyResult.title, 49) : keyResult.title,
+            },
           };
           elements.push(element);
           edge = {
@@ -198,5 +213,9 @@ export class DiagramComponent implements OnInit, OnChanges {
     });
 
     return elements.concat(edges);
+  }
+
+  split_at_index(value: any, index: any) {
+    return value.substring(0, index) + '...';
   }
 }

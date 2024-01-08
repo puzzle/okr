@@ -6,8 +6,9 @@
 }
 
 #cy {
-  margin-top: 30px;
-  width: 2050px;
-  height: 1000px;
   border: 1px solid black;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: calc(100vw - 60px);
+  height: calc(100vh - 120px);
 }

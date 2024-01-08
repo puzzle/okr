@@ -73,7 +73,7 @@ public class TeamAuthorizationService {
     }
 
     public void removeUserFromTeam(long entityId, long userId) {
-        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM), entityId);
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         teamBusinessService.removeUserFromTeam(entityId, userId);
     }
 

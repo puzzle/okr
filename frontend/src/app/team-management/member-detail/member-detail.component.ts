@@ -21,8 +21,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   teams: Team[] = [];
   selectedUserIsLoggedInUser: boolean = false;
   unsubscribe$ = new Subject<void>();
-  readonly displayedColumns = ['name', 'role', 'delete'];
+  userTeamEditId: number | undefined;
 
+  readonly displayedColumns = ['team', 'role', 'delete'];
   readonly getFullNameFromUser = getFullNameFromUser;
 
   constructor(
@@ -85,8 +86,12 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  editTeamMembership(userTeam: UserTeam, user: User) {
-    alert('not implemented');
+  saveTeamRole(userTeam: UserTeam, user: User, $event: boolean) {
+    this.userTeamEditId = undefined;
+    this.teamService
+      .updateOrAddTeamMembership(user, userTeam)
+      .pipe(tap(() => this.loadUser(user.id)))
+      .subscribe();
   }
 
   isEditable(userTeam: UserTeam) {

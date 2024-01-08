@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Team } from '../shared/types/model/Team';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/types/model/User';
+import { UserTeam } from '../shared/types/model/UserTeam';
 
 @Injectable({
   providedIn: 'root',
@@ -52,5 +53,12 @@ export class TeamService {
 
   removeUserFromTeam(user: User, team: Team): Observable<void> {
     return this.http.put<void>(`${this.API_URL}/${team.id}/user/${user.id}/removeuser`, null);
+  }
+
+  updateOrAddTeamMembership(user: User, userTeam: UserTeam): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_URL}/${userTeam.team.id}/user/${user.id}/updateaddteammembership/${userTeam.isTeamAdmin}`,
+      {},
+    );
   }
 }

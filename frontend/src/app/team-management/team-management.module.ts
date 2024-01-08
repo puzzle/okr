@@ -23,6 +23,9 @@ import { AddMemberToTeamDialogComponent } from './add-member-to-team-dialog/add-
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MemberDetailComponent } from './member-detail/member-detail.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TeamRoleDropdownComponent } from './team-role-dropdown/team-role-dropdown.component';
+import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     SearchTeamManagementComponent,
     AddMemberToTeamDialogComponent,
     MemberDetailComponent,
+    TeamRoleDropdownComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +58,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatMenuModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    TranslateModule,
   ],
 })
 export class TeamManagementModule {}

@@ -1,10 +1,16 @@
-<ng-container *ngIf="(adminTeams$ | async) as adminTeams">
-  <button *ngIf="!userTeam && adminTeams.length" (click)="createUserTeam(adminTeams[0])" [attr.data-testId]="'add-team'" class="align-new-icon"
-          color="primary" mat-button>
-        <span class="d-flex align-items-center fw-bold add-text">
-          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg"/>
-          Zu weiterem Team hinzufügen
-        </span>
+<ng-container *ngIf="adminTeams$ | async as adminTeams">
+  <button
+    *ngIf="!userTeam && adminTeams.length"
+    (click)="createUserTeam(adminTeams[0])"
+    [attr.data-testId]="'add-team'"
+    class="align-new-icon"
+    color="primary"
+    mat-button
+  >
+    <span class="d-flex align-items-center fw-bold add-text">
+      <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+      Zu weiterem Team hinzufügen
+    </span>
   </button>
   <ng-container *ngIf="userTeam">
     <p class="mt-4 mb-2">Zu neuem Team hinzufügen</p>
@@ -16,7 +22,7 @@
         appearance="outline"
       >
         <mat-select [(ngModel)]="userTeam.team">
-          <mat-option *ngFor="let team of adminTeams" [value]="team">{{team.name}}</mat-option>
+          <mat-option *ngFor="let team of adminTeams" [value]="team">{{ team.name }}</mat-option>
         </mat-select>
       </mat-form-field>
 

@@ -1,5 +1,5 @@
 <div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
-  <div *ngIf="user$ | async as user; else spinner">
+  <div *ngIf="user; else spinner">
     <div class="w-100">
       <h2>
         {{ getFullNameFromUser(user) }}
@@ -26,7 +26,7 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button *ngIf="isDeletable(element, user)" mat-icon-button (click)="removeTeamMembership(element, user)">
+            <button *ngIf="isDeletable(element, user)" mat-icon-button (click)="removeUserFromTeam(element, user)">
               <mat-icon class="d-flex justify-content-center align-items-center">delete</mat-icon>
             </button>
           </td>

@@ -1,24 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { mergeMap, Observable, tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
 import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
+import { TeamService } from '../../services/team.service';
 
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
   styleUrl: './member-detail.component.scss',
 })
-export class MemberDetailComponent implements OnInit {
+export class MemberDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MatTable) table!: MatTable<User[]>;
 
-  user$: Observable<User> | undefined;
+  user: User | undefined;
   teams: Team[] = [];
   selectedUserIsLoggedInUser: boolean = false;
+  unsubscribe$ = new Subject<void>();
   readonly displayedColumns = ['name', 'role', 'delete'];
 
   readonly getFullNameFromUser = getFullNameFromUser;
@@ -27,15 +29,34 @@ export class MemberDetailComponent implements OnInit {
     private readonly userService: UserService,
     private readonly route: ActivatedRoute,
     private readonly translateService: TranslateService,
+    private readonly teamService: TeamService,
+    private readonly cd: ChangeDetectorRef,
   ) {}
   ngOnInit(): void {
-    this.user$ = this.route.paramMap.pipe(
-      mergeMap((params) => {
-        const id = this.getIdFromParams(params);
-        return this.userService.getUserById(id);
-      }),
-      tap((user) => this.setSelectedUserIsLoggedinUser(user)),
-    );
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        tap((params) => {
+          const id = this.getIdFromParams(params);
+          this.loadUser(id);
+        }),
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  private loadUser(userId: number) {
+    this.userService
+      .getUserById(userId)
+      .pipe(tap((user) => this.setSelectedUserIsLoggedinUser(user)))
+      .subscribe((user) => {
+        this.user = user;
+        this.cd.markForCheck();
+      });
   }
 
   private setSelectedUserIsLoggedinUser(selectedUser: User) {
@@ -57,8 +78,11 @@ export class MemberDetailComponent implements OnInit {
     return this.translateService.instant('USER_ROLE.TEAM_MEMBER');
   }
 
-  removeTeamMembership(userTeam: UserTeam, user: User) {
-    alert('not implemented');
+  removeUserFromTeam(userTeam: UserTeam, user: User) {
+    this.teamService
+      .removeUserFromTeam(user, userTeam.team)
+      .pipe(tap(() => this.loadUser(user.id)))
+      .subscribe();
   }
 
   editTeamMembership(userTeam: UserTeam, user: User) {

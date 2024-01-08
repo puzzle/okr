@@ -87,4 +87,28 @@ public class TeamController {
         var userIds = userDtoList.stream().map(UserDto::id).toList();
         teamAuthorizationService.addUsersToTeam(id, userIds);
     }
+
+    @Operation(summary = "Remove User from Team", description = "Remove User with given UserID from Team")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Removed User from Team"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to remove user from team", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })
+    @PutMapping("/{id}/user/{userId}/removeuser")
+    public void removeUserFromTeam(
+            @Parameter(description = "The ID of an team to remove the user from it.", required = true) @PathVariable long id,
+            @Parameter(description = "The User ID to remove from the team.", required = true) @PathVariable long userId) {
+        teamAuthorizationService.removeUserFromTeam(id, userId);
+    }
+
+    @Operation(summary = "Update or add team membership", description = "If user is already member of this team, isAdmin is set. otherwise new team membership " +
+            "is added with isAdmin true or false")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Update or add team membership"),
+            @ApiResponse(responseCode = "401", description = "Not authorized to update or add team membership", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })
+    @PutMapping("/{id}/user/{userId}/updateaddteammembership/{isAdmin}")
+    public void updateOrAddTeamMembership(
+            @Parameter(description = "The ID of an team to update or add membership", required = true) @PathVariable long id,
+            @Parameter(description = "The User ID to update or add membership", required = true) @PathVariable long userId,
+            @Parameter(description = "The parameter if user should be admin or not", required = true) @PathVariable boolean isAdmin) {
+        teamAuthorizationService.updateOrAddTeamMembership(id, userId, isAdmin);
+    }
 }

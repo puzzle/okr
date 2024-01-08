@@ -42,11 +42,15 @@ export class TeamService {
     return this.http.put<Team>(`${this.API_URL}/${team.id}`, team).pipe(tap(() => this.reloadTeams().subscribe()));
   }
 
-  deleteTeam(id: number): Observable<any> {
-    return this.http.delete(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams().subscribe()));
+  deleteTeam(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams().subscribe()));
   }
 
   addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
     return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`, selectedUsers);
+  }
+
+  removeUserFromTeam(user: User, team: Team): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${user.id}/removeuser`, null);
   }
 }

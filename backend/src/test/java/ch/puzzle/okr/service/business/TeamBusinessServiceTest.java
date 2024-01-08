@@ -34,6 +34,7 @@ class TeamBusinessServiceTest {
     TeamPersistenceService teamPersistenceService = Mockito.mock(TeamPersistenceService.class);
     Team team1;
     Team team2;
+    Team team3;
     Team teamWithIdNull;
 
     Objective objective;
@@ -59,6 +60,7 @@ class TeamBusinessServiceTest {
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
+        this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
         this.objectiveCompleted = Objective.Builder.builder().withId(6L).withTitle("Objective 1").withState(SUCCESSFUL)
@@ -152,5 +154,56 @@ class TeamBusinessServiceTest {
 
         assertFalse(user1Teamids.contains(3L));
         assertFalse(user2Teamids.contains(3L));
+    }
+
+    @Test
+    void removeUserFromTeam_shouldRemoveUser() {
+        var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        teamBusinessService.removeUserFromTeam(team2.getId(), user.getId());
+        assertEquals(2, user.getUserTeamList().size());
+        assertEquals(
+                user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
+                List.of(team1.getId(), team3.getId())
+        );
+    }
+
+    @Test
+    void removeUserFromTeam_shouldThrowExceptionWhenNoTeamFound() {
+        var user = defaultUserWithTeams(1L, List.of(team1), List.of(team3));
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        assertThrows(RuntimeException.class, () -> teamBusinessService.removeUserFromTeam(team2.getId(), user.getId()));
+    }
+
+    @Test
+    void updateOrAddTeamMembership_shouldUpdateIfTeamFound() {
+        var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        teamBusinessService.updateOrAddTeamMembership(team2.getId(), user.getId(), true);
+        assertTrue(user.getUserTeamList().get(0).isTeamAdmin());
+        assertTrue(user.getUserTeamList().get(1).isTeamAdmin());
+        assertFalse(user.getUserTeamList().get(2).isTeamAdmin());
+    }
+
+    @Test
+    void updateOrAddTeamMembership_shouldAddTeamIfNoTeamFound() {
+        var user = defaultUserWithTeams(1L, List.of(), List.of(team2));
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
+        when(teamPersistenceService.findById(team3.getId())).thenReturn(team3);
+
+        teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), true);
+        teamBusinessService.updateOrAddTeamMembership(team3.getId(), user.getId(), false);
+
+        assertFalse(user.getUserTeamList().get(0).isTeamAdmin());
+        assertEquals(user.getUserTeamList().get(0).getTeam().getId(), team2.getId());
+
+        assertTrue(user.getUserTeamList().get(1).isTeamAdmin());
+        assertEquals(user.getUserTeamList().get(1).getTeam().getId(), team1.getId());
+
+        assertFalse(user.getUserTeamList().get(2).isTeamAdmin());
+        assertEquals(user.getUserTeamList().get(2).getTeam().getId(), team3.getId());
+
+        assertEquals(user.getUserTeamList().size(), 3);
     }
 }

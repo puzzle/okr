@@ -71,4 +71,14 @@ public class TeamAuthorizationService {
         allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
         return allTeams;
     }
+
+    public void removeUserFromTeam(long entityId, long userId) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_DELETE, TEAM), entityId);
+        teamBusinessService.removeUserFromTeam(entityId, userId);
+    }
+
+    public void updateOrAddTeamMembership(long entityId, long userId, boolean isAdmin) {
+        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
+        teamBusinessService.updateOrAddTeamMembership(entityId, userId, isAdmin);
+    }
 }

@@ -7,11 +7,25 @@
     appearance="outline"
   >
     <input
-      matInput
       type="text"
       placeholder="Nach Team oder Member suchen"
+      matInput
+      [formControl]="search"
+      [matAutocomplete]="auto"
       [attr.data-testId]="'teamManagementSearch'"
     />
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-optgroup label="Users" *ngIf="(filteredUsers$ | async)?.length">
+        <mat-option *ngFor="let user of filteredUsers$ | async" (click)="selectUser(user)" [value]="user.displayValue">
+          <span [innerHtml]="user.htmlValue"></span>
+        </mat-option>
+      </mat-optgroup>
+      <mat-optgroup label="Teams" *ngIf="(filteredTeams$ | async)?.length">
+        <mat-option *ngFor="let team of filteredTeams$ | async" (click)="selectTeam(team)" [value]="team.displayValue">
+          <span [innerHtml]="team.htmlValue"></span>
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
   </mat-form-field>
   <button
     class="bg-pz-dark-blue d-flex justify-content-center align-items-center icon-button px-3 focus-outline"

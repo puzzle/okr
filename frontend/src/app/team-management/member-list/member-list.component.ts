@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { getRouteToUserDetails } from '../../shared/routingConfig';
 
 @Component({
   selector: 'app-member-list',
@@ -126,7 +127,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   getMemberDetailsLink(user: User) {
-    return 'details/member/' + user.id;
+    return getMemberDetailsLink(user.id);
   }
 
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {

@@ -37,11 +37,8 @@ public class UserController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping
     public List<UserDto> getAllUsers() {
-        return userAuthorizationService.getAllUsers().stream()
-                .map(userMapper::toDto).toList();
+        return userAuthorizationService.getAllUsers().stream().map(userMapper::toDto).toList();
     }
-
-
 
     @Operation(summary = "Get Current User", description = "Get all current logged in user.")
     @ApiResponses(value = {
@@ -54,13 +51,11 @@ public class UserController {
     }
 
     @Operation(summary = "Get User by ID", description = "Get user by given ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returned user", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping(path = "/{id}")
     public UserDto getUserById(
-            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id
-            ) {
+            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
         var user = this.userAuthorizationService.getById(id);
         return userMapper.toDto(user);
     }

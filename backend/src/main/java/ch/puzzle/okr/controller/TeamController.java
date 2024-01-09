@@ -99,8 +99,8 @@ public class TeamController {
         teamAuthorizationService.removeUserFromTeam(id, userId);
     }
 
-    @Operation(summary = "Update or add team membership", description = "If user is already member of this team, isAdmin is set. otherwise new team membership " +
-            "is added with isAdmin true or false")
+    @Operation(summary = "Update or add team membership", description = "If user is already member of this team, isAdmin is set. otherwise new team membership "
+            + "is added with isAdmin true or false")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Update or add team membership"),
             @ApiResponse(responseCode = "401", description = "Not authorized to update or add team membership", content = @Content),
             @ApiResponse(responseCode = "404", description = "Did not find the Team with requested ID") })

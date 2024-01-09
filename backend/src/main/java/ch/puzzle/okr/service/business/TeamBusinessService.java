@@ -34,7 +34,7 @@ public class TeamBusinessService {
     public TeamBusinessService(TeamPersistenceService teamPersistenceService,
             ObjectiveBusinessService objectiveBusinessService, TeamValidationService validator,
             CacheService cacheService, UserPersistenceService userPersistenceService,
-                               UserTeamPersistenceService userTeamPersistenceService) {
+            UserTeamPersistenceService userTeamPersistenceService) {
         this.teamPersistenceService = teamPersistenceService;
         this.objectiveBusinessService = objectiveBusinessService;
         this.userPersistenceService = userPersistenceService;
@@ -49,7 +49,7 @@ public class TeamBusinessService {
     }
 
     @Transactional
-     // Creates a new team. Current authorization user is added as admin user in team.
+    // Creates a new team. Current authorization user is added as admin user in team.
     public Team createTeam(Team team, AuthorizationUser authorizationUser) {
         validator.validateOnCreate(team);
         cacheService.emptyAuthorizationUsersCache();
@@ -113,9 +113,7 @@ public class TeamBusinessService {
     public void removeUserFromTeam(long teamId, long userId) {
         var user = userPersistenceService.findById(userId);
         var userTeamList = user.getUserTeamList();
-        var userTeamToRemove = userTeamList.stream()
-                .filter(ut -> ut.getTeam().getId() == teamId)
-                .findFirst()
+        var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
                 .orElseThrow(() -> new RuntimeException("No team removed from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
@@ -139,11 +137,7 @@ public class TeamBusinessService {
 
     private void addTeamMembership(long teamId, boolean isAdmin, User user, List<UserTeam> userTeamList) {
         var team = teamPersistenceService.findById(teamId);
-        var userTeam = UserTeam.Builder.builder()
-                .withTeam(team)
-                .withTeamAdmin(isAdmin)
-                .withUser(user)
-                .build();
+        var userTeam = UserTeam.Builder.builder().withTeam(team).withTeamAdmin(isAdmin).withUser(user).build();
         userTeamList.add(userTeam);
     }
 

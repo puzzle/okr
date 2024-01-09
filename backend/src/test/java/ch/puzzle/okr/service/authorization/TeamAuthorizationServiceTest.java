@@ -43,7 +43,7 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void createEntityShouldReturnTeam() {
-        when(teamBusinessService.createTeam(teamUnderTest)).thenReturn(teamUnderTest);
+        when(teamBusinessService.createTeam(teamUnderTest, authorizationService.getAuthorizationUser())).thenReturn(teamUnderTest);
 
         Team team = teamAuthorizationService.createEntity(teamUnderTest);
         assertEquals(teamUnderTest, team);

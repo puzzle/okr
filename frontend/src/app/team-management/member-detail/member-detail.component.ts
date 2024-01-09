@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
@@ -19,7 +19,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   user: User | undefined;
   teams: Team[] = [];
-  currentUserTeams$ = new Subject<UserTeam[]>();
+  currentUserTeams$ = new BehaviorSubject<UserTeam[]>([]);
   selectedUserIsLoggedInUser: boolean = false;
   unsubscribe$ = new Subject<void>();
   userTeamEditId: number | undefined;

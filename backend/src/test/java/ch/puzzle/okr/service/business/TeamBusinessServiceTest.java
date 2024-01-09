@@ -107,11 +107,20 @@ class TeamBusinessServiceTest {
     }
 
     @Test
-    void shouldSaveANewTeam() {
-        Team team = Team.Builder.builder().withName("OKR-TEAM").build();
-        teamBusinessService.createTeam(team);
+    void shouldSaveANewTeam_shouldSetCurrentUserAsAdmin() {
+        Team team = Team.Builder.builder().withName("OKR-TEAM").withId(2L).build();
+        var user = defaultUserWithTeams(1L, List.of(), List.of());
+
+        when(teamPersistenceService.save(team)).thenReturn(team);
+        when(teamPersistenceService.findById(team.getId())).thenReturn(team);
+
+        teamBusinessService.createTeam(team, new AuthorizationUser(user));
+
         verify(teamPersistenceService, times(1)).save(team);
         verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+        assertEquals(user.getUserTeamList().size(), 1);
+        assertEquals(user.getUserTeamList().get(0).getTeam().getId(), team.getId());
+        assertTrue(user.getUserTeamList().get(0).isTeamAdmin());
     }
 
     @Test

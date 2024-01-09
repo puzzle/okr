@@ -23,7 +23,7 @@ public class Team implements WriteableInterface {
     @Version
     private int version;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team", cascade = CascadeType.ALL)
     private List<UserTeam> userTeamList;
 
     private transient boolean writeable;

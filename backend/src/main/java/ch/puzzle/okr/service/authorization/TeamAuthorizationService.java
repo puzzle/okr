@@ -25,7 +25,7 @@ public class TeamAuthorizationService {
 
     public Team createEntity(Team entity) {
         // everybody is allowed to create a new team
-        Team savedTeam = teamBusinessService.createTeam(entity);
+        Team savedTeam = teamBusinessService.createTeam(entity, authorizationService.getAuthorizationUser());
         savedTeam.setWriteable(true);
         return savedTeam;
     }

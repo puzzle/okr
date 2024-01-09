@@ -48,10 +48,16 @@ public class TeamBusinessService {
         return teamPersistenceService.findById(teamId);
     }
 
-    public Team createTeam(Team team) {
+    @Transactional
+     // Creates a new team. Current authorization user is added as admin user in team.
+    public Team createTeam(Team team, AuthorizationUser authorizationUser) {
         validator.validateOnCreate(team);
         cacheService.emptyAuthorizationUsersCache();
-        return teamPersistenceService.save(team);
+        var savedTeam = teamPersistenceService.save(team);
+        var currentUser = authorizationUser.user();
+        addTeamMembership(savedTeam.getId(), true, currentUser, currentUser.getUserTeamList());
+        userPersistenceService.save(currentUser);
+        return savedTeam;
     }
 
     public Team updateTeam(Team team, Long id) {
@@ -60,12 +66,25 @@ public class TeamBusinessService {
         return teamPersistenceService.save(team);
     }
 
+    @Transactional
     public void deleteTeam(Long id) {
         validator.validateOnDelete(id);
         objectiveBusinessService.getEntitiesByTeamId(id)
                 .forEach(objective -> objectiveBusinessService.deleteEntityById(objective.getId()));
+        deleteUserTeamList(id);
         cacheService.emptyAuthorizationUsersCache();
         teamPersistenceService.deleteById(id);
+    }
+
+    private void deleteUserTeamList(Long id) {
+        var team = teamPersistenceService.findById(id);
+        // remove userTeam from each user, otherwise they are still in the session and are not deleted
+        team.getUserTeamList().forEach(userTeam -> {
+            var user = userTeam.getUser();
+            user.getUserTeamList().remove(userTeam);
+        });
+        userTeamPersistenceService.deleteAll(team.getUserTeamList());
+        team.setUserTeamList(List.of());
     }
 
     public List<Team> getAllTeams(AuthorizationUser authorizationUser) {

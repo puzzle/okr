@@ -27,12 +27,15 @@ describe('UserService', () => {
     expect(service).toBeTruthy();
   });
 
-  test('getUsers should only reload users when they are not loaded yet', () => {
+  test('getUsers should only reload users when they are not loaded yet', (done) => {
+    const spy = jest.spyOn(service, 'reloadUsers');
     service.getUsers().subscribe((users) => {
-      expect(service.reloadUsers).toBeCalledTimes(1);
-      service.getUsers().subscribe(() => {
-        expect(service.reloadUsers).toBeCalledTimes(0);
-        expect(service.getUsers()).toBe([{ test }]);
+      expect(spy).toBeCalledTimes(1);
+      httpMock.expectOne(URL);
+      service.getUsers().subscribe((users) => {
+        expect(spy).toBeCalledTimes(1);
+        expect(users).toStrictEqual([]);
+        done();
       });
     });
   });
@@ -41,10 +44,13 @@ describe('UserService', () => {
     expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
   });
 
-  test('init current user should load user', () => {
+  test('init current user should load user', (done) => {
     expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
     service.initCurrentUser().subscribe(() => {
-      expect(service.getCurrentUser()).toBe({ test });
+      expect(service.getCurrentUser()).toBe(users[0]);
+      done();
     });
+    const req = httpMock.expectOne('api/v1/users/current');
+    req.flush(users[0]);
   });
 });

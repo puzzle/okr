@@ -7,9 +7,18 @@ import { ObjectiveService } from '../../services/objective.service';
 import { objective, objectiveWriteableFalse } from '../../shared/testData';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
+};
+
+const activatedRouteMock = {
+  snapshot: {
+    paramMap: {
+      get: jest.fn(),
+    },
+  },
 };
 
 describe('ObjectiveDetailComponent', () => {
@@ -19,13 +28,17 @@ describe('ObjectiveDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDialogModule],
-      providers: [{ provide: ObjectiveService, useValue: objectiveService }],
+      providers: [
+        { provide: ObjectiveService, useValue: objectiveService },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+      ],
       declarations: [ObjectiveDetailComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveDetailComponent);
     component = fixture.componentInstance;
     objectiveService.getFullObjective.mockReturnValue(of(objective));
+    activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
   });
 
   it('should create', () => {

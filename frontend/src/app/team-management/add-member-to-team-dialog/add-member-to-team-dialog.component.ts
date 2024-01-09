@@ -52,7 +52,6 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
         return this.filter(allPossibleUsers, filterValue || '', selectedUsers);
       }),
     );
-    this.usersForSelection$.subscribe((u) => console.log(u));
   }
 
   public ngOnDestroy() {

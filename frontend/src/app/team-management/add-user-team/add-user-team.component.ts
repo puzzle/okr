@@ -40,9 +40,9 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  createUserTeam(initialTeam: Team) {
+  createUserTeam(team: Team) {
     this.userTeam = {
-      team: initialTeam,
+      team,
       isTeamAdmin: false,
     };
   }

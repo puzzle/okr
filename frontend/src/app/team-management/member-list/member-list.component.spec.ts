@@ -45,7 +45,7 @@ describe('MemberListComponent', () => {
   });
 
   it('should test method convertFromUser', () => {
-    const user: User = testUser;
+    const user: User = { ...testUser };
     let userTableEntry = convertFromUser(user);
 
     expect(userTableEntry.id).toBe(user.id);
@@ -55,12 +55,12 @@ describe('MemberListComponent', () => {
     expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_MEMBER]);
     expect(userTableEntry.teams).toStrictEqual([team1.name]);
 
-    testUser.userTeamList.push({
+    user.userTeamList.push({
       id: 2,
       team: team2,
       isTeamAdmin: true,
     });
-    testUser.isOkrChampion = true;
+    user.isOkrChampion = true;
 
     userTableEntry = convertFromUser(user);
 
@@ -69,7 +69,7 @@ describe('MemberListComponent', () => {
   });
 
   it('should test method convertFromUser throws error, if user is not in any team', () => {
-    const user: User = testUser;
+    const user: User = { ...testUser };
     user.userTeamList = [];
     expect(() => convertFromUser(user)).toThrowError('User should have at least one role');
   });

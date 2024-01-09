@@ -9,9 +9,20 @@ import { keyResult, keyResultWriteableFalse } from '../../shared/testData';
 import { By } from '@angular/platform-browser';
 import { KeyresultService } from '../../services/keyresult.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
+import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
+import { ConfidenceComponent } from '../confidence/confidence.component';
 
 const keyResultServiceMock = {
   getFullKeyResult: jest.fn(),
+};
+
+const activatedRouteMock = {
+  snapshot: {
+    paramMap: {
+      get: jest.fn(),
+    },
+  },
 };
 
 describe('KeyresultDetailComponent', () => {
@@ -21,16 +32,22 @@ describe('KeyresultDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, MatDialogModule, MatIconModule, TranslateModule.forRoot()],
-      declarations: [KeyresultDetailComponent],
+      declarations: [KeyresultDetailComponent, ScoringComponent, ConfidenceComponent],
       providers: [
         {
           provide: KeyresultService,
           useValue: keyResultServiceMock,
         },
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
+        },
       ],
     }).compileComponents();
 
     jest.spyOn(keyResultServiceMock, 'getFullKeyResult').mockReturnValue(of(keyResult));
+    activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
+
     fixture = TestBed.createComponent(KeyresultDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -38,6 +55,11 @@ describe('KeyresultDetailComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should throw error when id is undefined', () => {
+    activatedRouteMock.snapshot.paramMap.get.mockReturnValue(undefined);
+    expect(() => component.ngOnInit()).toThrowError('keyresult id is undefined');
   });
 
   it('should display edit keyresult button if writeable is true', async () => {

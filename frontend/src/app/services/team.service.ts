@@ -24,15 +24,13 @@ export class TeamService {
   }
 
   reloadTeams(): void {
-    this.http.get<Team[]>(this.API_URL).pipe(
-      tap((teams) => {
-        if (!this.teams) {
-          this.teams = new BehaviorSubject<Team[]>(teams);
-          return;
-        }
-        this.teams.next(teams);
-      }),
-    );
+    this.http.get<Team[]>(this.API_URL).subscribe((teams) => {
+      if (!this.teams) {
+        this.teams = new BehaviorSubject<Team[]>(teams);
+        return;
+      }
+      this.teams.next(teams);
+    });
   }
 
   createTeam(team: Team): Observable<Team> {

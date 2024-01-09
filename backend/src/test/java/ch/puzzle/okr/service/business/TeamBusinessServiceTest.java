@@ -171,10 +171,8 @@ class TeamBusinessServiceTest {
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         teamBusinessService.removeUserFromTeam(team2.getId(), user.getId());
         assertEquals(2, user.getUserTeamList().size());
-        assertEquals(
-                user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
-                List.of(team1.getId(), team3.getId())
-        );
+        assertEquals(user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
+                List.of(team1.getId(), team3.getId()));
     }
 
     @Test

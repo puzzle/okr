@@ -1,17 +1,17 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {MemberDetailComponent} from './member-detail.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {ActivatedRoute} from "@angular/router";
-import {of} from "rxjs";
-import {TranslateModule} from "@ngx-translate/core";
-import {CommonModule} from "@angular/common";
-import {BrowserModule} from "@angular/platform-browser";
-import {SharedModule} from "../../shared/shared.module";
-import {UserService} from "../../services/user.service";
-import {testUser} from "../../shared/testData";
-import {AddUserTeamComponent} from "../add-user-team/add-user-team.component";
-import {MatTableModule} from "@angular/material/table";
-import {MatIconModule} from "@angular/material/icon";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MemberDetailComponent } from './member-detail.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { SharedModule } from '../../shared/shared.module';
+import { UserService } from '../../services/user.service';
+import { testUser } from '../../shared/testData';
+import { AddUserTeamComponent } from '../add-user-team/add-user-team.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -19,21 +19,18 @@ describe('MemberDetailComponent', () => {
 
   const activatedRouteMock = {
     paramMap: of({
-      get: (): any => 1
-    })
-  }
+      get: (): any => 1,
+    }),
+  };
 
   const userServiceMock = {
     getUserById: jest.fn(),
-    getCurrentUser: jest.fn()
-  }
+    getCurrentUser: jest.fn(),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        MemberDetailComponent,
-        AddUserTeamComponent,
-      ],
+      declarations: [MemberDetailComponent, AddUserTeamComponent],
       imports: [
         HttpClientTestingModule,
         TranslateModule.forRoot(),
@@ -41,12 +38,12 @@ describe('MemberDetailComponent', () => {
         BrowserModule,
         SharedModule,
         MatTableModule,
-        MatIconModule
+        MatIconModule,
       ],
       providers: [
-        {provide: ActivatedRoute, useValue: activatedRouteMock},
-        {provide: UserService, useValue: userServiceMock}
-      ]
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: UserService, useValue: userServiceMock },
+      ],
     }).compileComponents();
   });
 
@@ -64,15 +61,13 @@ describe('MemberDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set selectedUserIsLoggedInUser and currentUserTeams correctly', done => {
+  it('should set selectedUserIsLoggedInUser and currentUserTeams correctly', (done) => {
     component.ngOnInit();
-    component.currentUserTeams$.subscribe(userTeams => {
+    component.currentUserTeams$.subscribe((userTeams) => {
       expect(userTeams).toStrictEqual(testUser.userTeamList);
       expect(component.user).toStrictEqual(testUser);
       expect(component.selectedUserIsLoggedInUser).toBeTruthy();
       done();
-    })
-  })
-
-
+    });
+  });
 });

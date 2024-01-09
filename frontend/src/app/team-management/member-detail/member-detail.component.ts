@@ -83,7 +83,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     this.teamService
-      .removeUserFromTeam(user, userTeam.team)
+      .removeUserFromTeam(user.id, userTeam.team)
       .pipe(tap(() => this.loadUser(user.id)))
       .subscribe();
   }
@@ -92,7 +92,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.userTeamEditId = undefined;
     this.teamService
       .updateOrAddTeamMembership(user, userTeam)
-      .pipe(tap(() => this.loadUser(user.id)))
+      .pipe(
+        tap(() => this.loadUser(user.id)),
+        tap(() => this.userService.reloadUsers),
+      )
       .subscribe();
   }
 
@@ -102,5 +105,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   isDeletable(userTeam: UserTeam, user: User): boolean {
     return this.isEditable(userTeam) || this.selectedUserIsLoggedInUser;
+  }
+
+  saveIsAdmin(userTeam: UserTeam, user: User, isAdmin: boolean) {
+    userTeam.isTeamAdmin = isAdmin;
+    this.saveTeamRole(userTeam, user);
   }
 }

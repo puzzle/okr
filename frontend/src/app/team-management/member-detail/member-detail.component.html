@@ -25,7 +25,7 @@
               <ng-container *ngIf="element.id === userTeamEditId">
                 <app-team-role-dropdown
                   [isAdmin]="element.isTeamAdmin"
-                  (isAdminChange)="saveTeamRole(element, userRef)"
+                  (isAdminChange)="saveIsAdmin(element, userRef, $event)"
                 ></app-team-role-dropdown>
               </ng-container>
             </div>

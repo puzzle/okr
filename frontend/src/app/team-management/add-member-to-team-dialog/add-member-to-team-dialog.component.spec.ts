@@ -74,7 +74,7 @@ describe('AddMemberToTeamDialogComponent', () => {
     } as any;
     component.ngOnInit();
 
-    component.filteredUsers$!.pipe(takeLast(1)).subscribe((filteredUsers) => {
+    component.usersForSelection$!.pipe(takeLast(1)).subscribe((filteredUsers) => {
       expect(filteredUsers.length).toBe(1);
       expect(filteredUsers[0].email).toBe('peggimann@puzzle.ch');
       done();
@@ -88,7 +88,7 @@ describe('AddMemberToTeamDialogComponent', () => {
     component.selectedUsers = [users[1]];
     component.ngOnInit();
 
-    component.filteredUsers$!.pipe(takeLast(1)).subscribe((filteredUsers) => {
+    component.usersForSelection$!.pipe(takeLast(1)).subscribe((filteredUsers) => {
       expect(filteredUsers.length).toBe(component.allPossibleUsers.length - 1);
       expect(filteredUsers.map((u) => u.id)).not.toContain(users[1].id);
       done();

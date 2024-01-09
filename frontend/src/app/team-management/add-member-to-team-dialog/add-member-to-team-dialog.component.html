@@ -20,20 +20,20 @@
             [formControl]="search"
             [matAutocomplete]="auto"
           />
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option
-              (click)="selectUser(user)"
-              *ngFor="let user of filteredUsers$ | async"
-              [value]="getDisplayValue(user)"
-            >
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selectUser($event.option.value)"
+            [displayWith]="getDisplayValue"
+          >
+            <mat-option *ngFor="let user of usersForSelection$ | async" [value]="user">
               {{ getDisplayValue(user) }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </form>
     </div>
-    <div class="w-100">
-      <table mat-table [dataSource]="selectedUsers" class="okr-table" id="all-member-table">
+    <div class="w-100" *ngIf="dataSource">
+      <table mat-table [dataSource]="dataSource" class="okr-table" id="all-member-table">
         <ng-container matColumnDef="name">
           <td mat-cell *matCellDef="let element">{{ getDisplayValue(element) }}</td>
         </ng-container>
@@ -53,7 +53,7 @@
     <div class="d-flex p-0">
       <button
         [attr.data-testId]="'save'"
-        [disabled]="!selectedUsers.length"
+        [disabled]="!(selectedUsers$ | async)?.length"
         color="primary"
         mat-flat-button
         type="submit"

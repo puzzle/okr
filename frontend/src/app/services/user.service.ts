@@ -25,13 +25,13 @@ export class UserService {
   public getUsers(): Observable<User[]> {
     if (!this.usersLoaded) {
       this.usersLoaded = true;
-      this.reloadUsers().subscribe();
+      this.reloadUsers();
     }
     return this.users.asObservable();
   }
 
-  public reloadUsers(): Observable<User[]> {
-    return this.httpClient.get<User[]>(this.API_URL).pipe(tap((users) => this.users.next(users)));
+  public reloadUsers(): void {
+    this.httpClient.get<User[]>(this.API_URL).subscribe((users) => this.users.next(users));
   }
 
   public getCurrentUser(): User {

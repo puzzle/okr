@@ -4,7 +4,7 @@
   subscriptSizing="dynamic"
   appearance="outline"
 >
-  <mat-select [ngModel]="isAdmin" (ngModelChange)="triggerIsAdminChange()">
+  <mat-select [(ngModel)]="isAdmin" (ngModelChange)="triggerIsAdminChange()">
     <mat-option [value]="false">{{ "USER_ROLE.TEAM_MEMBER" | translate }}</mat-option>
     <mat-option [value]="true">{{ "USER_ROLE.TEAM_ADMIN" | translate }}</mat-option>
   </mat-select>

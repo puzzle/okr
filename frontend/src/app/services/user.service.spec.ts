@@ -29,9 +29,9 @@ describe('UserService', () => {
 
   test('getUsers should only reload users when they are not loaded yet', () => {
     service.getUsers().subscribe((users) => {
-      expect(service.reloadUsers()).toBeCalledTimes(1);
+      expect(service.reloadUsers).toBeCalledTimes(1);
       service.getUsers().subscribe(() => {
-        expect(service.reloadUsers()).toBeCalledTimes(0);
+        expect(service.reloadUsers).toBeCalledTimes(0);
         expect(service.getUsers()).toBe([{ test }]);
       });
     });

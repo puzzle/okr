@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { combineLatest, map, ReplaySubject, Subject, takeUntil, tap } from 'rxjs';
 import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
@@ -46,22 +46,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
     combineLatest([this.allUsersSubj.asObservable(), teamId$, this.teamService.getAllTeams()])
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(([users, teamIdParam, teams]) => {
-        this.setDataSource(users, teamIdParam);
         this.setSelectedTeam(teams, teamIdParam);
+        this.setDataSource(users, teamIdParam);
       });
-  }
-
-  private setDataSource(users: User[], teamIdParam: string | null) {
-    if (!teamIdParam) {
-      this.dataSource = convertFromUsers(users, null);
-      this.displayedColumns = this.allColumns;
-      this.cd.markForCheck();
-      return;
-    }
-    const teamId = parseInt(teamIdParam);
-    this.dataSource = convertFromUsers(users, teamId);
-    this.displayedColumns = this.teamColumns;
-    this.cd.markForCheck();
   }
 
   public ngOnDestroy(): void {
@@ -76,6 +63,31 @@ export class MemberListComponent implements OnInit, OnDestroy {
     }
     this.selectedTeam = teams.find((t) => t.id === parseInt(teamIdParam));
     this.cd.markForCheck();
+  }
+
+  private setDataSource(users: User[], teamIdParam: string | null) {
+    if (!teamIdParam) {
+      this.setDataSourceForAllTeams(users);
+      this.cd.markForCheck();
+      return;
+    }
+    this.setDataSourceForTeam(teamIdParam, users);
+    this.cd.markForCheck();
+  }
+
+  private setDataSourceForAllTeams(users: User[]) {
+    this.dataSource = convertFromUsers(users, null);
+    this.displayedColumns = this.allColumns;
+    return;
+  }
+
+  private setDataSourceForTeam(teamIdParam: string, users: User[]) {
+    const teamId = parseInt(teamIdParam);
+    this.dataSource = convertFromUsers(users, teamId);
+    this.displayedColumns = [...this.teamColumns];
+    if (this.selectedTeam?.isWriteable) {
+      this.displayedColumns.push('delete');
+    }
   }
 
   deleteTeam(selectedTeam: Team) {
@@ -114,6 +126,15 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   getMemberDetailsLink(user: User) {
-    return '/team-management/details/member/' + user.id;
+    return 'details/member/' + user.id;
+  }
+
+  removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.teamService
+      .removeUserFromTeam(entry.id, this.selectedTeam!)
+      .pipe(tap(() => this.userService.reloadUsers()))
+      .subscribe();
   }
 }

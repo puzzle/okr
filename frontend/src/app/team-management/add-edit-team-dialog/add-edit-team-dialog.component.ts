@@ -55,7 +55,7 @@ export class AddEditTeamDialog implements OnInit {
     let newTeam: Team = this.teamForm.value as Team;
     this.teamService
       .createTeam(newTeam)
-      .pipe(tap(() => this.userService.reloadUsers().subscribe()))
+      .pipe(tap(() => this.userService.reloadUsers()))
       .subscribe((result) => {
         this.dialogRef.close(result);
         this.router.navigateByUrl('/team-management/' + result.id);

@@ -17,14 +17,14 @@ export class TeamService {
 
   getAllTeams(): Observable<Team[]> {
     if (!this.teamsLoaded) {
-      this.reloadTeams().subscribe();
+      this.reloadTeams();
       this.teamsLoaded = true;
     }
     return this.teams.asObservable();
   }
 
-  reloadTeams(): Observable<Team[]> {
-    return this.http.get<Team[]>(this.API_URL).pipe(
+  reloadTeams(): void {
+    this.http.get<Team[]>(this.API_URL).pipe(
       tap((teams) => {
         if (!this.teams) {
           this.teams = new BehaviorSubject<Team[]>(teams);
@@ -36,23 +36,23 @@ export class TeamService {
   }
 
   createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(this.API_URL, team).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.post<Team>(this.API_URL, team).pipe(tap(() => this.reloadTeams()));
   }
 
   updateTeam(team: Team): Observable<Team> {
-    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.put<Team>(`${this.API_URL}/${team.id}`, team).pipe(tap(() => this.reloadTeams()));
   }
 
   deleteTeam(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams().subscribe()));
+    return this.http.delete<void>(`${this.API_URL}/${id}`).pipe(tap(() => this.reloadTeams()));
   }
 
   addUsersToTeam(team: Team, selectedUsers: User[]): Observable<void> {
     return this.http.put<void>(`${this.API_URL}/${team.id}/addusers`, selectedUsers);
   }
 
-  removeUserFromTeam(user: User, team: Team): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${user.id}/removeuser`, null);
+  removeUserFromTeam(userId: number, team: Team): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null);
   }
 
   updateOrAddTeamMembership(user: User, userTeam: UserTeam): Observable<void> {

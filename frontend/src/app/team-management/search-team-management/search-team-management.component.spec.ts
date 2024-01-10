@@ -188,7 +188,7 @@ describe('SearchTeamManagementComponent', () => {
   it('should switch to user page when selected', () => {
     component.selectUser(users[0]);
 
-    expect(navigateSpy).toHaveBeenCalledWith('details/member/1');
+    expect(navigateSpy).toHaveBeenCalledWith('/team-management/details/member/1');
   });
 
   it('should switch to teams page when selected', () => {

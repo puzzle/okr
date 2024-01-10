@@ -126,8 +126,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
 
-  getMemberDetailsLink(user: User) {
-    return getRouteToUserDetails(user.id);
+  getMemberDetailsLink(user: User, team?: Team) {
+    return getRouteToUserDetails(user.id, team?.id);
   }
 
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {

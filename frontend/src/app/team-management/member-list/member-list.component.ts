@@ -127,7 +127,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   getMemberDetailsLink(user: User) {
-    return getMemberDetailsLink(user.id);
+    return getRouteToUserDetails(user.id);
   }
 
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {

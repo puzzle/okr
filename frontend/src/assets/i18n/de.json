@@ -88,6 +88,9 @@
     "OKR_CHAMPION": "OKR-Champion"
   },
   "TEAM_MANAGEMENT": {
-    "WEITERE": "+ {{overflow}} weitere"
+    "WEITERE": "+ {{overflow}} weitere",
+    "INPUT_PLACEHOLDER": "Nach Team oder Member suchen",
+    "TEAMS": "Teams",
+    "USERS": "Users"
   }
 }

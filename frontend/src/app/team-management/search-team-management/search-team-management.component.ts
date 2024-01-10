@@ -84,11 +84,33 @@ export class SearchTeamManagementComponent {
     }
 
     this.filteredTeams$.next(
-      this.filterTeams(this.teams, filterValue).slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
+      this.filterTeams(this.teams, filterValue)
+        .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+        .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
     );
     this.filteredUsers$.next(
-      this.filterUsers(this.users, filterValue).slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
+      this.filterUsers(this.users, filterValue)
+        .sort((a, b) => this.sortByStringPosition(a.displayValue, b.displayValue, filterValue))
+        .slice(0, SearchTeamManagementComponent.MAX_SUGGESTIONS),
     );
+  }
+
+  private sortByStringPosition(a: string, b: string, value: string): number {
+    const indexA = a.toLowerCase().indexOf(value);
+    const indexB = b.toLowerCase().indexOf(value);
+    if (indexA === indexB) {
+      return 0;
+    }
+
+    if (indexB === -1) {
+      return -1;
+    }
+
+    if (indexA === -1) {
+      return 1;
+    }
+
+    return indexA - indexB;
   }
 
   private updateTeamsAndUsers(teams: Team[], users: User[]) {

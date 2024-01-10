@@ -9,12 +9,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
 import { Router } from '@angular/router';
 
-interface FilteredUser extends User {
+export interface FilteredUser extends User {
   displayValue: string;
   htmlValue: string;
 }
 
-interface FilteredTeam extends Team {
+export interface FilteredTeam extends Team {
   displayValue: string;
   htmlValue: string;
 }

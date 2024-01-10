@@ -14,7 +14,7 @@
       [matAutocomplete]="auto"
       [attr.data-testId]="'teamManagementSearch'"
     />
-    <mat-autocomplete #auto="matAutocomplete">
+    <mat-autocomplete #auto="matAutocomplete" class="autocomplete-bigger">
       <mat-optgroup label="Users" *ngIf="(filteredUsers$ | async)?.length">
         <mat-option *ngFor="let user of filteredUsers$ | async" (click)="selectUser(user)" [value]="user.displayValue">
           <span [innerHtml]="user.htmlValue"></span>

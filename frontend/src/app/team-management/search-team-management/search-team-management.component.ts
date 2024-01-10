@@ -6,7 +6,7 @@ import { Team } from '../../shared/types/model/Team';
 import { User } from '../../shared/types/model/User';
 import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routingConfig';
+import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
 import { Router } from '@angular/router';
 
 interface FilteredUser extends User {
@@ -49,6 +49,7 @@ export class SearchTeamManagementComponent {
 
     this.search.valueChanges
       .pipe(
+        takeUntilDestroyed(),
         debounceTime(200),
         map((v) => (v ? v.trim() : '')),
         distinctUntilChanged(),
@@ -57,18 +58,25 @@ export class SearchTeamManagementComponent {
         this.searchValue$.next(searchValue);
       });
 
-    this.searchValue$.pipe(filter((v) => v.length > 0)).subscribe(() => {
-      this.applyFilter(this.searchValue$.getValue());
-    });
+    this.searchValue$
+      .pipe(
+        takeUntilDestroyed(),
+        filter((searchValue) => searchValue.length > 0),
+      )
+      .subscribe(() => {
+        this.applyFilter(this.searchValue$.getValue());
+      });
   }
 
-  private updateTeamsAndUsers(teams: Team[], users: User[]) {
-    this.teams = teams.sort((a, b) => a.name.localeCompare(b.name));
-    this.users = users.sort((a, b) => (a.firstname + a.lastname).localeCompare(b.firstname + b.lastname));
-    this.applyFilter(this.searchValue$.getValue());
+  selectUser(user: User) {
+    this.router.navigateByUrl(getRouteToUserDetails(user.id)).then();
   }
 
-  applyFilter(filterValue: string): void {
+  selectTeam(team: Team) {
+    this.router.navigateByUrl(getRouteToTeam(team.id)).then();
+  }
+
+  private applyFilter(filterValue: string): void {
     if (filterValue.length == 0) {
       this.filteredUsers$.next([]);
       this.filteredUsers$.next([]);
@@ -83,17 +91,10 @@ export class SearchTeamManagementComponent {
     );
   }
 
-  selectUser(user: User) {
-    this.router.navigateByUrl(getRouteToUserDetails(user.id));
-  }
-
-  selectTeam(team: Team) {
-    console.log(team);
-    this.router.navigateByUrl(getRouteToTeam(team.id));
-  }
-
-  getMemberDetailsLink(user: User) {
-    return getRouteToUserDetails(user.id);
+  private updateTeamsAndUsers(teams: Team[], users: User[]) {
+    this.teams = teams.sort((a, b) => a.name.localeCompare(b.name));
+    this.users = users.sort((a, b) => (a.firstname + a.lastname).localeCompare(b.firstname + b.lastname));
+    this.applyFilter(this.searchValue$.getValue());
   }
 
   private filterTeams(teams: Team[], filterValue: string): FilteredTeam[] {

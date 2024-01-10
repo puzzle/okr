@@ -27,7 +27,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   generateDiagram(data: OverviewEntity[]): void {
     let generatedData: any[] = this.generateElements(data);
 
-    var cy: cytoscape.Core = cytoscape({
+    let cy = cytoscape({
       container: document.getElementById('cy'), // container to render in
 
       elements: generatedData,
@@ -212,6 +212,16 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
         });
       });
     });
+
+    // let edge = {
+    //   data: { source: 'Ob' + 10, target: 'KR' + 4 },
+    // };
+    // edges.push(edge);
+    //
+    // edge = {
+    //   data: { source: 'Ob' + 6, target: 'Ob' + 4 },
+    // };
+    // edges.push(edge);
 
     return data && data.length > 0 ? elements.concat(edges) : [];
   }

@@ -1,9 +1,13 @@
 package ch.puzzle.okr.controller;
 
 import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
+import ch.puzzle.okr.mapper.DashboardMapper;
+import ch.puzzle.okr.mapper.OverviewMapper;
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
 import ch.puzzle.okr.models.alignment.AlignmentSelectionId;
+import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
 import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
+import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
@@ -37,6 +41,14 @@ class AlignmentControllerIT {
     private AlignmentSelectionBusinessService alignmentSelectionBusinessService;
     @SpyBean
     private AlignmentSelectionMapper alignmentSelectionMapper;
+    @MockBean
+    private OverviewAuthorizationService overviewAuthorizationService;
+    @MockBean
+    OrganisationBusinessService organisationBusinessService;
+    @SpyBean
+    private OverviewMapper overviewMapper;
+    @SpyBean
+    private DashboardMapper dashboardMapper;
 
     static String alignmentObjectiveName = "Objective 5";
     static List<AlignmentSelection> alignmentSelectionPuzzle = List.of(

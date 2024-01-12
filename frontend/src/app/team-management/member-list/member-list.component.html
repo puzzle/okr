@@ -3,7 +3,13 @@
     <div class="title">
       <h3 *ngIf="selectedTeam">
         <span>{{ selectedTeam.name }}</span>
-        <mat-icon class="mx-2 cursor-pointer" *ngIf="selectedTeam.isWriteable" (click)="editTeam()">edit</mat-icon>
+        <mat-icon
+          class="mx-2 cursor-pointer"
+          *ngIf="selectedTeam.isWriteable"
+          (click)="editTeam()"
+          [attr.data-testId]="'editTeamButton'"
+          >edit</mat-icon
+        >
       </h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
       <p>Members: {{ dataSource.length }}</p>
@@ -25,7 +31,7 @@
       <button
         *ngIf="showInvitePerson()"
         (click)="invitePerson()"
-        [attr.data-testId]="'add-team'"
+        [attr.data-testId]="'add-user'"
         class="align-new-icon"
         color="primary"
         mat-button
@@ -37,11 +43,17 @@
       </button>
     </div>
     <div class="menu" *ngIf="selectedTeam">
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+        [attr.data-testId]="'teamMoreButton'"
+      >
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button (click)="deleteTeam(selectedTeam)" mat-menu-item>
+        <button (click)="deleteTeam(selectedTeam)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+          >
           <span>Team löschen</span>
         </button>
       </mat-menu>

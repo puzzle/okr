@@ -10,6 +10,7 @@
   "UNIT": {
     "PERCENT": "%",
     "CHF": " CHF",
+    "EUR": "EUR",
     "FTE": " FTE",
     "NUMBER": " Zahl"
   },

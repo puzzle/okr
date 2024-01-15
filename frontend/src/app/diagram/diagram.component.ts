@@ -166,36 +166,36 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   generateElements(data: OverviewEntity[]): any[] {
     let elements: any[] = [];
     let edges: any[] = [];
-    let element = {
-      data: { id: 'P', label: 'puzzle' },
-    };
-    elements.push(element);
-
+    // let element = {
+    //   data: { id: 'P', label: 'puzzle' },
+    // };
+    // elements.push(element);
+    //
     data.forEach((overViewEntity: OverviewEntity): void => {
-      element = {
-        data: {
-          id: 'Team' + overViewEntity.team.name,
-          label: this.splitLongWords(overViewEntity.team.name, 6),
-        },
-      };
-      elements.push(element);
-      let edge = {
-        data: { source: 'Team' + overViewEntity.team.name, target: 'P' },
-      };
-      edges.push(edge);
+      // element = {
+      //   data: {
+      //     id: 'Team' + overViewEntity.team.name,
+      //     label: this.splitLongWords(overViewEntity.team.name, 6),
+      //   },
+      // };
+      // elements.push(element);
+      // let edge = {
+      //   data: { source: 'Team' + overViewEntity.team.name, target: 'P' },
+      // };
+      // edges.push(edge);
 
       overViewEntity.objectives.forEach((objective: ObjectiveMin): void => {
-        element = {
+        let element = {
           data: {
             id: 'Ob' + objective.id,
             label: this.adjustLabel(objective.title, 44, 15),
           },
         };
         elements.push(element);
-        edge = {
-          data: { source: 'Ob' + objective.id, target: 'Team' + overViewEntity.team.name },
-        };
-        edges.push(edge);
+        // let edge = {
+        //   data: { source: 'Ob' + objective.id, target: 'Team' + overViewEntity.team.name },
+        // };
+        // edges.push(edge);
 
         objective.keyResults.forEach((keyResult: KeyresultMin): void => {
           element = {
@@ -205,7 +205,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
             },
           };
           elements.push(element);
-          edge = {
+          let edge = {
             data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
           };
           edges.push(edge);

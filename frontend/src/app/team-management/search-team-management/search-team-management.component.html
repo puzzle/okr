@@ -18,22 +18,15 @@
       #auto="matAutocomplete"
       class="autocomplete-bigger"
       [attr.data-testId]="'teamManagementSearchResult'"
+      [autoActiveFirstOption]="true"
     >
       <mat-optgroup [label]="'TEAM_MANAGEMENT.USERS' | translate" *ngIf="(filteredUsers$ | async)?.length">
-        <mat-option
-          *ngFor="let user of filteredUsers$ | async"
-          (onSelectionChange)="selectUser(user)"
-          [value]="user.displayValue"
-        >
+        <mat-option *ngFor="let user of filteredUsers$ | async" (onSelectionChange)="selectUser(user)">
           <span [innerHtml]="user.htmlValue"></span>
         </mat-option>
       </mat-optgroup>
       <mat-optgroup [label]="'TEAM_MANAGEMENT.TEAMS' | translate" *ngIf="(filteredTeams$ | async)?.length">
-        <mat-option
-          *ngFor="let team of filteredTeams$ | async"
-          (onSelectionChange)="selectTeam(team)"
-          [value]="team.displayValue"
-        >
+        <mat-option *ngFor="let team of filteredTeams$ | async" (onSelectionChange)="selectTeam(team)">
           <span [innerHtml]="team.htmlValue"></span>
         </mat-option>
       </mat-optgroup>

@@ -148,8 +148,8 @@ describe('SearchTeamManagementComponent', () => {
     let filteredUsers = component.filteredUsers$.getValue();
     let filteredTeams = component.filteredTeams$.getValue();
     expect(filteredUsers.map(getDisplayValues)).toEqual([
-      'Pete Parrot <parrot@puzzle.ch>',
-      'Martin Käser <kaeser@puzzle.ch>',
+      'Pete Parrot (parrot@puzzle.ch)',
+      'Martin Käser (kaeser@puzzle.ch)',
     ]);
 
     expect(filteredTeams.map(getDisplayValues)).toEqual([

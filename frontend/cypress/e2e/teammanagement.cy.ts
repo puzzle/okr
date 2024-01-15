@@ -1,5 +1,4 @@
 import * as users from '../fixtures/users.json';
-import { v4 as uuidv4 } from 'uuid';
 import { uniqueSuffix } from '../support/utils';
 
 describe('Team management tests', () => {
@@ -55,8 +54,45 @@ describe('Team management tests', () => {
       //Click delete button
       cy.getByTestId('teamMoreButton').click();
       cy.getByTestId('teamDeleteButton').click();
-      cy.getByTestId('confirmYes').click();
+
       cy.contains('LoremIpsum').should('not.exist');
+    });
+
+    describe.only('Search', () => {
+      it('Search user', () => {
+        cy.getByTestId('team-management').click();
+
+        cy.getByTestId('teamManagementSearch').click().type('pa', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)').click();
+
+        cy.contains('app-member-detail h2', 'Robin Papierer');
+      });
+
+      it('Search team', () => {
+        cy.getByTestId('team-management').click();
+
+        cy.getByTestId('teamManagementSearch').click().type('we are', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'we are cube.³').click();
+
+        cy.contains('app-member-list h3', 'we are cube.³');
+      });
+
+      it('Search mixed', () => {
+        cy.getByTestId('team-management').click();
+
+        cy.getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Users');
+        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Teams');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Puzzle ITC');
+      });
     });
   });
 

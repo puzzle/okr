@@ -4,7 +4,7 @@ import { UserService } from '../../services/user.service';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
 import { User } from '../../shared/types/model/User';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, filter, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
 import { Router } from '@angular/router';
@@ -58,21 +58,18 @@ export class SearchTeamManagementComponent {
         this.searchValue$.next(searchValue);
       });
 
-    this.searchValue$
-      .pipe(
-        takeUntilDestroyed(),
-        filter((searchValue) => searchValue.length > 0),
-      )
-      .subscribe(() => {
-        this.applyFilter(this.searchValue$.getValue());
-      });
+    this.searchValue$.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.applyFilter(this.searchValue$.getValue());
+    });
   }
 
   selectUser(user: User) {
+    this.search.setValue('');
     this.router.navigateByUrl(getRouteToUserDetails(user.id)).then();
   }
 
   selectTeam(team: Team) {
+    this.search.setValue('');
     this.router.navigateByUrl(getRouteToTeam(team.id)).then();
   }
 
@@ -135,7 +132,7 @@ export class SearchTeamManagementComponent {
 
       .map((user) => ({
         ...user,
-        displayValue: `${user.firstname} ${user.lastname} <${user.email}>`,
+        displayValue: `${user.firstname} ${user.lastname} (${user.email})`,
         htmlValue: this.formatText(`${user.firstname} ${user.lastname} (${user.email})`, filterValue),
       }));
   }

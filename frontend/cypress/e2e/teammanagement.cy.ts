@@ -58,7 +58,7 @@ describe('Team management tests', () => {
       cy.contains('LoremIpsum').should('not.exist');
     });
 
-    describe.only('Search', () => {
+    describe('Search', () => {
       it('Search user', () => {
         cy.getByTestId('team-management').click();
 

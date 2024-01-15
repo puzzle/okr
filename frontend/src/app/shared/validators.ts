@@ -24,6 +24,9 @@ export class UnitValueValidator implements Validator {
       case 'CHF': {
         return this.proceedRegex(value, NUMBER_REGEX);
       }
+      case 'EUR': {
+        return this.proceedRegex(value, NUMBER_REGEX);
+      }
       case 'NUMBER': {
         return this.proceedRegex(value, NUMBER_REGEX);
       }

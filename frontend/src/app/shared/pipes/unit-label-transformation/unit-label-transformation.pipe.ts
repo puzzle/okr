@@ -13,6 +13,8 @@ export class UnitLabelTransformationPipe implements PipeTransform {
         return Unit.FTE;
       case Unit.CHF:
         return Unit.CHF;
+      case Unit.EUR:
+        return Unit.EUR;
       case Unit.NUMBER:
         return '';
       default:

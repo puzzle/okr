@@ -145,7 +145,7 @@ class KeyResultValidationServiceTest {
     @MethodSource("nameValidationArguments")
     void validateOnCreateShouldThrowExceptionWhenTitleIsInvalid(String title, List<ErrorDto> errors) {
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(3.0).withStretchGoal(5.0)
-                .withUnit(Unit.FTE).withId(null).withTitle(title).withOwner(user).withObjective(objective)
+                .withUnit(Unit.EUR).withId(null).withTitle(title).withOwner(user).withObjective(objective)
                 .withCreatedBy(user).withCreatedOn(LocalDateTime.MIN).build();
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
@@ -178,7 +178,7 @@ class KeyResultValidationServiceTest {
     void validateOnUpdateShouldBeSuccessfulWhenKeyResultIsValid() {
         Long id = 5L;
         KeyResult keyResult = KeyResultMetric.Builder.builder().withBaseline(4.0).withStretchGoal(7.0)
-                .withUnit(Unit.NUMBER).withId(id).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
+                .withUnit(Unit.EUR).withId(id).withTitle("Keyresult Metric").withObjective(objective).withOwner(user)
                 .withCreatedOn(LocalDateTime.MIN).withModifiedOn(LocalDateTime.MAX).withDescription("Description")
                 .withCreatedBy(user).build();
         when(keyResultPersistenceService.findById(id)).thenReturn(keyResult);

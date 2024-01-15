@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, map, ReplaySubject, Subject, takeUntil, tap } from 'rxjs';
+import { combineLatest, map, ReplaySubject } from 'rxjs';
 import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
@@ -10,19 +10,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss',
 })
-export class MemberListComponent implements OnInit, OnDestroy {
+export class MemberListComponent implements OnInit {
   dataSource: UserTableEntry[] = [];
   selectedTeam: Team | undefined;
 
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
 
-  private unsubscribe$ = new Subject<void>();
   private allColumns = ['icon', 'name', 'roles', 'teams'];
   private teamColumns = ['icon', 'name', 'roles'];
 
@@ -40,20 +40,15 @@ export class MemberListComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.userService
       .getUsers()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntilDestroyed())
       .subscribe((users) => this.allUsersSubj.next(users));
     const teamId$ = this.route.paramMap.pipe(map((params) => params.get('teamId')));
     combineLatest([this.allUsersSubj.asObservable(), teamId$, this.teamService.getAllTeams()])
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntilDestroyed())
       .subscribe(([users, teamIdParam, teams]) => {
         this.setSelectedTeam(teams, teamIdParam);
         this.setDataSource(users, teamIdParam);
       });
-  }
-
-  public ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   private setSelectedTeam(teams: Team[], teamIdParam: string | null) {
@@ -132,9 +127,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    this.teamService
-      .removeUserFromTeam(entry.id, this.selectedTeam!)
-      .pipe(tap(() => this.userService.reloadUsers()))
-      .subscribe();
+    this.teamService.removeUserFromTeam(entry.id, this.selectedTeam!).subscribe(() => this.userService.reloadUsers());
   }
 }

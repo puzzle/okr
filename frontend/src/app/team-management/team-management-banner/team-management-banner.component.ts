@@ -16,14 +16,8 @@ export class TeamManagementBannerComponent {
   public constructor(private dialog: MatDialog) {}
 
   createTeam(): void {
-    const dialogConfig = OKR_DIALOG_CONFIG;
     if (!this.dialogRef) {
-      this.dialogRef = this.dialog.open(AddEditTeamDialog, {
-        height: dialogConfig.height,
-        width: dialogConfig.width,
-        maxHeight: dialogConfig.maxHeight,
-        maxWidth: dialogConfig.maxWidth,
-      });
+      this.dialogRef = this.dialog.open(AddEditTeamDialog, OKR_DIALOG_CONFIG);
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = undefined;
       });

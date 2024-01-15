@@ -34,11 +34,7 @@
         <ng-container matColumnDef="delete">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button
-              *ngIf="isDeletable(element, userRef)"
-              mat-icon-button
-              (click)="removeUserFromTeam(element, userRef)"
-            >
+            <button *ngIf="isDeletable(element)" mat-icon-button (click)="removeUserFromTeam(element, userRef)">
               <mat-icon class="d-flex justify-content-center align-items-center">delete</mat-icon>
             </button>
           </td>

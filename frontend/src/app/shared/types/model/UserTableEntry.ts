@@ -42,9 +42,6 @@ export const convertFromUser = (user: User): UserTableEntry => {
   if (user.userTeamList.filter((ut) => !ut.isTeamAdmin).length > 0) {
     roles.push(UserRole.TEAM_MEMBER);
   }
-  if (roles.length === 0) {
-    throw Error('User should have at least one role');
-  }
 
   return {
     id: user.id,

@@ -90,20 +90,17 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   saveTeamRole(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService
-      .updateOrAddTeamMembership(user, userTeam)
-      .pipe(
-        tap(() => this.loadUser(user.id)),
-        tap(() => this.userService.reloadUsers),
-      )
-      .subscribe();
+    this.teamService.updateOrAddTeamMembership(user, userTeam).subscribe(() => {
+      this.loadUser(user.id);
+      this.userService.reloadUsers();
+    });
   }
 
   isEditable(userTeam: UserTeam) {
     return userTeam.team.isWriteable;
   }
 
-  isDeletable(userTeam: UserTeam, user: User): boolean {
+  isDeletable(userTeam: UserTeam): boolean {
     return this.isEditable(userTeam) || this.selectedUserIsLoggedInUser;
   }
 

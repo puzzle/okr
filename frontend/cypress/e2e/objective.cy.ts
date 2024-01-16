@@ -135,6 +135,30 @@ describe('OKR Objective e2e tests', () => {
           .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
       });
 
+      it.only('Ongoing objective back to draft state', () => {
+        cy.getByTestId('add-objective').first().click();
+        cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);
+
+        cy.getByTestId('objective')
+          .filter(':contains("This objective will be returned to draft state")')
+          .last()
+          .getByTestId('three-dot-menu')
+          .click()
+          .get('.mat-mdc-menu-content')
+          .wait(500)
+          .contains('Zurück in Draft Status')
+          .click()
+          .wait(500)
+          .tabForward();
+        cy.focused().click().wait(500);
+
+        cy.getByTestId('objective')
+          .filter(':contains("This objective will be returned to draft state")')
+          .last()
+          .getByTestId('objective-state')
+          .should('have.attr', 'src', `assets/icons/draft-icon.svg`);
+      });
+
       it(`Search for Objective`, () => {
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('Search after this objective', 'safe', undefined, '', false);

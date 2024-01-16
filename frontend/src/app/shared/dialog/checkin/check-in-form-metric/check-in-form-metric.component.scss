@@ -14,3 +14,26 @@ mat-label {
 .unit-label {
   margin-left: 10px;
 }
+
+.disabled-field {
+  background-color: #f5f5f5;
+  width: 218px;
+}
+
+@media only screen and (min-width: 601px) {
+  #new-value {
+    order: 0;
+  }
+  #old-value {
+    order: 1;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #new-value {
+    order: 1;
+  }
+  #old-value {
+    order: 0;
+  }
+}

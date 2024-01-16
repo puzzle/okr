@@ -13,6 +13,8 @@ import { SharedModule } from '../shared/shared.module';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 describe('TeamManagementComponent', () => {
   let component: TeamManagementComponent;
@@ -32,6 +34,8 @@ describe('TeamManagementComponent', () => {
         MatInputModule,
         BrowserAnimationsModule,
         MatListModule,
+        MatAutocompleteModule,
+        TranslateModule.forRoot(),
       ],
       declarations: [
         TeamManagementComponent,

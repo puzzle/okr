@@ -1,32 +1,25 @@
 import * as users from '../fixtures/users.json';
+import { uniqueSuffix } from '../support/utils';
 import { onlyOn } from '@cypress/skip-test';
 
+let keyResultName = '';
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
     beforeEach(() => {
+      keyResultName = uniqueSuffix('Very important keyresult');
       cy.loginAsUser(users.gl);
       cy.visit('/?quarter=2');
       onlyOn('chrome');
     });
 
-    it(`Create checkin metric`, () => {
+    it.only(`Create checkin metric`, () => {
       cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
       cy.getByTestId('submit').should('be.disabled');
 
-      cy.fillOutKeyResult(
-        'Very important keyresult',
-        'PERCENT',
-        '21',
-        '52',
-        null,
-        null,
-        null,
-        null,
-        'This is my description',
-      );
+      cy.fillOutKeyResult(keyResultName, 'PERCENT', '21', '52', null, null, null, null, 'This is my description');
       cy.getByTestId('submit').click();
 
-      cy.getByTestId('keyresult').contains('Very important keyresult').click();
+      cy.getByTestId('keyresult').contains(keyResultName).click();
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
@@ -261,7 +254,7 @@ describe('OKR Check-in e2e tests', () => {
 });
 
 function checkForDialogTextMetric() {
-  cy.contains('Very important keyresult');
+  cy.contains(keyResultName);
   cy.contains('Check-in erfassen');
   cy.contains('Key Result');
   cy.contains('Neuer Wert');

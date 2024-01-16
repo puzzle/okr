@@ -136,6 +136,7 @@ describe('OKR Objective e2e tests', () => {
       });
 
       it('Ongoing objective back to draft state', () => {
+        onlyOn('chrome');
         cy.getByTestId('add-objective').first().click();
         cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);
 

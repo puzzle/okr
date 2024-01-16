@@ -12,11 +12,10 @@
           <span class="text-center text-small">Target</span>
         </span>
       </div>
-
       <div
-        [ngStyle]="{ display: stretched ? 'none' : 'block' }"
+        [ngStyle]="{ display: stretched ? 'none' : 'flex' }"
         [attr.data-testId]="'normal-scoring'"
-        class="d-flex align-items-start"
+        class="align-items-start"
       >
         <span class="okr-score">
           <span #fail [attr.data-testId]="'fail'" class="child h-100 d-flex align-items-center">
@@ -26,7 +25,7 @@
                 keyResult.lastCheckIn &&
                 +keyResult.lastCheckIn?.value! < castToMetric().baseline
               "
-              class="fs-6 text-white fw-bold text-center score-red scoring-error-badge rounded-circle ms-1"
+              class="fs-6 text-white fw-bold text-center score-red scoring-error-badge rounded-circle"
             >
               !
             </div>

@@ -15,7 +15,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -25,6 +25,9 @@ import { of } from 'rxjs';
 import { ActionService } from '../../../services/action.service';
 import * as de from '../../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { DialogHeaderComponent } from '../../../shared/custom/dialog-header/dialog-header.component';
+import { ConfidenceComponent } from '../../confidence/confidence.component';
+import { MatSliderModule } from '@angular/material/slider';
 
 const dialogMock = {
   close: jest.fn(),
@@ -54,6 +57,9 @@ describe('CheckInFormComponent', () => {
         MatInputModule,
         NoopAnimationsModule,
         MatCheckboxModule,
+        MatSliderModule,
+        FormsModule,
+        ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
           de: de,
         }),
@@ -65,7 +71,7 @@ describe('CheckInFormComponent', () => {
         { provide: ActionService, useValue: actionServiceMock },
         ParseUnitValuePipe,
       ],
-      declarations: [CheckInFormComponent],
+      declarations: [CheckInFormComponent, DialogHeaderComponent, ConfidenceComponent],
     });
     fixture = TestBed.createComponent(CheckInFormComponent);
     component = fixture.componentInstance;

@@ -8,6 +8,7 @@ import { objective, objectiveWriteableFalse } from '../../shared/testData';
 import { of } from 'rxjs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 let objectiveService = {
   getFullObjective: jest.fn(),
@@ -27,7 +28,7 @@ describe('ObjectiveDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, MatDialogModule],
+      imports: [HttpClientTestingModule, MatDialogModule, MatIconModule],
       providers: [
         { provide: ObjectiveService, useValue: objectiveService },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

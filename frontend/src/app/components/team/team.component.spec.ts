@@ -13,6 +13,8 @@ import { RefreshDataService } from '../../services/refresh-data.service';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import * as de from '../../../assets/i18n/de.json';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ConfidenceComponent } from '../confidence/confidence.component';
+import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
 
 const dialogMock = {
   open: jest.fn(),
@@ -38,7 +40,14 @@ describe('TeamComponent', () => {
           de: de,
         }),
       ],
-      declarations: [TeamComponent, MatIcon, ObjectiveComponent, KeyresultComponent],
+      declarations: [
+        TeamComponent,
+        MatIcon,
+        ObjectiveComponent,
+        KeyresultComponent,
+        ConfidenceComponent,
+        ScoringComponent,
+      ],
       providers: [
         {
           provide: MatDialog,

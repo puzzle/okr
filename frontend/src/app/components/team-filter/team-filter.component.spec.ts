@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../services/user.service';
 import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 
 const teamServiceMock = {
   getAllTeams: jest.fn(),
@@ -37,7 +38,7 @@ describe('TeamFilterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TeamFilterComponent],
+      declarations: [TeamFilterComponent, ApplicationBannerComponent],
       imports: [HttpClientTestingModule, RouterTestingModule, MatChipsModule, MatIconModule],
       providers: [
         { provide: TeamService, useValue: teamServiceMock },

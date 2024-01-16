@@ -17,6 +17,8 @@ export const environment = {
     clientId: '',
     responseType: 'code',
     showDebugInformation: true,
+    // TODO: Only set to false, when in LOCAL-DEV setting
+    requireHttps: false,
   } as AuthConfig,
 };
 

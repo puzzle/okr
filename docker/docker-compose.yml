@@ -1,18 +1,7 @@
 version: '3.5'
 
 services:
-  okr-db:
-    container_name: okr-dev-db
-    image: postgres:16
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pwd
-      POSTGRES_DB: okr
-    ports:
-      - 5432:5432
-
-  keycloak:
+  keycloakIdp:
     image: quay.io/keycloak/keycloak:23.0.1
     environment:
       - KEYCLOAK_ADMIN=admin
@@ -20,12 +9,12 @@ services:
     volumes:
       - ./config/realm-export.json:/opt/keycloak/data/import/realm.json
       - ./config/keycloak-config.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keycloak_data_idp:/opt/keycloak/data/
     command:
       - start-dev
       - --import-realm
-    ports:
-      - "8666:8080"
     network_mode: host
+    restart: always
 
   keycloakBroker:
     image: quay.io/keycloak/keycloak:23.0.1
@@ -35,9 +24,9 @@ services:
     volumes:
       - ./config/realm-export-broker.json:/opt/keycloak/data/import/realm.json
       - ./config/keycloak-broker-config.conf:/opt/keycloak/conf/keycloak.conf
+      - ./keycloak_data_broker:/opt/keycloak/data/
     command:
       - start-dev
       - --import-realm
-    ports:
-      - "8544:8080"
     network_mode: host
+    restart: always

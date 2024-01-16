@@ -32,3 +32,4 @@ sonar-project.properties
 /frontend/cypress/screenshots/
 /toolchains.xml
 /backend/src/main/resources/db/okr_schema.sql
+/docker/keycloak_data_**/*

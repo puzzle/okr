@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .contentSecurityPolicy(e -> e.policyDirectives("default-src 'self';"
                         + "script-src 'self' 'unsafe-inline';" + "        style-src 'self' 'unsafe-inline';"
                         + "        object-src 'none';" + "        base-uri 'self';"
-                        + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8544;"
+                        + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8666 http://localhost:8544;"
                         + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self';"
                         + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';"))
                 .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer

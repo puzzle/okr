@@ -20,7 +20,7 @@ mat-label {
   width: 218px;
 }
 
-@media only screen and (min-width: 601px) {
+@media only screen and (min-width: 575px) {
   #new-value {
     order: 0;
   }
@@ -29,12 +29,12 @@ mat-label {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 574px) {
   #new-value {
     order: 1;
   }
   #old-value {
-    margin-bottom: 2%;
+    margin-bottom: 3%;
     order: 0;
   }
 }

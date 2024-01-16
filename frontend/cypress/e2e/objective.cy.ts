@@ -25,7 +25,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective veröffentlichen')
           .click();
         cy.getByTestId('confirmYes').click();
@@ -47,7 +47,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective abschliessen')
           .click();
 
@@ -78,7 +78,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective abschliessen')
           .click();
 
@@ -108,7 +108,7 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('three-dot-menu')
           .click()
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .wait(500)
           .contains('Objective abschliessen')
           .click();
@@ -124,7 +124,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective wiedereröffnen')
           .click();
 
@@ -145,7 +145,7 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('three-dot-menu')
           .click()
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .wait(500)
           .contains('Zurück in Draft Status')
           .click()
@@ -216,7 +216,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective bearbeiten')
           .click();
 

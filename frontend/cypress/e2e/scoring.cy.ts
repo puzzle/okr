@@ -29,6 +29,18 @@ describe('Scoring component e2e tests', () => {
       cy.validateScoring(false, percentage);
       cy.getByTestId('close-drawer').click({ force: true });
       cy.validateScoring(true, percentage);
+
+      if (value < baseline) {
+        cy.getByTestId('keyresult')
+          .get(':contains("Metric scoring keyresult")')
+          .last()
+          .contains('*[class="scoring-error-badge"]');
+      } else {
+        cy.getByTestId('keyresult')
+          .get(':contains("Metric scoring keyresult")')
+          .last()
+          .not(':contains(*[class="scoring-error-badge"])');
+      }
     });
   });
 

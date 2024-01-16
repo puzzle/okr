@@ -58,7 +58,7 @@ function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean
     checkVisibilityOfScoringComponent(isOverview, 'none', 'normal-scoring');
   } else {
     checkVisibilityOfScoringComponent(isOverview, 'none', 'star-scoring');
-    checkVisibilityOfScoringComponent(isOverview, 'block', 'normal-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'flex', 'normal-scoring');
   }
 }
 

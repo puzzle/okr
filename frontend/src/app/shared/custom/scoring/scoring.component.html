@@ -13,9 +13,19 @@
         </span>
       </div>
 
-      <div [ngStyle]="{ display: stretched ? 'none' : 'block' }" [attr.data-testId]="'normal-scoring'">
+      <div
+        [ngStyle]="{ display: stretched ? 'none' : 'block' }"
+        [attr.data-testId]="'normal-scoring'"
+        class="d-flex align-items-start"
+      >
         <span class="okr-score">
-          <span class="child" #fail [attr.data-testId]="'fail'"></span>
+          <span class="child" #fail [attr.data-testId]="'fail'">
+            <span
+              class="ps-2 fs-5 text-danger fw-bold"
+              *ngIf="keyResult.keyResultType == 'metric' && +keyResult.lastCheckIn?.value! < castToMetric().baseline"
+              >!</span
+            >
+          </span>
         </span>
         <span class="okr-score okr-score-commit">
           <span class="child" #commit [attr.data-testId]="'commit'"></span>

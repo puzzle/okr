@@ -4,6 +4,9 @@
   height: $top-bar-height;
 }
 
+.button-topbar {
+  margin-top: -5px !important;
+}
 #okrTopbar {
   display: flex;
   position: fixed;

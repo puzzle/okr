@@ -1,5 +1,9 @@
 @import "../style/variables";
 
+:host {
+  flex: 1;
+}
+
 .keyResult-detail-attribute-show {
   background-color: $show-element;
   height: 100%;

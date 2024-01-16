@@ -329,3 +329,9 @@ table.okr-table {
     border-top-right-radius: 0 !important;
   }
 }
+
+.mat-mdc-autocomplete-panel {
+  &.autocomplete-bigger {
+    max-height: 480px;
+  }
+}

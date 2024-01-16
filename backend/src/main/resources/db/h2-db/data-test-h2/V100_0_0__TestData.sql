@@ -22,6 +22,7 @@ ALTER SEQUENCE sequence_organisation RESTART WITH 200;
 ALTER SEQUENCE sequence_person RESTART WITH 200;
 ALTER SEQUENCE sequence_quarter RESTART WITH 200;
 ALTER SEQUENCE sequence_team RESTART WITH 200;
+ALTER SEQUENCE sequence_person_team RESTART WITH 200;
 
 INSERT INTO person (id, version, email, firstname, lastname, is_okr_champion)
 VALUES (1, 1, 'peggimann@puzzle.ch', 'Paco', 'Eggimann', FALSE),

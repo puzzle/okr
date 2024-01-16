@@ -19,12 +19,17 @@
         class="d-flex align-items-start"
       >
         <span class="okr-score">
-          <span class="child" #fail [attr.data-testId]="'fail'">
-            <span
-              class="ps-2 fs-5 text-danger fw-bold"
-              *ngIf="keyResult.keyResultType == 'metric' && +keyResult.lastCheckIn?.value! < castToMetric().baseline"
-              >!</span
+          <span #fail [attr.data-testId]="'fail'" class="child h-100 d-flex align-items-center">
+            <div
+              *ngIf="
+                keyResult.keyResultType == 'metric' &&
+                keyResult.lastCheckIn &&
+                +keyResult.lastCheckIn?.value! < castToMetric().baseline
+              "
+              class="fs-6 text-white fw-bold text-center score-red scoring-error-badge rounded-circle ms-1"
             >
+              !
+            </div>
           </span>
         </span>
         <span class="okr-score okr-score-commit">

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,7 +65,11 @@ import { A11yModule } from '@angular/cdk/a11y';
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
     const config = await firstValueFrom(configService.config$);
-    oauthService.configure({ ...environment.oauth, issuer: config.issuer, clientId: config.clientId });
+    oauthService.configure({
+      ...environment.oauth,
+      issuer: config.issuer,
+      clientId: config.clientId,
+    });
   };
 }
 
@@ -167,7 +171,12 @@ export const MY_FORMATS = {
     { provide: HTTP_INTERCEPTORS, useClass: OauthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: OAuthStorage, useFactory: storageFactory },
-    { provide: APP_INITIALIZER, useFactory: initOauthFactory, deps: [ConfigService, OAuthService], multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initOauthFactory,
+      deps: [ConfigService, OAuthService, Injector],
+      multi: true,
+    },
     {
       provide: Router,
       useClass: CustomRouter,

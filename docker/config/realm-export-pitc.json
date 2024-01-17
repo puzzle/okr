@@ -1040,7 +1040,7 @@
       "protocol": "openid-connect",
       "attributes": {
         "frontchannel.logout.url": "https://okr.ocp-internal.cloudscale.puzzle.ch",
-        "post.logout.redirect.uris": "http://localhost:4200/*##https://okr-stag.ocp.cloudscale.puzzle.ch:*##http://localhost:8080/*##http://localhost:8080:/*",
+        "post.logout.redirect.uris": "http://pitc.okr.localhost:4200/*##https://okr-stag.ocp.cloudscale.puzzle.ch:*##http://pitc.okr.localhost:8080/*##http://pitc.okr.localhost:8080:/*",
         "oauth2.device.authorization.grant.enabled": "false",
         "backchannel.logout.revoke.offline.tokens": "false",
         "use.refresh.tokens": "true",

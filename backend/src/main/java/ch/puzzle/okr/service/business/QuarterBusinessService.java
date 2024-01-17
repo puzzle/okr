@@ -31,7 +31,10 @@ public class QuarterBusinessService {
     }
 
     public List<Quarter> getQuarters() {
-        return quarterPersistenceService.getMostCurrentQuarters();
+        List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
+        Quarter backlog = quarterPersistenceService.findById(999L);
+        mostCurrentQuarterList.add(backlog);
+        return mostCurrentQuarterList;
     }
 
     public Quarter getCurrentQuarter() {

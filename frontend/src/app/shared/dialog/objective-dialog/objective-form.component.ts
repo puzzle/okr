@@ -185,6 +185,7 @@ export class ObjectiveFormComponent implements OnInit {
   }
 
   allowedToSaveBacklog() {
+    if (this.data.action == 'duplicate') return true;
     if (this.data.objective.objectiveId) {
       return this.objectiveForm.value.quarter!.toString() == '999' ? this.state == 'DRAFT' : true;
     } else {

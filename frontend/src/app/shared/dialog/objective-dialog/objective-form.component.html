@@ -75,7 +75,7 @@
     <div class="d-flex flex-row">
       <button
         *ngIf="!data.objective.objectiveId"
-        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
+        [disabled]="objectiveForm.invalid"
         color="primary"
         mat-flat-button
         (click)="onSubmit('DRAFT')"
@@ -85,7 +85,7 @@
         Als Draft speichern
       </button>
       <button
-        [disabled]="objectiveForm.invalid"
+        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
         color="primary"
         mat-stroked-button
         type="submit"

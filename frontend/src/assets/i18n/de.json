@@ -31,7 +31,7 @@
   "ERROR": {
     "UNAUTHORIZED": "Du bist nicht autorisiert, um das Objekt mit der Id {1} zu öffnen.",
     "NOT_FOUND": "Das Objekt '{0}' mit der Id {1} konnte nicht gefunden werden.",
-    "KEY_RESULT_CONVERSION": "Der Key Result Type {0} konnte weder zu metrisch noch zu ordinal konvertiert werden.",
+    "KEY_RESULT_CONVERSION": "Der Key Result Typ {0} konnte weder zu metrisch noch zu ordinal konvertiert werden.",
     "ALREADY_EXISTS_SAME_NAME": "{0} mit diesem Namen existiert bereits.",
     "CONVERT_TOKEN": "Benutzer kann nicht aus Token konvertiert werden.",
     "DATA_HAS_BEEN_UPDATED": "Die Daten des {0} wurden bereits von einem anderen Benutzer geändert oder gelöscht.",

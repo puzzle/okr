@@ -147,7 +147,7 @@ describe('OKR Objective e2e tests', () => {
           .click()
           .get('.objective-menu-option')
           .wait(500)
-          .contains('Zurück in Draft Status')
+          .contains('Objective als Draft speichern')
           .click()
           .wait(500)
           .tabForward();

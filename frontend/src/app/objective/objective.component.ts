@@ -87,7 +87,7 @@ export class ObjectiveComponent implements OnInit {
           dialog: { dialog: CompleteDialogComponent, data: { objectiveTitle: this.objective$.value.title } },
         },
         {
-          displayName: 'Zurück in Draft Status',
+          displayName: 'Objective als Draft speichern',
           action: 'todraft',
           dialog: {
             dialog: ConfirmDialogComponent,

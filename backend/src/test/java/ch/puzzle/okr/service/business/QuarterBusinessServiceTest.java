@@ -6,19 +6,18 @@ import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,6 +60,25 @@ class QuarterBusinessServiceTest {
     void shouldCallGetQuarters() {
         quarterBusinessService.getQuarters();
         verify(quarterPersistenceService).getMostCurrentQuarters();
+    }
+
+    @Test
+    void shouldGetBacklogQuarter() {
+        Quarter realQuarter1 = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1)).withEndDate(LocalDate.of(2022, 7, 31)).build();
+        Quarter realQuarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ-22/23-Q4")
+                .withStartDate(LocalDate.of(2022, 8, 1)).withEndDate(LocalDate.of(2022, 11, 30)).build();
+        List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
+
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(999L).withLabel("Backlog").build();
+        when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
+        when(quarterPersistenceService.findById(999L)).thenReturn(backlogQuarter);
+
+        quarterList = quarterBusinessService.getQuarters();
+        assertEquals(3, quarterList.size());
+        assertEquals("Backlog", quarterList.get(2).getLabel());
+        assertNull(quarterList.get(2).getStartDate());
+        assertNull(quarterList.get(2).getEndDate());
     }
 
     @Test

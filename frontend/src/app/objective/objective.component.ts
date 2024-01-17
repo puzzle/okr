@@ -28,6 +28,7 @@ export class ObjectiveComponent implements OnInit {
 
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
+  isBacklogQuarter: boolean = false;
   protected readonly trackByFn = trackByFn;
   @ViewChild('menuButton') private menuButton!: ElementRef;
 
@@ -49,6 +50,9 @@ export class ObjectiveComponent implements OnInit {
   ngOnInit() {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
+    }
+    if (this.objective$.value.quarter.id == 999) {
+      this.isBacklogQuarter = true;
     }
   }
 
@@ -99,19 +103,19 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    return [
-      ...this.getDefaultMenuActions(),
-      ...[
-        {
-          displayName: 'Objective veröffentlichen',
-          action: 'release',
-          dialog: {
-            dialog: ConfirmDialogComponent,
-            data: { title: 'Objective', action: 'release' },
+    return this.isBacklogQuarter
+      ? this.getDefaultMenuActions()
+      : [
+          ...this.getDefaultMenuActions(),
+          {
+            displayName: 'Objective veröffentlichen',
+            action: 'release',
+            dialog: {
+              dialog: ConfirmDialogComponent,
+              data: { title: 'Objective', action: 'release' },
+            },
           },
-        },
-      ],
-    ];
+        ];
   }
 
   getDefaultMenuActions() {

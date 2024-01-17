@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
@@ -69,7 +70,8 @@ class ObjectiveValidationServiceTest {
         this.user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
                 .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
         this.team = Team.Builder.builder().withId(1L).withName("Team1").build();
-        this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
+        this.quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2")
+                .withStartDate(LocalDate.of(2022, 1, 1)).withEndDate(LocalDate.of(2022, 3, 31)).build();
 
         this.objective1 = Objective.Builder.builder().withId(1L).withTitle("Objective 1").withCreatedBy(user)
                 .withTeam(team).withQuarter(quarter).withDescription("This is our description")
@@ -156,15 +158,15 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnCreateShouldThrowExceptionWhenAttrsAreMissing() {
-        Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").build();
+        Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Title").withQuarter(quarter)
+                .build();
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnCreate(objectiveInvalid));
 
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")));
+                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -181,6 +183,40 @@ class ObjectiveValidationServiceTest {
                 () -> validator.validateOnCreate(objectiveInvalid));
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_SET_FORBIDDEN", List.of("ModifiedBy",
                 "User{id=1, version=0, username='bkaufmann', firstname='Bob', lastname='Kaufmann', email='kaufmann@puzzle.ch', writeable=false}")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenStartDateIsNull() {
+        Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
+                .withEndDate(LocalDate.of(2022, 7, 31)).build();
+        Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("Start date is missing")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(invalidQuarter).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveInvalid));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ-22/23-Q3")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnCreateShouldThrowExceptionWhenEndDateIsNull() {
+        Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1)).build();
+        Objective objectiveInvalid = Objective.Builder.builder().withId(null).withTitle("End date is missing")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(invalidQuarter).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(objectiveInvalid));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ-22/23-Q3")));
 
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
@@ -257,13 +293,13 @@ class ObjectiveValidationServiceTest {
 
     @Test
     void validateOnUpdateShouldThrowExceptionWhenAttrsAreMissing() {
-        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withModifiedBy(user).build();
+        Objective objective = Objective.Builder.builder().withId(5L).withTitle("Title").withQuarter(quarter)
+                .withModifiedBy(user).build();
         when(objectivePersistenceService.findById(objective.getId())).thenReturn(objective);
 
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> validator.validateOnUpdate(5L, objective));
-        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("quarter", "Objective")),
-                new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("team", "Objective")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdBy", "Objective")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("createdOn", "Objective")),
                 new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("state", "Objective")));
@@ -285,6 +321,40 @@ class ObjectiveValidationServiceTest {
         List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NOT_SET", List.of("modifiedBy")));
 
         assertEquals(INTERNAL_SERVER_ERROR, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnUpdateShouldThrowExceptionWhenStartDateIsNull() {
+        Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
+                .withEndDate(LocalDate.of(2022, 7, 31)).build();
+        Objective objectiveInvalid = Objective.Builder.builder().withId(1L).withTitle("Start date is missing")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(invalidQuarter).withModifiedBy(user).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("StartDate", "GJ-22/23-Q3")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnUpdateShouldThrowExceptionWhenEndDateIsNull() {
+        Quarter invalidQuarter = Quarter.Builder.builder().withId(1L).withLabel("GJ-22/23-Q3")
+                .withStartDate(LocalDate.of(2022, 4, 1)).build();
+        Objective objectiveInvalid = Objective.Builder.builder().withId(1L).withTitle("End date is missing")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(invalidQuarter).withModifiedBy(user).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, objectiveInvalid));
+        List<ErrorDto> expectedErrors = List.of(new ErrorDto("ATTRIBUTE_NULL", List.of("EndDate", "GJ-22/23-Q3")));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
     }

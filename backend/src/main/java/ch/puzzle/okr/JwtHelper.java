@@ -18,9 +18,8 @@ public class JwtHelper {
         final String tenantId = issuer.split("/realms/")[1];
 
         // Ensure we return only tenantIds for realms which really exist
-        return this.tenantConfigProvider
-                .getTenantConfigById(tenantId)
-                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant for issuer{0}", issuer)))
+        return this.tenantConfigProvider.getTenantConfigById(tenantId).orElseThrow(
+                () -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant for issuer{0}", issuer)))
                 .tenantId();
     }
 }

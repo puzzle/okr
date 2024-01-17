@@ -32,8 +32,8 @@ public class AuthorizationService {
     private final JwtHelper jwtHelper;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
-                                ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-                                JwtConverterFactory jwtConverterFactory, JwtHelper jwtHelper) {
+            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
+            JwtConverterFactory jwtConverterFactory, JwtHelper jwtHelper) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;

@@ -75,7 +75,7 @@
     <div class="d-flex flex-row">
       <button
         *ngIf="!data.objective.objectiveId"
-        [disabled]="objectiveForm.invalid"
+        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
         color="primary"
         mat-flat-button
         (click)="onSubmit('DRAFT')"

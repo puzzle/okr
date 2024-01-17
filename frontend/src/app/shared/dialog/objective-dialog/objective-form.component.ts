@@ -184,5 +184,13 @@ export class ObjectiveFormComponent implements OnInit {
     } as Objective;
   }
 
+  allowedToSaveBacklog() {
+    if (this.data.objective.objectiveId) {
+      return this.objectiveForm.value.quarter!.toString() == '999' ? this.state == 'DRAFT' : true;
+    } else {
+      return this.objectiveForm.value.quarter!.toString() != '999';
+    }
+  }
+
   protected readonly getQuarterLabel = getQuarterLabel;
 }

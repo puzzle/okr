@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.JwtHelper;
+import ch.puzzle.okr.TenantContext;
 import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
@@ -27,21 +29,26 @@ public class AuthorizationService {
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
     private final JwtConverterFactory jwtConverterFactory;
+    private final JwtHelper jwtHelper;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
-            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtConverterFactory jwtConverterFactory) {
+                                ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
+                                JwtConverterFactory jwtConverterFactory, JwtHelper jwtHelper) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.jwtConverterFactory = jwtConverterFactory;
+        this.jwtHelper = jwtHelper;
     }
 
     public AuthorizationUser updateOrAddAuthorizationUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
+
+        TenantContext.setCurrentTenant(jwtHelper.getTenantFromIssuer(token.getClaim("iss")));
         User userFromToken = jwtConverterFactory.getJwtUserConverter().convert(token);
+
         return authorizationRegistrationService.updateOrAddAuthorizationUser(userFromToken);
     }
 

@@ -15,8 +15,11 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private final Map<String, JwtIssuerValidator> validators = new ConcurrentHashMap<>();
 
-    public TenantJwtIssuerValidator(TenantConfigProvider tenantConfigProvider) {
+    private final JwtHelper jwtHelper;
+
+    public TenantJwtIssuerValidator(TenantConfigProvider tenantConfigProvider, JwtHelper jwtHelper) {
         this.tenantConfigProvider = tenantConfigProvider;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     private String toTenant(Jwt jwt) {
-        return jwt.getIssuer().toString().split("/realms/")[1];
+        return jwtHelper.getTenantFromIssuer(jwt.getIssuer().toString());
     }
 
     private JwtIssuerValidator fromTenant(String tenant) {

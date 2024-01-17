@@ -21,9 +21,11 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     private final TenantConfigProvider tenantConfigProvider;
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
+    private final JwtHelper jwtHelper;
 
-    public TenantJWSKeySelector(final TenantConfigProvider tenantConfigProvider) {
+    public TenantJWSKeySelector(final TenantConfigProvider tenantConfigProvider, JwtHelper jwtHelper) {
         this.tenantConfigProvider = tenantConfigProvider;
+        this.jwtHelper = jwtHelper;
     }
 
     @Override
@@ -34,7 +36,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private String toTenant(JWTClaimsSet claimSet) {
-        return ((String) claimSet.getClaim("iss")).split("/realms/")[1];
+        return jwtHelper.getTenantFromIssuer((String) claimSet.getClaim("iss"));
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String tenantId) {

@@ -15,8 +15,8 @@ public class FlywayMultitenantMigrationInitializer {
     private final TenantConfigProvider tenantConfigProvider;
     private final String[] scriptLocations;
 
-    public FlywayMultitenantMigrationInitializer(
-            final MultitenantDataSource multitenantDataSource, TenantConfigProvider tenantConfigProvider,
+    public FlywayMultitenantMigrationInitializer(final MultitenantDataSource multitenantDataSource,
+            TenantConfigProvider tenantConfigProvider,
             final @Value("${spring.flyway.locations}") String[] scriptLocations) {
         this.multitenantDataSource = multitenantDataSource;
         this.tenantConfigProvider = tenantConfigProvider;
@@ -27,15 +27,12 @@ public class FlywayMultitenantMigrationInitializer {
         this.multitenantDataSource.getResolvedDataSources().entrySet().forEach(objectDataSourceEntry -> {
             String tenantId = (String) objectDataSourceEntry.getKey();
 
-            TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
-                    .getTenantConfigById(tenantId)
-                    .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
+            TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider.getTenantConfigById(tenantId)
+                    .orElseThrow(
+                            () -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
-            Flyway flyway = Flyway.configure()
-                    .locations(scriptLocations)
-                    .baselineOnMigrate(Boolean.TRUE)
-                    .dataSource(objectDataSourceEntry.getValue())
-                    .schemas(tenantConfig.dataSourceConfig().schema())
+            Flyway flyway = Flyway.configure().locations(scriptLocations).baselineOnMigrate(Boolean.TRUE)
+                    .dataSource(objectDataSourceEntry.getValue()).schemas(tenantConfig.dataSourceConfig().schema())
                     .load();
 
             flyway.migrate();

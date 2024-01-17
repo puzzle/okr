@@ -17,11 +17,11 @@ public class MultitenantConfiguration {
     private final TenantConfigProvider tenantConfigProvider;
     private final String defaultTenantId;
 
-    public MultitenantConfiguration(final TenantConfigProvider tenantConfigProvider, final @Value("${okr.default-tenant}") String defaultTenantId) {
+    public MultitenantConfiguration(final TenantConfigProvider tenantConfigProvider,
+            final @Value("${okr.default-tenant}") String defaultTenantId) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.defaultTenantId = defaultTenantId;
     }
-
 
     @Bean
     public DataSource dataSource() {
@@ -40,7 +40,8 @@ public class MultitenantConfiguration {
                 dataSourceBuilder.url(dataSourceConfig.url());
                 resolvedDataSources.put(tenantId, dataSourceBuilder.build());
             } catch (Exception exp) {
-                throw new RuntimeException(MessageFormat.format("Problem in tenant ({0}) datasource:{1}", tenantConfig.tenantId(), exp));
+                throw new RuntimeException(
+                        MessageFormat.format("Problem in tenant ({0}) datasource:{1}", tenantConfig.tenantId(), exp));
             }
         }
 

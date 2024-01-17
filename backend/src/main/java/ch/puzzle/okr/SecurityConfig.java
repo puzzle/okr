@@ -54,8 +54,7 @@ public class SecurityConfig {
 
     @Bean
     JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
-        ConfigurableJWTProcessor<SecurityContext> jwtProcessor =
-                new DefaultJWTProcessor<>();
+        ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
         jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
         return jwtProcessor;
     }
@@ -63,10 +62,8 @@ public class SecurityConfig {
     @Bean
     JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor, OAuth2TokenValidator<Jwt> jwtValidator) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
-        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(
-                JwtValidators.createDefault(),
-                jwtValidator
-        );
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(JwtValidators.createDefault(),
+                jwtValidator);
         decoder.setJwtValidator(validator);
         return decoder;
     }

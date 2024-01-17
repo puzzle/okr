@@ -27,7 +27,8 @@ public class ClientConfigService {
 
         Optional<TenantConfigProvider.TenantConfig> tenantConfig = tenantConfigProvider.getTenantConfigById(subdomain);
         if (tenantConfig.isEmpty()) {
-            throw new EntityNotFoundException(MessageFormat.format("Could not find tenant for subdomain:{0}", subdomain));
+            throw new EntityNotFoundException(
+                    MessageFormat.format("Could not find tenant for subdomain:{0}", subdomain));
         }
 
         HashMap<String, String> config = new HashMap<>();

@@ -21,9 +21,7 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     @Override
     public OAuth2TokenValidatorResult validate(Jwt token) {
-        return this.validators
-                .computeIfAbsent(toTenant(token), this::fromTenant)
-                .validate(token);
+        return this.validators.computeIfAbsent(toTenant(token), this::fromTenant).validate(token);
     }
 
     private String toTenant(Jwt jwt) {
@@ -31,9 +29,7 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     private JwtIssuerValidator fromTenant(String tenant) {
-        return this.tenantConfigProvider
-                .getTenantById(tenant)
-                .map(JwtIssuerValidator::new)
+        return this.tenantConfigProvider.getTenantById(tenant).map(JwtIssuerValidator::new)
                 .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 }

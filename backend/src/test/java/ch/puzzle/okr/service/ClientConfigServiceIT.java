@@ -36,10 +36,8 @@ class ClientConfigServiceIT {
 
     @Test
     void getConfigBasedOnActiveEnv_invalidSubdomain_throwsException() {
-        assertThrowsExactly(
-                EntityNotFoundException.class,
-                () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch")
-        );
+        assertThrowsExactly(EntityNotFoundException.class,
+                () -> clientConfigService.getConfigBasedOnActiveEnv("foobar.okr.puzzle.ch"));
     }
 
 }

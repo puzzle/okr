@@ -22,6 +22,7 @@ public class ClientConfigController {
 
     @GetMapping
     public ResponseEntity<Map<String, String>> getConfig(HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(configService.getConfigBasedOnActiveEnv(request.getServerName()));
     }
 }

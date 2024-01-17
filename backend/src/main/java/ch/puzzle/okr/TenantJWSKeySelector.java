@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class TenantJWSKeySelector
-        implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
+public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
     private final TenantConfigProvider tenantConfigProvider;
 
@@ -28,11 +27,10 @@ public class TenantJWSKeySelector
     }
 
     @Override
-    public List<? extends Key> selectKeys(JWSHeader jwsHeader, JWTClaimsSet jwtClaimsSet, SecurityContext securityContext)
-            throws KeySourceException {
-        return this.selectors
-                .computeIfAbsent(toTenant(jwtClaimsSet), this::fromTenant)
-                .selectJWSKeys(jwsHeader, securityContext);
+    public List<? extends Key> selectKeys(JWSHeader jwsHeader, JWTClaimsSet jwtClaimsSet,
+            SecurityContext securityContext) throws KeySourceException {
+        return this.selectors.computeIfAbsent(toTenant(jwtClaimsSet), this::fromTenant).selectJWSKeys(jwsHeader,
+                securityContext);
     }
 
     private String toTenant(JWTClaimsSet claimSet) {
@@ -40,9 +38,7 @@ public class TenantJWSKeySelector
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String tenantId) {
-        return this.tenantConfigProvider
-                .getJwkSetUri(tenantId)
-                .map(this::fromUri)
+        return this.tenantConfigProvider.getJwkSetUri(tenantId).map(this::fromUri)
                 .orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
     }
 

@@ -12,23 +12,16 @@ public class TenantConfigProvider {
     final String jwkSetUriTemplate;
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
 
-    public TenantConfigProvider(
-            final @Value("${okr.tenant-ids}") String[] tenantIds,
+    public TenantConfigProvider(final @Value("${okr.tenant-ids}") String[] tenantIds,
             final @Value("${okr.security.oauth2.resourceserver.jwt.jwk-set-uri-template}") String jwkSetUriTemplate,
             final @Value("${okr.security.oauth2.frontend.issuer-url-template}") String frontendClientIssuerUrl,
-            final @Value("${okr.security.oauth2.frontend.client-id-template}") String frontendClientId
-    ) {
+            final @Value("${okr.security.oauth2.frontend.client-id-template}") String frontendClientId) {
         this.jwkSetUriTemplate = jwkSetUriTemplate;
         for (String tenantId : tenantIds) {
-            tenantConfigs.put(
-                    tenantId,
-                    new TenantConfig(
-                            tenantId,
-                            jwkSetUriTemplate.replace("{tenantid}", tenantId),
+            tenantConfigs.put(tenantId,
+                    new TenantConfig(tenantId, jwkSetUriTemplate.replace("{tenantid}", tenantId),
                             frontendClientIssuerUrl.replace("{tenantid}", tenantId),
-                            frontendClientId.replace("{tenantid}", tenantId)
-                    )
-            );
+                            frontendClientId.replace("{tenantid}", tenantId)));
         }
     }
 
@@ -44,11 +37,6 @@ public class TenantConfigProvider {
         return getTenantConfigById(tenantId).map(TenantConfig::tenantId);
     }
 
-    public record TenantConfig(
-            String tenantId,
-            String jwkSetUri,
-            String issuerUrl,
-            String clientId
-    ) {
+    public record TenantConfig(String tenantId, String jwkSetUri, String issuerUrl, String clientId) {
     }
 }

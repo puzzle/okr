@@ -34,7 +34,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private String toTenant(JWTClaimsSet claimSet) {
-        return (String) claimSet.getClaim("iss");
+        return ((String) claimSet.getClaim("iss")).split("/realms/")[1];
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String tenantId) {

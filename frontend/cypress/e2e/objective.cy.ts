@@ -25,7 +25,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective veröffentlichen')
           .click();
         cy.getByTestId('confirmYes').click();
@@ -47,7 +47,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective abschliessen')
           .click();
 
@@ -78,7 +78,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective abschliessen')
           .click();
 
@@ -108,7 +108,7 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('three-dot-menu')
           .click()
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .wait(500)
           .contains('Objective abschliessen')
           .click();
@@ -124,7 +124,7 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective wiedereröffnen')
           .click();
 
@@ -133,6 +133,31 @@ describe('OKR Objective e2e tests', () => {
           .last()
           .getByTestId('objective-state')
           .should('have.attr', 'src', `assets/icons/ongoing-icon.svg`);
+      });
+
+      it('Ongoing objective back to draft state', () => {
+        onlyOn('chrome');
+        cy.getByTestId('add-objective').first().click();
+        cy.fillOutObjective('This objective will be returned to draft state', 'safe', undefined, '', false);
+
+        cy.getByTestId('objective')
+          .filter(':contains("This objective will be returned to draft state")')
+          .last()
+          .getByTestId('three-dot-menu')
+          .click()
+          .get('.objective-menu-option')
+          .wait(500)
+          .contains('Objective als Draft speichern')
+          .click()
+          .wait(500)
+          .tabForward();
+        cy.focused().click().wait(500);
+
+        cy.getByTestId('objective')
+          .filter(':contains("This objective will be returned to draft state")')
+          .last()
+          .getByTestId('objective-state')
+          .should('have.attr', 'src', `assets/icons/draft-icon.svg`);
       });
 
       it(`Search for Objective`, () => {
@@ -191,15 +216,15 @@ describe('OKR Objective e2e tests', () => {
           .getByTestId('three-dot-menu')
           .click()
           .wait(500)
-          .get('.mat-mdc-menu-content')
+          .get('.objective-menu-option')
           .contains('Objective bearbeiten')
           .click();
 
-        cy.fillOutObjective('Move to another quarter on edit', 'safe', '4', '', false);
+        cy.fillOutObjective('Move to another quarter on edit', 'safe', 'GJ 22/23-Q4', '', false);
 
         cy.get('Move to another quarter on edit').should('not.exist');
 
-        cy.visit('/?quarter=4');
+        cy.visit('/?quarter=1');
 
         cy.contains('Move to another quarter on edit');
       });

@@ -1,5 +1,6 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.security;
 
+import ch.puzzle.okr.ForwardFilter;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;

@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.JwtHelper;
-import ch.puzzle.okr.TenantContext;
+import ch.puzzle.okr.security.JwtHelper;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;

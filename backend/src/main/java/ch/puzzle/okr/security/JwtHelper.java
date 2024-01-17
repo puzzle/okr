@@ -1,5 +1,6 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.security;
 
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 

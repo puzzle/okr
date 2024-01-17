@@ -1,5 +1,6 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.security;
 
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;

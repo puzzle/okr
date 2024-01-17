@@ -1,5 +1,6 @@
-package ch.puzzle.okr;
+package ch.puzzle.okr.security;
 
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
 import com.nimbusds.jose.proc.JWSAlgorithmFamilyJWSKeySelector;

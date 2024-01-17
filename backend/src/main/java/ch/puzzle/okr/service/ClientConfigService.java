@@ -1,6 +1,6 @@
 package ch.puzzle.okr.service;
 
-import ch.puzzle.okr.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -240,4 +240,34 @@ describe('ObjectiveDialogComponent', () => {
     expect(rawFormValue.team).toBe(objective.teamId);
     expect(rawFormValue.quarter).toBe(objective.quarterId);
   });
+
+  it('should return correct value if allowed to save to backlog', async () => {
+    component.data.action = 'duplicate';
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeTruthy();
+
+    component.objectiveForm.controls.quarter.setValue(999);
+    component.data.action = '';
+    component.data.objective.objectiveId = 5;
+    component.state = 'DRAFT';
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeTruthy();
+
+    component.state = 'ONGOING';
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeFalsy();
+
+    component.objectiveForm.controls.quarter.setValue(2);
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeTruthy();
+
+    component.objectiveForm.controls.quarter.setValue(999);
+    component.data.objective.objectiveId = undefined;
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeFalsy();
+
+    component.objectiveForm.controls.quarter.setValue(2);
+    fixture.detectChanges();
+    expect(component.allowedToSaveBacklog()).toBeTruthy();
+  });
 });

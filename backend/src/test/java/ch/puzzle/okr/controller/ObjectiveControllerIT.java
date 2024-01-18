@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -64,7 +65,7 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterStartDate":"2023-04-01","quarterEndDate":"2023-06-30","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
@@ -77,10 +78,12 @@ class ObjectiveControllerIT {
     private static final Objective fullObjective = Objective.Builder.builder().withId(42L).withTitle("FullObjective")
             .withCreatedBy(user).withTeam(team).withQuarter(quarter).withDescription(DESCRIPTION)
             .withModifiedOn(LocalDateTime.MAX).build();
-    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L, DESCRIPTION,
-            State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true);
-    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, DESCRIPTION,
-            State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true);
+    private static final ObjectiveDto objective1Dto = new ObjectiveDto(5L, 1, OBJECTIVE_TITLE_1, 1L, 1L,
+            LocalDate.of(2023, 4, 1), LocalDate.of(2023, 6, 30), DESCRIPTION, State.DRAFT, LocalDateTime.MAX,
+            LocalDateTime.MAX, true);
+    private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L,
+            LocalDate.of(2023, 4, 1), LocalDate.of(2023, 6, 30), DESCRIPTION, State.DRAFT, LocalDateTime.MIN,
+            LocalDateTime.MIN, true);
 
     @Autowired
     private MockMvc mvc;
@@ -117,8 +120,8 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnObjectiveWhenCreatingNewObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, "Just be faster", State.DRAFT,
-                null, null, true);
+        ObjectiveDto testObjective = new ObjectiveDto(null, 1, "Program Faster", 1L, 1L, LocalDate.of(2023, 4, 1),
+                LocalDate.of(2023, 6, 30), "Just be faster", State.DRAFT, null, null, true);
 
         BDDMockito.given(objectiveMapper.toDto(any())).willReturn(testObjective);
         BDDMockito.given(objectiveAuthorizationService.createEntity(any())).willReturn(fullObjective);
@@ -142,8 +145,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnUpdatedObjective() throws Exception {
-        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
-                State.NOTSUCCESSFUL, LocalDateTime.MIN, LocalDateTime.MAX, true);
+        ObjectiveDto testObjective = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, LocalDate.of(2023, 4, 1),
+                LocalDate.of(2023, 6, 30), EVERYTHING_FINE_DESCRIPTION, State.NOTSUCCESSFUL, LocalDateTime.MIN,
+                LocalDateTime.MAX, true);
         Objective objective = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withTitle(TITLE).build();
 
@@ -160,8 +164,9 @@ class ObjectiveControllerIT {
 
     @Test
     void shouldReturnImUsed() throws Exception {
-        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, EVERYTHING_FINE_DESCRIPTION,
-                State.SUCCESSFUL, LocalDateTime.MAX, LocalDateTime.MAX, true);
+        ObjectiveDto testObjectiveDto = new ObjectiveDto(1L, 1, TITLE, 1L, 1L, LocalDate.of(2023, 4, 1),
+                LocalDate.of(2023, 6, 30), EVERYTHING_FINE_DESCRIPTION, State.SUCCESSFUL, LocalDateTime.MAX,
+                LocalDateTime.MAX, true);
         Objective objectiveImUsed = Objective.Builder.builder().withId(1L).withDescription(EVERYTHING_FINE_DESCRIPTION)
                 .withQuarter(Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build()).withTitle(TITLE)
                 .build();

@@ -33,7 +33,7 @@ class QuarterControllerIT {
             .withStartDate(LocalDate.of(2022, 9, 1)).withEndDate(LocalDate.of(2022, 12, 31)).build();
     static Quarter quarter2 = Quarter.Builder.builder().withId(2L).withLabel("GJ 22/23-Q3")
             .withStartDate(LocalDate.of(2023, 1, 1)).withEndDate(LocalDate.of(2023, 3, 31)).build();
-    static Quarter backlogQuarter = Quarter.Builder.builder().withId(999L).withLabel("Backlog").withStartDate(null)
+    static Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
             .withEndDate(null).build();
     static List<Quarter> quaterList = Arrays.asList(quarter1, quarter2, backlogQuarter);
 
@@ -54,7 +54,7 @@ class QuarterControllerIT {
                 .andExpect(jsonPath("$[1].id", Is.is(2))).andExpect(jsonPath("$[1].label", Is.is("GJ 22/23-Q3")))
                 .andExpect(jsonPath("$[1].startDate", Is.is(LocalDate.of(2023, 1, 1).toString())))
                 .andExpect(jsonPath("$[1].endDate", Is.is(LocalDate.of(2023, 3, 31).toString())))
-                .andExpect(jsonPath("$[2].id", Is.is(999))).andExpect(jsonPath("$[2].label", Is.is("Backlog")));
+                .andExpect(jsonPath("$[2].id", Is.is(199))).andExpect(jsonPath("$[2].label", Is.is("Backlog")));
     }
 
     @Test

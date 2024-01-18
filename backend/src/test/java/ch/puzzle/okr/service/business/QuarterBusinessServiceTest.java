@@ -70,7 +70,7 @@ class QuarterBusinessServiceTest {
                 .withStartDate(LocalDate.of(2022, 8, 1)).withEndDate(LocalDate.of(2022, 11, 30)).build();
         List<Quarter> quarterList = new ArrayList<>(Arrays.asList(realQuarter1, realQuarter2));
 
-        Quarter backlogQuarter = Quarter.Builder.builder().withId(999L).withLabel("Backlog").build();
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
         when(quarterPersistenceService.findByLabel("Backlog")).thenReturn(backlogQuarter);
 

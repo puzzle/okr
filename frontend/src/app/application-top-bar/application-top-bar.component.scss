@@ -4,9 +4,19 @@
   height: $top-bar-height;
 }
 
-.button-topbar {
-  margin-top: -5px !important;
+#topbar-team {
+  font-size: 19px;
 }
+
+#topbar-help {
+  margin-top: -1px;
+  font-size: 15px;
+}
+
+#topbar-user {
+  font-size: 18px;
+}
+
 #okrTopbar {
   display: flex;
   position: fixed;
@@ -22,7 +32,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: white !important;
   text-decoration: none;
   height: 100%;
   gap: 5px;
@@ -30,12 +40,14 @@
   padding: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
+  font-weight: normal;
 
   mat-icon {
     display: flex;
-    align-items: center;
     justify-content: center;
-    transform: scale(0.95);
+    align-items: center;
+    text-align: center;
+    transform: scale(1) !important;
   }
 
   &:focus,
@@ -43,13 +55,4 @@
     background-color: #1a4e83;
     border: 1px solid white;
   }
-}
-
-.header-icon {
-  color: white;
-}
-
-.header-text:hover {
-  text-decoration: underline;
-  color: white;
 }

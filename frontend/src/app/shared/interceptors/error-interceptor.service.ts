@@ -59,7 +59,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (!successMessageObj) return;
 
     let messageKey = successMessageObj.key;
-    let isBacklogQuarter = response.body.quarterStartDate == null && response.body.quarterEndDate == null;
+    let isBacklogQuarter = response.body?.quarterStartDate == null && response.body?.quarterEndDate == null;
     if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
       messageKey += '_BACKLOG';
     }

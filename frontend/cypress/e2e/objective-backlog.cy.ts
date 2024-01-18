@@ -8,7 +8,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
   it(`Create Objective in backlog quarter`, () => {
     cy.getByTestId('add-objective').first().click();
-    cy.fillOutObjective('Objective in quarter backlog', 'safe-draft', '999', '', false);
+    cy.fillOutObjective('Objective in quarter backlog', 'safe-draft', 'Backlog', '', false);
 
     cy.get('Objective in quarter backlog').should('not.exist');
 

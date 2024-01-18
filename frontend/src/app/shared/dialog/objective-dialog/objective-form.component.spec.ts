@@ -153,6 +153,8 @@ describe('ObjectiveDialogComponent', () => {
         id: 5,
         version: 1,
         quarterId: 2,
+        quarterStartDate: new Date('2022-01-01'),
+        quarterEndDate: new Date('2022-03-31'),
         state: State[state as keyof typeof State],
         teamId: 2,
         title: title,

@@ -361,6 +361,8 @@ export const objective: Objective = {
   description: 'description',
   teamId: 2,
   quarterId: 2,
+  quarterStartDate: new Date('2022-01-01'),
+  quarterEndDate: new Date('2022-03-31'),
   state: State.SUCCESSFUL,
   writeable: true,
 };
@@ -372,6 +374,8 @@ export const objectiveWriteableFalse: Objective = {
   description: 'descriptionWriteableFalse',
   teamId: 2,
   quarterId: 2,
+  quarterStartDate: new Date('2022-01-01'),
+  quarterEndDate: new Date('2022-03-31'),
   state: State.NOTSUCCESSFUL,
   writeable: false,
 };

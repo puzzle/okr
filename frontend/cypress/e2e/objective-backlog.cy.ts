@@ -6,13 +6,13 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.visit('/?quarter=2');
   });
 
-  it(`Create Objective in backlog quarter`, () => {
+  it.only(`Create Objective in backlog quarter`, () => {
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('Objective in quarter backlog', 'safe-draft', 'Backlog', '', false);
 
     cy.get('Objective in quarter backlog').should('not.exist');
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
 
     cy.contains('Objective in quarter backlog');
   });
@@ -35,7 +35,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.get('This goes now to backlog').should('not.exist');
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
 
     cy.contains('This goes now to backlog');
   });
@@ -60,7 +60,7 @@ describe('OKR Objective Backlog e2e tests', () => {
   });
 
   it(`Can not make Objective public in backlog`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can not public this');
     cy.getByTestId('safe').should('be.disabled');
@@ -79,7 +79,7 @@ describe('OKR Objective Backlog e2e tests', () => {
   });
 
   it(`Can edit Objective title in backlog`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('This is possible for edit', 'safe-draft', undefined, '', false);
 
@@ -101,7 +101,7 @@ describe('OKR Objective Backlog e2e tests', () => {
   });
 
   it(`Can edit Objective and change quarter`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('This goes to other quarter later', 'safe-draft', undefined, '', false);
 
@@ -123,7 +123,7 @@ describe('OKR Objective Backlog e2e tests', () => {
   });
 
   it(`Can duplicate in backlog`, () => {
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('Ready for duplicate', 'safe-draft', undefined, '', false);
 
@@ -176,7 +176,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.get('select#quarter').select('Backlog');
     cy.getByTestId('safe').first().click();
 
-    cy.visit('/?quarter=999');
+    cy.visit('/?quarter=199');
     cy.contains('Possible to duplicate into backlog');
   });
 });

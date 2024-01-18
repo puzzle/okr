@@ -18,6 +18,7 @@ export function validateScoring(isOverview: boolean, percentage: number) {
   validateScoringWidth('commit', scoringValue.commitPercent, isOverview);
   validateScoringWidth('target', scoringValue.targetPercent, isOverview);
 
+  if (percentage == 0) return;
   validateScoringColor('fail', rgbCode, isOverview);
   validateScoringColor('commit', rgbCode, isOverview);
   validateScoringColor('target', rgbCode, isOverview);

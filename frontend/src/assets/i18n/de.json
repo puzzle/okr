@@ -62,6 +62,7 @@
     },
     "OBJECTIVE": {
       "POST": "Das Objective wurde erfolgreich erstellt.",
+      "POST_BACKLOG": "Das Objective wurde als Draft im Backlog gespeichert.",
       "PUT": "Das Objective wurde erfolgreich aktualisiert.",
       "DELETE": "Das Objective wurde erfolgreich gelöscht.",
       "IM_USED": "Das Objective kann nicht in ein anderes Quartal verlegt werden."

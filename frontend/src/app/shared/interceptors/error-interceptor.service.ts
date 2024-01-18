@@ -58,7 +58,11 @@ export class ErrorInterceptor implements HttpInterceptor {
     const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
     if (!successMessageObj) return;
 
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
+    let messageKey = successMessageObj.key;
+    if (messageKey == 'OBJECTIVE.POST' && response.body.quarterId == 999) {
+      messageKey += '_BACKLOG';
+    }
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 

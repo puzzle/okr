@@ -7,7 +7,7 @@
   tabindex="0"
 >
   <div class="row mx-1">
-    <section class="d-flex mb-3 mt-3 justify-content-between">
+    <section class="d-flex mb-3 mt-3 justify-content-between pe-0">
       <section class="d-flex gap-2 align-items-start">
         <img
           (click)="$event.stopPropagation()"
@@ -29,7 +29,7 @@
         (keydown.enter)="$event.stopPropagation()"
         [attr.data-testId]="'three-dot-menu'"
       >
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon svgIcon="pz-menu-icon" class="scale-9"></mat-icon>
       </button>
     </section>
 

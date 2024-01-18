@@ -41,7 +41,7 @@ describe('Scoring component e2e tests', () => {
     [0, 100, -1],
     [200, 100, 250],
   ].forEach(([baseline, stretchgoal, value]) => {
-    it.only('show indicator that value is negative', () => {
+    it('show indicator that value is negative', () => {
       setupMetricKR(baseline, stretchgoal, value);
       cy.validateScoring(false, 0);
       cy.get('.keyResult-detail-attribute-show')

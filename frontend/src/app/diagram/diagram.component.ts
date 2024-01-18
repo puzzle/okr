@@ -188,7 +188,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
         let element = {
           data: {
             id: 'Ob' + objective.id,
-            label: this.adjustLabel(objective.title, 44, 15),
+            label: this.adjustLabel(objective.title, 36, 15) + '\n \n ' + overViewEntity.team.name,
           },
         };
         elements.push(element);
@@ -197,31 +197,63 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
         // };
         // edges.push(edge);
 
-        objective.keyResults.forEach((keyResult: KeyresultMin): void => {
-          element = {
-            data: {
-              id: 'KR' + keyResult.id,
-              label: this.adjustLabel(keyResult.title, 49, 12),
-            },
-          };
-          elements.push(element);
-          let edge = {
-            data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
-          };
-          edges.push(edge);
-        });
+        if (overViewEntity.team.name == 'Puzzle ITC') {
+          objective.keyResults.forEach((keyResult: KeyresultMin): void => {
+            // if (keyResult.title == 'Clap of thunder bilge aft log crows nest landlubber or just lubber overhaul') return;
+            // if (keyResult.title == 'Scourge of the seven seas blow the man down provost hail-shot Yellow Jack') return;
+            element = {
+              data: {
+                id: 'KR' + keyResult.id,
+                label: this.adjustLabel(keyResult.title, 30, 12) + '\n \n ' + overViewEntity.team.name,
+              },
+            };
+            elements.push(element);
+            let edge = {
+              data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
+            };
+            edges.push(edge);
+          });
+        }
       });
     });
 
-    // let edge = {
-    //   data: { source: 'Ob' + 10, target: 'KR' + 4 },
-    // };
-    // edges.push(edge);
-    //
-    // edge = {
-    //   data: { source: 'Ob' + 6, target: 'Ob' + 4 },
-    // };
-    // edges.push(edge);
+    let edge = {
+      data: { source: 'Ob' + 19, target: 'KR' + 20 },
+    };
+    edges.push(edge);
+
+    edge = {
+      data: { source: 'Ob' + 21, target: 'Ob' + 11 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 20, target: 'Ob' + 13 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 23, target: 'KR' + 27 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 14, target: 'Ob' + 12 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 22, target: 'Ob' + 11 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 17, target: 'KR' + 28 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 18, target: 'KR' + 27 },
+    };
+    edges.push(edge);
+    edge = {
+      data: { source: 'Ob' + 15, target: 'Ob' + 11 },
+    };
+    edges.push(edge);
 
     return data && data.length > 0 ? elements.concat(edges) : [];
   }

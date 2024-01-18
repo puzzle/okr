@@ -49,6 +49,7 @@ values (4, '', '2023-07-25 08:17:51.309958', 66, 'Build a company culture that k
 insert into key_result (id, basis_value, description, expected_evolution, modified_on, target_value, title, unit,
                         created_by_id, objective_id, owner_id)
 values (3, 0, '', 0, '2023-07-25 08:14:31.964115', 25, 'Steigern der URS um 25%', 0, 1, 3, 1),
+       (96, 0, '', 0, '2023-07-25 08:14:31.964115', 25, 'Es sollte möglich sein, dass wir heute feiern', 0, 1, 6, 1),
        (4, 100, '', 1, '2023-07-25 08:15:18.244565', 67, 'Antwortzeit für Supportanfragen um 33% verkürzen.', 0, 1, 3,
         1),
        (5, null, '', 4, '2023-07-25 08:16:24.466383', 1,

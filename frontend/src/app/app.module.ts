@@ -72,6 +72,7 @@ import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { TeamManagementComponent } from './shared/dialog/team-management/team-management.component';
 import { KeyresultDialogComponent } from './shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { DiagramComponent } from './diagram/diagram.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -181,6 +182,7 @@ export const MY_FORMATS = {
     MatChipsModule,
     CdkDropList,
     CdkDrag,
+    MatTabsModule,
   ],
   providers: [
     {

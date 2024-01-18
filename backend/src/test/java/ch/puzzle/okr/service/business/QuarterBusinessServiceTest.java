@@ -72,7 +72,7 @@ class QuarterBusinessServiceTest {
 
         Quarter backlogQuarter = Quarter.Builder.builder().withId(999L).withLabel("Backlog").build();
         when(quarterPersistenceService.getMostCurrentQuarters()).thenReturn(quarterList);
-        when(quarterPersistenceService.findById(999L)).thenReturn(backlogQuarter);
+        when(quarterPersistenceService.findByLabel("Backlog")).thenReturn(backlogQuarter);
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(3, quarterList.size());

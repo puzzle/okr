@@ -1,12 +1,12 @@
 import { KeyresultMin } from './KeyresultMin';
-import { QuarterMin } from './QuarterMin';
 import { State } from '../enums/State';
+import { Quarter } from './Quarter';
 
 export interface ObjectiveMin {
   id: number;
   version: number;
   title: string;
   state: State;
-  quarter: QuarterMin;
+  quarter: Quarter;
   keyResults: KeyresultMin[];
 }

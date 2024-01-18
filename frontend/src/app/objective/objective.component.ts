@@ -51,7 +51,7 @@ export class ObjectiveComponent implements OnInit {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
     }
-    if (this.objective$.value.quarter.id == 999) {
+    if (this.objective$.value.quarter.startDate == null && this.objective$.value.quarter.endDate == null) {
       this.isBacklogQuarter = true;
     }
   }

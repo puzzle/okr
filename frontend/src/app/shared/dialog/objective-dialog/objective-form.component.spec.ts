@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../services/objective.service';
-import { objective, quarter, teamMin1 } from '../../testData';
+import { objective, quarter, quarterList, teamMin1 } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -242,6 +242,8 @@ describe('ObjectiveDialogComponent', () => {
   });
 
   it('should return correct value if allowed to save to backlog', async () => {
+    component.quarters = quarterList;
+
     component.data.action = 'duplicate';
     fixture.detectChanges();
     expect(component.allowedToSaveBacklog()).toBeTruthy();

@@ -32,6 +32,7 @@ export class ObjectiveFormComponent implements OnInit {
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
+  quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
@@ -86,6 +87,7 @@ export class ObjectiveFormComponent implements OnInit {
       : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
+      this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
       this.state = objective.state;
@@ -184,12 +186,16 @@ export class ObjectiveFormComponent implements OnInit {
     } as Objective;
   }
 
-  allowedToSaveBacklog() {
+  allowedToSaveBacklog(): boolean {
+    let currentQuarter: Quarter | undefined = this.quarters.find(
+      (quarter) => quarter.id == this.objectiveForm.value.quarter,
+    );
+    let isBacklogCurrent: boolean = currentQuarter?.startDate == null && currentQuarter?.endDate == null;
     if (this.data.action == 'duplicate') return true;
     if (this.data.objective.objectiveId) {
-      return this.objectiveForm.value.quarter!.toString() == '999' ? this.state == 'DRAFT' : true;
+      return isBacklogCurrent ? this.state == 'DRAFT' : true;
     } else {
-      return this.objectiveForm.value.quarter!.toString() != '999';
+      return !isBacklogCurrent;
     }
   }
 

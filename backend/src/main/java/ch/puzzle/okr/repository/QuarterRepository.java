@@ -15,6 +15,8 @@ public interface QuarterRepository extends CrudRepository<Quarter, Long> {
     @Query("SELECT q FROM Quarter q WHERE q.startDate IS NOT NULL ORDER BY q.startDate DESC LIMIT 6")
     List<Quarter> findTop6ByOrderByStartDateDescWithoutNullStartDate();
 
+    Quarter findByLabel(String label);
+
     @Query(value = "Select q from Quarter q where q.startDate <= :date and q.endDate >= :date")
     Quarter getActiveQuarter(@Param("date") LocalDate date);
 }

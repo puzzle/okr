@@ -134,7 +134,8 @@ describe('ObjectiveColumnComponent', () => {
   test('Should set isBacklogQuarter right', async () => {
     expect(component.isBacklogQuarter).toBeFalsy();
 
-    objectiveMin.quarter.id = 999;
+    objectiveMin.quarter.startDate = null;
+    objectiveMin.quarter.endDate = null;
 
     component.objective = objectiveMin;
     fixture.detectChanges();
@@ -144,7 +145,8 @@ describe('ObjectiveColumnComponent', () => {
   });
 
   test('Should return correct menu entries when backlog', async () => {
-    objectiveMin.quarter.id = 999;
+    objectiveMin.quarter.startDate = null;
+    objectiveMin.quarter.endDate = null;
     component.objective = objectiveMin;
     fixture.detectChanges();
     component.ngOnInit();

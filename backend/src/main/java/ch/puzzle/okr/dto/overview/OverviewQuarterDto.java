@@ -1,4 +1,6 @@
 package ch.puzzle.okr.dto.overview;
 
-public record OverviewQuarterDto(Long id, String label) {
+import java.time.LocalDate;
+
+public record OverviewQuarterDto(Long id, String label, LocalDate startDate, LocalDate endDate) {
 }

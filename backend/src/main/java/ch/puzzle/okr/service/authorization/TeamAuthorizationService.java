@@ -59,10 +59,7 @@ public class TeamAuthorizationService {
         if (hasRoleWriteAndReadAll(authorizationUser)) {
             return true;
         }
-        if (authorizationUser.isUserAdminInTeam(teamId)) {
-            return true;
-        }
-        return false;
+        return authorizationUser.isUserAdminInTeam(teamId);
     }
 
     public List<Team> getAllTeams() {
@@ -73,7 +70,10 @@ public class TeamAuthorizationService {
     }
 
     public void removeUserFromTeam(long entityId, long userId) {
-        checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
+        // user is allowed to remove own membership of any team
+        if (userId != authorizationService.getAuthorizationUser().user().getId()) {
+            checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
+        }
         teamBusinessService.removeUserFromTeam(entityId, userId);
     }
 

@@ -27,6 +27,7 @@ import { TeamRoleDropdownComponent } from './team-role-dropdown/team-role-dropdo
 import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
     MatProgressSpinnerModule,
     MatSelectModule,
     TranslateModule,
+    A11yModule,
   ],
 })
 export class TeamManagementModule {}

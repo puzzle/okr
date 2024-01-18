@@ -272,8 +272,7 @@ function checkForToaster(selector: string, amount: number, messages: string[] = 
     .then((e) => messages.forEach((m) => expect(e).contains(m)));
 }
 
-const overviewIsLoaded = () =>
-  cy.get('mat-chip').should('have.length.at.least', 2) && cy.get('.team-title').should('have.length.at.least', 1);
+const overviewIsLoaded = () => cy.get('mat-chip').should('have.length.at.least', 2);
 
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })

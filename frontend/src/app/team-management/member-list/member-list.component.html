@@ -18,7 +18,7 @@
       <button
         *ngIf="showAddMemberToTeam()"
         (click)="addMemberToTeam()"
-        [attr.data-testId]="'add-team'"
+        [attr.data-testId]="'add-team-member'"
         class="align-new-icon"
         color="primary"
         mat-button
@@ -42,7 +42,7 @@
         </span>
       </button>
     </div>
-    <div class="menu" *ngIf="selectedTeam">
+    <div class="menu" *ngIf="selectedTeam?.isWriteable">
       <button
         mat-icon-button
         [matMenuTriggerFor]="menu"
@@ -52,7 +52,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button (click)="deleteTeam(selectedTeam)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+        <button (click)="deleteTeam(selectedTeam!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
           >
           <span>Team löschen</span>
         </button>

@@ -85,6 +85,7 @@ public class TeamBusinessService {
         });
         userTeamPersistenceService.deleteAll(team.getUserTeamList());
         team.setUserTeamList(List.of());
+        cacheService.emptyAuthorizationUsersCache();
     }
 
     public List<Team> getAllTeams(AuthorizationUser authorizationUser) {
@@ -107,6 +108,7 @@ public class TeamBusinessService {
             user.getUserTeamList().add(userTeam);
             userPersistenceService.save(user);
         }
+        cacheService.emptyAuthorizationUsersCache();
     }
 
     @Transactional
@@ -118,6 +120,7 @@ public class TeamBusinessService {
         userTeamList.remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
         userPersistenceService.save(user);
+        cacheService.emptyAuthorizationUsersCache();
     }
 
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {
@@ -133,6 +136,7 @@ public class TeamBusinessService {
         // if user has no membership to this team, it is added.
         addTeamMembership(teamId, isAdmin, user, userTeamList);
         userPersistenceService.save(user);
+        cacheService.emptyAuthorizationUsersCache();
     }
 
     private void addTeamMembership(long teamId, boolean isAdmin, User user, List<UserTeam> userTeamList) {

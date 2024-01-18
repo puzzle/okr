@@ -9,7 +9,7 @@
         <div class="input-style gap-2 col-12">
           <label class="text-black" for="name">Teamname</label>
           <textarea
-            [attr.data-testId]="'name'"
+            [attr.data-testId]="'add-team-name'"
             class="big-dialog-form-field"
             [ngClass]="formInputCheck(teamForm, 'name')"
             formControlName="name"
@@ -28,7 +28,7 @@
   <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
     <div class="d-flex p-0">
       <button
-        [attr.data-testId]="'save'"
+        [attr.data-testId]="'add-team-save'"
         [disabled]="teamForm.invalid"
         color="primary"
         mat-flat-button

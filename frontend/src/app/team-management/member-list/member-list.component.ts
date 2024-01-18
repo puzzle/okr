@@ -92,7 +92,10 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   deleteTeam(selectedTeam: Team) {
-    this.teamService.deleteTeam(selectedTeam.id).subscribe(() => this.router.navigateByUrl('team-management'));
+    this.teamService.deleteTeam(selectedTeam.id).subscribe(() => {
+      this.userService.reloadUsers();
+      this.router.navigateByUrl('team-management');
+    });
   }
 
   addMemberToTeam() {

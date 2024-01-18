@@ -19,6 +19,7 @@
             matInput
             [formControl]="search"
             [matAutocomplete]="auto"
+            [attr.data-testId]="'search-member-to-add'"
           />
           <mat-autocomplete
             #auto="matAutocomplete"

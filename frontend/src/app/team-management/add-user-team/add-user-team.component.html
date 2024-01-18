@@ -22,15 +22,22 @@
         subscriptSizing="dynamic"
         appearance="outline"
       >
-        <mat-select [(ngModel)]="userTeam.team">
-          <mat-option *ngFor="let team of adminTeams" [value]="team">{{ team.name }}</mat-option>
+        <mat-select [attr.data-testId]="'select-team-dropdown'" [(ngModel)]="userTeam.team">
+          <mat-option
+            [attr.data-testId]="'select-team-dropdown-option'"
+            *ngFor="let team of adminTeams"
+            [value]="team"
+            >{{ team.name }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
 
       <app-team-role-dropdown *ngIf="userTeam" [(isAdmin)]="userTeam.isTeamAdmin"></app-team-role-dropdown>
     </div>
     <div class="mt-2">
-      <button (click)="save()" mat-raised-button color="primary">Hinzufügen</button>
+      <button [attr.data-testId]="'add-user-to-team-save'" (click)="save()" mat-raised-button color="primary">
+        Hinzufügen
+      </button>
     </div>
   </ng-container>
 </ng-container>

@@ -14,6 +14,7 @@ import java.util.Objects;
 
 import static ch.puzzle.okr.Constants.OBJECTIVE;
 import static ch.puzzle.okr.Constants.TEAM;
+import static ch.puzzle.okr.service.validation.QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull;
 
 @Service
 public class ObjectiveValidationService
@@ -28,7 +29,7 @@ public class ObjectiveValidationService
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         throwExceptionWhenModifiedByIsSet(model);
-        throwExceptionWhenStartEndDateQuarterIsNull(model);
+        throwExceptionWhenStartEndDateQuarterIsNull(model.getQuarter());
         validate(model);
     }
 
@@ -38,7 +39,7 @@ public class ObjectiveValidationService
         throwExceptionWhenIdIsNull(model.getId());
         throwExceptionWhenIdHasChanged(id, model.getId());
         throwExceptionWhenModifiedByIsNull(model);
-        throwExceptionWhenStartEndDateQuarterIsNull(model);
+        throwExceptionWhenStartEndDateQuarterIsNull(model.getQuarter());
         Objective savedObjective = doesEntityExist(id);
         throwExceptionWhenTeamHasChanged(model.getTeam(), savedObjective.getTeam());
         validate(model);
@@ -49,19 +50,6 @@ public class ObjectiveValidationService
 
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_SET_FORBIDDEN,
                     List.of("ModifiedBy", model.getModifiedBy()));
-        }
-    }
-
-    private static void throwExceptionWhenStartEndDateQuarterIsNull(Objective model) {
-        if (!model.getQuarter().getLabel().equals("Backlog")) {
-            if (model.getQuarter().getStartDate() == null) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                        List.of("StartDate", model.getQuarter().getLabel()));
-            } else if (model.getQuarter().getEndDate() == null) {
-                throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                        List.of("EndDate", model.getQuarter().getLabel()));
-            }
-
         }
     }
 

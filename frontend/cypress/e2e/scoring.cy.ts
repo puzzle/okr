@@ -20,7 +20,6 @@ describe('Scoring component e2e tests', () => {
       const percentage = getPercentageMetric(baseline, stretchgoal, value);
       cy.validateScoring(false, percentage);
       cy.get('.keyResult-detail-attribute-show')
-        // now we can find the one element with text "second"
         .contains('Aktuell')
         .parent()
         .not(':contains(!)')

@@ -93,7 +93,7 @@ $scale-gap: 0.1;
   $selector: ".scale-#{$scale-value * 10}";
 
   #{$selector} {
-    transform: scale(#{$scale-value});
+    transform: scale(#{$scale-value}) !important;
   }
 }
 

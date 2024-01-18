@@ -15,6 +15,10 @@ export class AppComponent {
     private domSanitizer: DomSanitizer,
   ) {
     this.matIconRegistry.addSvgIcon(
+      'pz-search',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(this.PATH_PREFIX + 'search-icon.svg'),
+    );
+    this.matIconRegistry.addSvgIcon(
       'pz-menu-icon',
       this.domSanitizer.bypassSecurityTrustResourceUrl(this.PATH_PREFIX + 'three-dot-menu-icon.svg'),
     );

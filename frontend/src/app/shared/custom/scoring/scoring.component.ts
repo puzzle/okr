@@ -14,7 +14,7 @@ import { KeyresultMin } from '../../types/model/KeyresultMin';
 import { Zone } from '../../types/enums/Zone';
 import { KeyResultMetricMin } from '../../types/model/KeyResultMetricMin';
 import { Observable, of } from 'rxjs';
-import { calculateCurrentPercentage } from '../../common';
+import { calculateCurrentPercentage, isLastCheckInNegative } from '../../common';
 
 @Component({
   selector: 'app-scoring',
@@ -31,6 +31,7 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   targetPercent: number = 0;
   labelPercentage: Observable<number>;
   stretched: boolean = false;
+  protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
   @ViewChild('fail')
   private failElement: ElementRef<HTMLSpanElement> | undefined = undefined;

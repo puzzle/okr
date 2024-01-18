@@ -22,8 +22,11 @@
             <div
               *ngIf="
                 keyResult.keyResultType == 'metric' &&
-                keyResult.lastCheckIn &&
-                +keyResult.lastCheckIn?.value! < castToMetric().baseline
+                isLastCheckInNegative(
+                  castToMetric().baseline,
+                  castToMetric().stretchGoal,
+                  +(castToMetric().lastCheckIn?.value || castToMetric().baseline)
+                )
               "
               class="fs-6 text-white fw-bold text-center score-red scoring-error-badge rounded-circle"
             >

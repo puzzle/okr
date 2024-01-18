@@ -1,4 +1,4 @@
-import { isInValid } from '../../src/app/shared/common';
+import { isLastCheckInNegative } from '../../src/app/shared/common';
 
 interface ScoringValue {
   failPercent: number;
@@ -24,7 +24,7 @@ export function validateScoring(isOverview: boolean, percentage: number) {
 }
 
 export function getPercentageMetric(baseline: number, stretchGoal: number, value: number) {
-  if (isInValid(baseline, stretchGoal, value)) {
+  if (isLastCheckInNegative(baseline, stretchGoal, value)) {
     return -1;
   }
   return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;

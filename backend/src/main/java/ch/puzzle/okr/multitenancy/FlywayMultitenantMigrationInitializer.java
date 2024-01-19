@@ -30,7 +30,6 @@ public class FlywayMultitenantMigrationInitializer {
                     .locations(scriptLocations)
                     .baselineOnMigrate(Boolean.TRUE)
                     .schemas(dataSourceConfig.schema())
-                    .defaultSchema(this.defaultSchema)
                     .load();
 
             tenantSchemaFlyway.migrate();

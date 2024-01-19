@@ -57,7 +57,7 @@ class TeamControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_TEAM = """
-            {"id":7,"version":4,"name":"OKR"}""";
+            {"id":7,"version":4,"name":"OKR","isWriteable":false}""";
 
     private static final String UPDATE_TEAM = """
             {

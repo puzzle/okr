@@ -4,17 +4,13 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringIntegrationTest
@@ -27,23 +23,12 @@ class UserPersistenceServiceIT {
     @Autowired
     private UserPersistenceService userPersistenceService;
 
-    @Autowired
-    private CacheManager cacheManager;
-
-    private Cache cache;
-
-    @BeforeEach
-    void beforeEach() {
-        cache = cacheManager.getCache(USER_CACHE);
-    }
-
     @AfterEach
     void tearDown() {
         if (createdUser != null) {
             userPersistenceService.deleteById(createdUser.getId());
             createdUser = null;
         }
-        cache.clear();
     }
 
     @Test
@@ -104,14 +89,5 @@ class UserPersistenceServiceIT {
         assertEquals("firstname", createdUser.getFirstname());
         assertEquals("lastname", createdUser.getLastname());
         assertEquals("lastname@puzzle.ch", createdUser.getEmail());
-    }
-
-    @Test
-    void getOrCreateUserShouldAddUserToCache() {
-        User existingUser = User.Builder.builder().withEmail(EMAIL_ALICE).build();
-        userPersistenceService.getOrCreateUser(existingUser);
-
-        User cachedUser = cacheManager.getCache(USER_CACHE).get(EMAIL_ALICE, User.class);
-        assertNotNull(cachedUser);
     }
 }

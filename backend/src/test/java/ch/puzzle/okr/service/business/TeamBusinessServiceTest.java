@@ -8,6 +8,7 @@ import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
+import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,9 @@ class TeamBusinessServiceTest {
 
     @Mock
     UserPersistenceService userPersistenceService;
+
+    @Mock
+    UserTeamPersistenceService userTeamPersistenceService;
 
     @InjectMocks
     private TeamValidationService validator = Mockito.mock(TeamValidationService.class);
@@ -133,12 +137,18 @@ class TeamBusinessServiceTest {
 
     @Test
     void shouldDeleteTeamAndItsObjectives() {
-        when(objectiveBusinessService.getEntitiesByTeamId(1L)).thenReturn(objectiveList);
-        teamBusinessService.deleteTeam(1L);
+        var team = defaultTeam(1L);
+        team.setUserTeamList(List.of(
+                UserTeam.Builder.builder().withTeam(team).withUser(new User()).withId(1L).build()
+        ));
+        when(objectiveBusinessService.getEntitiesByTeamId(team.getId())).thenReturn(objectiveList);
+        when(teamPersistenceService.findById(team.getId())).thenReturn(team);
 
-        verify(teamPersistenceService, times(1)).deleteById(1L);
+        teamBusinessService.deleteTeam(team.getId());
+
+        verify(teamPersistenceService, times(1)).deleteById(team.getId());
         verify(objectiveBusinessService, times(objectiveList.size())).deleteEntityById(anyLong());
-        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
+        verify(cacheService, times(2)).emptyAuthorizationUsersCache();
     }
 
     @Test

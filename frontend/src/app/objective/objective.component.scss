@@ -30,7 +30,7 @@
 
   &:hover {
     border-radius: 1rem;
-    background-color: rgba(30, 90, 150, 0.1);
+    background-color: #f5f7fa;
   }
 }
 
@@ -39,4 +39,8 @@
   height: 1.25rem;
   margin-top: 2px;
   margin-left: 4px;
+}
+
+.objective-title {
+  width: 90%;
 }

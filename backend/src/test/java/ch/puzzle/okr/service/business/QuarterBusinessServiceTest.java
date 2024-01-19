@@ -76,9 +76,9 @@ class QuarterBusinessServiceTest {
 
         quarterList = quarterBusinessService.getQuarters();
         assertEquals(3, quarterList.size());
-        assertEquals("Backlog", quarterList.get(2).getLabel());
-        assertNull(quarterList.get(2).getStartDate());
-        assertNull(quarterList.get(2).getEndDate());
+        assertEquals("Backlog", quarterList.get(0).getLabel());
+        assertNull(quarterList.get(0).getStartDate());
+        assertNull(quarterList.get(0).getEndDate());
     }
 
     @Test

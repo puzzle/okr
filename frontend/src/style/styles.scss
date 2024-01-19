@@ -30,6 +30,10 @@ body {
   @extend .linebreak;
 }
 
+.fit-content {
+  width: fit-content;
+}
+
 .sub-title {
   font-size: 0.8rem;
 }

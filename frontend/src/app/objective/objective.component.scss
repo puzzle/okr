@@ -24,8 +24,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
+  margin-right: 3px;
+
+  &:hover {
+    border-radius: 1rem;
+    background-color: rgba(30, 90, 150, 0.1);
+  }
 }
 
 .icon {

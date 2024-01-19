@@ -29,6 +29,7 @@ describe('MemberDetailComponent', () => {
     getUserById: jest.fn(),
     getCurrentUser: jest.fn(),
     reloadUsers: jest.fn(),
+    reloadCurrentUser: jest.fn(),
   };
 
   const teamServiceMock = {
@@ -63,6 +64,7 @@ describe('MemberDetailComponent', () => {
 
     userServiceMock.getUserById.mockReturnValue(of(testUser));
     userServiceMock.getCurrentUser.mockReturnValue(testUser);
+    userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
 
     fixture.detectChanges();
   });

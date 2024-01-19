@@ -7,6 +7,9 @@ import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { SearchTeamManagementComponent } from '../search-team-management/search-team-management.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 describe('TeamManagementBannerComponent', () => {
   let component: TeamManagementBannerComponent;
@@ -18,7 +21,14 @@ describe('TeamManagementBannerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule, MatFormFieldModule, MatIconModule],
+      imports: [
+        MatDialogModule,
+        MatFormFieldModule,
+        MatIconModule,
+        HttpClientTestingModule,
+        TranslateModule.forRoot(),
+        MatAutocompleteModule,
+      ],
       declarations: [TeamManagementBannerComponent, SearchTeamManagementComponent],
       providers: [{ provide: MatDialog, useValue: matDialogMock }],
     }).compileComponents();

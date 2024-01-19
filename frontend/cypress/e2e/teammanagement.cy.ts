@@ -141,7 +141,7 @@ describe('Team management tests', () => {
             let roleCell = $row.find('td:nth-child(3)');
             let teamsCell = $row.find('td:nth-child(4)');
             expect(roleCell.text().trim()).to.equal('Team-Admin, Team-Member');
-            expect(teamsCell.text().trim()).to.equal('/BBT, LoremIpsum, + 1 weitere');
+            expect(teamsCell.text().trim()).to.equal('/BBT, LoremIpsum');
             return false;
           }
           return true;

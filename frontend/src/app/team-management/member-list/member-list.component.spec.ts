@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -46,7 +47,7 @@ describe('MemberListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MemberListComponent],
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, TranslateTestingModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -64,7 +65,11 @@ describe('MemberListComponent', () => {
       get: () => team1.id,
     });
 
+    userServiceMock.reloadCurrentUser.mockReset();
+    userServiceMock.reloadUsers.mockReset();
+
     jest.spyOn(userServiceMock, 'getUsers').mockReturnValue(of([]));
+    userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
   });
 
   it('should create', () => {
@@ -241,7 +246,7 @@ describe('MemberListComponent', () => {
   });
 
   it('should return correct memberDetailsLink', () => {
-    expect(component.getMemberDetailsLink(testUser)).toStrictEqual('details/member/' + testUser.id);
+    expect(component.getMemberDetailsLink(testUser)).toStrictEqual('/team-management/details/member/' + testUser.id);
   });
 
   it('removeMemberFromTeam should call removeUserFromTeam and reloadUsers', fakeAsync(() => {

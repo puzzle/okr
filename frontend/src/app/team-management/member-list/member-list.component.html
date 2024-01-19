@@ -12,7 +12,7 @@
         >
       </h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
-      <p>Members: {{ dataSource.length }}</p>
+      <p>Members: {{ dataSource.data.length }}</p>
     </div>
     <div class="action-button">
       <button
@@ -60,14 +60,7 @@
     </div>
   </div>
 
-  <div class="pt-3 p-2" *ngIf="!dataSource.length">
-    <p>Keine Members</p>
-  </div>
-
-  <table *ngIf="dataSource.length" mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
-    <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
     <ng-container matColumnDef="icon">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
@@ -112,5 +105,14 @@
       [routerLink]="getMemberDetailsLink(row, selectedTeam)"
       *matRowDef="let row; columns: displayedColumns"
     ></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">Keine Members</td>
+    </tr>
   </table>
+  <mat-paginator
+    [selectConfig]="selectConfig"
+    [pageSizeOptions]="[20, 50, 100]"
+    aria-label="Select page of users"
+  ></mat-paginator>
 </div>

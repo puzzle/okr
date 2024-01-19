@@ -15,6 +15,9 @@ import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -47,7 +50,7 @@ describe('MemberListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MemberListComponent],
-      imports: [HttpClientTestingModule, TranslateTestingModule],
+      imports: [HttpClientTestingModule, TranslateTestingModule, MatPaginatorModule, BrowserAnimationsModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -139,40 +142,38 @@ describe('MemberListComponent', () => {
     expect(userTableEntries.map((ut) => ut.firstname)).toStrictEqual(['Bob', 'Key Result', 'Paco', 'Robin']);
   });
 
-  it('ngOnInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
-    TestBed.runInInjectionContext(() => {
-      userServiceMock.getUsers.mockReturnValue(of(users));
-      teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
-      component.ngOnInit();
-      tick();
-      expect(teamServiceMock.getAllTeams).toHaveBeenCalledTimes(1);
-      expect(component.selectedTeam).toBe(team1);
-      expect(component.dataSource.length).toBe(1);
-      expect(component.dataSource[0].teams[0]).toBe(team1.name);
-    });
+  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
+    userServiceMock.getUsers.mockReturnValue(of(users));
+    teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
+    component.ngAfterViewInit();
+    tick();
+    expect(teamServiceMock.getAllTeams).toHaveBeenCalledTimes(1);
+    expect(component.selectedTeam).toBe(team1);
+    expect(component.dataSource.data.length).toBe(1);
+    expect(component.dataSource.data[0].teams[0]).toBe(team1.name);
   }));
 
-  it('ngOnInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null', fakeAsync(() => {
+  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null', fakeAsync(() => {
     activatedRouteMock.paramMap = of({
       get: () => null,
     });
     TestBed.runInInjectionContext(() => {
       userServiceMock.getUsers.mockReturnValue(of(users));
       teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
-      component.ngOnInit();
+      component.ngAfterViewInit();
       tick();
       expect(component.selectedTeam).toBe(undefined);
-      expect(component.dataSource.length).toBe(users.length);
+      expect(component.dataSource.data.length).toBe(users.length);
     });
   }));
 
-  it('should set displayedColumns correctly', fakeAsync(() => {
+  it('ngAfterViewInit should set displayedColumns correctly', fakeAsync(() => {
     const teamCopy = { ...team1 };
     teamCopy.isWriteable = true;
     TestBed.runInInjectionContext(() => {
       userServiceMock.getUsers.mockReturnValue(of(users));
       teamServiceMock.getAllTeams.mockReturnValue(of([teamCopy]));
-      component.ngOnInit();
+      component.ngAfterViewInit();
       tick();
       expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles', 'delete']);
     });
@@ -197,7 +198,7 @@ describe('MemberListComponent', () => {
 
   it('addMemberToTeam should open dialog', () => {
     component.selectedTeam = team1;
-    component.dataSource = [];
+    component.dataSource = new MatTableDataSource<UserTableEntry>([]);
     dialogMock.open.mockReturnValue({
       afterClosed: () => of(null),
     });

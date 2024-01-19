@@ -28,6 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatI18nPaginatorIntl } from './mat-i18n-paginator-intel';
 
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ import { A11yModule } from '@angular/cdk/a11y';
     MatSelectModule,
     TranslateModule,
     A11yModule,
+    MatPaginatorModule,
   ],
+  providers: [{ provide: MatPaginatorIntl, useClass: MatI18nPaginatorIntl }],
 })
 export class TeamManagementModule {}

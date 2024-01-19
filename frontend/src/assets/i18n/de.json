@@ -93,5 +93,13 @@
     "INPUT_PLACEHOLDER": "Nach Team oder Member suchen",
     "TEAMS": "Teams",
     "USERS": "Users"
+  },
+  "PAGINATOR": {
+    "MEMBERS_PRO_SEITE":  "Members pro Seite",
+    "NAECHSTE_SEITE": "Nächste Seite",
+    "VORHERIGE_SEITE":  "Vorherige Seite",
+    "ERSTE_SEITE": "Erste Seite",
+    "LETZTE_SEITE":  "Letzte Seite",
+    "VON": "von"
   }
 }

@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { State } from '../../shared/types/enums/State';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OverviewService } from '../../services/overview.service';
-import { objectiveMin } from '../../shared/testData';
+import { objective, objectiveMin } from '../../shared/testData';
 import { MatMenuHarness } from '@angular/material/menu/testing';
 import { KeyresultComponent } from '../keyresult/keyresult.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,9 +21,21 @@ import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import * as de from '../../../assets/i18n/de.json';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { ObjectiveMin } from '../../shared/types/model/ObjectiveMin';
+import { MenuEntry } from '../../shared/types/menu-entry';
+import { of } from 'rxjs';
+import { ObjectiveService } from '../../services/objective.service';
 
 const overviewServiceMock = {
   getObjectiveWithKeyresults: jest.fn(),
+};
+
+const objectiveServiceMock = {
+  getFullObjective(objectiveMin: ObjectiveMin) {
+    let ongoingObjective = objective;
+    ongoingObjective.state = State.ONGOING;
+    return of(ongoingObjective);
+  },
 };
 describe('ObjectiveColumnComponent', () => {
   let component: ObjectiveComponent;
@@ -48,7 +60,10 @@ describe('ObjectiveColumnComponent', () => {
           de: de,
         }),
       ],
-      providers: [{ provide: OverviewService, useValue: overviewServiceMock }],
+      providers: [
+        { provide: OverviewService, useValue: overviewServiceMock },
+        { provide: ObjectiveService, useValue: objectiveServiceMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ObjectiveComponent);
@@ -98,5 +113,21 @@ describe('ObjectiveColumnComponent', () => {
     component.isWritable = false;
     const button = fixture.debugElement.query(By.css('[data-testId="add-keyResult"]'));
     expect(button).toBeFalsy();
+  });
+
+  it('Correct method should be called when back to draft is clicked', () => {
+    jest.spyOn(component, 'objectiveBackToDraft');
+    component.objective$.next(objectiveMin);
+    fixture.detectChanges();
+    const menuEntry: MenuEntry =
+      component.getOngoingMenuActions()[
+        component
+          .getOngoingMenuActions()
+          .map((menuAction) => menuAction.action)
+          .indexOf('todraft')
+      ];
+    component.handleDialogResult(menuEntry, { endState: '', comment: null, objective: objective });
+    fixture.detectChanges();
+    expect(component.objectiveBackToDraft).toHaveBeenCalled();
   });
 });

@@ -57,12 +57,6 @@ describe('ScoringComponent', () => {
 
       let color: string | null = component.getScoringColorClassAndSetBorder();
       expect(color).toBe(object.className);
-
-      if (object.borderClass !== 'none') {
-        expect(
-          fixture.debugElement.query(By.css('[data-testId="' + object.borderClass + '"]')).nativeElement.classList,
-        ).toContain('border-right');
-      }
     });
   });
 

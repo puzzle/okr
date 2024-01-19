@@ -22,6 +22,11 @@ describe('UnitLabelTransformationPipe', () => {
     expect(pipe.transform(Unit.CHF)).toBe(Unit.CHF);
   });
 
+  it('Format EUR label', () => {
+    const pipe = new UnitLabelTransformationPipe();
+    expect(pipe.transform(Unit.EUR)).toBe(Unit.EUR);
+  });
+
   it('Format Number label', () => {
     const pipe = new UnitLabelTransformationPipe();
     expect(pipe.transform(Unit.NUMBER)).toBe('');

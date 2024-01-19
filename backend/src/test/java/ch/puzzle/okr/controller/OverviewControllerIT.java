@@ -48,6 +48,8 @@ class OverviewControllerIT {
     public static final String TEAM_KUCHEN = "Kuchen";
     public static final String QUARTER_LABEL = "GJ 22/23-Q2";
     public static final String CHF = "CHF";
+    public static final String EUR = "EUR";
+    public static final String FTE = "FTE";
     public static final String JSON_PATH_TEAM_NAME = "$[0].team.name";
     public static final String JSON_PATH_TEAM_ID = "$[0].team.id";
     public static final String JSON_PATH_ROOT = "$";
@@ -61,7 +63,7 @@ class OverviewControllerIT {
             Overview.Builder.builder().withOverviewId(OverviewId.of(1L, 2L, 21L, 41L)).withTeamName(PUZZLE)
                     .withObjectiveTitle("Objective 1").withObjectiveState(DRAFT).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
-                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(EUR).withBaseline(5.0).withStretchGoal(20.0)
                     .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build());
     static List<Overview> overviewOKR = List.of(
             Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 5L, 20L, 40L)).withTeamName("OKR")
@@ -72,13 +74,13 @@ class OverviewControllerIT {
             Overview.Builder.builder().withOverviewId(OverviewId.of(2L, 7L, 21L, 41L)).withTeamName("OKR")
                     .withObjectiveTitle("Objective 7").withObjectiveState(ONGOING).withQuarterId(1L)
                     .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION)
-                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0)
+                    .withKeyResultType(KEY_RESULT_TYPE_METRIC).withUnit(FTE).withBaseline(5.0).withStretchGoal(20.0)
                     .withCheckInValue(15.0).withConfidence(5).withCheckInCreatedOn(LocalDateTime.now()).build());
 
     static Overview overviewKuchen = Overview.Builder.builder().withOverviewId(OverviewId.of(3L, 8L, 20L, 40L))
             .withTeamName(TEAM_KUCHEN).withObjectiveTitle("Objective 8").withObjectiveState(ONGOING).withQuarterId(1L)
             .withQuarterLabel(QUARTER_LABEL).withKeyResultTitle(DESCRIPTION).withKeyResultType(KEY_RESULT_TYPE_METRIC)
-            .withUnit(CHF).withBaseline(5.0).withStretchGoal(20.0).withCheckInValue(15.0).withConfidence(5)
+            .withUnit(EUR).withBaseline(5.0).withStretchGoal(20.0).withCheckInValue(15.0).withConfidence(5)
             .withCheckInCreatedOn(LocalDateTime.now()).build();
 
     static Overview simpleOverview = Overview.Builder.builder().withOverviewId(OverviewId.of(4L, -1L, -1L, -1L))

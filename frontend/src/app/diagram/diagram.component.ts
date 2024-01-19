@@ -4,6 +4,9 @@ import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Router } from '@angular/router';
 import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
+import { calculateCurrentPercentage } from '../shared/common';
+import { KeyResultMetricMin } from '../shared/types/model/KeyResultMetricMin';
+import { KeyResultOrdinalMin } from '../shared/types/model/KeyResultOrdinalMin';
 
 @Component({
   selector: 'app-diagram',
@@ -13,6 +16,9 @@ import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 export class DiagramComponent implements AfterViewInit, OnChanges {
   @Input()
   overviewEntity!: OverviewEntity[];
+
+  currentNodeBackgroundColor: string = '';
+  currentNodeFontColor: string = '';
 
   constructor(private router: Router) {}
 
@@ -60,34 +66,13 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
           },
         },
         {
-          selector: '#P',
-          style: {
-            height: 200,
-            width: 200,
-            'font-size': '70px',
-            'font-family': 'OKRFont, sans-serif',
-            color: '#FFFFFF',
-            backgroundColor: '#1E5A96',
-          },
-        },
-        {
-          selector: '[id^="Team"]', // id which starts with Team
-          style: {
-            height: 160,
-            width: 160,
-            'font-size': '32px',
-            backgroundColor: '#238BCA',
-            'text-max-width': '140',
-          },
-        },
-        {
           selector: '[id^="Ob"]', // id which starts with Ob
           style: {
             height: 160,
             width: 160,
             'font-size': '18px',
             backgroundColor: '#2C97A6',
-            'text-max-width': '140',
+            'text-max-width': '120',
           },
         },
         {
@@ -97,7 +82,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
             width: 120,
             'font-size': '14px',
             backgroundColor: '#E5E8EB',
-            'text-max-width': '100',
+            'text-max-width': '80',
           },
         },
       ],
@@ -109,19 +94,18 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
 
     cy.on('tap', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
-
       if (node.id().substring(0, 2) == 'KR') {
         node.style({
-          'background-color': '#E5E8EB',
+          'background-color': this.currentNodeBackgroundColor,
+          color: this.currentNodeFontColor,
           'border-width': 0,
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
         node.style({
-          color: '#000000',
-          'background-color': '#2C97A6',
+          'background-color': this.currentNodeBackgroundColor,
+          color: this.currentNodeFontColor,
         });
       }
-
       if (node.id() == 'P') return;
       if (node.id().charAt(0) == 'T') return;
       let type: string = node.id().charAt(0) == 'O' ? 'Objective' : 'KeyResult';
@@ -133,12 +117,19 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
       let node = evt.target;
 
       if (node.id().substring(0, 2) == 'KR') {
+        let backgroundRGB = this.extractRGBNumbers(node.style().backgroundColor);
+        this.currentNodeBackgroundColor = this.rgbToHex(backgroundRGB![0], backgroundRGB![1], backgroundRGB![2]);
+        let fontRGB = this.extractRGBNumbers(node.style().color);
+        this.currentNodeFontColor = this.rgbToHex(fontRGB![0], fontRGB![1], fontRGB![2]);
         node.style({
           'background-color': 'white',
+          color: '#000000',
           'border-color': '#5D6974',
           'border-width': 1,
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
+        let numbers = this.extractRGBNumbers(node.style().backgroundColor);
+        this.currentNodeBackgroundColor = this.rgbToHex(numbers![0], numbers![1], numbers![2]);
         node.style({
           color: '#FFFFFF',
           'background-color': '#1d7e8c',
@@ -148,16 +139,16 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
 
     cy.on('mouseout', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
-
       if (node.id().substring(0, 2) == 'KR') {
         node.style({
-          'background-color': '#E5E8EB',
+          'background-color': this.currentNodeBackgroundColor,
+          color: this.currentNodeFontColor,
           'border-width': 0,
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
         node.style({
-          color: '#000000',
-          'background-color': '#2C97A6',
+          'background-color': this.currentNodeBackgroundColor,
+          color: this.currentNodeFontColor,
         });
       }
     });
@@ -166,57 +157,39 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   generateElements(data: OverviewEntity[]): any[] {
     let elements: any[] = [];
     let edges: any[] = [];
-    // let element = {
-    //   data: { id: 'P', label: 'puzzle' },
-    // };
-    // elements.push(element);
-    //
     data.forEach((overViewEntity: OverviewEntity): void => {
-      // element = {
-      //   data: {
-      //     id: 'Team' + overViewEntity.team.name,
-      //     label: this.splitLongWords(overViewEntity.team.name, 6),
-      //   },
-      // };
-      // elements.push(element);
-      // let edge = {
-      //   data: { source: 'Team' + overViewEntity.team.name, target: 'P' },
-      // };
-      // edges.push(edge);
-
       overViewEntity.objectives.forEach((objective: ObjectiveMin): void => {
         let element = {
           data: {
             id: 'Ob' + objective.id,
             label: this.adjustLabel(objective.title, 36, 15) + '\n \n ' + overViewEntity.team.name,
           },
+          style: {
+            'background-color': '#2C97A6',
+          },
         };
         elements.push(element);
-        // let edge = {
-        //   data: { source: 'Ob' + objective.id, target: 'Team' + overViewEntity.team.name },
-        // };
-        // edges.push(edge);
-
-        if (overViewEntity.team.name == 'Puzzle ITC') {
-          objective.keyResults.forEach((keyResult: KeyresultMin): void => {
-            // if (keyResult.title == 'Clap of thunder bilge aft log crows nest landlubber or just lubber overhaul') return;
-            // if (keyResult.title == 'Scourge of the seven seas blow the man down provost hail-shot Yellow Jack') return;
-            element = {
-              data: {
-                id: 'KR' + keyResult.id,
-                label: this.adjustLabel(keyResult.title, 30, 12) + '\n \n ' + overViewEntity.team.name,
-              },
-            };
-            elements.push(element);
-            let edge = {
-              data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
-            };
-            edges.push(edge);
-          });
-        }
+        // if (overViewEntity.team.name == 'Puzzle ITC') {
+        objective.keyResults.forEach((keyResult): void => {
+          let style = this.generateStyle(keyResult);
+          element = {
+            data: {
+              id: 'KR' + keyResult.id,
+              label: this.adjustLabel(keyResult.title, 25, 12) + '\n \n ' + overViewEntity.team.name,
+            },
+            style: style,
+          };
+          elements.push(element);
+          let edge = {
+            data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
+          };
+          edges.push(edge);
+        });
+        // }
       });
     });
 
+    // Static alignment demo
     let edge = {
       data: { source: 'Ob' + 19, target: 'KR' + 20 },
     };
@@ -286,5 +259,94 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
       return word;
     });
     return modifiedWords.join(' ');
+  }
+
+  generateStyle(keyResult: KeyresultMin) {
+    let style = {
+      'background-color': '#1E8A29',
+      'background-opacity': 0.8,
+      color: '#FFFFFF',
+    };
+    if (keyResult.keyResultType == 'metric') {
+      let percentages = calculateCurrentPercentage(keyResult as KeyResultMetricMin);
+      if (percentages < 30) {
+        style = {
+          'background-color': '#BA3838',
+          'background-opacity': 0.8,
+          color: '#FFFFFF',
+        };
+      } else if (percentages < 70) {
+        style = {
+          'background-color': '#FFD600',
+          'background-opacity': 0.8,
+          color: '#000000',
+        };
+      } else if (percentages < 100) {
+        style = {
+          'background-color': '#1E8A29',
+          'background-opacity': 0.8,
+          color: '#FFFFFF',
+        };
+      } else if (percentages >= 100) {
+        style = {
+          'background-color': '#000000',
+          'background-opacity': 0.8,
+          color: '#FFFFFF',
+        };
+      }
+    } else {
+      let ordinalKeyResult = keyResult as KeyResultOrdinalMin;
+      switch (ordinalKeyResult.lastCheckIn?.value) {
+        case 'FAIL':
+          style = {
+            'background-color': '#BA3838',
+            'background-opacity': 0.8,
+            color: '#FFFFFF',
+          };
+          break;
+        case 'COMMIT':
+          style = {
+            'background-color': '#FFD600',
+            'background-opacity': 0.8,
+            color: '#000000',
+          };
+          break;
+        case 'TARGET':
+          style = {
+            'background-color': '#1E8A29',
+            'background-opacity': 0.8,
+            color: '#FFFFFF',
+          };
+          break;
+        case 'STRETCH':
+          style = {
+            'background-color': '#000000',
+            'background-opacity': 0.8,
+            color: '#FFFFFF',
+          };
+          break;
+      }
+    }
+
+    return style;
+  }
+
+  componentToHex(c: any) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? '0' + hex : hex;
+  }
+
+  rgbToHex(r: any, g: any, b: any) {
+    return '#' + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+  }
+
+  extractRGBNumbers(rgbString: string) {
+    let match = rgbString.match(/(\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+      let numbers = [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
+      return numbers;
+    } else {
+      return null;
+    }
   }
 }

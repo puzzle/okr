@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
@@ -377,6 +379,57 @@ class ObjectiveValidationServiceTest {
         assertEquals(BAD_REQUEST, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
+    void validateOnCreateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+                .withEndDate(null).build();
+
+        Objective invalidObjective = Objective.Builder.builder().withTitle("Invalid Objective").withCreatedBy(user)
+                .withCreatedOn(LocalDateTime.MAX).withState(state).withTeam(team).withQuarter(backlogQuarter).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnCreate(invalidObjective));
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT", List.of("Objective", "Draft", state.toString())));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = State.class, names = { "DRAFT" }, mode = EnumSource.Mode.EXCLUDE)
+    void validateOnUpdateShouldThrowExceptionWhenQuarterIsBacklogAndStateIsNotDraft(State state) {
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+                .withEndDate(null).build();
+
+        Objective invalidObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(state).withTeam(team)
+                .withQuarter(backlogQuarter).withModifiedBy(user).build();
+
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> validator.validateOnUpdate(1L, invalidObjective));
+        List<ErrorDto> expectedErrors = List
+                .of(new ErrorDto("ATTRIBUTE_MUST_BE_DRAFT", List.of("Objective", "Draft", state.toString())));
+
+        assertEquals(BAD_REQUEST, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+    }
+
+    @Test
+    void validateOnUpdateShouldPassWhenQuarterIsBacklogAndStateIsDraft() {
+        Quarter backlogQuarter = Quarter.Builder.builder().withId(199L).withLabel("Backlog").withStartDate(null)
+                .withEndDate(null).build();
+
+        Objective validObjective = Objective.Builder.builder().withId(1L).withTitle("Invalid Objective")
+                .withCreatedBy(user).withCreatedOn(LocalDateTime.MAX).withState(State.DRAFT).withTeam(team)
+                .withQuarter(backlogQuarter).withModifiedBy(user).build();
+
+        assertDoesNotThrow(() -> validator.validateOnUpdate(1L, validObjective));
     }
 
     @Test

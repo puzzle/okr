@@ -14,7 +14,7 @@ const currentUserResolver: ResolveFn<User | undefined> = () => {
   const oauthService = inject(OAuthService);
   const userService = inject(UserService);
   if (oauthService.hasValidIdToken()) {
-    return userService.initCurrentUser();
+    return userService.getOrInitCurrentUser();
   }
   return of(undefined);
 };

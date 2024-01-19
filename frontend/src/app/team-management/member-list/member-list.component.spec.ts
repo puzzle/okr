@@ -18,6 +18,7 @@ import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.
 const userServiceMock = {
   getUsers: jest.fn(),
   reloadUsers: jest.fn(),
+  reloadCurrentUser: jest.fn(),
 };
 
 const teamServiceMock = {
@@ -185,6 +186,8 @@ describe('MemberListComponent', () => {
     expect(teamServiceMock.deleteTeam).toBeCalledWith(team.id);
     expect(routerMock.navigateByUrl).toBeCalledWith('team-management');
     expect(routerMock.navigateByUrl).toBeCalledTimes(1);
+    expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
+    expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
   }));
 
   it('addMemberToTeam should open dialog', () => {
@@ -254,5 +257,7 @@ describe('MemberListComponent', () => {
 
     expect(teamServiceMock.removeUserFromTeam).toBeCalledTimes(1);
     expect(teamServiceMock.removeUserFromTeam).toBeCalledWith(entry.id, component.selectedTeam);
+    expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
+    expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
   }));
 });

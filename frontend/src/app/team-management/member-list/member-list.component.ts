@@ -94,6 +94,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   deleteTeam(selectedTeam: Team) {
     this.teamService.deleteTeam(selectedTeam.id).subscribe(() => {
       this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
       this.router.navigateByUrl('team-management');
     });
   }
@@ -136,6 +137,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    this.teamService.removeUserFromTeam(entry.id, this.selectedTeam!).subscribe(() => this.userService.reloadUsers());
+    this.teamService.removeUserFromTeam(entry.id, this.selectedTeam!).subscribe(() => {
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
+    });
   }
 }

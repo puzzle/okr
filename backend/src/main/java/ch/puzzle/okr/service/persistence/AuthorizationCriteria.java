@@ -48,12 +48,13 @@ public class AuthorizationCriteria<T> {
         StringBuilder sb = new StringBuilder(256);
         if (hasRoleWriteAndReadAll(user)) {
             sb.append(format(" or %s.%s=:%s", alias, stateColumn, PARAM_ALL_DRAFT_STATE));
+        } else {
+            // users can read draft state of teams with admin role
+            sb.append(format(" or (%s.%s=:%s and %s.%s IN (:%s))", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
+                    teamIdColumn, PARAM_USER_TEAM_IDS));
         }
         // all users can read published state
         sb.append(format(" or %s.%s IN (:%s)", alias, stateColumn, PARAM_PUBLISHED_STATES));
-        // users can read draft state of teams with admin role
-        sb.append(format(" or %s.%s=:%s and %s.%s IN (:%s)", alias, stateColumn, PARAM_TEAM_DRAFT_STATE, alias,
-                teamIdColumn, PARAM_USER_TEAM_IDS));
         if (!sb.isEmpty()) {
             sb.delete(0, 4).insert(0, " and (").append(")");
         }
@@ -74,10 +75,11 @@ public class AuthorizationCriteria<T> {
     public void setParameters(TypedQuery<T> typedQuery, AuthorizationUser user) {
         if (hasRoleWriteAndReadAll(user)) {
             typedQuery.setParameter(PARAM_ALL_DRAFT_STATE, DRAFT);
+        } else {
+            typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
+            typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.extractTeamIds());
         }
         typedQuery.setParameter(PARAM_PUBLISHED_STATES, List.of(ONGOING, SUCCESSFUL, NOTSUCCESSFUL));
-        typedQuery.setParameter(PARAM_TEAM_DRAFT_STATE, DRAFT);
-        typedQuery.setParameter(PARAM_USER_TEAM_IDS, user.extractTeamIds());
     }
 
     private static boolean shouldAddTeamFilter(List<Long> teamIds) {

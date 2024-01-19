@@ -6,7 +6,6 @@ import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
 import { TeamMin } from '../../shared/types/model/TeamMin';
 import { TranslateService } from '@ngx-translate/core';
-import { tap } from 'rxjs';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
@@ -53,13 +52,12 @@ export class AddEditTeamDialog implements OnInit {
 
   private createNewTeam() {
     let newTeam: Team = this.teamForm.value as Team;
-    this.teamService
-      .createTeam(newTeam)
-      .pipe(tap(() => this.userService.reloadUsers()))
-      .subscribe((result) => {
-        this.dialogRef.close(result);
-        this.router.navigateByUrl('/team-management/' + result.id);
-      });
+    this.teamService.createTeam(newTeam).subscribe((result) => {
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
+      this.dialogRef.close(result);
+      this.router.navigateByUrl('/team-management/' + result.id);
+    });
   }
 
   private updateTeam() {

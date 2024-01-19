@@ -3,8 +3,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { UserService } from './user.service';
 import { users } from '../shared/testData';
 
-const response = users;
-
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
@@ -29,7 +27,7 @@ describe('UserService', () => {
 
   test('getUsers should only reload users when they are not loaded yet', (done) => {
     const spy = jest.spyOn(service, 'reloadUsers');
-    service.getUsers().subscribe((users) => {
+    service.getUsers().subscribe(() => {
       expect(spy).toBeCalledTimes(1);
       httpMock.expectOne(URL);
       service.getUsers().subscribe((users) => {
@@ -46,7 +44,7 @@ describe('UserService', () => {
 
   test('init current user should load user', (done) => {
     expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
-    service.initCurrentUser().subscribe(() => {
+    service.getOrInitCurrentUser().subscribe(() => {
       expect(service.getCurrentUser()).toBe(users[0]);
       done();
     });

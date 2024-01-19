@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../shared/types/model/User';
@@ -64,10 +64,11 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
   }
 
   addUsersToTeam(): void {
-    this.teamService
-      .addUsersToTeam(this.data.team, this.selectedUsers$.getValue())
-      .pipe(tap(() => this.userService.reloadUsers()))
-      .subscribe(() => this.dialogRef.close());
+    this.teamService.addUsersToTeam(this.data.team, this.selectedUsers$.getValue()).subscribe(() => {
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
+      this.dialogRef.close();
+    });
   }
 
   private filter(allPossibleUsers: User[], searchValue: string, selectedUsers: User[]) {

@@ -93,6 +93,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.teamService.updateOrAddTeamMembership(user, userTeam).subscribe(() => {
       this.loadUser(user.id);
       this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
     });
   }
 

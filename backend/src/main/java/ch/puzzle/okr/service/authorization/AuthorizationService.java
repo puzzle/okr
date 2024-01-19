@@ -46,10 +46,9 @@ public class AuthorizationService {
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
 
-        TenantContext.setCurrentTenant(jwtHelper.getTenantFromIssuer(token.getClaim("iss")));
-        User userFromToken = jwtConverterFactory.getJwtUserConverter().convert(token);
+        User user = jwtConverterFactory.getJwtUserConverter().convert(token);
 
-        return authorizationRegistrationService.updateOrAddAuthorizationUser(userFromToken);
+        return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
     }
 
     public void hasRoleReadByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {

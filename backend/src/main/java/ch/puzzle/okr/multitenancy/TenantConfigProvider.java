@@ -17,11 +17,11 @@ public class TenantConfigProvider {
     private final Map<String, TenantConfig> tenantConfigs = new HashMap<>();
     private final Environment env;
 
+
     public TenantConfigProvider(final @Value("${okr.tenant-ids}") String[] tenantIds,
-            final @Value("${okr.security.oauth2.resourceserver.jwt.jwk-set-uri-template}") String jwkSetUriTemplate,
-            final @Value("${okr.security.oauth2.frontend.issuer-url-template}") String frontendClientIssuerUrl,
-            final @Value("${okr.security.oauth2.frontend.client-id-template}") String frontendClientId,
-            Environment env) {
+                                final @Value("${okr.security.oauth2.resourceserver.jwt.jwk-set-uri-template}") String jwkSetUriTemplate,
+                                final @Value("${okr.security.oauth2.frontend.issuer-url-template}") String frontendClientIssuerUrl,
+                                final @Value("${okr.security.oauth2.frontend.client-id-template}") String frontendClientId, Environment env) {
         this.jwkSetUriTemplate = jwkSetUriTemplate;
         this.env = env;
 
@@ -29,7 +29,10 @@ public class TenantConfigProvider {
             tenantConfigs.put(tenantId,
                     new TenantConfig(tenantId, jwkSetUriTemplate.replace("{tenantid}", tenantId),
                             frontendClientIssuerUrl.replace("{tenantid}", tenantId),
-                            frontendClientId.replace("{tenantid}", tenantId), this.readDataSourceConfig(tenantId)));
+                            frontendClientId.replace("{tenantid}", tenantId),
+                            this.readDataSourceConfig(tenantId)
+                    )
+            );
         }
     }
 
@@ -38,11 +41,13 @@ public class TenantConfigProvider {
     }
 
     private DataSourceConfig readDataSourceConfig(String tenantId) {
-        return new DataSourceConfig(env.getProperty(MessageFormat.format("okr.datasource.driver-class-name", tenantId)),
+        return new DataSourceConfig(
+                env.getProperty("okr.datasource.driver-class-name", tenantId),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.url", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.username", tenantId)),
                 env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.password", tenantId)),
-                env.getProperty(MessageFormat.format("okr-{0}", tenantId)));
+                env.getProperty(MessageFormat.format("okr.tenants.{0}.datasource.schema", tenantId))
+        );
     }
 
     public Optional<TenantConfig> getTenantConfigById(String tenantId) {
@@ -54,7 +59,7 @@ public class TenantConfigProvider {
     }
 
     public record TenantConfig(String tenantId, String jwkSetUri, String issuerUrl, String clientId,
-            DataSourceConfig dataSourceConfig) {
+                               DataSourceConfig dataSourceConfig) {
     }
 
     public record DataSourceConfig(String driverClassName, String url, String name, String password, String schema) {

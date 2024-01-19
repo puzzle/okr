@@ -1,41 +1,39 @@
 package ch.puzzle.okr.multitenancy;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FlywayMultitenantMigrationInitializer {
-    private final MultitenantDataSource multitenantDataSource;
     private final TenantConfigProvider tenantConfigProvider;
     private final String[] scriptLocations;
 
-    public FlywayMultitenantMigrationInitializer(final MultitenantDataSource multitenantDataSource,
-            TenantConfigProvider tenantConfigProvider,
+    private final String defaultSchema = "okr_pitc";
+
+    public FlywayMultitenantMigrationInitializer(TenantConfigProvider tenantConfigProvider,
             final @Value("${spring.flyway.locations}") String[] scriptLocations) {
-        this.multitenantDataSource = multitenantDataSource;
         this.tenantConfigProvider = tenantConfigProvider;
         this.scriptLocations = scriptLocations;
     }
 
     public void migrateFlyway() {
-        this.multitenantDataSource.getResolvedDataSources().entrySet().forEach(objectDataSourceEntry -> {
-            String tenantId = (String) objectDataSourceEntry.getKey();
+        this.tenantConfigProvider.getTenantConfigs().forEach((tenantConfig) -> {
+            TenantConfigProvider.DataSourceConfig dataSourceConfig = this.tenantConfigProvider
+                    .getTenantConfigById(tenantConfig.tenantId())
+                    .map(TenantConfigProvider.TenantConfig::dataSourceConfig)
+                    .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
 
-            TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider.getTenantConfigById(tenantId)
-                    .orElseThrow(
-                            () -> new EntityNotFoundException("Cannot find tenant for configuring flyway migration"));
-
-            Flyway flyway = Flyway.configure().locations(scriptLocations).baselineOnMigrate(Boolean.TRUE)
-                    .dataSource(objectDataSourceEntry.getValue()).schemas(tenantConfig.dataSourceConfig().schema())
+            Flyway tenantSchemaFlyway = Flyway.configure()
+                    .dataSource(dataSourceConfig.url(), dataSourceConfig.name(), dataSourceConfig.password())
+                    .locations(scriptLocations)
+                    .baselineOnMigrate(Boolean.TRUE)
+                    .schemas(dataSourceConfig.schema())
+                    .defaultSchema(this.defaultSchema)
                     .load();
 
-            flyway.migrate();
+            tenantSchemaFlyway.migrate();
         });
 
     }

@@ -138,9 +138,8 @@ class TeamBusinessServiceTest {
     @Test
     void shouldDeleteTeamAndItsObjectives() {
         var team = defaultTeam(1L);
-        team.setUserTeamList(List.of(
-                UserTeam.Builder.builder().withTeam(team).withUser(new User()).withId(1L).build()
-        ));
+        team.setUserTeamList(
+                List.of(UserTeam.Builder.builder().withTeam(team).withUser(new User()).withId(1L).build()));
         when(objectiveBusinessService.getEntitiesByTeamId(team.getId())).thenReturn(objectiveList);
         when(teamPersistenceService.findById(team.getId())).thenReturn(team);
 

@@ -89,7 +89,13 @@ export class ObjectiveFormComponent implements OnInit {
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
       this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+
+      let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
+      if (currentQuarter && !GJ_REGEX_PATTERN.test(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+        quarterId = quarters[1].id;
+      }
+
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
@@ -186,16 +192,36 @@ export class ObjectiveFormComponent implements OnInit {
     } as Objective;
   }
 
-  allowedToSaveBacklog(): boolean {
+  allowedToSaveBacklog() {
     let currentQuarter: Quarter | undefined = this.quarters.find(
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
-    let isBacklogCurrent: boolean = !GJ_REGEX_PATTERN.test(currentQuarter!.label);
-    if (this.data.action == 'duplicate') return true;
-    if (this.data.objective.objectiveId) {
-      return isBacklogCurrent ? this.state == 'DRAFT' : true;
+    if (currentQuarter) {
+      let isBacklogCurrent: boolean = !GJ_REGEX_PATTERN.test(currentQuarter.label);
+      if (this.data.action == 'duplicate') return true;
+      if (this.data.objective.objectiveId) {
+        return isBacklogCurrent ? this.state == 'DRAFT' : true;
+      } else {
+        return !isBacklogCurrent;
+      }
     } else {
-      return !isBacklogCurrent;
+      return true;
+    }
+  }
+
+  allowedOption(quarter: Quarter) {
+    if (quarter.label == 'Backlog') {
+      if (this.data.action == 'duplicate') {
+        return true;
+      } else if (this.data.action == 'releaseBacklog') {
+        return false;
+      } else if (this.data.objective.objectiveId) {
+        return this.state == 'DRAFT';
+      } else {
+        return true;
+      }
+    } else {
+      return true;
     }
   }
 

@@ -5,7 +5,7 @@
     ></app-dialog-header>
   </div>
   <div *ngIf="this.data.action == 'releaseBacklog'">
-    <app-dialog-header [dialogTitle]="'Objective aus dem Backlog in Quartal veröffentlichen'"></app-dialog-header>
+    <app-dialog-header [dialogTitle]="'Objective veröffentlichen und in Quartal verschieben'"></app-dialog-header>
   </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
@@ -52,10 +52,17 @@
         <div class="d-flex row mb-1">
           <div class="d-flex flex-column gap-2 col-6">
             <label class="text-black" for="quarter">Quartal</label>
-            <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
-              <option *ngFor="let quarter of quarters$ | async; let i = index" [value]="quarter.id">
-                {{ getQuarterLabel(quarter, i) }}
-              </option>
+            <select
+              class="custom-select bg-white w-100"
+              formControlName="quarter"
+              id="quarter"
+              [attr.data-testId]="'quarterSelect'"
+            >
+              <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+                <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                  {{ getQuarterLabel(quarter, i) }}
+                </option>
+              </ng-container>
             </select>
           </div>
           <mat-checkbox

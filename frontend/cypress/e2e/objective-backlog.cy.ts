@@ -6,7 +6,7 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.visit('/?quarter=2');
   });
 
-  it.only(`Create Objective in backlog quarter`, () => {
+  it(`Create Objective in backlog quarter`, () => {
     cy.getByTestId('add-objective').first().click();
     cy.fillOutObjective('Objective in quarter backlog', 'safe-draft', 'Backlog', '', false);
 
@@ -59,11 +59,11 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.getByTestId('safe').should('be.disabled');
   });
 
-  it(`Can not make Objective public in backlog`, () => {
+  it(`Can publish Objective to another quarter from backlog`, () => {
     cy.visit('/?quarter=199');
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can not public this');
-    cy.getByTestId('safe').should('be.disabled');
+    cy.getByTestId('safe').should('not.exist');
     cy.getByTestId('safe-draft').click();
 
     cy.getByTestId('objective')
@@ -75,7 +75,13 @@ describe('OKR Objective Backlog e2e tests', () => {
     cy.wait(500);
     cy.contains('Objective bearbeiten');
     cy.contains('Objective duplizieren');
-    cy.contains('Objective veröffentlichen').should('not.exist');
+    cy.contains('Objective veröffentlichen');
+
+    cy.get('.objective-menu-option').contains('Objective veröffentlichen').click();
+
+    cy.contains('Objective veröffentlichen und in Quartal verschieben');
+
+    cy.get('select#quarter').find(':selected').contains('hello');
   });
 
   it(`Can edit Objective title in backlog`, () => {

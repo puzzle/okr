@@ -41,4 +41,13 @@ public class QuarterValidationService
         }
     }
 
+    public void validateOnGeneration(Quarter quarter) {
+        if (quarter.getStartDate() == null) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
+                    List.of("StartDate", quarter.getLabel()));
+        } else if (quarter.getEndDate() == null) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
+                    List.of("EndDate", quarter.getLabel()));
+        }
+    }
 }

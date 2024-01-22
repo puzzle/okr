@@ -64,13 +64,7 @@ public class QuarterBusinessService {
         Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
                 .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
-        if (quarter.getStartDate() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("StartDate", quarter.getLabel()));
-        } else if (quarter.getEndDate() == null) {
-            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("EndDate", quarter.getLabel()));
-        }
+        validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
 

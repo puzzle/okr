@@ -32,6 +32,7 @@ import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginato
 import { MatI18nPaginatorIntl } from './mat-i18n-paginator-intel';
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
+import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { MemberListTableComponent } from './member-list/member-list-table/member
     AddUserTeamComponent,
     TeamManagementMobileFilterComponent,
     MemberListTableComponent,
+    MemberListMobileComponent,
   ],
   imports: [
     CommonModule,

@@ -68,10 +68,12 @@
   </div>
   <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
-  <ng-container class="d-none d-md-block">
+  <div class="d-none d-md-block">
     <app-member-list-table [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-table>
-  </ng-container>
-  <ng-container class="d-block d-md-none"></ng-container>
+  </div>
+  <div class="d-block d-md-none">
+    <app-member-list-mobile [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-mobile>
+  </div>
 
   <mat-paginator
     [selectConfig]="selectConfig"

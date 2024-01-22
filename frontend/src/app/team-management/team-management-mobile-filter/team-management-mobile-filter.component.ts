@@ -42,7 +42,7 @@ export class TeamManagementMobileFilterComponent {
     this.teams = teams;
     const teamId = params.get('teamId');
     if (teamId) {
-      this.selectedTeam = teams.find((t) => (t.id = parseInt(teamId)));
+      this.selectedTeam = teams.find((t) => t.id === parseInt(teamId));
       return;
     }
     this.selectedTeam = this.ALL_TEAMS;

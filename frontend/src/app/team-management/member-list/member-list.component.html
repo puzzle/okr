@@ -1,17 +1,17 @@
 <div xmlns="http://www.w3.org/1999/html">
   <div id="member-header">
     <div class="title">
-      <h3 *ngIf="selectedTeam">
-        <span>{{ selectedTeam.name }}</span>
+      <h3 *ngIf="selectedTeam$.value">
+        <span>{{ selectedTeam$.value!.name }}</span>
         <mat-icon
           class="mx-2 cursor-pointer d-none d-md-inline-block"
-          *ngIf="selectedTeam.isWriteable"
+          *ngIf="selectedTeam$.value!.isWriteable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
           >edit</mat-icon
         >
       </h3>
-      <h3 *ngIf="!selectedTeam">Alle Teams</h3>
+      <h3 *ngIf="!selectedTeam$.value">Alle Teams</h3>
       <p class="d-none d-md-block">Members: {{ dataSource.data.length }}</p>
     </div>
     <div class="action-button d-none d-md-flex">
@@ -42,7 +42,7 @@
         </span>
       </button>
     </div>
-    <div class="menu" *ngIf="selectedTeam?.isWriteable">
+    <div class="menu" *ngIf="selectedTeam$.value?.isWriteable">
       <button
         mat-icon-button
         [matMenuTriggerFor]="menu"
@@ -54,13 +54,13 @@
       <mat-menu #menu="matMenu">
         <button
           class="d-block d-md-none"
-          (click)="deleteTeam(selectedTeam!)"
+          (click)="deleteTeam(selectedTeam$.value!)"
           mat-menu-item
           [attr.data-testId]="'teamDeleteButton'"
         >
           <span>Member hinzufügen</span>
         </button>
-        <button (click)="deleteTeam(selectedTeam!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+        <button (click)="deleteTeam(selectedTeam$.value!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
           <span>Team löschen</span>
         </button>
       </mat-menu>
@@ -68,60 +68,11 @@
   </div>
   <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
-    <ng-container matColumnDef="icon">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <mat-icon>person_outline</mat-icon>
-      </td>
-    </ng-container>
+  <ng-container class="d-none d-md-block">
+    <app-member-list-table [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-table>
+  </ng-container>
+  <ng-container class="d-block d-md-none"></ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">
-        <a [routerLink]="getMemberDetailsLink(element, selectedTeam)">
-          {{ element.firstname }} {{ element.lastname }}
-        </a>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="roles">
-      <th mat-header-cell *matHeaderCellDef>Rolle</th>
-      <td mat-cell *matCellDef="let element">{{ element.roles | roles }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="teams">
-      <th mat-header-cell *matHeaderCellDef>Teams</th>
-      <td mat-cell *matCellDef="let element" [title]="element.teams | teams: undefined">
-        {{ element.teams | teams: 2 }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button
-          [attr.data-testId]="'remove-from-member-list'"
-          (click)="removeMemberFromTeam(element, $event)"
-          mat-icon-button
-        >
-          <mat-icon class="d-flex justify-content-center align-items-center"> delete </mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      class="cursor-pointer"
-      [routerLink]="getMemberDetailsLink(row, selectedTeam)"
-      *matRowDef="let row; columns: displayedColumns"
-    ></tr>
-
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="4">Keine Members</td>
-    </tr>
-  </table>
   <mat-paginator
     [selectConfig]="selectConfig"
     [pageSizeOptions]="[20, 50, 100]"

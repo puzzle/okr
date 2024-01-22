@@ -1,0 +1,11 @@
+div {
+  display: block;
+  width: 100px;
+
+  @media (min-width: 576px) {
+    width: 180px;
+  }
+  @media (min-width: 992px) {
+    width: 274px;
+  }
+}

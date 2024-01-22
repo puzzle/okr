@@ -4,7 +4,7 @@
       <h3 *ngIf="selectedTeam">
         <span>{{ selectedTeam.name }}</span>
         <mat-icon
-          class="mx-2 cursor-pointer"
+          class="mx-2 cursor-pointer d-none d-md-inline-block"
           *ngIf="selectedTeam.isWriteable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
@@ -12,9 +12,9 @@
         >
       </h3>
       <h3 *ngIf="!selectedTeam">Alle Teams</h3>
-      <p>Members: {{ dataSource.data.length }}</p>
+      <p class="d-none d-md-block">Members: {{ dataSource.data.length }}</p>
     </div>
-    <div class="action-button">
+    <div class="action-button d-none d-md-flex">
       <button
         *ngIf="showAddMemberToTeam()"
         (click)="addMemberToTeam()"
@@ -49,16 +49,24 @@
         aria-label="Example icon-button with a menu"
         [attr.data-testId]="'teamMoreButton'"
       >
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon class="d-flex justify-content-center align-items-center">more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
+        <button
+          class="d-block d-md-none"
+          (click)="deleteTeam(selectedTeam!)"
+          mat-menu-item
+          [attr.data-testId]="'teamDeleteButton'"
+        >
+          <span>Member hinzufügen</span>
+        </button>
         <button (click)="deleteTeam(selectedTeam!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
-          >
           <span>Team löschen</span>
         </button>
       </mat-menu>
     </div>
   </div>
+  <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
     <ng-container matColumnDef="icon">

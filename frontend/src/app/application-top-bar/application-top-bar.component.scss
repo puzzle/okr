@@ -4,19 +4,6 @@
   height: $top-bar-height;
 }
 
-#topbar-team {
-  font-size: 19px;
-}
-
-#topbar-help {
-  margin-top: -1px;
-  font-size: 15px;
-}
-
-#topbar-user {
-  font-size: 18px;
-}
-
 #okrTopbar {
   display: flex;
   position: fixed;
@@ -35,7 +22,7 @@
   color: white !important;
   text-decoration: none;
   height: 100%;
-  gap: 5px;
+  gap: 1px;
   font-size: 16px;
   padding: 10px;
   border-radius: 8px;
@@ -48,6 +35,8 @@
     align-items: center;
     text-align: center;
     transform: scale(1) !important;
+    margin-top: -1px;
+    font-size: 18px;
   }
 
   &:focus,

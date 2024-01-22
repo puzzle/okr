@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -6,4 +8,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent {
+  readonly PATH_PREFIX = '../assets/icons/';
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer,
+  ) {
+    this.matIconRegistry.addSvgIcon(
+      'pz-menu-icon',
+      this.domSanitizer.bypassSecurityTrustResourceUrl(this.PATH_PREFIX + 'three-dot-menu-icon.svg'),
+    );
+  }
+}

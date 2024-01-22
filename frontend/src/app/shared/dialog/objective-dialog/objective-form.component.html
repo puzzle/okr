@@ -4,13 +4,16 @@
       [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' duplizieren'"
     ></app-dialog-header>
   </div>
+  <div *ngIf="this.data.action == 'releaseBacklog'">
+    <app-dialog-header [dialogTitle]="'Objective aus dem Backlog in Quartal veröffentlichen'"></app-dialog-header>
+  </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
       *ngIf="!data.objective.objectiveId"
       [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
     ></app-dialog-header>
     <app-dialog-header
-      *ngIf="data.objective.objectiveId"
+      *ngIf="data.objective.objectiveId && this.data.action != 'releaseBacklog'"
       [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
     ></app-dialog-header>
   </div>

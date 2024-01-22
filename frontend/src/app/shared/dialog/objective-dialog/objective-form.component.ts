@@ -13,7 +13,7 @@ import { Objective } from '../../types/model/Objective';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -190,7 +190,7 @@ export class ObjectiveFormComponent implements OnInit {
     let currentQuarter: Quarter | undefined = this.quarters.find(
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
-    let isBacklogCurrent: boolean = currentQuarter?.startDate == null && currentQuarter?.endDate == null;
+    let isBacklogCurrent: boolean = !GJ_REGEX_PATTERN.test(currentQuarter!.label);
     if (this.data.action == 'duplicate') return true;
     if (this.data.objective.objectiveId) {
       return isBacklogCurrent ? this.state == 'DRAFT' : true;

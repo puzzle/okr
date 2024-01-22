@@ -104,19 +104,20 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    return this.isBacklogQuarter
-      ? this.getDefaultMenuActions()
-      : [
-          ...this.getDefaultMenuActions(),
-          {
-            displayName: 'Objective veröffentlichen',
-            action: 'release',
-            dialog: {
-              dialog: ConfirmDialogComponent,
-              data: { title: 'Objective', action: 'release' },
-            },
-          },
-        ];
+    let element = {
+      displayName: 'Objective veröffentlichen',
+      action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+      dialog: {
+        dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
+        data: {
+          title: 'Objective',
+          action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+          objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
+        },
+      },
+    };
+
+    return [...this.getDefaultMenuActions(), element];
   }
 
   getDefaultMenuActions() {
@@ -192,6 +193,8 @@ export class ObjectiveComponent implements OnInit {
         } else if (menuEntry.action == 'release') {
           this.releaseObjective(objective);
         } else if (menuEntry.action == 'duplicate') {
+          this.refreshDataService.markDataRefresh();
+        } else if (menuEntry.action == 'releaseBacklog') {
           this.refreshDataService.markDataRefresh();
         } else if (menuEntry.action == 'todraft') {
           this.objectiveBackToDraft(objective);

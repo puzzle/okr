@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
@@ -63,8 +65,17 @@ class TeamBusinessServiceTest {
     @BeforeEach
     void setUp() {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
+        this.team1.setUserTeamList(List.of(
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()
+        ));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
+        this.team2.setUserTeamList(List.of(
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()
+        ));;
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
+        this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
         this.objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
         this.objectiveCompleted = Objective.Builder.builder().withId(6L).withTitle("Objective 1").withState(SUCCESSFUL)
@@ -178,6 +189,8 @@ class TeamBusinessServiceTest {
     void removeUserFromTeam_shouldRemoveUser() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        when(teamPersistenceService.findById(team2.getId())).thenReturn(team2);
+
         teamBusinessService.removeUserFromTeam(team2.getId(), user.getId());
         assertEquals(2, user.getUserTeamList().size());
         assertEquals(user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
@@ -188,8 +201,24 @@ class TeamBusinessServiceTest {
     void removeUserFromTeam_shouldThrowExceptionWhenNoTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
+
         assertThrows(RuntimeException.class, () -> teamBusinessService.removeUserFromTeam(team2.getId(), user.getId()));
     }
+
+    @Test
+    void removeUserFromTeam_shouldThrowExceptionWhenLastAdminShouldBeRemoved() {
+        var user = defaultUserWithTeams(2L, List.of(team1), List.of(team3));
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+        when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
+
+        assertThrows(
+                OkrResponseStatusException.class,
+                () -> teamBusinessService.removeUserFromTeam(team1.getId(), user.getId()),
+                ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString()
+        );
+    }
+
 
     @Test
     void updateOrAddTeamMembership_shouldUpdateIfTeamFound() {

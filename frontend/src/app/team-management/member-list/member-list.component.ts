@@ -118,7 +118,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     const dialogConfig = OKR_DIALOG_CONFIG;
     dialogConfig.data = {
       team: this.selectedTeam,
-      currentUsersOfTeam: this.dataSource,
+      currentUsersOfTeam: this.dataSource.data,
     };
     const dialogRef = this.dialog.open(AddMemberToTeamDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());

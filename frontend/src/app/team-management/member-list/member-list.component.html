@@ -92,7 +92,11 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
-        <button (click)="removeMemberFromTeam(element, $event)" mat-icon-button>
+        <button
+          [attr.data-testId]="'remove-from-member-list'"
+          (click)="removeMemberFromTeam(element, $event)"
+          mat-icon-button
+        >
           <mat-icon class="d-flex justify-content-center align-items-center"> delete </mat-icon>
         </button>
       </td>

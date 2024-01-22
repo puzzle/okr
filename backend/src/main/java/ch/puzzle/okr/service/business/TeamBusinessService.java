@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
@@ -10,6 +12,7 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -114,13 +117,26 @@ public class TeamBusinessService {
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
         var user = userPersistenceService.findById(userId);
+        checkTeamHasAtLeastOneAdmin(teamId, user);
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
-                .orElseThrow(() -> new RuntimeException("No team removed from userTeam list"));
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "No team found to removed from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
         userPersistenceService.save(user);
         cacheService.emptyAuthorizationUsersCache();
+    }
+
+    private void checkTeamHasAtLeastOneAdmin(long teamId, User user) {
+        var team = this.teamPersistenceService.findById(teamId);
+        team.getUserTeamList().stream()
+                .filter(ut -> ut.isTeamAdmin()
+                        && !Objects.equals(ut.getUser().getId(), user.getId()))
+                .findAny()
+                .orElseThrow(() -> new OkrResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        ErrorKey.TRIED_TO_DELETE_LAST_ADMIN
+                ));
     }
 
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {

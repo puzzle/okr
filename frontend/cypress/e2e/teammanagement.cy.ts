@@ -36,6 +36,17 @@ describe('Team management tests', () => {
       cy.contains(teamName);
     });
 
+    it('Try to remove last admin of team should not work', () => {
+      cy.intercept('PUT', '**/removeuser').as('removeUser');
+
+      cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
+      cy.getByTestId('remove-from-member-list').click();
+
+      cy.wait('@removeUser');
+
+      cy.contains('Der letzte Administrator eines Teams kann nicht entfernt werden').should('exist');
+    });
+
     it('Edit team', () => {
       cy.intercept('GET', '**/users').as('getUsers');
       cy.intercept('GET', '**/teams').as('getTeams');

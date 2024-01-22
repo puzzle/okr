@@ -30,6 +30,7 @@ import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
 import { A11yModule } from '@angular/cdk/a11y';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatI18nPaginatorIntl } from './mat-i18n-paginator-intel';
+import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { MatI18nPaginatorIntl } from './mat-i18n-paginator-intel';
     MemberDetailComponent,
     TeamRoleDropdownComponent,
     AddUserTeamComponent,
+    TeamManagementMobileFilterComponent,
   ],
   imports: [
     CommonModule,

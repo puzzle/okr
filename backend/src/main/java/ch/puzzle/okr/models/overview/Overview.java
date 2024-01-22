@@ -8,7 +8,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import org.hibernate.annotations.Immutable;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,8 +24,6 @@ public class Overview implements WriteableInterface {
     private LocalDateTime objectiveCreatedOn;
     private Long quarterId;
     private String quarterLabel;
-    private LocalDate quarterStartDate;
-    private LocalDate quarterEndDate;
     private String keyResultTitle;
     private String keyResultType;
     private Double baseline;
@@ -54,8 +51,6 @@ public class Overview implements WriteableInterface {
         objectiveCreatedOn = builder.objectiveCreatedOn;
         quarterId = builder.quarterId;
         quarterLabel = builder.quarterLabel;
-        quarterStartDate = builder.quarterStartDate;
-        quarterEndDate = builder.quarterEndDate;
         keyResultTitle = builder.keyResultTitle;
         keyResultType = builder.keyResultType;
         baseline = builder.baseline;
@@ -100,14 +95,6 @@ public class Overview implements WriteableInterface {
 
     public String getQuarterLabel() {
         return quarterLabel;
-    }
-
-    public LocalDate getQuarterStartDate() {
-        return quarterStartDate;
-    }
-
-    public LocalDate getQuarterEndDate() {
-        return quarterEndDate;
     }
 
     public String getKeyResultTitle() {
@@ -173,10 +160,9 @@ public class Overview implements WriteableInterface {
         return "Overview{" + "overviewId=" + overviewId + ", teamVersion='" + teamVersion + ", teamName='" + teamName
                 + '\'' + ", objectiveTitle='" + objectiveTitle + '\'' + ", objectiveState=" + objectiveState
                 + ", objectiveCreatedOn=" + objectiveCreatedOn + ", quarterId=" + quarterId + ", quarterLabel='"
-                + quarterLabel + ", quarterStartDate='" + quarterStartDate + ", quarterEndDate='" + quarterEndDate
-                + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='" + keyResultType + '\''
-                + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit + '\''
-                + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
+                + quarterLabel + '\'' + ", keyResultTitle='" + keyResultTitle + '\'' + ", keyResultType='"
+                + keyResultType + '\'' + ", baseline=" + baseline + ", stretchGoal=" + stretchGoal + ", unit='" + unit
+                + '\'' + ", commitZone='" + commitZone + '\'' + ", targetZone='" + targetZone + '\'' + ", stretchZone='"
                 + stretchZone + '\'' + ", checkInValue=" + checkInValue + ", checkInZone='" + checkInZone + '\''
                 + ", confidence=" + confidence + ", createdOn=" + checkInCreatedOn + ", writeable=" + writeable + '\''
                 + '}';
@@ -191,8 +177,6 @@ public class Overview implements WriteableInterface {
         private LocalDateTime objectiveCreatedOn;
         private Long quarterId;
         private String quarterLabel;
-        private LocalDate quarterStartDate;
-        private LocalDate quarterEndDate;
         private String keyResultTitle;
         private String keyResultType;
         private Double baseline;
@@ -250,16 +234,6 @@ public class Overview implements WriteableInterface {
 
         public Builder withQuarterLabel(String quarterLabel) {
             this.quarterLabel = quarterLabel;
-            return this;
-        }
-
-        public Builder withQuarterStartDate(LocalDate quarterStartDate) {
-            this.quarterStartDate = quarterStartDate;
-            return this;
-        }
-
-        public Builder withQuarterEndDate(LocalDate quarterEndDate) {
-            this.quarterEndDate = quarterEndDate;
             return this;
         }
 

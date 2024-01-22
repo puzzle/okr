@@ -9,8 +9,7 @@ export interface Objective {
   state: State;
   teamId: number;
   quarterId: number;
-  quarterStartDate: Date;
-  quarterEndDate: Date;
+  quarterLabel: string;
   createdOn?: Date;
   modifiedOn?: Date;
   createdBy?: User;

@@ -15,6 +15,7 @@ import { Objective } from '../shared/types/model/Objective';
 import { isMobileDevice, trackByFn } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-column',
@@ -51,7 +52,7 @@ export class ObjectiveComponent implements OnInit {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
     }
-    if (this.objective$.value.quarter.startDate == null && this.objective$.value.quarter.endDate == null) {
+    if (!GJ_REGEX_PATTERN.test(this.objective$.value.quarter.label)) {
       this.isBacklogQuarter = true;
     }
   }

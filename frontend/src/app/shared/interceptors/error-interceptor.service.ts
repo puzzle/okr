@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
+  GJ_REGEX_PATTERN,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
 } from '../constantLibary';
@@ -59,7 +60,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     if (!successMessageObj) return;
 
     let messageKey = successMessageObj.key;
-    let isBacklogQuarter = response.body?.quarterStartDate == null && response.body?.quarterEndDate == null;
+    let isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
     if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
       messageKey += '_BACKLOG';
     }

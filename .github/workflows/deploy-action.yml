@@ -60,7 +60,7 @@ jobs:
           outputs: type=docker,dest=/tmp/okr-docker-image.tar
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: okr-image
           path: /tmp/okr-docker-image.tar

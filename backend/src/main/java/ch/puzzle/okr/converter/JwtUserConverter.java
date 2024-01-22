@@ -21,11 +21,11 @@ public class JwtUserConverter implements Converter<Jwt, User> {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUserConverter.class);
 
-    @Value("${okr.jwt.user.firstname}")
+    @Value("${okr.jwt.claim.firstname}")
     private String firstname;
-    @Value("${okr.jwt.user.lastname}")
+    @Value("${okr.jwt.claim.lastname}")
     private String lastname;
-    @Value("${okr.jwt.user.email}")
+    @Value("${okr.jwt.claim.email}")
     private String email;
 
     @Override
@@ -34,9 +34,12 @@ public class JwtUserConverter implements Converter<Jwt, User> {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder().withFirstname(claims.get(firstname).toString())
-                    .withLastname(claims.get(lastname).toString()).withEmail(claims.get(email).toString())
-                    .withUserTeamList(new ArrayList<>()).build();
+            return User.Builder.builder()
+                    .withFirstname(claims.get(firstname).toString())
+                    .withLastname(claims.get(lastname).toString())
+                    .withEmail(claims.get(email).toString())
+                    .withUserTeamList(new ArrayList<>())
+                    .build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);

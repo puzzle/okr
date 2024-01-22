@@ -31,9 +31,13 @@ public class AuthorizationService {
     private final JwtConverterFactory jwtConverterFactory;
     private final JwtHelper jwtHelper;
 
-    public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
-            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtConverterFactory jwtConverterFactory, JwtHelper jwtHelper) {
+    public AuthorizationService(
+            AuthorizationRegistrationService authorizationRegistrationService,
+            ObjectivePersistenceService objectivePersistenceService,
+            ActionPersistenceService actionPersistenceService,
+            JwtConverterFactory jwtConverterFactory,
+            JwtHelper jwtHelper
+    ) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
@@ -46,7 +50,7 @@ public class AuthorizationService {
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
 
-        User user = jwtConverterFactory.getJwtUserConverter().convert(token);
+        User user = jwtHelper.getUserFormJwt(token);
 
         return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
     }

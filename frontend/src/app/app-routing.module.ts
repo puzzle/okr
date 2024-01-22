@@ -50,6 +50,8 @@ const routes: Routes = [
     canActivate: [authGuard],
     resolve: { user: currentUserResolver },
   },
+  { path: 'objective', redirectTo: 'details/objective' },
+  { path: 'keyresult', redirectTo: 'details/keyresult' },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 

@@ -73,7 +73,7 @@ class TeamBusinessServiceTest {
         this.team2.setUserTeamList(List.of(
                 UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
                 UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()
-        ));;
+        ));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();

@@ -35,8 +35,7 @@ export function optionalValue(param: object): { [p: string]: any } {
   );
 }
 export function isLastCheckInNegative(baseline: number, stretchGoal: number, value: number): boolean {
-  if (value < baseline && baseline <= stretchGoal) return true;
-  return value > baseline && baseline > stretchGoal;
+  return (value > baseline && baseline > stretchGoal) || (value < baseline && baseline <= stretchGoal);
 }
 
 export function calculateCurrentPercentage(keyResultMetric: KeyResultMetricMin): number {

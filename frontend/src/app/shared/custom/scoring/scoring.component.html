@@ -20,14 +20,7 @@
         <span class="okr-score">
           <span #fail [attr.data-testId]="'fail'" class="child h-100 d-flex align-items-center">
             <div
-              *ngIf="
-                keyResult.keyResultType == 'metric' &&
-                isLastCheckInNegative(
-                  castToMetric().baseline,
-                  castToMetric().stretchGoal,
-                  +(castToMetric().lastCheckIn?.value || castToMetric().baseline)
-                )
-              "
+              *ngIf="keyResult.keyResultType == 'metric' && calculateCurrentPercentage(castToMetric()) < 1"
               class="fs-6 text-white fw-bold text-center score-red scoring-error-badge rounded-circle"
             >
               !

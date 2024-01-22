@@ -139,7 +139,8 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
       return 'score-green';
     } else if (this.commitPercent > 0 || (this.failPercent == 100 && this.keyResult.keyResultType === 'metric')) {
       return 'score-yellow';
-    } else if (this.failPercent > 0) {
+    } else if (this.failPercent >= 3.3333) {
+      // 3.3333% because if lower fail is not visible in overview and we display !
       return 'score-red';
     } else {
       return null;
@@ -176,4 +177,6 @@ export class ScoringComponent implements OnInit, AfterViewInit, OnChanges {
   castToMetric(): KeyResultMetricMin {
     return this.keyResult as KeyResultMetricMin;
   }
+
+  protected readonly calculateCurrentPercentage = calculateCurrentPercentage;
 }

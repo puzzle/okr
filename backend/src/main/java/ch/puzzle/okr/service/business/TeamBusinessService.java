@@ -117,18 +117,21 @@ public class TeamBusinessService {
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
         var user = userPersistenceService.findById(userId);
-        checkTeamHasAtLeastOneAdmin(teamId, user);
+        var team = this.teamPersistenceService.findById(teamId);
+
+        checkTeamHasAtLeastOneAdmin(team, user);
+
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "No team found to removed from userTeam list"));
         userTeamList.remove(userTeamToRemove);
+        team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
         userPersistenceService.save(user);
         cacheService.emptyAuthorizationUsersCache();
     }
 
-    private void checkTeamHasAtLeastOneAdmin(long teamId, User user) {
-        var team = this.teamPersistenceService.findById(teamId);
+    private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
         team.getUserTeamList().stream()
                 .filter(ut -> ut.isTeamAdmin()
                         && !Objects.equals(ut.getUser().getId(), user.getId()))

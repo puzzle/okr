@@ -1,4 +1,4 @@
-import { isInValid } from '../../src/app/shared/common';
+import { isLastCheckInNegative } from '../../src/app/shared/common';
 
 interface ScoringValue {
   failPercent: number;
@@ -18,13 +18,14 @@ export function validateScoring(isOverview: boolean, percentage: number) {
   validateScoringWidth('commit', scoringValue.commitPercent, isOverview);
   validateScoringWidth('target', scoringValue.targetPercent, isOverview);
 
+  if (percentage == 0) return;
   validateScoringColor('fail', rgbCode, isOverview);
   validateScoringColor('commit', rgbCode, isOverview);
   validateScoringColor('target', rgbCode, isOverview);
 }
 
 export function getPercentageMetric(baseline: number, stretchGoal: number, value: number) {
-  if (isInValid(baseline, stretchGoal, value)) {
+  if (isLastCheckInNegative(baseline, stretchGoal, value)) {
     return -1;
   }
   return (Math.abs(value - baseline) / Math.abs(stretchGoal - baseline)) * 100;
@@ -58,7 +59,7 @@ function validateScoringColor(zone: string, rgbCode: string, isOverview: boolean
     checkVisibilityOfScoringComponent(isOverview, 'none', 'normal-scoring');
   } else {
     checkVisibilityOfScoringComponent(isOverview, 'none', 'star-scoring');
-    checkVisibilityOfScoringComponent(isOverview, 'block', 'normal-scoring');
+    checkVisibilityOfScoringComponent(isOverview, 'flex', 'normal-scoring');
   }
 }
 

@@ -16,7 +16,7 @@ describe('OKR Overview', () => {
   });
 
   it('Check font ', () => {
-    cy.get('.team-title').first().invoke('css', 'font-family').should('eq', 'Roboto');
+    cy.get('.team-title').first().invoke('css', 'font-family').should('eq', 'Roboto, sans-serif');
     cy.get('.team-title').first().invoke('css', 'font-weight').should('eq', '700');
   });
 });

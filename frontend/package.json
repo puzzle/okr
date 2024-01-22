@@ -54,7 +54,7 @@
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.0.0",
     "ngx-translate-testing": "^7.0.0",
-    "prettier": "^3.1.0",
+    "prettier": "^3.2.4",
     "typescript": "^5.2.2"
   },
   "jest": {

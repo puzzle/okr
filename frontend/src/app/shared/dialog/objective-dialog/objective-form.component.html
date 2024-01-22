@@ -86,6 +86,7 @@
         Als Draft speichern
       </button>
       <button
+        *ngIf="allowedToSaveBacklog()"
         [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
         color="primary"
         mat-stroked-button

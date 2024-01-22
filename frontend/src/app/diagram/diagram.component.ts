@@ -31,6 +31,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   }
 
   generateDiagram(data: OverviewEntity[]): void {
+    if (data.length == 0) return;
     let generatedData: any[] = this.generateElements(data);
 
     let cy = cytoscape({
@@ -116,11 +117,12 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
     cy.on('mouseover', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
 
+      let backgroundRGB = this.extractRGBNumbers(node.style().backgroundColor);
+      this.currentNodeBackgroundColor = this.rgbToHex(backgroundRGB![0], backgroundRGB![1], backgroundRGB![2]);
+      let fontRGB = this.extractRGBNumbers(node.style().color);
+      this.currentNodeFontColor = this.rgbToHex(fontRGB![0], fontRGB![1], fontRGB![2]);
+
       if (node.id().substring(0, 2) == 'KR') {
-        let backgroundRGB = this.extractRGBNumbers(node.style().backgroundColor);
-        this.currentNodeBackgroundColor = this.rgbToHex(backgroundRGB![0], backgroundRGB![1], backgroundRGB![2]);
-        let fontRGB = this.extractRGBNumbers(node.style().color);
-        this.currentNodeFontColor = this.rgbToHex(fontRGB![0], fontRGB![1], fontRGB![2]);
         node.style({
           'background-color': 'white',
           color: '#000000',
@@ -128,8 +130,6 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
           'border-width': 1,
         });
       } else if (node.id().substring(0, 2) == 'Ob') {
-        let numbers = this.extractRGBNumbers(node.style().backgroundColor);
-        this.currentNodeBackgroundColor = this.rgbToHex(numbers![0], numbers![1], numbers![2]);
         node.style({
           color: '#FFFFFF',
           'background-color': '#1d7e8c',

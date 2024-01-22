@@ -4,6 +4,7 @@
 <app-application-banner id="bannerComponent"></app-application-banner>
 <div id="overview" class="overviewContainer px-sm-4" [ngStyle]="{ 'padding-top.px': overviewPadding | async }">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+
     <mat-tab label="Overview">
       <app-team
         [hasAdminAccess]="hasAdminAccess"
@@ -16,8 +17,10 @@
         <img src="assets/images/puzzle-p.svg" alt="" width="242" class="puzzle-logo" />
       </div>
     </mat-tab>
-    <mat-tab label="Diagram">
-      <app-diagram [overviewEntity]="(overviewEntities$ | async) || []"></app-diagram>
+    <mat-tab label="Netz">
+<!--      <ng-template matTabContent>-->
+        <app-diagram [overviewEntity]="(overviewEntities$ | async) || []"></app-diagram>
+<!--      </ng-template>-->
     </mat-tab>
   </mat-tab-group>
 </div>

@@ -1,8 +1,5 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.security.JwtHelper;
-import ch.puzzle.okr.multitenancy.TenantContext;
-import ch.puzzle.okr.converter.JwtConverterFactory;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Action;
 import ch.puzzle.okr.models.Objective;
@@ -11,6 +8,7 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.checkin.CheckIn;
 import ch.puzzle.okr.models.keyresult.KeyResult;
+import ch.puzzle.okr.security.JwtHelper;
 import ch.puzzle.okr.service.persistence.ActionPersistenceService;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
 import org.springframework.security.core.Authentication;
@@ -28,20 +26,17 @@ public class AuthorizationService {
     private final AuthorizationRegistrationService authorizationRegistrationService;
     private final ObjectivePersistenceService objectivePersistenceService;
     private final ActionPersistenceService actionPersistenceService;
-    private final JwtConverterFactory jwtConverterFactory;
     private final JwtHelper jwtHelper;
 
     public AuthorizationService(
             AuthorizationRegistrationService authorizationRegistrationService,
             ObjectivePersistenceService objectivePersistenceService,
             ActionPersistenceService actionPersistenceService,
-            JwtConverterFactory jwtConverterFactory,
             JwtHelper jwtHelper
     ) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
-        this.jwtConverterFactory = jwtConverterFactory;
         this.jwtHelper = jwtHelper;
     }
 
@@ -149,7 +144,7 @@ public class AuthorizationService {
     }
 
     private void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
-            OkrResponseStatusException notAuthorizedException) {
+                                     OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
         }
@@ -170,12 +165,5 @@ public class AuthorizationService {
 
     private boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team) {
         return hasRoleWriteForTeam(authorizationUser, team.getId());
-    }
-
-    public static boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Long teamId) {
-        if (hasRoleWriteAndReadAll(authorizationUser)) {
-            return true;
-        }
-        return authorizationUser.isUserAdminInTeam(teamId);
     }
 }

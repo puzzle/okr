@@ -1,9 +1,12 @@
 package ch.puzzle.okr.multitenancy;
 
+import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,6 +15,8 @@ import java.text.MessageFormat;
 import java.util.*;
 
 public abstract class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider {
+    private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
+
     private final Map<String, ConnectionProvider> connectionProviderMap;
 
     public AbstractSchemaMultiTenantConnectionProvider() {
@@ -24,6 +29,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
 
         String schema = Objects.equals(tenantIdentifier, "public") ? tenantIdentifier : MessageFormat.format("okr_{0}", tenantIdentifier);
 
+        logger.debug("Setting schema to {}", schema);
         connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
 
         return connection;
@@ -66,7 +72,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
         try {
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
-            if(!Objects.equals(tenantId, "public")) {
+            if (!Objects.equals(tenantId, "public")) {
                 Object put = properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantId));
             }
             return properties;

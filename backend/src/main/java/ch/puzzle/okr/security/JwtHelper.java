@@ -22,20 +22,17 @@ public class JwtHelper {
     private static final Logger logger = LoggerFactory.getLogger(JwtHelper.class);
 
     private final TenantConfigProvider tenantConfigProvider;
-    private final String username;
     private final String firstname;
     private final String lastname;
     private final String email;
 
     public JwtHelper(
             TenantConfigProvider tenantConfigProvider,
-            @Value("${okr.jwt.claim.username}") final String username,
             @Value("${okr.jwt.claim.firstname}") final String firstname,
             @Value("${okr.jwt.claim.lastname}") final String lastname,
             @Value("${okr.jwt.claim.email}") final String email
     ) {
         this.tenantConfigProvider = tenantConfigProvider;
-        this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -58,7 +55,6 @@ public class JwtHelper {
 
         try {
             return User.Builder.builder()
-                    .withUsername(claims.get(username).toString())
                     .withFirstname(claims.get(firstname).toString())
                     .withLastname(claims.get(lastname).toString())
                     .withEmail(claims.get(email).toString()).build();

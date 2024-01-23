@@ -6,8 +6,11 @@ import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
-import { MatDialog } from '@angular/material/dialog';
-import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import {
+  AddMemberToTeamDialogComponent,
+  AddMemberToTeamDialogComponentData,
+} from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { getRouteToUserDetails } from '../../shared/routeUtils';
@@ -86,7 +89,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
     const teamId = parseInt(teamIdParam);
     this.dataSource = convertFromUsers(users, teamId);
     this.displayedColumns = [...this.teamColumns];
-    if (this.selectedTeam?.isWriteable) {
+    if (this.selectedTeam?.writeable) {
       this.displayedColumns.push('delete');
     }
   }
@@ -100,9 +103,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   addMemberToTeam() {
-    const dialogConfig = OKR_DIALOG_CONFIG;
+    const dialogConfig: MatDialogConfig<AddMemberToTeamDialogComponentData> = OKR_DIALOG_CONFIG;
     dialogConfig.data = {
-      team: this.selectedTeam,
+      team: this.selectedTeam!,
       currentUsersOfTeam: this.dataSource,
     };
     const dialogRef = this.dialog.open(AddMemberToTeamDialogComponent, dialogConfig);
@@ -118,7 +121,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   showAddMemberToTeam() {
-    return this.selectedTeam && this.selectedTeam.isWriteable;
+    return this.selectedTeam && this.selectedTeam.writeable;
   }
 
   editTeam(): void {

@@ -168,7 +168,7 @@ describe('MemberListComponent', () => {
 
   it('should set displayedColumns correctly', fakeAsync(() => {
     const teamCopy = { ...team1 };
-    teamCopy.isWriteable = true;
+    teamCopy.writeable = true;
     TestBed.runInInjectionContext(() => {
       userServiceMock.getUsers.mockReturnValue(of(users));
       teamServiceMock.getAllTeams.mockReturnValue(of([teamCopy]));
@@ -223,10 +223,10 @@ describe('MemberListComponent', () => {
     component.selectedTeam = undefined;
     expect(component.showAddMemberToTeam()).toBeFalsy();
     const teamCopy = { ...team1 };
-    teamCopy.isWriteable = false;
+    teamCopy.writeable = false;
     component.selectedTeam = teamCopy;
     expect(component.showAddMemberToTeam()).toBeFalsy();
-    teamCopy.isWriteable = true;
+    teamCopy.writeable = true;
     expect(component.showAddMemberToTeam()).toBeTruthy();
   });
 

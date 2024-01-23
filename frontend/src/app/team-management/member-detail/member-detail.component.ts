@@ -98,7 +98,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   }
 
   isEditable(userTeam: UserTeam) {
-    return userTeam.team.isWriteable;
+    return userTeam.team.writeable;
   }
 
   isDeletable(userTeam: UserTeam): boolean {

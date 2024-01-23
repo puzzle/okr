@@ -1,4 +1,3 @@
-import { TeamMin } from './types/model/TeamMin';
 import { State } from './types/enums/State';
 import { QuarterMin } from './types/model/QuarterMin';
 import { CheckInMin } from './types/model/CheckInMin';
@@ -22,38 +21,40 @@ export const teamFormObject = {
   name: 'newTeamName',
 };
 
-export const teamMin1: TeamMin = {
+export const marketingTeamWriteable: Team = {
   id: 1,
   version: 2,
   name: 'Marketing Team',
-  writable: true,
-} as TeamMin;
+  writeable: true,
+};
 
-export const teamMin2: TeamMin = {
+export const marketingTeamNotWriteable: Team = {
   id: 1,
   version: 3,
   name: 'Marketing Team',
-  writable: false,
-} as TeamMin;
+  writeable: false,
+};
 
 export const team1: Team = {
   id: 1,
   version: 2,
   name: 'Team1',
-  filterIsActive: true,
-} as Team;
+  writeable: false,
+};
 
 export const team2: Team = {
   id: 2,
   version: 3,
   name: 'Team2',
-} as Team;
+  writeable: false,
+};
 
 export const team3: Team = {
   id: 3,
   version: 4,
   name: 'Team3',
-} as Team;
+  writeable: false,
+};
 
 export const teamList = [team1, team2, team3];
 
@@ -260,13 +261,13 @@ export const objectiveResponse4: any = {
 };
 
 export const overViewEntity1: OverviewEntity = {
-  team: teamMin1,
+  team: marketingTeamWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
   writable: true,
 };
 
 export const overViewEntity2: OverviewEntity = {
-  team: teamMin2,
+  team: marketingTeamNotWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
   writable: true,
 };

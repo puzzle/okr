@@ -29,7 +29,7 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
       map(([allTeams, userTeams]) => {
         const currentTeamIds = userTeams.map((ut) => ut.team.id);
         return allTeams.filter((t) => {
-          return t.isWriteable && !currentTeamIds.includes(t.id);
+          return t.writeable && !currentTeamIds.includes(t.id);
         });
       }),
     );

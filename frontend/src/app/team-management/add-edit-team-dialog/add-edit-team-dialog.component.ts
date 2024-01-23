@@ -4,7 +4,6 @@ import { formInputCheck, hasFormFieldErrors } from '../../shared/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
-import { TeamMin } from '../../shared/types/model/TeamMin';
 import { TranslateService } from '@ngx-translate/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
@@ -18,7 +17,6 @@ export class AddEditTeamDialog implements OnInit {
   teamForm = new FormGroup({
     name: new FormControl<string>('', [Validators.required, Validators.minLength(2), Validators.maxLength(250)]),
   });
-  public hasInActiveOrganisations: boolean = false;
   protected readonly formInputCheck = formInputCheck;
   protected readonly hasFormFieldErrors = hasFormFieldErrors;
 
@@ -29,7 +27,7 @@ export class AddEditTeamDialog implements OnInit {
     private router: Router,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      team: TeamMin;
+      team: Team;
     },
     private translate: TranslateService,
   ) {}

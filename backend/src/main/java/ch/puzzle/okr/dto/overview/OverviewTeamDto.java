@@ -1,4 +1,4 @@
 package ch.puzzle.okr.dto.overview;
 
-public record OverviewTeamDto(Long id, int version, String name, boolean writable) {
+public record OverviewTeamDto(Long id, int version, String name, boolean writeable) {
 }

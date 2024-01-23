@@ -1,29 +1,29 @@
-import { KeyresultDialogComponent } from "./keyresult-dialog.component";
-import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
-import { KeyresultService } from "../../services/keyresult.service";
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
-import { MatInputModule } from "@angular/material/input";
-import { ReactiveFormsModule } from "@angular/forms";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { MatIconModule } from "@angular/material/icon";
-import { By } from "@angular/platform-browser";
-import { testUser, users } from "../../shared/testData";
-import { State } from "../../shared/types/enums/State";
-import { KeyResult } from "../../shared/types/model/KeyResult";
-import { of } from "rxjs";
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatSelectModule } from "@angular/material/select";
-import { MatRadioModule } from "@angular/material/radio";
-import { KeyResultObjective } from "../../shared/types/model/KeyResultObjective";
-import { DialogHeaderComponent } from "../../shared/custom/dialog-header/dialog-header.component";
-import { OAuthService } from "angular-oauth2-oidc";
-import { KeyresultTypeComponent } from "../keyresult-type/keyresult-type.component";
-import { ActionPlanComponent } from "../action-plan/action-plan.component";
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
-import { DragDropModule } from "@angular/cdk/drag-drop";
-import { UserService } from "../../services/user.service";
-import { KeyResultFormComponent } from "../key-result-form/key-result-form.component";
+import { KeyresultDialogComponent } from './keyresult-dialog.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { KeyresultService } from '../../services/keyresult.service';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { By } from '@angular/platform-browser';
+import { testUser, users } from '../../shared/testData';
+import { State } from '../../shared/types/enums/State';
+import { KeyResult } from '../../shared/types/model/KeyResult';
+import { of } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { KeyResultObjective } from '../../shared/types/model/KeyResultObjective';
+import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-header.component';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { KeyresultTypeComponent } from '../keyresult-type/keyresult-type.component';
+import { ActionPlanComponent } from '../action-plan/action-plan.component';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { UserService } from '../../services/user.service';
+import { KeyResultFormComponent } from '../key-result-form/key-result-form.component';
 
 describe('KeyresultDialogComponent', () => {
   let component: KeyresultDialogComponent;
@@ -40,7 +40,7 @@ describe('KeyresultDialogComponent', () => {
     getUsers() {
       return of(users);
     },
-    getCurrentUser: jest.fn()
+    getCurrentUser: jest.fn(),
   };
 
   let fullObjective = {

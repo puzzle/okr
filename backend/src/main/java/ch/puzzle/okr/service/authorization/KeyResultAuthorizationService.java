@@ -42,7 +42,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     public List<CheckIn> getAllCheckInsByKeyResult(Long keyResultId) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         getAuthorizationService().hasRoleReadByKeyResultId(keyResultId, authorizationUser);
         List<CheckIn> checkIns = getBusinessService().getAllCheckInsByKeyResult(keyResultId);
         setRoleCreateOrUpdateCheckIn(checkIns, authorizationUser);
@@ -56,7 +56,7 @@ public class KeyResultAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     public KeyResultWithActionList updateEntities(Long id, KeyResult entity, List<Action> actionList) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(entity, authorizationUser);
         KeyResultWithActionList updatedEntities = getBusinessService().updateEntities(id, entity, actionList);
         updatedEntities.keyResult().setWriteable(true);

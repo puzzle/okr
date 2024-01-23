@@ -46,7 +46,7 @@ public class UserController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @GetMapping(path = "/current")
     public UserDto getCurrentUser() {
-        var currentUser = this.authorizationService.getAuthorizationUser().user();
+        var currentUser = this.authorizationService.updateOrAddAuthorizationUser().user();
         return userMapper.toDto(currentUser);
     }
 

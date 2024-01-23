@@ -43,7 +43,7 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void createEntityShouldReturnTeam() {
-        when(teamBusinessService.createTeam(teamUnderTest, authorizationService.getAuthorizationUser())).thenReturn(teamUnderTest);
+        when(teamBusinessService.createTeam(teamUnderTest, authorizationService.updateOrAddAuthorizationUser())).thenReturn(teamUnderTest);
 
         Team team = teamAuthorizationService.createEntity(teamUnderTest);
         assertEquals(teamUnderTest, team);
@@ -52,7 +52,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void updateEntityShouldReturnUpdatedTeamWhenAuthorizedAsOkrChampion() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(okrChampionUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         when(teamBusinessService.updateTeam(teamUnderTest, id)).thenReturn(teamUnderTest);
 
         Team team = teamAuthorizationService.updateEntity(teamUnderTest, id);
@@ -62,7 +62,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void updateEntityShouldReturnUpdatedTeamWhenAuthorizedAsAdminUser() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(adminUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
         when(teamBusinessService.updateTeam(teamUnderTest, id)).thenReturn(teamUnderTest);
 
         Team team = teamAuthorizationService.updateEntity(teamUnderTest, id);
@@ -72,7 +72,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void updateEntityShouldThrowExceptionWhenAuthorizedAsMemberUser() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(memberUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.updateEntity(teamUnderTest, id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -82,7 +82,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void updateEntityShouldThrowExceptionWhenAuthorizedAsUserWithNoTeams() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(userWithNoTeams);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithNoTeams);
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.updateEntity(teamUnderTest, id));
         assertEquals(UNAUTHORIZED, exception.getStatusCode());
@@ -91,19 +91,19 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void deleteEntityByIdShouldPassThroughWhenAuthorizedAsOkrChampion() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(okrChampionUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         teamAuthorizationService.deleteEntity(teamUnderTest.getId());
     }
 
     @Test
     void deleteEntityByIdShouldPassThroughWhenAuthorizedAsTeamAdmin() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(adminUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(adminUser);
         teamAuthorizationService.deleteEntity(teamUnderTest.getId());
     }
 
     @Test
     void deleteEntityByIdShouldThrowExceptionWhenAuthorizedAsMemberUser() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(memberUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(memberUser);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.deleteEntity(teamUnderTest.getId()));
@@ -114,7 +114,7 @@ class TeamAuthorizationServiceTest {
     @Test
     void deleteEntityByIdShouldThrowExceptionWhenAuthorizedAsUserWithNoTeams() {
         Long id = 13L;
-        when(authorizationService.getAuthorizationUser()).thenReturn(userWithNoTeams);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithNoTeams);
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class,
                 () -> teamAuthorizationService.deleteEntity(id));
@@ -127,9 +127,9 @@ class TeamAuthorizationServiceTest {
     void getAllTeamsShouldReturnAllTeams(boolean isWriteable) {
         List<Team> teamList = List.of(teamUnderTest, teamUnderTest);
         if (isWriteable) {
-            when(authorizationService.getAuthorizationUser()).thenReturn(okrChampionUser);
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.getAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(userWithoutWriteAllRole());
         }
         when(teamBusinessService.getAllTeams(any())).thenReturn(teamList);
 
@@ -140,12 +140,10 @@ class TeamAuthorizationServiceTest {
 
     @Test
     void addUsersToTeam_shouldThrowExceptionIfUserNotAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(
                 new AuthorizationUser(defaultUserWithTeams(1L, List.of(), List.of()))
         );
-        assertThrows(OkrResponseStatusException.class, () -> {
-            teamAuthorizationService.addUsersToTeam(1L, List.of());
-        });
+        assertThrows(OkrResponseStatusException.class, () -> teamAuthorizationService.addUsersToTeam(1L, List.of()));
     }
 
     @Test
@@ -153,7 +151,7 @@ class TeamAuthorizationServiceTest {
         var adminTeamId = 1L;
         var adminTeam = defaultTeam(adminTeamId);
         var usersList = List.of(1L, 2L);
-        when(authorizationService.getAuthorizationUser())
+        when(authorizationService.updateOrAddAuthorizationUser())
                 .thenReturn(new AuthorizationUser(defaultUserWithTeams(1L, List.of(adminTeam), List.of())));
         teamAuthorizationService.addUsersToTeam(adminTeamId, usersList);
         verify(teamBusinessService, times(1)).addUsersToTeam(adminTeamId, usersList);

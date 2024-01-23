@@ -123,6 +123,7 @@ public class TeamBusinessService {
         cacheService.emptyAuthorizationUsersCache();
     }
 
+    @Transactional
     public void updateOrAddTeamMembership(long teamId, long userId, boolean isAdmin) {
         var user = userPersistenceService.findById(userId);
         List<UserTeam> userTeamList = user.getUserTeamList();
@@ -151,14 +152,13 @@ public class TeamBusinessService {
             boolean isUserTeam1 = authorizationUser.isUserMemberInTeam(t1.getId());
             boolean isUserTeam2 = authorizationUser.isUserMemberInTeam(t2.getId());
 
-            if (isUserTeam1 == isUserTeam2) {
-                if (Objects.equals(t1.getName(), t2.getName())) {
-                    return t1.getId().compareTo(t2.getId());
-                } else {
-                    return t1.getName().compareTo(t2.getName());
-                }
+            if (isUserTeam1 != isUserTeam2) {
+                return isUserTeam1 ? -1 : 1;
             }
-            return isUserTeam1 ? -1 : 1;
+            if (Objects.equals(t1.getName(), t2.getName())) {
+                return t1.getId().compareTo(t2.getId());
+            }
+            return t1.getName().compareTo(t2.getName());
         }
     }
 }

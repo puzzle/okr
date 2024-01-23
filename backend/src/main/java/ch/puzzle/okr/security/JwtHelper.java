@@ -30,12 +30,10 @@ public class JwtHelper {
     private final String lastname;
     private final String email;
 
-    public JwtHelper(
-            TenantConfigProvider tenantConfigProvider,
+    public JwtHelper(TenantConfigProvider tenantConfigProvider,
             @Value("${okr.jwt.claim.firstname}") final String firstname,
             @Value("${okr.jwt.claim.lastname}") final String lastname,
-            @Value("${okr.jwt.claim.email}") final String email
-    ) {
+            @Value("${okr.jwt.claim.email}") final String email) {
         this.tenantConfigProvider = tenantConfigProvider;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -47,32 +45,22 @@ public class JwtHelper {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder()
-                    .withFirstname(claims.get(firstname).toString())
-                    .withLastname(claims.get(lastname).toString())
-                    .withEmail(claims.get(email).toString()).build();
+            return User.Builder.builder().withFirstname(claims.get(firstname).toString())
+                    .withLastname(claims.get(lastname).toString()).withEmail(claims.get(email).toString()).build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);
         }
     }
 
-
     public String getTenantFromToken(Jwt token) {
-        return getTenantOrThrow(
-                token.getClaimAsString(CLAIM_TENANT)
-        );
+        return getTenantOrThrow(token.getClaimAsString(CLAIM_TENANT));
     }
 
     private String getTenantOrThrow(String tenant) {
         // Ensure we return only tenants for realms which really exist
-        return this.tenantConfigProvider
-                .getTenantConfigById(tenant)
-                .orElseThrow(
-                        () -> new EntityNotFoundException(
-                                MessageFormat.format("Cannot find tenant {0}", tenant)
-                        )
-                )
+        return this.tenantConfigProvider.getTenantConfigById(tenant)
+                .orElseThrow(() -> new EntityNotFoundException(MessageFormat.format("Cannot find tenant {0}", tenant)))
                 .tenantId();
     }
 

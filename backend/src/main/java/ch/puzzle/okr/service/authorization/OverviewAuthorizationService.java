@@ -19,7 +19,7 @@ public class OverviewAuthorizationService {
     private final AuthorizationService authorizationService;
 
     public OverviewAuthorizationService(OverviewBusinessService overviewBusinessService,
-            AuthorizationService authorizationService) {
+                                        AuthorizationService authorizationService) {
         this.overviewBusinessService = overviewBusinessService;
         this.authorizationService = authorizationService;
     }
@@ -40,7 +40,7 @@ public class OverviewAuthorizationService {
     }
 
     private void setRoleCreateOrUpdateTeam(Overview overview, AuthorizationUser authorizationUser,
-            Map<Long, Boolean> teamAccess) {
+                                           Map<Long, Boolean> teamAccess) {
         if (overview.getOverviewId() != null && overview.getOverviewId().getObjectiveId() != null
                 && overview.getOverviewId().getTeamId() != null) {
             Long teamId = overview.getOverviewId().getTeamId();

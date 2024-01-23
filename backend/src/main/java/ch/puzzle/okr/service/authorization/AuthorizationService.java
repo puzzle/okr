@@ -28,12 +28,9 @@ public class AuthorizationService {
     private final ActionPersistenceService actionPersistenceService;
     private final JwtHelper jwtHelper;
 
-    public AuthorizationService(
-            AuthorizationRegistrationService authorizationRegistrationService,
-            ObjectivePersistenceService objectivePersistenceService,
-            ActionPersistenceService actionPersistenceService,
-            JwtHelper jwtHelper
-    ) {
+    public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
+            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
+            JwtHelper jwtHelper) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
@@ -144,7 +141,7 @@ public class AuthorizationService {
     }
 
     private void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
-                                     OkrResponseStatusException notAuthorizedException) {
+            OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
         }

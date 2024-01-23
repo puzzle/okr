@@ -34,12 +34,9 @@ public class JwtUserConverter implements Converter<Jwt, User> {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder()
-                    .withFirstname(claims.get(firstname).toString())
-                    .withLastname(claims.get(lastname).toString())
-                    .withEmail(claims.get(email).toString())
-                    .withUserTeamList(new ArrayList<>())
-                    .build();
+            return User.Builder.builder().withFirstname(claims.get(firstname).toString())
+                    .withLastname(claims.get(lastname).toString()).withEmail(claims.get(email).toString())
+                    .withUserTeamList(new ArrayList<>()).build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);

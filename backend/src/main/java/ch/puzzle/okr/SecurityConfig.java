@@ -101,12 +101,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationEventPublisher authenticationEventPublisher
-            (ApplicationEventPublisher applicationEventPublisher) {
+    public AuthenticationEventPublisher authenticationEventPublisher(
+            ApplicationEventPublisher applicationEventPublisher) {
         return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
     }
-
-
-
 
 }

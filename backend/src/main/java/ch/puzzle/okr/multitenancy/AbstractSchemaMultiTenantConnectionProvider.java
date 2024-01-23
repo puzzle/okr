@@ -27,7 +27,8 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         Connection connection = super.getConnection(tenantIdentifier);
 
-        String schema = Objects.equals(tenantIdentifier, "public") ? tenantIdentifier : MessageFormat.format("okr_{0}", tenantIdentifier);
+        String schema = Objects.equals(tenantIdentifier, "public") ? tenantIdentifier
+                : MessageFormat.format("okr_{0}", tenantIdentifier);
 
         logger.debug("Setting schema to {}", schema);
         connection.createStatement().execute(String.format("SET SCHEMA '%s';", schema));
@@ -46,26 +47,21 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
     }
 
     private ConnectionProvider getConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier)
-                .map(connectionProviderMap::get)
+        return Optional.ofNullable(tenantIdentifier).map(connectionProviderMap::get)
                 .orElseGet(() -> createNewConnectionProvider(tenantIdentifier));
     }
 
     private ConnectionProvider createNewConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier)
-                .map(this::createConnectionProvider)
-                .map(connectionProvider -> {
-                    connectionProviderMap.put(tenantIdentifier, connectionProvider);
-                    return connectionProvider;
-                })
-                .orElseThrow(() -> new ConnectionProviderException(String.format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
+        return Optional.ofNullable(tenantIdentifier).map(this::createConnectionProvider).map(connectionProvider -> {
+            connectionProviderMap.put(tenantIdentifier, connectionProvider);
+            return connectionProvider;
+        }).orElseThrow(() -> new ConnectionProviderException(
+                String.format("Cannot create new connection provider for tenant: %s", tenantIdentifier)));
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier)
-                .map(this::getHibernatePropertiesForTenantId)
-                .map(this::initConnectionProvider)
-                .orElse(null);
+        return Optional.ofNullable(tenantIdentifier).map(this::getHibernatePropertiesForTenantId)
+                .map(this::initConnectionProvider).orElse(null);
     }
 
     private Properties getHibernatePropertiesForTenantId(String tenantId) {
@@ -73,11 +69,13 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
             if (!Objects.equals(tenantId, "public")) {
-                Object put = properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantId));
+                Object put = properties.put(AvailableSettings.DEFAULT_SCHEMA,
+                        MessageFormat.format("okr_{0}", tenantId));
             }
             return properties;
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Cannot open hibernate properties: %s)", this.getHibernatePropertiesFilePaths()));
+            throw new RuntimeException(
+                    String.format("Cannot open hibernate properties: %s)", this.getHibernatePropertiesFilePaths()));
         }
     }
 

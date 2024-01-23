@@ -30,7 +30,7 @@ class ClientConfigServiceIT {
         Map<String, String> configMap = clientConfigService.getConfigBasedOnActiveEnv("acme.okr.puzzle.ch");
 
         assertEquals("prod", configMap.get("activeProfile"));
-        assertEquals("http://localhost:8544/realms/acme", configMap.get("issuer"));
+        assertEquals("http://localhost:8544/realms/pitc", configMap.get("issuer"));
         assertEquals("acme_okr_staging", configMap.get("clientId"));
     }
 

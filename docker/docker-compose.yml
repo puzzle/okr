@@ -19,7 +19,6 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=keycloak
     volumes:
        - ./config/realm-export-pitc.json:/opt/keycloak/data/import/realm-pitc.json
-       - ./config/realm-export-acme.json:/opt/keycloak/data/import/realm-acme.json
     command:
       - start-dev
       - --import-realm

@@ -18,6 +18,6 @@ public class AuthenticationEvents {
     public void onSuccess(AuthenticationSuccessEvent success) {
         Jwt token = (Jwt) success.getAuthentication().getPrincipal();
 
-        TenantContext.setCurrentTenant(jwtHelper.getTenantFromIssuer(token.getIssuer().toString()));
+        TenantContext.setCurrentTenant(jwtHelper.getTenantFromToken(token));
     }
 }

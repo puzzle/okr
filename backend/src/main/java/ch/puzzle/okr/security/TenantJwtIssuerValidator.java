@@ -29,7 +29,7 @@ public class TenantJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     }
 
     private String toTenant(Jwt jwt) {
-        return jwtHelper.getTenantFromIssuer(jwt.getIssuer().toString());
+        return jwtHelper.getTenantFromToken(jwt);
     }
 
     private JwtIssuerValidator fromTenant(String tenant) {

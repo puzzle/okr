@@ -37,7 +37,7 @@ public class TenantJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<Sec
     }
 
     private String toTenant(JWTClaimsSet claimSet) {
-        return jwtHelper.getTenantFromIssuer((String) claimSet.getClaim("iss"));
+        return jwtHelper.getTenantFromJWTClaimsSet(claimSet);
     }
 
     private JWSKeySelector<SecurityContext> fromTenant(String tenantId) {

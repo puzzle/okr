@@ -1,20 +1,20 @@
-import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from "@angular/core/testing";
+import { ComponentFixture, fakeAsync, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { TeamFilterComponent } from "./team-filter.component";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { RouterTestingHarness, RouterTestingModule } from "@angular/router/testing";
-import { MatChipsModule } from "@angular/material/chips";
-import { HarnessLoader } from "@angular/cdk/testing";
-import { TestbedHarnessEnvironment } from "@angular/cdk/testing/testbed";
-import { TeamService } from "../../services/team.service";
-import { RefreshDataService } from "../../services/refresh-data.service";
-import { of, Subject } from "rxjs";
-import { team1, team2, team3, teamList, testUser } from "../../shared/testData";
-import { Router } from "@angular/router";
-import { MatIconModule } from "@angular/material/icon";
-import { UserService } from "../../services/user.service";
-import { extractTeamsFromUser } from "../../shared/types/model/User";
-import { ApplicationBannerComponent } from "../application-banner/application-banner.component";
+import { TeamFilterComponent } from './team-filter.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingHarness, RouterTestingModule } from '@angular/router/testing';
+import { MatChipsModule } from '@angular/material/chips';
+import { HarnessLoader } from '@angular/cdk/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { TeamService } from '../../services/team.service';
+import { RefreshDataService } from '../../services/refresh-data.service';
+import { of, Subject } from 'rxjs';
+import { team1, team2, team3, teamList, testUser } from '../../shared/testData';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { UserService } from '../../services/user.service';
+import { extractTeamsFromUser } from '../../shared/types/model/User';
+import { ApplicationBannerComponent } from '../application-banner/application-banner.component';
 
 const teamServiceMock = {
   getAllTeams: jest.fn(),

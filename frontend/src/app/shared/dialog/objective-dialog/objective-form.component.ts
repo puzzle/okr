@@ -13,7 +13,7 @@ import { Objective } from '../../types/model/Objective';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { formInputCheck, getQuarterLabel, getValueFromQuery, hasFormFieldErrors, isMobileDevice } from '../../common';
 import { ActivatedRoute } from '@angular/router';
-import { CONFIRM_DIALOG_WIDTH } from '../../constantLibary';
+import { CONFIRM_DIALOG_WIDTH, GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -32,6 +32,7 @@ export class ObjectiveFormComponent implements OnInit {
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
+  quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
@@ -86,8 +87,15 @@ export class ObjectiveFormComponent implements OnInit {
       : of(this.getDefaultObjective());
 
     forkJoin([objective$, this.quarters$]).subscribe(([objective, quarters]) => {
+      this.quarters = quarters;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
-      const quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+      let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
+
+      let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
+      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+        quarterId = quarters[1].id;
+      }
+
       this.state = objective.state;
       this.version = objective.version;
       this.teams$.subscribe((value) => {
@@ -109,6 +117,7 @@ export class ObjectiveFormComponent implements OnInit {
       objectiveDTO.state = 'DRAFT' as State;
       return this.objectiveService.duplicateObjective(id, objectiveDTO);
     } else {
+      if (this.data.action == 'releaseBacklog') objectiveDTO.state = 'ONGOING' as State;
       return id
         ? this.objectiveService.updateObjective(objectiveDTO)
         : this.objectiveService.createObjective(objectiveDTO);
@@ -182,6 +191,43 @@ export class ObjectiveFormComponent implements OnInit {
       teamId: 0,
       quarterId: 0,
     } as Objective;
+  }
+
+  allowedToSaveBacklog() {
+    let currentQuarter: Quarter | undefined = this.quarters.find(
+      (quarter) => quarter.id == this.objectiveForm.value.quarter,
+    );
+    if (currentQuarter) {
+      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
+      if (this.data.action == 'duplicate') return true;
+      if (this.data.objective.objectiveId) {
+        return isBacklogCurrent ? this.state == 'DRAFT' : true;
+      } else {
+        return !isBacklogCurrent;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  allowedOption(quarter: Quarter) {
+    if (quarter.label == 'Backlog') {
+      if (this.data.action == 'duplicate') {
+        return true;
+      } else if (this.data.action == 'releaseBacklog') {
+        return false;
+      } else if (this.data.objective.objectiveId) {
+        return this.state == 'DRAFT';
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  isBacklogQuarter(label: string) {
+    return GJ_REGEX_PATTERN.test(label);
   }
 
   protected readonly getQuarterLabel = getQuarterLabel;

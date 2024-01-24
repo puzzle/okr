@@ -43,12 +43,7 @@
       </button>
     </div>
     <div class="menu" *ngIf="selectedTeam$.value?.isWriteable">
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
-        [attr.data-testId]="'teamMoreButton'"
-      >
+      <button mat-icon-button [matMenuTriggerFor]="menu" [attr.data-testId]="'teamMoreButton'">
         <mat-icon class="d-flex justify-content-center align-items-center">more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">

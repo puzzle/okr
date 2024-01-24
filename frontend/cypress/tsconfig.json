@@ -3,6 +3,6 @@
   "include": ["**/*.ts"],
   "compilerOptions": {
     "sourceMap": false,
-    "types": ["cypress", "node", "cypress-real-events"],
-  },
+    "types": ["cypress", "node", "cypress-real-events"]
+  }
 }

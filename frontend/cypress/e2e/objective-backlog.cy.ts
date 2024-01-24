@@ -84,7 +84,7 @@ describe('OKR Objective Backlog e2e tests', () => {
 
     cy.get('.objective-menu-option').contains('Objective veröffentlichen').click();
 
-    cy.contains('Objective veröffentlichen und in Quartal verschieben');
+    cy.contains('Objective veröffentlichen');
 
     cy.getByTestId('title').first().clear().type('This is our first released objective');
 

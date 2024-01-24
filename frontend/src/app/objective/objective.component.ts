@@ -104,7 +104,7 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    let element = {
+    let menuEntries = {
       displayName: 'Objective veröffentlichen',
       action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
       dialog: {
@@ -117,7 +117,7 @@ export class ObjectiveComponent implements OnInit {
       },
     };
 
-    return [...this.getDefaultMenuActions(), element];
+    return [...this.getDefaultMenuActions(), menuEntries];
   }
 
   getDefaultMenuActions() {

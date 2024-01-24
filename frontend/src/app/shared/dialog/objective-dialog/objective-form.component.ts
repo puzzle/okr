@@ -117,6 +117,7 @@ export class ObjectiveFormComponent implements OnInit {
       objectiveDTO.state = 'DRAFT' as State;
       return this.objectiveService.duplicateObjective(id, objectiveDTO);
     } else {
+      if (this.data.action == 'releaseBacklog') objectiveDTO.state = 'ONGOING' as State;
       return id
         ? this.objectiveService.updateObjective(objectiveDTO)
         : this.objectiveService.createObjective(objectiveDTO);

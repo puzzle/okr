@@ -16,7 +16,6 @@ import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
 
@@ -51,7 +50,7 @@ describe('MemberListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MemberListComponent, MemberListTableComponent],
-      imports: [HttpClientTestingModule, TranslateTestingModule, MatPaginatorModule, BrowserAnimationsModule],
+      imports: [HttpClientTestingModule, TranslateTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },

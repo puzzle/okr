@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, combineLatest, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
@@ -11,7 +11,6 @@ import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator, MatPaginatorSelectConfig } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-member-list',
@@ -19,11 +18,8 @@ import { MatPaginator, MatPaginatorSelectConfig } from '@angular/material/pagina
   styleUrl: './member-list.component.scss',
 })
 export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
-
   dataSource: MatTableDataSource<UserTableEntry> = new MatTableDataSource<UserTableEntry>([]);
   selectedTeam$: BehaviorSubject<Team | undefined> = new BehaviorSubject<Team | undefined>(undefined);
-  selectConfig: MatPaginatorSelectConfig = {};
 
   private allUsersSubj: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
   private unsubscribe$ = new Subject<void>();
@@ -40,7 +36,6 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   public ngOnInit(): void {}
 
   public ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
     this.userService
       .getUsers()
       .pipe(takeUntil(this.unsubscribe$))
@@ -80,19 +75,12 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private setDataSourceForAllTeams(users: User[]) {
-    const userEntries = convertFromUsers(users, null);
-    this.setDataSource(userEntries);
+    this.dataSource.data = convertFromUsers(users, null);
   }
 
   private setDataSourceForTeam(teamIdParam: string, users: User[]) {
     const teamId = parseInt(teamIdParam);
-    const userEntries = convertFromUsers(users, teamId);
-    this.setDataSource(userEntries);
-  }
-
-  private setDataSource(userEntries: UserTableEntry[]): void {
-    this.dataSource.data = userEntries;
-    this.paginator.firstPage();
+    this.dataSource.data = convertFromUsers(users, teamId);
   }
 
   deleteTeam(selectedTeam: Team) {

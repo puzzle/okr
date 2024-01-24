@@ -28,8 +28,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
 import { A11yModule } from '@angular/cdk/a11y';
-import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
-import { MatI18nPaginatorIntl } from './mat-i18n-paginator-intel';
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
@@ -72,8 +70,6 @@ import { MemberListMobileComponent } from './member-list/member-list-mobile/memb
     MatSelectModule,
     TranslateModule,
     A11yModule,
-    MatPaginatorModule,
   ],
-  providers: [{ provide: MatPaginatorIntl, useClass: MatI18nPaginatorIntl }],
 })
 export class TeamManagementModule {}

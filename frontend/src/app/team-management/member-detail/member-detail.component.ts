@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { UserService } from '../../services/user.service';
 import { BehaviorSubject, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
 import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,6 +33,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
+    private readonly router: Router,
   ) {}
   ngOnInit(): void {
     this.route.paramMap
@@ -108,5 +109,9 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   saveIsAdmin(userTeam: UserTeam, user: User, isAdmin: boolean) {
     userTeam.isTeamAdmin = isAdmin;
     this.saveTeamRole(userTeam, user);
+  }
+
+  navigateBack() {
+    this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
 }

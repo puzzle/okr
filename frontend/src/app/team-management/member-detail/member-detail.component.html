@@ -1,10 +1,13 @@
 <div class="w-100" cdkTrapFocus cdkTrapFocusAutoCapture="true" [attr.data-testId]="'side-panel'">
   <div *ngIf="user as userRef; else spinner">
-    <div class="w-100">
-      <h2>
+    <div class="w-100 d-flex justify-content-between align-items-center mb-3">
+      <h3 class="title">
         {{ getFullNameFromUser(userRef) }}
         <span *ngIf="selectedUserIsLoggedInUser">(ich)</span>
-      </h2>
+      </h3>
+      <button class="d-flex" mat-icon-button (click)="navigateBack()" [attr.data-testId]="'close-drawer'">
+        <mat-icon class="d-flex justify-content-center align-items-center">close</mat-icon>
+      </button>
     </div>
     <div class="w-100">
       <table mat-table [dataSource]="userRef.userTeamList" class="okr-table">

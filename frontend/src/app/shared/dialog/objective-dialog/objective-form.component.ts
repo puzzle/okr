@@ -92,7 +92,7 @@ export class ObjectiveFormComponent implements OnInit {
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], quarters[1].id)[0];
 
       let currentQuarter: Quarter | undefined = this.quarters.find((quarter) => quarter.id == quarterId);
-      if (currentQuarter && !GJ_REGEX_PATTERN.test(currentQuarter.label) && this.data.action == 'releaseBacklog') {
+      if (currentQuarter && !this.isBacklogQuarter(currentQuarter.label) && this.data.action == 'releaseBacklog') {
         quarterId = quarters[1].id;
       }
 
@@ -197,7 +197,7 @@ export class ObjectiveFormComponent implements OnInit {
       (quarter) => quarter.id == this.objectiveForm.value.quarter,
     );
     if (currentQuarter) {
-      let isBacklogCurrent: boolean = !GJ_REGEX_PATTERN.test(currentQuarter.label);
+      let isBacklogCurrent: boolean = !this.isBacklogQuarter(currentQuarter.label);
       if (this.data.action == 'duplicate') return true;
       if (this.data.objective.objectiveId) {
         return isBacklogCurrent ? this.state == 'DRAFT' : true;
@@ -223,6 +223,10 @@ export class ObjectiveFormComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  isBacklogQuarter(label: string) {
+    return GJ_REGEX_PATTERN.test(label);
   }
 
   protected readonly getQuarterLabel = getQuarterLabel;

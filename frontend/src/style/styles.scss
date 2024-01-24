@@ -335,3 +335,9 @@ table.okr-table {
     max-height: 480px;
   }
 }
+
+@import "custom_bootstrap";
+
+.spinner-container {
+  @extend .mt-5;
+}

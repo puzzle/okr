@@ -49,7 +49,7 @@
         *ngIf="!isComplete && isWritable"
         mat-button
         color="primary"
-        class="fw-bold"
+        class="fw-bold px-0 pe-2 ms-2"
         [attr.data-testId]="'add-keyResult'"
         (click)="openAddKeyResultDialog(); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"

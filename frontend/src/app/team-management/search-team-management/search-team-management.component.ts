@@ -74,9 +74,9 @@ export class SearchTeamManagementComponent {
   }
 
   private applyFilter(filterValue: string): void {
-    if (filterValue.length == 0) {
+    if (!filterValue.length) {
       this.filteredUsers$.next([]);
-      this.filteredUsers$.next([]);
+      this.filteredTeams$.next([]);
       return;
     }
 

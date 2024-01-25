@@ -123,6 +123,7 @@ describe('Tab workflow tests', () => {
     beforeEach(() => {
       cy.loginAsUser(users.gl);
       onlyOn('chrome');
+      cy.tabForward();
     });
 
     // Header from here

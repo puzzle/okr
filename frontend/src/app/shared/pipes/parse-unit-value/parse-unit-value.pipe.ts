@@ -1,8 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { CHAR_REGEX } from '../../regexLibrary';
 
 @Pipe({
   name: 'parseUnitValue',
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class ParseUnitValuePipe implements PipeTransform {
   transform(param: string | null): number {

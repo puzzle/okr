@@ -27,7 +27,7 @@ const refreshDataServiceMock = {
 };
 
 const userServiceMock = {
-  getCurrentUser: () => testUser,
+  getCurrentUser: jest.fn(),
 };
 
 describe('TeamFilterComponent', () => {
@@ -54,6 +54,7 @@ describe('TeamFilterComponent', () => {
       .markDataRefresh()
       .mockImplementation(() => refreshDataServiceMock.reloadOverviewSubject.next(null));
     router = TestBed.inject(Router);
+    userServiceMock.getCurrentUser.mockReturnValue(testUser);
     fixture.detectChanges();
   });
 
@@ -176,7 +177,7 @@ describe('TeamFilterComponent', () => {
     refreshDataServiceMock.reloadOverviewSubject.next(null);
     fixture.detectChanges();
     expect(component.teams$.value).toStrictEqual([team2, team1]);
-    expect(component.activeTeams).toStrictEqual([team2.id]);
+    expect(component.activeTeams).toStrictEqual([team1.id]);
   });
 
   it('should use teams of user if no known teams are in url', async () => {

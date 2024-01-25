@@ -7,6 +7,12 @@ import { UserService } from '../../services/user.service';
 import { FormControl } from '@angular/forms';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
+import { UserTableEntry } from '../../shared/types/model/UserTableEntry';
+
+export type AddMemberToTeamDialogComponentData = {
+  team: Team;
+  currentUsersOfTeam: UserTableEntry[];
+};
 
 @Component({
   selector: 'app-add-member-to-team-dialog',
@@ -29,10 +35,7 @@ export class AddMemberToTeamDialogComponent implements OnInit, OnDestroy {
     private readonly teamService: TeamService,
     public dialogRef: MatDialogRef<AddMemberToTeamDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: {
-      team: Team;
-      currentUsersOfTeam: User[];
-    },
+    public data: AddMemberToTeamDialogComponentData,
   ) {
     this.selectedUsers$.subscribe((users) => (this.dataSource = new MatTableDataSource<User>(users)));
   }

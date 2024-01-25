@@ -60,6 +60,7 @@ import { CheckInFormMetricComponent } from './components/checkin/check-in-form-m
 import { CheckInFormOrdinalComponent } from './components/checkin/check-in-form-ordinal/check-in-form-ordinal.component';
 import { CheckInFormComponent } from './components/checkin/check-in-form/check-in-form.component';
 import { ApplicationTopBarComponent } from './components/application-top-bar/application-top-bar.component';
+import { A11yModule } from '@angular/cdk/a11y';
 
 function initOauthFactory(configService: ConfigService, oauthService: OAuthService) {
   return async () => {
@@ -154,6 +155,7 @@ export const MY_FORMATS = {
     CdkDropList,
     CdkDrag,
     SharedModule,
+    A11yModule,
   ],
   providers: [
     {

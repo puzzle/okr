@@ -30,7 +30,7 @@ class AuthorizationRegistrationServiceIT {
 
     @Test
     void registerAuthorizationUserShouldAddAuthorizationUserToCache() {
-        authorizationRegistrationService.registerAuthorizationUser(user);
+        authorizationRegistrationService.updateOrAddAuthorizationUser(user);
 
         Cache cache = cacheManager.getCache(AUTHORIZATION_USER_CACHE);
         assertNotNull(cache);

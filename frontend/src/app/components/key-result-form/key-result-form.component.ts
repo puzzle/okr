@@ -63,7 +63,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
       ]);
 
       this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
-        const loggedInUser = this.getUserName();
+        const loggedInUser = this.getLoggedInUserName();
         users.forEach((user) => {
           if (getFullNameFromUser(user) === loggedInUser) {
             this.keyResultForm.controls['owner'].setValue(user);
@@ -120,7 +120,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUserNameById(user: User): string {
+  getUserNameFromUser(user: User): string {
     return user ? getFullNameFromUser(user) : '';
   }
 
@@ -130,7 +130,7 @@ export class KeyResultFormComponent implements OnInit, OnDestroy {
 
   updateFormValidity() {}
 
-  getUserName() {
-    return this.oauthService.getIdentityClaims()['name'];
+  getLoggedInUserName() {
+    return this.getUserNameFromUser(this.userService.getCurrentUser());
   }
 }

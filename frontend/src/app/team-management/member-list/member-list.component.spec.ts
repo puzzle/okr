@@ -212,10 +212,10 @@ describe('MemberListComponent', () => {
     component.selectedTeam$.next(undefined);
     expect(component.showAddMemberToTeam()).toBeFalsy();
     const teamCopy = { ...team1 };
-    teamCopy.isWriteable = false;
+    teamCopy.writeable = false;
     component.selectedTeam$.next(teamCopy);
     expect(component.showAddMemberToTeam()).toBeFalsy();
-    teamCopy.isWriteable = true;
+    teamCopy.writeable = true;
     expect(component.showAddMemberToTeam()).toBeTruthy();
   });
 

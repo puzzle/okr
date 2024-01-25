@@ -4,11 +4,6 @@
 @import "fonts/Roboto";
 @import "fonts/MaterialIcons";
 
-p {
-  margin: 0;
-  padding: 0;
-}
-
 html,
 body {
   font-size: 100%;
@@ -16,6 +11,11 @@ body {
   padding: 0;
   background-color: $overview-bg;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .linebreak {
@@ -334,4 +334,10 @@ table.okr-table {
   &.autocomplete-bigger {
     max-height: 480px;
   }
+}
+
+@import "custom_bootstrap";
+
+.spinner-container {
+  @extend .mt-5;
 }

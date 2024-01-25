@@ -43,7 +43,7 @@ class OverviewAuthorizationServiceTest {
 
     @Test
     void getFilteredOverviewShouldReturnOverviewsWhenAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
@@ -54,7 +54,7 @@ class OverviewAuthorizationServiceTest {
 
     @Test
     void getFilteredOverviewShouldSetWritableProperlyToTrue() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
@@ -65,7 +65,7 @@ class OverviewAuthorizationServiceTest {
 
     @Test
     void getFilteredOverviewShouldSetWritableProperlyToFalse() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(any(), any(), any(), eq(authorizationUser)))
                 .thenReturn(List.of(overview));
 
@@ -76,7 +76,7 @@ class OverviewAuthorizationServiceTest {
 
     @Test
     void getFilteredOverviewShouldReturnEmptyListWhenNotAuthorized() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
         when(overviewBusinessService.getFilteredOverview(1L, List.of(adminTeamId), "", authorizationUser)).thenReturn(List.of());
 
         List<Overview> overviews = overviewAuthorizationService.getFilteredOverview(1L, List.of(adminTeamId), "");
@@ -87,9 +87,9 @@ class OverviewAuthorizationServiceTest {
     @ValueSource(booleans = { true, false })
     void hasWriteAllAccessShouldReturnHasRoleWriteAll(boolean hasRoleWriteAll) {
         if (hasRoleWriteAll) {
-            when(authorizationService.getAuthorizationUser()).thenReturn(okrChampionUser);
+            when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(okrChampionUser);
         } else {
-            when(authorizationService.getAuthorizationUser())
+            when(authorizationService.updateOrAddAuthorizationUser())
                     .thenReturn(mockAuthorizationUser(defaultUser(adminTeamId)));
         }
 

@@ -18,7 +18,7 @@ public class AuthorizationRegistrationService {
     }
 
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.email")
-    public AuthorizationUser registerAuthorizationUser(User user) {
+    public AuthorizationUser updateOrAddAuthorizationUser(User user) {
         return new AuthorizationUser(userBusinessService.getOrCreateUser(user));
     }
 }

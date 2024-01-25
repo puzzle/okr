@@ -91,7 +91,7 @@ class KeyResultBusinessServiceIT {
 
     @BeforeEach
     void setUp() {
-        when(authorizationService.getAuthorizationUser()).thenReturn(authorizationUser);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(authorizationUser);
     }
 
     @AfterEach

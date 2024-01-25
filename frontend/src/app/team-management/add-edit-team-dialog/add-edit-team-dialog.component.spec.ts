@@ -15,7 +15,7 @@ import { DialogHeaderComponent } from '../../shared/custom/dialog-header/dialog-
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { TeamService } from '../../services/team.service';
 import { of } from 'rxjs';
-import { teamFormObject, teamMin1 } from '../../shared/testData';
+import { marketingTeamWriteable, teamFormObject } from '../../shared/testData';
 import { Team } from '../../shared/types/model/Team';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -93,7 +93,7 @@ describe('TeamManagementComponent', () => {
   });
 
   it('should call service method to update team if data input is not null', async () => {
-    component.data = { team: teamMin1 };
+    component.data = { team: marketingTeamWriteable };
     component.teamForm.setValue(teamFormObject);
     jest.spyOn(teamServiceMock, 'updateTeam').mockReturnValue(of(teamFormObject));
     fixture.detectChanges();
@@ -101,15 +101,14 @@ describe('TeamManagementComponent', () => {
     expect(teamServiceMock.updateTeam).toHaveBeenCalled();
     expect(teamServiceMock.updateTeam).toHaveBeenCalledWith({
       ...teamFormObject,
-      id: teamMin1.id,
-      version: teamMin1.version,
+      id: marketingTeamWriteable.id,
+      version: marketingTeamWriteable.version,
     } as Team);
   });
 
   it('should set team values in from on init if data is not null', async () => {
-    component.data = { team: teamMin1 };
+    component.data = { team: marketingTeamWriteable };
     component.ngOnInit();
-    expect(component.teamForm.controls.name.value).toBe(teamMin1.name);
-    expect(component.hasInActiveOrganisations).toBeFalsy();
+    expect(component.teamForm.controls.name.value).toBe(marketingTeamWriteable.name);
   });
 });

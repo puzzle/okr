@@ -25,7 +25,7 @@ public class TeamAuthorizationService {
 
     public Team createEntity(Team entity) {
         // everybody is allowed to create a new team
-        Team savedTeam = teamBusinessService.createTeam(entity, authorizationService.getAuthorizationUser());
+        Team savedTeam = teamBusinessService.createTeam(entity, authorizationService.updateOrAddAuthorizationUser());
         savedTeam.setWriteable(true);
         return savedTeam;
     }
@@ -55,7 +55,7 @@ public class TeamAuthorizationService {
     }
 
     public boolean isUserWriteAllowed(Long teamId) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         if (hasRoleWriteAndReadAll(authorizationUser)) {
             return true;
         }
@@ -63,7 +63,7 @@ public class TeamAuthorizationService {
     }
 
     public List<Team> getAllTeams() {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         List<Team> allTeams = teamBusinessService.getAllTeams(authorizationUser);
         allTeams.forEach(team -> team.setWriteable(isUserWriteAllowed(team.getId())));
         return allTeams;
@@ -71,7 +71,7 @@ public class TeamAuthorizationService {
 
     public void removeUserFromTeam(long entityId, long userId) {
         // user is allowed to remove own membership of any team
-        if (userId != authorizationService.getAuthorizationUser().user().getId()) {
+        if (userId != authorizationService.updateOrAddAuthorizationUser().user().getId()) {
             checkUserAuthorization(OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, TEAM), entityId);
         }
         teamBusinessService.removeUserFromTeam(entityId, userId);

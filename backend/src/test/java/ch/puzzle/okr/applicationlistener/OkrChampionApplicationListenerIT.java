@@ -45,6 +45,10 @@ class OkrChampionApplicationListenerIT {
         assertTrue(userMariaSaved.get().isOkrChampion());
         assertFalse(userAndreaSaved.get().isOkrChampion());
 
+        userPersistenceService.deleteById(userRichardSaved.get().getId());
+        userPersistenceService.deleteById(userMariaSaved.get().getId());
+        userPersistenceService.deleteById(userAndreaSaved.get().getId());
+
     }
 
 }

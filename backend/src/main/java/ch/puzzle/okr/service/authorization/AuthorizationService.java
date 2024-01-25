@@ -37,12 +37,12 @@ public class AuthorizationService {
         this.jwtConverterFactory = jwtConverterFactory;
     }
 
-    public AuthorizationUser getAuthorizationUser() {
+    public AuthorizationUser updateOrAddAuthorizationUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
         User user = jwtConverterFactory.getJwtUserConverter().convert(token);
-        return authorizationRegistrationService.registerAuthorizationUser(user);
+        return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
     }
 
     public void hasRoleReadByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {

@@ -6,8 +6,11 @@ import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
 import { Team } from '../../shared/types/model/Team';
-import { MatDialog } from '@angular/material/dialog';
-import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import {
+  AddMemberToTeamDialogComponent,
+  AddMemberToTeamDialogComponentData,
+} from '../add-member-to-team-dialog/add-member-to-team-dialog.component';
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
@@ -92,9 +95,9 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addMemberToTeam() {
-    const dialogConfig = OKR_DIALOG_CONFIG;
+    const dialogConfig: MatDialogConfig<AddMemberToTeamDialogComponentData> = OKR_DIALOG_CONFIG;
     dialogConfig.data = {
-      team: this.selectedTeam$.value,
+      team: this.selectedTeam$.value!,
       currentUsersOfTeam: this.dataSource.data,
     };
     const dialogRef = this.dialog.open(AddMemberToTeamDialogComponent, dialogConfig);
@@ -110,7 +113,7 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showAddMemberToTeam() {
-    return this.selectedTeam$.value?.isWriteable;
+    return this.selectedTeam$.value?.writeable;
   }
 
   editTeam(): void {

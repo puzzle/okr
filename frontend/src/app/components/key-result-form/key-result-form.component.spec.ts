@@ -42,6 +42,7 @@ describe('KeyResultFormComponent', () => {
     getUsers() {
       return of(users);
     },
+    getCurrentUser: jest.fn(),
   };
 
   const matDialogRefMock = {
@@ -125,6 +126,7 @@ describe('KeyResultFormComponent', () => {
       fixture = TestBed.createComponent(KeyResultFormComponent);
       component = fixture.componentInstance;
       component.keyResultForm = keyResultFormGroup;
+      userService.getCurrentUser.mockReturnValue(testUser);
       fixture.detectChanges();
     });
 
@@ -142,7 +144,7 @@ describe('KeyResultFormComponent', () => {
       expect(formObject.title).toBe('Title');
       expect(formObject.description).toBe(null);
       expect(userServiceSpy).toHaveBeenCalled();
-      expect(component.keyResultForm.controls['owner'].value).toBe(users[1]);
+      expect(component.keyResultForm.controls['owner'].value).toBe(testUser);
       expect(component.keyResultForm.invalid).toBeFalsy();
     }));
 
@@ -160,7 +162,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should return label from user', () => {
-      let userName: string = component.getUserNameById(testUser);
+      let userName: string = component.getUserNameFromUser(testUser);
       expect(userName).toEqual('Bob Baumeister');
     });
 
@@ -222,8 +224,8 @@ describe('KeyResultFormComponent', () => {
 
     it('should get username from user right', () => {
       let user = users[0];
-      expect(component.getUserNameById(user)).toEqual('Bob Baumeister');
-      expect(component.getUserNameById(null!)).toEqual('');
+      expect(component.getUserNameFromUser(user)).toEqual('Bob Baumeister');
+      expect(component.getUserNameFromUser(null!)).toEqual('');
     });
 
     it('should get keyresult id right', () => {
@@ -233,7 +235,7 @@ describe('KeyResultFormComponent', () => {
     });
 
     it('should get username from oauthService  right', () => {
-      expect(component.getUserName()).toEqual('Paco Egiman');
+      expect(component.getLoggedInUserName()).toEqual(testUser.firstname + ' ' + testUser.lastname);
     });
   });
 });

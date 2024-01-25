@@ -9,6 +9,10 @@ describe('AddUserTeamComponent', () => {
   let fixture: ComponentFixture<AddUserTeamComponent>;
   let teamService: TeamService;
 
+  const team1Copy = { ...team1 };
+  const team2Copy = { ...team2 };
+  const team3Copy = { ...team3 };
+
   const teamServiceMock = {
     getAllTeams: jest.fn(),
   };
@@ -25,7 +29,7 @@ describe('AddUserTeamComponent', () => {
     component = fixture.componentInstance;
     teamService = TestBed.inject(TeamService);
 
-    teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
+    teamServiceMock.getAllTeams.mockReturnValue(of([team1Copy, team2Copy, team3Copy]));
     component.currentTeams$ = of(testUser.userTeamList);
 
     fixture.detectChanges();
@@ -36,21 +40,21 @@ describe('AddUserTeamComponent', () => {
   });
 
   it('should filter adminTeams correctly', (done) => {
-    team1.isWriteable = true;
-    team2.isWriteable = true;
-    team3.isWriteable = false;
+    team1Copy.writeable = true;
+    team2Copy.writeable = true;
+    team3Copy.writeable = false;
     component.ngOnInit();
     component.adminTeams$!.subscribe((teams) => {
       expect(teams.length).toBe(1);
-      expect(teams[0].id).toBe(team2.id);
+      expect(teams[0].id).toBe(team2Copy.id);
       done();
     });
   });
 
   it('createUserTeam should create the userTeam', () => {
-    component.createUserTeam(team1);
+    component.createUserTeam(team1Copy);
     expect(component.userTeam).toStrictEqual({
-      team: team1,
+      team: team1Copy,
       isTeamAdmin: false,
     });
   });

@@ -14,7 +14,7 @@ public class ObjectiveAuthorizationService extends AuthorizationServiceBase<Long
     }
 
     public Objective duplicateEntity(Long id, Objective objective) {
-        AuthorizationUser authorizationUser = getAuthorizationService().getAuthorizationUser();
+        AuthorizationUser authorizationUser = getAuthorizationService().updateOrAddAuthorizationUser();
         hasRoleCreateOrUpdate(objective, authorizationUser);
         return getBusinessService().duplicateObjective(id, objective, authorizationUser);
     }

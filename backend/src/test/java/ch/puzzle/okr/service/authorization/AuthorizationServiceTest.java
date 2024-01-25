@@ -101,9 +101,9 @@ class AuthorizationServiceTest {
 
         when(jwtConverterFactory.getJwtUserConverter()).thenReturn(jwtUserConverter);
         when(jwtUserConverter.convert(token)).thenReturn(user);
-        when(authorizationRegistrationService.registerAuthorizationUser(user)).thenReturn(authorizationUser);
+        when(authorizationRegistrationService.updateOrAddAuthorizationUser(user)).thenReturn(authorizationUser);
 
-        assertNotNull(authorizationService.getAuthorizationUser());
+        assertNotNull(authorizationService.updateOrAddAuthorizationUser());
     }
 
     @Test

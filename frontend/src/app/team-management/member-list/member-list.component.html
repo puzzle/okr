@@ -1,11 +1,11 @@
-<div xmlns="http://www.w3.org/1999/html">
+<div>
   <div id="member-header">
     <div class="title">
       <h3 *ngIf="selectedTeam$.value">
         <span>{{ selectedTeam$.value!.name }}</span>
         <mat-icon
           class="mx-2 cursor-pointer d-none d-md-inline-block"
-          *ngIf="selectedTeam$.value!.isWriteable"
+          *ngIf="selectedTeam$.value!.writeable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
           >edit</mat-icon
@@ -42,7 +42,7 @@
         </span>
       </button>
     </div>
-    <div class="menu" *ngIf="selectedTeam$.value?.isWriteable">
+    <div class="menu" *ngIf="selectedTeam$.value?.writeable">
       <button mat-icon-button [matMenuTriggerFor]="menu" [attr.data-testId]="'teamMoreButton'">
         <mat-icon class="d-flex justify-content-center align-items-center">more_vert</mat-icon>
       </button>

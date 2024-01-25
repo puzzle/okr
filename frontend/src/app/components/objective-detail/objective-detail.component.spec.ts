@@ -17,7 +17,7 @@ let objectiveService = {
 const activatedRouteMock = {
   snapshot: {
     paramMap: {
-      get: jest.fn(),
+      get: jest.fn() as any,
     },
   },
 };
@@ -39,11 +39,17 @@ describe('ObjectiveDetailComponent', () => {
     fixture = TestBed.createComponent(ObjectiveDetailComponent);
     component = fixture.componentInstance;
     objectiveService.getFullObjective.mockReturnValue(of(objective));
+    activatedRouteMock.snapshot.paramMap.get = jest.fn();
     activatedRouteMock.snapshot.paramMap.get.mockReturnValue(of(1));
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should throw an exception, if id is undefined', () => {
+    activatedRouteMock.snapshot.paramMap.get = () => undefined;
+    expect(() => component.ngOnInit()).toThrowError('objective id is undefined');
   });
 
   it('get data from backend', () => {

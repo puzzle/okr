@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TeamComponent } from './team.component';
 import { MatIcon } from '@angular/material/icon';
-import { overViewEntity1 } from '../../shared/testData';
+import { overViewEntity1, overViewEntity2 } from '../../shared/testData';
 import { ObjectiveComponent } from '../objective/objective.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatMenuModule } from '@angular/material/menu';
@@ -15,6 +15,7 @@ import * as de from '../../../assets/i18n/de.json';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfidenceComponent } from '../confidence/confidence.component';
 import { ScoringComponent } from '../../shared/custom/scoring/scoring.component';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 const dialogMock = {
   open: jest.fn(),
@@ -58,7 +59,11 @@ describe('TeamComponent', () => {
           useValue: refreshDataServiceMock,
         },
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(TeamComponent, {
+        set: { changeDetection: ChangeDetectionStrategy.Default },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TeamComponent);
     component = fixture.componentInstance;
@@ -75,5 +80,12 @@ describe('TeamComponent', () => {
     fixture.detectChanges();
     const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
     expect(button).toBeTruthy();
+  });
+
+  it('should not display add objective button if writeable is false', () => {
+    component.overviewEntity = overViewEntity2;
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('[data-testId="add-objective"]'));
+    expect(button).toBeFalsy();
   });
 });

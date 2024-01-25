@@ -109,7 +109,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", version=" + version + ", firstname='" + firstname + '\'' + ", lastname='"
-                + lastname + '\'' + ", email='" + email + '\'' + '}';
+                + lastname + '\'' + ", email='" + email + '\'' + ", isOkrChampion='" + isOkrChampion + '\'' + '}';
     }
 
     @Override
@@ -121,12 +121,12 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(version, user.version)
                 && Objects.equals(firstname, user.firstname) && Objects.equals(lastname, user.lastname)
-                && Objects.equals(email, user.email);
+                && Objects.equals(email, user.email) && Objects.equals(isOkrChampion, user.isOkrChampion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, firstname, lastname, email);
+        return Objects.hash(id, version, firstname, lastname, email, isOkrChampion);
     }
 
     public static final class Builder {

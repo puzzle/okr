@@ -73,28 +73,29 @@ describe('OKR team e2e tests', () => {
         .and('eq', 'rgb(30, 90, 150)');
       cy.get('mat-chip:visible:contains("LoremIpsum")')
         .should('have.css', 'background-color')
-        .and('eq', 'rgb(255, 255, 255)');
+        .and('eq', 'rgb(30, 90, 150)');
       cy.get('mat-chip:visible:contains("we are cube")')
         .should('have.css', 'background-color')
         .and('eq', 'rgb(255, 255, 255)');
       cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
+      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
       cy.contains('Kein Team ausgewählt');
     });
 
     it('URL changes to the selected teams', () => {
       cy.url().should('include', 'teams=');
       cy.url().should('include', '5');
-      cy.url().should('not.include', '6');
+      cy.url().should('include', '6');
 
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+      cy.get('mat-chip:visible:contains("/BBT")').click();
       cy.url().should('include', 'teams=');
       cy.url().should('include', '5');
       cy.url().should('include', '6');
+      cy.url().should('include', '4');
       cy.get('mat-chip:visible:contains("Puzzle ITC")').click();
       cy.get('mat-chip:visible:contains("LoremIpsum")').click();
+      cy.get('mat-chip:visible:contains("/BBT")').click();
       cy.url().should('not.include', 'teams=');
-      cy.url().should('not.include', '5');
-      cy.url().should('not.include', '6');
     });
 
     it('Select teams by url', () => {

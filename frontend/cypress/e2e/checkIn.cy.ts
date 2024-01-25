@@ -251,8 +251,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('submit').click();
 
       cy.getByTestId('keyresult').contains('I am a metric keyresult for testing').click();
-      cy.tabForward();
-      cy.tabForward();
+
+      cy.tabForwardUntil('[data-testId="add-check-in"]');
       cy.focused().contains('Check-in erfassen').click();
       cy.contains('Check-in im Draft-Status');
       cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');

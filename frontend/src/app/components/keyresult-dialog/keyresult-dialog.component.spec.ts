@@ -40,6 +40,7 @@ describe('KeyresultDialogComponent', () => {
     getUsers() {
       return of(users);
     },
+    getCurrentUser: jest.fn(),
   };
 
   let fullObjective = {
@@ -292,6 +293,9 @@ describe('KeyresultDialogComponent', () => {
 
       fixture = TestBed.createComponent(KeyresultDialogComponent);
       component = fixture.componentInstance;
+
+      userService.getCurrentUser.mockReturnValue(testUser);
+
       fixture.detectChanges();
       keyResultService = TestBed.inject(KeyresultService);
     });
@@ -415,7 +419,7 @@ describe('KeyresultDialogComponent', () => {
           {
             provide: MatDialogRef,
             useValue: {
-              close: (dialogResult: any) => {},
+              close: () => {},
             },
           },
           {

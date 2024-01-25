@@ -16,6 +16,7 @@ import { of } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { User } from '../../shared/types/model/User';
 import { Router } from '@angular/router';
+import { UserTeam } from '../../shared/types/model/UserTeam';
 import Spy = jasmine.Spy;
 
 const teams: Team[] = [
@@ -23,29 +24,25 @@ const teams: Team[] = [
     id: 1,
     version: 1,
     name: 'ZZ the Puzzle Team - Keyword',
-    filterIsActive: false,
-    isWriteable: false,
+    writeable: false,
   },
   {
     id: 2,
     version: 1,
     name: 'The Puzzle Team - Keyword',
-    filterIsActive: false,
-    isWriteable: false,
+    writeable: false,
   },
   {
     id: 3,
     version: 1,
     name: 'Puzzle Team - No',
-    filterIsActive: false,
-    isWriteable: false,
+    writeable: false,
   },
   {
     id: 4,
     version: 1,
     name: 'Team Ruedi - Noname',
-    filterIsActive: false,
-    isWriteable: false,
+    writeable: false,
   },
 ];
 
@@ -98,10 +95,11 @@ describe('SearchTeamManagementComponent', () => {
         return of(users);
       },
     };
+
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule,
+        RouterTestingModule.withRoutes([]),
         BrowserAnimationsModule,
         MatAutocompleteModule,
         ReactiveFormsModule,
@@ -126,11 +124,11 @@ describe('SearchTeamManagementComponent', () => {
     }).compileComponents();
   });
   beforeEach(() => {
+    navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl') as unknown as Spy;
     fixture = TestBed.createComponent(SearchTeamManagementComponent);
     component = fixture.componentInstance;
 
     fixture.detectChanges();
-    navigateSpy = jest.spyOn(TestBed.inject(Router), 'navigateByUrl') as unknown as Spy;
   });
 
   afterEach(() => {
@@ -186,7 +184,48 @@ describe('SearchTeamManagementComponent', () => {
   });
 
   it('should switch to user page when selected', () => {
-    component.selectUser(users[0]);
+    const userWithSingleTeam: User = {
+      ...users[0],
+      userTeamList: [{ team: { id: 1, name: 'My Team' } as Team, isTeamAdmin: false } as UserTeam],
+    };
+    component.selectUser(userWithSingleTeam);
+
+    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/1/details/member/1`);
+  });
+
+  it('should switch to the user page of which the user is admin when selected', () => {
+    const userWithDifferentTeams: User = {
+      ...users[0],
+      userTeamList: [
+        { team: { id: 1, name: 'My Team - noadmin' } as Team, isTeamAdmin: false } as UserTeam,
+        { team: { id: 2, name: 'My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
+      ],
+    };
+    component.selectUser(userWithDifferentTeams);
+
+    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/2/details/member/1`);
+  });
+
+  it('should switch to the user page of the team which comes alphabetically first when selected', () => {
+    const userWithDifferentTeams: User = {
+      ...users[0],
+      userTeamList: [
+        { team: { id: 1, name: 'My Team - noadmin' } as Team, isTeamAdmin: false } as UserTeam,
+        { team: { id: 2, name: 'Z - My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
+        { team: { id: 3, name: 'A - My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
+      ],
+    };
+    component.selectUser(userWithDifferentTeams);
+
+    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/3/details/member/1`);
+  });
+
+  it('should switch to root user page when selected', () => {
+    const userWithoutTeam = {
+      ...users[0],
+      teams: [],
+    };
+    component.selectUser(userWithoutTeam);
 
     expect(navigateSpy).toHaveBeenCalledWith('/team-management/details/member/1');
   });

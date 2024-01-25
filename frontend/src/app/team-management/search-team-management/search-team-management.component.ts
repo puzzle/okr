@@ -65,7 +65,14 @@ export class SearchTeamManagementComponent {
 
   selectUser(user: User) {
     this.search.setValue('');
-    this.router.navigateByUrl(getRouteToUserDetails(user.id)).then();
+    const teamId =
+      user.userTeamList.sort((a, b) => {
+        if (a.isTeamAdmin === b.isTeamAdmin) {
+          return a.team.name.localeCompare(b.team.name);
+        }
+        return a.isTeamAdmin ? -1 : 1;
+      })[0]?.team.id ?? undefined;
+    this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId)).then();
   }
 
   selectTeam(team: Team) {
@@ -74,9 +81,9 @@ export class SearchTeamManagementComponent {
   }
 
   private applyFilter(filterValue: string): void {
-    if (filterValue.length == 0) {
+    if (!filterValue.length) {
       this.filteredUsers$.next([]);
-      this.filteredUsers$.next([]);
+      this.filteredTeams$.next([]);
       return;
     }
 

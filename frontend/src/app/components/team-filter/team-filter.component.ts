@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, Subject, Subscription, takeUntil } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { TeamService } from '../../services/team.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +18,7 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
   activeTeams: number[] = [];
   protected readonly trackByFn = trackByFn;
   private unsubscribe$ = new Subject<void>();
+  private subscription?: Subscription;
 
   constructor(
     private teamService: TeamService,
@@ -26,22 +27,25 @@ export class TeamFilterComponent implements OnInit, OnDestroy {
     private refreshDataService: RefreshDataService,
     private userService: UserService,
   ) {
-    this.refreshDataService.reloadOverviewSubject.subscribe(() => {
-      this.teamService
-        .getAllTeams()
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((teams) => {
-          this.teams$.next(teams);
-          this.activeTeams = this.activeTeams.filter((teamId) => this.getAllTeamIds().includes(teamId));
-          this.changeTeamFilterParams();
-        });
+    this.refreshDataService.reloadOverviewSubject.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.refreshTeamData();
     });
   }
 
   ngOnInit(): void {
-    this.teamService
+    this.refreshTeamData();
+  }
+
+  private refreshTeamData() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.subscription = this.teamService
       .getAllTeams()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        filter((teams) => teams.length > 0),
+      )
       .subscribe((teams: Team[]) => {
         this.teams$.next(teams);
         const teamQuery = this.route.snapshot.queryParams['teams'];

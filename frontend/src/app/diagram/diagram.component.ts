@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import cytoscape from 'cytoscape';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Router } from '@angular/router';
@@ -7,15 +7,26 @@ import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { calculateCurrentPercentage } from '../shared/common';
 import { KeyResultMetricMin } from '../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../shared/types/model/KeyResultOrdinalMin';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrl: './diagram.component.scss',
 })
-export class DiagramComponent implements AfterViewInit, OnChanges {
+export class DiagramComponent implements AfterViewInit, OnDestroy {
+  private overviewEntity$ = new BehaviorSubject<OverviewEntity[]>({} as OverviewEntity[]);
+
   @Input()
-  overviewEntity!: OverviewEntity[];
+  get overviewEntity(): BehaviorSubject<OverviewEntity[]> {
+    return this.overviewEntity$;
+  }
+
+  set overviewEntity(overviewEntity: OverviewEntity[]) {
+    this.overviewEntity$.next(overviewEntity);
+  }
+
+  cy!: cytoscape.Core;
 
   currentNodeBackgroundColor: string = '';
   currentNodeFontColor: string = '';
@@ -23,19 +34,24 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   constructor(private router: Router) {}
 
   ngAfterViewInit(): void {
-    this.generateDiagram(this.overviewEntity);
+    this.overviewEntity.subscribe((overviewEntity) => {
+      this.generateDiagram(overviewEntity);
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.generateDiagram(changes['overviewEntity'].currentValue);
+  ngOnDestroy() {
+    this.cy.nodes().remove();
+    this.cy.edges().remove();
+    this.cy.off('all');
+    this.cy.destroy();
   }
 
   generateDiagram(data: OverviewEntity[]): void {
     if (data.length == 0) return;
     let generatedData: any[] = this.generateElements(data);
 
-    let cy = cytoscape({
-      container: document.getElementById('cy'), // container to render in
+    this.cy = cytoscape({
+      container: document.getElementById('cy'),
 
       elements: generatedData,
 
@@ -93,43 +109,45 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
       },
     });
 
-    cy.on('tap', 'node', (evt: cytoscape.EventObject): void => {
+    this.cy.on('tap', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
-      if (node.id().substring(0, 2) == 'KR') {
+      let nodeId = node.id();
+      if (!nodeId) return;
+      if (nodeId.substring(0, 2) == 'KR') {
         node.style({
           'background-color': this.currentNodeBackgroundColor,
           color: this.currentNodeFontColor,
           'border-width': 0,
         });
-      } else if (node.id().substring(0, 2) == 'Ob') {
+      } else if (nodeId.substring(0, 2) == 'Ob') {
         node.style({
           'background-color': this.currentNodeBackgroundColor,
           color: this.currentNodeFontColor,
         });
       }
-      if (node.id() == 'P') return;
-      if (node.id().charAt(0) == 'T') return;
       let type: string = node.id().charAt(0) == 'O' ? 'Objective' : 'KeyResult';
 
       this.router.navigate([type.toLowerCase(), node.id().substring(2)]);
     });
 
-    cy.on('mouseover', 'node', (evt: cytoscape.EventObject): void => {
+    this.cy.on('mouseover', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
+      let nodeId = node.id();
+      if (!nodeId) return;
 
       let backgroundRGB = this.extractRGBNumbers(node.style().backgroundColor);
       this.currentNodeBackgroundColor = this.rgbToHex(backgroundRGB![0], backgroundRGB![1], backgroundRGB![2]);
       let fontRGB = this.extractRGBNumbers(node.style().color);
       this.currentNodeFontColor = this.rgbToHex(fontRGB![0], fontRGB![1], fontRGB![2]);
 
-      if (node.id().substring(0, 2) == 'KR') {
+      if (nodeId.substring(0, 2) == 'KR') {
         node.style({
           'background-color': 'white',
           color: '#000000',
           'border-color': '#5D6974',
           'border-width': 1,
         });
-      } else if (node.id().substring(0, 2) == 'Ob') {
+      } else if (nodeId.substring(0, 2) == 'Ob') {
         node.style({
           color: '#FFFFFF',
           'background-color': '#1d7e8c',
@@ -137,15 +155,17 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
       }
     });
 
-    cy.on('mouseout', 'node', (evt: cytoscape.EventObject): void => {
+    this.cy.on('mouseout', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
-      if (node.id().substring(0, 2) == 'KR') {
+      let nodeId = node.id();
+      if (!nodeId) return;
+      if (nodeId.substring(0, 2) == 'KR') {
         node.style({
           'background-color': this.currentNodeBackgroundColor,
           color: this.currentNodeFontColor,
           'border-width': 0,
         });
-      } else if (node.id().substring(0, 2) == 'Ob') {
+      } else if (nodeId.substring(0, 2) == 'Ob') {
         node.style({
           'background-color': this.currentNodeBackgroundColor,
           color: this.currentNodeFontColor,
@@ -266,65 +286,103 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
       'background-color': '#1E8A29',
       'background-opacity': 0.8,
       color: '#FFFFFF',
+      'border-color': '#FFFFFF',
+      'border-width': 0,
     };
     if (keyResult.keyResultType == 'metric') {
-      let percentages = calculateCurrentPercentage(keyResult as KeyResultMetricMin);
-      if (percentages < 30) {
+      if (!keyResult.lastCheckIn) {
         style = {
-          'background-color': '#BA3838',
-          'background-opacity': 0.8,
-          color: '#FFFFFF',
-        };
-      } else if (percentages < 70) {
-        style = {
-          'background-color': '#FFD600',
-          'background-opacity': 0.8,
+          'background-color': '#FFFFFF',
+          'background-opacity': 1,
           color: '#000000',
+          'border-color': '#000000',
+          'border-width': 1,
         };
-      } else if (percentages < 100) {
-        style = {
-          'background-color': '#1E8A29',
-          'background-opacity': 0.8,
-          color: '#FFFFFF',
-        };
-      } else if (percentages >= 100) {
-        style = {
-          'background-color': '#000000',
-          'background-opacity': 0.8,
-          color: '#FFFFFF',
-        };
-      }
-    } else {
-      let ordinalKeyResult = keyResult as KeyResultOrdinalMin;
-      switch (ordinalKeyResult.lastCheckIn?.value) {
-        case 'FAIL':
+      } else {
+        let percentages = calculateCurrentPercentage(keyResult as KeyResultMetricMin);
+        if (percentages < 30) {
           style = {
             'background-color': '#BA3838',
             'background-opacity': 0.8,
             color: '#FFFFFF',
+            'border-color': '#FFFFFF',
+            'border-width': 0,
           };
-          break;
-        case 'COMMIT':
+        } else if (percentages < 70) {
           style = {
             'background-color': '#FFD600',
             'background-opacity': 0.8,
             color: '#000000',
+            'border-color': '#FFFFFF',
+            'border-width': 0,
           };
-          break;
-        case 'TARGET':
+        } else if (percentages < 100) {
           style = {
             'background-color': '#1E8A29',
             'background-opacity': 0.8,
             color: '#FFFFFF',
+            'border-color': '#FFFFFF',
+            'border-width': 0,
           };
-          break;
-        case 'STRETCH':
+        } else if (percentages >= 100) {
           style = {
             'background-color': '#000000',
             'background-opacity': 0.8,
             color: '#FFFFFF',
+            'border-color': '#FFFFFF',
+            'border-width': 0,
           };
-          break;
+        }
+      }
+    } else {
+      if (!keyResult.lastCheckIn) {
+        style = {
+          'background-color': '#FFFFFF',
+          'background-opacity': 1,
+          color: '#000000',
+          'border-color': '#000000',
+          'border-width': 1,
+        };
+      } else {
+        let ordinalKeyResult = keyResult as KeyResultOrdinalMin;
+        switch (ordinalKeyResult.lastCheckIn?.value) {
+          case 'FAIL':
+            style = {
+              'background-color': '#BA3838',
+              'background-opacity': 0.8,
+              color: '#FFFFFF',
+              'border-color': '#FFFFFF',
+              'border-width': 0,
+            };
+            break;
+          case 'COMMIT':
+            style = {
+              'background-color': '#FFD600',
+              'background-opacity': 0.8,
+              color: '#000000',
+              'border-color': '#FFFFFF',
+              'border-width': 0,
+            };
+            break;
+          case 'TARGET':
+            style = {
+              'background-color': '#1E8A29',
+              'background-opacity': 0.8,
+              color: '#FFFFFF',
+              'border-color': '#FFFFFF',
+              'border-width': 0,
+            };
+            break;
+          case 'STRETCH':
+            style = {
+              'background-color': '#000000',
+              'background-opacity': 0.8,
+              color: '#FFFFFF',
+              'border-color': '#FFFFFF',
+              'border-width': 0,
+            };
+            break;
+        }
       }
     }
 
@@ -343,8 +401,7 @@ export class DiagramComponent implements AfterViewInit, OnChanges {
   extractRGBNumbers(rgbString: string) {
     let match = rgbString.match(/(\d+),\s*(\d+),\s*(\d+)/);
     if (match) {
-      let numbers = [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
-      return numbers;
+      return [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])];
     } else {
       return null;
     }

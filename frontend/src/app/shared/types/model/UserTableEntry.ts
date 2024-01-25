@@ -8,6 +8,7 @@ export interface UserTableEntry {
   email: string;
   teams: string[];
   roles: string[];
+  isOkrChampion: boolean;
 }
 
 export const convertFromUsers = (users: User[], teamId: number | null): UserTableEntry[] => {
@@ -33,9 +34,6 @@ export const convertFromUsers = (users: User[], teamId: number | null): UserTabl
 export const convertFromUser = (user: User): UserTableEntry => {
   const teams = user.userTeamList.map((ut) => ut.team.name);
   const roles = [];
-  if (user.isOkrChampion) {
-    roles.push(UserRole.OKR_CHAMPION);
-  }
   if (user.userTeamList.filter((ut) => ut.isTeamAdmin).length > 0) {
     roles.push(UserRole.TEAM_ADMIN);
   }
@@ -50,5 +48,6 @@ export const convertFromUser = (user: User): UserTableEntry => {
     email: user.email,
     teams,
     roles,
+    isOkrChampion: user.isOkrChampion,
   };
 };

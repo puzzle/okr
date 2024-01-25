@@ -27,7 +27,14 @@
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="delete">
+  <ng-container matColumnDef="okr_champion">
+    <th mat-header-cell *matHeaderCellDef>OKR Champion</th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.isOkrChampion | okrChampion }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="menu">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element">
       <div class="menu" *ngIf="selectedTeam$.value?.isWriteable">

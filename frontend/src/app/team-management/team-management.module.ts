@@ -31,6 +31,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
+import { OkrChampionPipe } from './okr-champion.pipe';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { MemberListMobileComponent } from './member-list/member-list-mobile/memb
     MatSelectModule,
     TranslateModule,
     A11yModule,
+    OkrChampionPipe,
   ],
 })
 export class TeamManagementModule {}

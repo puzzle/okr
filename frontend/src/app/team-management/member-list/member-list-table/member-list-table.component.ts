@@ -17,7 +17,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   @Input({ required: true }) dataSource!: MatTableDataSource<UserTableEntry>;
   @Input({ required: true }) selectedTeam$!: BehaviorSubject<undefined | Team>;
 
-  private allColumns = ['icon', 'name', 'roles', 'teams'];
+  private allColumns = ['icon', 'name', 'roles', 'teams', 'okr_champion'];
   private teamColumns = ['icon', 'name', 'roles'];
   private unsubscribe$ = new Subject<void>();
 
@@ -42,7 +42,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   private setColumnForTeam(team: Team) {
     this.displayedColumns = [...this.teamColumns];
     if (team.isWriteable) {
-      this.displayedColumns.push('delete');
+      this.displayedColumns.push('menu');
     }
   }
 

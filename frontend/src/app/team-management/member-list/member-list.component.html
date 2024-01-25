@@ -1,18 +1,21 @@
 <div>
   <div id="member-header">
-    <div class="title">
-      <h3 *ngIf="selectedTeam$.value">
-        <span>{{ selectedTeam$.value!.name }}</span>
-        <mat-icon
-          class="mx-2 cursor-pointer d-none d-md-inline-block"
-          *ngIf="selectedTeam$.value!.writeable"
+    <div class="team-title">
+      <div class="d-flex px-3">
+        <h2 *ngIf="selectedTeam$.value">{{ selectedTeam$.value!.name }}</h2>
+        <app-puzzle-icon-button
+          *ngIf="selectedTeam$.value?.writeable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
-          >edit</mat-icon
+          icon="edit.svg"
+          alt="Edit Team Icon"
         >
-      </h3>
-      <h3 *ngIf="!selectedTeam$.value">Alle Teams</h3>
-      <p class="d-none d-md-block">Members: {{ dataSource.data.length }}</p>
+        </app-puzzle-icon-button>
+        <h2 *ngIf="!selectedTeam$.value">Alle Teams</h2>
+      </div>
+      <div class="d-none d-md-flex flex-grow-1">
+        <p>Members: {{ dataSource.data.length }}</p>
+      </div>
     </div>
     <div class="action-button d-none d-md-flex">
       <button
@@ -42,10 +45,13 @@
         </span>
       </button>
     </div>
-    <div class="menu" *ngIf="selectedTeam$.value?.writeable">
-      <button mat-icon-button [matMenuTriggerFor]="menu" [attr.data-testId]="'teamMoreButton'">
-        <mat-icon class="d-flex justify-content-center align-items-center">more_vert</mat-icon>
-      </button>
+    <div class="menu mx-2" *ngIf="selectedTeam$.value?.writeable">
+      <app-puzzle-icon-button
+        icon="threedot.svg"
+        alt="Menu Icon"
+        [matMenuTriggerFor]="menu"
+        [attr.data-testId]="'teamMoreButton'"
+      ></app-puzzle-icon-button>
       <mat-menu #menu="matMenu">
         <button
           class="d-block d-md-none"

@@ -32,6 +32,8 @@ import { TeamManagementMobileFilterComponent } from './team-management-mobile-fi
 import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
 import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
 import { OkrChampionPipe } from './okr-champion.pipe';
+import { PuzzleIconComponent } from '../shared/custom/puzzle-icon/puzzle-icon.component';
+import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { OkrChampionPipe } from './okr-champion.pipe';
     TeamManagementMobileFilterComponent,
     MemberListTableComponent,
     MemberListMobileComponent,
+    PuzzleIconComponent,
+    PuzzleIconButtonComponent,
   ],
   imports: [
     CommonModule,

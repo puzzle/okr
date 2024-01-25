@@ -41,7 +41,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
 
   private setColumnForTeam(team: Team) {
     this.displayedColumns = [...this.teamColumns];
-    if (team.isWriteable) {
+    if (team.writeable) {
       this.displayedColumns.push('menu');
     }
   }

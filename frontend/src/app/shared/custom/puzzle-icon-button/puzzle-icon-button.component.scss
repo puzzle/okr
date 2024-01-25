@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button.puzzle-icon-button {
+    border: none;
+    background: none;
+
+    &:hover {
+      background-color: #dbdee0;
+    }
+  }
+}

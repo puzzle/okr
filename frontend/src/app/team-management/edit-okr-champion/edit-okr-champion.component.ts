@@ -35,8 +35,8 @@ export class EditOkrChampionComponent {
     }, 0);
   }
 
-  okrChampionDisabled(): boolean {
-    return !this.userService.getCurrentUser().isOkrChampion;
+  okrChampionEditable(): boolean {
+    return this.userService.getCurrentUser().isOkrChampion;
   }
 
   setOkrChampion(okrChampion: boolean) {

@@ -4,6 +4,7 @@
     <app-puzzle-icon-button
       *ngIf="isEditable()"
       (click)="setEditAsync($event, true)"
+      [attr.data-testId]="'edit-role'"
       icon="edit.svg"
       alt="Edit Team Icon"
     >

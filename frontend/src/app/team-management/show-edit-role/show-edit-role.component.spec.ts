@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { ShowEditRoleComponent } from './show-edit-role.component';
 import { testUser } from '../../shared/testData';
@@ -36,4 +36,14 @@ describe('ShowEditRoleComponent', () => {
     expect(userTeam.isTeamAdmin).toBeTruthy();
     expect(component.edit).toBeFalsy();
   });
+
+  it('setEditAsync should set edit to given value', fakeAsync(() => {
+    component.edit = false;
+    const mouseEvent = {
+      stopPropagation: () => undefined,
+    } as any;
+    component.setEditAsync(mouseEvent, true);
+    tick();
+    expect(component.edit).toBeTruthy();
+  }));
 });

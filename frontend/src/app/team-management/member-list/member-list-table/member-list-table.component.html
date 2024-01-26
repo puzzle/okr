@@ -54,13 +54,17 @@
         <app-puzzle-icon-button
           (click)="$event.stopPropagation()"
           [matMenuTriggerFor]="userMenu"
-          [attr.data-testId]="'userMoreButton'"
+          [attr.data-testId]="'member-list-more'"
           icon="threedot.svg"
           alt="More Icon"
         >
         </app-puzzle-icon-button>
         <mat-menu #userMenu="matMenu">
-          <button (click)="removeMemberFromTeam(element, $event)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+          <button
+            (click)="removeMemberFromTeam(element, $event)"
+            mat-menu-item
+            [attr.data-testId]="'remove-from-member-list'"
+          >
             <app-puzzle-icon icon="delete-icon.svg" alt="Remove Icon"></app-puzzle-icon>
             <span class="font-size-14">Member entfernen</span>
           </button>

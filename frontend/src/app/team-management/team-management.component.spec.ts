@@ -15,6 +15,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
+import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
 
 describe('TeamManagementComponent', () => {
   let component: TeamManagementComponent;
@@ -37,6 +43,10 @@ describe('TeamManagementComponent', () => {
         RouterModule,
         MatAutocompleteModule,
         TranslateModule.forRoot(),
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatTableModule,
       ],
       declarations: [
         TeamManagementComponent,
@@ -44,6 +54,9 @@ describe('TeamManagementComponent', () => {
         TeamListComponent,
         MemberListComponent,
         SearchTeamManagementComponent,
+        TeamManagementMobileFilterComponent,
+        MemberListTableComponent,
+        MemberListMobileComponent,
       ],
       providers: [{ provide: ActivatedRoute, useValue: activatedRouteMock }],
     }).compileComponents();

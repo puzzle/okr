@@ -40,6 +40,7 @@ describe('Team management tests', () => {
       cy.intercept('PUT', '**/removeuser').as('removeUser');
 
       cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
+      cy.getByTestId('member-list-more').click();
       cy.getByTestId('remove-from-member-list').click();
 
       cy.wait('@removeUser');
@@ -81,7 +82,7 @@ describe('Team management tests', () => {
 
     describe('Search', () => {
       it('Search user', () => {
-        cy.getByTestId('teamManagementSearch').click().type('pa', { delay: 1 });
+        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('pa', { delay: 1 });
 
         cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
         cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
@@ -91,15 +92,15 @@ describe('Team management tests', () => {
       });
 
       it('Search team', () => {
-        cy.getByTestId('teamManagementSearch').click().type('we are', { delay: 1 });
+        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('we are', { delay: 1 });
 
         cy.contains('.mat-mdc-autocomplete-panel mat-option', 'we are cube.³').click();
 
-        cy.contains('app-member-list h3', 'we are cube.³');
+        cy.contains('app-member-list h2', 'we are cube.³');
       });
 
       it('Search mixed', () => {
-        cy.getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
+        cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
 
         cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Users');
         cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Teams');
@@ -117,25 +118,25 @@ describe('Team management tests', () => {
 
       // add to team bbt as admin
       cy.get('app-member-detail').getByTestId('add-user').click();
-      cy.getByTestId('select-team-dropdown').click();
+      cy.get('app-member-detail').getByTestId('select-team-dropdown').click();
       cy.getByTestId('select-team-dropdown-option').contains('/BBT').click();
-      cy.getByTestId('select-team-role').click();
+      cy.get('app-member-detail').getByTestId('select-team-role').click();
       cy.getByTestId('select-team-role-admin').click();
-      cy.getByTestId('add-user-to-team-save').click();
+      cy.get('app-member-detail').getByTestId('add-user-to-team-save').click();
 
       cy.wait('@updateEsha');
 
       // add to team loremipsum as member
       cy.get('app-member-detail').getByTestId('add-user').click();
-      cy.getByTestId('select-team-dropdown').click();
+      cy.get('app-member-detail').getByTestId('select-team-dropdown').click();
 
       // team BBT should not be in list anymore
       cy.getByTestId('select-team-dropdown-option').should('not.contain', '/BBT');
 
       cy.getByTestId('select-team-dropdown-option').contains('LoremIpsum').click();
-      cy.getByTestId('select-team-role').click();
+      cy.get('app-member-detail').getByTestId('select-team-role').click();
       cy.getByTestId('select-team-role-member').click();
-      cy.getByTestId('add-user-to-team-save').click();
+      cy.get('app-member-detail').getByTestId('add-user-to-team-save').click();
 
       cy.wait('@updateEsha');
       // check table
@@ -161,6 +162,31 @@ describe('Team management tests', () => {
           expect(foundEsha).to.be.true;
         });
     });
+
+    it('Navigate to user Esha and set as okr champion', () => {
+      navigateToUser(nameEsha);
+      cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
+      cy.getByTestId('edit-okr-champion-readonly').contains('Nein');
+      cy.getByTestId('edit-okr-champion-edit').click();
+      cy.getByTestId('edit-okr-champion-readonly').should('not.exist');
+      cy.getByTestId('edit-okr-champion-checkbox').click();
+      cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
+      cy.getByTestId('edit-okr-champion-readonly').contains('Ja');
+      cy.contains('Der User wurde erfolgreich aktualisiert.');
+
+      // reset okr champion to false
+      cy.getByTestId('edit-okr-champion-edit').click();
+      cy.getByTestId('edit-okr-champion-checkbox').click();
+      cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
+      cy.getByTestId('edit-okr-champion-readonly').contains('Nein');
+
+      // test click outside of element
+      cy.getByTestId('edit-okr-champion-edit').click();
+      cy.get('app-member-detail').find('h2').click();
+      // checkbox should hide again
+      cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
+      cy.getByTestId('edit-okr-champion-readonly').contains('Nein');
+    });
   });
 
   describe('As BL', () => {
@@ -183,6 +209,8 @@ describe('Team management tests', () => {
       cy.get('app-team-management').contains('LoremIpsum').click();
       cy.getByTestId('teamMoreButton').should('not.exist');
       cy.getByTestId('editTeamButton').should('not.exist');
+      cy.getByTestId('member-list-more').should('not.exist');
+      cy.getByTestId('edit-role').should('not.exist');
     });
 
     it('should check if team /BBT can be edited and edit name', () => {
@@ -225,6 +253,25 @@ describe('Team management tests', () => {
       cy.getByTestId('save').click();
     });
 
+    it('should change role of Findus Peterson to Team Admin', () => {
+      cy.get('app-team-management').contains('/BBT').click();
+
+      cy.get('app-member-list tbody tr')
+        .each(($row) => {
+          let usernameCell = $row.find('td:nth-child(2)');
+          if (usernameCell.text().trim() !== 'Findus Peterson') {
+            return;
+          }
+          $row.find(`[data-testId='edit-role']`).click();
+        })
+        .then(() => {
+          cy.getByTestId('select-team-role').click();
+          cy.getByTestId('select-team-role-admin').click();
+          cy.getByTestId('select-team-role').should('not.exist');
+          cy.contains('Das Team wurde erfolgreich aktualisiert.');
+        });
+    });
+
     it('should test that Findus Peterson cannot be added to further teams', () => {
       navigateToUser('Findus Peterson');
 
@@ -244,6 +291,12 @@ describe('Team management tests', () => {
       cy.getByTestId('delete-team-member').eq(0).click();
       cy.getByTestId('delete-team-member').eq(0).click();
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
+    });
+
+    it('Navigate to user Esha and check if okr champion is not editable', () => {
+      navigateToUser(nameEsha);
+      cy.getByTestId('edit-okr-champion-readonly').should('exist');
+      cy.getByTestId('edit-okr-champion-edit').should('not.exist');
     });
   });
 });

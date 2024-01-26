@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
@@ -20,8 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserBusinessServiceTest {
@@ -134,5 +134,29 @@ class UserBusinessServiceTest {
 
         verify(userPersistenceService, times(1)).save(user);
         assertTrue(user.isOkrChampion());
+    }
+
+    @Test
+    void setOkrChampion_shouldThrowExceptionIfLastOkrChampIsRemoved() {
+        var user = TestHelper.defaultUser(1L);
+        var user2 = TestHelper.defaultUser(2L);
+        user.setOkrChampion(true);
+        when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
+
+        assertThrows(OkrResponseStatusException.class, () -> userBusinessService.setOkrChampion(user, false));
+    }
+
+    @Test
+    void setOkrChampion_shouldNotThrowExceptionIfSecondLastOkrChampIsRemoved() {
+        var user = TestHelper.defaultUser(1L);
+        var user2 = TestHelper.defaultUser(2L);
+        user.setOkrChampion(true);
+        user2.setOkrChampion(true);
+        when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
+
+        userBusinessService.setOkrChampion(user, false);
+
+        verify(userPersistenceService, times(1)).save(user);
+        assertFalse(user.isOkrChampion());
     }
 }

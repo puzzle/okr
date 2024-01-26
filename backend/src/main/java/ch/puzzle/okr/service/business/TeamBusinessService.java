@@ -147,6 +147,7 @@ public class TeamBusinessService {
             if (ut.getTeam().getId().equals(teamId)) {
                 ut.setTeamAdmin(isAdmin);
                 userPersistenceService.save(user);
+                cacheService.emptyAuthorizationUsersCache();
                 return;
             }
         }

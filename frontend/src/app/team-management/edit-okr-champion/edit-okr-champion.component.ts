@@ -43,6 +43,8 @@ export class EditOkrChampionComponent {
     this.userService.setOkrChampion(this.user, okrChampion).subscribe(() => {
       this.user.isOkrChampion = okrChampion;
       this.setEditAsync(false);
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
       this.cd.markForCheck();
     });
   }

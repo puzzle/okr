@@ -79,7 +79,6 @@ class TeamBusinessServiceTest {
         this.objectiveCompleted = Objective.Builder.builder().withId(6L).withTitle("Objective 1").withState(SUCCESSFUL)
                 .build();
         this.objectiveList = List.of(objective, objective, objective, objectiveCompleted);
-
     }
 
     @Test
@@ -188,11 +187,13 @@ class TeamBusinessServiceTest {
         var user = defaultUserWithTeams(1L, List.of(team1), List.of(team2, team3));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team2.getId())).thenReturn(team2);
+        team2.setUserTeamList(new ArrayList<>(team2.getUserTeamList()));
 
         teamBusinessService.removeUserFromTeam(team2.getId(), user.getId());
         assertEquals(2, user.getUserTeamList().size());
         assertEquals(user.getUserTeamList().stream().map(ut -> ut.getTeam().getId()).toList(),
                 List.of(team1.getId(), team3.getId()));
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
@@ -223,6 +224,7 @@ class TeamBusinessServiceTest {
         assertTrue(user.getUserTeamList().get(0).isTeamAdmin());
         assertTrue(user.getUserTeamList().get(1).isTeamAdmin());
         assertFalse(user.getUserTeamList().get(2).isTeamAdmin());
+        verify(cacheService, times(1)).emptyAuthorizationUsersCache();
     }
 
     @Test
@@ -245,5 +247,6 @@ class TeamBusinessServiceTest {
         assertEquals(user.getUserTeamList().get(2).getTeam().getId(), team3.getId());
 
         assertEquals(user.getUserTeamList().size(), 3);
+        verify(cacheService, times(2)).emptyAuthorizationUsersCache();
     }
 }

@@ -81,6 +81,7 @@ public class UserAuthorizationServiceTest {
         when(userBusinessService.getUserById(user.getId())).thenReturn(user);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        assertThrows(OkrResponseStatusException.class, () -> userAuthorizationService.setOkrChampion(user.getId(), true));
+        assertThrows(OkrResponseStatusException.class,
+                () -> userAuthorizationService.setOkrChampion(user.getId(), true));
     }
 }

@@ -146,7 +146,8 @@ public class AuthorizationService {
         throw notAuthorizedException;
     }
 
-    public static void checkRoleWriteAndReadAll(AuthorizationUser user, OkrResponseStatusException notAuthorizedException) {
+    public static void checkRoleWriteAndReadAll(AuthorizationUser user,
+            OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteAndReadAll(user)) {
             return;
         }

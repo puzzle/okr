@@ -63,8 +63,7 @@ public class UserController {
     @PutMapping(path = "/{id}/okrchampion/{okrChampion}")
     public UserDto setOkrChampion(
             @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id,
-            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean okrChampion
-    ) {
+            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean okrChampion) {
         var user = this.userAuthorizationService.setOkrChampion(id, okrChampion);
         return userMapper.toDto(user);
     }

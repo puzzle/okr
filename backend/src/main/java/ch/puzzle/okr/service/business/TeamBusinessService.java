@@ -123,7 +123,8 @@ public class TeamBusinessService {
 
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
-                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST, "No team found to removed from userTeam list"));
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No team found to removed from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
@@ -133,13 +134,9 @@ public class TeamBusinessService {
 
     private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
         team.getUserTeamList().stream()
-                .filter(ut -> ut.isTeamAdmin()
-                        && !Objects.equals(ut.getUser().getId(), user.getId()))
-                .findAny()
-                .orElseThrow(() -> new OkrResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        ErrorKey.TRIED_TO_DELETE_LAST_ADMIN
-                ));
+                .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId())).findAny()
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                        ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
     }
 
     @Transactional

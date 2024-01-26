@@ -31,4 +31,9 @@ public class UserBusinessService {
         validationService.validateOnGetOrCreate(user);
         return userPersistenceService.getOrCreateUser(user);
     }
+
+    public User setOkrChampion(User user, boolean okrChampion) {
+        user.setOkrChampion(okrChampion);
+        return userPersistenceService.save(user);
+    }
 }

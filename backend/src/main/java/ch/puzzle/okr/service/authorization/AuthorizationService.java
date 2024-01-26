@@ -146,6 +146,13 @@ public class AuthorizationService {
         throw notAuthorizedException;
     }
 
+    public static void checkRoleWriteAndReadAll(AuthorizationUser user, OkrResponseStatusException notAuthorizedException) {
+        if (hasRoleWriteAndReadAll(user)) {
+            return;
+        }
+        throw notAuthorizedException;
+    }
+
     public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
         return user.user().isOkrChampion();
     }

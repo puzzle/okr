@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
@@ -17,9 +18,10 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserBusinessServiceTest {
@@ -121,5 +123,16 @@ class UserBusinessServiceTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());
+    }
+
+    @Test
+    void setOkrChampion_shouldSetOkrChampionCorrectly() {
+        var user = TestHelper.defaultUser(1L);
+        user.setOkrChampion(false);
+
+        userBusinessService.setOkrChampion(user, true);
+
+        verify(userPersistenceService, times(1)).save(user);
+        assertTrue(user.isOkrChampion());
     }
 }

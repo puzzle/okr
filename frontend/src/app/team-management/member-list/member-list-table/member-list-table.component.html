@@ -15,9 +15,22 @@
     </td>
   </ng-container>
 
+  <!--  all roles for all teams view-->
   <ng-container matColumnDef="roles">
     <th mat-header-cell *matHeaderCellDef>Rolle</th>
     <td mat-cell *matCellDef="let element">{{ element.roles | roles }}</td>
+  </ng-container>
+
+  <!--  single role with edit for team view-->
+  <ng-container matColumnDef="role">
+    <th mat-header-cell *matHeaderCellDef>Rolle</th>
+    <td mat-cell *matCellDef="let element">
+      <app-show-edit-role
+        *ngIf="element.userTeamList.length"
+        [userTeam]="getSingleUserTeam(element)"
+        (save)="saveUserTeamRole(element, $event)"
+      ></app-show-edit-role>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="teams">
@@ -48,6 +61,7 @@
         </app-puzzle-icon-button>
         <mat-menu #userMenu="matMenu">
           <button (click)="removeMemberFromTeam(element, $event)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+            <app-puzzle-icon icon="delete-icon.svg" alt="Remove Icon"></app-puzzle-icon>
             <span>Member entfernen</span>
           </button>
         </mat-menu>

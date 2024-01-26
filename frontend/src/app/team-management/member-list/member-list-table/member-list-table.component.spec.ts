@@ -23,6 +23,7 @@ describe('MemberListTableComponent', () => {
     getAllTeams: jest.fn(),
     deleteTeam: jest.fn(),
     removeUserFromTeam: jest.fn(),
+    updateOrAddTeamMembership: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -40,6 +41,9 @@ describe('MemberListTableComponent', () => {
     component = fixture.componentInstance;
 
     component.selectedTeam$ = new BehaviorSubject<Team | undefined>(undefined);
+    teamServiceMock.removeUserFromTeam.mockReset();
+    userServiceMock.reloadUsers.mockReset();
+    userServiceMock.reloadCurrentUser.mockReset();
 
     fixture.detectChanges();
   });
@@ -51,21 +55,21 @@ describe('MemberListTableComponent', () => {
   it('should set displayedColumns for all teams correctly', fakeAsync(() => {
     component.selectedTeam$.next(undefined);
     tick();
-    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles', 'teams']);
+    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles', 'teams', 'okr_champion']);
   }));
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
     component.selectedTeam$.next(team1);
     tick();
-    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles']);
+    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'role']);
   }));
 
   it('should set displayedColumns for admin team correctly', fakeAsync(() => {
     const team = { ...team1 };
-    team.isWriteable = true;
+    team.writeable = true;
     component.selectedTeam$.next(team);
     tick();
-    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles', 'delete']);
+    expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'role', 'menu']);
   }));
 
   it('should return correct memberDetailsLink', () => {
@@ -89,4 +93,34 @@ describe('MemberListTableComponent', () => {
     expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
   }));
+
+  it('saveUserTeamRole should call updateOrAddTeamMembership and reload users', fakeAsync(() => {
+    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
+    userServiceMock.reloadCurrentUser.mockReturnValue(of());
+    const entry = {
+      id: 1,
+    } as any;
+    const ut = testUser.userTeamList[0];
+    component.saveUserTeamRole(entry, ut);
+    tick();
+    expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledWith(entry.id, ut);
+    expect(userServiceMock.reloadUsers).toHaveBeenCalledTimes(1);
+    expect(userServiceMock.reloadCurrentUser).toHaveBeenCalledTimes(1);
+  }));
+
+  it('getSingleUserTeam should return first userTeam uf userTableEntry', () => {
+    const ut = {
+      userTeamList: [testUser.userTeamList[0]],
+    } as any;
+    expect(component.getSingleUserTeam(ut)).toStrictEqual(testUser.userTeamList[0]);
+  });
+
+  it('getSingleUserTeam should throw error if userTeamList.length is not 1', () => {
+    const ut = {
+      userTeamList: [testUser.userTeamList[0], testUser.userTeamList[0]],
+    } as any;
+    expect(() => component.getSingleUserTeam(ut)).toThrowError('it should have exactly one UserTeam at this point');
+    ut.userTeamList = [];
+    expect(() => component.getSingleUserTeam(ut)).toThrowError('it should have exactly one UserTeam at this point');
+  });
 });

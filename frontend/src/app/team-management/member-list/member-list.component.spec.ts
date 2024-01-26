@@ -18,6 +18,7 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { MatTableDataSource } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListTableComponent } from './member-list-table/member-list-table.component';
+import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -49,7 +50,7 @@ describe('MemberListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MemberListComponent, MemberListTableComponent],
+      declarations: [MemberListComponent, MemberListTableComponent, MemberListMobileComponent],
       imports: [HttpClientTestingModule, TranslateTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
@@ -88,7 +89,9 @@ describe('MemberListComponent', () => {
     expect(userTableEntry.lastname).toBe(user.lastname);
     expect(userTableEntry.email).toBe(user.email);
     expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.isOkrChampion).toBeFalsy();
     expect(userTableEntry.teams).toStrictEqual([team1.name]);
+    expect(userTableEntry.userTeamList).toStrictEqual(user.userTeamList);
 
     user.userTeamList.push({
       id: 2,
@@ -99,8 +102,10 @@ describe('MemberListComponent', () => {
 
     userTableEntry = convertFromUser(user);
 
-    expect(userTableEntry.roles).toStrictEqual([UserRole.OKR_CHAMPION, UserRole.TEAM_ADMIN, UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_ADMIN, UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.isOkrChampion).toBeTruthy();
     expect(userTableEntry.teams).toStrictEqual([team1.name, team2.name]);
+    expect(userTableEntry.userTeamList).toStrictEqual(user.userTeamList);
   });
 
   it('should test method convertFromUsers', () => {

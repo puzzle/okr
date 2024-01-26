@@ -4,7 +4,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
-import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { SharedModule } from '../../shared/shared.module';
 import { UserService } from '../../services/user.service';
@@ -13,7 +12,11 @@ import { AddUserTeamComponent } from '../add-user-team/add-user-team.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { TeamService } from '../../services/team.service';
-import spyOn = jest.spyOn;
+import { ShowEditRoleComponent } from '../show-edit-role/show-edit-role.component';
+import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('MemberDetailComponent', () => {
   let component: MemberDetailComponent;
@@ -40,20 +43,29 @@ describe('MemberDetailComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MemberDetailComponent, AddUserTeamComponent],
+      declarations: [
+        MemberDetailComponent,
+        AddUserTeamComponent,
+        ShowEditRoleComponent,
+        PuzzleIconButtonComponent,
+        PuzzleIconComponent,
+      ],
       imports: [
         HttpClientTestingModule,
         TranslateModule.forRoot(),
-        CommonModule,
         BrowserModule,
         SharedModule,
         MatTableModule,
         MatIconModule,
+        CommonModule,
       ],
       providers: [
         { provide: ActivatedRoute, useValue: activatedRouteMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: TeamService, useValue: teamServiceMock },
+      ],
+      schemas: [
+        NO_ERRORS_SCHEMA, //
       ],
     }).compileComponents();
   });
@@ -114,20 +126,7 @@ describe('MemberDetailComponent', () => {
     tick();
 
     expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledTimes(1);
-    expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledWith(user, userTeam);
+    expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledWith(user.id, userTeam);
     expect(userServiceMock.getUserById).toHaveBeenCalledWith(user.id);
   }));
-
-  it('saveIsAdmin should set admin and call saveTeamRole', () => {
-    const user = testUser;
-    const userTeam = testUser.userTeamList[0];
-    const spy = spyOn(component, 'saveIsAdmin');
-
-    teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(' '));
-
-    userTeam.isTeamAdmin = false;
-    component.saveIsAdmin(userTeam, user, true);
-    expect(userTeam.isTeamAdmin).toBeTruthy();
-    expect(spy).toBeCalledTimes(1);
-  });
 });

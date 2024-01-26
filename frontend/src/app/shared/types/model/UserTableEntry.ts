@@ -1,5 +1,6 @@
 import { User } from './User';
 import { UserRole } from '../enums/UserRole';
+import { UserTeam } from './UserTeam';
 
 export interface UserTableEntry {
   id: number;
@@ -9,6 +10,7 @@ export interface UserTableEntry {
   teams: string[];
   roles: string[];
   isOkrChampion: boolean;
+  userTeamList: UserTeam[];
 }
 
 export const convertFromUsers = (users: User[], teamId: number | null): UserTableEntry[] => {
@@ -49,5 +51,6 @@ export const convertFromUser = (user: User): UserTableEntry => {
     teams,
     roles,
     isOkrChampion: user.isOkrChampion,
+    userTeamList: user.userTeamList,
   };
 };

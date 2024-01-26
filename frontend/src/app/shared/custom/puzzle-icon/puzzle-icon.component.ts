@@ -12,5 +12,5 @@ export class PuzzleIconComponent {
   alt!: string;
 
   @Input({ required: false })
-  size: number = 20;
+  size: number = 16;
 }

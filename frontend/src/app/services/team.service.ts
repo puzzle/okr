@@ -53,9 +53,9 @@ export class TeamService {
     return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null);
   }
 
-  updateOrAddTeamMembership(user: User, userTeam: UserTeam): Observable<void> {
+  updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
     return this.http.put<void>(
-      `${this.API_URL}/${userTeam.team.id}/user/${user.id}/updateaddteammembership/${userTeam.isTeamAdmin}`,
+      `${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
       {},
     );
   }

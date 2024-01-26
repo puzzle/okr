@@ -7,6 +7,7 @@ import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { UserTeam } from '../../../shared/types/model/UserTeam';
 
 @Component({
   selector: 'app-member-list-table',
@@ -18,7 +19,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   @Input({ required: true }) selectedTeam$!: BehaviorSubject<undefined | Team>;
 
   private allColumns = ['icon', 'name', 'roles', 'teams', 'okr_champion'];
-  private teamColumns = ['icon', 'name', 'roles'];
+  private teamColumns = ['icon', 'name', 'role'];
   private unsubscribe$ = new Subject<void>();
 
   displayedColumns: string[] = this.allColumns;
@@ -59,7 +60,23 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  saveUserTeamRole(userTableEntry: UserTableEntry, userTeam: UserTeam): void {
+    this.teamService.updateOrAddTeamMembership(userTableEntry.id, userTeam).subscribe(() => {
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
+    });
+  }
+
   getMemberDetailsLink(user: User, team?: Team) {
     return getRouteToUserDetails(user.id, team?.id);
+  }
+
+  // this method is only used in Team context. Therefore, it should only have one userTeam.
+  // otherwise the method will throw an exception
+  getSingleUserTeam(userTableEntry: UserTableEntry): UserTeam {
+    if (userTableEntry.userTeamList.length !== 1) {
+      throw Error('it should have exactly one UserTeam at this point');
+    }
+    return userTableEntry.userTeamList[0];
   }
 }

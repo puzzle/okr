@@ -18,24 +18,7 @@
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef>Rolle</th>
           <td mat-cell *matCellDef="let element">
-            <div class="role">
-              <ng-container *ngIf="element.id !== userTeamEditId">
-                <span>{{ getRole(element) }}</span>
-                <app-puzzle-icon-button
-                  *ngIf="isEditable(element)"
-                  (click)="userTeamEditId = element.id"
-                  icon="edit.svg"
-                  alt="Edit Team Icon"
-                >
-                </app-puzzle-icon-button>
-              </ng-container>
-              <ng-container *ngIf="element.id === userTeamEditId">
-                <app-team-role-dropdown
-                  [isAdmin]="element.isTeamAdmin"
-                  (isAdminChange)="saveIsAdmin(element, userRef, $event)"
-                ></app-team-role-dropdown>
-              </ng-container>
-            </div>
+            <app-show-edit-role [userTeam]="element" (save)="saveTeamRole($event, userRef)"></app-show-edit-role>
           </td>
         </ng-container>
         <ng-container matColumnDef="delete">

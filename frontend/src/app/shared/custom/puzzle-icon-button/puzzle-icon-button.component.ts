@@ -13,7 +13,7 @@ export class PuzzleIconButtonComponent {
   alt!: string;
 
   @Input({ required: false })
-  size: number = 28;
+  size: number = 24;
 
   readonly padding = 4;
   imgSize = this.size - 2 * this.padding;

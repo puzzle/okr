@@ -34,6 +34,7 @@ import { MemberListMobileComponent } from './member-list/member-list-mobile/memb
 import { OkrChampionPipe } from './okr-champion.pipe';
 import { PuzzleIconComponent } from '../shared/custom/puzzle-icon/puzzle-icon.component';
 import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { ShowEditRoleComponent } from './show-edit-role/show-edit-role.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/p
     MemberListMobileComponent,
     PuzzleIconComponent,
     PuzzleIconButtonComponent,
+    ShowEditRoleComponent,
   ],
   imports: [
     CommonModule,

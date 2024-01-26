@@ -62,6 +62,7 @@
           <span>Member hinzufügen</span>
         </button>
         <button (click)="deleteTeam(selectedTeam$.value!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+          <app-puzzle-icon icon="delete-icon.svg" alt="Delete Team"></app-puzzle-icon>
           <span>Team löschen</span>
         </button>
       </mat-menu>

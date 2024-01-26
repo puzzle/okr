@@ -75,13 +75,6 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     return parseInt(id);
   }
 
-  getRole(userTeam: UserTeam): string {
-    if (userTeam.isTeamAdmin) {
-      return this.translateService.instant('USER_ROLE.TEAM_ADMIN');
-    }
-    return this.translateService.instant('USER_ROLE.TEAM_MEMBER');
-  }
-
   removeUserFromTeam(userTeam: UserTeam, user: User) {
     this.teamService
       .removeUserFromTeam(user.id, userTeam.team)
@@ -91,24 +84,15 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
 
   saveTeamRole(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user, userTeam).subscribe(() => {
+    this.teamService.updateOrAddTeamMembership(user.id, userTeam).subscribe(() => {
       this.loadUser(user.id);
       this.userService.reloadUsers();
       this.userService.reloadCurrentUser().subscribe();
     });
   }
 
-  isEditable(userTeam: UserTeam) {
-    return userTeam.team.writeable;
-  }
-
   isDeletable(userTeam: UserTeam): boolean {
-    return this.isEditable(userTeam) || this.selectedUserIsLoggedInUser;
-  }
-
-  saveIsAdmin(userTeam: UserTeam, user: User, isAdmin: boolean) {
-    userTeam.isTeamAdmin = isAdmin;
-    this.saveTeamRole(userTeam, user);
+    return userTeam.team.writeable || this.selectedUserIsLoggedInUser;
   }
 
   navigateBack() {

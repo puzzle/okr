@@ -1,21 +1,20 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShowEditRoleComponent } from "./show-edit-role.component";
-import { testUser } from "../../shared/testData";
-import { TranslateTestingModule } from "ngx-translate-testing";
-import * as de from "../../../assets/i18n/de.json";
+import { ShowEditRoleComponent } from './show-edit-role.component';
+import { testUser } from '../../shared/testData';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import * as de from '../../../assets/i18n/de.json';
 
 describe('ShowEditRoleComponent', () => {
   let component: ShowEditRoleComponent;
   let fixture: ComponentFixture<ShowEditRoleComponent>;
-  const userTeam = {...testUser.userTeamList[0]};
+  const userTeam = { ...testUser.userTeamList[0] };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ShowEditRoleComponent],
-      imports: [TranslateTestingModule.withTranslations({de: de})]
-    })
-    .compileComponents();
+      imports: [TranslateTestingModule.withTranslations({ de: de })],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ShowEditRoleComponent);
     component = fixture.componentInstance;
@@ -36,7 +35,5 @@ describe('ShowEditRoleComponent', () => {
 
     expect(userTeam.isTeamAdmin).toBeTruthy();
     expect(component.edit).toBeFalsy();
-  })
-
-
+  });
 });

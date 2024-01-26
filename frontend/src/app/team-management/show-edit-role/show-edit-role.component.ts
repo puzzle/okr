@@ -1,25 +1,21 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { UserTeam } from "../../shared/types/model/UserTeam";
-import { TranslateService } from "@ngx-translate/core";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UserTeam } from '../../shared/types/model/UserTeam';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: "app-show-edit-role",
-  templateUrl: "./show-edit-role.component.html",
-  styleUrl: "./show-edit-role.component.scss"
+  selector: 'app-show-edit-role',
+  templateUrl: './show-edit-role.component.html',
+  styleUrl: './show-edit-role.component.scss',
 })
 export class ShowEditRoleComponent {
-
-  @Input({required: true}) userTeam!: UserTeam;
+  @Input({ required: true }) userTeam!: UserTeam;
 
   @Output()
   private readonly save = new EventEmitter<UserTeam>();
 
   edit = false;
 
-  constructor(
-    private readonly translate: TranslateService
-  ) {
-  }
+  constructor(private readonly translate: TranslateService) {}
 
   saveIsAdmin(isAdmin: boolean) {
     this.edit = false;

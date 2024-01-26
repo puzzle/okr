@@ -1,12 +1,7 @@
 <div class="role">
   <ng-container *ngIf="!edit">
     <span>{{ getRole() }}</span>
-    <app-puzzle-icon-button
-      *ngIf="isEditable()"
-      (click)="setEdit($event, true)"
-      icon="edit.svg"
-      alt="Edit Team Icon"
-    >
+    <app-puzzle-icon-button *ngIf="isEditable()" (click)="setEdit($event, true)" icon="edit.svg" alt="Edit Team Icon">
     </app-puzzle-icon-button>
   </ng-container>
   <ng-container *ngIf="edit">

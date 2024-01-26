@@ -67,13 +67,11 @@ class TeamBusinessServiceTest {
         this.team1 = Team.Builder.builder().withId(1L).withName("Team 1").build();
         this.team1.setUserTeamList(List.of(
                 UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(2L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()
-        ));
+                UserTeam.Builder.builder().withTeam(team1).withUser(defaultUser(3L)).withTeamAdmin(false).build()));
         this.team2 = Team.Builder.builder().withId(2L).withName("Team 2").build();
         this.team2.setUserTeamList(List.of(
                 UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(4L)).withTeamAdmin(true).build(),
-                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()
-        ));
+                UserTeam.Builder.builder().withTeam(team2).withUser(defaultUser(5L)).withTeamAdmin(true).build()));
         this.team3 = Team.Builder.builder().withId(3L).withName("Team 3").build();
         this.team3.setUserTeamList(List.of());
         this.teamWithIdNull = Team.Builder.builder().withName("Team with id null").build();
@@ -212,13 +210,10 @@ class TeamBusinessServiceTest {
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
         when(teamPersistenceService.findById(team1.getId())).thenReturn(team1);
 
-        assertThrows(
-                OkrResponseStatusException.class,
+        assertThrows(OkrResponseStatusException.class,
                 () -> teamBusinessService.removeUserFromTeam(team1.getId(), user.getId()),
-                ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString()
-        );
+                ErrorKey.TRIED_TO_DELETE_LAST_ADMIN.toString());
     }
-
 
     @Test
     void updateOrAddTeamMembership_shouldUpdateIfTeamFound() {

@@ -48,4 +48,8 @@ export class UserService {
   getUserById(id: number): Observable<User> {
     return this.httpClient.get<User>(this.API_URL + '/' + id);
   }
+
+  setOkrChampion(user: User, okrChampion: boolean) {
+    return this.httpClient.put(`${this.API_URL}/${user.id}/okrchampion/${okrChampion}`, {});
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -15,7 +15,29 @@ export class ShowEditRoleComponent {
 
   edit = false;
 
-  constructor(private readonly translate: TranslateService) {}
+  constructor(
+    private readonly translate: TranslateService,
+    private readonly elementRef: ElementRef,
+    private readonly cd: ChangeDetectorRef,
+  ) {}
+
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: MouseEvent) {
+    if (this.elementRef.nativeElement.contains(event.target)) {
+      return;
+    }
+    this.edit = false;
+  }
+
+  // we set edit async, to ensure hostListener can detect outside-of-element clicks correctly
+  // otherwise element of event.target is already hidden
+  setEditAsync($event: MouseEvent, edit: boolean) {
+    $event.stopPropagation();
+    setTimeout(() => {
+      this.edit = edit;
+      this.cd.markForCheck();
+    }, 0);
+  }
 
   saveIsAdmin(isAdmin: boolean) {
     this.edit = false;
@@ -32,10 +54,5 @@ export class ShowEditRoleComponent {
 
   isEditable() {
     return this.userTeam.team.writeable;
-  }
-
-  setEdit($event: MouseEvent, edit: boolean) {
-    $event.stopPropagation();
-    this.edit = edit;
   }
 }

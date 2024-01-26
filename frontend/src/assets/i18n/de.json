@@ -76,6 +76,9 @@
     "CHECK_IN": {
       "POST": "Das Check-in wurde erfolgreich erstellt.",
       "PUT": "Das Check-in wurde erfolgreich aktualisiert."
+    },
+    "USERS": {
+      "PUT": "Der User wurde erfolgreich aktualisiert."
     }
   },
   "DIALOG_ERRORS": {

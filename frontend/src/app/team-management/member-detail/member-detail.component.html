@@ -10,6 +10,9 @@
       </button>
     </div>
     <div class="w-100">
+      <app-edit-okr-champion [user]="userRef"></app-edit-okr-champion>
+    </div>
+    <div class="w-100">
       <table mat-table [dataSource]="userRef.userTeamList" class="okr-table">
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef>Team</th>

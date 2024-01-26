@@ -31,8 +31,12 @@ body {
   a {
     color: $pz-dark-blue;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 700;
+  }
+
+  .font-size-14 {
+    font-size: 0.875rem;
   }
 }
 

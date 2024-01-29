@@ -37,6 +37,17 @@ public class AuthorizationService {
         this.jwtHelper = jwtHelper;
     }
 
+    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
+        return user.user().isOkrChampion();
+    }
+
+    public static boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Long teamId) {
+        if (hasRoleWriteAndReadAll(authorizationUser)) {
+            return true;
+        }
+        return authorizationUser.isUserAdminInTeam(teamId);
+    }
+
     public AuthorizationUser updateOrAddAuthorizationUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();

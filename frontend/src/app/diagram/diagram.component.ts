@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import cytoscape from 'cytoscape';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './diagram.component.html',
   styleUrl: './diagram.component.scss',
 })
-export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
+export class DiagramComponent implements AfterViewInit, OnDestroy {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity[]>({} as OverviewEntity[]);
 
   @Input()
@@ -30,18 +30,11 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
 
   currentNodeBackgroundColor: string = '';
   currentNodeFontColor: string = '';
+  currentNodeBorderColor: string = '';
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    console.log("hello");
-    this.overviewEntity.subscribe((overviewEntity) => {
-      console.log(overviewEntity);
-    });
-  }
-
   ngAfterViewInit(): void {
-    console.log("tv app");
     this.overviewEntity.subscribe((overviewEntity) => {
       this.generateDiagram(overviewEntity);
     });
@@ -51,7 +44,7 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
     this.cy.nodes().remove();
     this.cy.edges().remove();
     this.cy.off('all');
-    this.cy.destroy();
+    this.cy.removeAllListeners();
   }
 
   generateDiagram(data: OverviewEntity[]): void {
@@ -134,13 +127,15 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
       this.currentNodeBackgroundColor = this.rgbToHex(backgroundRGB![0], backgroundRGB![1], backgroundRGB![2]);
       let fontRGB = this.extractRGBNumbers(node.style().color);
       this.currentNodeFontColor = this.rgbToHex(fontRGB![0], fontRGB![1], fontRGB![2]);
+      let borderRGB = this.extractRGBNumbers(node.style().borderColor);
+      this.currentNodeBorderColor = this.rgbToHex(borderRGB![0], borderRGB![1], borderRGB![2]);
 
       if (nodeId.substring(0, 2) == 'KR') {
         node.style({
-          'background-color': 'white',
+          'background-color': '#FFFFFF',
           color: '#000000',
-          'border-color': '#5D6974',
-          'border-width': 1,
+          'border-color': '#1E5A96',
+          'border-width': 2,
         });
       } else if (nodeId.substring(0, 2) == 'Ob') {
         node.style({
@@ -154,38 +149,38 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
       this.handleMouseLeaveEvent(evt.target);
     });
 
-    this.cy.add([
-      {
-        group: 'nodes',
-        data: [
-          {
-            id: 'NR1',
-            label: 'Yanick',
-            tag: 'othername',
-          },
-        ],
-      },
-      {
-        group: 'nodes',
-        data: [
-          {
-            id: 'NR1',
-            label: 'Yanick',
-          },
-          {
-            id: 'NR2',
-            label: 'Lias',
-          },
-        ],
-      },
-      // { group: 'nodes', data: {id: 'kuchen',
-      //     label: 'Sehr lustig <br/><span style="color: red;">das Team</span>'}
-      // },
-      // { group: 'nodes', data: {id: 'asdf', label: {
-      //       return: '<h1 class="material-icons">Du bist ja lustig</h1>'
-      //     }
-      // }},
-    ]);
+    // this.cy.add([
+    //   {
+    //     group: 'nodes',
+    //     data: [
+    //       {
+    //         id: 'NR1',
+    //         label: 'Yanick',
+    //         tag: 'othername',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     group: 'nodes',
+    //     data: [
+    //       {
+    //         id: 'NR1',
+    //         label: 'Yanick',
+    //       },
+    //       {
+    //         id: 'NR2',
+    //         label: 'Lias',
+    //       },
+    //     ],
+    //   },
+    //   // { group: 'nodes', data: {id: 'kuchen',
+    //   //     label: 'Sehr lustig <br/><span style="color: red;">das Team</span>'}
+    //   // },
+    //   // { group: 'nodes', data: {id: 'asdf', label: {
+    //   //       return: '<h1 class="material-icons">Du bist ja lustig</h1>'
+    //   //     }
+    //   // }},
+    // ]);
   }
 
   handleMouseLeaveEvent(node: any) {
@@ -196,6 +191,7 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
         'background-color': this.currentNodeBackgroundColor,
         color: this.currentNodeFontColor,
         'border-width': this.currentNodeBackgroundColor == '#ffffff' ? 1 : 0,
+        'border-color': this.currentNodeBorderColor,
       });
     } else if (nodeId.substring(0, 2) == 'Ob') {
       node.style({
@@ -213,30 +209,30 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
         let element = {
           data: {
             id: 'Ob' + objective.id,
-            label: this.adjustLabel(objective.title, 36, 15) + '\n \n ' + overViewEntity.team.name,
+            label: this.adjustLabel(objective.title, 36, 15) + '\n --- \n ' + overViewEntity.team.name,
           },
           style: {
             'background-color': '#2C97A6',
           },
         };
         elements.push(element);
-        // if (overViewEntity.team.name == 'Puzzle ITC') {
-        objective.keyResults.forEach((keyResult): void => {
-          let style = this.generateStyle(keyResult);
-          element = {
-            data: {
-              id: 'KR' + keyResult.id,
-              label: this.adjustLabel(keyResult.title, 25, 12) + '\n \n ' + overViewEntity.team.name,
-            },
-            style: style,
-          };
-          elements.push(element);
-          let edge = {
-            data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
-          };
-          edges.push(edge);
-        });
-        // }
+        if (overViewEntity.team.name == 'Puzzle ITC') {
+          objective.keyResults.forEach((keyResult): void => {
+            let style = this.generateStyle(keyResult);
+            element = {
+              data: {
+                id: 'KR' + keyResult.id,
+                label: this.adjustLabel(keyResult.title, 25, 12) + '\n --- \n ' + overViewEntity.team.name,
+              },
+              style: style,
+            };
+            elements.push(element);
+            let edge = {
+              data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
+            };
+            edges.push(edge);
+          });
+        }
       });
     });
 
@@ -357,10 +353,10 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
           };
         } else if (percentages >= 100) {
           style = {
-            'background-color': '#000000',
-            'background-opacity': 0.8,
+            'background-color': '#1E5A96',
+            'background-opacity': 1,
             color: '#FFFFFF',
-            'border-color': '#FFFFFF',
+            'border-color': '#1E5A96',
             'border-width': 0,
           };
         }
@@ -406,10 +402,10 @@ export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
             break;
           case 'STRETCH':
             style = {
-              'background-color': '#000000',
-              'background-opacity': 0.8,
+              'background-color': '#1E5A96',
+              'background-opacity': 1,
               color: '#FFFFFF',
-              'border-color': '#FFFFFF',
+              'border-color': '#1E5A96',
               'border-width': 0,
             };
             break;

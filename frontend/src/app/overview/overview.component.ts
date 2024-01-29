@@ -21,7 +21,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
   private service: AlignmentService | OverviewService;
-  isDiagram: boolean = true;
 
   constructor(
     private overviewService: OverviewService,
@@ -30,14 +29,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private changeDetector: ChangeDetectorRef,
   ) {
-    this.service = this.isDiagram ? this.alignmentService : this.overviewService;
+    this.service = overviewService;
+
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => this.loadOverviewWithParams());
 
     combineLatest([
-      refreshDataService.teamFilterReady.asObservable(),
-      refreshDataService.quarterFilterReady.asObservable(),
+      this.refreshDataService.teamFilterReady.asObservable(),
+      this.refreshDataService.quarterFilterReady.asObservable(),
     ])
       .pipe(take(1))
       .subscribe(() => {
@@ -57,7 +57,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadOverviewWithParams() {
+  loadOverviewWithParams(index: number = 0) {
+    this.service = index == 0 ? this.overviewService : this.alignmentService;
+
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
     const teamQuery = this.activatedRoute.snapshot.queryParams['teams'];
     const objectiveQuery = this.activatedRoute.snapshot.queryParams['objectiveQuery'];

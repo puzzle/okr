@@ -37,6 +37,7 @@ import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/p
 import { ShowEditRoleComponent } from './show-edit-role/show-edit-role.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditOkrChampionComponent } from './edit-okr-champion/edit-okr-champion.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { EditOkrChampionComponent } from './edit-okr-champion/edit-okr-champion.
     A11yModule,
     OkrChampionPipe,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
 })
 export class TeamManagementModule {}

@@ -121,10 +121,6 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     alert('not implemented');
   }
 
-  showInvitePerson(): boolean {
-    return !this.selectedTeam$.value;
-  }
-
   showAddMemberToTeam() {
     return this.selectedTeam$.value?.writeable;
   }

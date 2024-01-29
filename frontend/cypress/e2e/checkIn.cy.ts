@@ -289,8 +289,6 @@ describe('OKR Check-in e2e tests', () => {
     });
 
     it(`Should not display last value div if last checkin is not present`, () => {
-      cy.intercept('GET', '**/keyresults*').as('keyresult');
-
       cy.getByTestId('add-objective').first().click();
       cy.fillOutObjective('new objective', 'safe', '3');
       cy.visit('/?quarter=3');
@@ -305,9 +303,8 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('I am a keyresult metric').click();
       cy.getByTestId('add-check-in').first().click();
 
-      cy.wait('@keyresult');
-
       cy.get('#old-value').should('not.exist');
+
       cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
       cy.getByTestId('add-check-in').first().click();
       cy.get('#old-value').should('not.exist');

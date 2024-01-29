@@ -20,12 +20,21 @@ mat-label {
   width: 218px;
 }
 
-@media only screen and (min-width: 575px) {
+@media only screen and (min-width: 601px) {
+  .gap-between {
+    gap: 5rem;
+  }
+}
+
+@media only screen and (min-width: 575px) and (max-width: 600px) {
   #new-value {
     order: 0;
   }
   #old-value {
     order: 1;
+  }
+  .gap-between {
+    gap: 3rem;
   }
 }
 
@@ -34,7 +43,9 @@ mat-label {
     order: 1;
   }
   #old-value {
-    margin-bottom: 3%;
     order: 0;
+  }
+  .gap-between {
+    gap: 1rem;
   }
 }

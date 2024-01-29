@@ -31,4 +31,8 @@ public class UserBusinessService {
         validationService.validateOnGetOrCreate(user);
         return userPersistenceService.getOrCreateUser(user);
     }
+
+    public User saveUser(User user) {
+        return userPersistenceService.save(user);
+    }
 }

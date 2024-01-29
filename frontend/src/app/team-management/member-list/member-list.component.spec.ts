@@ -203,9 +203,7 @@ describe('MemberListComponent', () => {
       afterClosed: () => of(false),
     });
 
-    const team = team1;
-
-    component.deleteTeam(team);
+    component.deleteTeam(team1);
     tick();
 
     expect(teamServiceMock.deleteTeam).toBeCalledTimes(0);
@@ -226,13 +224,6 @@ describe('MemberListComponent', () => {
     };
 
     expect(dialogMock.open).toBeCalledWith(AddMemberToTeamDialogComponent, expectedDialogConfig);
-  });
-
-  it('should showInvitePerson only if selected team is null', () => {
-    component.selectedTeam$.next(undefined);
-    expect(component.showInvitePerson()).toBeTruthy();
-    component.selectedTeam$.next(team1);
-    expect(component.showInvitePerson()).toBeFalsy();
   });
 
   it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {

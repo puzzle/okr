@@ -39,14 +39,28 @@ describe('AddUserTeamComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should filter adminTeams correctly', (done) => {
+  it('should filter selectableAdminTeams correctly', (done) => {
     team1Copy.writeable = true;
     team2Copy.writeable = true;
     team3Copy.writeable = false;
     component.ngOnInit();
-    component.adminTeams$!.subscribe((teams) => {
+    component.selectableAdminTeams$!.subscribe((teams) => {
       expect(teams.length).toBe(1);
       expect(teams[0].id).toBe(team2Copy.id);
+      done();
+    });
+  });
+
+  it('should filter allAdminTeams correctly', (done) => {
+    team1Copy.writeable = true;
+    team2Copy.writeable = true;
+    team3Copy.writeable = false;
+    component.ngOnInit();
+    component.allAdminTeams$!.subscribe((teams) => {
+      expect(teams.length).toBe(2);
+      expect(teams[0].id).toBe(team1Copy.id);
+      expect(teams[1].id).toBe(team2Copy.id);
+      expect(component.showAddButton(teams)).toBeTruthy();
       done();
     });
   });
@@ -70,5 +84,20 @@ describe('AddUserTeamComponent', () => {
     });
     component.save();
     expect(component.userTeam).toBe(undefined);
+  });
+
+  it('should test showAddButton', () => {
+    component.userTeam = testUser.userTeamList[0];
+    expect(component.showAddButton(null)).toBeFalsy();
+    expect(component.showAddButton([team1Copy, team2Copy])).toBeFalsy();
+    component.userTeam = undefined;
+    expect(component.showAddButton([])).toBeFalsy();
+    expect(component.showAddButton([team1Copy, team2Copy])).toBeTruthy();
+  });
+
+  it('should test addButtonDisabled', () => {
+    expect(component.addButtonDisabled([team1Copy])).toBeFalsy();
+    expect(component.addButtonDisabled([])).toBeTruthy();
+    expect(component.addButtonDisabled(null)).toBeTruthy();
   });
 });

@@ -7,7 +7,7 @@ import { UserTeam } from '../../shared/types/model/UserTeam';
 @Component({
   selector: 'app-add-user-team',
   templateUrl: './add-user-team.component.html',
-  styleUrl: './add-user-team.component.css',
+  styleUrl: './add-user-team.component.scss',
 })
 export class AddUserTeamComponent implements OnInit, OnDestroy {
   @Output()
@@ -17,19 +17,27 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
   currentTeams$!: Observable<UserTeam[]>;
 
   userTeam: { team: Team; isTeamAdmin: boolean } | undefined;
-  adminTeams$: Observable<Team[]> | undefined;
+  selectableAdminTeams$: Observable<Team[]> | undefined;
+  allAdminTeams$: Observable<Team[]> | undefined;
 
   private unsubscribe$ = new Subject<void>();
 
   constructor(private readonly teamService: TeamService) {}
 
   ngOnInit() {
-    this.adminTeams$ = combineLatest([this.teamService.getAllTeams(), this.currentTeams$]).pipe(
+    this.allAdminTeams$ = this.teamService.getAllTeams().pipe(
+      takeUntil(this.unsubscribe$),
+      map((teams) => {
+        return teams.filter((t) => t.writeable);
+      }),
+    );
+
+    this.selectableAdminTeams$ = combineLatest([this.allAdminTeams$, this.currentTeams$]).pipe(
       takeUntil(this.unsubscribe$),
       map(([allTeams, userTeams]) => {
         const currentTeamIds = userTeams.map((ut) => ut.team.id);
         return allTeams.filter((t) => {
-          return t.writeable && !currentTeamIds.includes(t.id);
+          return !currentTeamIds.includes(t.id);
         });
       }),
     );
@@ -53,5 +61,13 @@ export class AddUserTeamComponent implements OnInit, OnDestroy {
     }
     this.addUserTeam.next(this.userTeam);
     this.userTeam = undefined;
+  }
+
+  showAddButton(adminTeams: Team[] | null) {
+    return !this.userTeam && adminTeams?.length;
+  }
+
+  addButtonDisabled(selectableAdminTeams: Team[] | null) {
+    return !selectableAdminTeams?.length;
   }
 }

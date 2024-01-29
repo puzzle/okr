@@ -228,6 +228,18 @@ class TeamBusinessServiceTest {
     }
 
     @Test
+    void updateOrAddTeamMembership_shouldThrowExceptionIfLastAdminShouldBeRemoved() {
+        var user = defaultUserWithTeams(1L, List.of(team1), List.of());
+        team1.setUserTeamList(new ArrayList<>(user.getUserTeamList()));
+
+        when(userPersistenceService.findById(user.getId())).thenReturn(user);
+
+        assertThrows(OkrResponseStatusException.class, () ->
+                teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false)
+        );
+    }
+
+    @Test
     void updateOrAddTeamMembership_shouldAddTeamIfNoTeamFound() {
         var user = defaultUserWithTeams(1L, List.of(), List.of(team2));
         when(userPersistenceService.findById(user.getId())).thenReturn(user);

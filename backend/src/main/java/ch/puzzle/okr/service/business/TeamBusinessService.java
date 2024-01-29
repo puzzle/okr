@@ -145,14 +145,21 @@ public class TeamBusinessService {
         List<UserTeam> userTeamList = user.getUserTeamList();
         for (var ut : userTeamList) {
             if (ut.getTeam().getId().equals(teamId)) {
-                ut.setTeamAdmin(isAdmin);
-                userPersistenceService.save(user);
-                cacheService.emptyAuthorizationUsersCache();
+                updateTeamMembership(isAdmin, ut, user);
                 return;
             }
         }
         // if user has no membership to this team, it is added.
         addTeamMembership(teamId, isAdmin, user, userTeamList);
+        userPersistenceService.save(user);
+        cacheService.emptyAuthorizationUsersCache();
+    }
+
+    private void updateTeamMembership(boolean isAdmin, UserTeam ut, User user) {
+        if (!isAdmin) {
+            checkTeamHasAtLeastOneAdmin(ut.getTeam(), user);
+        }
+        ut.setTeamAdmin(isAdmin);
         userPersistenceService.save(user);
         cacheService.emptyAuthorizationUsersCache();
     }

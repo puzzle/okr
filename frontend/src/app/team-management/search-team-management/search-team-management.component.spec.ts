@@ -15,8 +15,7 @@ import { UserService } from '../../services/user.service';
 import { of } from 'rxjs';
 import { Team } from '../../shared/types/model/Team';
 import { User } from '../../shared/types/model/User';
-import { Router } from '@angular/router';
-import { UserTeam } from '../../shared/types/model/UserTeam';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import Spy = jasmine.Spy;
 
 const teams: Team[] = [
@@ -79,8 +78,8 @@ describe('SearchTeamManagementComponent', () => {
 
   let teamServiceMock: Partial<TeamService>;
   let userServiceMock: Partial<UserService>;
+  let activatedRouteMock: Partial<ActivatedRoute>;
   let navigateSpy: Spy;
-
   beforeEach(async () => {
     jest.useFakeTimers();
 
@@ -94,6 +93,12 @@ describe('SearchTeamManagementComponent', () => {
       getUsers: () => {
         return of(users);
       },
+    };
+
+    activatedRouteMock = {
+      snapshot: {
+        params: {},
+      } as unknown as ActivatedRouteSnapshot,
     };
 
     await TestBed.configureTestingModule({
@@ -119,6 +124,10 @@ describe('SearchTeamManagementComponent', () => {
         {
           provide: UserService,
           useValue: userServiceMock,
+        },
+        {
+          provide: ActivatedRoute,
+          useValue: activatedRouteMock,
         },
       ],
     }).compileComponents();
@@ -183,51 +192,20 @@ describe('SearchTeamManagementComponent', () => {
     expect(component.filteredTeams$.getValue()).not.toHaveLength(0);
   });
 
-  it('should switch to user page when selected', () => {
-    const userWithSingleTeam: User = {
-      ...users[0],
-      userTeamList: [{ team: { id: 1, name: 'My Team' } as Team, isTeamAdmin: false } as UserTeam],
-    };
-    component.selectUser(userWithSingleTeam);
+  it('should stay on current team page when a user is selected', () => {
+    activatedRouteMock!.snapshot!.params['teamId'] = '42';
 
-    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/1/details/member/1`);
+    component.selectUser(users[1]);
+
+    expect(navigateSpy).toHaveBeenCalledWith('/team-management/42/details/member/2');
   });
 
-  it('should switch to the user page of which the user is admin when selected', () => {
-    const userWithDifferentTeams: User = {
-      ...users[0],
-      userTeamList: [
-        { team: { id: 1, name: 'My Team - noadmin' } as Team, isTeamAdmin: false } as UserTeam,
-        { team: { id: 2, name: 'My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
-      ],
-    };
-    component.selectUser(userWithDifferentTeams);
+  it('should stay on current root page when a user is selected', () => {
+    activatedRouteMock!.snapshot!.params = {};
 
-    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/2/details/member/1`);
-  });
+    component.selectUser(users[1]);
 
-  it('should switch to the user page of the team which comes alphabetically first when selected', () => {
-    const userWithDifferentTeams: User = {
-      ...users[0],
-      userTeamList: [
-        { team: { id: 1, name: 'My Team - noadmin' } as Team, isTeamAdmin: false } as UserTeam,
-        { team: { id: 2, name: 'Z - My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
-        { team: { id: 3, name: 'A - My Team - admin' } as Team, isTeamAdmin: true } as UserTeam,
-      ],
-    };
-    component.selectUser(userWithDifferentTeams);
-
-    expect(navigateSpy).toHaveBeenCalledWith(`/team-management/3/details/member/1`);
-  });
-
-  it('should switch to root user page when selected', () => {
-    const userWithoutTeam = {
-      ...users[0],
-      teams: [],
-    };
-    component.selectUser(userWithoutTeam);
-
-    expect(navigateSpy).toHaveBeenCalledWith('/team-management/details/member/1');
+    expect(navigateSpy).toHaveBeenCalledWith('/team-management/details/member/2');
   });
 
   it('should switch to teams page when selected', () => {

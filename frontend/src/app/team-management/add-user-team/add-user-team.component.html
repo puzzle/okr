@@ -8,7 +8,7 @@
       *ngIf="showAddButton(allAdminTeams$ | async)"
       (click)="createUserTeam(selectableAdminTeams[0])"
       [attr.data-testId]="'add-user'"
-      class="align-new-icon"
+      class="align-new-icon mdc-button px-0 pe-2"
       [disabled]="addButtonDisabled(selectableAdminTeams)"
       color="primary"
       mat-button

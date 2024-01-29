@@ -1,6 +1,12 @@
+.scoring-error-badge {
+  aspect-ratio: 1/1;
+  height: 90%;
+  margin-left: 1.05px;
+}
+
 .scoring-container {
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 
 .okr-score-label {

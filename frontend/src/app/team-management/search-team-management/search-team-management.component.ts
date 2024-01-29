@@ -7,7 +7,7 @@ import { User } from '../../shared/types/model/User';
 import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { getRouteToTeam, getRouteToUserDetails } from '../../shared/routeUtils';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface FilteredUser extends User {
   displayValue: string;
@@ -39,6 +39,7 @@ export class SearchTeamManagementComponent {
     private readonly userService: UserService,
     private readonly teamService: TeamService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
   ) {
     combineLatest([teamService.getAllTeams(), userService.getUsers()])
       .pipe(takeUntilDestroyed())
@@ -65,13 +66,7 @@ export class SearchTeamManagementComponent {
 
   selectUser(user: User) {
     this.search.setValue('');
-    const teamId =
-      user.userTeamList.sort((a, b) => {
-        if (a.isTeamAdmin === b.isTeamAdmin) {
-          return a.team.name.localeCompare(b.team.name);
-        }
-        return a.isTeamAdmin ? -1 : 1;
-      })[0]?.team.id ?? undefined;
+    const teamId: number = this.activatedRoute.snapshot.params['teamId'];
     this.router.navigateByUrl(getRouteToUserDetails(user.id, teamId)).then();
   }
 

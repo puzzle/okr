@@ -141,7 +141,6 @@ class OkrArchitectureTest {
                 .layer("PersistenceService").definedBy("..service.persistence..") //
                 .layer("Repository").definedBy("..repository..") //
                 .layer("Mapper").definedBy("..mapper..") //
-                .layer("ApplicationListener").definedBy("..applicationlistener..") //
 
                 .whereLayer("Controller").mayNotBeAccessedByAnyLayer() //
                 .whereLayer("AuthorizationService").mayOnlyBeAccessedByLayers("Controller") //
@@ -149,8 +148,7 @@ class OkrArchitectureTest {
                 .mayOnlyBeAccessedByLayers("Controller", "AuthorizationService", "Mapper", "BusinessService") //
                 .whereLayer("ValidationService").mayOnlyBeAccessedByLayers("BusinessService") //
                 .whereLayer("PersistenceService")
-                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService",
-                        "ApplicationListener") //
+                .mayOnlyBeAccessedByLayers("BusinessService", "PersistenceService", "ValidationService") //
                 .whereLayer("Repository").mayOnlyBeAccessedByLayers("PersistenceService"); //
 
         layeredArchitecture.check(importedClasses);

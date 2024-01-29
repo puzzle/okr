@@ -57,4 +57,8 @@ public class UserBusinessService {
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
                         ErrorKey.TRIED_TO_REMOVE_LAST_OKR_CHAMPION));
     }
+
+    public User saveUser(User user) {
+        return userPersistenceService.save(user);
+    }
 }

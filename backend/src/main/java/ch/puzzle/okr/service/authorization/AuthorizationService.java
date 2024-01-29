@@ -41,8 +41,8 @@ public class AuthorizationService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
-        User user = jwtConverterFactory.getJwtUserConverter().convert(token);
-        return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
+        User userFromToken = jwtConverterFactory.getJwtUserConverter().convert(token);
+        return authorizationRegistrationService.updateOrAddAuthorizationUser(userFromToken);
     }
 
     public void hasRoleReadByObjectiveId(Long objectiveId, AuthorizationUser authorizationUser) {

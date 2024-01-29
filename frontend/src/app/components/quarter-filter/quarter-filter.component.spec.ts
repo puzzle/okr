@@ -21,6 +21,7 @@ const overviewService = {
 };
 
 const quarters = [
+  { id: 199, label: 'Backlog', startDate: null, endDate: null },
   { ...quarter, id: 2 },
   { ...quarter, id: 5 },
   { ...quarter, id: 7 },
@@ -71,8 +72,8 @@ describe('QuarterFilterComponent', () => {
     expect(quarterSelect).toBeTruthy();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[1].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[1].label + ' Aktuell');
+    expect(component.quarterId).toBe(quarters[2].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(0);
   });
 
@@ -81,15 +82,15 @@ describe('QuarterFilterComponent', () => {
     const routerHarnessPromise = RouterTestingHarness.create();
     const quarterSelectPromise = loader.getHarness(MatSelectHarness);
     await Promise.all([routerHarnessPromise, quarterSelectPromise]).then(async ([routerHarness, quarterSelect]) => {
-      await routerHarness.navigateByUrl('/?quarter=' + quarters[2].id);
+      await routerHarness.navigateByUrl('/?quarter=' + quarters[3].id);
 
       expect(quarterSelect).toBeTruthy();
       routerHarness.detectChanges();
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(component.quarterId).toBe(quarters[2].id);
-      expect(await quarterSelect.getValueText()).toBe(quarters[2].label);
+      expect(component.quarterId).toBe(quarters[3].id);
+      expect(await quarterSelect.getValueText()).toBe(quarters[3].label);
       expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
     });
   });
@@ -105,9 +106,9 @@ describe('QuarterFilterComponent', () => {
     routerHarness.detectChanges();
     component.ngOnInit();
     fixture.detectChanges();
-    expect(component.quarterId).toBe(quarters[1].id);
-    expect(await quarterSelect.getValueText()).toBe(quarters[1].label + ' Aktuell');
+    expect(component.quarterId).toBe(quarters[2].id);
+    expect(await quarterSelect.getValueText()).toBe(quarters[2].label + ' Aktuell');
     expect(component.changeDisplayedQuarter).toHaveBeenCalledTimes(1);
-    expect(router.url).toBe('/?quarter=' + quarters[1].id);
+    expect(router.url).toBe('/?quarter=' + quarters[2].id);
   });
 });

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {
   DRAWER_ROUTES,
   ERROR_MESSAGE_KEY_PREFIX,
+  GJ_REGEX_PATTERN,
   SUCCESS_MESSAGE_KEY_PREFIX,
   SUCCESS_MESSAGE_MAP,
 } from '../shared/constantLibary';
@@ -58,7 +59,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     const successMessageObj = this.getSuccessMessageKey(response.url, response.status, method);
     if (!successMessageObj) return;
 
-    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + successMessageObj.key);
+    let messageKey = successMessageObj.key;
+    let isBacklogQuarter = !GJ_REGEX_PATTERN.test(response.body?.quarterLabel);
+    if (messageKey == 'OBJECTIVE.POST' && isBacklogQuarter) {
+      messageKey += '_BACKLOG';
+    }
+    const message = this.translate.instant(SUCCESS_MESSAGE_KEY_PREFIX + messageKey);
     this.toasterService.showCustomToaster(message, successMessageObj.toasterType);
   }
 

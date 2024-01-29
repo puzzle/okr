@@ -43,3 +43,9 @@ $pz-dark-blue-palette: (
     900: white,
   ),
 );
+
+:root {
+  --mdc-text-button-label-text-tracking: normal;
+  --mdc-filled-button-label-text-tracking: normal;
+  --mdc-outlined-button-label-text-tracking: normal;
+}

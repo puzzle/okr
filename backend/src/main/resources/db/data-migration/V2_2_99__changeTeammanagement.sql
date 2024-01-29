@@ -20,3 +20,5 @@ VALUES (1, 1, 1, 4, TRUE),
        -- gl@gl.ch
        (8, 1, 61, 5, TRUE),
        (9, 1, 61, 6, FALSE);
+
+ALTER SEQUENCE sequence_person_team RESTART WITH 1000;

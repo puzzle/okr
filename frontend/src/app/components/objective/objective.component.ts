@@ -15,7 +15,7 @@ import { Objective } from '../../shared/types/model/Objective';
 import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
+import { GJ_REGEX_PATTERN, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-column',
@@ -29,6 +29,7 @@ export class ObjectiveComponent implements OnInit {
 
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
+  isBacklogQuarter: boolean = false;
   protected readonly trackByFn = trackByFn;
   @ViewChild('menuButton') private menuButton!: ElementRef;
 
@@ -50,6 +51,9 @@ export class ObjectiveComponent implements OnInit {
   ngOnInit() {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
+    }
+    if (!GJ_REGEX_PATTERN.test(this.objective$.value.quarter.label)) {
+      this.isBacklogQuarter = true;
     }
   }
 
@@ -100,19 +104,20 @@ export class ObjectiveComponent implements OnInit {
   }
 
   getDraftMenuActions() {
-    return [
-      ...this.getDefaultMenuActions(),
-      ...[
-        {
-          displayName: 'Objective veröffentlichen',
-          action: 'release',
-          dialog: {
-            dialog: ConfirmDialogComponent,
-            data: { title: 'Objective', action: 'release' },
-          },
+    let menuEntries = {
+      displayName: 'Objective veröffentlichen',
+      action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+      dialog: {
+        dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
+        data: {
+          title: 'Objective',
+          action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+          objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
         },
-      ],
-    ];
+      },
+    };
+
+    return [...this.getDefaultMenuActions(), menuEntries];
   }
 
   getDefaultMenuActions() {
@@ -178,6 +183,8 @@ export class ObjectiveComponent implements OnInit {
         } else if (menuEntry.action == 'release') {
           this.releaseObjective(objective);
         } else if (menuEntry.action == 'duplicate') {
+          this.refreshDataService.markDataRefresh();
+        } else if (menuEntry.action == 'releaseBacklog') {
           this.refreshDataService.markDataRefresh();
         } else if (menuEntry.action == 'todraft') {
           this.objectiveBackToDraft(objective);

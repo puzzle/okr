@@ -1,9 +1,7 @@
 package ch.puzzle.okr.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,10 +17,8 @@ public class Quarter {
     @Column(unique = true)
     private String label;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private LocalDate startDate;
 
-    @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private LocalDate endDate;
 
     public Quarter() {

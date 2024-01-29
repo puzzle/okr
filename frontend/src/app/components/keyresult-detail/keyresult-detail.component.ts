@@ -12,7 +12,7 @@ import { CloseState } from '../../shared/types/enums/CloseState';
 import { CheckInFormComponent } from '../checkin/check-in-form/check-in-form.component';
 import { State } from '../../shared/types/enums/State';
 import { CONFIRM_DIALOG_WIDTH, DATE_FORMAT, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
-import { isInValid, isMobileDevice } from '../../shared/common';
+import { calculateCurrentPercentage, isLastCheckInNegative, isMobileDevice } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { ConfirmDialogComponent } from '../../shared/dialog/confirm-dialog/confirm-dialog.component';
 
@@ -28,7 +28,7 @@ export class KeyresultDetailComponent implements OnInit {
   keyResult$: BehaviorSubject<KeyResult> = new BehaviorSubject<KeyResult>({} as KeyResult);
   isComplete: boolean = false;
   protected readonly DATE_FORMAT = DATE_FORMAT;
-  protected readonly isInValid = isInValid;
+  protected readonly isLastCheckInNegative = isLastCheckInNegative;
 
   constructor(
     private keyResultService: KeyresultService,
@@ -189,4 +189,6 @@ export class KeyresultDetailComponent implements OnInit {
   backToOverview() {
     this.router.navigate(['']);
   }
+
+  protected readonly calculateCurrentPercentage = calculateCurrentPercentage;
 }

@@ -42,6 +42,7 @@ describe('TeamManagementComponent', () => {
         MatListModule,
         RouterModule,
         MatAutocompleteModule,
+        ReactiveFormsModule,
         TranslateModule.forRoot(),
         MatSelectModule,
         FormsModule,

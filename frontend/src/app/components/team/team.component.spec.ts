@@ -40,15 +40,9 @@ describe('TeamComponent', () => {
         TranslateTestingModule.withTranslations({
           de: de,
         }),
-      ],
-      declarations: [
-        TeamComponent,
         MatIcon,
-        ObjectiveComponent,
-        KeyresultComponent,
-        ConfidenceComponent,
-        ScoringComponent,
       ],
+      declarations: [TeamComponent, ObjectiveComponent, KeyresultComponent, ConfidenceComponent, ScoringComponent],
       providers: [
         {
           provide: MatDialog,

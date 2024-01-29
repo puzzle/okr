@@ -234,9 +234,8 @@ class TeamBusinessServiceTest {
 
         when(userPersistenceService.findById(user.getId())).thenReturn(user);
 
-        assertThrows(OkrResponseStatusException.class, () ->
-                teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false)
-        );
+        assertThrows(OkrResponseStatusException.class,
+                () -> teamBusinessService.updateOrAddTeamMembership(team1.getId(), user.getId(), false));
     }
 
     @Test

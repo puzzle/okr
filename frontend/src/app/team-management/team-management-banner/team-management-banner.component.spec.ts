@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ActivatedRoute } from '@angular/router';
 
 describe('TeamManagementBannerComponent', () => {
   let component: TeamManagementBannerComponent;
@@ -30,7 +31,10 @@ describe('TeamManagementBannerComponent', () => {
         MatAutocompleteModule,
       ],
       declarations: [TeamManagementBannerComponent, SearchTeamManagementComponent],
-      providers: [{ provide: MatDialog, useValue: matDialogMock }],
+      providers: [
+        { provide: MatDialog, useValue: matDialogMock },
+        { provide: ActivatedRoute, useValue: {} },
+      ],
     }).compileComponents();
   });
 

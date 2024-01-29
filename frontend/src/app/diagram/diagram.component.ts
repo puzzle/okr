@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from "@angular/core";
 import cytoscape from 'cytoscape';
 import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './diagram.component.html',
   styleUrl: './diagram.component.scss',
 })
-export class DiagramComponent implements AfterViewInit, OnDestroy {
+export class DiagramComponent implements AfterViewInit, OnInit, OnDestroy {
   private overviewEntity$ = new BehaviorSubject<OverviewEntity[]>({} as OverviewEntity[]);
 
   @Input()
@@ -33,7 +33,15 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   constructor(private router: Router) {}
 
+  ngOnInit() {
+    console.log("hello");
+    this.overviewEntity.subscribe((overviewEntity) => {
+      console.log(overviewEntity);
+    });
+  }
+
   ngAfterViewInit(): void {
+    console.log("tv app");
     this.overviewEntity.subscribe((overviewEntity) => {
       this.generateDiagram(overviewEntity);
     });
@@ -111,20 +119,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
     this.cy.on('tap', 'node', (evt: cytoscape.EventObject): void => {
       let node = evt.target;
-      let nodeId = node.id();
-      if (!nodeId) return;
-      if (nodeId.substring(0, 2) == 'KR') {
-        node.style({
-          'background-color': this.currentNodeBackgroundColor,
-          color: this.currentNodeFontColor,
-          'border-width': 0,
-        });
-      } else if (nodeId.substring(0, 2) == 'Ob') {
-        node.style({
-          'background-color': this.currentNodeBackgroundColor,
-          color: this.currentNodeFontColor,
-        });
-      }
+      this.handleMouseLeaveEvent(node);
       let type: string = node.id().charAt(0) == 'O' ? 'Objective' : 'KeyResult';
 
       this.router.navigate([type.toLowerCase(), node.id().substring(2)]);
@@ -156,22 +151,58 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     });
 
     this.cy.on('mouseout', 'node', (evt: cytoscape.EventObject): void => {
-      let node = evt.target;
-      let nodeId = node.id();
-      if (!nodeId) return;
-      if (nodeId.substring(0, 2) == 'KR') {
-        node.style({
-          'background-color': this.currentNodeBackgroundColor,
-          color: this.currentNodeFontColor,
-          'border-width': 0,
-        });
-      } else if (nodeId.substring(0, 2) == 'Ob') {
-        node.style({
-          'background-color': this.currentNodeBackgroundColor,
-          color: this.currentNodeFontColor,
-        });
-      }
+      this.handleMouseLeaveEvent(evt.target);
     });
+
+    this.cy.add([
+      {
+        group: 'nodes',
+        data: [
+          {
+            id: 'NR1',
+            label: 'Yanick',
+            tag: 'othername',
+          },
+        ],
+      },
+      {
+        group: 'nodes',
+        data: [
+          {
+            id: 'NR1',
+            label: 'Yanick',
+          },
+          {
+            id: 'NR2',
+            label: 'Lias',
+          },
+        ],
+      },
+      // { group: 'nodes', data: {id: 'kuchen',
+      //     label: 'Sehr lustig <br/><span style="color: red;">das Team</span>'}
+      // },
+      // { group: 'nodes', data: {id: 'asdf', label: {
+      //       return: '<h1 class="material-icons">Du bist ja lustig</h1>'
+      //     }
+      // }},
+    ]);
+  }
+
+  handleMouseLeaveEvent(node: any) {
+    let nodeId = node.id();
+    if (!nodeId) return;
+    if (nodeId.substring(0, 2) == 'KR') {
+      node.style({
+        'background-color': this.currentNodeBackgroundColor,
+        color: this.currentNodeFontColor,
+        'border-width': this.currentNodeBackgroundColor == '#ffffff' ? 1 : 0,
+      });
+    } else if (nodeId.substring(0, 2) == 'Ob') {
+      node.style({
+        'background-color': this.currentNodeBackgroundColor,
+        color: this.currentNodeFontColor,
+      });
+    }
   }
 
   generateElements(data: OverviewEntity[]): any[] {

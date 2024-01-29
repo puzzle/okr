@@ -19,20 +19,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: white !important;
   text-decoration: none;
   height: 100%;
-  gap: 5px;
+  gap: 1px;
   font-size: 16px;
   padding: 10px;
   border-radius: 8px;
   border: 1px solid transparent;
+  font-weight: normal;
 
   mat-icon {
     display: flex;
-    align-items: center;
     justify-content: center;
-    transform: scale(0.95);
+    align-items: center;
+    text-align: center;
+    transform: scale(1) !important;
+    margin-top: -1px;
+    font-size: 18px;
   }
 
   &:focus,
@@ -40,13 +44,4 @@
     background-color: #1a4e83;
     border: 1px solid white;
   }
-}
-
-.header-icon {
-  color: white;
-}
-
-.header-text:hover {
-  text-decoration: underline;
-  color: white;
 }

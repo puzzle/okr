@@ -130,4 +130,30 @@ describe('ObjectiveColumnComponent', () => {
     fixture.detectChanges();
     expect(component.objectiveBackToDraft).toHaveBeenCalled();
   });
+
+  test('Should set isBacklogQuarter right', async () => {
+    expect(component.isBacklogQuarter).toBeFalsy();
+
+    objectiveMin.quarter.label = 'Backlog';
+
+    component.objective = objectiveMin;
+    fixture.detectChanges();
+    component.ngOnInit();
+
+    expect(component.isBacklogQuarter).toBeTruthy();
+  });
+
+  test('Should return correct menu entries when backlog', async () => {
+    objectiveMin.quarter.label = 'Backlog';
+    component.objective = objectiveMin;
+    fixture.detectChanges();
+    component.ngOnInit();
+
+    let menuActions = component.getDraftMenuActions();
+
+    expect(menuActions.length).toEqual(3);
+    expect(menuActions[0].displayName).toEqual('Objective bearbeiten');
+    expect(menuActions[1].displayName).toEqual('Objective duplizieren');
+    expect(menuActions[2].displayName).toEqual('Objective veröffentlichen');
+  });
 });

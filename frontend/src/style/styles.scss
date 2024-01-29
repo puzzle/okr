@@ -10,7 +10,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, sans-serif;
 
   p {
     margin: 0;
@@ -28,6 +28,10 @@ body {
   word-wrap: anywhere;
   color: black;
   @extend .linebreak;
+}
+
+.fit-content {
+  width: fit-content;
 }
 
 .sub-title {
@@ -248,12 +252,14 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   line-height: 115% !important;
 }
 
-.add-cross-button {
-  margin-bottom: 1px;
+img.add-cross-button {
+  width: 0.65rem;
+  margin: 0 6px 1px 9px;
 }
 
 .add-text {
   margin-top: 1px;
+  height: 2rem;
 }
 
 .align-new-icon {

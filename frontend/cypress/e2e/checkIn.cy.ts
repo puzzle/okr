@@ -287,6 +287,26 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Check-in im Draft-Status');
       cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
     });
+
+    it(`Should not display last value div if last checkin is not present`, () => {
+      cy.getByTestId('add-objective').first().click();
+      cy.fillOutObjective('new objective', 'safe', '3');
+      cy.visit('/?quarter=3');
+      cy.contains('new objective').first().parentsUntil('#objective-column').last().focus();
+
+      cy.tabForwardUntil('[data-testId="add-keyResult"]');
+      cy.focused().contains('Key Result hinzufügen');
+      cy.realPress('Enter');
+
+      cy.fillOutKeyResult('I am a keyresult metric', 'PERCENT', '45', '60', null, null, null, null, 'Description');
+      cy.getByTestId('submit').click();
+      cy.getByTestId('keyresult').contains('I am a keyresult metric').click();
+      cy.getByTestId('add-check-in').first().click();
+      cy.get('#old-value').should('not.exist');
+      cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
+      cy.getByTestId('add-check-in').first().click();
+      cy.get('#old-value').should('not.exist');
+    });
   });
 });
 

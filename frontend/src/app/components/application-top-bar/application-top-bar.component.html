@@ -4,12 +4,7 @@
       <img alt="okr-logo" height="32" ngSrc="assets/images/okr-logo.svg" width="140" />
     </span>
     <div class="d-flex align-items-center me-md-5 me-1">
-      <button
-        routerLink="team-management"
-        *ngIf="hasAdminAccess | async"
-        [attr.data-testId]="'team-management'"
-        class="topBarEntry btn"
-      >
+      <button routerLink="team-management" [attr.data-testId]="'team-management'" class="topBarEntry btn">
         <mat-icon aria-hidden="false" aria-label="Group icon" fontIcon="group"></mat-icon>
         <span class="d-none d-md-flex">Teamverwaltung </span>
       </button>

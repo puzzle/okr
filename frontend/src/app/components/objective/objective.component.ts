@@ -15,8 +15,7 @@ import { Objective } from '../../shared/types/model/Objective';
 import { trackByFn } from '../../shared/common';
 import { KeyresultDialogComponent } from '../keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
-import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
-import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
+import { GJ_REGEX_PATTERN, OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-column',

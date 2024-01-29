@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatListModule } from '@angular/material/list';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('TeamManagementComponent', () => {
   let component: TeamManagementComponent;
@@ -36,6 +37,7 @@ describe('TeamManagementComponent', () => {
         MatListModule,
         RouterModule,
         MatAutocompleteModule,
+        ReactiveFormsModule,
         TranslateModule.forRoot(),
       ],
       declarations: [

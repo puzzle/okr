@@ -12,7 +12,6 @@ import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 @Service
 public class AuthorizationRegistrationService {
 
-
     private static final String DELIMITER = ",";
 
     @Value("${okr.user.champion.emails}")

@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { User } from '../../shared/types/model/User';
 import { UserService } from '../../services/user.service';
+import { TeamService } from '../../services/team.service';
 
 @Component({
   selector: 'app-edit-okr-champion',
@@ -9,11 +10,13 @@ import { UserService } from '../../services/user.service';
 })
 export class EditOkrChampionComponent {
   @Input({ required: true }) user!: User;
+  @Output() public okrChampionChange = new EventEmitter<boolean>();
 
   edit = false;
 
   constructor(
     private readonly userService: UserService,
+    private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
     private elementRef: ElementRef,
   ) {}
@@ -40,12 +43,8 @@ export class EditOkrChampionComponent {
   }
 
   setOkrChampion(okrChampion: boolean) {
-    this.userService.setOkrChampion(this.user, okrChampion).subscribe(() => {
-      this.user.isOkrChampion = okrChampion;
-      this.setEditAsync(false);
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-      this.cd.markForCheck();
-    });
+    this.okrChampionChange.emit(okrChampion);
+    this.setEditAsync(false);
+    this.cd.markForCheck();
   }
 }

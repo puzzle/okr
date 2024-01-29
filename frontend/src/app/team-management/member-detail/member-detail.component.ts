@@ -123,4 +123,13 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   navigateBack() {
     this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
+
+  okrChampionChange(okrChampion: boolean, user: User) {
+    this.userService.setOkrChampion(user, okrChampion).subscribe(() => {
+      this.loadUser(user.id);
+      this.userService.reloadUsers();
+      this.teamService.reloadTeams();
+      this.userService.reloadCurrentUser().subscribe();
+    });
+  }
 }

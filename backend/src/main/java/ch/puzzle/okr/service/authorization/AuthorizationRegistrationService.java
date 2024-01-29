@@ -23,11 +23,20 @@ public class AuthorizationRegistrationService {
         this.userBusinessService = userBusinessService;
     }
 
-    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.email")
-    public AuthorizationUser updateOrAddAuthorizationUser(User user) {
-        var userCreated = userBusinessService.getOrCreateUser(user);
-        setOkrChampionFromProperties(userCreated);
-        return new AuthorizationUser(userCreated);
+    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#userFromToken.email")
+    public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
+        var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
+        updateChangeableFields(userFromToken, userFromDB);
+        return new AuthorizationUser(userFromDB);
+    }
+
+    // firstname and lastname comes from JWT token and could be updated in keycloak.
+    // okr champion is set in application properties and should be updated as well
+    private void updateChangeableFields(User userFromToken, User userFromDB) {
+        userFromDB.setFirstname(userFromToken.getFirstname());
+        userFromDB.setLastname(userFromToken.getLastname());
+        setOkrChampionFromProperties(userFromDB);
+        userBusinessService.saveUser(userFromDB);
     }
 
     public void setOkrChampionFromProperties(User user) {
@@ -35,7 +44,6 @@ public class AuthorizationRegistrationService {
         for (var mail : championMails) {
             if (mail.trim().equals(user.getEmail())) {
                 user.setOkrChampion(true);
-                userBusinessService.saveUser(user);
                 return;
             }
         }

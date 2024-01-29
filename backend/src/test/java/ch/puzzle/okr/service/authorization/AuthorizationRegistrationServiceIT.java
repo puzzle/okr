@@ -74,4 +74,17 @@ class AuthorizationRegistrationServiceIT {
         userPersistenceService.deleteById(userMariaSaved.get().getId());
         userPersistenceService.deleteById(userAndreaSaved.get().getId());
     }
+
+    @Test
+    void registerAuthorizationUser_shouldSetFirstnameAndLastname() {
+        var userRichard = User.Builder.builder().withFirstname("Richard").withLastname("Eberhard")
+                .withEmail("richard.eberhard@puzzle.ch").build();
+
+        userPersistenceService.getOrCreateUser(userRichard);
+        setField(authorizationRegistrationService, "okrChampionEmails", "");
+        authorizationRegistrationService.updateOrAddAuthorizationUser(userRichard);
+        var userRichardSaved = userPersistenceService.findByEmail(userRichard.getEmail());
+        assertTrue(userRichardSaved.get().isOkrChampion());
+        userPersistenceService.deleteById(userRichardSaved.get().getId());
+    }
 }

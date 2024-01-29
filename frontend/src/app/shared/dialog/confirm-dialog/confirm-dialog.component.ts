@@ -25,6 +25,9 @@ export class ConfirmDialogComponent implements OnInit {
       if (this.data.action === 'release') {
         this.dialogTitle = this.data.title + ' veröffentlichen';
         this.dialogText = 'Soll dieses ' + this.data.title + ' veröffentlicht werden?';
+      } else if (this.data.action === 'todraft') {
+        this.dialogTitle = this.data.title + ' als Draft speichern';
+        this.dialogText = 'Soll dieses ' + this.data.title + ' als Draft gespeichert werden?';
       }
     } else {
       this.dialogTitle = this.data.title + ' löschen';

@@ -58,9 +58,9 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInMetric',
-  (currentValue: number, shouldChangeConfidence: boolean, changeInfo: string | null, initiatives: string | null) => {
+  (currentValue: number, shouldChangeConfidence: number, changeInfo: string | null, initiatives: string | null) => {
     cy.getByTestId('check-in-metric-value').clear().type(currentValue.toString());
-    changeConfidence(shouldChangeConfidence);
+    setConfidence(shouldChangeConfidence);
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }
@@ -73,12 +73,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInOrdinal',
-  (
-    currentZoneIndex: number,
-    shouldChangeConfidence: boolean,
-    changeInfo: string | null,
-    initiatives: string | null,
-  ) => {
+  (currentZoneIndex: number, confidence: number, changeInfo: string | null, initiatives: string | null) => {
     switch (currentZoneIndex) {
       case 0:
         cy.getByTestId('fail-radio').click();
@@ -93,7 +88,7 @@ Cypress.Commands.add(
         cy.getByTestId('stretch-radio').click();
         break;
     }
-    changeConfidence(shouldChangeConfidence);
+    setConfidence(confidence);
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }
@@ -238,10 +233,12 @@ function doUntil(selector: string, tab: () => void, limit: number = 100) {
   }
 }
 
-function changeConfidence(changeConfidence: boolean) {
-  if (changeConfidence) {
-    cy.tabForward();
-    cy.tabForward();
+function setConfidence(confidence: number) {
+  cy.getByTestId('confidence-slider').find('input').focus();
+  for (let i = 0; i < 10; i++) {
+    cy.realPress('ArrowLeft');
+  }
+  for (let i = 0; i < confidence; i++) {
     cy.realPress('ArrowRight');
   }
 }

@@ -15,6 +15,7 @@ import { Objective } from '../shared/types/model/Objective';
 import { isMobileDevice, trackByFn } from '../shared/common';
 import { KeyresultDialogComponent } from '../shared/dialog/keyresult-dialog/keyresult-dialog.component';
 import { TranslateService } from '@ngx-translate/core';
+import { GJ_REGEX_PATTERN } from '../shared/constantLibary';
 
 @Component({
   selector: 'app-objective-column',
@@ -28,6 +29,7 @@ export class ObjectiveComponent implements OnInit {
 
   menuEntries: MenuEntry[] = [];
   isComplete: boolean = false;
+  isBacklogQuarter: boolean = false;
   protected readonly trackByFn = trackByFn;
   @ViewChild('menuButton') private menuButton!: ElementRef;
 
@@ -49,6 +51,9 @@ export class ObjectiveComponent implements OnInit {
   ngOnInit() {
     if (this.objective$.value.state.includes('successful') || this.objective$.value.state.includes('not-successful')) {
       this.isComplete = true;
+    }
+    if (!GJ_REGEX_PATTERN.test(this.objective$.value.quarter.label)) {
+      this.isBacklogQuarter = true;
     }
   }
 
@@ -86,24 +91,33 @@ export class ObjectiveComponent implements OnInit {
           action: 'complete',
           dialog: { dialog: CompleteDialogComponent, data: { objectiveTitle: this.objective$.value.title } },
         },
+        {
+          displayName: 'Objective als Draft speichern',
+          action: 'todraft',
+          dialog: {
+            dialog: ConfirmDialogComponent,
+            data: { title: 'Objective', action: 'todraft' },
+          },
+        },
       ],
     ];
   }
 
   getDraftMenuActions() {
-    return [
-      ...this.getDefaultMenuActions(),
-      ...[
-        {
-          displayName: 'Objective veröffentlichen',
-          action: 'release',
-          dialog: {
-            dialog: ConfirmDialogComponent,
-            data: { title: 'Objective', action: 'release' },
-          },
+    let menuEntries = {
+      displayName: 'Objective veröffentlichen',
+      action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+      dialog: {
+        dialog: this.isBacklogQuarter ? ObjectiveFormComponent : ConfirmDialogComponent,
+        data: {
+          title: 'Objective',
+          action: this.isBacklogQuarter ? 'releaseBacklog' : 'release',
+          objectiveId: this.isBacklogQuarter ? this.objective$.value.id : undefined,
         },
-      ],
-    ];
+      },
+    };
+
+    return [...this.getDefaultMenuActions(), menuEntries];
   }
 
   getDefaultMenuActions() {
@@ -145,7 +159,7 @@ export class ObjectiveComponent implements OnInit {
             height: 'auto',
           };
 
-      if (menuEntry.action == 'release') {
+      if (menuEntry.action == 'release' || menuEntry.action == 'todraft') {
         dialogConfig.width = 'auto';
       }
       const matDialogRef = this.matDialog.open(menuEntry.dialog.dialog, {
@@ -180,6 +194,10 @@ export class ObjectiveComponent implements OnInit {
           this.releaseObjective(objective);
         } else if (menuEntry.action == 'duplicate') {
           this.refreshDataService.markDataRefresh();
+        } else if (menuEntry.action == 'releaseBacklog') {
+          this.refreshDataService.markDataRefresh();
+        } else if (menuEntry.action == 'todraft') {
+          this.objectiveBackToDraft(objective);
         }
       });
     } else {
@@ -207,6 +225,13 @@ export class ObjectiveComponent implements OnInit {
 
   releaseObjective(objective: Objective) {
     objective.state = 'ONGOING' as State;
+    this.objectiveService.updateObjective(objective).subscribe(() => {
+      this.refreshDataService.markDataRefresh();
+    });
+  }
+
+  objectiveBackToDraft(objective: Objective) {
+    objective.state = 'DRAFT' as State;
     this.objectiveService.updateObjective(objective).subscribe(() => {
       this.refreshDataService.markDataRefresh();
     });

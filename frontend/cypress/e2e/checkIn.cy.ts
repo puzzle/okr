@@ -30,7 +30,37 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
-      cy.fillOutCheckInMetric(30, true, 'We bought a new house', 'We have to buy more PCs');
+      cy.fillOutCheckInMetric(30, 6, 'We bought a new house', 'We have to buy more PCs');
+
+      cy.contains('30%');
+      cy.contains('6/10');
+      cy.contains('Letztes Check-in (' + getCurrentDate() + ')');
+      cy.contains('We bought a new house');
+      cy.contains('Alle Check-ins anzeigen');
+    });
+
+    it(`Create checkin metric with confidence 0`, () => {
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.getByTestId('submit').should('be.disabled');
+
+      cy.fillOutKeyResult(
+        'Very important keyresult',
+        'PERCENT',
+        '21',
+        '52',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('Very important keyresult').click();
+
+      cy.getByTestId('add-check-in').first().click();
+      checkForDialogTextMetric();
+      cy.fillOutCheckInMetric(30, 0, 'We bought a new house', 'We have to buy more PCs');
 
       cy.contains('30%');
       cy.contains('6/10');
@@ -60,7 +90,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextMetric();
-      cy.fillOutCheckInMetric(5, false, null, null);
+      cy.fillOutCheckInMetric(5, 5, null, null);
 
       cy.contains('5%');
       cy.contains('!');
@@ -92,7 +122,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('add-check-in').first().click();
       checkForDialogTextOrdinal();
-      cy.fillOutCheckInOrdinal(1, true, 'There is a new car', 'Buy now a new pool');
+      cy.fillOutCheckInOrdinal(1, 6, 'There is a new car', 'Buy now a new pool');
 
       cy.contains('6/10');
       cy.contains('There is a new car');
@@ -119,10 +149,10 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('This will give a checkin list').click();
 
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(30, false, 'We bought a new house', 'We have to buy more PCs');
+      cy.fillOutCheckInMetric(30, 5, 'We bought a new house', 'We have to buy more PCs');
       cy.wait(200);
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(50, true, 'This was a good idea', 'Will be difficult');
+      cy.fillOutCheckInMetric(50, 6, 'This was a good idea', 'Will be difficult');
 
       cy.getByTestId('show-all-checkins').click();
 
@@ -160,7 +190,7 @@ describe('OKR Check-in e2e tests', () => {
       cy.getByTestId('keyresult').contains('Here we edit a metric checkin').click();
 
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInMetric(30, false, 'Here we are', 'A cat would be great');
+      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
       cy.contains('Aktuell: CHF 30.-');
       cy.getByTestId('show-all-checkins').click();
 
@@ -205,7 +235,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.getByTestId('keyresult').contains('For editing ordinal checkin').click();
       cy.getByTestId('add-check-in').first().click();
-      cy.fillOutCheckInOrdinal(0, true, 'There is a new car', 'Buy now a new pool');
+      cy.fillOutCheckInOrdinal(0, 6, 'There is a new car', 'Buy now a new pool');
       cy.getByTestId('show-all-checkins').click();
 
       cy.wait(500);
@@ -256,6 +286,26 @@ describe('OKR Check-in e2e tests', () => {
       cy.focused().contains('Check-in erfassen').click();
       cy.contains('Check-in im Draft-Status');
       cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
+    });
+
+    it(`Should not display last value div if last checkin is not present`, () => {
+      cy.getByTestId('add-objective').first().click();
+      cy.fillOutObjective('new objective', 'safe', '3');
+      cy.visit('/?quarter=3');
+      cy.contains('new objective').first().parentsUntil('#objective-column').last().focus();
+
+      cy.tabForwardUntil('[data-testId="add-keyResult"]');
+      cy.focused().contains('Key Result hinzufügen');
+      cy.realPress('Enter');
+
+      cy.fillOutKeyResult('I am a keyresult metric', 'PERCENT', '45', '60', null, null, null, null, 'Description');
+      cy.getByTestId('submit').click();
+      cy.getByTestId('keyresult').contains('I am a keyresult metric').click();
+      cy.getByTestId('add-check-in').first().click();
+      cy.get('#old-value').should('not.exist');
+      cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
+      cy.getByTestId('add-check-in').first().click();
+      cy.get('#old-value').should('not.exist');
     });
   });
 });

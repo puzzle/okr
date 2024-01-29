@@ -14,4 +14,9 @@ describe('OKR Overview', () => {
       expect(texts).to.deep.equal(textsExpectedOrder);
     });
   });
+
+  it('Check font ', () => {
+    cy.get('.team-title').first().invoke('css', 'font-family').should('eq', 'Roboto, sans-serif');
+    cy.get('.team-title').first().invoke('css', 'font-weight').should('eq', '700');
+  });
 });

@@ -27,8 +27,8 @@ create table if not exists quarter
 (
     id         bigint       not null,
     label      varchar(255) not null,
-    start_date date         not null,
-    end_date   date         not null,
+    start_date date,
+    end_date   date,
     primary key (id),
     constraint uk_quarter_label
         unique (label)

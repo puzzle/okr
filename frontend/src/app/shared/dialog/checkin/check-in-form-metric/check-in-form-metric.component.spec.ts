@@ -59,6 +59,11 @@ describe('CheckInFormComponent', () => {
     expect(component.generateUnitLabel()).toEqual('CHF');
   }));
 
+  it('should format eur correctly', waitForAsync(async () => {
+    component.keyResult = { ...keyResultMetric, unit: Unit.EUR };
+    expect(component.generateUnitLabel()).toEqual('EUR');
+  }));
+
   it('should format fte correctly', waitForAsync(async () => {
     component.keyResult = { ...keyResultMetric, unit: Unit.FTE };
     expect(component.generateUnitLabel()).toEqual('FTE');

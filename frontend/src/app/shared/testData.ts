@@ -1,6 +1,5 @@
 import { TeamMin } from './types/model/TeamMin';
 import { State } from './types/enums/State';
-import { QuarterMin } from './types/model/QuarterMin';
 import { CheckInMin } from './types/model/CheckInMin';
 import { KeyResultMetricMin } from './types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from './types/model/KeyResultOrdinalMin';
@@ -110,10 +109,33 @@ export const addedAction: Action = {
   keyResultId: 1,
 } as Action;
 
-export const quarterMin: QuarterMin = {
+export const quarterMin: Quarter = {
   id: 1,
   label: 'GJ 23/24-Q1',
-} as QuarterMin;
+} as Quarter;
+
+export const quarter1: Quarter = {
+  id: 1,
+  label: 'GJ 22/23-Q4',
+  startDate: new Date('2023-04-01'),
+  endDate: new Date('2023-07-30'),
+} as Quarter;
+
+export const quarter2: Quarter = {
+  id: 2,
+  label: 'GJ 22/23-Q3',
+  startDate: new Date('2023-01-01'),
+  endDate: new Date('2023-03-31'),
+} as Quarter;
+
+export const quarterBacklog: Quarter = {
+  id: 999,
+  label: 'GJ 23/24-Q1',
+  startDate: null,
+  endDate: null,
+} as Quarter;
+
+export const quarterList: Quarter[] = [quarter1, quarter2, quarterBacklog];
 
 export const checkInMetric: CheckInMin = {
   id: 815,
@@ -339,6 +361,7 @@ export const objective: Objective = {
   description: 'description',
   teamId: 2,
   quarterId: 2,
+  quarterLabel: 'GJ 22/23-Q2',
   state: State.SUCCESSFUL,
   writeable: true,
 };
@@ -350,6 +373,7 @@ export const objectiveWriteableFalse: Objective = {
   description: 'descriptionWriteableFalse',
   teamId: 2,
   quarterId: 2,
+  quarterLabel: 'GJ 22/23-Q2',
   state: State.NOTSUCCESSFUL,
   writeable: false,
 };

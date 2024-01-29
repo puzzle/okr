@@ -8,6 +8,7 @@
     0px 15px 9px 0px rgba(0, 0, 0, 0.05),
     0px 27px 11px 0px rgba(0, 0, 0, 0.01),
     0px 42px 12px 0px rgba(0, 0, 0, 0);
+
   &:hover {
     box-shadow:
       2px 8px 19px 0px rgba(0, 0, 0, 0.1),
@@ -22,13 +23,14 @@
   color: $pz-dark-blue;
   display: flex;
   justify-content: center;
-  align-items: start;
-  width: 35px;
-  height: 32px;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  margin-right: 3px;
 
   &:hover {
     border-radius: 1rem;
-    background-color: lightgray;
+    background-color: #f5f7fa;
   }
 }
 
@@ -37,4 +39,8 @@
   height: 1.25rem;
   margin-top: 2px;
   margin-left: 4px;
+}
+
+.objective-title {
+  width: 90%;
 }

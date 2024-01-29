@@ -16,19 +16,44 @@ describe('Scoring component e2e tests', () => {
     [0, 100, 100],
   ].forEach(([baseline, stretchgoal, value]) => {
     it('Create metric checkin and validate value of scoring component', () => {
-      cy.createMetricKeyresult('Metric scoring keyresult', String(baseline), String(stretchgoal));
-      cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
-      cy.getByTestId('add-check-in').click();
-      cy.getByTestId('check-in-metric-value').clear().type(String(value));
-      cy.getByTestId('confidence-slider').click();
-      cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
-      cy.getByTestId('changeInfo').click().type('Testveränderungen');
-      cy.getByTestId('initiatives').click().type('Testmassnahmen');
-      cy.getByTestId('submit-check-in').click();
+      setupMetricKR(baseline, stretchgoal, value);
       const percentage = getPercentageMetric(baseline, stretchgoal, value);
       cy.validateScoring(false, percentage);
+      cy.get('.keyResult-detail-attribute-show')
+        .contains('Aktuell')
+        .parent()
+        .not(':contains(!)')
+        .should('have.css', 'border-color')
+        .and('not.equal', 'rgb(186, 56, 56)');
+
       cy.getByTestId('close-drawer').click({ force: true });
       cy.validateScoring(true, percentage);
+
+      cy.getByTestId('keyresult')
+        .get(':contains("Metric scoring keyresult")')
+        .last()
+        .not(':contains(*[class="scoring-error-badge"])');
+    });
+  });
+
+  [
+    [0, 100, -1],
+    [200, 100, 250],
+  ].forEach(([baseline, stretchgoal, value]) => {
+    it('show indicator that value is negative', () => {
+      setupMetricKR(baseline, stretchgoal, value);
+      cy.validateScoring(false, 0);
+      cy.get('.keyResult-detail-attribute-show')
+        .contains('Aktuell')
+        .parent()
+        .contains('!')
+        .should('have.css', 'border-color')
+        .and('equal', 'rgb(186, 56, 56)');
+
+      cy.getByTestId('close-drawer').click({ force: true });
+      cy.validateScoring(true, 0);
+
+      cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().get('.scoring-error-badge');
     });
   });
 
@@ -50,3 +75,15 @@ describe('Scoring component e2e tests', () => {
     });
   });
 });
+
+function setupMetricKR(baseline: number, stretchgoal: number, value: number) {
+  cy.createMetricKeyresult('Metric scoring keyresult', String(baseline), String(stretchgoal));
+  cy.getByTestId('keyresult').get(':contains("Metric scoring keyresult")').last().click();
+  cy.getByTestId('add-check-in').click();
+  cy.getByTestId('check-in-metric-value').clear().type(String(value));
+  cy.getByTestId('confidence-slider').click();
+  cy.realPress('{rightarrow}').realPress('{rightarrow}').realPress('{rightarrow}');
+  cy.getByTestId('changeInfo').click().type('Testveränderungen');
+  cy.getByTestId('initiatives').click().type('Testmassnahmen');
+  cy.getByTestId('submit-check-in').click();
+}

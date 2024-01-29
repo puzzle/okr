@@ -33,6 +33,8 @@ export class CheckInFormMetricComponent implements OnInit {
         return '%';
       case 'CHF':
         return 'CHF';
+      case 'EUR':
+        return 'EUR';
       case 'FTE':
         return 'FTE';
       default:

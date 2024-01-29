@@ -1,6 +1,12 @@
+.scoring-error-badge {
+  aspect-ratio: 1/1;
+  height: 90%;
+  margin-left: 1.05px;
+}
+
 .scoring-container {
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 
 .okr-score-label {
@@ -49,10 +55,6 @@
 
 .score-green {
   background-color: #1e8a29;
-}
-
-.border-right {
-  border-right: 1px solid gray;
 }
 
 .score-stretch {

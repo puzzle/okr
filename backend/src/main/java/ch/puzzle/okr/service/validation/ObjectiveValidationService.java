@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.validation;
 import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Objective;
+import ch.puzzle.okr.models.State;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.repository.ObjectiveRepository;
 import ch.puzzle.okr.service.persistence.ObjectivePersistenceService;
@@ -12,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-import static ch.puzzle.okr.Constants.OBJECTIVE;
-import static ch.puzzle.okr.Constants.TEAM;
+import static ch.puzzle.okr.Constants.*;
+import static ch.puzzle.okr.service.validation.QuarterValidationService.throwExceptionWhenStartEndDateQuarterIsNull;
 
 @Service
 public class ObjectiveValidationService
@@ -28,6 +29,8 @@ public class ObjectiveValidationService
         throwExceptionWhenModelIsNull(model);
         throwExceptionWhenIdIsNotNull(model.getId());
         throwExceptionWhenModifiedByIsSet(model);
+        throwExceptionWhenStartEndDateQuarterIsNull(model.getQuarter());
+        throwExceptionWhenNotDraftInBacklogQuarter(model);
         validate(model);
     }
 
@@ -37,6 +40,8 @@ public class ObjectiveValidationService
         throwExceptionWhenIdIsNull(model.getId());
         throwExceptionWhenIdHasChanged(id, model.getId());
         throwExceptionWhenModifiedByIsNull(model);
+        throwExceptionWhenStartEndDateQuarterIsNull(model.getQuarter());
+        throwExceptionWhenNotDraftInBacklogQuarter(model);
         Objective savedObjective = doesEntityExist(id);
         throwExceptionWhenTeamHasChanged(model.getTeam(), savedObjective.getTeam());
         validate(model);
@@ -61,6 +66,14 @@ public class ObjectiveValidationService
         if (!Objects.equals(team, savedTeam)) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_CANNOT_CHANGE,
                     List.of(TEAM, OBJECTIVE));
+        }
+    }
+
+    private static void throwExceptionWhenNotDraftInBacklogQuarter(Objective model) {
+        if (model.getQuarter().getStartDate() == null && model.getQuarter().getEndDate() == null
+                && model.getQuarter().getLabel().equals("Backlog") && (model.getState() != State.DRAFT)) {
+            throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_MUST_BE_DRAFT,
+                    List.of(OBJECTIVE, STATE_DRAFT, model.getState()));
         }
     }
 }

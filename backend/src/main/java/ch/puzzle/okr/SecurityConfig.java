@@ -47,7 +47,7 @@ public class SecurityConfig {
                         + "script-src 'self' 'unsafe-inline';" + "        style-src 'self' 'unsafe-inline';"
                         + "        object-src 'none';" + "        base-uri 'self';"
                         + "        connect-src 'self' https://sso.puzzle.ch http://localhost:8544;"
-                        + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self';"
+                        + "        font-src 'self';" + "        frame-src 'self';" + "        img-src 'self' data: ;"
                         + "        manifest-src 'self';" + "        media-src 'self';" + "        worker-src 'none';"))
                 .crossOriginEmbedderPolicy(coepCustomizer -> coepCustomizer
                         .policy(CrossOriginEmbedderPolicyHeaderWriter.CrossOriginEmbedderPolicy.REQUIRE_CORP))

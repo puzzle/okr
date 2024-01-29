@@ -1,10 +1,13 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +34,10 @@ public class QuarterBusinessService {
     }
 
     public List<Quarter> getQuarters() {
-        return quarterPersistenceService.getMostCurrentQuarters();
+        List<Quarter> mostCurrentQuarterList = quarterPersistenceService.getMostCurrentQuarters();
+        Quarter backlog = quarterPersistenceService.findByLabel("Backlog");
+        mostCurrentQuarterList.add(0, backlog);
+        return mostCurrentQuarterList;
     }
 
     public Quarter getCurrentQuarter() {
@@ -58,6 +64,7 @@ public class QuarterBusinessService {
         Quarter quarter = Quarter.Builder.builder().withLabel(createQuarterLabel(yearMonth))
                 .withStartDate(yearMonth.plusMonths(4).atDay(1)).withEndDate(yearMonth.plusMonths(6).atEndOfMonth())
                 .build();
+        validator.validateOnGeneration(quarter);
         quarterPersistenceService.save(quarter);
     }
 

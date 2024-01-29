@@ -153,4 +153,28 @@ describe('ErrorInterceptor', () => {
       expect(b).toBe(result);
     },
   );
+
+  it('should return custom success message on objective creation in backlog', () => {
+    jest.spyOn(translator, 'instant').mockReturnValue('Das Objective wurde als Draft im Backlog gespeichert.');
+    jest.spyOn(toaster, 'showCustomToaster');
+    jest.spyOn(interceptor, 'getSuccessMessageKey').mockReturnValue({ key: 'OBJECTIVE.POST', toasterType: undefined });
+
+    let mockHttpResponse = {
+      url: '"http://localhost:4200/api/v2/objectives"',
+      status: 201,
+      statusText: 'Created',
+      ok: true,
+      body: {
+        objectiveTitle: 'Das ist der Titel',
+        quarterId: 999,
+      },
+    };
+
+    interceptor.handleSuccessToaster(mockHttpResponse, HttpType.POST);
+    expect(translator.instant).toBeCalledWith('SUCCESS.OBJECTIVE.POST_BACKLOG');
+    expect(toaster.showCustomToaster).toBeCalledWith(
+      'Das Objective wurde als Draft im Backlog gespeichert.',
+      undefined,
+    );
+  });
 });

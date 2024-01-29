@@ -8,7 +8,7 @@ import { CheckInMin } from '../shared/types/model/CheckInMin';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfidenceComponent implements OnChanges {
-  min: number = 1;
+  min: number = 0;
   max: number = 10;
   @Input() edit: boolean = true;
   @Input() isDetail: boolean = true;

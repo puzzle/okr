@@ -25,7 +25,7 @@ export class CheckInFormComponent implements OnInit {
   continued: boolean = false;
   dialogForm = new FormGroup({
     value: new FormControl<string>('', [Validators.required]),
-    confidence: new FormControl<number>(5, [Validators.required, Validators.min(1), Validators.max(10)]),
+    confidence: new FormControl<number>(5, [Validators.required, Validators.min(0), Validators.max(10)]),
     changeInfo: new FormControl<string>('', [Validators.maxLength(4096)]),
     initiatives: new FormControl<string>('', [Validators.maxLength(4096)]),
     actionList: new FormControl<Action[]>([]),

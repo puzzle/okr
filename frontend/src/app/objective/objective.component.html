@@ -7,8 +7,8 @@
   tabindex="0"
 >
   <div class="row mx-1">
-    <section class="d-flex mb-3 mt-3 justify-content-between">
-      <section class="d-flex gap-2 align-items-start">
+    <section class="d-flex mb-3 mt-3 justify-content-between pe-0">
+      <section class="d-flex gap-2 align-items-start fit-content objective-title">
         <img
           (click)="$event.stopPropagation()"
           [attr.data-testId]="'objective-state'"
@@ -18,7 +18,7 @@
           matTooltip="{{ getStateTooltip() + ' ' + formatObjectiveState(objective.state) }}"
           matTooltipPosition="above"
         />
-        <h2 class="title">{{ objective.title }}</h2>
+        <h2 class="title fit-content">{{ objective.title }}</h2>
       </section>
       <button
         #menuButton
@@ -29,7 +29,7 @@
         (keydown.enter)="$event.stopPropagation()"
         [attr.data-testId]="'three-dot-menu'"
       >
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon svgIcon="pz-menu-icon" class="scale-9"></mat-icon>
       </button>
     </section>
 
@@ -49,7 +49,7 @@
         *ngIf="!isComplete && isWritable"
         mat-button
         color="primary"
-        class="fw-bold"
+        class="fw-bold px-0 pe-2 ms-2"
         [attr.data-testId]="'add-keyResult'"
         (click)="openAddKeyResultDialog(); $event.stopPropagation()"
         (keydown.enter)="$event.stopPropagation()"

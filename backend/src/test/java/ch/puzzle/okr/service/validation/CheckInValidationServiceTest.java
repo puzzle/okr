@@ -70,7 +70,7 @@ class CheckInValidationServiceTest {
 
     private static Stream<Arguments> confidenceValidationArguments() {
         return Stream.of(
-                arguments(-1, List.of(new ErrorDto("ATTRIBUTE_MIN_VALUE", List.of("confidence", "CheckIn", "1")))),
+                arguments(-1, List.of(new ErrorDto("ATTRIBUTE_MIN_VALUE", List.of("confidence", "CheckIn", "0")))),
                 arguments(11, List.of(new ErrorDto("ATTRIBUTE_MAX_VALUE", List.of("confidence", "CheckIn", "10")))),
                 arguments(null, List.of(new ErrorDto("ATTRIBUTE_NOT_NULL", List.of("confidence", "CheckIn")))));
     }

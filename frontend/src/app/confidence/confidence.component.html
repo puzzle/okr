@@ -1,7 +1,7 @@
 <div
   class="d-flex align-items-center justify-content-start bg-inherit w-100"
   id="confidence"
-  *ngIf="checkIn.confidence"
+  *ngIf="checkIn.confidence || checkIn.confidence === 0"
 >
   <div
     class="bg-inherit d-flex justify-content-center align-items-center"

@@ -76,6 +76,10 @@ describe('MemberListComponent', () => {
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
   });
 
+  afterEach(() => {
+    teamServiceMock.deleteTeam.mockReset();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -175,6 +179,9 @@ describe('MemberListComponent', () => {
   it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(true),
+    });
 
     const team = team1;
 
@@ -187,6 +194,21 @@ describe('MemberListComponent', () => {
     expect(routerMock.navigateByUrl).toBeCalledTimes(1);
     expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
     expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
+  }));
+
+  it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
+    routerMock.navigateByUrl.mockReturnValue(of(null));
+    teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(false),
+    });
+
+    const team = team1;
+
+    component.deleteTeam(team);
+    tick();
+
+    expect(teamServiceMock.deleteTeam).toBeCalledTimes(0);
   }));
 
   it('addMemberToTeam should open dialog', () => {

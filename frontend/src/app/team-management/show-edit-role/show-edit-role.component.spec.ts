@@ -28,12 +28,9 @@ describe('ShowEditRoleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('saveIsAdmin should set edit to false and save admin', () => {
+  it('saveIsAdmin should set edit to false', () => {
     component.edit = true;
-
     component.saveIsAdmin(true);
-
-    expect(userTeam.isTeamAdmin).toBeTruthy();
     expect(component.edit).toBeFalsy();
   });
 

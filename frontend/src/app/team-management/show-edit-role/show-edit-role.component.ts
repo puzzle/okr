@@ -11,7 +11,7 @@ export class ShowEditRoleComponent {
   @Input({ required: true }) userTeam!: UserTeam;
 
   @Output()
-  private readonly save = new EventEmitter<UserTeam>();
+  private readonly save = new EventEmitter<boolean>();
 
   edit = false;
 
@@ -41,8 +41,7 @@ export class ShowEditRoleComponent {
 
   saveIsAdmin(isAdmin: boolean) {
     this.edit = false;
-    this.userTeam.isTeamAdmin = isAdmin;
-    this.save.emit(this.userTeam);
+    this.save.emit(isAdmin);
   }
 
   getRole(): string {

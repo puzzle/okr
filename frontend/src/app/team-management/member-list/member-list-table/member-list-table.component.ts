@@ -6,8 +6,11 @@ import { Team } from '../../../shared/types/model/Team';
 import { TeamService } from '../../../services/team.service';
 import { UserService } from '../../../services/user.service';
 import { getRouteToUserDetails } from '../../../shared/routeUtils';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, mergeMap, Subject, takeUntil } from 'rxjs';
 import { UserTeam } from '../../../shared/types/model/UserTeam';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CancelDialogComponent, CancelDialogData } from '../../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { OKR_DIALOG_CONFIG } from '../../../shared/constantLibary';
 
 @Component({
   selector: 'app-member-list-table',
@@ -27,6 +30,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   constructor(
     private readonly teamService: TeamService,
     private readonly userService: UserService,
+    private readonly dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -54,14 +58,30 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
   removeMemberFromTeam(entry: UserTableEntry, event: MouseEvent) {
     event.stopPropagation();
     event.preventDefault();
-    this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value!).subscribe(() => {
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-    });
+
+    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: `${entry.firstname} ${entry.lastname} wirklich aus Team ${this.selectedTeam$.value?.name} entfernen?`,
+    };
+    this.dialog
+      .open(CancelDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(
+        filter((confirm) => confirm),
+        mergeMap(() => this.teamService.removeUserFromTeam(entry.id, this.selectedTeam$.value!)),
+      )
+      .subscribe(() => {
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser().subscribe();
+      });
   }
 
-  saveUserTeamRole(userTableEntry: UserTableEntry, userTeam: UserTeam): void {
-    this.teamService.updateOrAddTeamMembership(userTableEntry.id, userTeam).subscribe(() => {
+  saveUserTeamRole(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
+    // make a copy and set value only after successful request
+    const newUserTeam = { ...userTeam };
+    newUserTeam.isTeamAdmin = isAdmin;
+    this.teamService.updateOrAddTeamMembership(userTableEntry.id, newUserTeam).subscribe(() => {
+      userTeam.isTeamAdmin = isAdmin;
       this.userService.reloadUsers();
       this.userService.reloadCurrentUser().subscribe();
     });

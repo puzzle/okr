@@ -28,7 +28,7 @@
       <app-show-edit-role
         *ngIf="element.userTeamList.length"
         [userTeam]="getSingleUserTeam(element)"
-        (save)="saveUserTeamRole(element, $event)"
+        (save)="saveUserTeamRole($event, element, getSingleUserTeam(element))"
       ></app-show-edit-role>
     </td>
   </ng-container>

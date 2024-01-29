@@ -8,6 +8,7 @@ import { UserService } from '../../../services/user.service';
 import { TeamService } from '../../../services/team.service';
 import { Team } from '../../../shared/types/model/Team';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('MemberListTableComponent', () => {
   let component: MemberListTableComponent;
@@ -26,6 +27,10 @@ describe('MemberListTableComponent', () => {
     updateOrAddTeamMembership: jest.fn(),
   };
 
+  const dialogMock = {
+    open: jest.fn(),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatTableModule],
@@ -33,6 +38,7 @@ describe('MemberListTableComponent', () => {
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: TeamService, useValue: teamServiceMock },
+        { provide: MatDialog, useValue: dialogMock },
       ],
     }).compileComponents();
 
@@ -46,6 +52,10 @@ describe('MemberListTableComponent', () => {
     userServiceMock.reloadCurrentUser.mockReset();
 
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    teamServiceMock.removeUserFromTeam.mockReset();
   });
 
   it('should create', () => {
@@ -76,7 +86,7 @@ describe('MemberListTableComponent', () => {
     expect(component.getMemberDetailsLink(testUser)).toStrictEqual('/team-management/details/member/' + testUser.id);
   });
 
-  it('removeMemberFromTeam should call removeUserFromTeam and reloadUsers', fakeAsync(() => {
+  it('removeMemberFromTeam should call removeUserFromTeam and reloadUsers if confirmed', fakeAsync(() => {
     const entry = {
       id: 1,
     };
@@ -84,6 +94,9 @@ describe('MemberListTableComponent', () => {
     teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
     userServiceMock.reloadUsers.mockReturnValue(of());
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(true),
+    });
 
     component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
     tick();
@@ -94,6 +107,26 @@ describe('MemberListTableComponent', () => {
     expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
   }));
 
+  it('removeMemberFromTeam should not call removeUserFromTeam and reloadUsers if not confirmed', fakeAsync(() => {
+    const entry = {
+      id: 1,
+    };
+    component.selectedTeam$.next(team1);
+    teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
+    userServiceMock.reloadUsers.mockReturnValue(of());
+    userServiceMock.reloadCurrentUser.mockReturnValue(of());
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(false),
+    });
+
+    component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
+    tick();
+
+    expect(teamServiceMock.removeUserFromTeam).toBeCalledTimes(0);
+    expect(userServiceMock.reloadUsers).toBeCalledTimes(0);
+    expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(0);
+  }));
+
   it('saveUserTeamRole should call updateOrAddTeamMembership and reload users', fakeAsync(() => {
     teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
     userServiceMock.reloadCurrentUser.mockReturnValue(of());
@@ -101,7 +134,7 @@ describe('MemberListTableComponent', () => {
       id: 1,
     } as any;
     const ut = testUser.userTeamList[0];
-    component.saveUserTeamRole(entry, ut);
+    component.saveUserTeamRole(true, entry, ut);
     tick();
     expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledWith(entry.id, ut);
     expect(userServiceMock.reloadUsers).toHaveBeenCalledTimes(1);

@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, map, ReplaySubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, mergeMap, ReplaySubject, Subject, takeUntil } from 'rxjs';
 import { User } from '../../shared/types/model/User';
 import { convertFromUsers, UserTableEntry } from '../../shared/types/model/UserTableEntry';
 import { TeamService } from '../../services/team.service';
@@ -14,6 +14,7 @@ import {
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
+import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
 
 @Component({
   selector: 'app-member-list',
@@ -87,11 +88,23 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteTeam(selectedTeam: Team) {
-    this.teamService.deleteTeam(selectedTeam.id).subscribe(() => {
-      this.userService.reloadUsers();
-      this.userService.reloadCurrentUser().subscribe();
-      this.router.navigateByUrl('team-management');
-    });
+    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: selectedTeam.name + ' wirklich löschen?',
+      dialogText: 'Soll das Team und dessen OKRs wirklich gelöscht werden?',
+    };
+    this.dialog
+      .open(CancelDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(
+        filter((confirm) => confirm),
+        mergeMap(() => this.teamService.deleteTeam(selectedTeam.id)),
+      )
+      .subscribe(() => {
+        this.userService.reloadUsers();
+        this.userService.reloadCurrentUser().subscribe();
+        this.router.navigateByUrl('team-management');
+      });
   }
 
   addMemberToTeam() {

@@ -1,7 +1,7 @@
 <ng-container *ngIf="selectableAdminTeams$ | async as selectableAdminTeams">
   <div
     class="tooltip-wrapper"
-    [matTooltip]="'Der User ist bereits in allen Teams, von denen Sie Admin sind'"
+    [matTooltip]="'Der User ist bereits in allen Teams in welchen Sie Admin sind'"
     [matTooltipDisabled]="!addButtonDisabled(selectableAdminTeams)"
   >
     <button

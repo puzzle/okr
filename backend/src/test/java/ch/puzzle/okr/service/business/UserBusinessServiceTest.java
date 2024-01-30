@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.TestHelper;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
@@ -29,6 +30,8 @@ class UserBusinessServiceTest {
     UserPersistenceService userPersistenceService;
     @Mock
     UserValidationService validationService;
+    @Mock
+    CacheService cacheService;
     List<User> userList;
     @InjectMocks
     private UserBusinessService userBusinessService;

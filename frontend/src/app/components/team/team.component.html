@@ -7,7 +7,7 @@
     </span>
     <button
       (click)="createObjective()"
-      *ngIf="OVEntity.team.writeable"
+      *ngIf="OVEntity.writeable"
       [attr.data-testId]="'add-objective'"
       class="px-0 mt-1 mb-3 pe-2 h-50 align-new-icon"
       color="primary"
@@ -27,7 +27,7 @@
     <app-objective-column
       *ngFor="let objective of OVEntity.objectives; trackBy: trackByObjectiveId"
       [attr.data-testId]="'objective'"
-      [isWritable]="OVEntity.team.writeable"
+      [isWritable]="OVEntity.writeable"
       [objective]="objective"
       class="col-xs-12 col-md-6 col-xl-4 pb-3 column-width"
       id="objective-column"

@@ -54,7 +54,6 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       objective: {
         objectiveId?: number;
         teamId?: number;
-        teamVersion?: number;
       };
     },
     private translate: TranslateService,

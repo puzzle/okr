@@ -1,5 +1,7 @@
 import * as users from '../fixtures/users.json';
 import { onlyOn } from '@cypress/skip-test';
+import { uniqueSuffix } from '../support/utils';
+import Chainable = Cypress.Chainable;
 
 describe('OKR Check-in e2e tests', () => {
   describe('tests via click', () => {
@@ -288,13 +290,12 @@ describe('OKR Check-in e2e tests', () => {
       cy.contains('Dein Objective befindet sich noch im DRAFT Status. Möchtest du das Check-in trotzdem erfassen?');
     });
 
-    it(`Should not display last value div if last checkin is not present`, () => {
-      cy.intercept('GET', '**/keyresults*').as('keyresult');
-
+    it(`Should only display last value div if last checkin is present`, () => {
+      const objectiveName = uniqueSuffix('new objective');
       cy.getByTestId('add-objective').first().click();
-      cy.fillOutObjective('new objective', 'safe', '3');
+      cy.fillOutObjective(objectiveName, 'safe', '3');
       cy.visit('/?quarter=3');
-      cy.contains('new objective').first().parentsUntil('#objective-column').last().focus();
+      getObjectiveContainerByName(objectiveName).focus();
 
       cy.tabForwardUntil('[data-testId="add-keyResult"]');
       cy.focused().contains('Key Result hinzufügen');
@@ -302,18 +303,23 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.fillOutKeyResult('I am a keyresult metric', 'PERCENT', '45', '60', null, null, null, null, 'Description');
       cy.getByTestId('submit').click();
-      cy.getByTestId('keyresult').contains('I am a keyresult metric').click();
+      getObjectiveContainerByName(objectiveName).getByTestId('keyresult').contains('I am a keyresult metric').click();
+
+      cy.intercept('**/keyresults/*').as('getKeyResultsAfterSave');
       cy.getByTestId('add-check-in').first().click();
-
-      cy.wait('@keyresult');
-
       cy.get('#old-value').should('not.exist');
       cy.fillOutCheckInMetric(10, false, 'changeinfo', 'initiatives');
+      cy.wait('@getKeyResultsAfterSave');
+
       cy.getByTestId('add-check-in').first().click();
-      cy.get('#old-value').should('not.exist');
+      cy.get('#old-value label + div').contains('10 %');
     });
   });
 });
+
+function getObjectiveContainerByName(name: string): Chainable {
+  return cy.contains(name).first().parentsUntil('#objective-column').last();
+}
 
 function checkForDialogTextMetric() {
   cy.contains('Very important keyresult');

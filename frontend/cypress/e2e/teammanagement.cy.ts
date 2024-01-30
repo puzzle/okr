@@ -318,9 +318,14 @@ describe('Team management tests', () => {
     });
 
     it('should remove added memberships from esha', () => {
+      cy.intercept('PUT', '**/removeuser').as('removeUser');
+
       navigateToUser(nameEsha);
       cy.getByTestId('delete-team-member').eq(0).click();
       cy.getByTestId('cancelDialog-confirm').click();
+
+      cy.wait('@removeUser');
+
       cy.getByTestId('delete-team-member').eq(0).click();
       cy.getByTestId('cancelDialog-confirm').click();
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');

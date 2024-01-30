@@ -124,7 +124,7 @@ public class TeamBusinessService {
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
                 .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
-                        "No team found to removed from userTeam list"));
+                        "No team found to remove from userTeam list"));
         userTeamList.remove(userTeamToRemove);
         team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);

@@ -45,6 +45,9 @@
         </ng-container>
         <tr mat-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell px-3" [attr.colspan]="displayedColumns.length">Keine Teams</td>
+        </tr>
       </table>
       <app-add-user-team
         [currentTeams$]="currentUserTeams$.asObservable()"

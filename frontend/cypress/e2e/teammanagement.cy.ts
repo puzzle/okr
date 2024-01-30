@@ -43,9 +43,29 @@ describe('Team management tests', () => {
       cy.getByTestId('member-list-more').click();
       cy.getByTestId('remove-from-member-list').click();
 
+      // dialog
+      cy.contains(`Jaya Norris wirklich aus Team ${teamName} entfernen?`);
+      cy.getByTestId('cancelDialog-confirm').click();
+
       cy.wait('@removeUser');
 
       cy.contains('Der letzte Administrator eines Teams kann nicht entfernt werden').should('exist');
+    });
+
+    it('clicking cancel in dialog when removing user should not remove user', () => {
+      cy.intercept('PUT', '**/removeuser').as('removeUser');
+
+      cy.get('app-team-list .mat-mdc-list-item').contains(teamName).click();
+      cy.getByTestId('member-list-more').click();
+      cy.getByTestId('remove-from-member-list').click();
+
+      // cancel dialog
+      cy.contains(`Jaya Norris wirklich aus Team ${teamName} entfernen?`);
+      cy.getByTestId('cancelDialog-cancel').click();
+
+      cy.get('@removeUser.all').then((interceptions) => {
+        expect(interceptions).to.have.length(0);
+      });
     });
 
     it('Edit team', () => {
@@ -74,6 +94,16 @@ describe('Team management tests', () => {
       //Click delete button
       cy.getByTestId('teamMoreButton').click();
       cy.getByTestId('teamDeleteButton').click();
+
+      // cancel dialog => cancel
+      cy.contains(`${teamName} wirklich löschen?`);
+      cy.getByTestId('cancelDialog-cancel').click();
+
+      // try again and confirm dialog
+      cy.getByTestId('teamMoreButton').click();
+      cy.getByTestId('teamDeleteButton').click();
+      cy.contains(`${teamName} wirklich löschen?`);
+      cy.getByTestId('cancelDialog-confirm').click();
 
       cy.wait(['@saveTeam', '@getUsers']);
 
@@ -283,13 +313,16 @@ describe('Team management tests', () => {
     it('should remove BBT membership of findus', () => {
       navigateToUser('Findus Peterson');
       cy.getByTestId('delete-team-member').click();
+      cy.getByTestId('cancelDialog-confirm').click();
       cy.get('app-member-detail').contains('/BBT').should('not.exist');
     });
 
     it('should remove added memberships from esha', () => {
       navigateToUser(nameEsha);
       cy.getByTestId('delete-team-member').eq(0).click();
+      cy.getByTestId('cancelDialog-confirm').click();
       cy.getByTestId('delete-team-member').eq(0).click();
+      cy.getByTestId('cancelDialog-confirm').click();
       cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
     });
 

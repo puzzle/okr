@@ -1,6 +1,8 @@
 import { HttpType } from './types/enums/HttpType';
 import { ToasterType } from './types/enums/ToasterType';
 import { HttpStatusCode } from '@angular/common/http';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { isMobileDevice } from './common';
 
 interface MessageKeyMap {
   [key: string]: {
@@ -25,6 +27,8 @@ export const ERROR_MESSAGE_KEY_PREFIX = 'ERROR.';
 export const DATE_FORMAT = 'dd.MM.yyyy';
 export const CONFIRM_DIALOG_WIDTH: string = '450px';
 export const DRAWER_ROUTES = ['objective', 'keyresult'];
+
+export const GJ_REGEX_PATTERN = /^GJ \d{2}\/\d{2}-Q\d$/;
 
 export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
   teams: {
@@ -70,3 +74,15 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
     methods: [{ method: HttpType.POST }, { method: HttpType.PUT }],
   },
 };
+
+export const OKR_DIALOG_CONFIG: MatDialogConfig = isMobileDevice()
+  ? {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100vh',
+      width: '100vw',
+    }
+  : {
+      width: '45em',
+      height: 'auto',
+    };

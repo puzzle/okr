@@ -30,7 +30,7 @@ public abstract class CheckIn implements WriteableInterface {
     private String initiatives;
 
     @Max(value = 10, message = MessageKey.ATTRIBUTE_MAX_VALUE)
-    @Min(value = 1, message = MessageKey.ATTRIBUTE_MIN_VALUE)
+    @Min(value = 0, message = MessageKey.ATTRIBUTE_MIN_VALUE)
     @NotNull(message = MessageKey.ATTRIBUTE_NOT_NULL)
     private Integer confidence;
 

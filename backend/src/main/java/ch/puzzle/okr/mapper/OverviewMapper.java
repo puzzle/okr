@@ -4,7 +4,6 @@ import ch.puzzle.okr.ErrorKey;
 import ch.puzzle.okr.dto.overview.*;
 import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.overview.Overview;
-import ch.puzzle.okr.service.business.OrganisationBusinessService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,10 +17,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Component
 public class OverviewMapper {
-    private final OrganisationBusinessService organisationBusinessService;
-
-    public OverviewMapper(OrganisationBusinessService organisationBusinessService) {
-        this.organisationBusinessService = organisationBusinessService;
+    public OverviewMapper() {
     }
 
     public List<OverviewDto> toDto(List<Overview> overviews) {
@@ -67,11 +63,8 @@ public class OverviewMapper {
         if (isValidId(overview.getOverviewId().getObjectiveId())) {
             objectives.add(createObjectiveDto(overview));
         }
-        return new OverviewDto(
-                new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamVersion(),
-                        overview.getTeamName(), overview.isWriteable(),
-                        organisationBusinessService.teamHasInActiveOrganisations(overview.getOverviewId().getTeamId())),
-                objectives);
+        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamVersion(),
+                overview.getTeamName(), overview.isWriteable()), objectives);
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {

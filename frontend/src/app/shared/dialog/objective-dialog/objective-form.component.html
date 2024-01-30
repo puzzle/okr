@@ -4,13 +4,16 @@
       [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' duplizieren'"
     ></app-dialog-header>
   </div>
+  <div *ngIf="this.data.action == 'releaseBacklog'">
+    <app-dialog-header [dialogTitle]="'Objective veröffentlichen'"></app-dialog-header>
+  </div>
   <div *ngIf="this.data.action != 'duplicate'">
     <app-dialog-header
       *ngIf="!data.objective.objectiveId"
       [dialogTitle]="'Objective für ' + (this.currentTeam | async)?.name + ' erfassen'"
     ></app-dialog-header>
     <app-dialog-header
-      *ngIf="data.objective.objectiveId"
+      *ngIf="data.objective.objectiveId && this.data.action != 'releaseBacklog'"
       [dialogTitle]="'Objective von ' + (this.currentTeam | async)?.name + ' bearbeiten'"
     ></app-dialog-header>
   </div>
@@ -49,10 +52,17 @@
         <div class="d-flex row mb-1">
           <div class="d-flex flex-column gap-2 col-6">
             <label class="text-black" for="quarter">Quartal</label>
-            <select class="custom-select bg-white w-100" formControlName="quarter" id="quarter">
-              <option *ngFor="let quarter of quarters$ | async; let i = index" [value]="quarter.id">
-                {{ getQuarterLabel(quarter, i) }}
-              </option>
+            <select
+              class="custom-select bg-white w-100"
+              formControlName="quarter"
+              id="quarter"
+              [attr.data-testId]="'quarterSelect'"
+            >
+              <ng-container *ngFor="let quarter of quarters$ | async; let i = index">
+                <option *ngIf="allowedOption(quarter)" [value]="quarter.id">
+                  {{ getQuarterLabel(quarter, i) }}
+                </option>
+              </ng-container>
             </select>
           </div>
           <mat-checkbox
@@ -72,11 +82,12 @@
 
 <mat-dialog-actions class="mt-3">
   <div class="d-flex w-100 flex-row justify-content-between">
-    <div class="d-flex flex-row">
+    <div class="d-flex flex-row gap-2">
       <button
         *ngIf="!data.objective.objectiveId"
         [disabled]="objectiveForm.invalid"
         color="primary"
+        class="me-1"
         mat-flat-button
         (click)="onSubmit('DRAFT')"
         type="submit"
@@ -85,16 +96,18 @@
         Als Draft speichern
       </button>
       <button
-        [disabled]="objectiveForm.invalid"
+        *ngIf="allowedToSaveBacklog()"
+        [disabled]="objectiveForm.invalid || !allowedToSaveBacklog()"
         color="primary"
         mat-stroked-button
+        class="ms-0"
         type="submit"
         (click)="onSubmit('ONGOING')"
         [attr.data-testId]="'safe'"
       >
         Speichern
       </button>
-      <button color="primary" mat-button mat-dialog-close class="ms-2" [attr.data-testId]="'cancel'">Abbrechen</button>
+      <button color="primary" mat-button mat-dialog-close [attr.data-testId]="'cancel'">Abbrechen</button>
     </div>
     <div *ngIf="data.objective.objectiveId && data.action != 'duplicate'">
       <button color="primary" type="button" mat-button (click)="deleteObjective()" [attr.data-testId]="'delete'">

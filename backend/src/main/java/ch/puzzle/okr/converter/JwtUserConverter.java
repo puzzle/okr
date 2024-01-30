@@ -10,6 +10,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static ch.puzzle.okr.Constants.USER;
@@ -20,8 +21,6 @@ public class JwtUserConverter implements Converter<Jwt, User> {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUserConverter.class);
 
-    @Value("${okr.jwt.user.username}")
-    private String username;
     @Value("${okr.jwt.user.firstname}")
     private String firstname;
     @Value("${okr.jwt.user.lastname}")
@@ -35,9 +34,9 @@ public class JwtUserConverter implements Converter<Jwt, User> {
         logger.debug("claims {}", claims);
 
         try {
-            return User.Builder.builder().withUsername(claims.get(username).toString())
-                    .withFirstname(claims.get(firstname).toString()).withLastname(claims.get(lastname).toString())
-                    .withEmail(claims.get(email).toString()).build();
+            return User.Builder.builder().withFirstname(claims.get(firstname).toString())
+                    .withLastname(claims.get(lastname).toString()).withEmail(claims.get(email).toString())
+                    .withUserTeamList(new ArrayList<>()).build();
         } catch (Exception e) {
             logger.warn("can not convert user from claims {}", claims);
             throw new OkrResponseStatusException(BAD_REQUEST, ErrorKey.CONVERT_TOKEN, USER);

@@ -54,7 +54,7 @@ public class KeyResultOrdinalMapper {
                 .withId(keyResultOrdinalDto.id()).withVersion(keyResultOrdinalDto.version())
                 .withObjective(objectiveBusinessService.getEntityById(keyResultOrdinalDto.objective().id()))
                 .withTitle(keyResultOrdinalDto.title()).withDescription(keyResultOrdinalDto.description())
-                .withOwner(userBusinessService.getOwnerById(keyResultOrdinalDto.owner().id()))
+                .withOwner(userBusinessService.getUserById(keyResultOrdinalDto.owner().id()))
                 .withModifiedOn(keyResultOrdinalDto.modifiedOn()).build();
     }
 

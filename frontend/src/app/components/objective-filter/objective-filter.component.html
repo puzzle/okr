@@ -1,0 +1,26 @@
+<form class="d-flex search-form" (ngSubmit)="this.refresh.next()">
+  <mat-form-field
+    id="objective-form-field"
+    class="bg-white header-form-field"
+    ngDefaultControl
+    subscriptSizing="dynamic"
+    [appearance]="'outline'"
+  >
+    <input
+      matInput
+      [type]="'text'"
+      [placeholder]="'Nach Objectives suchen'"
+      [(ngModel)]="query"
+      (input)="this.refresh.next()"
+      [ngModelOptions]="{ standalone: true }"
+      [attr.data-testId]="'objectiveSearch'"
+    />
+  </mat-form-field>
+
+  <button
+    class="bg-pz-dark-blue d-flex justify-content-start align-items-center icon-button pe-3 focus-outline"
+    type="submit"
+  >
+    <mat-icon svgIcon="pz-search" class="text-white scale-8"></mat-icon>
+  </button>
+</form>

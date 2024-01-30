@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAll;
+import static ch.puzzle.okr.service.authorization.AuthorizationService.hasRoleWriteAndReadAll;
 
 @Service
 public class OverviewAuthorizationService {
@@ -25,7 +25,7 @@ public class OverviewAuthorizationService {
     }
 
     public List<Overview> getFilteredOverview(Long quarterId, List<Long> teamIds, String objectiveQuery) {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
         List<Overview> overviews = overviewBusinessService.getFilteredOverview(quarterId, teamIds, objectiveQuery,
                 authorizationUser);
         setRoleCreateOrUpdateTeam(overviews, authorizationUser);
@@ -50,11 +50,11 @@ public class OverviewAuthorizationService {
     }
 
     public boolean hasWriteAllAccess() {
-        AuthorizationUser authorizationUser = authorizationService.getAuthorizationUser();
-        return hasRoleWriteAll(authorizationUser);
+        AuthorizationUser authorizationUser = authorizationService.updateOrAddAuthorizationUser();
+        return hasRoleWriteAndReadAll(authorizationUser);
     }
 
     private boolean isWriteable(AuthorizationUser authorizationUser, Overview overview) {
-        return authorizationService.isWriteable(authorizationUser, overview.getOverviewId().getTeamId());
+        return AuthorizationService.hasRoleWriteForTeam(authorizationUser, overview.getOverviewId().getTeamId());
     }
 }

@@ -1,0 +1,41 @@
+<form class="d-flex search-form">
+  <mat-form-field
+    id="search-member-form-field"
+    class="bg-white header-form-field"
+    ngDefaultControl
+    subscriptSizing="dynamic"
+    appearance="outline"
+  >
+    <input
+      type="text"
+      [placeholder]="'TEAM_MANAGEMENT.INPUT_PLACEHOLDER' | translate"
+      matInput
+      [formControl]="search"
+      [matAutocomplete]="auto"
+      [attr.data-testId]="'teamManagementSearch'"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      class="autocomplete-bigger"
+      [attr.data-testId]="'teamManagementSearchResult'"
+      [autoActiveFirstOption]="true"
+    >
+      <mat-optgroup [label]="'TEAM_MANAGEMENT.USERS' | translate" *ngIf="(filteredUsers$ | async)?.length">
+        <mat-option *ngFor="let user of filteredUsers$ | async" (onSelectionChange)="selectUser(user)">
+          <span [innerHtml]="user.htmlValue"></span>
+        </mat-option>
+      </mat-optgroup>
+      <mat-optgroup [label]="'TEAM_MANAGEMENT.TEAMS' | translate" *ngIf="(filteredTeams$ | async)?.length">
+        <mat-option *ngFor="let team of filteredTeams$ | async" (onSelectionChange)="selectTeam(team)">
+          <span [innerHtml]="team.htmlValue"></span>
+        </mat-option>
+      </mat-optgroup>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button
+    class="bg-pz-dark-blue d-flex justify-content-center align-items-center icon-button px-3 focus-outline"
+    type="submit"
+  >
+    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="search" class="text-white"></mat-icon>
+  </button>
+</form>

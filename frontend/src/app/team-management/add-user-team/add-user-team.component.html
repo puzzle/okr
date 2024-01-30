@@ -1,0 +1,43 @@
+<ng-container *ngIf="adminTeams$ | async as adminTeams">
+  <button
+    *ngIf="!userTeam"
+    (click)="createUserTeam(adminTeams[0])"
+    [attr.data-testId]="'add-user'"
+    class="align-new-icon mdc-button px-0 pe-2"
+    color="primary"
+    [disabled]="!adminTeams.length"
+    mat-button
+  >
+    <span class="d-flex align-items-center fw-bold add-text">
+      <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+      Zu weiterem Team hinzufügen
+    </span>
+  </button>
+  <ng-container *ngIf="userTeam">
+    <p class="mt-4 mb-2">Zu neuem Team hinzufügen</p>
+    <div class="new-team w-100">
+      <mat-form-field
+        class="bg-white header-form-field"
+        ngDefaultControl
+        subscriptSizing="dynamic"
+        appearance="outline"
+      >
+        <mat-select [attr.data-testId]="'select-team-dropdown'" [(ngModel)]="userTeam.team">
+          <mat-option
+            [attr.data-testId]="'select-team-dropdown-option'"
+            *ngFor="let team of adminTeams"
+            [value]="team"
+            >{{ team.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <app-team-role-dropdown *ngIf="userTeam" [(isAdmin)]="userTeam.isTeamAdmin"></app-team-role-dropdown>
+    </div>
+    <div class="mt-2">
+      <button [attr.data-testId]="'add-user-to-team-save'" (click)="save()" mat-raised-button color="primary">
+        Hinzufügen
+      </button>
+    </div>
+  </ng-container>
+</ng-container>

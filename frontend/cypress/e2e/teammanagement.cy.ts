@@ -1,70 +1,262 @@
 import * as users from '../fixtures/users.json';
+import { uniqueSuffix } from '../support/utils';
 
 describe('Team management tests', () => {
+  const teamName = uniqueSuffix('New Team');
+  const nameEsha = users.bl.name;
+
   describe('As GL', () => {
+    before(() => {
+      // login as bl to ensure this user exists in database
+      cy.loginAsUser(users.bl);
+      cy.getByTestId('user-name').click();
+      cy.getByTestId('logout').click();
+    });
+
     beforeEach(() => {
       cy.loginAsUser(users.gl);
+      cy.getByTestId('team-management').click();
     });
 
     it('Opens teammanagement dialog', () => {
-      cy.getByTestId('team-management').click();
-
       //Check if overview contains correct titles of teammanagement
       cy.contains('Teamverwaltung');
-      cy.contains('Teamname');
-      cy.contains('Organisationen');
+      cy.contains('Team hinzufügen');
+      cy.contains('Alle Teams');
     });
 
     it('Create team', () => {
-      cy.getByTestId('team-management').click();
-      cy.wait(500);
-      cy.getByTestId('name').click().type('New Team');
+      cy.intercept('POST', '**/teams').as('addTeam');
 
-      //Select gl as organisation
-      cy.getByTestId('organisation-select').click().get('mat-option').contains('org_gl').click();
-      cy.realPress('Escape');
-
-      //Save team and check if team appears now on overview
-      cy.getByTestId('save').click();
-      cy.contains('New Team');
+      cy.contains('Teamverwaltung');
+      cy.getByTestId('add-team').click();
+      cy.getByTestId('add-team-name').click().clear().type(teamName, { delay: 1 });
+      cy.getByTestId('add-team-save').click();
+      cy.wait('@addTeam');
+      cy.contains(teamName);
     });
 
     it('Edit team', () => {
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
-      cy.getByTestId('edit-team-LoremIpsum').click();
-      cy.getByTestId('name').click().clear().type('LoremIpsumEdited');
-      cy.getByTestId('organisation-select').click();
+      cy.intercept('GET', '**/users').as('getUsers');
+      cy.intercept('GET', '**/teams').as('getTeams');
 
-      //Remove organisations from team
-      cy.get('mat-option').contains('org_bl').click();
-      cy.get('mat-option').contains('org_mobility').click();
+      cy.get('app-team-list .mat-mdc-list-item').contains('LoremIpsum').click();
+      editTeamNameAndTest('IpsumLorem');
+      cy.visit('team-management');
 
-      //Add organisation to team
-      cy.get('mat-option').contains('org_azubi').click();
-      cy.realPress('Escape');
+      cy.wait(['@getUsers', '@getTeams']);
 
-      //Save Team and check if it was edited correctly
-      cy.getByTestId('save').click();
-      cy.contains('LoremIpsumEdited');
+      cy.contains('LoremIpsum').should('not.exist');
+      cy.contains('IpsumLorem').should('exist');
+      // set old team name again
+      cy.get('app-team-list .mat-mdc-list-item').contains('IpsumLorem').click();
+      editTeamNameAndTest('LoremIpsum');
     });
 
     it('Delete team', () => {
-      cy.get('mat-chip:visible:contains("LoremIpsum")').click();
-      cy.getByTestId('edit-team-LoremIpsumEdited').click();
+      cy.intercept('DELETE', '**/teams/*').as('saveTeam');
+      cy.intercept('GET', '**/users').as('getUsers');
+
+      cy.contains('app-team-list .mat-mdc-list-item', teamName).click();
+
       //Click delete button
-      cy.getByTestId('delete').click();
-      cy.getByTestId('confirmYes').click();
-      cy.contains('LoremIpsum').should('not.exist');
+      cy.getByTestId('teamMoreButton').click();
+      cy.getByTestId('teamDeleteButton').click();
+
+      cy.wait(['@saveTeam', '@getUsers']);
+
+      cy.contains(teamName).should('not.exist');
+    });
+
+    describe('Search', () => {
+      it('Search user', () => {
+        cy.getByTestId('teamManagementSearch').click().type('pa', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)').click();
+
+        cy.contains('app-member-detail h2', 'Robin Papierer');
+      });
+
+      it('Search team', () => {
+        cy.getByTestId('teamManagementSearch').click().type('we are', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'we are cube.³').click();
+
+        cy.contains('app-member-list h3', 'we are cube.³');
+      });
+
+      it('Search mixed', () => {
+        cy.getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
+
+        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Users');
+        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Teams');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Robin Papierer (papierer@puzzle.ch)');
+        cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Puzzle ITC');
+      });
+    });
+
+    it('Navigate to Bobs profile and add him to BBT and LoremIpsum', () => {
+      cy.intercept('PUT', '**/updateaddteammembership/*').as('updateEsha');
+
+      navigateToUser(nameEsha);
+
+      // add to team bbt as admin
+      cy.get('app-member-detail').getByTestId('add-user').click();
+      cy.getByTestId('select-team-dropdown').click();
+      cy.getByTestId('select-team-dropdown-option').contains('/BBT').click();
+      cy.getByTestId('select-team-role').click();
+      cy.getByTestId('select-team-role-admin').click();
+      cy.getByTestId('add-user-to-team-save').click();
+
+      cy.wait('@updateEsha');
+
+      // add to team loremipsum as member
+      cy.get('app-member-detail').getByTestId('add-user').click();
+      cy.getByTestId('select-team-dropdown').click();
+
+      // team BBT should not be in list anymore
+      cy.getByTestId('select-team-dropdown-option').should('not.contain', '/BBT');
+
+      cy.getByTestId('select-team-dropdown-option').contains('LoremIpsum').click();
+      cy.getByTestId('select-team-role').click();
+      cy.getByTestId('select-team-role-member').click();
+      cy.getByTestId('add-user-to-team-save').click();
+
+      cy.wait('@updateEsha');
+      // check table
+      checkRolesForEsha();
+
+      closeOverlay();
+
+      let foundEsha = false;
+      cy.get('app-member-list tbody tr')
+        .each(($row) => {
+          let usernameCell = $row.find('td:nth-child(2)');
+          if (usernameCell.text().trim() === nameEsha) {
+            foundEsha = true;
+            let roleCell = $row.find('td:nth-child(3)');
+            let teamsCell = $row.find('td:nth-child(4)');
+            expect(roleCell.text().trim()).to.equal('Team-Admin, Team-Member');
+            expect(teamsCell.text().trim()).to.equal('/BBT, LoremIpsum');
+            return false;
+          }
+          return true;
+        })
+        .then(() => {
+          expect(foundEsha).to.be.true;
+        });
     });
   });
 
   describe('As BL', () => {
     beforeEach(() => {
       cy.loginAsUser(users.bl);
+      cy.getByTestId('team-management').click();
     });
 
-    it('Can not see teammanagement icons', () => {
-      cy.getByTestId('team-management').should('not.exist');
+    it('should check if correct roles for BL are set', () => {
+      cy.intercept('GET', '**/users/*').as('getEsha');
+
+      cy.get('td').contains(nameEsha).click();
+      cy.wait('@getEsha');
+
+      checkRolesForEsha();
+      closeOverlay();
+    });
+
+    it('should check if team loremIpsum cannot be edited', () => {
+      cy.get('app-team-management').contains('LoremIpsum').click();
+      cy.getByTestId('teamMoreButton').should('not.exist');
+      cy.getByTestId('editTeamButton').should('not.exist');
+    });
+
+    it('should check if team /BBT can be edited and edit name', () => {
+      cy.get('app-team-management').contains('/BBT').click();
+      cy.getByTestId('teamMoreButton').should('exist');
+      editTeamNameAndTest('/BBT_edit');
+      // restore old name
+      editTeamNameAndTest('/BBT');
+    });
+
+    it('should add members to team /BBT', () => {
+      cy.get('app-team-management').contains('/BBT').click();
+      cy.getByTestId('add-team-member').click();
+      cy.getByTestId('search-member-to-add').click();
+
+      // esha should not exist (is already member of team)
+      const matOption = '.cdk-overlay-container mat-option';
+      cy.get(matOption).contains(nameEsha).should('not.exist');
+
+      // add findus peterson
+      cy.getByTestId('search-member-to-add').click().type('Find', { delay: 1 });
+      cy.get(matOption).contains('Findus Peterson').click();
+
+      // add robin papierer
+      cy.getByTestId('search-member-to-add').click();
+      cy.get(matOption).contains('Findus Peterson').should('not.exist');
+      cy.get(matOption).contains('Robin Papierer').click();
+
+      // check if Findus and Robin exists in table
+      const allMemberTableTr = '#all-member-table tbody tr';
+      cy.get(allMemberTableTr).eq(0).should('contain', 'Findus Peterson');
+      cy.get(allMemberTableTr).eq(1).should('contain', 'Robin Papierer');
+
+      // remove robin papierer from list
+      cy.get(allMemberTableTr + ' button')
+        .eq(1)
+        .click();
+      cy.get(allMemberTableTr).eq(1).should('not.exist');
+
+      cy.getByTestId('save').click();
+    });
+
+    it('should test that Findus Peterson cannot be added to further teams', () => {
+      navigateToUser('Findus Peterson');
+
+      // current user BL (Esha Harris) is only admin in /BBT team.
+      // That's why 'add-team-member' should be disabled
+      cy.get('app-member-detail').getByTestId('add-user').should('be.disabled');
+    });
+
+    it('should remove BBT membership of findus', () => {
+      navigateToUser('Findus Peterson');
+      cy.getByTestId('delete-team-member').click();
+      cy.get('app-member-detail').contains('/BBT').should('not.exist');
+    });
+
+    it('should remove added memberships from esha', () => {
+      navigateToUser(nameEsha);
+      cy.getByTestId('delete-team-member').eq(0).click();
+      cy.getByTestId('delete-team-member').eq(0).click();
+      cy.get('app-member-detail').should('not.contain', '/BBT').and('not.contain', 'LoremIpsum');
     });
   });
 });
+
+function closeOverlay() {
+  cy.get('.cdk-overlay-backdrop').click(-50, -50, { force: true });
+}
+
+function checkRolesForEsha() {
+  cy.get('app-member-detail tbody tr').eq(0).should('contain', '/BBT').and('contain', 'Team-Admin');
+  cy.get('app-member-detail tbody tr').eq(1).should('contain', 'LoremIpsum').and('contain', 'Team-Member');
+}
+
+function editTeamNameAndTest(teamName: string) {
+  cy.intercept('PUT', '**/teams/*').as('saveTeam');
+  cy.getByTestId('editTeamButton').click();
+  cy.getByTestId('add-team-name').click().clear().type(teamName, { delay: 1 });
+  cy.getByTestId('add-team-save').click();
+  cy.wait('@saveTeam');
+  cy.contains(teamName);
+}
+
+function navigateToUser(userName: string) {
+  cy.intercept('GET', '**/users/*').as('getUser');
+  cy.get('td').contains(userName).click();
+  cy.wait('@getUser');
+}

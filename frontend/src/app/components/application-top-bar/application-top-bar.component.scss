@@ -1,0 +1,47 @@
+@import "../style/variables";
+
+#topBarHeight {
+  height: $top-bar-height;
+}
+
+#okrTopbar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 102;
+  height: inherit;
+  justify-content: space-between;
+  background-color: $pz-dark-blue;
+}
+
+.topBarEntry {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white !important;
+  text-decoration: none;
+  height: 100%;
+  gap: 1px;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: normal;
+
+  mat-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transform: scale(1) !important;
+    margin-top: -1px;
+    font-size: 18px;
+  }
+
+  &:focus,
+  &:hover {
+    background-color: #1a4e83;
+    border: 1px solid white;
+  }
+}

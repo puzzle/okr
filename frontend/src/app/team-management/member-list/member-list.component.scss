@@ -1,0 +1,56 @@
+@import "../../../style/_variables.scss";
+
+:host {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+
+  div {
+    max-width: 800px;
+    flex: 1 0 0;
+
+    #member-header {
+      display: flex;
+      align-items: center;
+      background-color: $dark-grey;
+      width: 100%;
+      min-height: 57px;
+      justify-content: space-between;
+
+      div {
+        display: flex;
+        align-items: end;
+
+        &.title {
+          flex: 1 0 0;
+          h3 {
+            margin: 0 2rem 0 1rem;
+          }
+          p {
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+          }
+        }
+        &.menu {
+          flex: 0 0 0;
+        }
+        &.action-button {
+          flex: 0 0 auto;
+          padding-right: 1rem;
+        }
+      }
+    }
+
+    .mat-column-icon {
+      width: 50px;
+    }
+
+    .mat-column-name {
+      width: 30%;
+    }
+
+    .mat-column-delete {
+      width: 20px;
+    }
+  }
+}

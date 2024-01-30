@@ -1,53 +1,51 @@
 package ch.puzzle.okr.service.authorization;
 
-import ch.puzzle.okr.converter.JwtConverterFactory;
-import ch.puzzle.okr.mapper.role.RoleMapperFactory;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.service.business.UserBusinessService;
-import ch.puzzle.okr.service.persistence.TeamPersistenceService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 
 @Service
 public class AuthorizationRegistrationService {
 
-    @Value("${okr.organisation.name.1stLevel}")
-    private String firstLevelOrganisationName;
+    private static final String DELIMITER = ",";
+
+    @Value("${okr.user.champion.emails}")
+    private String okrChampionEmails;
 
     private final UserBusinessService userBusinessService;
-    private final TeamPersistenceService teamPersistenceService;
-    private final JwtConverterFactory jwtConverterFactory;
-    private final RoleMapperFactory roleMapperFactory;
 
-    public AuthorizationRegistrationService(UserBusinessService userBusinessService,
-            TeamPersistenceService teamPersistenceService, JwtConverterFactory jwtConverterFactory,
-            RoleMapperFactory roleMapperFactory) {
+    public AuthorizationRegistrationService(UserBusinessService userBusinessService) {
         this.userBusinessService = userBusinessService;
-        this.teamPersistenceService = teamPersistenceService;
-        this.jwtConverterFactory = jwtConverterFactory;
-        this.roleMapperFactory = roleMapperFactory;
     }
 
-    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#user.username")
-    public AuthorizationUser registerAuthorizationUser(User user, Jwt token) {
-        List<String> organisationNames = jwtConverterFactory.getJwtOrganisationConverter().convert(token);
-        return new AuthorizationUser(userBusinessService.getOrCreateUser(user), getTeamIds(organisationNames),
-                getFirstLevelTeamIds(),
-                roleMapperFactory.getRoleMapper().mapAuthorizationRoles(organisationNames, user));
+    @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#userFromToken.email")
+    public AuthorizationUser updateOrAddAuthorizationUser(User userFromToken) {
+        var userFromDB = userBusinessService.getOrCreateUser(userFromToken);
+        updateChangeableFields(userFromToken, userFromDB);
+        return new AuthorizationUser(userFromDB);
     }
 
-    private List<Long> getTeamIds(List<String> organisationNames) {
-        return teamPersistenceService.findTeamIdsByOrganisationNames(organisationNames);
+    // firstname and lastname comes from JWT token and could be updated in keycloak.
+    // okr champion is set in application properties and should be updated as well
+    private void updateChangeableFields(User userFromToken, User userFromDB) {
+        userFromDB.setFirstname(userFromToken.getFirstname());
+        userFromDB.setLastname(userFromToken.getLastname());
+        setOkrChampionFromProperties(userFromDB);
+        userBusinessService.saveUser(userFromDB);
     }
 
-    private List<Long> getFirstLevelTeamIds() {
-        return teamPersistenceService.findTeamIdsByOrganisationName(firstLevelOrganisationName);
+    public void setOkrChampionFromProperties(User user) {
+        String[] championMails = okrChampionEmails.split(DELIMITER);
+        for (var mail : championMails) {
+            if (mail.trim().equals(user.getEmail())) {
+                user.setOkrChampion(true);
+                return;
+            }
+        }
     }
 }

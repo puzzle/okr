@@ -19,14 +19,6 @@ public class JwtConverterFactory {
         this.appContext = appContext;
     }
 
-    public synchronized Converter<Jwt, List<String>> getJwtOrganisationConverter() {
-        if (jwtOrganisationConverter == null) {
-            // place to load configured converter instead of default converter
-            jwtOrganisationConverter = appContext.getBean(JwtOrganisationConverter.class);
-        }
-        return jwtOrganisationConverter;
-    }
-
     public synchronized Converter<Jwt, User> getJwtUserConverter() {
         if (jwtUserConverter == null) {
             // place to load configured converter instead of default converter

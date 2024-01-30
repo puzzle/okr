@@ -4,18 +4,18 @@
 @import "fonts/Roboto";
 @import "fonts/MaterialIcons";
 
-p {
-  margin: 0;
-  padding: 0;
-}
-
 html,
-body {
+body.okr {
   font-size: 100%;
   margin: 0;
   padding: 0;
   background-color: $overview-bg;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, sans-serif;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .linebreak {
@@ -28,6 +28,10 @@ body {
   word-wrap: anywhere;
   color: black;
   @extend .linebreak;
+}
+
+.fit-content {
+  width: fit-content;
 }
 
 .sub-title {
@@ -93,15 +97,6 @@ input textarea {
 
 .backdrop {
   margin-top: $top-bar-height;
-}
-
-.spinner-container {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  @extend .mt-5;
-  @extend .display-6;
 }
 
 .cursor-pointer {
@@ -198,11 +193,6 @@ input {
   margin-left: -8px;
 }
 
-#objective-form-field .mdc-notched-outline__trailing {
-  border-bottom-right-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-}
-
 mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   width: 220px;
 }
@@ -262,12 +252,14 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
   line-height: 115% !important;
 }
 
-.add-cross-button {
-  margin-bottom: 1px;
+img.add-cross-button {
+  width: 0.65rem;
+  margin: 0 6px 1px 9px;
 }
 
 .add-text {
   margin-top: 1px;
+  height: 2rem;
 }
 
 .align-new-icon {
@@ -286,4 +278,72 @@ mat-form-field.quarter-filter .mat-mdc-text-field-wrapper {
 
 .break-word {
   word-break: break-all;
+}
+
+#okrBanner {
+  position: fixed;
+  width: 100%;
+  height: min-content;
+  z-index: 100;
+  transition: 0.5s;
+  background-color: #dcedf9;
+}
+
+app-team-management-banner > #okrBanner {
+  position: relative;
+}
+
+table.okr-table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  border: none;
+  box-shadow: none;
+  tr {
+    height: 40px;
+
+    > td {
+      border: none;
+      background-color: $light-grey;
+    }
+    > th {
+      vertical-align: bottom;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: none;
+      background-color: white;
+    }
+  }
+  tbody {
+    tr:hover {
+      box-shadow: 0 0 0 1px $dark-grey;
+    }
+  }
+}
+
+.search-form {
+  button {
+    border-radius: 0 4px 4px 0;
+    mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(1.25);
+    }
+  }
+  .mdc-notched-outline__trailing {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+
+.mat-mdc-autocomplete-panel {
+  &.autocomplete-bigger {
+    max-height: 480px;
+  }
+}
+
+@import "custom_bootstrap";
+
+.spinner-container {
+  @extend .mt-5;
 }

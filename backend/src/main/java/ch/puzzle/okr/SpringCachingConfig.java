@@ -15,6 +15,6 @@ public class SpringCachingConfig {
 
     @Bean
     public CacheManager cacheManager() {
-        return new ConcurrentMapCacheManager(AUTHORIZATION_USER_CACHE, USER_CACHE);
+        return new ConcurrentMapCacheManager(AUTHORIZATION_USER_CACHE);
     }
 }

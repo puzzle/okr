@@ -1,0 +1,32 @@
+<div id="okrBanner" class="container-fluid">
+  <div class="row first-line">
+    <div class="col-12">
+      <a routerLink="/">Zurück zu OKR's</a>
+    </div>
+  </div>
+  <div class="row second-line">
+    <div class="col-12 col-md-5 col-lg-4">
+      <h1>Teamverwaltung</h1>
+    </div>
+    <div class="d-none d-md-flex col-md-7 col-lg-8">
+      <app-search-team-management></app-search-team-management>
+      <button
+        (click)="createTeam()"
+        [attr.data-testId]="'add-team'"
+        class="align-new-icon mdc-button px-0 pe-2"
+        color="primary"
+        mat-button
+      >
+        <span class="d-flex align-items-center fw-bold add-text">
+          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+          Team hinzufügen
+        </span>
+      </button>
+    </div>
+  </div>
+  <div id="okr-tangram">
+    <div *ngIf="!isMobileDevice()">
+      <app-okr-tangram [attr.data-testId]="'okr-logo'"></app-okr-tangram>
+    </div>
+  </div>
+</div>

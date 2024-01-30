@@ -58,9 +58,9 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInMetric',
-  (currentValue: number, shouldChangeConfidence: boolean, changeInfo: string | null, initiatives: string | null) => {
+  (currentValue: number, shouldChangeConfidence: number, changeInfo: string | null, initiatives: string | null) => {
     cy.getByTestId('check-in-metric-value').clear().type(currentValue.toString());
-    changeConfidence(shouldChangeConfidence);
+    setConfidence(shouldChangeConfidence);
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }
@@ -73,12 +73,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add(
   'fillOutCheckInOrdinal',
-  (
-    currentZoneIndex: number,
-    shouldChangeConfidence: boolean,
-    changeInfo: string | null,
-    initiatives: string | null,
-  ) => {
+  (currentZoneIndex: number, confidence: number, changeInfo: string | null, initiatives: string | null) => {
     switch (currentZoneIndex) {
       case 0:
         cy.getByTestId('fail-radio').click();
@@ -93,7 +88,7 @@ Cypress.Commands.add(
         cy.getByTestId('stretch-radio').click();
         break;
     }
-    changeConfidence(shouldChangeConfidence);
+    setConfidence(confidence);
     if (changeInfo) {
       cy.getByTestId('changeInfo').clear().type(changeInfo!);
     }
@@ -238,20 +233,24 @@ function doUntil(selector: string, tab: () => void, limit: number = 100) {
   }
 }
 
-function changeConfidence(changeConfidence: boolean) {
-  if (changeConfidence) {
-    cy.tabForward();
-    cy.tabForward();
+function setConfidence(confidence: number) {
+  cy.getByTestId('confidence-slider').find('input').focus();
+  for (let i = 0; i < 10; i++) {
+    cy.realPress('ArrowLeft');
+  }
+  for (let i = 0; i < confidence; i++) {
     cy.realPress('ArrowRight');
   }
 }
 
 function loginWithCredentials(username: string, password: string) {
   cy.visit('/');
+  cy.intercept('GET', '**/users/current').as('getCurrentUser');
   cy.origin(Cypress.env('login_url'), { args: { username, password } }, ({ username, password }) => {
     cy.get('input[name="username"]').type(username);
     cy.get('input[name="password"]').type(password);
     cy.get('input[type="submit"]').click();
+    cy.wait('@getCurrentUser', { responseTimeout: 10000 });
   });
   cy.url().then((url) => {
     const currentUrl = new URL(url);
@@ -270,8 +269,7 @@ function checkForToaster(selector: string, amount: number, messages: string[] = 
     .then((e) => messages.forEach((m) => expect(e).contains(m)));
 }
 
-const overviewIsLoaded = () =>
-  cy.get('mat-chip').should('have.length.at.least', 2) && cy.get('.team-title').should('have.length.at.least', 1);
+const overviewIsLoaded = () => cy.get('mat-chip').should('have.length.at.least', 2);
 
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })

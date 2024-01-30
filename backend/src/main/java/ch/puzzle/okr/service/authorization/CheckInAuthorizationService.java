@@ -30,6 +30,6 @@ public class CheckInAuthorizationService extends AuthorizationServiceBase<Long, 
 
     @Override
     protected boolean isWriteable(CheckIn entity, AuthorizationUser authorizationUser) {
-        return getAuthorizationService().isWriteable(entity, authorizationUser);
+        return getAuthorizationService().hasRoleWriteForTeam(entity, authorizationUser);
     }
 }

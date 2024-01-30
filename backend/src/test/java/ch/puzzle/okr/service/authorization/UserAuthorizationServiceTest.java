@@ -29,9 +29,6 @@ public class UserAuthorizationServiceTest {
 
     private final long adminTeamId = 5L;
     private final long memberTeamId = 6L;
-
-    private final AuthorizationUser authorizationUser = new AuthorizationUser(
-            defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId)), List.of(defaultTeam(memberTeamId))));
     User user = defaultUserWithTeams(1L, List.of(defaultTeam(adminTeamId), defaultTeam(memberTeamId)), List.of());
     User user2 = defaultUserWithTeams(2L, List.of(), List.of(defaultTeam(adminTeamId), defaultTeam(memberTeamId)));
 
@@ -68,9 +65,9 @@ public class UserAuthorizationServiceTest {
         when(userBusinessService.getUserById(user.getId())).thenReturn(user);
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
-        userAuthorizationService.setOkrChampion(user.getId(), true);
+        userAuthorizationService.setIsOkrChampion(user.getId(), true);
 
-        verify(userBusinessService, times(1)).setOkrChampion(user, true);
+        verify(userBusinessService, times(1)).setIsOkrChampion(user, true);
     }
 
     @Test
@@ -82,6 +79,6 @@ public class UserAuthorizationServiceTest {
         when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
 
         assertThrows(OkrResponseStatusException.class,
-                () -> userAuthorizationService.setOkrChampion(user.getId(), true));
+                () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
     }
 }

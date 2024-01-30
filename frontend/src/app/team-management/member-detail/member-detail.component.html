@@ -12,7 +12,7 @@
     <div class="w-100">
       <app-edit-okr-champion
         [user]="userRef"
-        (okrChampionChange)="okrChampionChange($event, userRef)"
+        (okrChampionChange)="isOkrChampionChange($event, userRef)"
       ></app-edit-okr-champion>
     </div>
     <div class="w-100">
@@ -26,7 +26,7 @@
           <td mat-cell *matCellDef="let element">
             <app-show-edit-role
               [userTeam]="element"
-              (save)="updateTeamRole($event, element, userRef)"
+              (save)="updateTeamMembership($event, element, userRef)"
             ></app-show-edit-role>
           </td>
         </ng-container>
@@ -51,7 +51,7 @@
       </table>
       <app-add-user-team
         [currentTeams$]="currentUserTeams$.asObservable()"
-        (addUserTeam)="addTeamRole($event, userRef)"
+        (addUserTeam)="addTeamMembership($event, userRef)"
       ></app-add-user-team>
     </div>
   </div>

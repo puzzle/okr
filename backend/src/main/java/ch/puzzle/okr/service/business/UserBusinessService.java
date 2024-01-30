@@ -41,7 +41,7 @@ public class UserBusinessService {
         return userPersistenceService.getOrCreateUser(user);
     }
 
-    public User setOkrChampion(User user, boolean okrChampion) {
+    public User setIsOkrChampion(User user, boolean okrChampion) {
         if (!okrChampion) {
             checkAtLeastOneOkrChampionExists(user);
         }

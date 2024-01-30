@@ -134,7 +134,7 @@ describe('MemberListTableComponent', () => {
       id: 1,
     } as any;
     const ut = testUser.userTeamList[0];
-    component.saveUserTeamRole(true, entry, ut);
+    component.saveUserTeamMembership(true, entry, ut);
     tick();
     expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledWith(entry.id, ut);
     expect(userServiceMock.reloadUsers).toHaveBeenCalledTimes(1);

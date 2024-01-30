@@ -76,7 +76,7 @@ export class MemberListTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  saveUserTeamRole(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
+  saveUserTeamMembership(isAdmin: boolean, userTableEntry: UserTableEntry, userTeam: UserTeam): void {
     // make a copy and set value only after successful request
     const newUserTeam = { ...userTeam };
     newUserTeam.isTeamAdmin = isAdmin;

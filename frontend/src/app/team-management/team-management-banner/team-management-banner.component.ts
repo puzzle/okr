@@ -15,7 +15,9 @@ export class TeamManagementBannerComponent {
 
   createTeam(): void {
     if (!this.dialogRef) {
-      this.dialogRef = this.dialog.open(AddEditTeamDialog, OKR_DIALOG_CONFIG);
+      const config = OKR_DIALOG_CONFIG;
+      config.data = undefined;
+      this.dialogRef = this.dialog.open(AddEditTeamDialog, config);
       this.dialogRef.afterClosed().subscribe(() => {
         this.dialogRef = undefined;
       });

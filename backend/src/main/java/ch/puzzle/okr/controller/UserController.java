@@ -60,11 +60,11 @@ public class UserController {
     @Operation(summary = "Set OKR Champion property for user", description = "Sets the property okrChampion of user to true or false")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned user", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
-    @PutMapping(path = "/{id}/okrchampion/{okrChampion}")
+    @PutMapping(path = "/{id}/isokrchampion/{isOkrChampion}")
     public UserDto setOkrChampion(
             @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id,
-            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean okrChampion) {
-        var user = this.userAuthorizationService.setOkrChampion(id, okrChampion);
+            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
+        var user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
         return userMapper.toDto(user);
     }
 

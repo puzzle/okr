@@ -133,7 +133,7 @@ class UserBusinessServiceTest {
         var user = TestHelper.defaultUser(1L);
         user.setOkrChampion(false);
 
-        userBusinessService.setOkrChampion(user, true);
+        userBusinessService.setIsOkrChampion(user, true);
 
         verify(userPersistenceService, times(1)).save(user);
         assertTrue(user.isOkrChampion());
@@ -146,7 +146,7 @@ class UserBusinessServiceTest {
         user.setOkrChampion(true);
         when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
 
-        assertThrows(OkrResponseStatusException.class, () -> userBusinessService.setOkrChampion(user, false));
+        assertThrows(OkrResponseStatusException.class, () -> userBusinessService.setIsOkrChampion(user, false));
     }
 
     @Test
@@ -157,7 +157,7 @@ class UserBusinessServiceTest {
         user2.setOkrChampion(true);
         when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
 
-        userBusinessService.setOkrChampion(user, false);
+        userBusinessService.setIsOkrChampion(user, false);
 
         verify(userPersistenceService, times(1)).save(user);
         assertFalse(user.isOkrChampion());

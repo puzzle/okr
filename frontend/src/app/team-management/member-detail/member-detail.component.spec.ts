@@ -70,9 +70,7 @@ describe('MemberDetailComponent', () => {
         { provide: TeamService, useValue: teamServiceMock },
         { provide: MatDialog, useValue: dialogMock },
       ],
-      schemas: [
-        NO_ERRORS_SCHEMA, //
-      ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
@@ -148,7 +146,7 @@ describe('MemberDetailComponent', () => {
     teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
     userServiceMock.getUserById.mockReturnValue(of(user));
 
-    component.addTeamRole(userTeam, user);
+    component.addTeamMembership(userTeam, user);
     tick();
 
     expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledTimes(1);
@@ -163,7 +161,7 @@ describe('MemberDetailComponent', () => {
     teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null));
     userServiceMock.getUserById.mockReturnValue(of(user));
 
-    component.updateTeamRole(false, userTeam, user);
+    component.updateTeamMembership(false, userTeam, user);
     tick();
 
     expect(teamServiceMock.updateOrAddTeamMembership).toHaveBeenCalledTimes(1);
@@ -179,7 +177,7 @@ describe('MemberDetailComponent', () => {
     teamServiceMock.updateOrAddTeamMembership.mockReturnValue(of(null).pipe(delay(10)));
     userServiceMock.getUserById.mockReturnValue(of(user));
 
-    component.updateTeamRole(true, userTeam, user);
+    component.updateTeamMembership(true, userTeam, user);
 
     expect(userTeam.isTeamAdmin).toBeFalsy();
     tick(11);

@@ -46,10 +46,10 @@ public class UserAuthorizationService {
         return user;
     }
 
-    public User setOkrChampion(long id, boolean okrChampion) {
+    public User setIsOkrChampion(long id, boolean isOkrChampion) {
         var user = userBusinessService.getUserById(id);
         AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
                 OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
-        return userBusinessService.setOkrChampion(user, okrChampion);
+        return userBusinessService.setIsOkrChampion(user, isOkrChampion);
     }
 }

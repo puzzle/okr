@@ -94,7 +94,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => this.loadUser(user.id));
   }
 
-  updateTeamRole(isAdmin: boolean, userTeam: UserTeam, user: User) {
+  updateTeamMembership(isAdmin: boolean, userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
     // make a copy and set value of real object after successful request
     const newUserTeam = { ...userTeam };
@@ -107,7 +107,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  addTeamRole(userTeam: UserTeam, user: User) {
+  addTeamMembership(userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
     this.teamService.updateOrAddTeamMembership(user.id, userTeam).subscribe(() => {
       this.loadUser(user.id);
@@ -124,8 +124,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['../'], { relativeTo: this.route.parent });
   }
 
-  okrChampionChange(okrChampion: boolean, user: User) {
-    this.userService.setOkrChampion(user, okrChampion).subscribe(() => {
+  isOkrChampionChange(okrChampion: boolean, user: User) {
+    this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
       this.loadUser(user.id);
       this.userService.reloadUsers();
       this.teamService.reloadTeams();

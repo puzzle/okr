@@ -2,8 +2,10 @@ package ch.puzzle.okr.service.authorization;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
+import ch.puzzle.okr.multitenancy.TenantConfigProvider;
+import ch.puzzle.okr.multitenancy.TenantContext;
 import ch.puzzle.okr.service.business.UserBusinessService;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +14,15 @@ import static ch.puzzle.okr.SpringCachingConfig.AUTHORIZATION_USER_CACHE;
 @Service
 public class AuthorizationRegistrationService {
 
-    private static final String DELIMITER = ",";
-
-    @Value("${okr.user.champion.emails}")
-    private String okrChampionEmails;
-
     private final UserBusinessService userBusinessService;
+    private final TenantConfigProvider tenantConfigProvider;
 
-    public AuthorizationRegistrationService(UserBusinessService userBusinessService) {
+    public AuthorizationRegistrationService(
+            UserBusinessService userBusinessService,
+            TenantConfigProvider tenantConfigProvider
+    ) {
         this.userBusinessService = userBusinessService;
+        this.tenantConfigProvider = tenantConfigProvider;
     }
 
     @Cacheable(value = AUTHORIZATION_USER_CACHE, key = "#userFromToken.email")
@@ -40,8 +42,10 @@ public class AuthorizationRegistrationService {
     }
 
     public void setOkrChampionFromProperties(User user) {
-        String[] championMails = okrChampionEmails.split(DELIMITER);
-        for (var mail : championMails) {
+        TenantConfigProvider.TenantConfig tenantConfig = this.tenantConfigProvider
+                .getTenantConfigById(TenantContext.getCurrentTenant())
+                .orElseThrow(() -> new EntityNotFoundException("Cannot find tenant"));
+        for (var mail : tenantConfig.okrChampionEmails()) {
             if (mail.trim().equals(user.getEmail())) {
                 user.setOkrChampion(true);
                 return;

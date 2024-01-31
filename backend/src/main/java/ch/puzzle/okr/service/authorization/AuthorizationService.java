@@ -29,16 +29,12 @@ public class AuthorizationService {
     private final JwtHelper jwtHelper;
 
     public AuthorizationService(AuthorizationRegistrationService authorizationRegistrationService,
-            ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
-            JwtHelper jwtHelper) {
+                                ObjectivePersistenceService objectivePersistenceService, ActionPersistenceService actionPersistenceService,
+                                JwtHelper jwtHelper) {
         this.authorizationRegistrationService = authorizationRegistrationService;
         this.actionPersistenceService = actionPersistenceService;
         this.objectivePersistenceService = objectivePersistenceService;
         this.jwtHelper = jwtHelper;
-    }
-
-    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
-        return user.user().isOkrChampion();
     }
 
     public static boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Long teamId) {
@@ -46,6 +42,18 @@ public class AuthorizationService {
             return true;
         }
         return authorizationUser.isUserAdminInTeam(teamId);
+    }
+
+    public static void checkRoleWriteAndReadAll(AuthorizationUser user,
+                                                OkrResponseStatusException notAuthorizedException) {
+        if (hasRoleWriteAndReadAll(user)) {
+            return;
+        }
+        throw notAuthorizedException;
+    }
+
+    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
+        return user.user().isOkrChampion();
     }
 
     public AuthorizationUser updateOrAddAuthorizationUser() {
@@ -152,23 +160,11 @@ public class AuthorizationService {
     }
 
     private void hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team,
-            OkrResponseStatusException notAuthorizedException) {
+                                     OkrResponseStatusException notAuthorizedException) {
         if (hasRoleWriteForTeam(authorizationUser, team)) {
             return;
         }
         throw notAuthorizedException;
-    }
-
-    public static void checkRoleWriteAndReadAll(AuthorizationUser user,
-            OkrResponseStatusException notAuthorizedException) {
-        if (hasRoleWriteAndReadAll(user)) {
-            return;
-        }
-        throw notAuthorizedException;
-    }
-
-    public static boolean hasRoleWriteAndReadAll(AuthorizationUser user) {
-        return user.user().isOkrChampion();
     }
 
     private boolean hasRoleWriteForTeam(AuthorizationUser authorizationUser, Team team) {

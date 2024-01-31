@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.*;
 
-public abstract class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider {
+public abstract class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
     private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
 
     private final Map<String, ConnectionProvider> connectionProviderMap;
@@ -69,8 +69,10 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
             if (!Objects.equals(tenantId, "public")) {
-                Object put = properties.put(AvailableSettings.DEFAULT_SCHEMA,
-                        MessageFormat.format("okr_{0}", tenantId));
+                properties.put(
+                        AvailableSettings.DEFAULT_SCHEMA,
+                        MessageFormat.format("okr_{0}", tenantId)
+                );
             }
             return properties;
         } catch (IOException e) {

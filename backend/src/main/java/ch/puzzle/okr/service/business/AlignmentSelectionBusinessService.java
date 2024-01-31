@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.business;
 
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.service.persistence.AlignmentSelectionPersistenceService;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +20,9 @@ public class AlignmentSelectionBusinessService {
     public List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(Long quarterId, Long ignoredTeamId) {
         return alignmentSelectionPersistenceService.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterId,
                 ignoredTeamId);
+    }
+
+    public List<AlignmentView> getAlignmentViewByQuarterId(Long quarterId, List<Long> teamIds) {
+        return alignmentSelectionPersistenceService.getAlignmentViewByQuarterId(quarterId, teamIds);
     }
 }

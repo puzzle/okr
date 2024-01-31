@@ -23,7 +23,7 @@
 
     <mat-tab label="Netz">
       <ng-template matTabContent>
-        <app-diagram [overviewEntity]="(overviewEntities$ | async) || []"></app-diagram>
+        <app-diagram [alignmentEntity]="(alignmentEntities$ | async) || []"></app-diagram>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

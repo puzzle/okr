@@ -1,13 +1,12 @@
 import { AfterViewInit, Component, Input, OnDestroy } from '@angular/core';
 import cytoscape from 'cytoscape';
-import { OverviewEntity } from '../shared/types/model/OverviewEntity';
 import { Router } from '@angular/router';
-import { ObjectiveMin } from '../shared/types/model/ObjectiveMin';
 import { KeyresultMin } from '../shared/types/model/KeyresultMin';
 import { calculateCurrentPercentage } from '../shared/common';
 import { KeyResultMetricMin } from '../shared/types/model/KeyResultMetricMin';
 import { KeyResultOrdinalMin } from '../shared/types/model/KeyResultOrdinalMin';
 import { BehaviorSubject } from 'rxjs';
+import { Alignment } from '../shared/types/model/Alignment';
 
 @Component({
   selector: 'app-diagram',
@@ -15,15 +14,15 @@ import { BehaviorSubject } from 'rxjs';
   styleUrl: './diagram.component.scss',
 })
 export class DiagramComponent implements AfterViewInit, OnDestroy {
-  private overviewEntity$ = new BehaviorSubject<OverviewEntity[]>({} as OverviewEntity[]);
+  private alignmentEntity$ = new BehaviorSubject<Alignment[]>({} as Alignment[]);
 
   @Input()
-  get overviewEntity(): BehaviorSubject<OverviewEntity[]> {
-    return this.overviewEntity$;
+  get alignmentEntity(): BehaviorSubject<Alignment[]> {
+    return this.alignmentEntity$;
   }
 
-  set overviewEntity(overviewEntity: OverviewEntity[]) {
-    this.overviewEntity$.next(overviewEntity);
+  set alignmentEntity(alignmentEntity: Alignment[]) {
+    this.alignmentEntity$.next(alignmentEntity);
   }
 
   cy!: cytoscape.Core;
@@ -35,8 +34,8 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   constructor(private router: Router) {}
 
   ngAfterViewInit(): void {
-    this.overviewEntity.subscribe((overviewEntity) => {
-      this.generateDiagram(overviewEntity);
+    this.alignmentEntity.subscribe((alignmentEntity) => {
+      this.generateDiagram(alignmentEntity);
     });
   }
 
@@ -47,7 +46,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     this.cy.removeAllListeners();
   }
 
-  generateDiagram(data: OverviewEntity[]): void {
+  generateDiagram(data: Alignment[]): void {
     if (data.length == 0) return;
     let generatedData: any[] = this.generateElements(data);
 
@@ -201,79 +200,80 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  generateElements(data: OverviewEntity[]): any[] {
+  generateElements(data: Alignment[]): any[] {
     let elements: any[] = [];
     let edges: any[] = [];
-    data.forEach((overViewEntity: OverviewEntity): void => {
-      overViewEntity.objectives.forEach((objective: ObjectiveMin): void => {
-        let element = {
-          data: {
-            id: 'Ob' + objective.id,
-            label: this.adjustLabel(objective.title, 36, 15) + '\n --- \n ' + overViewEntity.team.name,
-          },
-          style: {
-            'background-color': '#2C97A6',
-          },
-        };
-        elements.push(element);
-        if (overViewEntity.team.name == 'Puzzle ITC') {
-          objective.keyResults.forEach((keyResult): void => {
-            let style = this.generateStyle(keyResult);
-            element = {
-              data: {
-                id: 'KR' + keyResult.id,
-                label: this.adjustLabel(keyResult.title, 25, 12) + '\n --- \n ' + overViewEntity.team.name,
-              },
-              style: style,
-            };
-            elements.push(element);
-            let edge = {
-              data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
-            };
-            edges.push(edge);
-          });
-        }
-      });
-    });
+    // data.forEach((overViewEntity: OverviewEntity): void => {
+    //   overViewEntity.objectives.forEach((objective: ObjectiveMin): void => {
+    //     let element = {
+    //       data: {
+    //         id: 'Ob' + objective.id,
+    //         label: this.adjustLabel(objective.title, 36, 15) + '\n --- \n ' + overViewEntity.team.name,
+    //       },
+    //       style: {
+    //         'background-color': '#2C97A6',
+    //       },
+    //     };
+    //     elements.push(element);
+    //     if (overViewEntity.team.name == 'Puzzle ITC') {
+    //       objective.keyResults.forEach((keyResult): void => {
+    //         let style = this.generateStyle(keyResult);
+    //         element = {
+    //           data: {
+    //             id: 'KR' + keyResult.id,
+    //             label: this.adjustLabel(keyResult.title, 25, 12) + '\n --- \n ' + overViewEntity.team.name,
+    //           },
+    //           style: style,
+    //         };
+    //         elements.push(element);
+    //         let edge = {
+    //           data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
+    //         };
+    //         edges.push(edge);
+    //       });
+    //     }
+    //   });
+    // });
 
     // Static alignment demo
-    let edge = {
-      data: { source: 'Ob' + 19, target: 'KR' + 20 },
-    };
-    edges.push(edge);
 
-    edge = {
-      data: { source: 'Ob' + 21, target: 'Ob' + 11 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 20, target: 'Ob' + 13 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 23, target: 'KR' + 27 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 14, target: 'Ob' + 12 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 22, target: 'Ob' + 11 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 17, target: 'KR' + 28 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 18, target: 'KR' + 27 },
-    };
-    edges.push(edge);
-    edge = {
-      data: { source: 'Ob' + 15, target: 'Ob' + 11 },
-    };
-    edges.push(edge);
+    // let edge = {
+    //   data: { source: 'Ob' + 19, target: 'KR' + 20 },
+    // };
+    // edges.push(edge);
+    //
+    // edge = {
+    //   data: { source: 'Ob' + 21, target: 'Ob' + 11 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 20, target: 'Ob' + 13 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 23, target: 'KR' + 27 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 14, target: 'Ob' + 12 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 22, target: 'Ob' + 11 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 17, target: 'KR' + 28 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 18, target: 'KR' + 27 },
+    // };
+    // edges.push(edge);
+    // edge = {
+    //   data: { source: 'Ob' + 15, target: 'Ob' + 11 },
+    // };
+    // edges.push(edge);
 
     return data && data.length > 0 ? elements.concat(edges) : [];
   }

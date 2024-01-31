@@ -7,6 +7,7 @@ import { RefreshDataService } from '../shared/services/refresh-data.service';
 import { getQueryString, getValueFromQuery, isMobileDevice, trackByFn } from '../shared/common';
 import { AlignmentService } from '../shared/services/alignment.service';
 import { Dashboard } from '../shared/types/model/Dashboard';
+import { Alignment } from '../shared/types/model/Alignment';
 
 @Component({
   selector: 'app-overview',
@@ -16,6 +17,7 @@ import { Dashboard } from '../shared/types/model/Dashboard';
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   overviewEntities$: Subject<OverviewEntity[]> = new Subject<OverviewEntity[]>();
+  alignmentEntities$: Subject<Alignment[]> = new Subject<Alignment[]>();
   protected readonly trackByFn = trackByFn;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
@@ -31,9 +33,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {
     this.service = overviewService;
 
+    let index = this.service instanceof OverviewService ? 0 : 1;
+
     this.refreshDataService.reloadOverviewSubject
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.loadOverviewWithParams());
+      .subscribe(() => this.loadOverviewWithParams(index));
 
     combineLatest([
       this.refreshDataService.teamFilterReady.asObservable(),
@@ -42,7 +46,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(() => {
         this.activatedRoute.queryParams.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-          this.loadOverviewWithParams();
+          let index = this.service instanceof OverviewService ? 0 : 1;
+          this.loadOverviewWithParams(index);
         });
       });
   }
@@ -57,7 +62,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadOverviewWithParams(index: number = 0) {
+  loadOverviewWithParams(index: number) {
     this.service = index == 0 ? this.overviewService : this.alignmentService;
 
     const quarterQuery = this.activatedRoute.snapshot.queryParams['quarter'];
@@ -71,18 +76,32 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   loadOverview(quarterId?: number, teamIds?: number[], objectiveQuery?: string) {
-    this.service
-      .getOverview(quarterId, teamIds, objectiveQuery)
-      .pipe(
-        catchError(() => {
-          this.loadOverview();
-          return EMPTY;
-        }),
-      )
-      .subscribe((dashboard: Dashboard) => {
-        this.hasAdminAccess.next(dashboard.adminAccess);
-        this.overviewEntities$.next(dashboard.overviews);
-      });
+    if (this.service instanceof OverviewService) {
+      this.service
+        .getOverview(quarterId, teamIds, objectiveQuery)
+        .pipe(
+          catchError(() => {
+            this.loadOverview();
+            return EMPTY;
+          }),
+        )
+        .subscribe((dashboard: Dashboard) => {
+          this.hasAdminAccess.next(dashboard.adminAccess);
+          this.overviewEntities$.next(dashboard.overviews);
+        });
+    } else {
+      this.service
+        .getAlignments(quarterId, teamIds, objectiveQuery)
+        .pipe(
+          catchError(() => {
+            this.loadOverview();
+            return EMPTY;
+          }),
+        )
+        .subscribe((alignment: Alignment[]) => {
+          this.alignmentEntities$.next(alignment);
+        });
+    }
   }
 
   ngOnDestroy(): void {

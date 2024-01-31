@@ -1,6 +1,7 @@
 package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.alignment.AlignmentSelection;
+import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.repository.AlignmentSelectionRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,9 @@ public class AlignmentSelectionPersistenceService {
 
     public List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(Long quarterId, Long ignoredTeamId) {
         return alignmentSelectionRepository.getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterId, ignoredTeamId);
+    }
+
+    public List<AlignmentView> getAlignmentViewByQuarterId(Long quarterId, List<Long> teamIds) {
+        return alignmentSelectionRepository.getAlignmentViewByQuarterId(quarterId, teamIds);
     }
 }

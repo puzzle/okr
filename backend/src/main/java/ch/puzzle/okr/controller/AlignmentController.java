@@ -5,6 +5,7 @@ import ch.puzzle.okr.dto.overview.DashboardDto;
 import ch.puzzle.okr.mapper.AlignmentSelectionMapper;
 import ch.puzzle.okr.mapper.DashboardMapper;
 import ch.puzzle.okr.mapper.OverviewMapper;
+import ch.puzzle.okr.models.alignment.AlignmentView;
 import ch.puzzle.okr.service.authorization.OverviewAuthorizationService;
 import ch.puzzle.okr.service.business.AlignmentSelectionBusinessService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +56,19 @@ public class AlignmentController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(alignmentSelectionMapper.toDto(alignmentSelectionBusinessService
                         .getAlignmentSelectionByQuarterIdAndTeamIdNot(quarterFilter, teamFilter)));
+    }
+
+    @Operation(summary = "Get all objectives with their aligned keyresult or objective for alignment", description = "Get all objectives with their aligned keyresult or objective for alignment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned a list of objectives with their aligned objectives or key results for the alignment", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = AlignmentView.class)) }),
+            @ApiResponse(responseCode = "400", description = "Can't return list of objectives with their aligned key results or objectives for the alignment", content = @Content) })
+    @GetMapping("/filtered")
+    public ResponseEntity<List<AlignmentView>> getAlignmentViews(
+            @RequestParam(required = false, defaultValue = "", name = "quarter") Long quarterFilter,
+            @RequestParam(required = false, defaultValue = "", name = "teamIds") List<Long> teamIds) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(alignmentSelectionBusinessService.getAlignmentViewByQuarterId(quarterFilter, teamIds));
     }
 
     @Operation(summary = "Get all objectives and their key results to select the alignment", description = "Get a list of objectives with their key results to select the alignment")

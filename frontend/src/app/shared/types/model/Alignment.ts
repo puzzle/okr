@@ -1,4 +1,3 @@
-
 export interface Alignment {
   entityId: number;
   title: string;

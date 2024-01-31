@@ -11,10 +11,32 @@ body.okr {
   padding: 0;
   background-color: $overview-bg;
   font-family: Roboto, sans-serif;
+  --bs-body-font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
 
   p {
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    color: $pz-dark-blue;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .font-size-14 {
+    font-size: 0.875rem;
   }
 }
 
@@ -124,6 +146,10 @@ input[type="text"] {
   padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
 }
 
+.dialog-form-field {
+  padding: 0.437rem 0.625rem 0.375rem 0.625rem !important;
+}
+
 .mat-mdc-checkbox .mdc-form-field {
   font-size: 1rem !important;
 }
@@ -178,11 +204,6 @@ input {
   .mat-mdc-menu-content {
     padding: 0 !important;
   }
-}
-
-.team-title {
-  font-size: 1.5rem;
-  font-weight: bold;
 }
 
 .select-style .mat-mdc-select-value-text {

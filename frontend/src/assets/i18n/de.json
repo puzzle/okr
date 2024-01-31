@@ -53,7 +53,9 @@
     "NOT_AUTHORIZED_TO_WRITE": "Du bist nicht autorisiert, um dieses {0} zu bearbeiten.",
     "NOT_AUTHORIZED_TO_DELETE": "Du bist nicht autorisiert, um dieses {0} zu löschen.",
     "TOKEN_NULL": "Das erhaltene Token ist null.",
-    "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden."
+    "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden.",
+    "TRIED_TO_DELETE_LAST_ADMIN": "Der letzte Administrator eines Teams kann nicht entfernt werden",
+    "TRIED_TO_REMOVE_LAST_OKR_CHAMPION": "Der letzte OKR Champion kann nicht entfernt werden"
   },
   "SUCCESS": {
     "TEAM": {
@@ -77,6 +79,9 @@
     "CHECK_IN": {
       "POST": "Das Check-in wurde erfolgreich erstellt.",
       "PUT": "Das Check-in wurde erfolgreich aktualisiert."
+    },
+    "USERS": {
+      "PUT": "Der User wurde erfolgreich aktualisiert."
     }
   },
   "DIALOG_ERRORS": {
@@ -95,5 +100,17 @@
     "INPUT_PLACEHOLDER": "Nach Team oder Member suchen",
     "TEAMS": "Teams",
     "USERS": "Users"
+  },
+  "PAGINATOR": {
+    "MEMBERS_PRO_SEITE":  "Members pro Seite",
+    "NAECHSTE_SEITE": "Nächste Seite",
+    "VORHERIGE_SEITE":  "Vorherige Seite",
+    "ERSTE_SEITE": "Erste Seite",
+    "LETZTE_SEITE":  "Letzte Seite",
+    "VON": "von"
+  },
+  "SHARED": {
+    "JA": "Ja",
+    "NEIN": "Nein"
   }
 }

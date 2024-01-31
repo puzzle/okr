@@ -1,0 +1,44 @@
+@import "variables";
+
+:host {
+  padding-top: 2rem;
+  display: block;
+}
+
+.member {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  background-color: $light-grey;
+
+  .member-icon {
+    width: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .member-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+
+    div {
+      flex: 1 1 50%;
+
+      &.single-line {
+        line-height: 1.5 !important;
+      }
+    }
+
+    div:nth-child(2) {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .member-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -63,8 +63,8 @@ public class OverviewMapper {
         if (isValidId(overview.getOverviewId().getObjectiveId())) {
             objectives.add(createObjectiveDto(overview));
         }
-        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamVersion(),
-                overview.getTeamName(), overview.isWriteable()), objectives);
+        return new OverviewDto(new OverviewTeamDto(overview.getOverviewId().getTeamId(), overview.getTeamName()),
+                objectives, overview.isWriteable());
     }
 
     private OverviewObjectiveDto createObjectiveDto(Overview overview) {

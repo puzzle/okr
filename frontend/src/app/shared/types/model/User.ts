@@ -1,4 +1,5 @@
 import { UserTeam } from './UserTeam';
+import { UserTableEntry } from './UserTableEntry';
 
 export interface User {
   id: number;
@@ -13,6 +14,6 @@ export const extractTeamsFromUser = (user: User) => {
   return user.userTeamList.map((u) => u.team);
 };
 
-export const getFullNameFromUser = (user: User) => {
+export const getFullNameFromUser = (user: User | UserTableEntry) => {
   return `${user.firstname} ${user.lastname}`;
 };

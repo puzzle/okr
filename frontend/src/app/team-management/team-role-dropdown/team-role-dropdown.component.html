@@ -4,7 +4,12 @@
   subscriptSizing="dynamic"
   appearance="outline"
 >
-  <mat-select [attr.data-testId]="'select-team-role'" [(ngModel)]="isAdmin" (ngModelChange)="triggerIsAdminChange()">
+  <mat-select
+    [attr.data-testId]="'select-team-role'"
+    [(ngModel)]="isAdmin"
+    (ngModelChange)="triggerIsAdminChange()"
+    (click)="$event.stopPropagation()"
+  >
     <mat-option [attr.data-testId]="'select-team-role-member'" [value]="false">{{
       "USER_ROLE.TEAM_MEMBER" | translate
     }}</mat-option>

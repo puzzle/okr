@@ -1,11 +1,15 @@
 package ch.puzzle.okr.service.authorization;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
 import ch.puzzle.okr.service.business.UserBusinessService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static ch.puzzle.okr.Constants.USER;
 
 @Service
 public class UserAuthorizationService {
@@ -40,5 +44,12 @@ public class UserAuthorizationService {
         var user = userBusinessService.getUserById(id);
         setTeamWritableForUser(user);
         return user;
+    }
+
+    public User setIsOkrChampion(long id, boolean isOkrChampion) {
+        var user = userBusinessService.getUserById(id);
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
+        return userBusinessService.setIsOkrChampion(user, isOkrChampion);
     }
 }

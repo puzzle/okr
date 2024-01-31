@@ -15,6 +15,10 @@ import { AddMemberToTeamDialogComponent } from '../add-member-to-team-dialog/add
 import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { MatTableDataSource } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MemberListTableComponent } from './member-list-table/member-list-table.component';
+import { MemberListMobileComponent } from './member-list-mobile/member-list-mobile.component';
 
 const userServiceMock = {
   getUsers: jest.fn(),
@@ -46,8 +50,8 @@ describe('MemberListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MemberListComponent],
-      imports: [HttpClientTestingModule, TranslateTestingModule],
+      declarations: [MemberListComponent, MemberListTableComponent, MemberListMobileComponent],
+      imports: [HttpClientTestingModule, TranslateTestingModule, BrowserAnimationsModule],
       providers: [
         { provide: UserService, useValue: userServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -72,6 +76,10 @@ describe('MemberListComponent', () => {
     userServiceMock.reloadCurrentUser.mockReturnValue(of(testUser));
   });
 
+  afterEach(() => {
+    teamServiceMock.deleteTeam.mockReset();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -85,7 +93,9 @@ describe('MemberListComponent', () => {
     expect(userTableEntry.lastname).toBe(user.lastname);
     expect(userTableEntry.email).toBe(user.email);
     expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.isOkrChampion).toBeFalsy();
     expect(userTableEntry.teams).toStrictEqual([team1.name]);
+    expect(userTableEntry.userTeamList).toStrictEqual(user.userTeamList);
 
     user.userTeamList.push({
       id: 2,
@@ -96,8 +106,10 @@ describe('MemberListComponent', () => {
 
     userTableEntry = convertFromUser(user);
 
-    expect(userTableEntry.roles).toStrictEqual([UserRole.OKR_CHAMPION, UserRole.TEAM_ADMIN, UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.roles).toStrictEqual([UserRole.TEAM_ADMIN, UserRole.TEAM_MEMBER]);
+    expect(userTableEntry.isOkrChampion).toBeTruthy();
     expect(userTableEntry.teams).toStrictEqual([team1.name, team2.name]);
+    expect(userTableEntry.userTeamList).toStrictEqual(user.userTeamList);
   });
 
   it('should test method convertFromUsers', () => {
@@ -139,48 +151,37 @@ describe('MemberListComponent', () => {
     expect(userTableEntries.map((ut) => ut.firstname)).toStrictEqual(['Bob', 'Key Result', 'Paco', 'Robin']);
   });
 
-  it('ngOnInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
-    TestBed.runInInjectionContext(() => {
-      userServiceMock.getUsers.mockReturnValue(of(users));
-      teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
-      component.ngOnInit();
-      tick();
-      expect(teamServiceMock.getAllTeams).toHaveBeenCalledTimes(1);
-      expect(component.selectedTeam).toBe(team1);
-      expect(component.dataSource.length).toBe(1);
-      expect(component.dataSource[0].teams[0]).toBe(team1.name);
-    });
+  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly', fakeAsync(() => {
+    userServiceMock.getUsers.mockReturnValue(of(users));
+    teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
+    component.ngAfterViewInit();
+    tick();
+    expect(teamServiceMock.getAllTeams).toHaveBeenCalledTimes(1);
+    expect(component.selectedTeam$.value).toBe(team1);
+    expect(component.dataSource.data.length).toBe(1);
+    expect(component.dataSource.data[0].teams[0]).toBe(team1.name);
   }));
 
-  it('ngOnInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null', fakeAsync(() => {
+  it('ngAfterViewInit should load all Users, set teamId, selectedTeam and update data source correctly if teamIdParam is null', fakeAsync(() => {
     activatedRouteMock.paramMap = of({
       get: () => null,
     });
     TestBed.runInInjectionContext(() => {
       userServiceMock.getUsers.mockReturnValue(of(users));
       teamServiceMock.getAllTeams.mockReturnValue(of([team1, team2, team3]));
-      component.ngOnInit();
+      component.ngAfterViewInit();
       tick();
-      expect(component.selectedTeam).toBe(undefined);
-      expect(component.dataSource.length).toBe(users.length);
-    });
-  }));
-
-  it('should set displayedColumns correctly', fakeAsync(() => {
-    const teamCopy = { ...team1 };
-    teamCopy.writeable = true;
-    TestBed.runInInjectionContext(() => {
-      userServiceMock.getUsers.mockReturnValue(of(users));
-      teamServiceMock.getAllTeams.mockReturnValue(of([teamCopy]));
-      component.ngOnInit();
-      tick();
-      expect(component.displayedColumns).toStrictEqual(['icon', 'name', 'roles', 'delete']);
+      expect(component.selectedTeam$.value).toBe(undefined);
+      expect(component.dataSource.data.length).toBe(users.length);
     });
   }));
 
   it('deleteTeam should trigger teamService.deleteTeam and navigate', fakeAsync(() => {
     routerMock.navigateByUrl.mockReturnValue(of(null));
     teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(true),
+    });
 
     const team = team1;
 
@@ -195,9 +196,22 @@ describe('MemberListComponent', () => {
     expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
   }));
 
+  it('deleteTeam should not trigger teamService.deleteTeam if dialog is canceled', fakeAsync(() => {
+    routerMock.navigateByUrl.mockReturnValue(of(null));
+    teamServiceMock.deleteTeam.mockReturnValue(of(null));
+    dialogMock.open.mockReturnValue({
+      afterClosed: () => of(false),
+    });
+
+    component.deleteTeam(team1);
+    tick();
+
+    expect(teamServiceMock.deleteTeam).toBeCalledTimes(0);
+  }));
+
   it('addMemberToTeam should open dialog', () => {
-    component.selectedTeam = team1;
-    component.dataSource = [];
+    component.selectedTeam$.next(team1);
+    component.dataSource = new MatTableDataSource<UserTableEntry>([]);
     dialogMock.open.mockReturnValue({
       afterClosed: () => of(null),
     });
@@ -212,26 +226,19 @@ describe('MemberListComponent', () => {
     expect(dialogMock.open).toBeCalledWith(AddMemberToTeamDialogComponent, expectedDialogConfig);
   });
 
-  it('should showInvitePerson only if selected team is null', () => {
-    component.selectedTeam = undefined;
-    expect(component.showInvitePerson()).toBeTruthy();
-    component.selectedTeam = team1;
-    expect(component.showInvitePerson()).toBeFalsy();
-  });
-
   it('should showAddMemberToTeam if selectedTeam is set and selectedTeam is writable', () => {
-    component.selectedTeam = undefined;
+    component.selectedTeam$.next(undefined);
     expect(component.showAddMemberToTeam()).toBeFalsy();
     const teamCopy = { ...team1 };
     teamCopy.writeable = false;
-    component.selectedTeam = teamCopy;
+    component.selectedTeam$.next(teamCopy);
     expect(component.showAddMemberToTeam()).toBeFalsy();
     teamCopy.writeable = true;
     expect(component.showAddMemberToTeam()).toBeTruthy();
   });
 
   it('edit team should open dialog', () => {
-    component.selectedTeam = team1;
+    component.selectedTeam$.next(team1);
     dialogMock.open.mockReturnValue({
       afterClosed: () => of(null),
     });
@@ -244,25 +251,4 @@ describe('MemberListComponent', () => {
 
     expect(dialogMock.open).toBeCalledWith(AddEditTeamDialog, expectedDialogConfig);
   });
-
-  it('should return correct memberDetailsLink', () => {
-    expect(component.getMemberDetailsLink(testUser)).toStrictEqual('/team-management/details/member/' + testUser.id);
-  });
-
-  it('removeMemberFromTeam should call removeUserFromTeam and reloadUsers', fakeAsync(() => {
-    const entry = {
-      id: 1,
-    };
-    component.selectedTeam = team1;
-    teamServiceMock.removeUserFromTeam.mockReturnValue(of(null));
-    userServiceMock.reloadUsers.mockReturnValue(of());
-
-    component.removeMemberFromTeam(entry as UserTableEntry, new MouseEvent('click'));
-    tick();
-
-    expect(teamServiceMock.removeUserFromTeam).toBeCalledTimes(1);
-    expect(teamServiceMock.removeUserFromTeam).toBeCalledWith(entry.id, component.selectedTeam);
-    expect(userServiceMock.reloadUsers).toBeCalledTimes(1);
-    expect(userServiceMock.reloadCurrentUser).toBeCalledTimes(1);
-  }));
 });

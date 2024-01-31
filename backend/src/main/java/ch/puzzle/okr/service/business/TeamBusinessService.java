@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.ErrorKey;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.Team;
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.models.UserTeam;
@@ -10,6 +12,7 @@ import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.persistence.UserTeamPersistenceService;
 import ch.puzzle.okr.service.validation.TeamValidationService;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -114,13 +117,26 @@ public class TeamBusinessService {
     @Transactional
     public void removeUserFromTeam(long teamId, long userId) {
         var user = userPersistenceService.findById(userId);
+        var team = this.teamPersistenceService.findById(teamId);
+
+        checkTeamHasAtLeastOneAdmin(team, user);
+
         var userTeamList = user.getUserTeamList();
         var userTeamToRemove = userTeamList.stream().filter(ut -> ut.getTeam().getId() == teamId).findFirst()
-                .orElseThrow(() -> new RuntimeException("No team removed from userTeam list"));
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No team found to remove from userTeam list"));
         userTeamList.remove(userTeamToRemove);
+        team.getUserTeamList().remove(userTeamToRemove);
         userTeamPersistenceService.delete(userTeamToRemove);
         userPersistenceService.save(user);
         cacheService.emptyAuthorizationUsersCache();
+    }
+
+    private void checkTeamHasAtLeastOneAdmin(Team team, User user) {
+        team.getUserTeamList().stream()
+                .filter(ut -> ut.isTeamAdmin() && !Objects.equals(ut.getUser().getId(), user.getId())).findAny()
+                .orElseThrow(() -> new OkrResponseStatusException(HttpStatus.BAD_REQUEST,
+                        ErrorKey.TRIED_TO_DELETE_LAST_ADMIN));
     }
 
     @Transactional
@@ -129,13 +145,21 @@ public class TeamBusinessService {
         List<UserTeam> userTeamList = user.getUserTeamList();
         for (var ut : userTeamList) {
             if (ut.getTeam().getId().equals(teamId)) {
-                ut.setTeamAdmin(isAdmin);
-                userPersistenceService.save(user);
+                updateTeamMembership(isAdmin, ut, user);
                 return;
             }
         }
         // if user has no membership to this team, it is added.
         addTeamMembership(teamId, isAdmin, user, userTeamList);
+        userPersistenceService.save(user);
+        cacheService.emptyAuthorizationUsersCache();
+    }
+
+    private void updateTeamMembership(boolean isAdmin, UserTeam ut, User user) {
+        if (!isAdmin) {
+            checkTeamHasAtLeastOneAdmin(ut.getTeam(), user);
+        }
+        ut.setTeamAdmin(isAdmin);
         userPersistenceService.save(user);
         cacheService.emptyAuthorizationUsersCache();
     }

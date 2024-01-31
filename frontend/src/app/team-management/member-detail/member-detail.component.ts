@@ -1,13 +1,16 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { BehaviorSubject, Subject, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, filter, mergeMap, Subject, takeUntil, tap } from 'rxjs';
 import { getFullNameFromUser, User } from '../../shared/types/model/User';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Team } from '../../shared/types/model/Team';
 import { UserTeam } from '../../shared/types/model/UserTeam';
 import { TranslateService } from '@ngx-translate/core';
 import { MatTable } from '@angular/material/table';
 import { TeamService } from '../../services/team.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 
 @Component({
   selector: 'app-member-detail',
@@ -33,6 +36,8 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     private readonly translateService: TranslateService,
     private readonly teamService: TeamService,
     private readonly cd: ChangeDetectorRef,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
   ) {}
   ngOnInit(): void {
     this.route.paramMap
@@ -74,39 +79,57 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
     return parseInt(id);
   }
 
-  getRole(userTeam: UserTeam): string {
-    if (userTeam.isTeamAdmin) {
-      return this.translateService.instant('USER_ROLE.TEAM_ADMIN');
-    }
-    return this.translateService.instant('USER_ROLE.TEAM_MEMBER');
-  }
-
   removeUserFromTeam(userTeam: UserTeam, user: User) {
-    this.teamService
-      .removeUserFromTeam(user.id, userTeam.team)
-      .pipe(tap(() => this.loadUser(user.id)))
-      .subscribe();
+    const dialogConfig: MatDialogConfig<CancelDialogData> = OKR_DIALOG_CONFIG;
+    dialogConfig.data = {
+      dialogTitle: getFullNameFromUser(user) + ` wirklich aus Team ${userTeam.team.name} entfernen?`,
+    };
+    this.dialog
+      .open(CancelDialogComponent, dialogConfig)
+      .afterClosed()
+      .pipe(
+        filter((confirm) => confirm),
+        mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)),
+      )
+      .subscribe(() => this.loadUser(user.id));
   }
 
-  saveTeamRole(userTeam: UserTeam, user: User) {
+  updateTeamMembership(isAdmin: boolean, userTeam: UserTeam, user: User) {
     this.userTeamEditId = undefined;
-    this.teamService.updateOrAddTeamMembership(user, userTeam).subscribe(() => {
+    // make a copy and set value of real object after successful request
+    const newUserTeam = { ...userTeam };
+    newUserTeam.isTeamAdmin = isAdmin;
+    this.teamService.updateOrAddTeamMembership(user.id, newUserTeam).subscribe(() => {
+      userTeam.isTeamAdmin = isAdmin;
       this.loadUser(user.id);
       this.userService.reloadUsers();
       this.userService.reloadCurrentUser().subscribe();
     });
   }
 
-  isEditable(userTeam: UserTeam) {
-    return userTeam.team.writeable;
+  addTeamMembership(userTeam: UserTeam, user: User) {
+    this.userTeamEditId = undefined;
+    this.teamService.updateOrAddTeamMembership(user.id, userTeam).subscribe(() => {
+      this.loadUser(user.id);
+      this.userService.reloadUsers();
+      this.userService.reloadCurrentUser().subscribe();
+    });
   }
 
   isDeletable(userTeam: UserTeam): boolean {
-    return this.isEditable(userTeam) || this.selectedUserIsLoggedInUser;
+    return userTeam.team.writeable || this.selectedUserIsLoggedInUser;
   }
 
-  saveIsAdmin(userTeam: UserTeam, user: User, isAdmin: boolean) {
-    userTeam.isTeamAdmin = isAdmin;
-    this.saveTeamRole(userTeam, user);
+  navigateBack() {
+    this.router.navigate(['../'], { relativeTo: this.route.parent });
+  }
+
+  isOkrChampionChange(okrChampion: boolean, user: User) {
+    this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
+      this.loadUser(user.id);
+      this.userService.reloadUsers();
+      this.teamService.reloadTeams();
+      this.userService.reloadCurrentUser().subscribe();
+    });
   }
 }

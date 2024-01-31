@@ -25,6 +25,7 @@ import { A11yModule } from '@angular/cdk/a11y';
 import { RouterOutlet } from '@angular/router';
 import { SpinnerComponent } from './custom/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CancelDialogComponent } from './dialog/cancel-dialog/cancel-dialog.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     OkrTangramComponent,
     SidepanelComponent,
     SpinnerComponent,
+    CancelDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -1,20 +1,23 @@
 <div>
   <div id="member-header">
-    <div class="title">
-      <h3 *ngIf="selectedTeam">
-        <span>{{ selectedTeam.name }}</span>
-        <mat-icon
-          class="mx-2 cursor-pointer"
-          *ngIf="selectedTeam.writeable"
+    <div class="team-title">
+      <div class="d-flex px-3">
+        <h2 *ngIf="selectedTeam$.value">{{ selectedTeam$.value!.name }}</h2>
+        <app-puzzle-icon-button
+          *ngIf="selectedTeam$.value?.writeable"
           (click)="editTeam()"
           [attr.data-testId]="'editTeamButton'"
-          >edit</mat-icon
+          icon="edit.svg"
+          alt="Edit Team Icon"
         >
-      </h3>
-      <h3 *ngIf="!selectedTeam">Alle Teams</h3>
-      <p>Members: {{ dataSource.length }}</p>
+        </app-puzzle-icon-button>
+        <h2 *ngIf="!selectedTeam$.value">Alle Teams</h2>
+      </div>
+      <div class="d-none d-md-flex flex-grow-1">
+        <p>Members: {{ dataSource.data.length }}</p>
+      </div>
     </div>
-    <div class="action-button">
+    <div class="action-button d-none d-md-flex">
       <button
         *ngIf="showAddMemberToTeam()"
         (click)="addMemberToTeam()"
@@ -28,89 +31,36 @@
           Member hinzufügen
         </span>
       </button>
-      <button
-        *ngIf="showInvitePerson()"
-        (click)="invitePerson()"
-        [attr.data-testId]="'add-user'"
-        class="align-new-icon mdc-button px-0 pe-2"
-        color="primary"
-        mat-button
-      >
-        <span class="d-flex align-items-center fw-bold add-text">
-          <img alt="Add key-result button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
-          Person einladen
-        </span>
-      </button>
     </div>
-    <div class="menu" *ngIf="selectedTeam?.writeable">
-      <button
-        mat-icon-button
+    <div class="menu mx-2" *ngIf="selectedTeam$.value?.writeable">
+      <app-puzzle-icon-button
+        icon="threedot.svg"
+        alt="Menu Icon"
         [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
         [attr.data-testId]="'teamMoreButton'"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
+      ></app-puzzle-icon-button>
       <mat-menu #menu="matMenu">
-        <button (click)="deleteTeam(selectedTeam!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
-          >
-          <span>Team löschen</span>
+        <button
+          class="d-block d-md-none"
+          (click)="deleteTeam(selectedTeam$.value!)"
+          mat-menu-item
+          [attr.data-testId]="'teamAddMemberButton'"
+        >
+          <span>Member hinzufügen</span>
+        </button>
+        <button (click)="deleteTeam(selectedTeam$.value!)" mat-menu-item [attr.data-testId]="'teamDeleteButton'">
+          <app-puzzle-icon icon="delete-icon.svg" alt="Delete Team"></app-puzzle-icon>
+          <span class="font-size-14">Team löschen</span>
         </button>
       </mat-menu>
     </div>
   </div>
+  <p class="d-block d-md-none text-small mx-2 mt-2">Members: {{ dataSource.data.length }}</p>
 
-  <div class="pt-3 p-2" *ngIf="!dataSource.length">
-    <p>Keine Members</p>
+  <div class="d-none d-md-block">
+    <app-member-list-table [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-table>
   </div>
-
-  <table *ngIf="dataSource.length" mat-table [dataSource]="dataSource" class="mat-elevation-z8 okr-table">
-    <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
-
-    <ng-container matColumnDef="icon">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <mat-icon>person_outline</mat-icon>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let element">
-        <a [routerLink]="getMemberDetailsLink(element, selectedTeam)">
-          {{ element.firstname }} {{ element.lastname }}
-        </a>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="roles">
-      <th mat-header-cell *matHeaderCellDef>Rolle</th>
-      <td mat-cell *matCellDef="let element">{{ element.roles | roles }}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="teams">
-      <th mat-header-cell *matHeaderCellDef>Teams</th>
-      <td mat-cell *matCellDef="let element" [title]="element.teams | teams: undefined">
-        {{ element.teams | teams: 2 }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button (click)="removeMemberFromTeam(element, $event)" mat-icon-button>
-          <mat-icon class="d-flex justify-content-center align-items-center"> delete </mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      class="cursor-pointer"
-      [routerLink]="getMemberDetailsLink(row, selectedTeam)"
-      *matRowDef="let row; columns: displayedColumns"
-    ></tr>
-  </table>
+  <div class="d-block d-md-none">
+    <app-member-list-mobile [dataSource]="dataSource" [selectedTeam$]="selectedTeam$"></app-member-list-mobile>
+  </div>
 </div>

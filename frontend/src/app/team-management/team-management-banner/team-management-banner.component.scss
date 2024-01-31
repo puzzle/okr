@@ -10,15 +10,10 @@
     > div:first-child {
       padding-left: 2rem;
     }
-
-    a {
-      text-decoration: none;
-      color: $pz-dark-blue;
-    }
   }
 
   .second-line {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 
     > div {
       display: flex;

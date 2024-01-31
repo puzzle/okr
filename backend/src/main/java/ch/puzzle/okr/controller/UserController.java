@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -57,6 +54,17 @@ public class UserController {
     public UserDto getUserById(
             @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id) {
         var user = this.userAuthorizationService.getById(id);
+        return userMapper.toDto(user);
+    }
+
+    @Operation(summary = "Set OKR Champion property for user", description = "Sets the property okrChampion of user to true or false")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned user", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
+    @PutMapping(path = "/{id}/isokrchampion/{isOkrChampion}")
+    public UserDto setOkrChampion(
+            @Parameter(description = "The ID for requested user.", required = true) @PathVariable long id,
+            @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
+        var user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
         return userMapper.toDto(user);
     }
 

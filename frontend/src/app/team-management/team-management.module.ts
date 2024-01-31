@@ -28,6 +28,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
 import { AddUserTeamComponent } from './add-user-team/add-user-team.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { TeamManagementMobileFilterComponent } from './team-management-mobile-filter/team-management-mobile-filter.component';
+import { MemberListTableComponent } from './member-list/member-list-table/member-list-table.component';
+import { MemberListMobileComponent } from './member-list/member-list-mobile/member-list-mobile.component';
+import { OkrChampionPipe } from './okr-champion.pipe';
+import { PuzzleIconComponent } from '../shared/custom/puzzle-icon/puzzle-icon.component';
+import { PuzzleIconButtonComponent } from '../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { ShowEditRoleComponent } from './show-edit-role/show-edit-role.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { EditOkrChampionComponent } from './edit-okr-champion/edit-okr-champion.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -43,6 +53,13 @@ import { A11yModule } from '@angular/cdk/a11y';
     MemberDetailComponent,
     TeamRoleDropdownComponent,
     AddUserTeamComponent,
+    TeamManagementMobileFilterComponent,
+    MemberListTableComponent,
+    MemberListMobileComponent,
+    PuzzleIconComponent,
+    PuzzleIconButtonComponent,
+    ShowEditRoleComponent,
+    EditOkrChampionComponent,
   ],
   imports: [
     CommonModule,
@@ -64,6 +81,9 @@ import { A11yModule } from '@angular/cdk/a11y';
     MatSelectModule,
     TranslateModule,
     A11yModule,
+    OkrChampionPipe,
+    MatCheckboxModule,
+    MatTooltipModule,
   ],
 })
 export class TeamManagementModule {}

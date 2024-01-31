@@ -2,14 +2,12 @@ package ch.puzzle.okr.service.persistence;
 
 import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.repository.UserRepository;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import static ch.puzzle.okr.Constants.USER;
-import static ch.puzzle.okr.SpringCachingConfig.USER_CACHE;
 
 @Service
 public class UserPersistenceService extends PersistenceBase<User, Long, UserRepository> {
@@ -36,5 +34,9 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
             user.setUserTeamList(List.of());
         }
         return getRepository().save(user);
+    }
+
+    public List<User> findAllOkrChampions() {
+        return getRepository().findByIsOkrChampion(true);
     }
 }

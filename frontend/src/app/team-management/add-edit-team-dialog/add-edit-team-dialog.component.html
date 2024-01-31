@@ -8,13 +8,14 @@
       <form [formGroup]="teamForm" class="d-flex flex-column flex-wrap container p-0">
         <div class="input-style gap-2 col-12">
           <label class="text-black" for="name">Teamname</label>
-          <textarea
+          <input
+            matInput
             [attr.data-testId]="'add-team-name'"
-            class="big-dialog-form-field"
+            class="dialog-form-field"
             [ngClass]="formInputCheck(teamForm, 'name')"
             formControlName="name"
             id="name"
-          ></textarea>
+          />
           <mat-error *ngIf="hasFormFieldErrors(teamForm, 'name')">
             <span>{{ getErrorMessage("SIZE_BETWEEN", "Teamname", 2, 250) }}</span>
           </mat-error>

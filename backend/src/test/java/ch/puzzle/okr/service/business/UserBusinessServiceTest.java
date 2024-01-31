@@ -1,6 +1,9 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.TestHelper;
+import ch.puzzle.okr.exception.OkrResponseStatusException;
 import ch.puzzle.okr.models.User;
+import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
 import org.assertj.core.api.Assertions;
@@ -17,9 +20,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserBusinessServiceTest {
@@ -27,6 +30,8 @@ class UserBusinessServiceTest {
     UserPersistenceService userPersistenceService;
     @Mock
     UserValidationService validationService;
+    @Mock
+    CacheService cacheService;
     List<User> userList;
     @InjectMocks
     private UserBusinessService userBusinessService;
@@ -121,5 +126,40 @@ class UserBusinessServiceTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
         assertEquals("Not allowed to give an id", exception.getReason());
+    }
+
+    @Test
+    void setOkrChampion_shouldSetOkrChampionCorrectly() {
+        var user = TestHelper.defaultUser(1L);
+        user.setOkrChampion(false);
+
+        userBusinessService.setIsOkrChampion(user, true);
+
+        verify(userPersistenceService, times(1)).save(user);
+        assertTrue(user.isOkrChampion());
+    }
+
+    @Test
+    void setOkrChampion_shouldThrowExceptionIfLastOkrChampIsRemoved() {
+        var user = TestHelper.defaultUser(1L);
+        var user2 = TestHelper.defaultUser(2L);
+        user.setOkrChampion(true);
+        when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
+
+        assertThrows(OkrResponseStatusException.class, () -> userBusinessService.setIsOkrChampion(user, false));
+    }
+
+    @Test
+    void setOkrChampion_shouldNotThrowExceptionIfSecondLastOkrChampIsRemoved() {
+        var user = TestHelper.defaultUser(1L);
+        var user2 = TestHelper.defaultUser(2L);
+        user.setOkrChampion(true);
+        user2.setOkrChampion(true);
+        when(userPersistenceService.findAllOkrChampions()).thenReturn(List.of(user, user2));
+
+        userBusinessService.setIsOkrChampion(user, false);
+
+        verify(userPersistenceService, times(1)).save(user);
+        assertFalse(user.isOkrChampion());
     }
 }

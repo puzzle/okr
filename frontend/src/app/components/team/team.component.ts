@@ -45,7 +45,6 @@ export class TeamComponent implements OnInit {
       data: {
         objective: {
           teamId: this.overviewEntity.team.id,
-          teamVersion: this.overviewEntity.team.version,
         },
       },
       height: dialogConfig.height,

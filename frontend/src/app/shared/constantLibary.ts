@@ -73,6 +73,10 @@ export const SUCCESS_MESSAGE_MAP: MessageKeyMap = {
     KEY: 'CHECK_IN',
     methods: [{ method: HttpType.POST }, { method: HttpType.PUT }],
   },
+  user: {
+    KEY: 'USERS',
+    methods: [{ method: HttpType.PUT }, { method: HttpType.POST }, { method: HttpType.DELETE }],
+  },
 };
 
 export const OKR_DIALOG_CONFIG: MatDialogConfig = isMobileDevice()

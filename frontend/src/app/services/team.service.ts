@@ -50,13 +50,17 @@ export class TeamService {
   }
 
   removeUserFromTeam(userId: number, team: Team): Observable<void> {
-    return this.http.put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null);
+    return this.http
+      .put<void>(`${this.API_URL}/${team.id}/user/${userId}/removeuser`, null)
+      .pipe(tap(() => this.reloadTeams()));
   }
 
-  updateOrAddTeamMembership(user: User, userTeam: UserTeam): Observable<void> {
-    return this.http.put<void>(
-      `${this.API_URL}/${userTeam.team.id}/user/${user.id}/updateaddteammembership/${userTeam.isTeamAdmin}`,
-      {},
-    );
+  updateOrAddTeamMembership(userId: number, userTeam: UserTeam): Observable<void> {
+    return this.http
+      .put<void>(
+        `${this.API_URL}/${userTeam.team.id}/user/${userId}/updateaddteammembership/${userTeam.isTeamAdmin}`,
+        {},
+      )
+      .pipe(tap(() => this.reloadTeams()));
   }
 }

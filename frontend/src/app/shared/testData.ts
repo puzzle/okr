@@ -285,13 +285,13 @@ export const objectiveResponse4: any = {
 export const overViewEntity1: OverviewEntity = {
   team: marketingTeamWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writable: true,
+  writeable: true,
 };
 
 export const overViewEntity2: OverviewEntity = {
   team: marketingTeamNotWriteable,
   objectives: [objectiveMin, objectiveMin, objectiveMin] as ObjectiveMin[],
-  writable: true,
+  writeable: true,
 };
 
 export const overViewEntityResponse1: any = {

@@ -26,9 +26,11 @@ export class AddEditTeamDialog implements OnInit {
     private userService: UserService,
     private router: Router,
     @Inject(MAT_DIALOG_DATA)
-    public data: {
-      team: Team;
-    },
+    public data:
+      | {
+          team: Team;
+        }
+      | undefined,
     private translate: TranslateService,
   ) {}
 
@@ -61,8 +63,8 @@ export class AddEditTeamDialog implements OnInit {
   private updateTeam() {
     let updatedTeam: Team = {
       ...this.teamForm.value,
-      id: this.data.team.id,
-      version: this.data.team.version,
+      id: this.data!.team.id,
+      version: this.data!.team.version,
     } as Team;
     this.teamService.updateTeam(updatedTeam).subscribe((result) => {
       this.dialogRef.close(result);

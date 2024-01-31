@@ -17,10 +17,8 @@ public class AuthorizationRegistrationService {
     private final UserBusinessService userBusinessService;
     private final TenantConfigProvider tenantConfigProvider;
 
-    public AuthorizationRegistrationService(
-            UserBusinessService userBusinessService,
-            TenantConfigProvider tenantConfigProvider
-    ) {
+    public AuthorizationRegistrationService(UserBusinessService userBusinessService,
+            TenantConfigProvider tenantConfigProvider) {
         this.userBusinessService = userBusinessService;
         this.tenantConfigProvider = tenantConfigProvider;
     }

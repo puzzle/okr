@@ -14,7 +14,7 @@ public interface AlignmentSelectionRepository extends ReadOnlyRepository<Alignme
     List<AlignmentSelection> getAlignmentSelectionByQuarterIdAndTeamIdNot(@Param("quarter_id") Long quarterId,
             @Param("ignoredTeamId") Long ignoredTeamId);
 
-    @Query(value = "from AlignmentView where quarterId = :quarter_id and teamId in :team_ids")
+    @Query(value = "from AlignmentView where alignedObjectiveQuarterId= :quarter_id and alignedObjectiveTeamId in :team_ids")
     List<AlignmentView> getAlignmentViewByQuarterId(@Param("quarter_id") Long quarterId,
             @Param("team_ids") List<Long> teamIds);
 }

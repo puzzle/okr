@@ -147,39 +147,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     this.cy.on('mouseout', 'node', (evt: cytoscape.EventObject): void => {
       this.handleMouseLeaveEvent(evt.target);
     });
-
-    // this.cy.add([
-    //   {
-    //     group: 'nodes',
-    //     data: [
-    //       {
-    //         id: 'NR1',
-    //         label: 'Yanick',
-    //         tag: 'othername',
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     group: 'nodes',
-    //     data: [
-    //       {
-    //         id: 'NR1',
-    //         label: 'Yanick',
-    //       },
-    //       {
-    //         id: 'NR2',
-    //         label: 'Lias',
-    //       },
-    //     ],
-    //   },
-    //   // { group: 'nodes', data: {id: 'kuchen',
-    //   //     label: 'Sehr lustig <br/><span style="color: red;">das Team</span>'}
-    //   // },
-    //   // { group: 'nodes', data: {id: 'asdf', label: {
-    //   //       return: '<h1 class="material-icons">Du bist ja lustig</h1>'
-    //   //     }
-    //   // }},
-    // ]);
   }
 
   handleMouseLeaveEvent(node: any) {
@@ -203,77 +170,67 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   generateElements(data: Alignment[]): any[] {
     let elements: any[] = [];
     let edges: any[] = [];
-    // data.forEach((overViewEntity: OverviewEntity): void => {
-    //   overViewEntity.objectives.forEach((objective: ObjectiveMin): void => {
-    //     let element = {
-    //       data: {
-    //         id: 'Ob' + objective.id,
-    //         label: this.adjustLabel(objective.title, 36, 15) + '\n --- \n ' + overViewEntity.team.name,
-    //       },
-    //       style: {
-    //         'background-color': '#2C97A6',
-    //       },
-    //     };
-    //     elements.push(element);
-    //     if (overViewEntity.team.name == 'Puzzle ITC') {
-    //       objective.keyResults.forEach((keyResult): void => {
-    //         let style = this.generateStyle(keyResult);
-    //         element = {
-    //           data: {
-    //             id: 'KR' + keyResult.id,
-    //             label: this.adjustLabel(keyResult.title, 25, 12) + '\n --- \n ' + overViewEntity.team.name,
-    //           },
-    //           style: style,
-    //         };
-    //         elements.push(element);
-    //         let edge = {
-    //           data: { source: 'KR' + keyResult.id, target: 'Ob' + objective.id },
-    //         };
-    //         edges.push(edge);
-    //       });
-    //     }
-    //   });
-    // });
 
-    // Static alignment demo
+    data.forEach((alignment) => {
+      let element = {
+        data: {
+          id: 'Ob' + alignment.alignedObjectiveId,
+          label:
+            this.adjustLabel(alignment.alignedObjectiveTitle, 36, 15) +
+            '\n --- \n ' +
+            alignment.alignedObjectiveTeamName,
+        },
+        style: {
+          'background-color': '#2C97A6',
+        },
+      };
+      elements.push(element);
 
-    // let edge = {
-    //   data: { source: 'Ob' + 19, target: 'KR' + 20 },
-    // };
-    // edges.push(edge);
-    //
-    // edge = {
-    //   data: { source: 'Ob' + 21, target: 'Ob' + 11 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 20, target: 'Ob' + 13 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 23, target: 'KR' + 27 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 14, target: 'Ob' + 12 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 22, target: 'Ob' + 11 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 17, target: 'KR' + 28 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 18, target: 'KR' + 27 },
-    // };
-    // edges.push(edge);
-    // edge = {
-    //   data: { source: 'Ob' + 15, target: 'Ob' + 11 },
-    // };
-    // edges.push(edge);
+      if (alignment.alignmentType == 'objective') {
+        let element = {
+          data: {
+            id: 'Ob' + alignment.targetObjectiveId,
+            label:
+              this.adjustLabel(alignment.targetObjectiveTitle, 36, 15) +
+              '\n --- \n ' +
+              alignment.targetObjectiveTeamName,
+          },
+          style: {
+            'background-color': '#2C97A6',
+          },
+        };
+        elements.push(element);
+
+        let edge = {
+          data: { source: 'Ob' + alignment.alignedObjectiveId, target: 'Ob' + alignment.targetObjectiveId },
+        };
+        edges.push(edge);
+      } else if (alignment.alignmentType == 'keyResult') {
+        let style = {
+          'background-color': '#1E8A29',
+          'background-opacity': 0.8,
+          color: '#FFFFFF',
+          'border-color': '#FFFFFF',
+          'border-width': 0,
+        };
+        element = {
+          data: {
+            id: 'KR' + alignment.targetKeyResultId,
+            label:
+              this.adjustLabel(alignment.targetKeyResultTitle, 25, 12) +
+              '\n --- \n ' +
+              alignment.targetKeyResultTeamName,
+          },
+          style: style,
+        };
+        elements.push(element);
+
+        let edge = {
+          data: { source: 'Ob' + alignment.alignedObjectiveId, target: 'KR' + alignment.targetKeyResultId },
+        };
+        edges.push(edge);
+      }
+    });
 
     return data && data.length > 0 ? elements.concat(edges) : [];
   }
@@ -414,6 +371,35 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     }
 
     return style;
+  }
+
+  generateObjectiveSVG(
+    backgroundColor: string = '#2C97A6',
+    strokeColor: string = '#2C97A6',
+    strokeWidth: number = 1,
+    textColor: string = '#FFFFFF',
+    textPart1: string,
+    textPart2: string,
+    textPart3: string,
+    teamName: string,
+    teamColor: string = 'green',
+  ) {
+    let svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+        <circle cx="80" cy="80" r="79" fill="${backgroundColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" />
+
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="${textColor}" font-size="16" font-family="Arial, sans-serif">
+          <tspan x="50%" dy="-2em">${textPart1}</tspan>
+          <tspan x="50%" dy="1.2em">${textPart2}</tspan>
+          <tspan x="50%" dy="1.2em">${textPart3}</tspan>
+          <tspan x="50%" dy="2em" font-weight="bold" fill="${teamColor}">${teamName}</tspan>
+        </text>
+      </svg>
+    `;
+
+    return {
+      svg: 'data:image/svg+xml;base64,' + btoa(svg),
+    };
   }
 
   componentToHex(c: any) {

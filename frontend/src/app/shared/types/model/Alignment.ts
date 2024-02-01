@@ -1,10 +1,17 @@
 export interface Alignment {
-  entityId: number;
-  title: string;
-  teamId: number;
-  quarterId: number;
-  alignmentType: string;
+  id: number;
   alignedObjectiveId: number;
+  alignedObjectiveTitle: string;
+  alignedObjectiveTeamId: number;
+  alignedObjectiveTeamName: string;
+  alignedObjectiveQuarterId: number;
+  alignmentType: string;
   targetKeyResultId: number;
+  targetKeyResultTitle: string;
+  targetKeyResultTeamId: number;
+  targetKeyResultTeamName: string;
   targetObjectiveId: number;
+  targetObjectiveTitle: string;
+  targetObjectiveTeamId: number;
+  targetObjectiveTeamName: string;
 }

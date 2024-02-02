@@ -1,31 +1,28 @@
-import { Component, ViewChild } from "@angular/core";
-import { NewUser } from "../../shared/types/model/NewUser";
-import { NgForm } from "@angular/forms";
+import { Component, ViewChild } from '@angular/core';
+import { NewUser } from '../../shared/types/model/NewUser';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-invite-user-dialog',
   templateUrl: './invite-user-dialog.component.html',
-  styleUrl: './invite-user-dialog.component.scss'
+  styleUrl: './invite-user-dialog.component.scss',
 })
 export class InviteUserDialogComponent {
-
   @ViewChild('form') form!: NgForm;
 
-  private readonly emptyUser = {firstname: '', lastname: '', email: ''};
+  private readonly emptyUser = { firstname: '', lastname: '', email: '' };
 
-  users: NewUser[] = [{...this.emptyUser}];
+  users: NewUser[] = [{ ...this.emptyUser }];
 
-  constructor() {
-  }
+  constructor() {}
 
-  inviteUsers() {
-  }
+  inviteUsers() {}
 
   addUser() {
-    this.users.push({...this.emptyUser});
+    this.users.push({ ...this.emptyUser });
   }
 
   removeUser(user: NewUser) {
-    this.users = this.users.filter(u => u !== user);
+    this.users = this.users.filter((u) => u !== user);
   }
 }

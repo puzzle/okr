@@ -13,7 +13,8 @@
         #firstName="ngModel"
         [(ngModel)]="user.firstname"
         [id]="'firstName-col_' + index"
-        [name]="'firstName-col_' + index" />
+        [name]="'firstName-col_' + index"
+      />
       @if (showError(firstName)) {
         <mat-error>
           @if (firstName.invalid) {
@@ -75,7 +76,12 @@
       @if (index === 0) {
         <label [for]="'delete-col_' + index">&nbsp;</label>
       }
-      <app-puzzle-icon-button (click)="remove()" [id]="'delete-col_' + index" icon="delete-icon.svg" alt="Remove User Icon"></app-puzzle-icon-button>
+      <app-puzzle-icon-button
+        (click)="remove()"
+        [id]="'delete-col_' + index"
+        icon="delete-icon.svg"
+        alt="Remove User Icon"
+      ></app-puzzle-icon-button>
     </div>
   </div>
 </div>

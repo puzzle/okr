@@ -118,11 +118,11 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
     dialogRef.afterClosed().subscribe(() => this.cd.markForCheck());
   }
 
-  invitePerson() {
+  inviteMember() {
     this.dialog.open(InviteUserDialogComponent, OKR_DIALOG_CONFIG).afterClosed().subscribe();
   }
 
-  showInvitePerson(): boolean {
+  showInviteMember(): boolean {
     return !this.selectedTeam$.value && this.userService.getCurrentUser().isOkrChampion;
   }
 

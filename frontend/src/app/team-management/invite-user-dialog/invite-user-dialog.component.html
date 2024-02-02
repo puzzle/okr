@@ -27,7 +27,14 @@
 <mat-dialog-actions>
   <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
     <div class="d-flex p-0">
-      <button color="primary" [disabled]="form.invalid" mat-flat-button type="submit" (click)="inviteUsers()">
+      <button
+        color="primary"
+        [attr.data-testId]="'invite'"
+        [disabled]="form.invalid"
+        mat-flat-button
+        type="submit"
+        (click)="inviteUsers()"
+      >
         Einladen
       </button>
       <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>

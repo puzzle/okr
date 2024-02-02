@@ -141,6 +141,48 @@ describe('Team management tests', () => {
       });
     });
 
+    describe('invite members', () => {
+      it('invite two members', () => {
+        const mailUserClaudia = uniqueSuffix('claudia.meier@test') + '.ch';
+        const mailUserStefan = uniqueSuffix('stefan.schmidt@test') + '.ch';
+        const firstNameClaudia = uniqueSuffix('Claudia');
+        const firstNameStefan = uniqueSuffix('Stefan');
+
+        cy.getByTestId('invite-member').click();
+        fillOutNewUser(firstNameClaudia, 'Meier', mailUserClaudia);
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+        fillOutNewUser(firstNameStefan, 'Schmidt', mailUserStefan);
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+
+        // test error messages
+        fillOutNewUser('Robin', '', 'papierer');
+        cy.contains('Angabe benötigt');
+        cy.contains('E-Mail ungültig');
+        cy.realType('@puzzle.ch');
+        cy.contains('E-Mail ungültig').should('not.exist');
+        cy.contains('E-Mail existiert bereits');
+        cy.tabBackward();
+        cy.realType('Papirer');
+        cy.contains('Angabe benötigt').should('not.exist');
+
+        // delete last entry
+        cy.tabForward();
+        cy.tabForward();
+        cy.realPress('Enter');
+        cy.contains('papiererr@puzzle.ch').should('not.exist');
+
+        // save
+        cy.getByTestId('invite').click();
+        cy.contains('Die Members wurden erfolgreich eingeladen');
+        cy.contains(firstNameClaudia);
+        cy.contains(firstNameStefan);
+      });
+    });
+
     it('Navigate to Bobs profile and add him to BBT and LoremIpsum', () => {
       cy.intercept('PUT', '**/updateaddteammembership/*').as('updateEsha');
 
@@ -361,4 +403,12 @@ function navigateToUser(userName: string) {
   cy.intercept('GET', '**/users/*').as('getUser');
   cy.get('td').contains(userName).click();
   cy.wait('@getUser');
+}
+
+function fillOutNewUser(firstname: string, lastname: string, email: string) {
+  cy.realType(firstname, { delay: 1 });
+  cy.tabForward();
+  cy.realType(lastname, { delay: 1 });
+  cy.tabForward();
+  cy.realType(email, { delay: 1 });
 }

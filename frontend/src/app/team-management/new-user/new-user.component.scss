@@ -4,8 +4,9 @@
     gap: 0.5rem;
   }
 }
-.invite-col {
+.equal-sized-col {
   flex: 1 0 0;
+  min-width: 0;
 
   label {
     margin-bottom: 0.75rem;

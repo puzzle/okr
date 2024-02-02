@@ -18,8 +18,6 @@ import { ControlContainer, NgForm, NgModel } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class NewUserComponent implements AfterViewInit {
-  randNr = Math.round(Math.random() * 10000);
-
   @Input({ required: true })
   index!: number;
 
@@ -35,8 +33,8 @@ export class NewUserComponent implements AfterViewInit {
     this.firstInput.nativeElement.focus();
   }
 
-  showError(firstName: NgModel) {
-    return firstName.invalid && (firstName.dirty || firstName.touched);
+  showError(control: NgModel) {
+    return control.invalid && (control.dirty || control.touched);
   }
 
   remove() {

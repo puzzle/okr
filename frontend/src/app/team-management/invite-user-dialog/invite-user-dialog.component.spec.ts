@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { InviteUserDialogComponent } from './invite-user-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -6,15 +6,31 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewUserComponent } from '../new-user/new-user.component';
 import { PuzzleIconComponent } from '../../shared/custom/puzzle-icon/puzzle-icon.component';
 import { PuzzleIconButtonComponent } from '../../shared/custom/puzzle-icon-button/puzzle-icon-button.component';
+import { UserService } from '../../services/user.service';
+import { testUser } from '../../shared/testData';
+import { DialogRef } from '@angular/cdk/dialog';
+import { of } from 'rxjs';
 
 describe('InviteUserDialogComponent', () => {
   let component: InviteUserDialogComponent;
   let fixture: ComponentFixture<InviteUserDialogComponent>;
 
+  const userServiceMock = {
+    createUsers: jest.fn(),
+  };
+
+  const dialogRefMock = {
+    close: jest.fn(),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [InviteUserDialogComponent, NewUserComponent, PuzzleIconComponent, PuzzleIconButtonComponent],
       imports: [MatDialogModule, FormsModule, ReactiveFormsModule],
+      providers: [
+        { provide: UserService, useValue: userServiceMock },
+        { provide: DialogRef, useValue: dialogRefMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InviteUserDialogComponent);
@@ -41,4 +57,14 @@ describe('InviteUserDialogComponent', () => {
 
     expect(component.users).toStrictEqual([user1, user3]);
   });
+
+  it('inviteUsers should call createUsers and close dialog', fakeAsync(() => {
+    userServiceMock.createUsers.mockReturnValue(of([testUser]));
+    component.inviteUsers();
+    tick();
+
+    expect(userServiceMock.createUsers).toBeCalledTimes(1);
+    expect(userServiceMock.createUsers).toBeCalledWith(component.users);
+    expect(dialogRefMock.close).toBeCalledTimes(1);
+  }));
 });

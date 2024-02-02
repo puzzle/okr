@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NewUser } from '../../shared/types/model/NewUser';
 import { NgForm } from '@angular/forms';
+import { UserService } from '../../services/user.service';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-invite-user-dialog',
@@ -14,9 +16,14 @@ export class InviteUserDialogComponent {
 
   users: NewUser[] = [{ ...this.emptyUser }];
 
-  constructor() {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly dialogRef: DialogRef,
+  ) {}
 
-  inviteUsers() {}
+  inviteUsers() {
+    this.userService.createUsers(this.users).subscribe(() => this.dialogRef.close());
+  }
 
   addUser() {
     this.users.push({ ...this.emptyUser });

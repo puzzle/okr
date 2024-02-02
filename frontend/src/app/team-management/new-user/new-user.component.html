@@ -18,7 +18,7 @@
       @if (showError(firstName)) {
         <mat-error>
           @if (firstName.invalid) {
-            <span>Ungültige Angabe</span>
+            <span>Angabe benötigt</span>
           }
         </mat-error>
       }
@@ -41,7 +41,7 @@
       @if (showError(lastName)) {
         <mat-error>
           @if (lastName.invalid) {
-            <span>Ungültige Angabe</span>
+            <span>Angabe benötigt</span>
           }
         </mat-error>
       }
@@ -60,12 +60,19 @@
         class="value-field"
         #email="ngModel"
         email
+        appUniqueEmail
         [(ngModel)]="user.email"
       />
       @if (showError(email)) {
         <mat-error>
           @if (email.invalid) {
-            <span>Ungültige Angabe</span>
+            @if (email.errors?.["required"]) {
+              <span>Angabe benötigt</span>
+            } @else if (email.errors?.["notUniqueMail"]) {
+              <span>E-Mail existiert bereits</span>
+            } @else if (email.errors?.["email"]) {
+              <span>E-Mail ungültig</span>
+            }
           }
         </mat-error>
       }

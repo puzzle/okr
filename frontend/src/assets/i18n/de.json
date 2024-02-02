@@ -81,7 +81,8 @@
       "PUT": "Das Check-in wurde erfolgreich aktualisiert."
     },
     "USERS": {
-      "PUT": "Der User wurde erfolgreich aktualisiert."
+      "PUT": "Der Member wurde erfolgreich aktualisiert.",
+      "POST": "Die Members wurden erfolgreich eingeladen"
     }
   },
   "DIALOG_ERRORS": {

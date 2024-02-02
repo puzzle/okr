@@ -130,9 +130,7 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
   isOkrChampionChange(okrChampion: boolean, user: User) {
     this.userService.setIsOkrChampion(user, okrChampion).subscribe(() => {
       this.loadUser(user.id);
-      this.userService.reloadUsers();
       this.teamService.reloadTeams();
-      this.userService.reloadCurrentUser().subscribe();
     });
   }
 }

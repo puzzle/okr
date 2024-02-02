@@ -15,6 +15,7 @@ import { OKR_DIALOG_CONFIG } from '../../shared/constantLibary';
 import { AddEditTeamDialog } from '../add-edit-team-dialog/add-edit-team-dialog.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { CancelDialogComponent, CancelDialogData } from '../../shared/dialog/cancel-dialog/cancel-dialog.component';
+import { InviteUserDialogComponent } from '../invite-user-dialog/invite-user-dialog.component';
 
 @Component({
   selector: 'app-member-list',
@@ -118,7 +119,11 @@ export class MemberListComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   invitePerson() {
-    alert('not implemented');
+    this.dialog.open(InviteUserDialogComponent, OKR_DIALOG_CONFIG).afterClosed().subscribe();
+  }
+
+  showInvitePerson(): boolean {
+    return !this.selectedTeam$.value && this.userService.getCurrentUser().isOkrChampion;
   }
 
   showAddMemberToTeam() {

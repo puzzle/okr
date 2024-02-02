@@ -1,0 +1,47 @@
+<section mat-dialog-title>
+  <div class="d-flex justify-content-between align-items-center position-relative dialog-header mt-1">
+  <span class="title w-100 mb-2">
+    <span>Members einladen</span>
+  </span>
+  </div>
+</section>
+<mat-dialog-content>
+  <div class="dialog-content" tabindex="-1">
+    <form #form="ngForm">
+      @for (user of users; track $index) {
+        <div class="w-100 d-flex justify-content-between align-items-center pe-4">
+          <app-new-user (removeUser)="removeUser(user)" [index]="$index" [user]="user"></app-new-user>
+        </div>
+      }
+      <div class="w-100 d-flex justify-content-start">
+        <button
+          (click)="addUser()"
+          class="px-0 mb-3 pe-2 align-new-icon"
+          color="primary"
+          mat-button
+        >
+      <span class="d-flex align-items-center fw-bold add-text">
+        <img alt="Add User button" class="add-cross-button" src="/assets/icons/new-icon.svg" />
+        Weiterer Member hinzufügen
+      </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="d-flex justify-content-between p-0 mt-2" mat-dialog-actions>
+    <div class="d-flex p-0">
+      <button
+        color="primary"
+        [disabled]="form.invalid"
+        mat-flat-button
+        type="submit"
+        (click)="inviteUsers()"
+      >
+        Einladen
+      </button>
+      <button color="primary" mat-button mat-dialog-close class="ms-2">Abbrechen</button>
+    </div>
+  </div>
+</mat-dialog-actions>

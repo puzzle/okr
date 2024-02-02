@@ -1,0 +1,16 @@
+:host {
+  width: 100%;
+  > div {
+    gap: .5rem;
+  }
+}
+.invite-col {
+  flex: 1 0 0;
+
+  label {
+    margin-bottom: .75rem;
+  }
+}
+.delete {
+  display: flex;
+}

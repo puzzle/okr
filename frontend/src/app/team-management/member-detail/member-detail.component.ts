@@ -91,7 +91,10 @@ export class MemberDetailComponent implements OnInit, OnDestroy {
         filter((confirm) => confirm),
         mergeMap(() => this.teamService.removeUserFromTeam(user.id, userTeam.team)),
       )
-      .subscribe(() => this.loadUser(user.id));
+      .subscribe(() => {
+        this.loadUser(user.id);
+        this.userService.reloadUsers();
+      });
   }
 
   updateTeamMembership(isAdmin: boolean, userTeam: UserTeam, user: User) {

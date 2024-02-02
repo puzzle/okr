@@ -74,8 +74,7 @@ public class UserController {
             @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
     @PostMapping(path = "/createall")
     public List<UserDto> createUsers(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody List<NewUserDto> newUserDtoList
-    ) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody List<NewUserDto> newUserDtoList) {
         var createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
         return userMapper.toDtos(createdUsers);
     }

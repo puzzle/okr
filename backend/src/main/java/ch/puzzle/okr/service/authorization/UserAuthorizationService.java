@@ -19,7 +19,7 @@ public class UserAuthorizationService {
     private final TeamAuthorizationService teamAuthorizationService;
 
     public UserAuthorizationService(UserBusinessService userBusinessService, AuthorizationService authorizationService,
-                                    TeamAuthorizationService teamAuthorizationService) {
+            TeamAuthorizationService teamAuthorizationService) {
         this.userBusinessService = userBusinessService;
         this.authorizationService = authorizationService;
         this.teamAuthorizationService = teamAuthorizationService;
@@ -54,10 +54,8 @@ public class UserAuthorizationService {
     }
 
     public List<User> createUsers(List<User> userList) {
-        AuthorizationService.checkRoleWriteAndReadAll(
-                authorizationService.updateOrAddAuthorizationUser(),
-                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER)
-        );
+        AuthorizationService.checkRoleWriteAndReadAll(authorizationService.updateOrAddAuthorizationUser(),
+                OkrResponseStatusException.of(ErrorKey.NOT_AUTHORIZED_TO_WRITE, USER));
         return userBusinessService.createUsers(userList);
     }
 }

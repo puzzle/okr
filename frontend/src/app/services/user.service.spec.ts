@@ -1,7 +1,7 @@
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { fakeAsync, getTestBed, TestBed, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
-import { users } from '../shared/testData';
+import { testUser, users } from '../shared/testData';
 
 describe('UserService', () => {
   let service: UserService;
@@ -21,11 +21,11 @@ describe('UserService', () => {
     httpMock.verify();
   });
 
-  test('should be created', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  test('getUsers should only reload users when they are not loaded yet', (done) => {
+  it('getUsers should only reload users when they are not loaded yet', (done) => {
     const spy = jest.spyOn(service, 'reloadUsers');
     service.getUsers().subscribe(() => {
       expect(spy).toBeCalledTimes(1);
@@ -38,11 +38,11 @@ describe('UserService', () => {
     });
   });
 
-  test('get current user should throw error, when not loaded', () => {
+  it('get current user should throw error, when not loaded', () => {
     expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
   });
 
-  test('init current user should load user', (done) => {
+  it('init current user should load user', (done) => {
     expect(() => service.getCurrentUser()).toThrowError('user should not be undefined here');
     service.getOrInitCurrentUser().subscribe(() => {
       expect(service.getCurrentUser()).toBe(users[0]);
@@ -51,4 +51,28 @@ describe('UserService', () => {
     const req = httpMock.expectOne('api/v1/users/current');
     req.flush(users[0]);
   });
+
+  it('setIsOkrChampion should call put operation, reloadUsers and reloadCurrentUser', fakeAsync(() => {
+    service.setIsOkrChampion(testUser, true).subscribe();
+    const req = httpMock.expectOne(`api/v1/users/${testUser.id}/isokrchampion/true`);
+    req.flush(users[0]);
+
+    tick();
+
+    const req2 = httpMock.expectOne(`api/v1/users`);
+    const req3 = httpMock.expectOne(`api/v1/users/current`);
+    req2.flush({});
+    req3.flush({});
+  }));
+
+  it('createUsers should call createAll and reloadUsers', fakeAsync(() => {
+    service.createUsers(users).subscribe();
+    const req = httpMock.expectOne(`api/v1/users/createall`);
+    req.flush(users);
+
+    tick();
+
+    const req2 = httpMock.expectOne(`api/v1/users`);
+    req2.flush({});
+  }));
 });

@@ -38,6 +38,9 @@ import { ShowEditRoleComponent } from './show-edit-role/show-edit-role.component
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { EditOkrChampionComponent } from './edit-okr-champion/edit-okr-champion.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NewUserComponent } from './new-user/new-user.component';
+import { InviteUserDialogComponent } from './invite-user-dialog/invite-user-dialog.component';
+import { UniqueEmailValidatorDirective } from './new-user/unique-mail.directive';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     PuzzleIconButtonComponent,
     ShowEditRoleComponent,
     EditOkrChampionComponent,
+    NewUserComponent,
+    InviteUserDialogComponent,
+    UniqueEmailValidatorDirective,
   ],
   imports: [
     CommonModule,

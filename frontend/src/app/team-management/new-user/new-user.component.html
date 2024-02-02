@@ -1,0 +1,94 @@
+<div class="d-flex w-100">
+  <div class="firstname equal-sized-col">
+    <div class="input-style">
+      @if (index === 0) {
+        <label [for]="'firstName-col_' + index">Vorname</label>
+      }
+      <input
+        required
+        minlength="1"
+        type="text"
+        class="value-field"
+        #firstInput
+        #firstName="ngModel"
+        [(ngModel)]="user.firstname"
+        [id]="'firstName-col_' + index"
+        [name]="'firstName-col_' + index"
+      />
+      @if (showError(firstName)) {
+        <mat-error>
+          @if (firstName.invalid) {
+            <span>Angabe benötigt</span>
+          }
+        </mat-error>
+      }
+    </div>
+  </div>
+  <div class="lastname equal-sized-col">
+    <div class="input-style equal-sized-col">
+      @if (index === 0) {
+        <label [for]="'lastname-col_' + index">Nachname</label>
+      }
+      <input
+        required
+        type="text"
+        [id]="'lastname-col_' + index"
+        [name]="'lastname-col_' + index"
+        class="value-field"
+        #lastName="ngModel"
+        [(ngModel)]="user.lastname"
+      />
+      @if (showError(lastName)) {
+        <mat-error>
+          @if (lastName.invalid) {
+            <span>Angabe benötigt</span>
+          }
+        </mat-error>
+      }
+    </div>
+  </div>
+  <div class="email equal-sized-col">
+    <div class="input-style equal-sized-col">
+      @if (index === 0) {
+        <label [for]="'email-col_' + index">E-Mail</label>
+      }
+      <input
+        required
+        type="email"
+        [id]="'email-col_' + index"
+        [name]="'email-col_' + index"
+        class="value-field"
+        #email="ngModel"
+        email
+        appUniqueEmail
+        [(ngModel)]="user.email"
+      />
+      @if (showError(email)) {
+        <mat-error>
+          @if (email.invalid) {
+            @if (email.errors?.["required"]) {
+              <span>Angabe benötigt</span>
+            } @else if (email.errors?.["notUniqueMail"]) {
+              <span>E-Mail existiert bereits</span>
+            } @else if (email.errors?.["email"]) {
+              <span>E-Mail ungültig</span>
+            }
+          }
+        </mat-error>
+      }
+    </div>
+  </div>
+  <div class="remove">
+    <div class="input-style equal-sized-col">
+      @if (index === 0) {
+        <label [for]="'delete-col_' + index">&nbsp;</label>
+      }
+      <app-puzzle-icon-button
+        (click)="remove()"
+        [id]="'delete-col_' + index"
+        icon="delete-icon.svg"
+        alt="Remove User Icon"
+      ></app-puzzle-icon-button>
+    </div>
+  </div>
+</div>

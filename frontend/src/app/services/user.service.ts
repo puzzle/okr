@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../shared/types/model/User';
+import { NewUser } from '../shared/types/model/NewUser';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +51,15 @@ export class UserService {
   }
 
   setIsOkrChampion(user: User, isOkrChampion: boolean) {
-    return this.httpClient.put(`${this.API_URL}/${user.id}/isokrchampion/${isOkrChampion}`, {});
+    return this.httpClient.put(`${this.API_URL}/${user.id}/isokrchampion/${isOkrChampion}`, {}).pipe(
+      tap(() => {
+        this.reloadUsers();
+        this.reloadCurrentUser().subscribe();
+      }),
+    );
+  }
+
+  createUsers(userList: NewUser[]) {
+    return this.httpClient.post<User>(`${this.API_URL}/createall`, userList).pipe(tap(() => this.reloadUsers()));
   }
 }

@@ -6,11 +6,13 @@ import ch.puzzle.okr.models.User;
 import ch.puzzle.okr.service.CacheService;
 import ch.puzzle.okr.service.persistence.UserPersistenceService;
 import ch.puzzle.okr.service.validation.UserValidationService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 @Service
 public class UserBusinessService {
@@ -60,5 +62,11 @@ public class UserBusinessService {
 
     public User saveUser(User user) {
         return userPersistenceService.save(user);
+    }
+
+    @Transactional
+    public List<User> createUsers(List<User> userList) {
+        var userIter = userPersistenceService.saveAll(userList);
+        return StreamSupport.stream(userIter.spliterator(), false).toList();
     }
 }

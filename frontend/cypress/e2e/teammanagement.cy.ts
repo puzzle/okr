@@ -244,7 +244,7 @@ describe('Team management tests', () => {
       cy.getByTestId('edit-okr-champion-checkbox').click();
       cy.getByTestId('edit-okr-champion-readonly').contains('OKR Champion:');
       cy.getByTestId('edit-okr-champion-readonly').contains('Ja');
-      cy.contains('Der User wurde erfolgreich aktualisiert.');
+      cy.contains('Der Member wurde erfolgreich aktualisiert.');
 
       // reset okr champion to false
       cy.getByTestId('edit-okr-champion-edit').click();

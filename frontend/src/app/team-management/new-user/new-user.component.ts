@@ -5,27 +5,26 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild
-} from "@angular/core";
-import { NewUser } from "../../shared/types/model/NewUser";
-import { ControlContainer, NgForm, NgModel } from "@angular/forms";
+  ViewChild,
+} from '@angular/core';
+import { NewUser } from '../../shared/types/model/NewUser';
+import { ControlContainer, NgForm, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-new-user',
   templateUrl: './new-user.component.html',
   styleUrl: './new-user.component.scss',
-  viewProviders: [{provide: ControlContainer, useExisting: NgForm}],
-  changeDetection: ChangeDetectionStrategy.Default
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-export class NewUserComponent implements AfterViewInit{
+export class NewUserComponent implements AfterViewInit {
+  randNr = Math.round(Math.random() * 10000);
 
-  randNr = Math.round(Math.random()*10000)
-
-  @Input({required: true})
+  @Input({ required: true })
   index!: number;
 
-  @Input({required: true})
-  user!: NewUser
+  @Input({ required: true })
+  user!: NewUser;
 
   @Output()
   removeUser: EventEmitter<void> = new EventEmitter<void>();
@@ -37,7 +36,7 @@ export class NewUserComponent implements AfterViewInit{
   }
 
   showError(firstName: NgModel) {
-    return firstName.invalid && (firstName.dirty || firstName.touched)
+    return firstName.invalid && (firstName.dirty || firstName.touched);
   }
 
   remove() {

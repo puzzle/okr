@@ -10,21 +10,19 @@ import org.hibernate.annotations.Immutable;
 public class AlignmentView implements WriteableInterface {
 
     @Id
-    private Long id;
+    private Long alignmentId;
     private Long alignedObjectiveId;
     private String alignedObjectiveTitle;
     private Long alignedObjectiveTeamId;
     private String alignedObjectiveTeamName;
     private Long alignedObjectiveQuarterId;
     private String alignmentType;
-    private Long targetKeyResultId;
-    private String targetKeyResultTitle;
-    private Long targetKeyResultTeamId;
-    private String targetKeyResultTeamName;
     private Long targetObjectiveId;
     private String targetObjectiveTitle;
-    private Long targetObjectiveTeamId;
     private String targetObjectiveTeamName;
+    private Long targetKeyResultId;
+    private String targetKeyResultTitle;
+    private String targetKeyResultTeamName;
 
     private transient boolean writeable;
 
@@ -32,7 +30,7 @@ public class AlignmentView implements WriteableInterface {
     }
 
     private AlignmentView(Builder builder) {
-        setId(builder.id);
+        setAlignmentId(builder.alignmentId);
         setAlignedObjectiveId(builder.alignedObjectiveId);
         setAlignedObjectiveTitle(builder.alignedObjectiveTitle);
         setAlignedObjectiveTeamId(builder.alignedObjectiveTeamId);
@@ -41,21 +39,19 @@ public class AlignmentView implements WriteableInterface {
         setAlignmentType(builder.alignmentType);
         setTargetKeyResultId(builder.targetKeyResultId);
         setTargetKeyResultTitle(builder.targetKeyResultTitle);
-        setTargetKeyResultTeamId(builder.targetKeyResultTeamId);
         setTargetKeyResultTeamName(builder.targetKeyResultTeamName);
         setTargetObjectiveId(builder.targetObjectiveId);
         setTargetObjectiveTitle(builder.targetObjectiveTitle);
-        setTargetObjectiveTeamId(builder.targetObjectiveTeamId);
         setTargetObjectiveTeamName(builder.targetObjectiveTeamName);
         setWriteable(builder.writeable);
     }
 
-    public Long getId() {
-        return id;
+    public Long getAlignmentId() {
+        return alignmentId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setAlignmentId(Long alignmentId) {
+        this.alignmentId = alignmentId;
     }
 
     public Long getAlignedObjectiveId() {
@@ -122,14 +118,6 @@ public class AlignmentView implements WriteableInterface {
         this.targetKeyResultTitle = targetKeyResultTitle;
     }
 
-    public Long getTargetKeyResultTeamId() {
-        return targetKeyResultTeamId;
-    }
-
-    public void setTargetKeyResultTeamId(Long targetKeyResultTeamId) {
-        this.targetKeyResultTeamId = targetKeyResultTeamId;
-    }
-
     public String getTargetKeyResultTeamName() {
         return targetKeyResultTeamName;
     }
@@ -154,14 +142,6 @@ public class AlignmentView implements WriteableInterface {
         this.targetObjectiveTitle = targetObjectiveTitle;
     }
 
-    public Long getTargetObjectiveTeamId() {
-        return targetObjectiveTeamId;
-    }
-
-    public void setTargetObjectiveTeamId(Long targetObjectiveTeamId) {
-        this.targetObjectiveTeamId = targetObjectiveTeamId;
-    }
-
     public String getTargetObjectiveTeamName() {
         return targetObjectiveTeamName;
     }
@@ -182,20 +162,18 @@ public class AlignmentView implements WriteableInterface {
 
     @Override
     public String toString() {
-        return "AlignmentView{" + "id=" + id + ", alignedObjectiveId=" + alignedObjectiveId
+        return "AlignmentView{" + "alignmentId=" + alignmentId + ", alignedObjectiveId=" + alignedObjectiveId
                 + ", alignedObjectiveTitle='" + alignedObjectiveTitle + '\'' + ", alignedObjectiveTeamId="
                 + alignedObjectiveTeamId + ", alignedObjectiveTeamName='" + alignedObjectiveTeamName + '\''
                 + ", alignedObjectiveQuarterId=" + alignedObjectiveQuarterId + ", alignmentType='" + alignmentType
                 + '\'' + ", targetKeyResultId=" + targetKeyResultId + ", targetKeyResultTitle='" + targetKeyResultTitle
-                + '\'' + ", targetKeyResultTeamId=" + targetKeyResultTeamId + ", targetKeyResultTeamName='"
-                + targetKeyResultTeamName + '\'' + ", targetObjectiveId=" + targetObjectiveId
-                + ", targetObjectiveTitle='" + targetObjectiveTitle + '\'' + ", targetObjectiveTeamId="
-                + targetObjectiveTeamId + ", targetObjectiveTeamName='" + targetObjectiveTeamName + '\''
-                + ", writeable=" + writeable + '}';
+                + '\'' + ", targetKeyResultTeamName='" + targetKeyResultTeamName + '\'' + ", targetObjectiveId="
+                + targetObjectiveId + ", targetObjectiveTitle='" + targetObjectiveTitle + '\''
+                + ", targetObjectiveTeamName='" + targetObjectiveTeamName + '\'' + ", writeable=" + writeable + '}';
     }
 
     public static final class Builder {
-        private Long id;
+        private Long alignmentId;
         private Long alignedObjectiveId;
         private String alignedObjectiveTitle;
         private Long alignedObjectiveTeamId;
@@ -204,19 +182,17 @@ public class AlignmentView implements WriteableInterface {
         private String alignmentType;
         private Long targetKeyResultId;
         private String targetKeyResultTitle;
-        private Long targetKeyResultTeamId;
         private String targetKeyResultTeamName;
         private Long targetObjectiveId;
         private String targetObjectiveTitle;
-        private Long targetObjectiveTeamId;
         private String targetObjectiveTeamName;
         private boolean writeable;
 
         public Builder() {
         }
 
-        public Builder withId(Long val) {
-            id = val;
+        public Builder withAlignmentId(Long val) {
+            alignmentId = val;
             return this;
         }
 
@@ -260,11 +236,6 @@ public class AlignmentView implements WriteableInterface {
             return this;
         }
 
-        public Builder withTargetKeyResultTeamId(Long val) {
-            targetKeyResultTeamId = val;
-            return this;
-        }
-
         public Builder withTargetKeyResultTeamName(String val) {
             targetKeyResultTeamName = val;
             return this;
@@ -277,11 +248,6 @@ public class AlignmentView implements WriteableInterface {
 
         public Builder withTargetObjectiveTitle(String val) {
             targetObjectiveTitle = val;
-            return this;
-        }
-
-        public Builder withTargetObjectiveTeamId(Long val) {
-            targetObjectiveTeamId = val;
             return this;
         }
 

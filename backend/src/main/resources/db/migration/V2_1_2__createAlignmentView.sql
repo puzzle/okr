@@ -1,20 +1,33 @@
-alter table alignment
-    add column if not exists aligned_objective_title text,
-    add column if not exists aligned_objective_quarter_id integer,
-    add column if not exists aligned_objective_team_id integer,
-    add column if not exists aligned_objective_team_name text,
-    add column if not exists target_objective_title text,
-    add column if not exists target_objective_team_id integer,
-    add column if not exists target_objective_team_name text,
-    add column if not exists target_key_result_title text,
-    add column if not exists target_key_result_team_id integer,
-    add column if not exists target_key_result_team_name text;
-
-insert into public.alignment (id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id, version, aligned_objective_title, aligned_objective_quarter_id, aligned_objective_team_id, aligned_objective_team_name, target_objective_title, target_objective_team_id, target_objective_team_name, target_key_result_title, target_key_result_team_id, target_key_result_team_name)
-values  (1, 4, 'objective', null, 6, 1, 'Build a company culture that kills the competition.', 2, 5, 'Puzzle ITC', 'Als BBT wollen wir den Arbeitsalltag der Members von Puzzle ITC erleichtern.', 4, '/BBT', null, null, null),
-        (2, 9, 'keyResult', 8, null, 1, 'At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.', 2, 6, 'LoremIpsum', null, null, null, 'High employee satisfaction scores (80%+) throughout the year.', 5, 'Puzzle ITC');
+insert into alignment (id, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id, version)
+values  (1, 4, 'objective', null, 6, 1),
+        (2, 3, 'objective', null, 6, 1),
+        (3, 8, 'objective', null, 3, 1),
+        (4, 9, 'keyResult', 8, null, 1),
+        (5, 10, 'keyResult', 5, null, 1),
+        (6, 5, 'keyResult', 4, null, 1),
+        (7, 6, 'keyResult', 3, null, 1);
 
 DROP VIEW IF EXISTS ALIGNMENT_VIEW;
 CREATE VIEW ALIGNMENT_VIEW AS
-SELECT a.id, a.aligned_objective_id, a.aligned_objective_title, a.aligned_objective_team_id, aligned_objective_team_name, a.aligned_objective_quarter_id, a.alignment_type, a.target_key_result_id, a.target_key_result_title, a.target_key_result_team_id, a.target_key_result_team_name, a.target_objective_id, a.target_objective_title, a.target_objective_team_id, a.target_objective_team_name
-FROM alignment a;
+SELECT
+    a.id AS alignment_id,
+    oa.id AS aligned_objective_id,
+    oa.title AS aligned_objective_title,
+    oat.id AS aligned_objective_team_id,
+    oat.name AS aligned_objective_team_name,
+    oa.quarter_id as aligned_objective_quarter_id,
+    a.alignment_type as alignment_type,
+    ot.id AS target_objective_id,
+    ot.title AS target_objective_title,
+    ott.name AS target_objective_team_name,
+    krt.id AS target_key_result_id,
+    krt.title AS target_key_result_title,
+    krtot.name AS target_key_result_team_name
+FROM alignment a
+         JOIN objective oa ON oa.id = a.aligned_objective_id
+         JOIN team oat ON oat.id = oa.team_id
+         LEFT JOIN objective ot ON ot.id = a.target_objective_id
+         LEFT JOIN team ott ON ott.id = ot.team_id
+         LEFT JOIN key_result krt ON krt.id = a.target_key_result_id
+         LEFT JOIN objective krto ON krto.id = krt.objective_id
+         LEFT JOIN team krtot ON krtot.id = krto.team_id;

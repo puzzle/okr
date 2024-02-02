@@ -47,8 +47,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   }
 
   generateDiagram(data: Alignment[]): void {
-    if (data.length == 0) return;
-    let generatedData: any[] = this.generateElements(data);
+    let generatedData: any[] = data.length == 0 ? this.emptyPageLogo() : this.generateElements(data);
 
     this.cy = cytoscape({
       container: document.getElementById('cy'),
@@ -175,13 +174,26 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       let element = {
         data: {
           id: 'Ob' + alignment.alignedObjectiveId,
-          label:
-            this.adjustLabel(alignment.alignedObjectiveTitle, 36, 15) +
-            '\n --- \n ' +
-            alignment.alignedObjectiveTeamName,
+          // label:
+          // this.adjustLabel(alignment.alignedObjectiveTitle, 36, 15) +
+          // '\n --- \n ' +
+          // alignment.alignedObjectiveTeamName,
         },
         style: {
-          'background-color': '#2C97A6',
+          height: 160,
+          backgroundColor: '#2C97A6',
+          width: 160,
+          'background-image': this.generateObjectiveSVG(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            'Hello',
+            'Findus',
+            'Kuchen',
+            alignment.alignedObjectiveTeamName,
+            '#FFA500',
+          ).svg,
         },
       };
       elements.push(element);
@@ -213,7 +225,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
           'border-color': '#FFFFFF',
           'border-width': 0,
         };
-        element = {
+        let newElement = {
           data: {
             id: 'KR' + alignment.targetKeyResultId,
             label:
@@ -223,7 +235,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
           },
           style: style,
         };
-        elements.push(element);
+        elements.push(newElement);
 
         let edge = {
           data: { source: 'Ob' + alignment.alignedObjectiveId, target: 'KR' + alignment.targetKeyResultId },
@@ -418,5 +430,30 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     } else {
       return null;
     }
+  }
+
+  emptyPageLogo() {
+    let svg = `<svg width="150" height="149" viewBox="0 0 243 242" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path id="Shape" d="M207.411 35.4379C159.962 -11.8138 83.0335 -11.8125 35.5858 35.4408C-11.8619 82.6941 -11.8619 159.306 35.5858 206.559C83.0335 253.812 159.962 253.814 207.411 206.562C230.198 183.87 243 153.092 243 121C243 88.9077 230.198 58.13 207.411 35.4379ZM198.046 77.2333C194.087 89.0106 181.349 124.343 181.349 124.343C177.087 135.858 152.159 135.757 118.311 135.858C118.311 135.858 140.181 132.782 146.499 120.622C151.922 108.686 156.522 96.396 160.269 83.8379C126.604 83.8379 123.597 95.585 123.597 95.585C123.597 95.585 102.334 154.845 94.7301 176.705C35.7621 176.705 45.1885 147.706 45.1885 147.706L74.6826 65.3047H134.42L130.431 77.1728C130.431 77.1728 135.291 65.3047 168.228 65.3047C168.248 65.3047 202.015 65.4459 198.046 77.2333Z" fill="white" fill-opacity="0.5"/>
+        </svg>`;
+
+    let element = {
+      svg: 'data:image/svg+xml;base64,' + btoa(svg),
+    };
+
+    return [
+      {
+        data: {
+          id: 'empty',
+        },
+        style: {
+          height: 149,
+          backgroundColor: '#000000',
+          width: 150,
+          opacity: 0.8,
+          'background-image': element.svg,
+        },
+      },
+    ];
   }
 }

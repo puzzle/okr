@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.NewUserDto;
 import ch.puzzle.okr.dto.UserDto;
 import ch.puzzle.okr.mapper.UserMapper;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
@@ -66,6 +67,17 @@ public class UserController {
             @Parameter(description = "okrChampion property of user is set to this flag.", required = true) @PathVariable boolean isOkrChampion) {
         var user = this.userAuthorizationService.setIsOkrChampion(id, isOkrChampion);
         return userMapper.toDto(user);
+    }
+
+    @Operation(summary = "Create users", description = "Creates a user entity for every user in the method body")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Returned users", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }), })
+    @PostMapping(path = "/createall")
+    public List<UserDto> createUsers(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "The Team as json to create a new Team.", required = true) @RequestBody List<NewUserDto> newUserDtoList
+    ) {
+        var createdUsers = this.userAuthorizationService.createUsers(userMapper.toUserList(newUserDtoList));
+        return userMapper.toDtos(createdUsers);
     }
 
 }

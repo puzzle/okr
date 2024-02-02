@@ -81,4 +81,29 @@ public class UserAuthorizationServiceTest {
         assertThrows(OkrResponseStatusException.class,
                 () -> userAuthorizationService.setIsOkrChampion(user.getId(), true));
     }
+
+    @Test
+    void createUsers_shouldCallBusinessService() {
+        var loggedInUser = defaultUser(1L);
+        loggedInUser.setOkrChampion(true);
+
+        List<User> users = List.of(user, user2);
+        when(userBusinessService.createUsers(users)).thenReturn(users);
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
+
+        userAuthorizationService.createUsers(users);
+
+        verify(userBusinessService, times(1)).createUsers(users);
+    }
+
+    @Test
+    void createUsers_shouldThrowErrorIfLoggedInUserIsNotOkrChampion() {
+        var loggedInUser = defaultUser(1L);
+        loggedInUser.setOkrChampion(false);
+
+        when(authorizationService.updateOrAddAuthorizationUser()).thenReturn(new AuthorizationUser(loggedInUser));
+
+        assertThrows(OkrResponseStatusException.class,
+                () -> userAuthorizationService.createUsers(List.of(user, user2)));
+    }
 }

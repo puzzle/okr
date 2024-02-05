@@ -320,9 +320,11 @@ table.okr-table {
   border: none;
   box-shadow: none;
   tr {
-    height: 40px;
+    $table-height: 40px;
+    height: $table-height;
 
     > td {
+      height: $table-height;
       border: none;
       background-color: $light-grey;
     }

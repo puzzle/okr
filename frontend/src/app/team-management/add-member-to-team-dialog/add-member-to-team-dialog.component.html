@@ -40,7 +40,13 @@
         </ng-container>
         <ng-container matColumnDef="delete">
           <td mat-cell *matCellDef="let element">
-            <button mat-button (click)="remove(element)">entfernen</button>
+            <div class="d-flex">
+              <app-puzzle-icon-button
+                (click)="remove(element)"
+                icon="delete-icon.svg"
+                alt="Remove User Icon"
+              ></app-puzzle-icon-button>
+            </div>
           </td>
         </ng-container>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

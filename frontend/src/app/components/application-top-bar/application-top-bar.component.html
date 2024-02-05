@@ -5,13 +5,18 @@
     </span>
     <div class="d-flex align-items-center me-md-5 me-1">
       <button
-        routerLinkActive="d-none"
+        *ngIf="teamManagementVisible$ | async"
         routerLink="team-management"
         [attr.data-testId]="'team-management'"
-        class="topBarEntry btn"
+        class="topBarEntry btn visible-by-default"
       >
         <mat-icon aria-hidden="false" aria-label="Group icon" fontIcon="group"></mat-icon>
         <span class="d-none d-md-flex">Teamverwaltung </span>
+      </button>
+
+      <button *ngIf="!(teamManagementVisible$ | async)" routerLink="/" class="topBarEntry btn visible-by-default">
+        <mat-icon aria-hidden="false" aria-label="Group icon" fontIcon="group"></mat-icon>
+        <span class="d-none d-md-flex">OKR Übersicht </span>
       </button>
 
       <button class="topBarEntry btn" href="https://wiki.puzzle.ch/Puzzle/OKRs">

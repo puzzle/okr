@@ -23,6 +23,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   hasAdminAccess: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   overviewPadding: Subject<number> = new Subject();
   private service: AlignmentService | OverviewService;
+  isOverview: boolean = true;
 
   constructor(
     private overviewService: OverviewService,
@@ -50,6 +51,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.loadOverviewWithParams(index);
         });
       });
+  }
+
+  switchPage(input: string) {
+    if (input == 'net') {
+      this.isOverview = false;
+      this.loadOverviewWithParams(1);
+    } else {
+      this.isOverview = true;
+      this.loadOverviewWithParams(0);
+    }
   }
 
   ngOnInit(): void {

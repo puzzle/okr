@@ -6,10 +6,10 @@ export interface Alignment {
   alignedObjectiveTeamName: string;
   alignedObjectiveQuarterId: number;
   alignmentType: string;
-  targetObjectiveId: number;
-  targetObjectiveTitle: string;
-  targetObjectiveTeamName: string;
-  targetKeyResultId: number;
-  targetKeyResultTitle: string;
-  targetKeyResultTeamName: string;
+  targetObjectiveId: number | undefined;
+  targetObjectiveTitle: string | undefined;
+  targetObjectiveTeamName: string | undefined;
+  targetKeyResultId: number | undefined;
+  targetKeyResultTitle: string | undefined;
+  targetKeyResultTeamName: string | undefined;
 }

@@ -19,6 +19,7 @@ import { Action } from './types/model/Action';
 import { OrganisationState } from './types/enums/OrganisationState';
 import { Organisation } from './types/model/Organisation';
 import { Dashboard } from './types/model/Dashboard';
+import { Alignment } from './types/model/Alignment';
 
 export const organisationActive = {
   id: 1,
@@ -108,6 +109,22 @@ export const addedAction: Action = {
   priority: 0,
   keyResultId: 1,
 } as Action;
+
+export const alignment1: Alignment = {
+  alignmentId: 1,
+  alignedObjectiveId: 5,
+  alignedObjectiveTitle: 'This is the objective title',
+  alignedObjectiveTeamId: 2,
+  alignedObjectiveTeamName: 'Team2',
+  alignedObjectiveQuarterId: 1,
+  alignmentType: 'objective',
+  targetObjectiveId: 102,
+  targetObjectiveTitle: 'My target objective',
+  targetObjectiveTeamName: 'Team1',
+  targetKeyResultId: undefined,
+  targetKeyResultTitle: undefined,
+  targetKeyResultTeamName: undefined,
+} as Alignment;
 
 export const quarterMin: Quarter = {
   id: 1,

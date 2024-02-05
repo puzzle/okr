@@ -40,10 +40,12 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.cy.nodes().remove();
-    this.cy.edges().remove();
-    this.cy.off('all');
-    this.cy.removeAllListeners();
+    if (this.cy) {
+      this.cy.nodes().remove();
+      this.cy.edges().remove();
+      this.cy.off('all');
+      this.cy.removeAllListeners();
+    }
   }
 
   generateDiagram(data: Alignment[]): void {
@@ -174,10 +176,6 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
       let element = {
         data: {
           id: 'Ob' + alignment.alignedObjectiveId,
-          // label:
-          // this.adjustLabel(alignment.alignedObjectiveTitle, 36, 15) +
-          // '\n --- \n ' +
-          // alignment.alignedObjectiveTeamName,
         },
         style: {
           height: 160,
@@ -188,9 +186,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
             undefined,
             undefined,
             undefined,
-            'Hello',
-            'Findus',
-            'Kuchen',
+            this.adjustLabel(alignment.alignedObjectiveTitle, 36, 15),
             alignment.alignedObjectiveTeamName,
             '#FFA500',
           ).svg,
@@ -203,7 +199,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
           data: {
             id: 'Ob' + alignment.targetObjectiveId,
             label:
-              this.adjustLabel(alignment.targetObjectiveTitle, 36, 15) +
+              this.adjustLabel(alignment.targetObjectiveTitle!, 36, 15) +
               '\n --- \n ' +
               alignment.targetObjectiveTeamName,
           },
@@ -229,7 +225,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
           data: {
             id: 'KR' + alignment.targetKeyResultId,
             label:
-              this.adjustLabel(alignment.targetKeyResultTitle, 25, 12) +
+              this.adjustLabel(alignment.targetKeyResultTitle!, 25, 12) +
               '\n --- \n ' +
               alignment.targetKeyResultTeamName,
           },
@@ -254,7 +250,15 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
   }
 
   split_at_index(value: any, index: any): string {
-    return value.substring(0, index) + '...';
+    let substring = value.substring(0, index);
+    if (/\s/.test(substring.substring(substring.length -1))) return substring + '...';
+    let lastChar = substring.substring(substring.length - 2);
+
+    if (/\s/.test(lastChar)) {
+      substring = value.substring(0, index + 1);
+    }
+
+    return substring + '...';
   }
 
   splitLongWords(inputString: string, maxLength: number): string {
@@ -390,23 +394,24 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
     strokeColor: string = '#2C97A6',
     strokeWidth: number = 1,
     textColor: string = '#FFFFFF',
-    textPart1: string,
-    textPart2: string,
-    textPart3: string,
+    textLabel: string,
     teamName: string,
     teamColor: string = 'green',
   ) {
     let svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
-        <circle cx="80" cy="80" r="79" fill="${backgroundColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" />
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+  <circle cx="250" cy="250" r="250" fill="${backgroundColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}"/>
 
-        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="${textColor}" font-size="16" font-family="Arial, sans-serif">
-          <tspan x="50%" dy="-2em">${textPart1}</tspan>
-          <tspan x="50%" dy="1.2em">${textPart2}</tspan>
-          <tspan x="50%" dy="1.2em">${textPart3}</tspan>
-          <tspan x="50%" dy="2em" font-weight="bold" fill="${teamColor}">${teamName}</tspan>
-        </text>
-      </svg>
+    <foreignObject x="188" y="210" width="120" height="150" color="${textColor}" font-size="16px" font-family="Arial, sans-serif">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="text-align: center">
+        ${textLabel}
+      </div>
+    </foreignObject>
+
+      <text x="250" y="300" dominant-baseline="middle" text-anchor="middle" font-size="16" font-family="Arial, sans-serif">
+    <tspan fill="${teamColor}">${teamName}</tspan>
+  </text>
+</svg>
     `;
 
     return {

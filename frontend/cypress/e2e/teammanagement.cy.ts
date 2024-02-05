@@ -21,7 +21,7 @@ describe('Team management tests', () => {
     it('Opens teammanagement dialog', () => {
       //Check if overview contains correct titles of teammanagement
       cy.contains('Teamverwaltung');
-      cy.contains('Team hinzufügen');
+      cy.contains('Team erfassen');
       cy.contains('Alle Teams');
     });
 
@@ -132,7 +132,7 @@ describe('Team management tests', () => {
       it('Search mixed', () => {
         cy.get('app-team-management-banner').getByTestId('teamManagementSearch').click().type('puz', { delay: 1 });
 
-        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Users');
+        cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Members');
         cy.contains('.mat-mdc-autocomplete-panel .mat-mdc-optgroup-label', 'Teams');
         cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Eggimann (peggimann@puzzle.ch)');
         cy.contains('.mat-mdc-autocomplete-panel mat-option', 'Paco Egiman (egiman@puzzle.ch)');

@@ -31,3 +31,34 @@ FROM alignment a
          LEFT JOIN key_result krt ON krt.id = a.target_key_result_id
          LEFT JOIN objective krto ON krto.id = krt.objective_id
          LEFT JOIN team krtot ON krtot.id = krto.team_id;
+
+
+
+-- select o.*, a.target_key_result_id, a.target_objective_id from alignment a
+--                                                                    left join objective o on o.id = a.aligned_objective_id
+-- where a.id in
+--       (
+--           SELECT a.*
+--           FROM alignment a
+--                    LEFT OUTER JOIN objective oa ON oa.id = a.aligned_objective_id and oa.quarter_id = 2
+--               --left join key_result kr ON kr.id = a.target_key_result_id
+--                    LEFT OUTER JOIN  objective ot ON ot.id = a.target_objective_id and ot.quarter_id = 2
+--       )
+--
+-- ;
+--
+-- SELECT o.*
+-- from (
+--          SELECT a.*    FROM alignment a, objective oa where oa.id = a.aligned_objective_id and oa.quarter_id = 2
+--          union
+--          SELECT a.*    FROM alignment a, objective ot where ot.id = a.target_objective_id and ot.quarter_id = 2
+--          --union
+-- --key_result
+--      ) un
+--          left join objective o on o.id = un.aligned_objective_id
+--
+--
+-- SELECT o.*
+-- from
+--     (SELECT a.aligned_objective_id  FROM alignment a, objective oa where oa.id = a.aligned_objective_id and oa.quarter_id = 2) un
+--         left join objective o on o.id = un.aligned_objective_id

@@ -251,7 +251,7 @@ export class DiagramComponent implements AfterViewInit, OnDestroy {
 
   split_at_index(value: any, index: any): string {
     let substring = value.substring(0, index);
-    if (/\s/.test(substring.substring(substring.length -1))) return substring + '...';
+    if (/\s/.test(substring.substring(substring.length - 1))) return substring + '...';
     let lastChar = substring.substring(substring.length - 2);
 
     if (/\s/.test(lastChar)) {

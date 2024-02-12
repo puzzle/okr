@@ -1,6 +1,8 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAlignmentsDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.service.authorization.AuthorizationService;
@@ -25,6 +27,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -65,10 +68,12 @@ class ObjectiveControllerIT {
             }
             """;
     private static final String RESPONSE_NEW_OBJECTIVE = """
-            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true}""";
+            {"id":null,"version":1,"title":"Program Faster","teamId":1,"quarterId":1,"quarterLabel":"GJ 22/23-Q2","description":"Just be faster","state":"DRAFT","createdOn":null,"modifiedOn":null,"writeable":true,"alignedEntityId":null}""";
     private static final String JSON_PATH_TITLE = "$.title";
     private static final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle(OBJECTIVE_TITLE_1)
             .build();
+    private static final Objective objectiveAlignment = Objective.Builder.builder().withId(9L)
+            .withTitle("Objective Alignment").withAlignedEntityId("O42").build();
     private static final Objective objective2 = Objective.Builder.builder().withId(7L).withTitle(OBJECTIVE_TITLE_2)
             .build();
     private static final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
@@ -82,6 +87,12 @@ class ObjectiveControllerIT {
             DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, null);
     private static final ObjectiveDto objective2Dto = new ObjectiveDto(7L, 1, OBJECTIVE_TITLE_2, 1L, 1L, "GJ 22/23-Q2",
             DESCRIPTION, State.DRAFT, LocalDateTime.MIN, LocalDateTime.MIN, true, "O5");
+    private static final ObjectiveDto objectiveAlignmentDto = new ObjectiveDto(9L, 1, "Objective Alignment", 1L, 1L,
+            "GJ 22/23-Q2", DESCRIPTION, State.DRAFT, LocalDateTime.MAX, LocalDateTime.MAX, true, "O42");
+    private static final KeyResultAlignmentsDto keyResultAlignmentsDto1 = new KeyResultAlignmentsDto(3L, "KR Title 1");
+    private static final KeyResultAlignmentsDto keyResultAlignmentsDto2 = new KeyResultAlignmentsDto(6L, "KR Title 2");
+    private static final ObjectiveAlignmentsDto alignmentPossibilities = new ObjectiveAlignmentsDto(1L,
+            "This is my objective title", List.of(keyResultAlignmentsDto1, keyResultAlignmentsDto2));
 
     @Autowired
     private MockMvc mvc;
@@ -96,6 +107,7 @@ class ObjectiveControllerIT {
     void setUp() {
         BDDMockito.given(objectiveMapper.toDto(objective1)).willReturn(objective1Dto);
         BDDMockito.given(objectiveMapper.toDto(objective2)).willReturn(objective2Dto);
+        BDDMockito.given(objectiveMapper.toDto(objectiveAlignment)).willReturn(objectiveAlignmentDto);
     }
 
     @Test
@@ -108,12 +120,39 @@ class ObjectiveControllerIT {
     }
 
     @Test
+    void getObjectiveByIdWithAlignmentId() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong())).willReturn(objectiveAlignment);
+
+        mvc.perform(get("/api/v2/objectives/9").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(jsonPath("$.id", Is.is(9)))
+                .andExpect(jsonPath(JSON_PATH_TITLE, Is.is("Objective Alignment")))
+                .andExpect(jsonPath("$.alignedEntityId", Is.is("O42")));
+    }
+
+    @Test
     void getObjectiveByIdFail() throws Exception {
         BDDMockito.given(objectiveAuthorizationService.getEntityById(anyLong()))
                 .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         mvc.perform(get(URL_OBJECTIVE_10).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void getAlignmentPossibilities() throws Exception {
+        BDDMockito.given(objectiveAuthorizationService.getAlignmentPossibilities(anyLong()))
+                .willReturn(List.of(alignmentPossibilities));
+
+        mvc.perform(get("/api/v2/objectives/alignmentPossibilities/5").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$[0].objectiveTitle", Is.is("This is my objective title")))
+                .andExpect(jsonPath("$[0].objectiveId", Is.is(1)))
+                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[0].keyResultId", Is.is(3)))
+                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[1].keyResultId", Is.is(6)))
+                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[0].keyResultTitle", Is.is("KR Title 1")))
+                .andExpect(jsonPath("$[0].keyResultAlignmentsDtos[1].keyResultTitle", Is.is("KR Title 2")));
+
+        verify(objectiveAuthorizationService, times(1)).getAlignmentPossibilities(5L);
     }
 
     @Test

@@ -76,7 +76,14 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
 
     public List<Objective> getEntitiesByTeamId(Long id) {
         validator.validateOnGet(id);
-        return objectivePersistenceService.findObjectiveByTeamId(id);
+
+        List<Objective> objectiveList = objectivePersistenceService.findObjectiveByTeamId(id);
+        objectiveList.forEach(objective -> {
+            String alignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
+            objective.setAlignedEntityId(alignmentId);
+        });
+
+        return objectiveList;
     }
 
     @Transactional

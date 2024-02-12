@@ -253,4 +253,12 @@ class ObjectivePersistenceServiceIT {
 
         assertEquals(2, count);
     }
+
+    @Test
+    void findObjectiveByQuarterId() {
+        List<Objective> objectiveList = objectivePersistenceService.findObjectiveByQuarterId(2L);
+
+        assertEquals(7, objectiveList.size());
+        assertEquals("Wir wollen die Kundenzufriedenheit steigern", objectiveList.get(0).getTitle());
+    }
 }

@@ -42,6 +42,8 @@ class KeyResultBusinessServiceTest {
     KeyResultValidationService validator;
     @Mock
     ActionBusinessService actionBusinessService;
+    @Mock
+    AlignmentBusinessService alignmentBusinessService;
     @InjectMocks
     private KeyResultBusinessService keyResultBusinessService;
     List<KeyResult> keyResults;
@@ -154,6 +156,7 @@ class KeyResultBusinessServiceTest {
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         verify(actionBusinessService, times(1)).deleteEntitiesByKeyResultId(1L);
         verify(actionBusinessService, times(1)).createEntities(actions);
+        verify(alignmentBusinessService, times(1)).updateKeyResultIdOnIdChange(1L, newKeyresult);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Metric update", newKeyresult.getTitle());
     }
@@ -172,6 +175,7 @@ class KeyResultBusinessServiceTest {
         verify(checkInBusinessService, times(1)).getCheckInsByKeyResultId(1L);
         verify(actionBusinessService, times(1)).deleteEntitiesByKeyResultId(1L);
         verify(actionBusinessService, times(1)).createEntities(actions);
+        verify(alignmentBusinessService, times(1)).updateKeyResultIdOnIdChange(1L, newKeyresult);
         assertEquals(1L, newKeyresult.getId());
         assertEquals("Keyresult Ordinal update", newKeyresult.getTitle());
     }
@@ -324,6 +328,7 @@ class KeyResultBusinessServiceTest {
 
         verify(checkInBusinessService, times(1)).deleteEntityById(1L);
         verify(actionBusinessService, times(2)).deleteEntityById(3L);
+        verify(alignmentBusinessService, times(1)).deleteAlignmentByKeyResultId(1L);
         verify(keyResultPersistenceService, times(1)).deleteById(1L);
     }
 

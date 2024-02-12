@@ -1,5 +1,6 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
 import ch.puzzle.okr.models.*;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -40,6 +41,8 @@ class ObjectiveBusinessServiceTest {
     @Mock
     KeyResultBusinessService keyResultBusinessService;
     @Mock
+    AlignmentBusinessService alignmentBusinessService;
+    @Mock
     CompletedBusinessService completedBusinessService;
     @Mock
     ObjectiveValidationService validator = Mockito.mock(ObjectiveValidationService.class);
@@ -52,9 +55,13 @@ class ObjectiveBusinessServiceTest {
     private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
             .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
+    private final Objective fullObjective2 = Objective.Builder.builder().withTitle("FullObjective2").withCreatedBy(user)
+            .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
+            .withModifiedOn(LocalDateTime.MAX).build();
     private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
             .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
+    private final List<Objective> objectiveList = List.of(objective, fullObjective, fullObjective2);
 
     @Test
     void getOneObjective() {
@@ -62,6 +69,7 @@ class ObjectiveBusinessServiceTest {
 
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
+        verify(alignmentBusinessService, times(1)).getTargetIdByAlignedObjectiveId(5L);
         assertEquals("Objective 1", realObjective.getTitle());
     }
 
@@ -71,6 +79,7 @@ class ObjectiveBusinessServiceTest {
 
         List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
 
+        verify(alignmentBusinessService, times(1)).getTargetIdByAlignedObjectiveId(5L);
         assertThat(entities).hasSameElementsAs(List.of(objective));
     }
 
@@ -96,6 +105,24 @@ class ObjectiveBusinessServiceTest {
         objectiveBusinessService.createEntity(objective, authorizationUser);
 
         verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(0)).createEntity(any());
+        assertEquals(DRAFT, objective.getState());
+        assertEquals(user, objective.getCreatedBy());
+        assertNull(objective.getCreatedOn());
+    }
+
+    @Test
+    void shouldSaveANewObjectiveWithAlignment() {
+        Objective objective = spy(Objective.Builder.builder().withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(DRAFT).withAlignedEntityId("O42").build());
+
+        doNothing().when(objective).setCreatedOn(any());
+
+        Objective savedObjective = objectiveBusinessService.createEntity(objective, authorizationUser);
+
+        verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(1)).createEntity(savedObjective);
         assertEquals(DRAFT, objective.getState());
         assertEquals(user, objective.getCreatedBy());
         assertNull(objective.getCreatedOn());
@@ -143,6 +170,7 @@ class ObjectiveBusinessServiceTest {
                 updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
+        verify(alignmentBusinessService, times(1)).updateEntity(updatedEntity.getId(), updatedEntity);
     }
 
     @Test
@@ -153,6 +181,7 @@ class ObjectiveBusinessServiceTest {
 
         verify(keyResultBusinessService, times(3)).deleteEntityById(5L);
         verify(objectiveBusinessService, times(1)).deleteEntityById(1L);
+        verify(alignmentBusinessService, times(1)).deleteAlignmentByObjectiveId(1L);
     }
 
     @Test
@@ -169,5 +198,23 @@ class ObjectiveBusinessServiceTest {
         objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
         verify(keyResultBusinessService, times(4)).createEntity(any(), any());
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
+    }
+
+    @Test
+    void shouldReturnAlignmentPossibilities() {
+        when(objectivePersistenceService.findObjectiveByQuarterId(anyLong())).thenReturn(objectiveList);
+        when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResultList);
+
+        List<ObjectiveAlignmentsDto> alignmentsDtos = objectiveBusinessService.getAlignmentPossibilities(5L);
+
+        verify(objectivePersistenceService, times(1)).findObjectiveByQuarterId(5L);
+        verify(keyResultBusinessService, times(1)).getAllKeyResultsByObjective(5L);
+        assertEquals("O - Objective 1", alignmentsDtos.get(0).objectiveTitle());
+        assertEquals(5, alignmentsDtos.get(0).objectiveId());
+        assertEquals("K - Keyresult Ordinal", alignmentsDtos.get(0).keyResultAlignmentsDtos().get(0).keyResultTitle());
+        assertEquals("O - FullObjective1", alignmentsDtos.get(1).objectiveTitle());
+        assertEquals("O - FullObjective2", alignmentsDtos.get(2).objectiveTitle());
+        assertEquals(List.of(), alignmentsDtos.get(2).keyResultAlignmentsDtos());
+
     }
 }

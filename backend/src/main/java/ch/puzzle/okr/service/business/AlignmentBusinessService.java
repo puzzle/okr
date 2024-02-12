@@ -76,7 +76,7 @@ public class AlignmentBusinessService {
         }
     }
 
-    private Alignment buildAlignmentModel(Objective alignedObjective) {
+    public Alignment buildAlignmentModel(Objective alignedObjective) {
         if (alignedObjective.getAlignedEntityId().startsWith("O")) {
             Objective targetObjective = objectivePersistenceService
                     .findById(Long.valueOf(alignedObjective.getAlignedEntityId().replace("O", "")));
@@ -94,7 +94,7 @@ public class AlignmentBusinessService {
         }
     }
 
-    private boolean isAlignmentTypeChange(Alignment alignment, Alignment savedAlignment) {
+    public boolean isAlignmentTypeChange(Alignment alignment, Alignment savedAlignment) {
         if (alignment instanceof ObjectiveAlignment && savedAlignment instanceof KeyResultAlignment) {
             return true;
         } else

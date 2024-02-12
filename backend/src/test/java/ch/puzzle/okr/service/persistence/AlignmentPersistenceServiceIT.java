@@ -115,11 +115,11 @@ class AlignmentPersistenceServiceIT {
     }
 
     @Test
-    void findByAlignedObjectiveIdShouldReturnListOfAlignments() {
-        List<Alignment> alignments = alignmentPersistenceService.findByAlignedObjectiveId(4L);
+    void findByAlignedObjectiveIdShouldReturnAlignmentModel() {
+        Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(4L);
 
-        assertEquals(2, alignments.size());
-        alignments.forEach(this::assertAlignment);
+        assertNotNull(alignment);
+        assertEquals(alignment.getAlignedObjective().getId(), 4);
     }
 
     @Test

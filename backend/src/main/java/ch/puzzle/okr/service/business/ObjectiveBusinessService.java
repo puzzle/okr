@@ -1,5 +1,7 @@
 package ch.puzzle.okr.service.business;
 
+import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
+import ch.puzzle.okr.dto.keyresult.KeyResultAlignmentsDto;
 import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.authorization.AuthorizationUser;
 import ch.puzzle.okr.models.keyresult.KeyResult;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,21 +29,49 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
     private final ObjectiveValidationService validator;
     private final KeyResultBusinessService keyResultBusinessService;
     private final CompletedBusinessService completedBusinessService;
+    private final AlignmentBusinessService alignmentBusinessService;
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectiveBusinessService.class);
 
     public ObjectiveBusinessService(@Lazy KeyResultBusinessService keyResultBusinessService,
             ObjectiveValidationService validator, ObjectivePersistenceService objectivePersistenceService,
-            CompletedBusinessService completedBusinessService) {
+            CompletedBusinessService completedBusinessService, AlignmentBusinessService alignmentBusinessService) {
         this.keyResultBusinessService = keyResultBusinessService;
         this.validator = validator;
         this.objectivePersistenceService = objectivePersistenceService;
         this.completedBusinessService = completedBusinessService;
+        this.alignmentBusinessService = alignmentBusinessService;
     }
 
     public Objective getEntityById(Long id) {
         validator.validateOnGet(id);
-        return objectivePersistenceService.findById(id);
+        Objective objective = objectivePersistenceService.findById(id);
+
+        String alignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(objective.getId());
+        objective.setAlignedEntityId(alignmentId);
+        return objective;
+    }
+
+    public List<ObjectiveAlignmentsDto> getAlignmentPossibilities(Long quarterId) {
+        validator.validateOnGet(quarterId);
+
+        List<Objective> objectivesByQuarter = objectivePersistenceService.findObjectiveByQuarterId(quarterId);
+        List<ObjectiveAlignmentsDto> objectiveAlignmentsDtos = new ArrayList<>();
+
+        objectivesByQuarter.forEach(objective -> {
+            List<KeyResult> keyResults = keyResultBusinessService.getAllKeyResultsByObjective(objective.getId());
+            List<KeyResultAlignmentsDto> keyResultAlignmentsDtos = new ArrayList<>();
+            keyResults.forEach(keyResult -> {
+                KeyResultAlignmentsDto keyResultAlignmentsDto = new KeyResultAlignmentsDto(keyResult.getId(),
+                        "K - " + keyResult.getTitle());
+                keyResultAlignmentsDtos.add(keyResultAlignmentsDto);
+            });
+            ObjectiveAlignmentsDto objectiveAlignmentsDto = new ObjectiveAlignmentsDto(objective.getId(),
+                    "O - " + objective.getTitle(), keyResultAlignmentsDtos);
+            objectiveAlignmentsDtos.add(objectiveAlignmentsDto);
+        });
+
+        return objectiveAlignmentsDtos;
     }
 
     public List<Objective> getEntitiesByTeamId(Long id) {
@@ -57,7 +88,10 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setModifiedOn(LocalDateTime.now());
         setQuarterIfIsImUsed(objective, savedObjective);
         validator.validateOnUpdate(id, objective);
-        return objectivePersistenceService.save(objective);
+        savedObjective = objectivePersistenceService.save(objective);
+        savedObjective.setAlignedEntityId(objective.getAlignedEntityId());
+        alignmentBusinessService.updateEntity(id, savedObjective);
+        return savedObjective;
     }
 
     private void setQuarterIfIsImUsed(Objective objective, Objective savedObjective) {
@@ -97,7 +131,11 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         objective.setCreatedBy(authorizationUser.user());
         objective.setCreatedOn(LocalDateTime.now());
         validator.validateOnCreate(objective);
-        return objectivePersistenceService.save(objective);
+        Objective savedObjective = objectivePersistenceService.save(objective);
+        if (objective.getAlignedEntityId() != null) {
+            alignmentBusinessService.createEntity(savedObjective);
+        }
+        return savedObjective;
     }
 
     /**

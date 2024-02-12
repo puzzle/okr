@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface AlignmentRepository extends CrudRepository<Alignment, Long> {
 
-    List<Alignment> findByAlignedObjectiveId(Long alignedObjectiveId);
+    Alignment findByAlignedObjectiveId(Long alignedObjectiveId);
 
     @Query(value = "from KeyResultAlignment where targetKeyResult.id = :keyResultId")
     List<KeyResultAlignment> findByKeyResultAlignmentId(@Param("keyResultId") Long keyResultId);

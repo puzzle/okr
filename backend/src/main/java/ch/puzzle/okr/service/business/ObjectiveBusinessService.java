@@ -202,6 +202,7 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         keyResultBusinessService //
                 .getAllKeyResultsByObjective(id) //
                 .forEach(keyResult -> keyResultBusinessService.deleteEntityById(keyResult.getId()));
+        alignmentBusinessService.deleteAlignmentByObjectiveId(id);
         objectivePersistenceService.deleteById(id);
     }
 }

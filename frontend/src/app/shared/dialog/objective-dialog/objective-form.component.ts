@@ -36,6 +36,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
   quarters$: Observable<Quarter[]> = of([]);
   currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
+  objective: Objective | null = null;
   teams$: Observable<Team[]> = of([]);
   alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
@@ -93,6 +94,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       : of(this.getDefaultObjective());
     forkJoin([objective$, this.quarters$, this.currentQuarter$]).subscribe(([objective, quarters, currentQuarter]) => {
       this.quarters = quarters;
+      this.objective = objective;
       const teamId = isCreating ? objective.teamId : this.data.objective.teamId;
       const newEditQuarter = isCreating ? currentQuarter.id : objective.quarterId;
       let quarterId = getValueFromQuery(this.route.snapshot.queryParams['quarter'], newEditQuarter)[0];
@@ -106,19 +108,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       this.teams$.subscribe((value) => {
         this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });
-      this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
-      this.alignmentPossibilities$.subscribe((value) => {
-        if (objective.id) {
-          value = value.filter((item) => !(item.objectiveId == objective.id));
-        }
-        let noSelectOption: AlignmentPossibility = {
-          objectiveId: null,
-          objectiveTitle: 'Bitte wählen',
-          keyResultAlignmentsDtos: [],
-        };
-        value.unshift(noSelectOption);
-        this.alignmentPossibilities$ = of(value);
-      });
+      this.generateAlignmentPossibilities(quarterId);
 
       this.objectiveForm.patchValue({
         title: objective.title,
@@ -254,4 +244,25 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
 
     return '';
   }
+  generateAlignmentPossibilities(quarterId: number) {
+    this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
+    this.alignmentPossibilities$.subscribe((value) => {
+      if (this.objective?.id) {
+        value = value.filter((item) => !(item.objectiveId == this.objective!.id));
+      }
+      let noSelectOption: AlignmentPossibility = {
+        objectiveId: null,
+        objectiveTitle: 'Bitte wählen',
+        keyResultAlignmentsDtos: [],
+      };
+      value.unshift(noSelectOption);
+      this.alignmentPossibilities$ = of(value);
+    });
+  }
+
+  updateAlignments() {
+    this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!);
+  }
+
+  protected readonly getQuarterLabel = getQuarterLabel;
 }

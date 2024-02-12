@@ -115,7 +115,7 @@ values  (1,1, 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
 
 insert into alignment (id, version, aligned_objective_id, alignment_type, target_key_result_id, target_objective_id) values
        (1,1, 4, 'objective', null, 3),
-       (2,1, 4, 'keyResult', 8, null);
+       (2,1, 9, 'keyResult', 8, null);
 
 insert into completed (id, version, objective_id, comment) values
        (1,1, 4, 'Das hat geklappt'),

@@ -105,6 +105,7 @@ public class KeyResultBusinessService implements BusinessServiceInterface<Long, 
                 .forEach(checkIn -> checkInBusinessService.deleteEntityById(checkIn.getId()));
         actionBusinessService.getActionsByKeyResultId(id)
                 .forEach(action -> actionBusinessService.deleteEntityById(action.getId()));
+        alignmentBusinessService.deleteAlignmentByKeyResultId(id);
         keyResultPersistenceService.deleteById(id);
     }
 

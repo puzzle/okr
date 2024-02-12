@@ -51,19 +51,41 @@
               </select>
             </div>
           </div>
+
+          <div class="d-flex flex-column gap-2 col-6">
+            <label class="text-black" for="alignment">Bezug (optional)</label>
+            <select
+              class="custom-select bg-white w-75"
+              formControlName="alignment"
+              id="alignment"
+              [attr.data-testId]="'alignmentSelect'"
+            >
+              <ng-container *ngFor="let alignment of alignmentPossibilities$ | async; let i = index">
+                <option [value]="'O' + alignment.objectiveId">
+                  {{ alignment.objectiveTitle }}
+                </option>
+                <ng-container *ngFor="let keyResult of alignment.keyResultAlignmentsDtos; let i = index">
+                  <option [value]="'K' + keyResult.keyResultId">
+                    {{ keyResult.keyResultTitle }}
+                  </option>
+                </ng-container>
+              </ng-container>
+            </select>
+          </div>
+          <h1>{{ this.objectiveForm.value.alignment }}</h1>
+        </div>
         </div>
         <div class="col align-self-end">
           <div class="okr-form-row">
             <mat-checkbox
-              [attr.data-testId]="'keyResult-checkbox'"
-              class="col-auto mx-n2"
-              color="primary"
-              formControlName="createKeyResults"
-              *ngIf="!data.objective.objectiveId"
-            >
-              <p class="col d-flex">Key Results im Anschluss erfassen</p>
-            </mat-checkbox>
-          </div>
+          [attr.data-testId]="'keyResult-checkbox'"
+          class="col-auto mx-n2"
+          color="primary"
+          formControlName="createKeyResults"
+          *ngIf="!data.objective.objectiveId"
+        >
+          <p class="col d-flex">Key Results im Anschluss erfassen</p>
+        </mat-checkbox>
         </div>
       </div>
     </form>

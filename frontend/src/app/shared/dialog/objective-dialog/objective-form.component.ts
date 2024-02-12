@@ -16,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { GJ_REGEX_PATTERN } from '../../constantLibary';
 import { TranslateService } from '@ngx-translate/core';
 import { DialogService } from '../../../services/dialog.service';
+import { AlignmentPossibility } from '../../types/model/AlignmentPossibility';
 
 @Component({
   selector: 'app-objective-form',
@@ -29,13 +30,14 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
     description: new FormControl<string>('', [Validators.maxLength(4096)]),
     quarter: new FormControl<number>(0, [Validators.required]),
     team: new FormControl<number>({ value: 0, disabled: true }, [Validators.required]),
-    relation: new FormControl<number>({ value: 0, disabled: true }),
+    alignment: new FormControl<string>(''),
     createKeyResults: new FormControl<boolean>(false),
   });
   quarters$: Observable<Quarter[]> = of([]);
   currentQuarter$: Observable<Quarter> = of();
   quarters: Quarter[] = [];
   teams$: Observable<Team[]> = of([]);
+  alignmentPossibilities$: Observable<AlignmentPossibility[]> = of([]);
   currentTeam: Subject<Team> = new Subject<Team>();
   state: string | null = null;
   version!: number;
@@ -72,6 +74,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       title: value.title,
       teamId: value.team,
       state: state,
+      alignedEntityId: value.alignment == 'Onull' ? null : value.alignment,
     } as unknown as Objective;
 
     const submitFunction = this.getSubmitFunction(objectiveDTO.id, objectiveDTO);
@@ -103,12 +106,26 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       this.teams$.subscribe((value) => {
         this.currentTeam.next(value.filter((team) => team.id == teamId)[0]);
       });
+      this.alignmentPossibilities$ = this.objectiveService.getAlignmentPossibilities(quarterId);
+      this.alignmentPossibilities$.subscribe((value) => {
+        if (objective.id) {
+          value = value.filter((item) => !(item.objectiveId == objective.id));
+        }
+        let noSelectOption: AlignmentPossibility = {
+          objectiveId: null,
+          objectiveTitle: 'Bitte wählen',
+          keyResultAlignmentsDtos: [],
+        };
+        value.unshift(noSelectOption);
+        this.alignmentPossibilities$ = of(value);
+      });
 
       this.objectiveForm.patchValue({
         title: objective.title,
         description: objective.description,
         team: teamId,
         quarter: quarterId,
+        alignment: objective.alignedEntityId ? objective.alignedEntityId : 'Onull',
       });
     });
   }

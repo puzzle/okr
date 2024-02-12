@@ -56,6 +56,7 @@
               class="custom-select bg-white w-75"
               formControlName="quarter"
               id="quarter"
+              (change)="updateAlignments()"
               [attr.data-testId]="'quarterSelect'"
             >
               <ng-container *ngFor="let quarter of quarters$ | async; let i = index">

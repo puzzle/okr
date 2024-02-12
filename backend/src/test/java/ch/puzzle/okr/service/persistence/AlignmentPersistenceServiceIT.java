@@ -161,14 +161,15 @@ class AlignmentPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> alignmentPersistenceService.findById(alignmentId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", "200")));
+        List<ErrorDto> expectedErrors = List
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", alignmentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created Alignment in tearDown()
-        createdAlignment = recreatedAlignment;
+        createdAlignment = createObjectiveAlignment;
     }
 
     @Test
@@ -200,14 +201,15 @@ class AlignmentPersistenceServiceIT {
         OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
                 () -> alignmentPersistenceService.findById(alignmentId));
 
-        List<ErrorDto> expectedErrors = List.of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", 200L)));
+        List<ErrorDto> expectedErrors = List
+                .of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", alignmentId)));
 
         assertEquals(NOT_FOUND, exception.getStatusCode());
         assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
         assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
 
         // delete re-created Alignment in tearDown()
-        createdAlignment = recreatedAlignment;
+        createdAlignment = returnedKeyResultAlignment;
     }
 
     private void assertAlignment(Alignment alignment) {
@@ -229,6 +231,6 @@ class AlignmentPersistenceServiceIT {
     private void assertAlignment(KeyResultAlignment keyResultAlignment) {
         assertEquals(2L, keyResultAlignment.getId());
         assertEquals(8L, keyResultAlignment.getAlignmentTarget().getId());
-        assertEquals(4L, keyResultAlignment.getAlignedObjective().getId());
+        assertEquals(9L, keyResultAlignment.getAlignedObjective().getId());
     }
 }

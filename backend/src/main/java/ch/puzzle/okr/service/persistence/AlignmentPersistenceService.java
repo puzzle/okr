@@ -24,13 +24,13 @@ public class AlignmentPersistenceService extends PersistenceBase<Alignment, Long
     }
 
     @Transactional
-    public void recreateEntity(Long id, Alignment alignment) {
+    public Alignment recreateEntity(Long id, Alignment alignment) {
         System.out.println(alignment.toString());
         System.out.println("*".repeat(30));
         // delete entity in order to prevent duplicates in case of changed keyResultType
         deleteById(id);
         System.out.printf("reached delete entity with %d", id);
-        save(alignment);
+        return save(alignment);
     }
 
     public Alignment findByAlignedObjectiveId(Long alignedObjectiveId) {

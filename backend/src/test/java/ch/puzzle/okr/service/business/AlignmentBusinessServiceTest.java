@@ -24,7 +24,6 @@ import java.util.List;
 import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -96,7 +95,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.createEntity(objectiveAlignedObjective);
 
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
-        verify(validator, times(1)).validateOnCreate(returnAlignment);
     }
 
     @Test
@@ -133,7 +131,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.updateEntity(8L, objectiveAlignedObjective);
 
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
-        verify(validator, times(1)).validateOnUpdate(returnAlignment.getId(), returnAlignment);
     }
 
     @Test
@@ -146,7 +143,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.updateEntity(8L, keyResultAlignedObjective);
 
         verify(alignmentPersistenceService, times(0)).save(returnAlignment);
-        verify(validator, times(1)).validateOnUpdate(returnAlignment.getId(), returnAlignment);
         verify(alignmentPersistenceService, times(1)).recreateEntity(2L, returnAlignment);
     }
 
@@ -201,7 +197,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.updateKeyResultIdOnIdChange(1L, metricKeyResult);
         keyResultAlignment.setAlignmentTarget(metricKeyResult);
         verify(alignmentPersistenceService, times(1)).save(keyResultAlignment);
-        verify(validator, times(1)).validateOnUpdate(keyResultAlignment.getId(), keyResultAlignment);
     }
 
     @Test

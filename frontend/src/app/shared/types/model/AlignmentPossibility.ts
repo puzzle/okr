@@ -4,5 +4,5 @@ export interface AlignmentPossibility {
   keyResultAlignmentsDtos: {
     keyResultId: number;
     keyResultTitle: string;
-  }[]
+  }[];
 }

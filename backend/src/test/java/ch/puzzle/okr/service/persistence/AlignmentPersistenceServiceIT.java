@@ -7,6 +7,7 @@ import ch.puzzle.okr.models.Objective;
 import ch.puzzle.okr.models.alignment.Alignment;
 import ch.puzzle.okr.models.alignment.KeyResultAlignment;
 import ch.puzzle.okr.models.alignment.ObjectiveAlignment;
+import ch.puzzle.okr.models.keyresult.KeyResult;
 import ch.puzzle.okr.models.keyresult.KeyResultMetric;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -16,8 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+import static ch.puzzle.okr.models.State.DRAFT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @SpringIntegrationTest
@@ -128,6 +131,83 @@ class AlignmentPersistenceServiceIT {
 
         assertEquals(1, alignments.size());
         assertAlignment(alignments.get(0));
+    }
+
+    @Test
+    void recreateEntityShouldUpdateAlignmentNoTypeChange() {
+        Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
+        Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
+        Objective objective3 = Objective.Builder.builder().withId(4L)
+                .withTitle("Build a company culture that kills the competition.").build();
+        ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1)
+                .withTargetObjective(objective2).build();
+
+        createdAlignment = alignmentPersistenceService.save(objectiveALignment);
+        ObjectiveAlignment createObjectiveAlignment = (ObjectiveAlignment) createdAlignment;
+        createObjectiveAlignment.setAlignmentTarget(objective3);
+        Long alignmentId = createObjectiveAlignment.getId();
+
+        Alignment recreatedAlignment = alignmentPersistenceService.recreateEntity(createdAlignment.getId(),
+                createObjectiveAlignment);
+
+        createObjectiveAlignment = (ObjectiveAlignment) recreatedAlignment;
+
+        assertNotNull(recreatedAlignment.getId());
+        assertEquals(4L, createObjectiveAlignment.getAlignmentTarget().getId());
+        assertEquals("Build a company culture that kills the competition.",
+                createObjectiveAlignment.getAlignmentTarget().getTitle());
+
+        // Should delete the old Alignment
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> alignmentPersistenceService.findById(alignmentId));
+
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", "200")));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+
+        // delete re-created Alignment in tearDown()
+        createdAlignment = recreatedAlignment;
+    }
+
+    @Test
+    void recreateEntityShouldUpdateAlignmentWithTypeChange() {
+        Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").withState(DRAFT).build();
+        Objective objective2 = Objective.Builder.builder().withId(8L).withTitle("Objective 2").withState(DRAFT).build();
+        KeyResult keyResult = KeyResultMetric.Builder.builder().withId(10L)
+                .withTitle("Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten").build();
+        ObjectiveAlignment objectiveALignment = ObjectiveAlignment.Builder.builder().withAlignedObjective(objective1)
+                .withTargetObjective(objective2).build();
+
+        createdAlignment = alignmentPersistenceService.save(objectiveALignment);
+
+        KeyResultAlignment keyResultAlignment = KeyResultAlignment.Builder.builder().withId(createdAlignment.getId())
+                .withAlignedObjective(objective1).withTargetKeyResult(keyResult).build();
+
+        Alignment recreatedAlignment = alignmentPersistenceService.recreateEntity(keyResultAlignment.getId(),
+                keyResultAlignment);
+
+        KeyResultAlignment returnedKeyResultAlignment = (KeyResultAlignment) recreatedAlignment;
+
+        assertNotNull(recreatedAlignment.getId());
+        assertEquals(createdAlignment.getAlignedObjective().getId(), recreatedAlignment.getAlignedObjective().getId());
+        assertEquals("Im Durchschnitt soll die Lautstärke 60dB nicht überschreiten",
+                returnedKeyResultAlignment.getAlignmentTarget().getTitle());
+
+        Long alignmentId = createdAlignment.getId();
+        // Should delete the old Alignment
+        OkrResponseStatusException exception = assertThrows(OkrResponseStatusException.class,
+                () -> alignmentPersistenceService.findById(alignmentId));
+
+        List<ErrorDto> expectedErrors = List.of(ErrorDto.of("MODEL_WITH_ID_NOT_FOUND", List.of("Alignment", 200L)));
+
+        assertEquals(NOT_FOUND, exception.getStatusCode());
+        assertThat(expectedErrors).hasSameElementsAs(exception.getErrors());
+        assertTrue(TestHelper.getAllErrorKeys(expectedErrors).contains(exception.getReason()));
+
+        // delete re-created Alignment in tearDown()
+        createdAlignment = recreatedAlignment;
     }
 
     private void assertAlignment(Alignment alignment) {

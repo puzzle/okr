@@ -1,5 +1,6 @@
 package ch.puzzle.okr.controller;
 
+import ch.puzzle.okr.dto.ObjectiveAlignmentsDto;
 import ch.puzzle.okr.dto.ObjectiveDto;
 import ch.puzzle.okr.mapper.ObjectiveMapper;
 import ch.puzzle.okr.models.Objective;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.HttpStatus.IM_USED;
 import static org.springframework.http.HttpStatus.OK;
@@ -40,6 +43,19 @@ public class ObjectiveController {
             @Parameter(description = "The ID for getting an Objective.", required = true) @PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectiveMapper.toDto(objectiveAuthorizationService.getEntityById(id)));
+    }
+
+    @Operation(summary = "Get Alignment possibilities", description = "Get all possibilities to create an Alignment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returned all Alignment possibilities for an Objective", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = ObjectiveAlignmentsDto.class)) }),
+            @ApiResponse(responseCode = "401", description = "Not authorized to get Alignment possibilities", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Did not find any possibilities to create an Alignment", content = @Content) })
+    @GetMapping("/alignmentPossibilities/{quarterId}")
+    public ResponseEntity<List<ObjectiveAlignmentsDto>> getAlignmentPossibilities(
+            @Parameter(description = "The Quarter ID for getting Alignment possibilities.", required = true) @PathVariable Long quarterId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(objectiveAuthorizationService.getAlignmentPossibilities(quarterId));
     }
 
     @Operation(summary = "Delete Objective by ID", description = "Delete Objective by ID")

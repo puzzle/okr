@@ -52,6 +52,7 @@ public class Objective implements WriteableInterface {
     private User modifiedBy;
 
     private transient boolean writeable;
+    private transient String alignedEntityId;
 
     public Objective() {
     }
@@ -68,6 +69,7 @@ public class Objective implements WriteableInterface {
         setState(builder.state);
         setCreatedOn(builder.createdOn);
         setModifiedBy(builder.modifiedBy);
+        setAlignedEntityId(builder.alignedEntityId);
     }
 
     public Long getId() {
@@ -160,12 +162,20 @@ public class Objective implements WriteableInterface {
         this.writeable = writeable;
     }
 
+    public String getAlignedEntityId() {
+        return alignedEntityId;
+    }
+
+    public void setAlignedEntityId(String alignedEntityId) {
+        this.alignedEntityId = alignedEntityId;
+    }
+
     @Override
     public String toString() {
         return "Objective{" + "id=" + id + ", version=" + version + ", title='" + title + '\'' + ", createdBy="
                 + createdBy + ", team=" + team + ", quarter=" + quarter + ", description='" + description + '\''
                 + ", modifiedOn=" + modifiedOn + ", state=" + state + ", createdOn=" + createdOn + ", modifiedBy="
-                + modifiedBy + ", writeable=" + writeable + '\'' + '}';
+                + modifiedBy + ", writeable=" + writeable + ", alignedEntityId=" + alignedEntityId + '\'' + '}';
     }
 
     @Override
@@ -201,6 +211,7 @@ public class Objective implements WriteableInterface {
         private State state;
         private LocalDateTime createdOn;
         private User modifiedBy;
+        private String alignedEntityId;
 
         private Builder() {
         }
@@ -261,6 +272,11 @@ public class Objective implements WriteableInterface {
 
         public Builder withModifiedBy(User modifiedBy) {
             this.modifiedBy = modifiedBy;
+            return this;
+        }
+
+        public Builder withAlignedEntityId(String alignedEntityId) {
+            this.alignedEntityId = alignedEntityId;
             return this;
         }
 

@@ -248,7 +248,7 @@ class ObjectiveBusinessServiceTest {
         when(keyResultBusinessService.getAllKeyResultsByObjective(savedObjective.getId())).thenReturn(keyResultList);
         when(keyResultBusinessService.hasKeyResultAnyCheckIns(any())).thenReturn(hasKeyResultAnyCheckIns);
         when(objectivePersistenceService.save(changedObjective)).thenReturn(updatedObjective);
-
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn(null);
         boolean isImUsed = objectiveBusinessService.isImUsed(changedObjective);
         Objective updatedEntity = objectiveBusinessService.updateEntity(changedObjective.getId(), changedObjective,
                 authorizationUser);
@@ -258,7 +258,7 @@ class ObjectiveBusinessServiceTest {
                 updatedEntity.getQuarter());
         assertEquals(changedObjective.getDescription(), updatedEntity.getDescription());
         assertEquals(changedObjective.getTitle(), updatedEntity.getTitle());
-        verify(alignmentBusinessService, times(1)).updateEntity(updatedEntity.getId(), updatedEntity);
+        verify(alignmentBusinessService, times(0)).updateEntity(any(), any());
     }
 
     @Test

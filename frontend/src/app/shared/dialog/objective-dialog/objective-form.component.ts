@@ -185,6 +185,7 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       state: 'DRAFT' as State,
       teamId: 0,
       quarterId: 0,
+      alignedEntityId: null,
     } as Objective;
   }
 
@@ -250,12 +251,14 @@ export class ObjectiveFormComponent implements OnInit, OnDestroy {
       if (this.objective?.id) {
         value = value.filter((item) => !(item.objectiveId == this.objective!.id));
       }
-      let noSelectOption: AlignmentPossibility = {
-        objectiveId: null,
-        objectiveTitle: 'Bitte wählen',
-        keyResultAlignmentsDtos: [],
-      };
-      value.unshift(noSelectOption);
+      if (value[0].objectiveTitle != 'Bitte wählen') {
+        let noSelectOption: AlignmentPossibility = {
+          objectiveId: null,
+          objectiveTitle: 'Bitte wählen',
+          keyResultAlignmentsDtos: [],
+        };
+        value.unshift(noSelectOption);
+      }
       this.alignmentPossibilities$ = of(value);
     });
   }

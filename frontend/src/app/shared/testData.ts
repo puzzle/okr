@@ -367,6 +367,19 @@ export const objective: Objective = {
   alignedEntityId: null,
 };
 
+export const objectiveWithAlignment: Objective = {
+  id: 5,
+  version: 1,
+  title: 'title',
+  description: 'description',
+  teamId: 2,
+  quarterId: 2,
+  quarterLabel: 'GJ 22/23-Q2',
+  state: State.SUCCESSFUL,
+  writeable: true,
+  alignedEntityId: 'O6',
+};
+
 export const objectiveWriteableFalse: Objective = {
   id: 6,
   version: 1,

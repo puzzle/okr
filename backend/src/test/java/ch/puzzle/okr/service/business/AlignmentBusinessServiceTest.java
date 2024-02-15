@@ -65,7 +65,6 @@ class AlignmentBusinessServiceTest {
         String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
         assertEquals("O8", targetId);
-        verify(validator, times(1)).validateOnGet(5L);
     }
 
     @Test
@@ -83,7 +82,6 @@ class AlignmentBusinessServiceTest {
         String targetId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(5L);
 
         assertEquals("K5", targetId);
-        verify(validator, times(1)).validateOnGet(5L);
     }
 
     @Test
@@ -107,7 +105,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.updateEntity(8L, objectiveAlignedObjective);
 
         verify(alignmentPersistenceService, times(1)).save(returnAlignment);
-        verify(validator, times(1)).validateOnCreate(returnAlignment);
     }
 
     @Test

@@ -51,7 +51,7 @@ class ObjectiveBusinessServiceTest {
     private final Quarter quarter = Quarter.Builder.builder().withId(1L).withLabel("GJ 22/23-Q2").build();
     private final User user = User.Builder.builder().withId(1L).withFirstname("Bob").withLastname("Kaufmann")
             .withUsername("bkaufmann").withEmail("kaufmann@puzzle.ch").build();
-    private final Objective objective = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
+    private final Objective objective1 = Objective.Builder.builder().withId(5L).withTitle("Objective 1").build();
     private final Objective fullObjective = Objective.Builder.builder().withTitle("FullObjective1").withCreatedBy(user)
             .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
@@ -59,13 +59,13 @@ class ObjectiveBusinessServiceTest {
             .withTeam(team1).withQuarter(quarter).withDescription("This is our description")
             .withModifiedOn(LocalDateTime.MAX).build();
     private final KeyResult ordinalKeyResult = KeyResultOrdinal.Builder.builder().withCommitZone("Baum")
-            .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective).build();
+            .withStretchZone("Wald").withId(5L).withTitle("Keyresult Ordinal").withObjective(objective1).build();
     private final List<KeyResult> keyResultList = List.of(ordinalKeyResult, ordinalKeyResult, ordinalKeyResult);
-    private final List<Objective> objectiveList = List.of(objective, fullObjective, fullObjective2);
+    private final List<Objective> objectiveList = List.of(objective1, fullObjective, fullObjective2);
 
     @Test
     void getOneObjective() {
-        when(objectivePersistenceService.findById(5L)).thenReturn(objective);
+        when(objectivePersistenceService.findById(5L)).thenReturn(objective1);
 
         Objective realObjective = objectiveBusinessService.getEntityById(5L);
 
@@ -75,12 +75,12 @@ class ObjectiveBusinessServiceTest {
 
     @Test
     void getEntitiesByTeamId() {
-        when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective));
+        when(objectivePersistenceService.findObjectiveByTeamId(anyLong())).thenReturn(List.of(objective1));
 
         List<Objective> entities = objectiveBusinessService.getEntitiesByTeamId(5L);
 
         verify(alignmentBusinessService, times(1)).getTargetIdByAlignedObjectiveId(5L);
-        assertThat(entities).hasSameElementsAs(List.of(objective));
+        assertThat(entities).hasSameElementsAs(List.of(objective1));
     }
 
     @Test
@@ -108,6 +108,94 @@ class ObjectiveBusinessServiceTest {
         verify(alignmentBusinessService, times(0)).createEntity(any());
         assertEquals(DRAFT, objective.getState());
         assertEquals(user, objective.getCreatedBy());
+        assertNull(objective.getCreatedOn());
+    }
+
+    @Test
+    void shouldUpdateAnObjective() {
+        Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(DRAFT).build());
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn(null);
+        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        doNothing().when(objective).setCreatedOn(any());
+
+        Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
+                authorizationUser);
+
+        verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(0)).updateEntity(any(), any());
+        assertEquals(objective.getTitle(), updatedObjective.getTitle());
+        assertEquals(objective.getTeam(), updatedObjective.getTeam());
+        assertNull(objective.getCreatedOn());
+    }
+
+    @Test
+    void shouldUpdateAnObjectiveWithAlignment() {
+        Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(DRAFT).withAlignedEntityId("O53").build());
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn("O41");
+        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        doNothing().when(objective).setCreatedOn(any());
+
+        Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
+                authorizationUser);
+
+        objective.setAlignedEntityId("O53");
+
+        verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(1)).updateEntity(objective.getId(), objective);
+        assertEquals(objective.getTitle(), updatedObjective.getTitle());
+        assertEquals(objective.getTeam(), updatedObjective.getTeam());
+        assertNull(objective.getCreatedOn());
+    }
+
+    @Test
+    void shouldUpdateAnObjectiveWithANewAlignment() {
+        Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(DRAFT).withAlignedEntityId("O53").build());
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn(null);
+        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        doNothing().when(objective).setCreatedOn(any());
+
+        Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
+                authorizationUser);
+
+        objective.setAlignedEntityId("O53");
+
+        verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(1)).updateEntity(objective.getId(), objective);
+        assertEquals(objective.getTitle(), updatedObjective.getTitle());
+        assertEquals(objective.getTeam(), updatedObjective.getTeam());
+        assertNull(objective.getCreatedOn());
+    }
+
+    @Test
+    void shouldUpdateAnObjectiveWithAlignmentDelete() {
+        Objective objective = spy(Objective.Builder.builder().withId(3L).withTitle("Received Objective").withTeam(team1)
+                .withQuarter(quarter).withDescription("The description").withModifiedOn(null).withModifiedBy(null)
+                .withState(DRAFT).build());
+
+        when(objectivePersistenceService.findById(anyLong())).thenReturn(objective);
+        when(alignmentBusinessService.getTargetIdByAlignedObjectiveId(any())).thenReturn("O52");
+        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        doNothing().when(objective).setCreatedOn(any());
+
+        Objective updatedObjective = objectiveBusinessService.updateEntity(objective.getId(), objective,
+                authorizationUser);
+
+        verify(objectivePersistenceService, times(1)).save(objective);
+        verify(alignmentBusinessService, times(1)).updateEntity(objective.getId(), objective);
+        assertEquals(objective.getTitle(), updatedObjective.getTitle());
+        assertEquals(objective.getTeam(), updatedObjective.getTeam());
         assertNull(objective.getCreatedOn());
     }
 
@@ -192,10 +280,10 @@ class ObjectiveBusinessServiceTest {
         KeyResult keyResultMetric2 = KeyResultMetric.Builder.builder().withTitle("Metric2").withUnit(Unit.CHF).build();
         List<KeyResult> keyResults = List.of(keyResultOrdinal, keyResultOrdinal2, keyResultMetric, keyResultMetric2);
 
-        when(objectivePersistenceService.save(any())).thenReturn(objective);
+        when(objectivePersistenceService.save(any())).thenReturn(objective1);
         when(keyResultBusinessService.getAllKeyResultsByObjective(anyLong())).thenReturn(keyResults);
 
-        objectiveBusinessService.duplicateObjective(objective.getId(), objective, authorizationUser);
+        objectiveBusinessService.duplicateObjective(objective1.getId(), objective1, authorizationUser);
         verify(keyResultBusinessService, times(4)).createEntity(any(), any());
         verify(objectiveBusinessService, times(1)).createEntity(any(), any());
     }

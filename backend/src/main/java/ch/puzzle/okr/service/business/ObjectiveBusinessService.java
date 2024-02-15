@@ -101,8 +101,12 @@ public class ObjectiveBusinessService implements BusinessServiceInterface<Long, 
         logger.debug("quarter has changed and is{}changeable, {}", not, objective);
         validator.validateOnUpdate(id, objective);
         savedObjective = objectivePersistenceService.save(objective);
-        savedObjective.setAlignedEntityId(objective.getAlignedEntityId());
-        alignmentBusinessService.updateEntity(id, savedObjective);
+        String targetAlignmentId = alignmentBusinessService.getTargetIdByAlignedObjectiveId(savedObjective.getId());
+        if ((objective.getAlignedEntityId() != null)
+                || objective.getAlignedEntityId() == null && targetAlignmentId != null) {
+            savedObjective.setAlignedEntityId(objective.getAlignedEntityId());
+            alignmentBusinessService.updateEntity(id, savedObjective);
+        }
         return savedObjective;
     }
 

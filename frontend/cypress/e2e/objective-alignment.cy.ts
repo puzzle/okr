@@ -101,24 +101,26 @@ describe('OKR Objective Alignment e2e tests', () => {
     cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
   });
 
-  it.only(`Alignment Possibilites change when quarter change`, () => {
+  it(`Alignment Possibilites change when quarter change`, () => {
     cy.visit('/?quarter=3');
 
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('We can link later on this');
     cy.getByTestId('safe').click();
 
-    cy.visit('/?quarter=2');
+    cy.getByTestId('add-objective').first().click();
+    cy.getByTestId('title').first().clear().type('There is my other alignment');
+    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
+
+    cy.get('select#alignment').select(1);
+    cy.get('select#alignment option:selected').should('contain.text', 'O - We can link later on this');
+
+    cy.getByTestId('cancel').click();
+
+    cy.visit('/?quarter=4');
 
     cy.getByTestId('add-objective').first().click();
     cy.getByTestId('title').first().clear().type('Quarter change objective');
-    cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment').select(1);
-
-    cy.get('select#alignment option:selected').should(
-      'contain.text',
-      'O - Wir wollen die Kundenzufriedenheit steigern',
-    );
 
     cy.get('select#quarter').select('GJ 22/23-Q3');
     cy.getByTestId('title').first().clear().type('A new title');

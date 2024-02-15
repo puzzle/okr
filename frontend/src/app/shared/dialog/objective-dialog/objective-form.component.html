@@ -53,7 +53,7 @@
           <div class="d-flex flex-column gap-2 col-6">
             <label class="text-black" for="quarter">Quartal</label>
             <select
-              class="custom-select bg-white w-75"
+              class="custom-select bg-white select-width"
               formControlName="quarter"
               id="quarter"
               (change)="updateAlignments()"
@@ -70,7 +70,7 @@
           <div class="d-flex flex-column gap-2 col-6">
             <label class="text-black" for="alignment">Bezug (optional)</label>
             <select
-              class="custom-select bg-white w-75"
+              class="custom-select bg-white select-width"
               formControlName="alignment"
               id="alignment"
               [attr.data-testId]="'alignmentSelect'"

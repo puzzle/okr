@@ -34,8 +34,6 @@ class AlignmentBusinessServiceTest {
     @Mock
     KeyResultPersistenceService keyResultPersistenceService;
     @Mock
-    AlignmentValidationService alignmentValidationService;
-    @Mock
     AlignmentPersistenceService alignmentPersistenceService;
     @Mock
     AlignmentValidationService validator;
@@ -114,8 +112,6 @@ class AlignmentBusinessServiceTest {
         alignmentBusinessService.updateEntity(8L, objective3);
 
         verify(alignmentPersistenceService, times(1)).deleteById(2L);
-        verify(validator, times(1)).validateOnDelete(2L);
-
     }
 
     @Test

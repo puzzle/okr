@@ -43,24 +43,24 @@ public class AlignmentValidationService
         validate(model);
     }
 
-    private static void throwExceptionWhenAlignedObjectIsNull(Alignment model) {
+    private void throwExceptionWhenAlignedObjectIsNull(Alignment model) {
         if (model.getAlignedObjective() == null) {
             throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                    List.of("alignedObjectiveId", model.getAlignedObjective().getId()));
+                    List.of("alignedObjectiveId"));
         } else if (model instanceof ObjectiveAlignment objectiveAlignment) {
             if (objectiveAlignment.getAlignmentTarget() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                        List.of("targetObjectiveId", objectiveAlignment.getAlignmentTarget().getId()));
+                        List.of("targetObjectiveId", objectiveAlignment.getAlignedObjective().getId()));
             }
         } else if (model instanceof KeyResultAlignment keyResultAlignment) {
             if (keyResultAlignment.getAlignmentTarget() == null) {
                 throw new OkrResponseStatusException(HttpStatus.BAD_REQUEST, ErrorKey.ATTRIBUTE_NULL,
-                        List.of("targetKeyResultId", keyResultAlignment.getAlignmentTarget().getId()));
+                        List.of("targetKeyResultId", keyResultAlignment.getAlignedObjective().getId()));
             }
         }
     }
 
-    private static void throwExceptionWhenAlignedIdIsSameAsTargetId(Alignment model) {
+    private void throwExceptionWhenAlignedIdIsSameAsTargetId(Alignment model) {
         if (model instanceof ObjectiveAlignment objectiveAlignment) {
             if (Objects.equals(objectiveAlignment.getAlignedObjective().getId(),
                     objectiveAlignment.getAlignmentTarget().getId())) {

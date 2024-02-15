@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ObjectiveService } from '../../../services/objective.service';
-import { marketingTeamWriteable, objective, quarter, quarterList } from '../../testData';
+import { marketingTeamWriteable, objective, objectiveWithAlignment, quarter, quarterList } from '../../testData';
 import { Observable, of } from 'rxjs';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
@@ -36,6 +36,7 @@ let objectiveService = {
   createObjective: jest.fn(),
   updateObjective: jest.fn(),
   deleteObjective: jest.fn(),
+  getAlignmentPossibilities: jest.fn(),
 };
 
 interface MatDialogDataInterface {
@@ -83,6 +84,24 @@ const mockActivatedRoute = {
   },
 };
 
+const alignmentPossibilities = [
+  {
+    objectiveId: 1003,
+    objectiveTitle: 'O - Test Objective',
+    keyResultAlignmentsDtos: [],
+  },
+  {
+    objectiveId: 1005,
+    objectiveTitle: 'O - Company will grow',
+    keyResultAlignmentsDtos: [
+      {
+        keyResultId: 6,
+        keyResultTitle: 'K - New structure',
+      },
+    ],
+  },
+];
+
 describe('ObjectiveDialogComponent', () => {
   let component: ObjectiveFormComponent;
   let fixture: ComponentFixture<ObjectiveFormComponent>;
@@ -117,6 +136,7 @@ describe('ObjectiveDialogComponent', () => {
           { provide: TeamService, useValue: teamService },
         ],
       });
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
@@ -172,23 +192,24 @@ describe('ObjectiveDialogComponent', () => {
         objectiveService.createObjective.mockReturnValue(of({ ...objective, state: state }));
         component.onSubmit(state);
 
-        expect(dialogMock.close).toHaveBeenCalledWith({
-          addKeyResult: createKeyresults,
-          delete: false,
-          objective: {
-            description: description,
-            id: 5,
-            version: 1,
-            quarterId: 2,
-            quarterLabel: 'GJ 22/23-Q2',
-            state: State[state as keyof typeof State],
-            teamId: 2,
-            title: title,
-            writeable: true,
-          },
-          teamId: 1,
-        });
-      }),
+      expect(dialogMock.close).toHaveBeenCalledWith({
+        addKeyResult: createKeyresults,
+        delete: false,
+        objective: {
+          description: description,
+          id: 5,
+          version: 1,
+          quarterId: 2,
+          quarterLabel: 'GJ 22/23-Q2',
+          state: State[state as keyof typeof State],
+          teamId: 2,
+          title: title,
+          writeable: true,
+          alignedEntityId: null,
+        },
+        teamId: 1,
+      });
+    }),
     );
 
     it('should create objective', () => {
@@ -198,7 +219,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 0,
         team: 0,
-        relation: 0,
+        alignment: '',
         createKeyResults: false,
       });
 
@@ -214,6 +235,36 @@ describe('ObjectiveDialogComponent', () => {
         title: 'Test title',
         quarterId: 0,
         teamId: 0,
+        version: undefined,
+        alignedEntityId: '',
+      });
+    });
+
+    it('should create objective with alignment', () => {
+      matDataMock.objective.objectiveId = undefined;
+      component.objectiveForm.setValue({
+        title: 'Test title with alignment',
+        description: 'Test description',
+        quarter: 0,
+        team: 0,
+        alignment: 'K37',
+        createKeyResults: false,
+      });
+
+      objectiveService.createObjective.mockReturnValue(of({ ...objective, state: 'DRAFT' }));
+      component.onSubmit('DRAFT');
+
+      fixture.detectChanges();
+
+      expect(objectiveService.createObjective).toHaveBeenCalledWith({
+        description: 'Test description',
+        id: undefined,
+        state: 'DRAFT',
+        title: 'Test title with alignment',
+        quarterId: 0,
+        teamId: 0,
+        version: undefined,
+        alignedEntityId: 'K37',
       });
     });
 
@@ -224,7 +275,7 @@ describe('ObjectiveDialogComponent', () => {
         description: 'Test description',
         quarter: 1,
         team: 1,
-        relation: 0,
+        alignment: '',
         createKeyResults: false,
       });
 
@@ -240,6 +291,36 @@ describe('ObjectiveDialogComponent', () => {
         title: 'Test title',
         quarterId: 1,
         teamId: 1,
+        version: undefined,
+        alignedEntityId: '',
+      });
+    });
+
+    it('should update objective with alignment', () => {
+      matDataMock.objective.objectiveId = 1;
+      component.objectiveForm.setValue({
+        title: 'Test title with alignment',
+        description: 'Test description',
+        quarter: 1,
+        team: 1,
+        alignment: 'K37',
+        createKeyResults: false,
+      });
+
+      objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));
+      component.onSubmit('DRAFT');
+
+      fixture.detectChanges();
+
+      expect(objectiveService.updateObjective).toHaveBeenCalledWith({
+        description: 'Test description',
+        id: 1,
+        state: 'DRAFT',
+        title: 'Test title with alignment',
+        quarterId: 1,
+        teamId: 1,
+        version: undefined,
+        alignedEntityId: 'K37',
       });
     });
 
@@ -268,6 +349,20 @@ describe('ObjectiveDialogComponent', () => {
       expect(rawFormValue.description).toBe(objective.description);
       expect(rawFormValue.team).toBe(objective.teamId);
       expect(rawFormValue.quarter).toBe(objective.quarterId);
+    });
+
+    it('should load default values into form onInit with defined objectiveId with an alignment', async () => {
+      matDataMock.objective.objectiveId = 1;
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl('/?quarter=2');
+      objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+      component.ngOnInit();
+      const rawFormValue = component.objectiveForm.getRawValue();
+      expect(rawFormValue.title).toBe(objectiveWithAlignment.title);
+      expect(rawFormValue.description).toBe(objectiveWithAlignment.description);
+      expect(rawFormValue.team).toBe(objectiveWithAlignment.teamId);
+      expect(rawFormValue.quarter).toBe(objectiveWithAlignment.quarterId);
+      expect(rawFormValue.alignment).toBe(objectiveWithAlignment.alignedEntityId);
     });
 
     it('should return correct value if allowed to save to backlog', async () => {
@@ -344,6 +439,80 @@ describe('ObjectiveDialogComponent', () => {
       fixture.detectChanges();
       expect(component.allowedOption(quarter)).toBeTruthy();
     });
+
+    it('should load correct alignment possibilities', async () => {
+      let generatedPossibilities = [
+        {
+          objectiveId: null,
+          objectiveTitle: 'Bitte wählen',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1003,
+          objectiveTitle: 'O - Test Objective',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1005,
+          objectiveTitle: 'O - Company will grow',
+          keyResultAlignmentsDtos: [
+            {
+              keyResultId: 6,
+              keyResultTitle: 'K - New structure',
+            },
+          ],
+        },
+      ];
+
+      let componentValue = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        componentValue = value;
+      });
+      expect(componentValue).toStrictEqual(generatedPossibilities);
+    });
+
+    it('should not load current Objective to alignment possibilities', async () => {
+      matDataMock.objective.objectiveId = 1;
+      component.objective = objectiveWithAlignment;
+      const routerHarness = await RouterTestingHarness.create();
+      await routerHarness.navigateByUrl('/?quarter=2');
+      objectiveService.getFullObjective.mockReturnValue(of(objectiveWithAlignment));
+      component.ngOnInit();
+
+      let generatedPossibilities = [
+        {
+          objectiveId: null,
+          objectiveTitle: 'Bitte wählen',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1003,
+          objectiveTitle: 'O - Test Objective',
+          keyResultAlignmentsDtos: [],
+        },
+        {
+          objectiveId: 1005,
+          objectiveTitle: 'O - Company will grow',
+          keyResultAlignmentsDtos: [
+            {
+              keyResultId: 6,
+              keyResultTitle: 'K - New structure',
+            },
+          ],
+        },
+      ];
+
+      let componentValue = null;
+      component.alignmentPossibilities$.subscribe((value) => {
+        componentValue = value;
+      });
+      expect(componentValue).toStrictEqual(generatedPossibilities);
+    });
+
+    it('should call ObjectiveService when updating Alignments', async () => {
+      component.updateAlignments();
+      expect(objectiveService.getAlignmentPossibilities).toHaveBeenCalled();
+    });
   });
 
   describe('Backlog quarter', () => {
@@ -376,6 +545,7 @@ describe('ObjectiveDialogComponent', () => {
           { provide: ActivatedRoute, useValue: mockActivatedRoute },
         ],
       });
+      jest.spyOn(objectiveService, 'getAlignmentPossibilities').mockReturnValue(of(alignmentPossibilities));
       fixture = TestBed.createComponent(ObjectiveFormComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();

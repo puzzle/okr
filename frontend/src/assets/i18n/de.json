@@ -91,6 +91,8 @@
     "NOT_AUTHORIZED_TO_DELETE": "Du bist nicht autorisiert, um dieses {0} zu löschen.",
     "TOKEN_NULL": "Das erhaltene Token ist null.",
     "ILLEGAL_CHANGE_OBJECTIVE_QUARTER": "Element kann nicht in ein anderes Quartal verlegt werden.",
+    "NOT_LINK_YOURSELF": "Das Objective kann nicht auf sich selbst zeigen.",
+    "ALIGNMENT_ALREADY_EXISTS": "Es existiert bereits ein Alignment ausgehend vom Objective mit der ID {1}."
     "TRIED_TO_DELETE_LAST_ADMIN": "Der letzte Administrator eines Teams kann nicht entfernt werden",
     "TRIED_TO_REMOVE_LAST_OKR_CHAMPION": "Der letzte OKR Champion kann nicht entfernt werden"
   },

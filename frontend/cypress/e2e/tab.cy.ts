@@ -213,6 +213,7 @@ describe('Tab workflow tests', () => {
       editInputFields('Edited by Cypress too');
       cy.tabForward();
       cy.tabForward();
+      cy.tabForward();
       cy.realPress('Enter');
       cy.contains('Edited by Cypress');
     });
@@ -230,6 +231,7 @@ describe('Tab workflow tests', () => {
       cy.tabForward();
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
+      cy.tabForward();
       cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');

@@ -112,9 +112,10 @@ public class AlignmentBusinessService {
 
     public void deleteAlignmentByObjectiveId(Long objectiveId) {
         Alignment alignment = alignmentPersistenceService.findByAlignedObjectiveId(objectiveId);
-        alignmentValidationService.validateOnDelete(alignment.getId());
-        alignmentPersistenceService.deleteById(alignment.getId());
-
+        if (alignment != null) {
+            alignmentValidationService.validateOnDelete(alignment.getId());
+            alignmentPersistenceService.deleteById(alignment.getId());
+        }
         List<ObjectiveAlignment> alignmentList = alignmentPersistenceService.findByObjectiveAlignmentId(objectiveId);
         alignmentList.forEach(objectiveAlignment -> {
             alignmentValidationService.validateOnDelete(objectiveAlignment.getId());

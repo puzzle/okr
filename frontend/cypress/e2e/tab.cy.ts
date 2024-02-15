@@ -234,6 +234,7 @@ describe('Tab workflow tests', () => {
       cy.focused().contains('GJ');
       cy.realPress('ArrowDown');
       cy.tabForward();
+      cy.tabForward();
       cy.focused().contains('Speichern');
       cy.realPress('Enter');
       cy.wait(500);

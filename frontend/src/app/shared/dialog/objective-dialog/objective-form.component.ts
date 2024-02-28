@@ -244,7 +244,7 @@ export class ObjectiveFormComponent implements OnInit {
       if (this.objective?.id) {
         value = value.filter((item) => !(item.objectiveId == this.objective!.id));
       }
-      if (value[0].objectiveTitle != 'Bitte wählen') {
+      if (value.length == 0 || value[0].objectiveTitle != 'Bitte wählen') {
         let noSelectOption: AlignmentPossibility = {
           objectiveId: null,
           objectiveTitle: 'Bitte wählen',

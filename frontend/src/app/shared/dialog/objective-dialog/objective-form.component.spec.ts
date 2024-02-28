@@ -281,7 +281,9 @@ describe('ObjectiveDialogComponent', () => {
     });
 
     it('should update objective with alignment', () => {
+      objectiveService.updateObjective.mockReset();
       matDataMock.objective.objectiveId = 1;
+      component.state = 'DRAFT';
       component.objectiveForm.setValue({
         title: 'Test title with alignment',
         description: 'Test description',
@@ -292,9 +294,9 @@ describe('ObjectiveDialogComponent', () => {
       });
 
       objectiveService.updateObjective.mockReturnValue(of({ ...objective, state: 'ONGOING' }));
-      component.onSubmit('DRAFT');
-
       fixture.detectChanges();
+
+      component.onSubmit('DRAFT');
 
       expect(objectiveService.updateObjective).toHaveBeenCalledWith({
         description: 'Test description',

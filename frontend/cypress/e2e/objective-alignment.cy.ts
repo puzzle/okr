@@ -11,7 +11,13 @@ describe('OKR Objective Alignment e2e tests', () => {
 
     cy.getByTestId('title').first().clear().type('Objective with new alignment');
     cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment').select('K - Steigern der URS um 25%');
+    cy.get('select#alignment')
+      .contains('K - Steigern der URS um 25%')
+      .then(($option) => {
+        const optionValue = $option.attr('value');
+        cy.get('select#alignment').select(optionValue!);
+      });
+
     cy.getByTestId('safe').click();
 
     cy.contains('Objective with new alignment');
@@ -33,7 +39,12 @@ describe('OKR Objective Alignment e2e tests', () => {
 
     cy.getByTestId('title').first().clear().type('We change alignment of this Objective');
     cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment').select('K - Steigern der URS um 25%');
+    cy.get('select#alignment')
+      .contains('K - Steigern der URS um 25%')
+      .then(($option) => {
+        const optionValue = $option.attr('value');
+        cy.get('select#alignment').select(optionValue!);
+      });
     cy.getByTestId('safe').click();
 
     cy.contains('We change alignment of this Objective');
@@ -47,7 +58,12 @@ describe('OKR Objective Alignment e2e tests', () => {
       .contains('Objective bearbeiten')
       .click();
 
-    cy.get('select#alignment').select('K - Antwortzeit für Supportanfragen um 33% verkürzen.');
+    cy.get('select#alignment')
+      .contains('K - Antwortzeit für Supportanfragen um 33% verkürzen.')
+      .then(($option) => {
+        const optionValue = $option.attr('value');
+        cy.get('select#alignment').select(optionValue!);
+      });
     cy.getByTestId('safe').click();
 
     cy.getByTestId('objective')
@@ -71,7 +87,12 @@ describe('OKR Objective Alignment e2e tests', () => {
 
     cy.getByTestId('title').first().clear().type('We delete the alignment');
     cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
-    cy.get('select#alignment').select('K - Steigern der URS um 25%');
+    cy.get('select#alignment')
+      .contains('K - Steigern der URS um 25%')
+      .then(($option) => {
+        const optionValue = $option.attr('value');
+        cy.get('select#alignment').select(optionValue!);
+      });
     cy.getByTestId('safe').click();
 
     cy.contains('We delete the alignment');
@@ -113,18 +134,27 @@ describe('OKR Objective Alignment e2e tests', () => {
     cy.get('select#alignment option:selected').should('contain.text', 'Bitte wählen');
 
     cy.get('select#alignment').select(1);
-    cy.get('select#alignment option:selected').should('contain.text', 'O - We can link later on this');
 
-    cy.getByTestId('cancel').click();
+    cy.get('select#alignment option:selected').then(($select) => {
+      const selectValue = $select.text();
+      cy.getByTestId('quarterSelect').select('GJ 23/24-Q1');
+      cy.getByTestId('title').first().clear().type('There is our other alignment');
 
-    cy.visit('/?quarter=4');
+      cy.get('select#alignment').select(1);
 
-    cy.getByTestId('add-objective').first().click();
-    cy.getByTestId('title').first().clear().type('Quarter change objective');
+      cy.get('select#alignment option:selected').should('not.contain.text', selectValue);
+      cy.getByTestId('cancel').click();
 
-    cy.get('select#quarter').select('GJ 22/23-Q3');
-    cy.getByTestId('title').first().clear().type('A new title');
-    cy.get('select#alignment').select(1);
-    cy.get('select#alignment option:selected').should('contain.text', 'O - We can link later on this');
+      cy.visit('/?quarter=4');
+
+      cy.getByTestId('add-objective').first().click();
+      cy.getByTestId('title').first().clear().type('Quarter change objective');
+
+      cy.get('select#quarter').select('GJ 22/23-Q3');
+      cy.getByTestId('title').first().clear().type('A new title');
+      cy.get('select#alignment').select(1);
+
+      cy.get('select#alignment option:selected').should('contain.text', selectValue);
+    });
   });
 });

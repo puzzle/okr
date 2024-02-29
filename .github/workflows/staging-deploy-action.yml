@@ -180,16 +180,23 @@ jobs:
         run: docker push ${{ needs.update-version.outputs.okr-docker-image}}
 
       - name: Install yq
+        shell: bash
+        env:
+          VERSION: v4.25.2
+          BINARY: yq_linux_amd64
         run: |
-          wget -q https://github.com/mikefarah/yq/releases/download/v4.25.2/yq_linux_amd64.tar.gz -O - |\
-          tar xz && mv yq_linux_amd64 /usr/local/bin/yq
+          wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
+          tar xz && mv ${BINARY} /usr/local/bin/yq
 
       - name: Update YAML file
+        shell: bash
+        env:
+          COMMITPREFIX: '[CTS]'
         run: |
           curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=main" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
           yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
           UPDATED_CONTENT=$(cat response.yaml)
-          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=[CTS] Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
+          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=$COMMITPREFIX Automated changes to ${{vars.FILEPATH_COMMIT}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest

@@ -186,19 +186,24 @@ jobs:
 
       - name: Update YAML file
         run: |
-          export GITLAB_API_URL=${{vars.TARGET_GITLAB_REPOSITORY}}
-          export GITLAB_FILEPATH=${{vars.GITLAB_FILEPATH}}
-          export NEWVALUE=${{ needs.update-version.outputs.okr-docker-image}}
-          export PROJECT_ACCESS_TOKEN=${{secrets.GITLAB_ACCESS_TOKEN}}
-          
           CURRENT_CONTENT=$(curl --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files?file_path=${{vars.GITLAB_FILEPATH}}&ref=main" | jq -r '.content')
-  
+          
           UPDATED_CONTENT=$(yq eval "${{vars.YAML_PATH}} = \"${{ needs.update-version.outputs.okr-docker-image}}\"" <<< "${CURRENT_CONTENT}")
-  
+          
           curl --request PUT --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" \
             --header "Content-Type: application/json" \
-            --data "{\"branch\": \"main\", \"commit_message\": \"[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}\", \"actions\": [{\"action\": \"update\", \"file_path\": \"${{vars.GITLAB_FILEPATH}}\", \"content\": \"${UPDATED_CONTENT}\"}]}" \
-               "${{vars.TARGET_GITLAB_REPOSITORY}}/commits"
+            --data "{
+              \"branch\": \"main\",
+              \"commit_message\": \"[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}\",
+              \"actions\": [
+                {
+                  \"action\": \"update\",
+                  \"file_path\": \"${{vars.GITLAB_FILEPATH}}\",
+                  \"content\": \"${UPDATED_CONTENT}\"
+                }
+              ]
+            }" \
+            "${{vars.TARGET_GITLAB_REPOSITORY}}/commits"
 
 #        env:
 #          NEWVALUE: ${{ needs.update-version.outputs.okr-docker-image}}
@@ -242,8 +247,8 @@ jobs:
 #          git commit -m "$COMMITPREFIX Automated changes to ${{ vars.GITLAB_FILEPATH }}" && \
 #          git push origin ${{ vars.TARGET_GITLAB_REFERENCE }}
 
-      - run: rm -rf ccy-repo
-        shell: bash
+#      - run: rm -rf ccy-repo
+#        shell: bash
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest

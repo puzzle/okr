@@ -188,7 +188,7 @@ jobs:
         run: |
           CURRENT_CONTENT=$(curl --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files?file_path=${{vars.GITLAB_FILEPATH}}&ref=main" | jq -r '.content')
           
-          UPDATED_CONTENT=$(yq eval "${{vars.YAML_PATH}} = \"${{ needs.update-version.outputs.okr-docker-image}}\"" <<< "${CURRENT_CONTENT}")
+          UPDATED_CONTENT=$(yq e "${{vars.YAML_PATH}} = \"${{ needs.update-version.outputs.okr-docker-image}}\"" <<< "${CURRENT_CONTENT}")
           
           curl --request PUT --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" \
             --header "Content-Type: application/json" \

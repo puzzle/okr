@@ -188,62 +188,11 @@ jobs:
         run: |
           curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=main" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
           
-          echo "$(cat response.yaml)"
-          
           yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
           
-          echo "$(cat response.yaml)"
-                    
-          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' \
-               --header "Content-Type: application/json" \
-               --data '{"branch": "main", "author_email": "actions@gitlab.com", "author_name": "GitLab Actions",
-                 "content": "$(cat response.yaml)", "commit_message": "[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}"}' \
-                 "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
-
-#        env:
-#          NEWVALUE: ${{ needs.update-version.outputs.okr-docker-image}}
-
-
-#      - name: Trigger Deployment Workflow with latest Version
-#        uses: actions/checkout@v4
-#        with:
-#          repository: ${{secrets.GITLAB_REMOTE_REPOSITORY}}
-#          ref: ${{ vars.TARGET_GITLAB_REFERENCE }}
-#          path: ccy-repo
-#          token: ${{secrets.VERSION_TOKEN}}
-#
-#      - name: Change Yaml
-#        shell: bash
-#        env:
-#          FILEPATH: ${{ vars.GITLAB_FILEPATH }}
-#          YAMLPATH: ${{ vars.YAML_PATH }}
-#          NEWVALUE: ${{ needs.update-version.outputs.okr-docker-image}}
-#          VERSION: v4.25.2
-#          BINARY: yq_linux_amd64
-#        run: |
-#          wget -q https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
-#          tar xz && mv ${BINARY} /usr/local/bin/yq
-#          yq -i "${YAMLPATH} = \"${NEWVALUE}\"" ccy-repo/${GITLAB_FILEPATH}
-#
-#      - name: Commit and Push Changes
-#        working-directory: ccy-repo
-#        shell: bash
-#        env:
-#          COMMITPREFIX: '[CTS]'
-#        run: |
-#          git config --global user.email "actions@github.com"
-#          git config --global user.name "GitHub Actions"
-#          git remote set-url origin "https://oauth2:${{secrets.GITLAB_ACCESS_TOKEN}}@gitlab.com/${{ vars.TARGET_GITLAB_REPOSITORY }}"
-#
-#          git add ${{ vars.GITLAB_FILEPATH }} || {
-#            echo "No files were changed, so we did not commit anything"
-#            exit 1
-#          } && \
-#          git commit -m "$COMMITPREFIX Automated changes to ${{ vars.GITLAB_FILEPATH }}" && \
-#          git push origin ${{ vars.TARGET_GITLAB_REFERENCE }}
-
-#      - run: rm -rf ccy-repo
-#        shell: bash
+          UPDATED_CONTENT=$(cat response.yaml)
+          
+          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' -F "branch=${{vars.TARGET_GITLAB_REFERENCE}}" -F "author_email=actions@gitlab.com" -F "author_name=GitLab Actions" -F "content=${UPDATED_CONTENT}" -F "commit_message=[CTS] Automated changes to ${{vars.GITLAB_FILEPATH}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 
   generate-and-push-sbom:
     runs-on: ubuntu-latest

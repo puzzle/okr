@@ -186,24 +186,19 @@ jobs:
 
       - name: Update YAML file
         run: |
-          CURRENT_CONTENT=$(curl --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files?file_path=${{vars.GITLAB_FILEPATH}}&ref=main" | jq -r '.content')
+          CURRENT_CONTENT=$(curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=main" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode)
           
-          UPDATED_CONTENT=$(yq e "${{vars.YAML_PATH}} = \"${{ needs.update-version.outputs.okr-docker-image}}\"" <<< "${CURRENT_CONTENT}")
+          echo "Current content ${CURRENT_CONTENT}"
           
-          curl --request PUT --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" \
-            --header "Content-Type: application/json" \
-            --data "{
-              \"branch\": \"main\",
-              \"commit_message\": \"[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}\",
-              \"actions\": [
-                {
-                  \"action\": \"update\",
-                  \"file_path\": \"${{vars.GITLAB_FILEPATH}}\",
-                  \"content\": \"${UPDATED_CONTENT}\"
-                }
-              ]
-            }" \
-            "${{vars.TARGET_GITLAB_REPOSITORY}}/commits"
+          yq -i '${{vars.YAML_PATH}} = ${{needs.update-version.outputs.okr-docker-image}}' ${CURRENT_CONTENT}
+          
+          echo "Updated content ${CURRENT_CONTENT}"
+          
+          curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' \
+               --header "Content-Type: application/json" \
+               --data '{"branch": "main", "author_email": "actions@gitlab.com", "author_name": "GitLab Actions",
+                 "content": ${CURRENT_CONTENT}, "commit_message": "[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}"}' \
+                 "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 
 #        env:
 #          NEWVALUE: ${{ needs.update-version.outputs.okr-docker-image}}

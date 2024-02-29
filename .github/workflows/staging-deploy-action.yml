@@ -186,18 +186,14 @@ jobs:
 
       - name: Update YAML file
         run: |
-          CURRENT_CONTENT=$(curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=main" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode)
+          curl -s --header "PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}" "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}?ref=main" -H "Accept: application/json" -H "Content-Type: application/json" | jq -r '.content' | base64 --decode > response.yaml
           
-          echo "Current content ${CURRENT_CONTENT}"
-          
-          yq -i '${{vars.YAML_PATH}} = ${{needs.update-version.outputs.okr-docker-image}}' ${CURRENT_CONTENT}
-          
-          echo "Updated content ${CURRENT_CONTENT}"
-          
+          yq -i '${{vars.YAML_PATH}} = ${{needs.update-version.outputs.okr-docker-image}}' response.yaml
+                    
           curl --request PUT --header 'PRIVATE-TOKEN: ${{secrets.GITLAB_ACCESS_TOKEN}}' \
                --header "Content-Type: application/json" \
                --data '{"branch": "main", "author_email": "actions@gitlab.com", "author_name": "GitLab Actions",
-                 "content": ${CURRENT_CONTENT}, "commit_message": "[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}"}' \
+                 "content": "$(cat response.yaml)", "commit_message": "[CTS] Automated changes to ${{ vars.GITLAB_FILEPATH }}"}' \
                  "${{vars.TARGET_GITLAB_REPOSITORY}}/files/${{vars.GITLAB_FILEPATH}}"
 
 #        env:

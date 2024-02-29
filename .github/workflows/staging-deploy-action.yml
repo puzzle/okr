@@ -182,7 +182,7 @@ jobs:
       - name: Trigger Deployment Workflow with latest Version
         uses: actions/checkout@v4
         with:
-          repository: "https://oauth2:${{secrets.GITLAB_ACCESS_TOKEN}}@gitlab.puzzle.ch/${{ vars.TARGET_GITLAB_REPOSITORY }}"
+          repository: ${{secrets.GITLAB_REMOTE_REPOSITORY}}
           ref: ${{ vars.TARGET_GITLAB_REFERENCE }}
           path: ccy-repo
           token: ${{secrets.VERSION_TOKEN}}

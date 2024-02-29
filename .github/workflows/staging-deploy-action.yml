@@ -190,7 +190,7 @@ jobs:
           
           echo "$(cat response.yaml)"
           
-          yq -i '${{vars.YAML_PATH}} = ${{needs.update-version.outputs.okr-docker-image}}' response.yaml
+          yq -i "${{vars.YAML_PATH}} = \"${{needs.update-version.outputs.okr-docker-image}}\"" response.yaml
           
           echo "$(cat response.yaml)"
                     

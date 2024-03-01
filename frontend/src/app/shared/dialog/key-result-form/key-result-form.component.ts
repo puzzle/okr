@@ -69,6 +69,7 @@ export class KeyResultFormComponent implements OnInit {
           }
         });
       });
+      console.log("Angular");
     }
 
     this.actionList$.subscribe((value) => {

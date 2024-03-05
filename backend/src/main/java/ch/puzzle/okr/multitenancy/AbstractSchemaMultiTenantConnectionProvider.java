@@ -1,5 +1,6 @@
 package ch.puzzle.okr.multitenancy;
 
+import ch.puzzle.okr.exception.ConnectionProviderException;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
@@ -70,7 +71,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
         try {
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
-            if (!Objects.equals(tenantIdentifier, "public")) {
+            if (!Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID)) {
                 properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
             }
             return properties;

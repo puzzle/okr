@@ -1,6 +1,5 @@
 package ch.puzzle.okr.multitenancy;
 
-import ch.puzzle.okr.service.business.KeyResultBusinessService;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionProvider;
@@ -14,9 +13,10 @@ import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.*;
 
-public abstract class AbstractSchemaMultiTenantConnectionProvider
-        extends AbstractMultiTenantConnectionProvider<String> {
-    private static final Logger logger = LoggerFactory.getLogger(KeyResultBusinessService.class);
+import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
+
+public abstract class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
+    private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
 
     private final Map<String, ConnectionProvider> connectionProviderMap;
 
@@ -28,7 +28,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     public Connection getConnection(String tenantIdentifier) throws SQLException {
         Connection connection = super.getConnection(tenantIdentifier);
 
-        String schema = Objects.equals(tenantIdentifier, "public") ? tenantIdentifier
+        String schema = Objects.equals(tenantIdentifier, DEFAULT_TENANT_ID) ? tenantIdentifier
                 : MessageFormat.format("okr_{0}", tenantIdentifier);
 
         logger.debug("Setting schema to {}", schema);
@@ -39,7 +39,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
 
     @Override
     protected ConnectionProvider getAnyConnectionProvider() {
-        return getConnectionProvider(TenantContext.DEFAULT_TENANT_ID);
+        return getConnectionProvider(DEFAULT_TENANT_ID);
     }
 
     @Override
@@ -61,16 +61,19 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider
     }
 
     private ConnectionProvider createConnectionProvider(String tenantIdentifier) {
-        return Optional.ofNullable(tenantIdentifier).map(this::getHibernatePropertiesForTenantId)
+        return Optional.ofNullable(tenantIdentifier).map(this::getHibernatePropertiesForTenantIdentifier)
                 .map(this::initConnectionProvider).orElse(null);
     }
 
-    private Properties getHibernatePropertiesForTenantId(String tenantId) {
+    private Properties getHibernatePropertiesForTenantIdentifier(String tenantIdentifier) {
         try {
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
-            if (!Objects.equals(tenantId, "public")) {
-                properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantId));
+            if (!Objects.equals(tenantIdentifier, "public")) {
+                properties.put(
+                        AvailableSettings.DEFAULT_SCHEMA,
+                        MessageFormat.format("okr_{0}", tenantIdentifier)
+                );
             }
             return properties;
         } catch (IOException e) {

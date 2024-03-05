@@ -40,7 +40,7 @@ public class JwtHelper {
         this.email = email;
     }
 
-    public User getUserFormJwt(Jwt token) {
+    public User getUserFromJwt(Jwt token) {
         Map<String, Object> claims = token.getClaims();
         logger.debug("claims {}", claims);
 

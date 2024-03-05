@@ -61,7 +61,7 @@ public class AuthorizationService {
         Authentication authentication = securityContext.getAuthentication();
         Jwt token = (Jwt) authentication.getPrincipal();
 
-        User user = jwtHelper.getUserFormJwt(token);
+        User user = jwtHelper.getUserFromJwt(token);
 
         return authorizationRegistrationService.updateOrAddAuthorizationUser(user);
     }

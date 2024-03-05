@@ -20,7 +20,6 @@ public class UserPersistenceService extends PersistenceBase<User, Long, UserRepo
         return USER;
     }
 
-    // @Cacheable(value = USER_CACHE, keyGenerator = "customKeyGenerator")
     public synchronized User getOrCreateUser(User user) {
         Optional<User> savedUser = getRepository().findByEmail(user.getEmail());
         return savedUser.orElseGet(() -> getRepository().save(user));

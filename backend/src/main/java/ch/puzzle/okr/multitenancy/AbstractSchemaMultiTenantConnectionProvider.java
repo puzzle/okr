@@ -15,7 +15,8 @@ import java.util.*;
 
 import static ch.puzzle.okr.multitenancy.TenantContext.DEFAULT_TENANT_ID;
 
-public abstract class AbstractSchemaMultiTenantConnectionProvider extends AbstractMultiTenantConnectionProvider<String> {
+public abstract class AbstractSchemaMultiTenantConnectionProvider
+        extends AbstractMultiTenantConnectionProvider<String> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractSchemaMultiTenantConnectionProvider.class);
 
     private final Map<String, ConnectionProvider> connectionProviderMap;
@@ -70,10 +71,7 @@ public abstract class AbstractSchemaMultiTenantConnectionProvider extends Abstra
             Properties properties = new Properties();
             properties.load(getClass().getResourceAsStream(this.getHibernatePropertiesFilePaths()));
             if (!Objects.equals(tenantIdentifier, "public")) {
-                properties.put(
-                        AvailableSettings.DEFAULT_SCHEMA,
-                        MessageFormat.format("okr_{0}", tenantIdentifier)
-                );
+                properties.put(AvailableSettings.DEFAULT_SCHEMA, MessageFormat.format("okr_{0}", tenantIdentifier));
             }
             return properties;
         } catch (IOException e) {

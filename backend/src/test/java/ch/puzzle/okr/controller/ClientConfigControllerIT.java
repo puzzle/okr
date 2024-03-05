@@ -29,6 +29,6 @@ class ClientConfigControllerIT {
     void shouldEmptyUsersCache() throws Exception {
         mvc.perform(get("/config").with(SecurityMockMvcRequestPostProcessors.csrf()))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
-        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv();
+        verify(clientConfigService, times(1)).getConfigBasedOnActiveEnv("pitc.okr.puzzle.ch");
     }
 }

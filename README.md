@@ -4,6 +4,12 @@ This is an open source application for managing OKRs, developed by the team of a
 
 This project contains two parts:
 
+## Setup
+Add subdomains to hosts file:
+```shell
+sudo sh -c 'echo "127.0.0.1       pitc.okr.localhost\n127.0.0.1       acme.okr.localhost" >> /etc/hosts'
+```
+
 ## Frontend
 
 [Frontend description](frontend/README.md)

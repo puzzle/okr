@@ -196,6 +196,7 @@ describe('OKR Check-in e2e tests', () => {
 
       cy.wait(500);
       cy.contains('Check-in History');
+      cy.contains('Wert: CHF 30.-');
       cy.getByTestId('edit-check-in').first().click();
       cy.contains('Here we edit a metric checkin');
       cy.contains('CHF 30.-');
@@ -211,6 +212,66 @@ describe('OKR Check-in e2e tests', () => {
       cy.wait(200);
       cy.contains('CHF 200.-');
       cy.contains('We bought a new sheep');
+    });
+
+    it('Should generate right labels in checkin history list', () => {
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.getByTestId('submit').should('be.disabled');
+      cy.fillOutKeyResult(
+        'A new KeyResult for checking checkin list',
+        'EUR',
+        '10',
+        '300',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('A new KeyResult for checking checkin list').click();
+
+      cy.getByTestId('add-check-in').first().click();
+      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+      cy.contains('Aktuell: 30 €');
+      cy.getByTestId('show-all-checkins').click();
+
+      cy.wait(500);
+      cy.contains('Check-in History');
+      cy.contains('Wert: 30 €');
+
+      cy.getByTestId('closeButton').click();
+      // Wait this time because of the toaster message
+      cy.wait(2000);
+      cy.getByTestId('close-drawer').click();
+
+      cy.getByTestId('objective').first().getByTestId('add-keyResult').first().click();
+      cy.fillOutKeyResult(
+        'There is another kr with fte',
+        'FTE',
+        '10',
+        '300',
+        null,
+        null,
+        null,
+        null,
+        'This is my description',
+      );
+
+      cy.getByTestId('submit').click();
+
+      cy.getByTestId('keyresult').contains('There is another kr with fte').click();
+
+      cy.getByTestId('add-check-in').first().click();
+      cy.fillOutCheckInMetric(30, 5, 'Here we are', 'A cat would be great');
+      cy.contains('Aktuell: 30 FTE');
+      cy.getByTestId('show-all-checkins').click();
+
+      cy.wait(500);
+      cy.contains('Check-in History');
+      cy.contains('Wert: 30 FTE');
     });
 
     it('Edit ordinal checkin', () => {

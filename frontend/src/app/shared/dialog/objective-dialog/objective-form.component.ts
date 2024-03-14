@@ -258,6 +258,9 @@ export class ObjectiveFormComponent implements OnInit {
 
   updateAlignments() {
     this.generateAlignmentPossibilities(this.objectiveForm.value.quarter!);
+    this.objectiveForm.patchValue({
+      alignment: 'Onull',
+    });
   }
 
   protected readonly getQuarterLabel = getQuarterLabel;

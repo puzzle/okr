@@ -38,7 +38,6 @@ export class CustomizationService {
     if (!title || this.currentConfig?.title === title) {
       return;
     }
-    debugger;
     this.document.querySelector('title')!.innerHTML = title;
   }
 

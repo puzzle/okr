@@ -1,6 +1,6 @@
 package ch.puzzle.okr;
 
-import ch.puzzle.okr.service.clientcustomization.ClientCustomizationProperties;
+import ch.puzzle.okr.service.clientconfig.ClientCustomizationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

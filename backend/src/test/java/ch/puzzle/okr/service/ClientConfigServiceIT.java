@@ -1,7 +1,7 @@
 package ch.puzzle.okr.service;
 
 import ch.puzzle.okr.dto.ClientConfigDto;
-import ch.puzzle.okr.service.clientcustomization.ClientConfigService;
+import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

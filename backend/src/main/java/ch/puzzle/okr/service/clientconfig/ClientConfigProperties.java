@@ -4,7 +4,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
 
-
 @ConfigurationProperties("okr.clientconfig")
 public class ClientConfigProperties {
     private String favicon;

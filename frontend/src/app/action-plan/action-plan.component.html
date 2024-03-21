@@ -25,7 +25,7 @@
         (focusin)="activeItem = i"
         class="action-input"
         [value]="action.action"
-        (focusout)="changeActionText($event, i)"
+        (input)="changeActionText($event, i)"
         [attr.data-testId]="'actionInput'"
       />
       <img

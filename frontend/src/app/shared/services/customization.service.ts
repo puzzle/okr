@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ConfigService } from "../../config.service";
-import { CustomizationConfig } from "../types/model/ClientConfig";
+import { Inject, Injectable } from '@angular/core';
+import { ConfigService } from '../../config.service';
+import { CustomizationConfig, CustomStyles } from '../types/model/ClientConfig';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -8,14 +9,17 @@ import { CustomizationConfig } from "../types/model/ClientConfig";
 export class CustomizationService {
   private currentConfig?: CustomizationConfig;
 
-  constructor(private configService: ConfigService) {
-    configService.config$.subscribe(config => {
+  constructor(
+    configService: ConfigService,
+    @Inject(DOCUMENT) private document: Document,
+  ) {
+    configService.config$.subscribe((config) => {
       this.updateCustomizations(config);
-    })
+    });
   }
 
-
   private updateCustomizations(config: CustomizationConfig) {
+    this.setTitle(config.title);
     this.setFavicon(config.favicon);
     this.setStyleCustomizations(config.customStyles);
 
@@ -27,46 +31,55 @@ export class CustomizationService {
       return;
     }
 
-    document.getElementById("favicon")?.setAttribute("src", favicon);
+    this.document.getElementById('favicon')?.setAttribute('href', favicon);
   }
 
-  private setStyleCustomizations(customStylesMap: Map<string, string>) {
+  private setTitle(title: string) {
+    if (!title || this.currentConfig?.title === title) {
+      return;
+    }
+    debugger;
+    this.document.querySelector('title')!.innerHTML = title;
+  }
+
+  private setStyleCustomizations(customStylesMap: CustomStyles) {
     if (!customStylesMap || this.areStylesTheSame(customStylesMap)) {
       return;
     }
 
-    this.removeStyles(this.currentConfig?.customStyles)
+    this.removeStyles(this.currentConfig?.customStyles);
     this.setStyles(customStylesMap);
   }
 
-  private areStylesTheSame(customStylesMap: Map<string, string>) {
+  private areStylesTheSame(customStylesMap: CustomStyles) {
     return JSON.stringify(this.currentConfig?.customStyles) === JSON.stringify(customStylesMap);
   }
 
-  private removeStyles(customStylesMap: Map<string, string> | undefined) {
+  private setStyles(customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
-    const styles = document?.getElementById("html")!.style;
+
+    const styles = this.document.querySelector('html')!.style;
     if (!styles) {
-      return
+      return;
     }
 
-    Array.from(customStylesMap.entries()).forEach(([varName, varValue]) => {
+    Object.entries(customStylesMap).forEach(([varName, varValue]) => {
       styles.setProperty(`--${varName}`, varValue);
     });
   }
 
-  private setStyles(customStylesMap: Map<string, string>) {
+  private removeStyles(customStylesMap: CustomStyles | undefined) {
     if (!customStylesMap) {
       return;
     }
-    const styles = document?.getElementById("html")!.style;
-    if (!styles) {
-      return
-    }
 
-    Array.from(customStylesMap.keys()).forEach((varName) => {
+    const styles = this.document.querySelector('html')!.style;
+    if (!styles) {
+      return;
+    }
+    Object.keys(customStylesMap).forEach((varName) => {
       styles.removeProperty(`--${varName}`);
     });
   }

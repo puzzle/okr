@@ -12,7 +12,12 @@
   z-index: 102;
   height: inherit;
   justify-content: space-between;
-  background-color: var(--okr-topbar-background-color)
+  background-color: var(--okr-topbar-background-color);
+
+  img {
+    max-height: calc(100% - 16px);
+    width: auto;
+  }
 }
 
 .topBarEntry {

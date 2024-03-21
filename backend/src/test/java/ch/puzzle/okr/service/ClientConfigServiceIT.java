@@ -1,10 +1,10 @@
 package ch.puzzle.okr.service;
 
+import ch.puzzle.okr.dto.ClientConfigDto;
+import ch.puzzle.okr.service.clientconfig.ClientConfigService;
 import ch.puzzle.okr.test.SpringIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,10 +16,10 @@ class ClientConfigServiceIT {
 
     @Test
     void saveKeyResultShouldSaveNewKeyResult() {
-        Map<String, String> configMap = clientConfigService.getConfigBasedOnActiveEnv();
+        ClientConfigDto clientConfig = clientConfigService.getConfigBasedOnActiveEnv();
 
-        assertEquals("prod", configMap.get("activeProfile"));
-        assertEquals("http://localhost:8544/realms/pitc", configMap.get("issuer"));
+        assertEquals("prod", clientConfig.activeProfile());
+        assertEquals("http://localhost:8544/realms/pitc", clientConfig.issuer());
     }
 
 }

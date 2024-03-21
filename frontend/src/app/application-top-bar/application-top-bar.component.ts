@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { map, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, map, ReplaySubject } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TeamManagementComponent } from '../shared/dialog/team-management/team-management.component';
@@ -22,6 +22,7 @@ export class ApplicationTopBarComponent implements OnInit {
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
+  logoSrc$ = new BehaviorSubject<String|undefined>(undefined);
 
   constructor(
     private oauthService: OAuthService,
@@ -35,9 +36,7 @@ export class ApplicationTopBarComponent implements OnInit {
     this.configService.config$
       .pipe(
         map((config) => {
-          if (config.activeProfile === 'staging') {
-            document.getElementById('okrTopbar')!.style.backgroundColor = '#ab31ad';
-          }
+          this.logoSrc$.next(config.logo);
         }),
       )
       .subscribe();

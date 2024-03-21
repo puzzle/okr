@@ -19,7 +19,6 @@ describe('CustomizationService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: DOCUMENT, useValue: undefined },
         {
           provide: ConfigService,
           useValue: {

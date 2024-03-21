@@ -21,8 +21,8 @@ export class ApplicationTopBarComponent implements OnInit {
 
   @Input()
   hasAdminAccess!: ReplaySubject<boolean>;
+  logoSrc$ = new BehaviorSubject<String>('assets/images/okr-logo.svg');
   private dialogRef!: MatDialogRef<TeamManagementComponent> | undefined;
-  logoSrc$ = new BehaviorSubject<String|undefined>(undefined);
 
   constructor(
     private oauthService: OAuthService,
@@ -36,7 +36,9 @@ export class ApplicationTopBarComponent implements OnInit {
     this.configService.config$
       .pipe(
         map((config) => {
-          this.logoSrc$.next(config.logo);
+          if (config.logo) {
+            this.logoSrc$.next(config.logo);
+          }
         }),
       )
       .subscribe();
@@ -45,6 +47,7 @@ export class ApplicationTopBarComponent implements OnInit {
       this.username.next(this.oauthService.getIdentityClaims()['name']);
     }
   }
+
   logOut() {
     const currentUrlTree = this.router.createUrlTree([], { queryParams: {} });
     this.router.navigateByUrl(currentUrlTree).then(() => {

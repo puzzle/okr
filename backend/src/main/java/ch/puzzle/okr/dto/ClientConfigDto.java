@@ -8,6 +8,7 @@ public record ClientConfigDto(
         String clientId,
         String favicon,
         String logo,
+        String title,
         HashMap<String, String> customStyles
 ) {
 }

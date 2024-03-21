@@ -1,11 +1,11 @@
-package ch.puzzle.okr.service.clientconfig;
+package ch.puzzle.okr.service.clientcustomization;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
 
-@ConfigurationProperties("okr.clientconfig")
-public class ClientConfigProperties {
+@ConfigurationProperties("okr.clientcustomization")
+public class ClientCustomizationProperties {
     private String favicon;
     private String logo;
     private String title;

@@ -3,6 +3,7 @@ package ch.puzzle.okr.service.business;
 import ch.puzzle.okr.models.Quarter;
 import ch.puzzle.okr.service.persistence.QuarterPersistenceService;
 import ch.puzzle.okr.service.validation.QuarterValidationService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -63,12 +64,12 @@ public class QuarterBusinessService {
         // Get Start of current business year
         // Subtract months based on the quarter we are in
         // i.e. quarter=2, subtract (2 - 1) * 3 = 3 Months to get start
-        int startOfBusinessYear = startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
+        int yearStart = startOfQuarter.minusMonths((quarter - 1) * 3L).getYear();
+        int yearEnd = yearStart + 1;
 
-        String yearStart = shortenYear(startOfBusinessYear);
-        String yearEnd = shortenYear(startOfBusinessYear + 1);
-
-        return quarterFormat.replace("xx", yearStart).replace("yy", yearEnd).replace("zz", String.valueOf(quarter));
+        return StringUtils.replaceEach(quarterFormat, new String[] { "xxxx", "yyyy", "xx", "yy", "zz" },
+                new String[] { String.valueOf(yearStart), String.valueOf(yearEnd), shortenYear(yearStart),
+                        shortenYear(yearEnd), String.valueOf(quarter) });
     }
 
     private void generateQuarter(LocalDateTime start, String label) {
@@ -111,6 +112,7 @@ public class QuarterBusinessService {
         // If the quarter 4 months in the future and the current are exactly 2 apart, this is the case
         // 1 -> 3, 2 -> 4, 3 -> 1, 4 -> 2
         if (Math.abs(nextQuarter - currentQuarter) == 2) {
+            logger.info("Generated quarters on last day of month");
             String label = createQuarterLabel(yearMonthToGenerate, nextQuarter);
             generateQuarter(yearMonthToGenerate.atDay(1).atStartOfDay(), label);
         }
